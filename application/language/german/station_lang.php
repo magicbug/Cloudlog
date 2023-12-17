@@ -36,6 +36,7 @@ $lang['station_logbooks_select_avail_loc'] = "Wähle verfügbare Stationsstandor
 $lang['station_logbooks_link_loc'] = "Verknüpfe Standort";
 $lang['station_logbooks_linked_loc'] = "Verknüpfte Standorte";
 $lang['station_logbooks_no_linked_loc'] = "Keine verknüpften Standorte";
+$lang['station_logbooks_unlink_station_location'] = "Entferne Verknüpfung";
 
 
 
