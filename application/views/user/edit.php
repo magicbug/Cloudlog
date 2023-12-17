@@ -152,6 +152,18 @@
 							<div class="card">
 								<div class="card-header"><?php echo lang('general_word_general'); ?></div>
 								<div class="card-body">
+									<div class="mb-3">
+										<label><?php echo lang('account_theme').' / '.lang('account_stylesheet'); ?></label>
+										<?php if(!isset($user_stylesheet)) { $user_stylesheet='default'; }?>
+										<select class="form-select" id="user_stylesheet" name="user_stylesheet" required>
+											<?php
+											foreach ($themes as $theme) {
+												echo '<option value="' . $theme->foldername . '" ' . (( $user_stylesheet == $theme->foldername)?'selected="selected"':"") . '>' . $theme->name . '</option>';
+											}
+											?>
+										</select>
+									</div>
+									<hr/>
 									<?php if ($this->config->item('cl_multilanguage')) { ?>
 										<div class="mb-3">
 											<label for="language"><?php echo lang('account_cloudlog_language'); ?></label>
@@ -200,19 +212,6 @@
 											<option value='N' <?php if($user_measurement_base == "N") { echo "selected=\"selected\""; } ?>>Nautical miles</option>
 										</select>
 										<small id="user_measurement_base_Help" class="form-text text-muted"><?php echo lang('account_choose_which_unit_distances_will_be_shown_in'); ?></small>
-									</div>
-									
-									<hr/>
-									<div class="mb-3">
-										<label><?php echo lang('account_theme').' / '.lang('account_stylesheet'); ?></label>
-										<?php if(!isset($user_stylesheet)) { $user_stylesheet='default'; }?>
-										<select class="form-select" id="user_stylesheet" name="user_stylesheet" required>
-											<?php
-											foreach ($themes as $theme) {
-												echo '<option value="' . $theme->foldername . '" ' . (( $user_stylesheet == $theme->foldername)?'selected="selected"':"") . '>' . $theme->name . '</option>';
-											}
-											?>
-										</select>
 									</div>
 								</div>
 							</div>
