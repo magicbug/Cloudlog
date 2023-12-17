@@ -6,6 +6,7 @@ $(document).ready( function () {
 
 $(document).ready( function () {
     $('#station_logbooks_linked_table').DataTable({
-        "stateSave": true
+        "stateSave": true,
+        "paging": true
     });
 } );
