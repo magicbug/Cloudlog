@@ -58,12 +58,11 @@ class Qrz extends CI_Controller {
 		$data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id, $trusted);
 		$errormessages=array();
 
-		$CI =& get_instance();
-		$CI->load->library('AdifHelper');
+		$this->load->library('AdifHelper');
 
 		if ($data['qsos']) {
 			foreach ($data['qsos']->result() as $qso) {
-				$adif = $CI->adifhelper->getAdifLine($qso);
+				$adif = $this->adifhelper->getAdifLine($qso);
 
 				if ($qso->COL_QRZCOM_QSO_UPLOAD_STATUS == 'M') {
 					$result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif, true);
@@ -89,6 +88,9 @@ class Qrz extends CI_Controller {
 					$result['status'] = 'Error';
 				}
 			}
+			if ($i == 0) {
+			    $result['status']='OK';
+		    }
 			$result['count'] = $i;
 			$result['errormessages'] = $errormessages;
 			return $result;
