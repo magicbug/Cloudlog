@@ -123,7 +123,7 @@ $lang['account_map_qso_confirm'] = "QSO (confirmed)";
 $lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";
 
 $lang['account_general_information'] = "General Information";
-$lang['account_qso_page_options'] = "QSO Page Options";
-$lang['account_website_confirmation_account'] = "WebSite Confirmation Account";
+$lang['account_qso_logging_options'] = "QSO Logging Options";
+$lang['account_third_party_services'] = "Third Party Services";
 $lang['account_default_values'] = "Default Values";
 $lang['account_miscellaneous'] = "Miscellaneous";

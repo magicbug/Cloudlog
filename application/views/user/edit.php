@@ -338,10 +338,10 @@
 							</div>
 						</div>
 
-						<!-- QSO Page Options -->
+						<!-- QSO Logging Options -->
 						<div class="col-md">
 							<div class="card">
-								<div class="card-header"><?php echo lang('account_qso_page_options'); ?></div>
+								<div class="card-header"><?php echo lang('account_qso_logging_options'); ?></div>
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="logendtime"><?php echo lang('account_log_end_time'); ?></label>
@@ -623,7 +623,7 @@
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_confirmation_account">
 				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_confirmation_account" aria-expanded="false" aria-controls="panelsStayOpen-B_confirmation_account">
-				<?php echo lang('account_website_confirmation_account'); ?></button>
+				<?php echo lang('account_third_party_services'); ?></button>
 			</h2>
 			<div id="panelsStayOpen-B_confirmation_account" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_confirmation_account">
 				<div class="accordion-body">
