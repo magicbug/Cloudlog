@@ -155,8 +155,11 @@ class ADIF_Parser
                 $res = preg_split($pattern, $r, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
                 $pattern = "/\<(.*?)\:/";
                 preg_match($pattern, $res[0], $match);
-                $tag = $match[1];
+				$tag = $match[1];
+				$pattern = "/\d+((:\D)?)/";
+                preg_match($pattern, $r, $fulltag);
 				$value = (isset($res[2])?trim($res[2]):(isset($res[1])?trim($res[1]):''));
+				$value = substr($value, 0, $fulltag[0]);
 				$return[mb_strtolower($tag, "UTF-8")] = $value;
         }
 
