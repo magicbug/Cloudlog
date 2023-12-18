@@ -23,7 +23,19 @@ class Migration_dxcc_index extends CI_Migration {
 	}
 
 	public function down(){
-		$this->db->query("ALTER TABLE dxcc_prefixes DROP INDEX idx_dxcc_prefixes_logic");
-		$this->db->query("ALTER TABLE dxcc_exceptions DROP INDEX idx_dxcc_exceptions_logic");
+
+		// check if index idx_dxcc_prefixes_logic exists
+		// if so, drop it
+		$prefixes_index = $this->db->query("SHOW INDEX FROM dxcc_prefixes WHERE Key_name = 'idx_dxcc_prefixes_logic'")->num_rows();
+		if ($prefixes_index == 1) {
+			$this->db->query("ALTER TABLE dxcc_prefixes DROP INDEX idx_dxcc_prefixes_logic");
+		}
+
+		// check if index dxcc_exceptions exists
+		// if so, drop it
+		$exceptions_index = $this->db->query("SHOW INDEX FROM dxcc_exceptions WHERE Key_name = 'idx_dxcc_exceptions_logic'")->num_rows();
+		if ($exceptions_index == 1) {
+			$this->db->query("ALTER TABLE dxcc_exceptions DROP INDEX idx_dxcc_exceptions_logic");
+		}
 	}
 }
