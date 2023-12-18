@@ -5,6 +5,10 @@
 	--cl-border-btn-pwd:#333;
 }
 
+.card-header {
+	color: white;
+}
+
 .awardsBgDanger a {
 	color: white;
 }

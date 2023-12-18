@@ -141,10 +141,10 @@
 		<!-- ZONE 2 / Cloudlog -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_cloudlog_general">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_cloudlog_general" aria-expanded="true" aria-controls="panelsStayOpen-B_cloudlog_general">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_cloudlog_general" aria-expanded="false" aria-controls="panelsStayOpen-B_cloudlog_general">
 				<?php echo lang('account_cloudlog_preferences'); ?></button>
 			</h2>
-			<div id="panelsStayOpen-B_cloudlog_general" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_cloudlog_general">
+			<div id="panelsStayOpen-B_cloudlog_general" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_cloudlog_general">
 				<div class="accordion-body">
 					<div class="row mb-3">
 						<!-- Cloudlog Preferences -->
@@ -152,6 +152,18 @@
 							<div class="card">
 								<div class="card-header"><?php echo lang('general_word_general'); ?></div>
 								<div class="card-body">
+									<div class="mb-3">
+										<label><?php echo lang('account_theme').' / '.lang('account_stylesheet'); ?></label>
+										<?php if(!isset($user_stylesheet)) { $user_stylesheet='default'; }?>
+										<select class="form-select" id="user_stylesheet" name="user_stylesheet" required>
+											<?php
+											foreach ($themes as $theme) {
+												echo '<option value="' . $theme->foldername . '" ' . (( $user_stylesheet == $theme->foldername)?'selected="selected"':"") . '>' . $theme->name . '</option>';
+											}
+											?>
+										</select>
+									</div>
+									<hr/>
 									<?php if ($this->config->item('cl_multilanguage')) { ?>
 										<div class="mb-3">
 											<label for="language"><?php echo lang('account_cloudlog_language'); ?></label>
@@ -200,19 +212,6 @@
 											<option value='N' <?php if($user_measurement_base == "N") { echo "selected=\"selected\""; } ?>>Nautical miles</option>
 										</select>
 										<small id="user_measurement_base_Help" class="form-text text-muted"><?php echo lang('account_choose_which_unit_distances_will_be_shown_in'); ?></small>
-									</div>
-									
-									<hr/>
-									<div class="mb-3">
-										<label><?php echo lang('account_theme').' / '.lang('account_stylesheet'); ?></label>
-										<?php if(!isset($user_stylesheet)) { $user_stylesheet='default'; }?>
-										<select class="form-select" id="user_stylesheet" name="user_stylesheet" required>
-											<?php
-											foreach ($themes as $theme) {
-												echo '<option value="' . $theme->foldername . '" ' . (( $user_stylesheet == $theme->foldername)?'selected="selected"':"") . '>' . $theme->name . '</option>';
-											}
-											?>
-										</select>
 									</div>
 								</div>
 							</div>
@@ -338,10 +337,10 @@
 							</div>
 						</div>
 
-						<!-- QSO Page Options -->
+						<!-- QSO Logging Options -->
 						<div class="col-md">
 							<div class="card">
-								<div class="card-header"><?php echo lang('account_qso_page_options'); ?></div>
+								<div class="card-header"><?php echo lang('account_qso_logging_options'); ?></div>
 								<div class="card-body">
 									<div class="mb-3">
 										<label for="logendtime"><?php echo lang('account_log_end_time'); ?></label>
@@ -556,10 +555,10 @@
 		<!-- ZONE 3 / Default Value -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_default_value">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_default_value" aria-expanded="true" aria-controls="panelsStayOpen-B_default_value">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_default_value" aria-expanded="false" aria-controls="panelsStayOpen-B_default_value">
 					<?php echo lang('account_default_values');?></button>
 			</h2>
-			<div id="panelsStayOpen-B_default_value" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_default_value">
+			<div id="panelsStayOpen-B_default_value" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_default_value">
 				<div class="accordion-body">
 					<div class="row">
 						<!-- Default -->
@@ -622,10 +621,10 @@
 		<!-- ZONE 4 / Confirmation Account -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_confirmation_account">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_confirmation_account" aria-expanded="true" aria-controls="panelsStayOpen-B_confirmation_account">
-				<?php echo lang('account_website_confirmation_account'); ?></button>
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_confirmation_account" aria-expanded="false" aria-controls="panelsStayOpen-B_confirmation_account">
+				<?php echo lang('account_third_party_services'); ?></button>
 			</h2>
-			<div id="panelsStayOpen-B_confirmation_account" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_confirmation_account">
+			<div id="panelsStayOpen-B_confirmation_account" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_confirmation_account">
 				<div class="accordion-body">
 					<div class="row">
 						<!-- Logbook of the World -->
@@ -710,10 +709,10 @@
 		<!-- ZONE 5 / Miscellaneous -->
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="panelsStayOpen-H_miscellaneous">
-				<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_miscellaneous" aria-expanded="true" aria-controls="panelsStayOpen-B_miscellaneous">
+				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-B_miscellaneous" aria-expanded="false" aria-controls="panelsStayOpen-B_miscellaneous">
 				<?php echo lang('account_miscellaneous');?></button>
 			</h2>
-			<div id="panelsStayOpen-B_miscellaneous" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-H_miscellaneous">
+			<div id="panelsStayOpen-B_miscellaneous" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-H_miscellaneous">
 				<div class="accordion-body">
 					<div class="row">
 						<!-- AMSAT Upload -->

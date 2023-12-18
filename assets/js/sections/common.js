@@ -581,7 +581,7 @@ function btn_pwd_showhide() {
         $(this).closest('div').find('.fa-eye-slash').removeClass('fa-eye-slash').addClass('fa-eye');
 	} else {
         $(this).closest('div').find('input[type="text"]').attr('type','password');
-        $(this).closest('div').find('.fa-eye').removeClass('Òfa-eye').addClass('fa-eye-slash');
+        $(this).closest('div').find('.fa-eye').removeClass('fa-eye').addClass('fa-eye-slash');
 	}
 }
 $('.user_edit .btn-pwd-showhide').off('click').on('click', btn_pwd_showhide );
