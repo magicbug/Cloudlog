@@ -1,3 +1,7 @@
+:root {
+	--cl-border-btn-pwd:var(--bs-border-color);
+}
+
 thead > tr > td {
 	background-color: aliceblue !important;
 }
@@ -47,4 +51,9 @@ thead > tr > td {
 #qsoList_wrapper td {
 	text-align: left !important;
 	white-space: nowrap;
+}
+
+.accordion {
+	--bs-accordion-btn-bg: #f9f9f9;
+	--bs-accordion-active-bg: #f9f9f9;
 }

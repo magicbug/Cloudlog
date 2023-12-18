@@ -2,6 +2,10 @@
  * No overrides for the default theme as it aligns with general.css
 */
 
+:root{
+	--cl-border-btn-pwd:var(--bs-border-color);
+}
+
 .selectize-input {
 	border-radius: 0;
 }
@@ -29,4 +33,9 @@
 
 TD.qrz {
 	white-space: nowrap;
+}
+
+.accordion {
+	--bs-accordion-btn-bg: #f9f9f9;
+	--bs-accordion-active-bg: #f9f9f9;
 }
