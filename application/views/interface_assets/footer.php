@@ -3067,7 +3067,7 @@ function viewEqsl(picture, callsign) {
     <?php } ?>
 <?php } ?>
 
-<?php if (($this->uri->segment(1) == "user") && ($this->uri->segment(2) == "edit")) { ?>
+<?php if ($this->uri->segment(1) == "user") { ?>
     <!-- [MAP Custom] select list with icons -->
     <script>
         $(document).ready(function(){
@@ -3087,6 +3087,20 @@ function viewEqsl(picture, callsign) {
                     $('.icon_selectBox[data-boxcontent="'+boxcontent+'"] .icon_overSelect').html($(this).html().substring(0,10)+'.');
                 }
                 $('.icon_selectBox_data[data-boxcontent="'+boxcontent+'"]').hide();
+            });
+
+            $('.collapse').on('shown.bs.collapse', function(e) {
+                var $card = $(this).closest('.accordion-item');
+                var $open = $($(this).data('parent')).find('.collapse.show');
+                
+                var additionalOffset = 0;
+                if($card.prevAll().filter($open.closest('.accordion-item')).length !== 0)
+                {
+                    additionalOffset =  $open.height();
+                }
+                $('html,body').animate({
+                    scrollTop: $card.offset().top - additionalOffset
+                }, 300);
             });
         });
     </script>
