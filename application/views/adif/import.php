@@ -1,4 +1,4 @@
-<div class="container adif">
+<div class="container adif" id="adif_import">
 
     <h2><?php echo $page_title; ?></h2>
     <?php

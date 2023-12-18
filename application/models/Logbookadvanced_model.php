@@ -335,23 +335,30 @@ class Logbookadvanced_model extends CI_Model {
 		}
 	}
 
-    public function updateQsl($ids, $user_id, $method, $sent) {
-        $this->load->model('user_model');
+	public function updateQsl($ids, $user_id, $method, $sent) {
+		$this->load->model('user_model');
 
-        if(!$this->user_model->authorize(2)) {
-            return array('message' => 'Error');
-        } else {
-            $data = array(
-                'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-                'COL_QSL_SENT' => $sent,
-                'COL_QSL_SENT_VIA' => $method
-            );
-            $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
-            $this->db->update($this->config->item('table_name'), $data);
+		if(!$this->user_model->authorize(2)) {
+			return array('message' => 'Error');
+		} else {
+			if ($method != '') {
+				$data = array(
+					'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+					'COL_QSL_SENT' => $sent,
+					'COL_QSL_SENT_VIA' => $method
+				);
+			} else {
+				$data = array(
+					'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+					'COL_QSL_SENT' => $sent,
+				);
+			}
+			$this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
+			$this->db->update($this->config->item('table_name'), $data);
 
-            return array('message' => 'OK');
-        }
-    }
+			return array('message' => 'OK');
+		}
+	}
 
 	public function updateQslReceived($ids, $user_id, $method, $sent) {
         $this->load->model('user_model');

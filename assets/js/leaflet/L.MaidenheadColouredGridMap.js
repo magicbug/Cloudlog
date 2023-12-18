@@ -4,7 +4,6 @@
 
 L.Maidenhead = L.LayerGroup.extend({
 
-
 	options: {
 		// Line and label color
 		color: 'rgba(255, 0, 0, 0.4)',

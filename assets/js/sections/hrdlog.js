@@ -21,27 +21,30 @@ function ExportHrd(station_id) {
 					$('#notcount'+value.station_id).html(value.notcount);
 					$('#totcount'+value.station_id).html(value.totcount);
 				});
-				$(".card-body").append('<div class="alert alert-success" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.infomessage + '</div>');
+				$(".card-body").append('<div class="alert alert-success" role="alert">' + data.infomessage + '</div>');
 			}
 			else {
-				$(".card-body").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + data.info + '</div>');
+				$(".card-body").append('<div class="alert alert-info" role="alert">' + data.info + '</div>');
 			}
 
 			if (data.errormessages.length > 0) {
-				$(".card-body").append('' +
-					'<div class="errormessages"><p>\n' +
-					'                            <button class="btn btn-danger" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">\n' +
-					'                                Show error messages\n' +
-					'                            </button>\n' +
-					'                            </p>\n' +
-					'                            <div class="collapse" id="collapseExample">\n' +
-					'                                <div class="card card-body"><div class="errors"></div>\n' +
-					'                            </div>\n' +
-					'                            </div></div>');
-				$.each(data.errormessages, function(index, value) {
+				$("#hrdlog_export").append(
+					'<div class="errormessages">\n' +
+					'    <div class="card mt-2">\n' +
+					'        <div class="card-header bg-danger">\n' +
+					'            Error Message\n' +
+					'        </div>\n' +
+					'        <div class="card-body">\n' +
+					'            <div class="errors"></div>\n' +
+					'        </div>\n' +
+					'    </div>\n' +
+					'</div>'
+				);
+				$.each(data.errormessages, function (index, value) {
 					$(".errors").append('<li>' + value);
 				});
 			}
+			
 		}
 	});
 }

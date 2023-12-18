@@ -48,6 +48,8 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
+		$data['user_add'] = true;
+		$data['user_form_action'] = site_url('user/add');
 		$data['bands'] = $this->bands->get_user_bands();
 
 		// Get themes list
@@ -94,9 +96,9 @@ class User extends CI_Controller {
 				$data['user_quicklog'] = $this->input->post('user_quicklog');
 				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 				$data['language'] = $this->input->post('language');
-				$this->load->view('user/add', $data);
+				$this->load->view('user/edit', $data);
 			} else {
-				$this->load->view('user/add', $data);
+				$this->load->view('user/edit', $data);
 			}
 			$this->load->view('interface_assets/footer');
 		} else {
@@ -182,7 +184,7 @@ class User extends CI_Controller {
 			$data['user_quicklog'] = $this->input->post('user_quicklog');
 			$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 			$data['language'] = $this->input->post('language');
-			$this->load->view('user/add', $data);
+			$this->load->view('user/edit', $data);
 			$this->load->view('interface_assets/footer');
 		}
 	}
@@ -225,6 +227,7 @@ class User extends CI_Controller {
 		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
+		$data['user_form_action'] = site_url('user/edit')."/".$this->uri->segment(3);;
 		$data['bands'] = $this->bands->get_user_bands();
 
 		// Get themes list

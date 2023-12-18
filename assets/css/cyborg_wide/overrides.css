@@ -1,6 +1,13 @@
 /*!
  * No overrides for the default theme as it aligns with general.css
 */
+:root{
+	--cl-border-btn-pwd:#333;
+}
+
+.card-header {
+	color: white;
+}
 
 .awardsBgDanger a {
 	color: white;
@@ -221,4 +228,18 @@ path.grid-worked {
 
 #qsomap {
 	height: 400px !important;
+}
+
+
+.accordion {
+	--bs-accordion-active-color: #FFFFFF;
+	--bs-accordion-bg: var(--bs-body-bg);
+	--bs-accordion-btn-bg: #2c2c2c;
+	--bs-accordion-active-bg: #2c2c2c;
+	--bs-accordion-btn-focus-border-color: #FFFFFF;
+	--bs-accordion-btn-focus-box-shadow: initial;
+	--bs-accordion-border-color: #2c2c2c;
+}
+.accordion-button.collapsed {
+	border-bottom: 1px solid var(--bs-body-bg);
 }

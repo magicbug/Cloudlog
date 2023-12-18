@@ -1,4 +1,4 @@
-<div class="container" id="create_station_profile">
+<div class="container mb-4" id="create_station_profile">
 
 <br>
 	<?php if($this->session->flashdata('message')) { ?>
@@ -117,7 +117,7 @@
 
 					<input type="hidden" class="form-control" name="station_logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>" required>	
 
-					<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang('station_logbooks_link_loc'); ?></button>
+					<button type="submit" class="btn btn-primary"><i class="fas fa-link"></i> <?php echo lang('station_logbooks_link_loc'); ?></button>
 					</form>
 				</div>
 			</div>
@@ -129,12 +129,14 @@
 			<?php echo lang('station_logbooks_linked_loc'); ?>
 		</div>
 
-	    <div class="table-responsive">
+	    <div class="table-responsive m-4">
 			<table id="station_logbooks_linked_table" class="table table-hover">
 				<thead class="thead-light">
 					<tr>
 						<th scope="col"><?php echo lang('station_location_name'); ?></th>
-						<th scope="col"></th>
+						<th scope="col"><?php echo lang('station_location_callsign'); ?></th>
+						<th scope="col"><?php echo lang('gen_hamradio_dxcc'); ?></th>
+						<th scope="col"><?php echo lang('station_logbooks_unlink_station_location'); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -143,15 +145,20 @@
 							foreach ($station_locations_linked->result() as $row) {
 					?>
 					<tr>
-						<td><?php echo $row->station_profile_name;?> (<?php echo lang('gen_hamradio_callsign'); ?>: <?php echo $row->station_callsign;?> <?php echo lang('gen_hamradio_dxcc'); ?>: <?php echo $row->station_country; if ($row->end != NULL) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?>)</td>
-						<td><a href="<?php echo site_url('logbooks/delete_relationship/'); ?><?php echo $station_logbook_details->logbook_id; ?>/<?php echo $row->station_id;?>" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a></td>
+						<td style="text-align: center; vertical-align: middle;"><?php echo $row->station_profile_name;?></td>
+						<td style="text-align: center; vertical-align: middle;"><?php echo $row->station_callsign;?></td>
+						<td style="text-align: center; vertical-align: middle;"><?php echo $row->station_country; if ($row->end != NULL) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+						<td style="text-align: center; vertical-align: middle;"><a href="<?php echo site_url('logbooks/delete_relationship/'); ?><?php echo $station_logbook_details->logbook_id; ?>/<?php echo $row->station_id;?>" class="btn btn-danger"><i class="fas fa-unlink"></i></a></td>
 					</tr>
 					<?php
 							}
 						} else {
 					?>
 					<tr>
-						<td colspan="2"><?php echo lang('station_logbooks_no_linked_loc'); ?></td>
+						<td style="text-align: center; vertical-align: middle;" colspan="2"><?php echo lang('station_logbooks_no_linked_loc'); ?></td>
+						<td style="text-align: center; vertical-align: middle;"></td>
+						<td style="text-align: center; vertical-align: middle;"></td>
+						<td style="text-align: center; vertical-align: middle;"></td>
 					</tr>
 					<?php } ?>
 				</tbody>

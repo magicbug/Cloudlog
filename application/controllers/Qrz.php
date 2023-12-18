@@ -58,12 +58,11 @@ class Qrz extends CI_Controller {
 		$data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id, $trusted);
 		$errormessages=array();
 
-		$CI =& get_instance();
-		$CI->load->library('AdifHelper');
+		$this->load->library('AdifHelper');
 
 		if ($data['qsos']) {
 			foreach ($data['qsos']->result() as $qso) {
-				$adif = $CI->adifhelper->getAdifLine($qso);
+				$adif = $this->adifhelper->getAdifLine($qso);
 
 				if ($qso->COL_QRZCOM_QSO_UPLOAD_STATUS == 'M') {
 					$result = $this->logbook_model->push_qso_to_qrz($qrz_api_key, $adif, true);
@@ -74,19 +73,24 @@ class Qrz extends CI_Controller {
 				if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') && ($result['message'] == 'STATUS=FAIL&REASON=Unable to add QSO to database: duplicate&EXTENDED=')) ){
 					$this->markqso($qso->COL_PRIMARY_KEY);
 					$i++;
+					$result['status'] = 'OK';
 				} elseif ( ($result['status']=='error') && (substr($result['message'],0,11)  == 'STATUS=AUTH')) {
 					log_message('error', 'QRZ upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
 					log_message('error', 'QRZ upload failed with the following message: ' .$result['message']);
 					log_message('error', 'QRZ upload stopped for Station_ID: ' .$station_id);
 					$errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
+					$result['status'] = 'Error';
 					break; /* If key is invalid, immediate stop syncing for more QSOs of this station */
 				} else {
 					log_message('error', 'QRZ upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
 					log_message('error', 'QRZ upload failed with the following message: ' .$result['message']);
 					$errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
+					$result['status'] = 'Error';
 				}
 			}
-			$result['status'] = 'OK';
+			if ($i == 0) {
+			    $result['status']='OK';
+		    }
 			$result['count'] = $i;
 			$result['errormessages'] = $errormessages;
 			return $result;
@@ -332,6 +336,8 @@ class Qrz extends CI_Controller {
 				$record['qsl_rcvd'] = $config['qrz_rcvd_mark'];
 			}
 
+			$record['call']=str_replace("_","/",$record['call']);
+			$record['station_callsign']=str_replace("_","/",$record['station_callsign']);
 			$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'], $record['station_callsign']);
 
 			if($status[0] == "Found") {
