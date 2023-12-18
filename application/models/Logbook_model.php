@@ -3095,598 +3095,599 @@ function lotw_last_qsl_date($user_id) {
      * $markHrd - used in ADIF import to mark QSOs as exported to HRDLog.net Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-	function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false) {
-        // be sure that station belongs to user
-        $this->load->model('stations');
-        if (!$this->stations->check_station_is_accessible($station_id) && $apicall == false ) {
-            return 'Station not accessible<br>';
-        }
+  function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false,$skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false) {
+	  // be sure that station belongs to user
+	  $this->load->model('stations');
+	  if (!$this->stations->check_station_is_accessible($station_id) && $apicall == false ) {
+		  return 'Station not accessible<br>';
+	  }
 
-	$station_profile=$this->stations->profile_clean($station_id);
-	$station_profile_call=$station_profile->station_callsign;
+	  $station_profile=$this->stations->profile_clean($station_id);
+	  $station_profile_call=$station_profile->station_callsign;
 
-	if (($station_id !=0 ) && (!(isset($record['station_callsign'])))) {
-		$record['station_callsign']=$station_profile_call;
-	}
+	  if (($station_id !=0 ) && (!(isset($record['station_callsign'])))) {
+		  $record['station_callsign']=$station_profile_call;
+	  }
 
-        if ((!$skipStationCheck) && ($station_id != 0) && (strtoupper($record['station_callsign']) != strtoupper($station_profile_call))) {     // Check if station_call from import matches profile ONLY when submitting via GUI.
-           return "Wrong station callsign <b>\"".htmlentities($record['station_callsign'])."\"</b> while importing QSO with ".$record['call']." for <b>".$station_profile_call."</b> : SKIPPED" .
-              "<br>See the <a target=\"_blank\" href=\"https://github.com/magicbug/Cloudlog/wiki/ADIF-file-can't-be-imported\">Cloudlog Wiki</a> for hints about errors in ADIF files.";
-        }
+	  if ((!$skipStationCheck) && ($station_id != 0) && (strtoupper($record['station_callsign']) != strtoupper($station_profile_call))) {     // Check if station_call from import matches profile ONLY when submitting via GUI.
+		  return "Wrong station callsign <b>\"".htmlentities($record['station_callsign'])."\"</b> while importing QSO with ".$record['call']." for <b>".$station_profile_call."</b> : SKIPPED" .
+			  "<br>See the <a target=\"_blank\" href=\"https://github.com/magicbug/Cloudlog/wiki/ADIF-file-can't-be-imported\">Cloudlog Wiki</a> for hints about errors in ADIF files.";
+	  }
 
-        $this->load->library('frequency');
-        $my_error = "";
+	  $this->load->library('frequency');
+	  $my_error = "";
 
-        // Join date+time
-        $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i:s', strtotime($record['time_on']));
+	  // Join date+time
+	  $time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i:s', strtotime($record['time_on']));
 
-        if (isset($record['time_off'])) {
-            if (isset($record['date_off'])) {
-                // date_off and time_off set
-                $time_off = date('Y-m-d', strtotime($record['date_off'])) . ' ' . date('H:i:s', strtotime($record['time_off']));
-            } elseif (strtotime($record['time_off']) < strtotime($record['time_on'])) {
-                // date_off is not set, QSO ends next day
-                $time_off = date('Y-m-d', strtotime($record['qso_date'] . ' + 1 day')) . ' ' . date('H:i:s', strtotime($record['time_off']));
-            } else {
-                // date_off is not set, QSO ends same day
-                $time_off = date('Y-m-d', strtotime($record['qso_date'])) . ' ' . date('H:i:s', strtotime($record['time_off']));
-            }
-        } else {
-            // date_off and time_off not set, QSO end == QSO start
-            $time_off = $time_on;
-        }
+	  if (isset($record['time_off'])) {
+		  if (isset($record['date_off'])) {
+			  // date_off and time_off set
+			  $time_off = date('Y-m-d', strtotime($record['date_off'])) . ' ' . date('H:i:s', strtotime($record['time_off']));
+		  } elseif (strtotime($record['time_off']) < strtotime($record['time_on'])) {
+			  // date_off is not set, QSO ends next day
+			  $time_off = date('Y-m-d', strtotime($record['qso_date'] . ' + 1 day')) . ' ' . date('H:i:s', strtotime($record['time_off']));
+		  } else {
+			  // date_off is not set, QSO ends same day
+			  $time_off = date('Y-m-d', strtotime($record['qso_date'])) . ' ' . date('H:i:s', strtotime($record['time_off']));
+		  }
+	  } else {
+		  // date_off and time_off not set, QSO end == QSO start
+		  $time_off = $time_on;
+	  }
 
-        // Store Freq
-        // Check if 'freq' is defined in the import?
-        if (isset($record['freq'])){ // record[freq] in MHz
-          $freq = floatval($record['freq']) * 1E6; // store in Hz
-        } else {
-          $freq = 0;
-        }
+	  // Store Freq
+	  // Check if 'freq' is defined in the import?
+	  if (isset($record['freq'])){ // record[freq] in MHz
+		  $freq = floatval($record['freq']) * 1E6; // store in Hz
+	  } else {
+		  $freq = 0;
+	  }
 
-        // Check for RX Freq
-        // Check if 'freq' is defined in the import?
-        if (isset($record['freq_rx'])){ // record[freq] in MHz
-          $freqRX = floatval($record['freq_rx']) * 1E6; // store in Hz
-        } else {
-          $freqRX = NULL;
-        }
+	  // Check for RX Freq
+	  // Check if 'freq' is defined in the import?
+	  if (isset($record['freq_rx'])){ // record[freq] in MHz
+		  $freqRX = floatval($record['freq_rx']) * 1E6; // store in Hz
+	  } else {
+		  $freqRX = NULL;
+	  }
 
-        // DXCC id
-        if (isset($record['call'])){
-          if ($dxccAdif != NULL) {
-              if (isset($record['dxcc'])) {
-                  $entity = $this->get_entity($record['dxcc']);
-                  $dxcc = array($record['dxcc'], $entity['name']);
-              } else {
-                  $dxcc = $this->check_dxcc_table($record['call'], $time_off);
-              }
-          } else {
-            $dxcc = $this->check_dxcc_table($record['call'], $time_off);
-          }
-      } else {
-        $dxcc = NULL;
-      }
+	  // Store Band
+	  if(isset($record['band'])) {
+		  $band = strtolower($record['band']);
+	  } else {
+		  if (isset($record['freq'])){
+			  if($freq != "0") {
+				  $band = $this->frequency->GetBand($freq);
+			  }
+		  }
+	  }
 
-        // Store or find country name
-        // dxcc has higher priority to be consistent with qso create and edit
-        if (isset($dxcc[1])) {
-            $country = ucwords(strtolower($dxcc[1]), "- (/");
-        } else if (isset($record['country'])) {
-            $country = $record['country'];
-        }
+	  if(isset($record['band_rx'])) {
+		  $band_rx = strtolower($record['band_rx']);
+	  } else {
+		  if (isset($record['freq_rx'])){
+			  if($freq != "0") {
+				  $band_rx = $this->frequency->GetBand($freqRX);
+			  }
+		  } else {
+			  $band_rx = "";
+		  }
+	  }
 
-        // RST recevied
-        if(isset($record['rst_rcvd'])) {
-                $rst_rx = $record['rst_rcvd'];
-        } else {
-                $rst_rx = "59";
-        }
+	  if (isset($record['mode'])) {
+		  $input_mode = $record['mode'];
+	  } else {
+		  $input_mode = '';
+	  }
 
-        // RST Sent
-        if(isset($record['rst_sent'])) {
-                $rst_tx = $record['rst_sent'];
-        } else {
-                $rst_tx = "59";
-        }
+	  $mode = $this->get_main_mode_if_submode($input_mode);
+	  if ($mode == null) {
+		  $submode = null;
+	  } else {
+		  $submode = $input_mode;
+		  $input_mode = $mode;
+	  }
 
-        // Store Band
-        if(isset($record['band'])) {
-                $band = strtolower($record['band']);
-        } else {
-            if (isset($record['freq'])){
-              if($freq != "0") {
-                $band = $this->frequency->GetBand($freq);
-              }
-            }
-        }
+	  if (empty($submode)) {
+		  $input_submode = (!empty($record['submode'])) ? $record['submode'] : '';
+	  } else {
+		  $input_submode = $submode;
+	  }
 
-        if(isset($record['band_rx'])) {
-                $band_rx = strtolower($record['band_rx']);
-        } else {
-                if (isset($record['freq_rx'])){
-                  if($freq != "0") {
-                    $band_rx = $this->frequency->GetBand($freqRX);
-                  }
-                } else {
-                  $band_rx = "";
-                }
-        }
 
-        if(isset($record['cqz'])) {
-          $cq_zone = $record['cqz'];
-        } elseif(isset($dxcc[2])) {
-          $cq_zone = $dxcc[2];
-        } else {
-          $cq_zone = NULL;
-        }
+	  // Check if QSO is already in the database
+	  if ($skipDuplicate != NULL) {
+		  $skip = false;
+	  } else {
+		  if (isset($record['call'])){
+			  $this->db->where('COL_CALL', $record['call']);
+		  }
+		  $this->db->where("DATE_FORMAT(COL_TIME_ON, '%Y-%m-%d %H:%i') = DATE_FORMAT(\"".$time_on."\", '%Y-%m-%d %H:%i')");
+		  $this->db->where('COL_BAND', $band);
+		  $this->db->where('COL_MODE', $input_mode);
+		  $this->db->where('station_id', $station_id);
+		  $check = $this->db->get($this->config->item('table_name'));
 
-        // Sanitise lat input to make sure its 11 chars
-        if (isset($record['lat'])){
-            $input_lat = mb_strimwidth($record['lat'], 0, 11);
-        }else{
-            $input_lat = NULL;
-        }
+		  // If dupe is not found, set variable to add QSO
+		  if ($check->num_rows() <= 0) {
+			  $skip = false;
+		  } else {
+			  $skip = true;
+		  }
+	  }
 
-        // Sanitise lon input to make sure its 11 chars
-        if (isset($record['lon'])){
-            $input_lon = mb_strimwidth($record['lon'], 0, 11);
-        }else{
-            $input_lon = NULL;
-        }
+	  if (!($skip)) {
+		  // DXCC id
+		  if (isset($record['call'])){
+			  if ($dxccAdif != NULL) {
+				  if (isset($record['dxcc'])) {
+					  $entity = $this->get_entity($record['dxcc']);
+					  $dxcc = array($record['dxcc'], $entity['name']);
+				  } else {
+					  $dxcc = $this->check_dxcc_table($record['call'], $time_off);
+				  }
+			  } else {
+				  $dxcc = $this->check_dxcc_table($record['call'], $time_off);
+			  }
+		  } else {
+			  $dxcc = NULL;
+		  }
 
-        // Sanitise my_lat input to make sure its 11 chars
-        if (isset($record['my_lat'])){
-            $input_my_lat = mb_strimwidth($record['my_lat'], 0, 11);
-        }else{
-            $input_my_lat = NULL;
-        }
+		  // Store or find country name
+		  // dxcc has higher priority to be consistent with qso create and edit
+		  if (isset($dxcc[1])) {
+			  $country = ucwords(strtolower($dxcc[1]), "- (/");
+		  } else if (isset($record['country'])) {
+			  $country = $record['country'];
+		  }
 
-        // Sanitise my_lon input to make sure its 11 chars
-        if (isset($record['my_lon'])){
-            $input_my_lon = mb_strimwidth($record['my_lon'], 0, 11);
-        }else{
-            $input_my_lon = NULL;
-        }
+		  // RST recevied
+		  if(isset($record['rst_rcvd'])) {
+			  $rst_rx = $record['rst_rcvd'];
+		  } else {
+			  $rst_rx = "59";
+		  }
 
-        // Sanitise TX_POWER
-        if (isset($record['tx_pwr'])){
-            $tx_pwr = filter_var($record['tx_pwr'],FILTER_VALIDATE_FLOAT);
-        }else{
-            $tx_pwr = NULL;
-        }
+		  // RST Sent
+		  if(isset($record['rst_sent'])) {
+			  $rst_tx = $record['rst_sent'];
+		  } else {
+			  $rst_tx = "59";
+		  }
 
-        // Sanitise RX Power
-        if (isset($record['rx_pwr'])){
-          // Check if RX_PWR is "K" which N1MM+ uses to indicate 1000W
-          if($record['rx_pwr'] == "K") {
-            $rx_pwr = 1000;
-          } else {
-            $rx_pwr = filter_var($record['rx_pwr'],FILTER_VALIDATE_FLOAT);
-          }
-        }else{
-          $rx_pwr = NULL;
-         }
+		  if(isset($record['cqz'])) {
+			  $cq_zone = $record['cqz'];
+		  } elseif(isset($dxcc[2])) {
+			  $cq_zone = $dxcc[2];
+		  } else {
+			  $cq_zone = NULL;
+		  }
 
-        if (isset($record['a_index'])){
-            $input_a_index = filter_var($record['a_index'],FILTER_SANITIZE_NUMBER_INT);
-        } else {
-            $input_a_index = NULL;
-        }
+		  // Sanitise lat input to make sure its 11 chars
+		  if (isset($record['lat'])){
+			  $input_lat = mb_strimwidth($record['lat'], 0, 11);
+		  }else{
+			  $input_lat = NULL;
+		  }
 
-        if (isset($record['age'])){
-            $input_age = filter_var($record['age'],FILTER_SANITIZE_NUMBER_INT);
-        } else {
-            $input_age = NULL;
-        }
+		  // Sanitise lon input to make sure its 11 chars
+		  if (isset($record['lon'])){
+			  $input_lon = mb_strimwidth($record['lon'], 0, 11);
+		  }else{
+			  $input_lon = NULL;
+		  }
 
-        if (isset($record['ant_az'])){
-            $input_ant_az = filter_var($record['ant_az'],FILTER_SANITIZE_NUMBER_INT);
-        } else {
-            $input_ant_az = NULL;
-        }
+		  // Sanitise my_lat input to make sure its 11 chars
+		  if (isset($record['my_lat'])){
+			  $input_my_lat = mb_strimwidth($record['my_lat'], 0, 11);
+		  }else{
+			  $input_my_lat = NULL;
+		  }
 
-        if (isset($record['ant_el'])){
-            $input_ant_el = filter_var($record['ant_el'],FILTER_SANITIZE_NUMBER_INT);
-        } else {
-            $input_ant_el = NULL;
-        }
+		  // Sanitise my_lon input to make sure its 11 chars
+		  if (isset($record['my_lon'])){
+			  $input_my_lon = mb_strimwidth($record['my_lon'], 0, 11);
+		  }else{
+			  $input_my_lon = NULL;
+		  }
 
-        if (isset($record['ant_path'])){
-            $input_ant_path = mb_strimwidth($record['ant_path'], 0, 1);
-        } else {
-            $input_ant_path = NULL;
-        }
+		  // Sanitise TX_POWER
+		  if (isset($record['tx_pwr'])){
+			  $tx_pwr = filter_var($record['tx_pwr'],FILTER_VALIDATE_FLOAT);
+		  }else{
+			  $tx_pwr = NULL;
+		  }
 
-        /*
-          Validate QSL Fields
-         qslrdate, qslsdate
-        */
+		  // Sanitise RX Power
+		  if (isset($record['rx_pwr'])){
+			  // Check if RX_PWR is "K" which N1MM+ uses to indicate 1000W
+			  if($record['rx_pwr'] == "K") {
+				  $rx_pwr = 1000;
+			  } else {
+				  $rx_pwr = filter_var($record['rx_pwr'],FILTER_VALIDATE_FLOAT);
+			  }
+		  }else{
+			  $rx_pwr = NULL;
+		  }
 
-        if (isset($record['qslrdate'])){
-            if(validateADIFDate($record['qslrdate']) == true){
-              $input_qslrdate = $record['qslrdate'];
-            } else {
-              $input_qslrdate = NULL;
-              $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the qslrdate is invalid (YYYYMMDD): ".$record['qslrdate']."<br>";
-            }
-        } else {
-            $input_qslrdate = NULL;
-        }
+		  if (isset($record['a_index'])){
+			  $input_a_index = filter_var($record['a_index'],FILTER_SANITIZE_NUMBER_INT);
+		  } else {
+			  $input_a_index = NULL;
+		  }
 
-        if (isset($record['qslsdate'])){
-            if(validateADIFDate($record['qslsdate']) == true){
-              $input_qslsdate = $record['qslsdate'];
-            } else {
-              $input_qslsdate = NULL;
-              $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the qslsdate is invalid (YYYYMMDD): ".$record['qslsdate']."<br>";
-            }
-        } else {
-            $input_qslsdate = NULL;
-        }
+		  if (isset($record['age'])){
+			  $input_age = filter_var($record['age'],FILTER_SANITIZE_NUMBER_INT);
+		  } else {
+			  $input_age = NULL;
+		  }
 
-        if (isset($record['qsl_rcvd'])){
-            $input_qsl_rcvd = mb_strimwidth($record['qsl_rcvd'], 0, 1);
-        } else {
-            $input_qsl_rcvd = "N";
-        }
+		  if (isset($record['ant_az'])){
+			  $input_ant_az = filter_var($record['ant_az'],FILTER_SANITIZE_NUMBER_INT);
+		  } else {
+			  $input_ant_az = NULL;
+		  }
 
-        if (isset($record['qsl_rcvd_via'])){
-            $input_qsl_rcvd_via = mb_strimwidth($record['qsl_rcvd_via'], 0, 1);
-        } else {
-            $input_qsl_rcvd_via = "";
-        }
+		  if (isset($record['ant_el'])){
+			  $input_ant_el = filter_var($record['ant_el'],FILTER_SANITIZE_NUMBER_INT);
+		  } else {
+			  $input_ant_el = NULL;
+		  }
 
-        if (isset($record['qsl_sent'])){
-            $input_qsl_sent = mb_strimwidth($record['qsl_sent'], 0, 1);
-        } else {
-            $input_qsl_sent = "N";
-        }
+		  if (isset($record['ant_path'])){
+			  $input_ant_path = mb_strimwidth($record['ant_path'], 0, 1);
+		  } else {
+			  $input_ant_path = NULL;
+		  }
 
-        if (isset($record['qsl_sent_via'])){
-            $input_qsl_sent_via = mb_strimwidth($record['qsl_sent_via'], 0, 1);
-        } else {
-            $input_qsl_sent_via = "";
-        }
+	/*
+	  Validate QSL Fields
+	 qslrdate, qslsdate
+	 */
 
-	// Validate Clublog-Fields
-	if (isset($record['clublog_qso_upload_status'])){
-		$input_clublog_qsl_sent = mb_strimwidth($record['clublog_qso_upload_status'], 0, 1);
-	} else if ($markClublog != NULL) {
-		$input_clublog_qsl_sent = "Y";
-	} else {
-		$input_clublog_qsl_sent = NULL;
-	}
+		  if (isset($record['qslrdate'])){
+			  if(validateADIFDate($record['qslrdate']) == true){
+				  $input_qslrdate = $record['qslrdate'];
+			  } else {
+				  $input_qslrdate = NULL;
+				  $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the qslrdate is invalid (YYYYMMDD): ".$record['qslrdate']."<br>";
+			  }
+		  } else {
+			  $input_qslrdate = NULL;
+		  }
 
-	if (isset($record['clublog_qso_upload_date'])){
-		if(validateADIFDate($record['clublog_qso_upload_date']) == true){
-			$input_clublog_qslsdate = $record['clublog_qso_upload_date'];
-		} else {
-			$input_clublog_qslsdate = NULL;
-			$my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the clublog_qso_upload_date is invalid (YYYYMMDD): ".$record['clublog_qso_upload_date']."<br>";
-		}
-	} else {
-		$input_clublog_qslsdate = NULL;
-	}
+		  if (isset($record['qslsdate'])){
+			  if(validateADIFDate($record['qslsdate']) == true){
+				  $input_qslsdate = $record['qslsdate'];
+			  } else {
+				  $input_qslsdate = NULL;
+				  $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the qslsdate is invalid (YYYYMMDD): ".$record['qslsdate']."<br>";
+			  }
+		  } else {
+			  $input_qslsdate = NULL;
+		  }
 
-        /*
-          Validate LoTW Fields
-        */
-        if (isset($record['lotw_qsl_rcvd'])){
-            $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
-        } else {
-            $input_lotw_qsl_rcvd = NULL;
-        }
+		  if (isset($record['qsl_rcvd'])){
+			  $input_qsl_rcvd = mb_strimwidth($record['qsl_rcvd'], 0, 1);
+		  } else {
+			  $input_qsl_rcvd = "N";
+		  }
 
-        if (isset($record['lotw_qslrdate'])){
-            if(validateADIFDate($record['lotw_qslrdate']) == true){
-              $input_lotw_qslrdate = $record['lotw_qslrdate'];
-            } else {
-              $input_lotw_qslrdate = NULL;
-              $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the lotw_qslrdate is invalid (YYYYMMDD): ".$record['lotw_qslrdate']."<br>";
-            }
-        } else {
-            $input_lotw_qslrdate = NULL;
-        }
+		  if (isset($record['qsl_rcvd_via'])){
+			  $input_qsl_rcvd_via = mb_strimwidth($record['qsl_rcvd_via'], 0, 1);
+		  } else {
+			  $input_qsl_rcvd_via = "";
+		  }
 
-	if (isset($record['lotw_qsl_sent'])){
-            $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
-        } else if ($markLotw != NULL) {
-            $input_lotw_qsl_sent = "Y";
-        } else {
-            $input_lotw_qsl_sent = NULL;
-        }
+		  if (isset($record['qsl_sent'])){
+			  $input_qsl_sent = mb_strimwidth($record['qsl_sent'], 0, 1);
+		  } else {
+			  $input_qsl_sent = "N";
+		  }
 
-        if (isset($record['lotw_qslsdate'])){
-            if(validateADIFDate($record['lotw_qslsdate']) == true){
-              $input_lotw_qslsdate = $record['lotw_qslsdate'];
-            } else {
-              $input_lotw_qslsdate = NULL;
-              $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the lotw_qslsdate is invalid (YYYYMMDD): ".$record['lotw_qslsdate']."<br>";
-            }
-        } else if ($markLotw != NULL) {
-            $input_lotw_qslsdate = $date = date("Y-m-d H:i:s", strtotime("now"));
-        } else {
-            $input_lotw_qslsdate = NULL;
-        }
+		  if (isset($record['qsl_sent_via'])){
+			  $input_qsl_sent_via = mb_strimwidth($record['qsl_sent_via'], 0, 1);
+		  } else {
+			  $input_qsl_sent_via = "";
+		  }
 
-        if (isset($record['mode'])) {
-            $input_mode = $record['mode'];
-        } else {
-            $input_mode = '';
-        }
+		  // Validate Clublog-Fields
+		  if (isset($record['clublog_qso_upload_status'])){
+			  $input_clublog_qsl_sent = mb_strimwidth($record['clublog_qso_upload_status'], 0, 1);
+		  } else if ($markClublog != NULL) {
+			  $input_clublog_qsl_sent = "Y";
+		  } else {
+			  $input_clublog_qsl_sent = NULL;
+		  }
 
-        $mode = $this->get_main_mode_if_submode($input_mode);
-        if ($mode == null) {
-            $submode = null;
-        } else {
-            $submode = $input_mode;
-            $input_mode = $mode;
-        }
+		  if (isset($record['clublog_qso_upload_date'])){
+			  if(validateADIFDate($record['clublog_qso_upload_date']) == true){
+				  $input_clublog_qslsdate = $record['clublog_qso_upload_date'];
+			  } else {
+				  $input_clublog_qslsdate = NULL;
+				  $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the clublog_qso_upload_date is invalid (YYYYMMDD): ".$record['clublog_qso_upload_date']."<br>";
+			  }
+		  } else {
+			  $input_clublog_qslsdate = NULL;
+		  }
 
-        if (empty($submode)) {
-            $input_submode = (!empty($record['submode'])) ? $record['submode'] : '';
-        } else {
-            $input_submode = $submode;
-        }
+	/*
+	  Validate LoTW Fields
+	 */
+		  if (isset($record['lotw_qsl_rcvd'])){
+			  $input_lotw_qsl_rcvd = mb_strimwidth($record['lotw_qsl_rcvd'], 0, 1);
+		  } else {
+			  $input_lotw_qsl_rcvd = NULL;
+		  }
 
-        // Get active station_id from station profile if one hasn't been provided
-        if($station_id == "" || $station_id == "0") {
-          $this->load->model('stations');
-          $station_id = $this->stations->find_active();
-        }
+		  if (isset($record['lotw_qslrdate'])){
+			  if(validateADIFDate($record['lotw_qslrdate']) == true){
+				  $input_lotw_qslrdate = $record['lotw_qslrdate'];
+			  } else {
+				  $input_lotw_qslrdate = NULL;
+				  $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the lotw_qslrdate is invalid (YYYYMMDD): ".$record['lotw_qslrdate']."<br>";
+			  }
+		  } else {
+			  $input_lotw_qslrdate = NULL;
+		  }
 
-        // Check if QSO is already in the database
-        if ($skipDuplicate != NULL) {
-            $skip = false;
-        } else {
-            if (isset($record['call'])){
-                $this->db->where('COL_CALL', $record['call']);
-            }
-            $this->db->where("DATE_FORMAT(COL_TIME_ON, '%Y-%m-%d %H:%i') = DATE_FORMAT(\"".$time_on."\", '%Y-%m-%d %H:%i')");
-            $this->db->where('COL_BAND', $band);
-            $this->db->where('COL_MODE', $input_mode);
-            $this->db->where('station_id', $station_id);
-            $check = $this->db->get($this->config->item('table_name'));
+		  if (isset($record['lotw_qsl_sent'])){
+			  $input_lotw_qsl_sent = mb_strimwidth($record['lotw_qsl_sent'], 0, 1);
+		  } else if ($markLotw != NULL) {
+			  $input_lotw_qsl_sent = "Y";
+		  } else {
+			  $input_lotw_qsl_sent = NULL;
+		  }
 
-            // If dupe is not found, set variable to add QSO
-            if ($check->num_rows() <= 0) {
-                $skip = false;
-            } else {
-                $skip = true;
-            }
-        }
+		  if (isset($record['lotw_qslsdate'])){
+			  if(validateADIFDate($record['lotw_qslsdate']) == true){
+				  $input_lotw_qslsdate = $record['lotw_qslsdate'];
+			  } else {
+				  $input_lotw_qslsdate = NULL;
+				  $my_error .= "Error QSO: Date: ".$time_on." Callsign: ".$record['call']." the lotw_qslsdate is invalid (YYYYMMDD): ".$record['lotw_qslsdate']."<br>";
+			  }
+		  } else if ($markLotw != NULL) {
+			  $input_lotw_qslsdate = $date = date("Y-m-d H:i:s", strtotime("now"));
+		  } else {
+			  $input_lotw_qslsdate = NULL;
+		  }
 
-        if ($operatorName != false) {
-			$operatorName = $this->session->userdata('user_callsign');
-		} else {
-			$operatorName = (!empty($record['operator'])) ? $record['operator'] : '';
-		}
+		  // Get active station_id from station profile if one hasn't been provided
+		  if($station_id == "" || $station_id == "0") {
+			  $this->load->model('stations');
+			  $station_id = $this->stations->find_active();
+		  }
 
-        // If user checked to mark QSOs as uploaded to QRZ or HRDLog Logbook, or else we try to find info in ADIF import.
-        if ($markHrd != null) {
-            $input_hrdlog_qso_upload_status = 'Y';
-            $input_hrdlog_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
-	} else {
-            $input_hrdlog_qso_upload_date = (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null;
-            $input_hrdlog_qso_upload_status = (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '';
-	}
 
-        if ($markQrz != null) {
-            $input_qrzcom_qso_upload_status = 'Y';
-            $input_qrzcom_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
-        } else {
-            $input_qrzcom_qso_upload_date = (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null;
-            $input_qrzcom_qso_upload_status = (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '';
-        }
+		  if ($operatorName != false) {
+			  $operatorName = $this->session->userdata('user_callsign');
+		  } else {
+			  $operatorName = (!empty($record['operator'])) ? $record['operator'] : '';
+		  }
 
-        if (!$skip)
-        {
-            // Create array with QSO Data use ?:
-            $data = array(
-                'COL_A_INDEX' => $input_a_index,
-                'COL_ADDRESS' => (!empty($record['address'])) ? $record['address'] : '',
-                'COL_ADDRESS_INTL' => (!empty($record['address_intl'])) ? $record['address_intl'] : '',
-                'COL_AGE' => $input_age,
-                'COL_ANT_AZ' => $input_ant_az,
-                'COL_ANT_EL' => $input_ant_el,
-                'COL_ANT_PATH' => $input_ant_path,
-                'COL_ARRL_SECT' => (!empty($record['arrl_sect'])) ? $record['arrl_sect'] : '',
-                'COL_AWARD_GRANTED' => (!empty($record['award_granted'])) ? $record['award_granted'] : '',
-                'COL_AWARD_SUBMITTED' => (!empty($record['award_submitted'])) ? $record['award_submitted'] : '',
-                'COL_BAND' => $band,
-                'COL_BAND_RX' => $band_rx,
-                'COL_BIOGRAPHY' => (!empty($record['biography'])) ? $record['biography'] : '',
-                'COL_CALL' => (!empty($record['call'])) ? strtoupper($record['call']) : '',
-                'COL_CHECK' => (!empty($record['check'])) ? $record['check'] : '',
-                'COL_CLASS' => (!empty($record['class'])) ? $record['class'] : '',
-                'COL_CLUBLOG_QSO_UPLOAD_DATE' => $input_clublog_qslsdate,
-                'COL_CLUBLOG_QSO_UPLOAD_STATUS' => $input_clublog_qsl_sent,
-                'COL_CNTY' => (!empty($record['cnty'])) ? $record['cnty'] : '',
-                'COL_COMMENT' => (!empty($record['comment'])) ? $record['comment'] : '',
-                'COL_COMMENT_INTL' => (!empty($record['comment_intl'])) ? $record['comment_intl'] : '',
-                'COL_CONT' => (!empty($record['cont'])) ? $record['cont'] : '',
-                'COL_CONTACTED_OP' => (!empty($record['contacted_op'])) ? $record['contacted_op'] : '',
-                'COL_CONTEST_ID' => (!empty($record['contest_id'])) ? $record['contest_id'] : '',
-                'COL_COUNTRY' => $country,
-                'COL_COUNTRY_INTL' => (!empty($record['country_intl'])) ? $record['country_intl'] : '',
-                'COL_CQZ' => $cq_zone,
-                'COL_CREDIT_GRANTED' => (!empty($record['credit_granted'])) ? $record['credit_granted'] : '',
-                'COL_CREDIT_SUBMITTED' => (!empty($record['credit_submitted'])) ? $record['credit_submitted'] : '',
-                'COL_DARC_DOK' => (!empty($record['darc_dok'])) ? strtoupper($record['darc_dok']) : '',
-                'COL_DISTANCE' => (!empty($record['distance'])) ? $record['distance'] : null,
-                'COL_DXCC' => $dxcc[0],
-                'COL_EMAIL' => (!empty($record['email'])) ? $record['email'] : '',
-                'COL_EQ_CALL' => (!empty($record['eq_call'])) ? $record['eq_call'] : '',
-                'COL_EQSL_QSL_RCVD' => (!empty($record['eqsl_qsl_rcvd'])) ? $record['eqsl_qsl_rcvd'] : null,
-                'COL_EQSL_QSL_SENT' => (!empty($record['eqsl_qsl_sent'])) ? $record['eqsl_qsl_sent'] : null,
-                'COL_EQSL_QSLRDATE' => (!empty($record['eqsl_qslrdate'])) ? $record['eqsl_qslrdate'] : null,
-                'COL_EQSL_QSLSDATE' => (!empty($record['eqsl_qslsdate'])) ? $record['eqsl_qslsdate'] : null,
-                'COL_EQSL_STATUS' => (!empty($record['eqsl_status'])) ? $record['eqsl_status'] : '',
-                'COL_FISTS' => (!empty($record['fists'])) ? $record['fists'] : null,
-                'COL_FISTS_CC' => (!empty($record['fists_cc'])) ? $record['fists_cc'] : null,
-                'COL_FORCE_INIT' => (!empty($record['force_init'])) ? $record['force_init'] : null,
-                'COL_FREQ' => $freq,
-                'COL_FREQ_RX' => (!empty($record['freq_rx'])) ? $freqRX : null,
-                'COL_GRIDSQUARE' => (!empty($record['gridsquare'])) ? $record['gridsquare'] : '',
-                'COL_HEADING' => (!empty($record['heading'])) ? $record['heading'] : null,
-                'COL_HRDLOG_QSO_UPLOAD_DATE' => (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null,
-                'COL_HRDLOG_QSO_UPLOAD_STATUS' => (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '',
-                'COL_IOTA' => (!empty($record['iota'])) ? $record['iota'] : '',
-                'COL_ITUZ' => (!empty($record['ituz'])) ? $record['ituz'] : null,
-                'COL_K_INDEX' => (!empty($record['k_index'])) ? $record['k_index'] : null,
-                'COL_LAT' => $input_lat,
-                'COL_LON' => $input_lon,
-                'COL_LOTW_QSL_RCVD' => $input_lotw_qsl_rcvd,
-                'COL_LOTW_QSL_SENT' => $input_lotw_qsl_sent,
-                'COL_LOTW_QSLRDATE' => $input_lotw_qslrdate,
-                'COL_LOTW_QSLSDATE' => $input_lotw_qslsdate,
-                'COL_LOTW_STATUS' => (!empty($record['lotw_status'])) ? $record['lotw_status'] : '',
-                'COL_MAX_BURSTS' => (!empty($record['max_bursts'])) ? $record['max_bursts'] : null,
-                'COL_MODE' => $input_mode,
-                'COL_MS_SHOWER' => (!empty($record['ms_shower'])) ? $record['ms_shower'] : '',
-                'COL_MY_ANTENNA' => (!empty($record['my_antenna'])) ? $record['my_antenna'] : '',
-                'COL_MY_ANTENNA_INTL' => (!empty($record['my_antenna_intl'])) ? $record['my_antenna_intl'] : '',
-                'COL_MY_CITY' => (!empty($record['my_city'])) ? $record['my_city'] : '',
-                'COL_MY_CITY_INTL' => (!empty($record['my_city_intl'])) ? $record['my_city_intl'] : '',
-                'COL_MY_CNTY' => (!empty($record['my_cnty'])) ? $record['my_cnty'] : '',
-                'COL_MY_COUNTRY' => (!empty($record['my_country'])) ? $record['my_country'] : '',
-                'COL_MY_COUNTRY_INTL' => (!empty($record['my_country_intl'])) ? $record['my_country_intl'] : null,
-                'COL_MY_CQ_ZONE' => (!empty($record['my_dxcc'])) ? $record['my_dxcc'] : null,
-                'COL_MY_DXCC' => (!empty($record['my_dxcc'])) ? $record['my_dxcc'] : null,
-                'COL_MY_FISTS' => (!empty($record['my_fists'])) ? $record['my_fists'] : null,
-                'COL_MY_GRIDSQUARE' => (!empty($record['my_gridsquare'])) ? $record['my_gridsquare'] : '',
-                'COL_MY_IOTA' => (!empty($record['my_iota'])) ? $record['my_iota'] : '',
-                'COL_MY_IOTA_ISLAND_ID' => (!empty($record['my_iota_island_id'])) ? $record['my_iota_island_id'] : '',
-                'COL_MY_ITU_ZONE' => (!empty($record['my_itu_zone'])) ? $record['my_itu_zone'] : null,
-                'COL_MY_LAT' => $input_my_lat,
-                'COL_MY_LON' => $input_my_lon,
-                'COL_MY_NAME' => (!empty($record['my_name'])) ? $record['my_name'] : '',
-                'COL_MY_NAME_INTL' => (!empty($record['my_name_intl'])) ? $record['my_name_intl'] : '',
-                'COL_MY_POSTAL_CODE' => (!empty($record['my_postal_code'])) ? $record['my_postal_code'] : '',
-                'COL_MY_POSTCODE_INTL' => (!empty($record['my_postcode_intl'])) ? $record['my_postcode_intl'] : '',
-                'COL_MY_RIG' => (!empty($record['my_rig'])) ? $record['my_rig'] : '',
-                'COL_MY_RIG_INTL' => (!empty($record['my_rig_intl'])) ? $record['my_rig_intl'] : '',
-                'COL_MY_SIG' => (!empty($record['my_sig'])) ? $record['my_sig'] : '',
-                'COL_MY_SIG_INFO' => (!empty($record['my_sig_info'])) ? $record['my_sig_info'] : '',
-                'COL_MY_SIG_INFO_INTL' => (!empty($record['my_sig_info_intl'])) ? $record['my_sig_info_intl'] : '',
-                'COL_MY_SIG_INTL' => (!empty($record['my_sig_intl'])) ? $record['my_sig_intl'] : '',
-                'COL_MY_SOTA_REF' => (!empty($record['my_sota_ref'])) ? $record['my_sota_ref'] : '',
-                'COL_MY_WWFF_REF' => (!empty($record['my_wwff_ref'])) ? $record['my_wwff_ref'] : '',
-                'COL_MY_POTA_REF' => (!empty($record['my_pota_ref'])) ? $record['my_pota_ref'] : '',
-                'COL_MY_STATE' => (!empty($record['my_state'])) ? $record['my_state'] : '',
-                'COL_MY_STREET' =>  (!empty($record['my_street'])) ? $record['my_street'] : '',
-                'COL_MY_STREET_INTL' => (!empty($record['my_street_intl'])) ? $record['my_street_intl'] : '',
-                'COL_MY_USACA_COUNTIES' => (!empty($record['my_usaca_counties'])) ? $record['my_usaca_counties'] : '',
-                'COL_MY_VUCC_GRIDS' => (!empty($record['my_vucc_grids'])) ? $record['my_vucc_grids'] : '',
-                'COL_NAME' => (!empty($record['name'])) ? $record['name'] : '',
-                'COL_NAME_INTL' => (!empty($record['name_intl'])) ? $record['name_intl']: '',
-                'COL_NOTES' => (!empty($record['notes'])) ? $record['notes'] : '',
-                'COL_NOTES_INTL' => (!empty($record['notes_intl'])) ? $record['notes_intl'] : '',
-                'COL_NR_BURSTS' => (!empty($record['nr_bursts'])) ? $record['nr_bursts'] : null,
-                'COL_NR_PINGS' => (!empty($record['nr_pings'])) ? $record['nr_pings'] : null,
-                'COL_OPERATOR' => $operatorName,
-                'COL_OWNER_CALLSIGN' => (!empty($record['owner_callsign'])) ? $record['owner_callsign'] : '',
-                'COL_PFX' => (!empty($record['pfx'])) ? $record['pfx'] : '',
-                'COL_PRECEDENCE' => (!empty($record['precedence'])) ? $record['precedence'] : '',
-                'COL_PROP_MODE' => (!empty($record['prop_mode'])) ? $record['prop_mode'] : '',
-                'COL_PUBLIC_KEY' => (!empty($record['public_key'])) ? $record['public_key'] : '',
-                'COL_HRDLOG_QSO_UPLOAD_DATE' => $input_hrdlog_qso_upload_date,
-                'COL_HRDLOG_QSO_UPLOAD_STATUS' => $input_hrdlog_qso_upload_status,
-                'COL_QRZCOM_QSO_UPLOAD_DATE' => $input_qrzcom_qso_upload_date,
-                'COL_QRZCOM_QSO_UPLOAD_STATUS' => $input_qrzcom_qso_upload_status,
-                'COL_QSL_RCVD' => $input_qsl_rcvd,
-                'COL_QSL_RCVD_VIA' => $input_qsl_rcvd_via,
-                'COL_QSL_SENT' => $input_qsl_sent,
-                'COL_QSL_SENT_VIA' => $input_qsl_sent_via,
-                'COL_QSL_VIA' => (!empty($record['qsl_via'])) ? $record['qsl_via'] : '',
-                'COL_QSLMSG' => (!empty($record['qslmsg'])) ? $record['qslmsg'] : '',
-                'COL_QSLRDATE' => $input_qslrdate,
-                'COL_QSLSDATE' => $input_qslsdate,
-                'COL_QSO_COMPLETE' => (!empty($record['qso_complete'])) ? $record['qso_complete'] : '',
-                'COL_QSO_DATE' => (!empty($record['qso_date'])) ? $record['qso_date'] : null,
-                'COL_QSO_DATE_OFF' => (!empty($record['qso_date_off'])) ? $record['qso_date_off'] : null,
-                'COL_QTH' => (!empty($record['qth'])) ? $record['qth'] : '',
-                'COL_QTH_INTL' => (!empty($record['qth_intl'])) ? $record['qth_intl'] : '',
-                'COL_REGION' => (!empty($record['region'])) ? $record['region'] : '',
-                'COL_RIG' => (!empty($record['rig'])) ? $record['rig'] : '',
-                'COL_RIG_INTL' => (!empty($record['rig_intl'])) ? $record['rig_intl'] : '',
-                'COL_RST_RCVD' => $rst_rx,
-                'COL_RST_SENT' => $rst_tx,
-                'COL_RX_PWR' => $rx_pwr,
-                'COL_SAT_MODE' => (!empty($record['sat_mode'])) ? $record['sat_mode'] : '',
-                'COL_SAT_NAME' => (!empty($record['sat_name'])) ? $record['sat_name'] : '',
-                'COL_SFI' => (!empty($record['sfi'])) ? $record['sfi'] : null,
-                'COL_SIG' => (!empty($record['sig'])) ? $record['sig'] : '',
-                'COL_SIG_INFO' => (!empty($record['sig_info'])) ? $record['sig_info'] : '',
-                'COL_SIG_INFO_INTL' => (!empty($record['sig_info_intl'])) ? $record['sig_info_intl'] : '',
-                'COL_SIG_INTL' => (!empty($record['sig_intl'])) ? $record['sig_intl'] : '',
-                'COL_SILENT_KEY' => (!empty($record['silent_key'])) ? $record['silent_key'] : '',
-                'COL_SKCC' => (!empty($record['skcc'])) ? $record['skcc'] : '',
-                'COL_SOTA_REF' => (!empty($record['sota_ref'])) ? $record['sota_ref'] : '',
-                'COL_WWFF_REF' => (!empty($record['wwff_ref'])) ? $record['wwff_ref'] : '',
-                'COL_POTA_REF' => (!empty($record['pota_ref'])) ? $record['pota_ref'] : '',
-                'COL_SRX' => (!empty($record['srx'])) ? (int)$record['srx'] : null,
-                //convert to integer to make sure no invalid entries are imported
-                'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
-                'COL_STATE' => (!empty($record['state'])) ? strtoupper($record['state']) : '',
-                'COL_STATION_CALLSIGN' => (!empty($record['station_callsign'])) ? $record['station_callsign'] : '',
-                //convert to integer to make sure no invalid entries are imported
-                'COL_STX' => (!empty($record['stx'])) ? (int)$record['stx'] : null,
-                'COL_STX_STRING' => (!empty($record['stx_string'])) ? $record['stx_string'] : '',
-                'COL_SUBMODE' => $input_submode,
-                'COL_SWL' => (!empty($record['swl'])) ? $record['swl'] : null,
-                'COL_TEN_TEN' => (!empty($record['ten_ten'])) ? $record['ten_ten'] : null,
-                'COL_TIME_ON' => $time_on,
-                'COL_TIME_OFF' => $time_off,
-                'COL_TX_PWR' => (!empty($tx_pwr)) ? $tx_pwr : null,
-                'COL_UKSMG' => (!empty($record['uksmg'])) ? $record['uksmg'] : '',
-                'COL_USACA_COUNTIES' => (!empty($record['usaca_counties'])) ? $record['usaca_counties'] : '',
-                'COL_VUCC_GRIDS' =>((!empty($record['vucc_grids']))) ? $record['vucc_grids'] : '',
-                'COL_WEB' => (!empty($record['web'])) ? $record['web'] : ''
-            );
+		  // If user checked to mark QSOs as uploaded to QRZ or HRDLog Logbook, or else we try to find info in ADIF import.
+		  if ($markHrd != null) {
+			  $input_hrdlog_qso_upload_status = 'Y';
+			  $input_hrdlog_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
+		  } else {
+			  $input_hrdlog_qso_upload_date = (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null;
+			  $input_hrdlog_qso_upload_status = (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '';
+		  }
 
-            // Collect field information from the station profile table thats required for the QSO.
-            if($station_id != "0") {
-              $this->db->select('station_profile.*, dxcc_entities.name as station_country');
-              $this->db->where('station_id', $station_id);
-              $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
-              $station_result = $this->db->get('station_profile');
+		  if ($markQrz != null) {
+			  $input_qrzcom_qso_upload_status = 'Y';
+			  $input_qrzcom_qso_upload_date = $date = date("Y-m-d H:i:s", strtotime("now"));
+		  } else {
+			  $input_qrzcom_qso_upload_date = (!empty($record['qrzcom_qso_upload_date'])) ? $record['qrzcom_qso_upload_date'] : null;
+			  $input_qrzcom_qso_upload_status = (!empty($record['qrzcom_qso_upload_status'])) ? $record['qrzcom_qso_upload_status'] : '';
+		  }
 
-                if ($station_result->num_rows() > 0){
-                    $data['station_id'] = $station_id;
+		  // Create array with QSO Data use ?:
+		  $data = array(
+			  'COL_A_INDEX' => $input_a_index,
+			  'COL_ADDRESS' => (!empty($record['address'])) ? $record['address'] : '',
+			  'COL_ADDRESS_INTL' => (!empty($record['address_intl'])) ? $record['address_intl'] : '',
+			  'COL_AGE' => $input_age,
+			  'COL_ANT_AZ' => $input_ant_az,
+			  'COL_ANT_EL' => $input_ant_el,
+			  'COL_ANT_PATH' => $input_ant_path,
+			  'COL_ARRL_SECT' => (!empty($record['arrl_sect'])) ? $record['arrl_sect'] : '',
+			  'COL_AWARD_GRANTED' => (!empty($record['award_granted'])) ? $record['award_granted'] : '',
+			  'COL_AWARD_SUBMITTED' => (!empty($record['award_submitted'])) ? $record['award_submitted'] : '',
+			  'COL_BAND' => $band,
+			  'COL_BAND_RX' => $band_rx,
+			  'COL_BIOGRAPHY' => (!empty($record['biography'])) ? $record['biography'] : '',
+			  'COL_CALL' => (!empty($record['call'])) ? strtoupper($record['call']) : '',
+			  'COL_CHECK' => (!empty($record['check'])) ? $record['check'] : '',
+			  'COL_CLASS' => (!empty($record['class'])) ? $record['class'] : '',
+			  'COL_CLUBLOG_QSO_UPLOAD_DATE' => $input_clublog_qslsdate,
+			  'COL_CLUBLOG_QSO_UPLOAD_STATUS' => $input_clublog_qsl_sent,
+			  'COL_CNTY' => (!empty($record['cnty'])) ? $record['cnty'] : '',
+			  'COL_COMMENT' => (!empty($record['comment'])) ? $record['comment'] : '',
+			  'COL_COMMENT_INTL' => (!empty($record['comment_intl'])) ? $record['comment_intl'] : '',
+			  'COL_CONT' => (!empty($record['cont'])) ? $record['cont'] : '',
+			  'COL_CONTACTED_OP' => (!empty($record['contacted_op'])) ? $record['contacted_op'] : '',
+			  'COL_CONTEST_ID' => (!empty($record['contest_id'])) ? $record['contest_id'] : '',
+			  'COL_COUNTRY' => $country,
+			  'COL_COUNTRY_INTL' => (!empty($record['country_intl'])) ? $record['country_intl'] : '',
+			  'COL_CQZ' => $cq_zone,
+			  'COL_CREDIT_GRANTED' => (!empty($record['credit_granted'])) ? $record['credit_granted'] : '',
+			  'COL_CREDIT_SUBMITTED' => (!empty($record['credit_submitted'])) ? $record['credit_submitted'] : '',
+			  'COL_DARC_DOK' => (!empty($record['darc_dok'])) ? strtoupper($record['darc_dok']) : '',
+			  'COL_DISTANCE' => (!empty($record['distance'])) ? $record['distance'] : null,
+			  'COL_DXCC' => $dxcc[0],
+			  'COL_EMAIL' => (!empty($record['email'])) ? $record['email'] : '',
+			  'COL_EQ_CALL' => (!empty($record['eq_call'])) ? $record['eq_call'] : '',
+			  'COL_EQSL_QSL_RCVD' => (!empty($record['eqsl_qsl_rcvd'])) ? $record['eqsl_qsl_rcvd'] : null,
+			  'COL_EQSL_QSL_SENT' => (!empty($record['eqsl_qsl_sent'])) ? $record['eqsl_qsl_sent'] : null,
+			  'COL_EQSL_QSLRDATE' => (!empty($record['eqsl_qslrdate'])) ? $record['eqsl_qslrdate'] : null,
+			  'COL_EQSL_QSLSDATE' => (!empty($record['eqsl_qslsdate'])) ? $record['eqsl_qslsdate'] : null,
+			  'COL_EQSL_STATUS' => (!empty($record['eqsl_status'])) ? $record['eqsl_status'] : '',
+			  'COL_FISTS' => (!empty($record['fists'])) ? $record['fists'] : null,
+			  'COL_FISTS_CC' => (!empty($record['fists_cc'])) ? $record['fists_cc'] : null,
+			  'COL_FORCE_INIT' => (!empty($record['force_init'])) ? $record['force_init'] : null,
+			  'COL_FREQ' => $freq,
+			  'COL_FREQ_RX' => (!empty($record['freq_rx'])) ? $freqRX : null,
+			  'COL_GRIDSQUARE' => (!empty($record['gridsquare'])) ? $record['gridsquare'] : '',
+			  'COL_HEADING' => (!empty($record['heading'])) ? $record['heading'] : null,
+			  'COL_HRDLOG_QSO_UPLOAD_DATE' => (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null,
+			  'COL_HRDLOG_QSO_UPLOAD_STATUS' => (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '',
+			  'COL_IOTA' => (!empty($record['iota'])) ? $record['iota'] : '',
+			  'COL_ITUZ' => (!empty($record['ituz'])) ? $record['ituz'] : null,
+			  'COL_K_INDEX' => (!empty($record['k_index'])) ? $record['k_index'] : null,
+			  'COL_LAT' => $input_lat,
+			  'COL_LON' => $input_lon,
+			  'COL_LOTW_QSL_RCVD' => $input_lotw_qsl_rcvd,
+			  'COL_LOTW_QSL_SENT' => $input_lotw_qsl_sent,
+			  'COL_LOTW_QSLRDATE' => $input_lotw_qslrdate,
+			  'COL_LOTW_QSLSDATE' => $input_lotw_qslsdate,
+			  'COL_LOTW_STATUS' => (!empty($record['lotw_status'])) ? $record['lotw_status'] : '',
+			  'COL_MAX_BURSTS' => (!empty($record['max_bursts'])) ? $record['max_bursts'] : null,
+			  'COL_MODE' => $input_mode,
+			  'COL_MS_SHOWER' => (!empty($record['ms_shower'])) ? $record['ms_shower'] : '',
+			  'COL_MY_ANTENNA' => (!empty($record['my_antenna'])) ? $record['my_antenna'] : '',
+			  'COL_MY_ANTENNA_INTL' => (!empty($record['my_antenna_intl'])) ? $record['my_antenna_intl'] : '',
+			  'COL_MY_CITY' => (!empty($record['my_city'])) ? $record['my_city'] : '',
+			  'COL_MY_CITY_INTL' => (!empty($record['my_city_intl'])) ? $record['my_city_intl'] : '',
+			  'COL_MY_CNTY' => (!empty($record['my_cnty'])) ? $record['my_cnty'] : '',
+			  'COL_MY_COUNTRY' => (!empty($record['my_country'])) ? $record['my_country'] : '',
+			  'COL_MY_COUNTRY_INTL' => (!empty($record['my_country_intl'])) ? $record['my_country_intl'] : null,
+			  'COL_MY_CQ_ZONE' => (!empty($record['my_dxcc'])) ? $record['my_dxcc'] : null,
+			  'COL_MY_DXCC' => (!empty($record['my_dxcc'])) ? $record['my_dxcc'] : null,
+			  'COL_MY_FISTS' => (!empty($record['my_fists'])) ? $record['my_fists'] : null,
+			  'COL_MY_GRIDSQUARE' => (!empty($record['my_gridsquare'])) ? $record['my_gridsquare'] : '',
+			  'COL_MY_IOTA' => (!empty($record['my_iota'])) ? $record['my_iota'] : '',
+			  'COL_MY_IOTA_ISLAND_ID' => (!empty($record['my_iota_island_id'])) ? $record['my_iota_island_id'] : '',
+			  'COL_MY_ITU_ZONE' => (!empty($record['my_itu_zone'])) ? $record['my_itu_zone'] : null,
+			  'COL_MY_LAT' => $input_my_lat,
+			  'COL_MY_LON' => $input_my_lon,
+			  'COL_MY_NAME' => (!empty($record['my_name'])) ? $record['my_name'] : '',
+			  'COL_MY_NAME_INTL' => (!empty($record['my_name_intl'])) ? $record['my_name_intl'] : '',
+			  'COL_MY_POSTAL_CODE' => (!empty($record['my_postal_code'])) ? $record['my_postal_code'] : '',
+			  'COL_MY_POSTCODE_INTL' => (!empty($record['my_postcode_intl'])) ? $record['my_postcode_intl'] : '',
+			  'COL_MY_RIG' => (!empty($record['my_rig'])) ? $record['my_rig'] : '',
+			  'COL_MY_RIG_INTL' => (!empty($record['my_rig_intl'])) ? $record['my_rig_intl'] : '',
+			  'COL_MY_SIG' => (!empty($record['my_sig'])) ? $record['my_sig'] : '',
+			  'COL_MY_SIG_INFO' => (!empty($record['my_sig_info'])) ? $record['my_sig_info'] : '',
+			  'COL_MY_SIG_INFO_INTL' => (!empty($record['my_sig_info_intl'])) ? $record['my_sig_info_intl'] : '',
+			  'COL_MY_SIG_INTL' => (!empty($record['my_sig_intl'])) ? $record['my_sig_intl'] : '',
+			  'COL_MY_SOTA_REF' => (!empty($record['my_sota_ref'])) ? $record['my_sota_ref'] : '',
+			  'COL_MY_WWFF_REF' => (!empty($record['my_wwff_ref'])) ? $record['my_wwff_ref'] : '',
+			  'COL_MY_POTA_REF' => (!empty($record['my_pota_ref'])) ? $record['my_pota_ref'] : '',
+			  'COL_MY_STATE' => (!empty($record['my_state'])) ? $record['my_state'] : '',
+			  'COL_MY_STREET' =>  (!empty($record['my_street'])) ? $record['my_street'] : '',
+			  'COL_MY_STREET_INTL' => (!empty($record['my_street_intl'])) ? $record['my_street_intl'] : '',
+			  'COL_MY_USACA_COUNTIES' => (!empty($record['my_usaca_counties'])) ? $record['my_usaca_counties'] : '',
+			  'COL_MY_VUCC_GRIDS' => (!empty($record['my_vucc_grids'])) ? $record['my_vucc_grids'] : '',
+			  'COL_NAME' => (!empty($record['name'])) ? $record['name'] : '',
+			  'COL_NAME_INTL' => (!empty($record['name_intl'])) ? $record['name_intl']: '',
+			  'COL_NOTES' => (!empty($record['notes'])) ? $record['notes'] : '',
+			  'COL_NOTES_INTL' => (!empty($record['notes_intl'])) ? $record['notes_intl'] : '',
+			  'COL_NR_BURSTS' => (!empty($record['nr_bursts'])) ? $record['nr_bursts'] : null,
+			  'COL_NR_PINGS' => (!empty($record['nr_pings'])) ? $record['nr_pings'] : null,
+			  'COL_OPERATOR' => $operatorName,
+			  'COL_OWNER_CALLSIGN' => (!empty($record['owner_callsign'])) ? $record['owner_callsign'] : '',
+			  'COL_PFX' => (!empty($record['pfx'])) ? $record['pfx'] : '',
+			  'COL_PRECEDENCE' => (!empty($record['precedence'])) ? $record['precedence'] : '',
+			  'COL_PROP_MODE' => (!empty($record['prop_mode'])) ? $record['prop_mode'] : '',
+			  'COL_PUBLIC_KEY' => (!empty($record['public_key'])) ? $record['public_key'] : '',
+			  'COL_HRDLOG_QSO_UPLOAD_DATE' => $input_hrdlog_qso_upload_date,
+			  'COL_HRDLOG_QSO_UPLOAD_STATUS' => $input_hrdlog_qso_upload_status,
+			  'COL_QRZCOM_QSO_UPLOAD_DATE' => $input_qrzcom_qso_upload_date,
+			  'COL_QRZCOM_QSO_UPLOAD_STATUS' => $input_qrzcom_qso_upload_status,
+			  'COL_QSL_RCVD' => $input_qsl_rcvd,
+			  'COL_QSL_RCVD_VIA' => $input_qsl_rcvd_via,
+			  'COL_QSL_SENT' => $input_qsl_sent,
+			  'COL_QSL_SENT_VIA' => $input_qsl_sent_via,
+			  'COL_QSL_VIA' => (!empty($record['qsl_via'])) ? $record['qsl_via'] : '',
+			  'COL_QSLMSG' => (!empty($record['qslmsg'])) ? $record['qslmsg'] : '',
+			  'COL_QSLRDATE' => $input_qslrdate,
+			  'COL_QSLSDATE' => $input_qslsdate,
+			  'COL_QSO_COMPLETE' => (!empty($record['qso_complete'])) ? $record['qso_complete'] : '',
+			  'COL_QSO_DATE' => (!empty($record['qso_date'])) ? $record['qso_date'] : null,
+			  'COL_QSO_DATE_OFF' => (!empty($record['qso_date_off'])) ? $record['qso_date_off'] : null,
+			  'COL_QTH' => (!empty($record['qth'])) ? $record['qth'] : '',
+			  'COL_QTH_INTL' => (!empty($record['qth_intl'])) ? $record['qth_intl'] : '',
+			  'COL_REGION' => (!empty($record['region'])) ? $record['region'] : '',
+			  'COL_RIG' => (!empty($record['rig'])) ? $record['rig'] : '',
+			  'COL_RIG_INTL' => (!empty($record['rig_intl'])) ? $record['rig_intl'] : '',
+			  'COL_RST_RCVD' => $rst_rx,
+			  'COL_RST_SENT' => $rst_tx,
+			  'COL_RX_PWR' => $rx_pwr,
+			  'COL_SAT_MODE' => (!empty($record['sat_mode'])) ? $record['sat_mode'] : '',
+			  'COL_SAT_NAME' => (!empty($record['sat_name'])) ? $record['sat_name'] : '',
+			  'COL_SFI' => (!empty($record['sfi'])) ? $record['sfi'] : null,
+			  'COL_SIG' => (!empty($record['sig'])) ? $record['sig'] : '',
+			  'COL_SIG_INFO' => (!empty($record['sig_info'])) ? $record['sig_info'] : '',
+			  'COL_SIG_INFO_INTL' => (!empty($record['sig_info_intl'])) ? $record['sig_info_intl'] : '',
+			  'COL_SIG_INTL' => (!empty($record['sig_intl'])) ? $record['sig_intl'] : '',
+			  'COL_SILENT_KEY' => (!empty($record['silent_key'])) ? $record['silent_key'] : '',
+			  'COL_SKCC' => (!empty($record['skcc'])) ? $record['skcc'] : '',
+			  'COL_SOTA_REF' => (!empty($record['sota_ref'])) ? $record['sota_ref'] : '',
+			  'COL_WWFF_REF' => (!empty($record['wwff_ref'])) ? $record['wwff_ref'] : '',
+			  'COL_POTA_REF' => (!empty($record['pota_ref'])) ? $record['pota_ref'] : '',
+			  'COL_SRX' => (!empty($record['srx'])) ? (int)$record['srx'] : null,
+			  //convert to integer to make sure no invalid entries are imported
+			  'COL_SRX_STRING' => (!empty($record['srx_string'])) ? $record['srx_string'] : '',
+			  'COL_STATE' => (!empty($record['state'])) ? strtoupper($record['state']) : '',
+			  'COL_STATION_CALLSIGN' => (!empty($record['station_callsign'])) ? $record['station_callsign'] : '',
+			  //convert to integer to make sure no invalid entries are imported
+			  'COL_STX' => (!empty($record['stx'])) ? (int)$record['stx'] : null,
+			  'COL_STX_STRING' => (!empty($record['stx_string'])) ? $record['stx_string'] : '',
+			  'COL_SUBMODE' => $input_submode,
+			  'COL_SWL' => (!empty($record['swl'])) ? $record['swl'] : null,
+			  'COL_TEN_TEN' => (!empty($record['ten_ten'])) ? $record['ten_ten'] : null,
+			  'COL_TIME_ON' => $time_on,
+			  'COL_TIME_OFF' => $time_off,
+			  'COL_TX_PWR' => (!empty($tx_pwr)) ? $tx_pwr : null,
+			  'COL_UKSMG' => (!empty($record['uksmg'])) ? $record['uksmg'] : '',
+			  'COL_USACA_COUNTIES' => (!empty($record['usaca_counties'])) ? $record['usaca_counties'] : '',
+			  'COL_VUCC_GRIDS' =>((!empty($record['vucc_grids']))) ? $record['vucc_grids'] : '',
+			  'COL_WEB' => (!empty($record['web'])) ? $record['web'] : ''
+		  );
 
-                    $row = $station_result->row_array();
+		  // Collect field information from the station profile table thats required for the QSO.
+		  if($station_id != "0") {
+			  $this->db->select('station_profile.*, dxcc_entities.name as station_country');
+			  $this->db->where('station_id', $station_id);
+			  $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
+			  $station_result = $this->db->get('station_profile');
 
-                    if (strpos(trim($row['station_gridsquare']), ',') !== false) {
-                      $data['COL_MY_VUCC_GRIDS'] = strtoupper(trim($row['station_gridsquare']));
-                    } else {
-                      $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($row['station_gridsquare']));
-                    }
+			  if ($station_result->num_rows() > 0){
+				  $data['station_id'] = $station_id;
 
-                    $data['COL_MY_CITY'] = trim($row['station_city']);
-                    $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
-                    $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
-                    $data['COL_MY_WWFF_REF'] = strtoupper(trim($row['station_wwff']));
-                    $data['COL_MY_POTA_REF'] = $row['station_pota'] == null ? '' : strtoupper(trim($row['station_pota']));
+				  $row = $station_result->row_array();
 
-                    $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
-                    $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));
-                    $data['COL_MY_COUNTRY'] = strtoupper(trim($row['station_country']));
-                    $data['COL_MY_CNTY'] = strtoupper(trim($row['station_cnty']));
-                    $data['COL_MY_CQ_ZONE'] = strtoupper(trim($row['station_cq']));
-                    $data['COL_MY_ITU_ZONE'] = strtoupper(trim($row['station_itu']));
-                }
-            }
+				  if (strpos(trim($row['station_gridsquare']), ',') !== false) {
+					  $data['COL_MY_VUCC_GRIDS'] = strtoupper(trim($row['station_gridsquare']));
+				  } else {
+					  $data['COL_MY_GRIDSQUARE'] = strtoupper(trim($row['station_gridsquare']));
+				  }
 
-            // Save QSO
-            $this->add_qso($data, $skipexport);
-        } else {
-          $my_error .= "Date/Time: ".$time_on." Callsign: ".$record['call']." Band: ".$band."  Duplicate<br>";
-        }
+				  $data['COL_MY_CITY'] = trim($row['station_city']);
+				  $data['COL_MY_IOTA'] = strtoupper(trim($row['station_iota']));
+				  $data['COL_MY_SOTA_REF'] = strtoupper(trim($row['station_sota']));
+				  $data['COL_MY_WWFF_REF'] = strtoupper(trim($row['station_wwff']));
+				  $data['COL_MY_POTA_REF'] = $row['station_pota'] == null ? '' : strtoupper(trim($row['station_pota']));
 
-        return $my_error;
-    }
+				  $data['COL_STATION_CALLSIGN'] = strtoupper(trim($row['station_callsign']));
+				  $data['COL_MY_DXCC'] = strtoupper(trim($row['station_dxcc']));
+				  $data['COL_MY_COUNTRY'] = strtoupper(trim($row['station_country']));
+				  $data['COL_MY_CNTY'] = strtoupper(trim($row['station_cnty']));
+				  $data['COL_MY_CQ_ZONE'] = strtoupper(trim($row['station_cq']));
+				  $data['COL_MY_ITU_ZONE'] = strtoupper(trim($row['station_itu']));
+			  }
+		  }
+
+		  // Save QSO
+		  $this->add_qso($data, $skipexport);
+	  } else {
+		  $my_error .= "Date/Time: ".$time_on." Callsign: ".$record['call']." Band: ".$band."  Duplicate<br>";
+	  }
+
+	  return $my_error;
+  }
 
     function update_dok($record, $ignoreAmbiguous, $onlyConfirmed, $overwriteDok) {
         $this->load->model('logbooks_model');
