@@ -153,15 +153,22 @@
 								<div class="card-header"><?php echo lang('general_word_general'); ?></div>
 								<div class="card-body">
 									<div class="mb-3">
-										<label><?php echo lang('account_theme').' / '.lang('account_stylesheet'); ?></label>
-										<?php if(!isset($user_stylesheet)) { $user_stylesheet='default'; }?>
-										<select class="form-select" id="user_stylesheet" name="user_stylesheet" required>
-											<?php
-											foreach ($themes as $theme) {
-												echo '<option value="' . $theme->foldername . '" ' . (( $user_stylesheet == $theme->foldername)?'selected="selected"':"") . '>' . $theme->name . '</option>';
-											}
-											?>
-										</select>
+										<div><label><?php echo lang('account_theme').' / '.lang('account_stylesheet'); ?></label><label class="float-end"><?php echo lang('general_word_options'); ?></label></div>
+										<div class="input-group">
+											<?php if(!isset($user_stylesheet)) { $user_stylesheet='default'; }?>
+											<select class="form-select" id="user_stylesheet" name="user_stylesheet" required>
+												<?php
+												foreach ($themes as $theme) {
+													echo '<option value="' . $theme->foldername . '" ' . (( $user_stylesheet == $theme->foldername)?'selected="selected"':"") . '>' . $theme->name . '</option>';
+												}
+												?>
+											</select>
+											<?php if(!isset($user_stylesheet_options)) { $user_stylesheet_options='0'; }?>
+											<select class="form-select" id="user_stylesheet_options" name="user_stylesheet_options" style="flex:none;width:110px;">
+												<option value="0" <?php if ($user_stylesheet_options == "0") { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
+												<option value="wide" <?php if ($user_stylesheet_options == "wide") { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_wide'); ?></option>
+											</select>
+										</div>
 									</div>
 									<hr/>
 									<?php if ($this->config->item('cl_multilanguage')) { ?>

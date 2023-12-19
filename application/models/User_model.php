@@ -149,9 +149,12 @@ class User_Model extends CI_Model {
 		$measurement, $user_date_format, $user_stylesheet, $user_qth_lookup, $user_sota_lookup, $user_wwff_lookup,
 		$user_pota_lookup, $user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
 		$user_show_profile_image, $user_previous_qsl_type, $user_amsat_status_upload, $user_mastodon_url,
-		$user_default_band, $user_default_confirmation, $user_qso_end_times, $user_quicklog, $user_quicklog_enter, $language) {
+		$user_default_band, $user_default_confirmation, $user_qso_end_times, $user_quicklog, $user_quicklog_enter, $language, $user_stylesheet_options) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
+			$user_stylesheet_options =  xss_clean($user_stylesheet_options);
+			$_user_stylesheet = json_encode(array("style"=>xss_clean($user_stylesheet), "options"=>$user_stylesheet_options));
+
 			$data = array(
 				'user_name' => xss_clean($username),
 				'user_password' => $this->_hash($password),
@@ -164,7 +167,7 @@ class User_Model extends CI_Model {
 				'user_timezone' => xss_clean($timezone),
 				'user_measurement_base' => xss_clean($measurement),
 				'user_date_format' => xss_clean($user_date_format),
-				'user_stylesheet' => xss_clean($user_stylesheet),
+				'user_stylesheet' => $_user_stylesheet,
 				'user_qth_lookup' => xss_clean($user_qth_lookup),
 				'user_sota_lookup' => xss_clean($user_sota_lookup),
 				'user_wwff_lookup' => xss_clean($user_wwff_lookup),
@@ -215,6 +218,8 @@ class User_Model extends CI_Model {
 		// Check user privileges
 		if(($this->session->userdata('user_type') == 99) || ($this->session->userdata('user_id') == $fields['id'])) {
 			if($this->exists_by_id($fields['id'])) {
+				$user_stylesheet_options =  xss_clean($fields['user_stylesheet_options']);
+				$fields['_user_stylesheet'] = json_encode(array("style"=>xss_clean($fields['user_stylesheet']), "options"=>$user_stylesheet_options));
 				$data = array(
 					'user_name' => xss_clean($fields['user_name']),
 					'user_email' => xss_clean($fields['user_email']),
@@ -228,7 +233,7 @@ class User_Model extends CI_Model {
 					'user_clublog_name' => xss_clean($fields['user_clublog_name']),
 					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
 					'user_date_format' => xss_clean($fields['user_date_format']),
-					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
+					'user_stylesheet' => $fields['_user_stylesheet'],
 					'user_qth_lookup' => xss_clean($fields['user_qth_lookup']),
 					'user_sota_lookup' => xss_clean($fields['user_sota_lookup']),
 					'user_wwff_lookup' => xss_clean($fields['user_wwff_lookup']),
@@ -342,6 +347,10 @@ class User_Model extends CI_Model {
 
 		$u = $this->get_by_id($id);
 
+		$_json_user_stylesheet = json_decode($u->row()->user_stylesheet, true);
+		if (is_null($_json_user_stylesheet) && !empty($u->row()->user_stylesheet)) {
+			$_json_user_stylesheet = array('style'=>$u->row()->user_stylesheet, 'options'=>'0');
+		}
 		$userdata = array(
 			'user_id'		 => $u->row()->user_id,
 			'user_name'		 => $u->row()->user_name,
@@ -357,7 +366,8 @@ class User_Model extends CI_Model {
 			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:"",
 			'user_measurement_base' => $u->row()->user_measurement_base,
 			'user_date_format' => $u->row()->user_date_format,
-			'user_stylesheet' => $u->row()->user_stylesheet,
+			'user_stylesheet' => $_json_user_stylesheet['style'],
+			'user_stylesheet_options' => $_json_user_stylesheet['options'],
 			'user_qth_lookup' => isset($u->row()->user_qth_lookup) ? $u->row()->user_qth_lookup : 0,
 			'user_sota_lookup' => isset($u->row()->user_sota_lookup) ? $u->row()->user_sota_lookup : 0,
 			'user_wwff_lookup' => isset($u->row()->user_wwff_lookup) ? $u->row()->user_wwff_lookup : 0,

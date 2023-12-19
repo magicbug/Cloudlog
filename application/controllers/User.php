@@ -76,6 +76,7 @@ class User extends CI_Controller {
 				$data['user_timezone'] = $this->input->post('user_timezone');
 				$data['user_measurement_base'] = $this->input->post('user_measurement_base');
 				$data['user_stylesheet'] = $this->input->post('user_stylesheet');
+				$data['user_stylesheet_options'] = $this->input->post('user_stylesheet_options');
 				$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 				$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 				$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
@@ -134,6 +135,7 @@ class User extends CI_Controller {
 				$this->input->post('user_quicklog'),
 				$this->input->post('user_quicklog_enter'),
 				$this->input->post('language'),
+				$this->input->post('user_stylesheet_options')
 				)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
@@ -164,6 +166,7 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator');
 			$data['user_measurement_base'] = $this->input->post('user_measurement_base');
 			$data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_stylesheet_options'] = $this->input->post('user_stylesheet_options');
 			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
@@ -363,12 +366,26 @@ class User extends CI_Controller {
 			} else {
 				$data['language'] = $q->language;
 			}
-
 			
 			if($this->input->post('user_stylesheet')) {
 				$data['user_stylesheet'] = $this->input->post('user_stylesheet', true);
 			} else {
-				$data['user_stylesheet'] = $q->user_stylesheet;
+				$_json_user_stylesheet = json_decode($q->user_stylesheet, true);
+				if (is_null($_json_user_stylesheet) && !empty($q->user_stylesheet)) {
+					$_json_user_stylesheet = array('style'=>$q->user_stylesheet, 'options'=>'0');
+				}
+				$data['user_stylesheet'] = $_json_user_stylesheet['style'];
+			}
+
+			if($this->input->post('user_stylesheet_options')) {
+				$data['user_stylesheet_options'] = $this->input->post('user_stylesheet_options', true);
+			} else {
+				if (isset($_json_user_stylesheet)) { 
+					$data['user_stylesheet_options'] = $_json_user_stylesheet['options'];
+				} else {
+					$data['user_stylesheet_options'] = '0';
+				}
+				
 			}
 
 			if($this->input->post('user_qth_lookup')) {
@@ -592,6 +609,7 @@ class User extends CI_Controller {
 			$data['user_locator'] = $this->input->post('user_locator', true);
 			$data['user_timezone'] = $this->input->post('user_timezone', true);
 			$data['user_stylesheet'] = $this->input->post('user_stylesheet');
+			$data['user_stylesheet_options'] = $this->input->post('user_stylesheet_options');
 			$data['user_qth_lookup'] = $this->input->post('user_qth_lookup');
 			$data['user_sota_lookup'] = $this->input->post('user_sota_lookup');
 			$data['user_wwff_lookup'] = $this->input->post('user_wwff_lookup');
