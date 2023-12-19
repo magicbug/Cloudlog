@@ -36,6 +36,7 @@ $lang['station_logbooks_select_avail_loc'] = "Wähle verfügbare Stationsstandor
 $lang['station_logbooks_link_loc'] = "Verknüpfe Standort";
 $lang['station_logbooks_linked_loc'] = "Verknüpfte Standorte";
 $lang['station_logbooks_no_linked_loc'] = "Keine verknüpften Standorte";
+$lang['station_logbooks_unlink_station_location'] = "Entferne Verknüpfung";
 
 
 
@@ -99,8 +100,11 @@ $lang['station_location_eqsl_defaultqslmsg_hint'] = "Definiere eine Standard-Nac
 $lang['station_location_qrz_subscription'] = 'Abonnement erforderlich';
 $lang['station_location_qrz_hint'] = "Finde deinen 'QRZ Logbook API Key' in den <a href='https://logbook.qrz.com/logbook' target='_blank'>QRZ.com Logbuch Einstellungen";
 $lang['station_location_qrz_realtime_upload'] = 'QRZ.com Logbuch Echtzeit Upload';
+$lang['station_location_hrdlog_username'] = "HRDLog.net Benutzername";
+$lang['station_location_hrdlog_username_hint'] = "Der Benutzername mit dem du bei HRDlog.net registriert bist (normalerweise dein Rufzeichen).";
+$lang['station_location_hrdlog_code'] = "HRDLog.net API Key";
 $lang['station_location_hrdlog_realtime_upload'] = "HRDLog.net Logbuch Echtzeit Upload";
-$lang['station_location_hrdlog_hint'] = "Erstelle deinen API Key auf <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>HRDLog.net Benutzerprofil Seite";
+$lang['station_location_hrdlog_code_hint'] = "Erstelle deinen API Key auf <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>HRDLog.net Benutzerprofil Seite";
 $lang['station_location_qo100_hint'] = "Erstelle deinen API Key auf <a href='https://qo100dx.club' target='_blank'>deiner QO-100 Dx Club's Profil Seite";
 $lang['station_location_qo100_realtime_upload'] = "QO-100 Dx Club Echtzeit Upload";
 $lang['station_location_oqrs_enabled'] = "OQRS aktivieren";
