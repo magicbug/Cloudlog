@@ -111,7 +111,11 @@ class OptionsLib {
 
         // If session data for stylesheet is set return choice
         if($CI->session->userdata('user_stylesheet')) {
-            return $CI->session->userdata('user_stylesheet');
+            if (is_dir(APPPATH.'/../assets/css/'.$CI->session->userdata('user_stylesheet'))) {
+                return $CI->session->userdata('user_stylesheet');
+            } else {
+                return $CI->config->item('option_theme');
+            }
         } else {
             // Return the global choice.
             return $CI->config->item('option_theme');
