@@ -412,40 +412,4 @@ class DxccFlag
     {
         return $this->dxccFlags[$dxcc];
     }
-
-    /**
-     * Set the country code aliases.
-     *
-     * @param  array  $aliases
-     */
-    public function setAliases(array $aliases)
-    {
-        $this->aliases = [];
-
-        foreach ($aliases as $alias => $countryCode) {
-            $this->aliases[strtoupper($alias)] = strtoupper($countryCode);
-        }
-    }
-
-    /**
-     * Convert the given character to unicode.
-     *
-     * @param  string  $char
-     * @return string
-     */
-    private function toUnicode($char)
-    {
-        return mb_convert_encoding('&#'.self::toRegionalIndicator($char).';', 'UTF-8', 'HTML-ENTITIES');
-    }
-
-    /**
-     * Convert the given characters to it's regional indicator codepoint.
-     *
-     * @param  string  $char
-     * @return int
-     */
-    private function toRegionalIndicator($char)
-    {
-        return ord($char) + self::INDICATOR_OFFSET;
-    }
 }
