@@ -17,6 +17,12 @@
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/selectize.bootstrap4.css" />
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap-dialog.css" />
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme(); ?>/overrides.css">
+		<?php $overrides_options = $this->optionslib->get_theme_options();
+		if (count($overrides_options)>0) { 
+			foreach($overrides_options as $options) {
+				echo '<link rel="stylesheet" href="'. base_url() .'assets/css/'. $this->optionslib->get_theme() .'/overrides_'. $options .'.css">';
+			}
+		} ?>
 	<?php } ?>
 
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">

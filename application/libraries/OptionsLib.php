@@ -116,6 +116,15 @@ class OptionsLib {
             // Return the global choice.
             return $CI->config->item('option_theme');
         }
+    }
 
+    // This returns the list options for theme
+    function get_theme_options() {
+        $CI =& get_instance();
+        if($CI->session->userdata('user_stylesheet_options') && ($CI->session->userdata('user_stylesheet_options') != "0")) {
+            return array($CI->session->userdata('user_stylesheet_options'));
+        } else {
+            return array();
+        }
     }
 }
