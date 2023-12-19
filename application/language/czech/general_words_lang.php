@@ -81,6 +81,9 @@ $lang['general_word_eqslcards'] = 'eQSL karty';
 $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
+$lang['general_word_options'] = 'Options';
+$lang['general_word_wide'] = 'Wide';
+
 $lang['general_word_details'] = 'Details';
 $lang['general_word_qso_data'] = 'QSO Data';
 
