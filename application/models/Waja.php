@@ -215,7 +215,7 @@ class WAJA extends CI_Model {
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
     function getWajaWorked($location_list, $band, $postdata) {
-        $sql = "SELECT distinct col_state FROM " . $this->config->item('table_name') . " thcv
+        $sql = "SELECT distinct LPAD(col_state, 2, '0') AS col_state FROM " . $this->config->item('table_name') . " thcv
         where station_id in (" . $location_list . ")";
 
 		if ($postdata['mode'] != 'All') {
@@ -252,7 +252,7 @@ class WAJA extends CI_Model {
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
     function getWajaConfirmed($location_list, $band, $postdata) {
-        $sql = "SELECT distinct col_state FROM " . $this->config->item('table_name') . " thcv
+        $sql = "SELECT distinct LPAD(col_state, 2, '0') AS col_state FROM " . $this->config->item('table_name') . " thcv
             where station_id in (" . $location_list . ")";
 
 		if ($postdata['mode'] != 'All') {
