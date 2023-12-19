@@ -104,6 +104,9 @@ path.grid-worked {
 	background-color: rgba(20, 41, 62, 0.6);
 	color: #fff;
 }
+.form-select {
+	--bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
 
 div.alert-danger {
 	color: #ffffff;
@@ -184,6 +187,7 @@ div.alert-danger {
 	--bs-accordion-bg: var(--cl-bg);
 	--bs-accordion-btn-bg: #4e5e6c;
 	--bs-accordion-active-bg: #4e5e6c;
+	--bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
 }
 .accordion-button.collapsed {
 	border-bottom: 1px solid var(--cl-bg);
