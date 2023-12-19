@@ -698,6 +698,9 @@ class Logbook extends CI_Controller {
 	}
 
 	function view($id) {
+		$CI =& get_instance();
+		$CI->load->library('DxccFlag');
+
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
@@ -706,6 +709,7 @@ class Logbook extends CI_Controller {
 
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
+		$data['dxccFlag'] = $CI->dxccflag->get($data['query']->result()[0]->COL_DXCC);
 
         if ($this->session->userdata('user_measurement_base') == NULL) {
             $data['measurement_base'] = $this->config->item('measurement_base');
