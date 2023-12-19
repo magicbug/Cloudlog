@@ -159,7 +159,7 @@ class ADIF_Parser
 				$pattern = "/\d+((:\D)?)/";
                 preg_match($pattern, $r, $fulltag);
 				$value = (isset($res[2])?trim($res[2]):(isset($res[1])?trim($res[1]):''));
-				$value = substr($value, 0, $fulltag[0]);
+				$value = mb_substr($value, 0, $fulltag[0]);
 				$return[mb_strtolower($tag, "UTF-8")] = $value;
         }
 
