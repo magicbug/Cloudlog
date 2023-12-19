@@ -433,6 +433,8 @@
                                   $distancestring = "(Gridline: ".$row->COL_VUCC_GRIDS." / distance: ".$distance.")";
                                } else if (substr_count($row->COL_VUCC_GRIDS, ',') == 3) {
                                   $distancestring = "(Gridcorner: ".$row->COL_VUCC_GRIDS." / distance: ".$distance.")";
+                               } else {
+                                  $distancestring = "(Grids: ".$row->COL_VUCC_GRIDS.")";
                                }
                             }
                             $twitter_string .= urlencode($distancestring." on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
