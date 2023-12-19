@@ -396,7 +396,7 @@
                     <?php
 
                         if($row->COL_SAT_NAME != null) {
-                            $twitter_band_sat = $row->COL_SAT_NAME;
+                            $twitter_band_sat = $row->COL_SAT_NAME." \u{1F6F0}\u{FE0F}";
                             $hashtags = "#hamr #cloudlog #amsat";
                         } else {
                             $twitter_band_sat = $row->COL_BAND;
