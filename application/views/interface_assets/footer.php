@@ -1416,12 +1416,18 @@ $(document).on('keypress',function(e) {
 						  // Update RST on mode change via CAT
 						  setRst($(".mode").val());
 					  }
-					  $("#sat_name").val(data.satname);
-					  $("#sat_mode").val(data.satmode);
+					  if(data.satname != null && data.satname != '') {
+						  $("#sat_name").val(data.satname);
+					  }
+					  if(data.satmode != null && data.satmode != '') {
+						  $("#sat_mode").val(data.satmode);
+					  }
 					  if(data.power != null && data.power != 0) {
 						  $("#transmit_power").val(data.power);
 					  }
-					  $("#selectPropagation").val(data.prop_mode);
+					  if(data.prop_mode != null && data.prop_mode != '') {
+						  $("#selectPropagation").val(data.prop_mode);
+					  }
 
 					  // Display CAT Timeout warning based on the figure given in the config file
 					  var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
