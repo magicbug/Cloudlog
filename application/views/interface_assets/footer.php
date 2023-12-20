@@ -1455,6 +1455,7 @@ $(document).on('keypress',function(e) {
 							  if (data.prop_mode == 'SAT') {
 								  text = text+' '+data.satname;
 							  }
+							  text = text + ')';
 						  }
 						  if(data.frequency_rx != null && data.frequency_rx != 0) {
 							  text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
