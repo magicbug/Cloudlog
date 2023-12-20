@@ -66,7 +66,7 @@ $(function() {
 								} 
 							});
 							if (!update) { 	// Sth. Fresh? So highlight
-								table.rows.add(data).draw().nodes().to$().addClass("fresh bg-info"); 
+								table.rows.add(data).draw().nodes().to$().addClass("fresh table-info"); 
 							} else { 
 								table.rows.add(data).draw(); 
 							}
