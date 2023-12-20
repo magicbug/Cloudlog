@@ -1,4 +1,4 @@
-<form method="post" class="col-md" action="<?php echo site_url('labels/print/'.$stationid) ?>">
+<form method="post" class="col-md" action="<?php echo site_url('labels/print/'.$stationid) ?>" target="_blank">
     <div class="mb-3 row">
         <label class="my-1 me-2 col-md-4" for="grid">Include Grid?</label>
         <div class="form-check-inline">
