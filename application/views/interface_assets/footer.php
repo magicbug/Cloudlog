@@ -1398,8 +1398,10 @@ $(document).on('keypress',function(e) {
 					  if($('.radio_login_error').length != 0) {
 						  $(".radio_login_error" ).remove();
 					  }
-					  $('#frequency').val(data.frequency);
-					  $("#band").val(frequencyToBand(data.frequency));
+					  if (data.frequency != null && data.frequency != '') {
+						  $('#frequency').val(data.frequency);
+						  $("#band").val(frequencyToBand(data.frequency));
+					  }
 					  if (data.frequency_rx != "") {
 						  $('#frequency_rx').val(data.frequency_rx);
 						  $("#band_rx").val(frequencyToBand(data.frequency_rx));
