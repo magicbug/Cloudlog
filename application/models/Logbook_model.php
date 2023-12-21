@@ -4517,9 +4517,10 @@ function lotw_last_qsl_date($user_id) {
       $this->load->library('qra');
 
       $json["markers"] = array();
-      $plot = array('lat'=>0, 'lng'=>0, 'html'=>'', 'label'=>'', 'confirmed'=>'N');
-
+      
       foreach ($qsos_result as $row) {
+        $plot = array('lat'=>0, 'lng'=>0, 'html'=>'', 'label'=>'', 'confirmed'=>'N');
+      
         $plot['label'] = $row->COL_CALL;
 
         $plot['html'] = "Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />";
