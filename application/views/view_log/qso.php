@@ -218,7 +218,7 @@
                     <?php if($row->name != null) { ?>
                     <tr>
                         <td><?php echo lang('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($dxccFlag != null) { echo " ".$dxccFlag; } if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
                     </tr>
                     <?php } ?>
 
@@ -424,6 +424,9 @@
                             $twitter_string = urlencode("Just worked ".$row->COL_CALL." ");
                             if ($row->COL_DXCC != 0) {
                                $twitter_string .= urlencode("in ".ucwords(strtolower(($row->COL_COUNTRY)))." ");
+                               if ($dxccFlag != null) {
+                                  $twitter_string .= $dxccFlag." ";
+                               }
                             }
                             $distancestring = '';
                             if ($row->COL_VUCC_GRIDS == null) {

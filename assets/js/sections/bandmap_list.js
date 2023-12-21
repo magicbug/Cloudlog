@@ -66,7 +66,7 @@ $(function() {
 								} 
 							});
 							if (!update) { 	// Sth. Fresh? So highlight
-								table.rows.add(data).draw().nodes().to$().addClass("fresh bg-info"); 
+								table.rows.add(data).draw().nodes().to$().addClass("fresh table-info"); 
 							} else { 
 								table.rows.add(data).draw(); 
 							}
@@ -94,9 +94,11 @@ $(function() {
 			if (distance<=20) {
 				distance++;
 				alpha=(.5/distance);
-				this.nodes().to$().css('background-color', 'rgba(0,0,255,' + alpha + ')');
+				this.nodes().to$().css('--bs-table-bg', 'rgba(0,0,255,' + alpha + ')');
+				this.nodes().to$().css('--bs-table-accent-bg', 'rgba(0,0,255,' + alpha + ')');
 			} else {
-				this.nodes().to$().css('background-color', '');
+				this.nodes().to$().css('--bs-table-bg', '');
+				this.nodes().to$().css('--bs-table-accent-bg', '');
 			}
 		});
 	}
