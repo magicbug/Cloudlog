@@ -101,6 +101,9 @@ path.grid-worked {
 	color: #eeeeee;
 	border: 1px solid #333;
 }
+.form-select {
+	--bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+}
 
 .bootstrap-dialog.type-primary .modal-header {
 	background-color: #131313;
@@ -184,6 +187,7 @@ path.grid-worked {
 	--bs-accordion-btn-focus-border-color: #FFFFFF;
 	--bs-accordion-btn-focus-box-shadow: initial;
 	--bs-accordion-border-color: #2c2c2c;
+	--bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FFFFFF'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
 }
 .accordion-button.collapsed {
 	border-bottom: 1px solid var(--bs-body-bg);
