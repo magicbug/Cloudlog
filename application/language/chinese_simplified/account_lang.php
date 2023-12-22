@@ -29,6 +29,8 @@ $lang['account_stylesheet'] = '样式表';
 $lang['account_personal_information'] = '个人信息';
 $lang['account_first_name'] = '姓';
 $lang['account_last_name'] = '名';
+
+$lang['account_hamradio_information'] = "Ham Radio";
 $lang['account_callsign'] = '呼号';
 $lang['account_gridsquare'] = '梅登海德网格';
 
@@ -115,7 +117,13 @@ $lang['account_winkeyer'] = 'Winkeyer';
 $lang['account_winkeyer_hint'] = "Cloudlog 中对 Winkeyer 的支持是实验性的，请在开启前先阅读 <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a>。";
 $lang['account_winkeyer_enabled'] = "启用 Winkeyer 功能";
 
-$lang['account_map_params'] = "Settings for map";
+$lang['account_map_params'] = "Map Settings";
 $lang['account_map_qso_by_default'] = "QSO (by default)";
 $lang['account_map_qso_confirm'] = "QSO (confirmed)";
 $lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";
+
+$lang['account_general_information'] = "General Information";
+$lang['account_qso_logging_options'] = "QSO Logging Options";
+$lang['account_third_party_services'] = "Third Party Services";
+$lang['account_default_values'] = "Default Values";
+$lang['account_miscellaneous'] = "Miscellaneous";

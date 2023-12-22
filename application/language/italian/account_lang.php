@@ -12,7 +12,7 @@ $lang['account_column5_text'] = 'Scegli colonna 5 (solo per il logbook)';
 $lang['account_create_user_account'] = 'Create User Account';
 $lang['account_edit_account'] = 'Edit Account';
 
-$lang['account_account_information'] = 'Account Information';
+$lang['account_account_information'] = "Account";
 $lang['account_user'] = "User";
 $lang['account_word_edited'] = "edited";
 $lang['account_username'] = 'Username';
@@ -26,9 +26,11 @@ $lang['account_word_admin'] = 'Admin';
 $lang['account_theme'] = 'Theme';
 $lang['account_stylesheet'] = 'Stylesheet';
 
-$lang['account_personal_information'] = 'Personal Information';
+$lang['account_personal_information'] = "Personal";
 $lang['account_first_name'] = 'First Name';
 $lang['account_last_name'] = 'Last Name';
+
+$lang['account_hamradio_information'] = "Ham Radio";
 $lang['account_callsign'] = 'Callsign';
 $lang['account_gridsquare'] = 'Gridsquare';
 
@@ -84,7 +86,7 @@ $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'eQSL.cc Username';
 $lang['account_eqslcc_password'] = 'eQSL.cc Password';
 
-$lang['account_save_account_changes'] = 'Save Account Changes';
+$lang['account_save_account_changes'] = "Save Account";
 $lang['account_create_account'] = 'Create Account';
 
 $lang['account_delete_user_account'] = 'Delete User Account';
@@ -115,7 +117,13 @@ $lang['account_winkeyer'] = 'Winkeyer';
 $lang['account_winkeyer_hint'] = "Winkeyer support in Cloudlog is very experimental read the wiki first at <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> before enabling.";
 $lang['account_winkeyer_enabled'] = "Winkeyer Features Enabled";
 
-$lang['account_map_params'] = "Settings for map";
+$lang['account_map_params'] = "Map Settings";
 $lang['account_map_qso_by_default'] = "QSO (by default)";
 $lang['account_map_qso_confirm'] = "QSO (confirmed)";
 $lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";
+
+$lang['account_general_information'] = "General Information";
+$lang['account_qso_logging_options'] = "QSO Logging Options";
+$lang['account_third_party_services'] = "Third Party Services";
+$lang['account_default_values'] = "Default Values";
+$lang['account_miscellaneous'] = "Miscellaneous";

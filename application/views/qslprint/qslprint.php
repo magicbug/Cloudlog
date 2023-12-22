@@ -13,8 +13,8 @@ if (empty($station_id)) {
 }
 
 if ($qsos->result() != NULL) {
-        echo '<div style="padding-top: 10px; margin-top: 0px;" class="container logbook">';
-	echo '<table style="width:100%" class="table table-sm table-bordered table-hover table-striped table-condensed qslprint">
+        echo '<div style="padding-top: 10px; margin-top: 0px;" class="container logbook mb-4">';
+	echo '<table style="width:100%" class="table table-sm table-bordered table-hover table-striped table-condensed qslprint" id="qslprint_table">
 <thead>
 <tr>
 <th style=\'text-align: center\'><div class="form-check" style="margin-top: -1.5em"><input class="form-check-input" type="checkbox" id="checkBoxAll" /></div></th>

@@ -202,9 +202,8 @@ class Logbook extends CI_Controller {
 		if (strlen($gridsquare) < 4)
 			return false;
 
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
 
 		if(!empty($logbooks_locations_array)) {
@@ -241,8 +240,8 @@ class Logbook extends CI_Controller {
 					$this->db->where("1=0");
 				}
 			} else {
-				$CI->load->model('logbook_model');
-				$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+				$this->load->model('logbook_model');
+				$this->db->where('COL_MODE', $this->logbook_model->get_main_mode_from_mode($mode));
 				$this->db->where('COL_BAND', $band);
 				$this->db->where('COL_PROP_MODE !=','SAT');
 				if ($extrawhere != '') {
@@ -273,9 +272,8 @@ class Logbook extends CI_Controller {
 		if (strlen($gridsquare) < 4)
 			return false;
 
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		if(!empty($logbooks_locations_array)) {
 			if($type == "SAT") {
@@ -316,15 +314,14 @@ class Logbook extends CI_Controller {
 			"confirmed" => false,
 		];
 		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
-		$CI =& get_instance();
-        $CI->load->model('logbooks_model');
-        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        $this->load->model('logbooks_model');
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		if($type == "SAT") {
 			$this->db->where('COL_PROP_MODE', 'SAT');
 		} else {
-			$CI->load->model('logbook_model');
-			$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+			$this->load->model('logbook_model');
+			$this->db->where('COL_MODE', $this->logbook_model->get_main_mode_from_mode($mode));
 			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_PROP_MODE !=','SAT');
 
@@ -372,8 +369,8 @@ class Logbook extends CI_Controller {
 				$this->db->where("1=0");
 			}
 		} else {
-			$CI->load->model('logbook_model');
-			$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+			$this->load->model('logbook_model');
+			$this->db->where('COL_MODE', $this->logbook_model->get_main_mode_from_mode($mode));
 			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_PROP_MODE !=','SAT');
 			if ($extrawhere != '') {
@@ -405,10 +402,9 @@ class Logbook extends CI_Controller {
 		];
 
 		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-		$CI->load->model('logbook_model');
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->load->model('logbook_model');
 
 		if(!empty($logbooks_locations_array)) {
 			if($type == "SAT") {
@@ -462,8 +458,8 @@ class Logbook extends CI_Controller {
 					$this->db->where("1=0");
 				}
 			} else {
-				$CI->load->model('logbook_model');
-				$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+				$this->load->model('logbook_model');
+				$this->db->where('COL_MODE', $this->logbook_model->get_main_mode_from_mode($mode));
 				$this->db->where('COL_BAND', $band);
 				$this->db->where('COL_PROP_MODE !=','SAT');
 				if ($extrawhere != '') {
@@ -507,10 +503,9 @@ class Logbook extends CI_Controller {
 		];
 
 		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
-		$CI->load->model('logbook_model');
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->load->model('logbook_model');
 
 		if(!empty($logbooks_locations_array)) {
 			if($type == "SAT") {
@@ -564,8 +559,8 @@ class Logbook extends CI_Controller {
 					$this->db->where("1=0");
 				}
 			} else {
-				$CI->load->model('logbook_model');
-				$this->db->where('COL_MODE', $CI->logbook_model->get_main_mode_from_mode($mode));
+				$this->load->model('logbook_model');
+				$this->db->where('COL_MODE', $this->logbook_model->get_main_mode_from_mode($mode));
 				$this->db->where('COL_BAND', $band);
 				$this->db->where('COL_PROP_MODE !=','SAT');
 				if ($extrawhere != '') {
@@ -698,6 +693,8 @@ class Logbook extends CI_Controller {
 	}
 
 	function view($id) {
+		$this->load->library('DxccFlag');
+
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
@@ -706,6 +703,7 @@ class Logbook extends CI_Controller {
 
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
+		$data['dxccFlag'] = $this->dxccflag->get($data['query']->result()[0]->COL_DXCC);
 
         if ($this->session->userdata('user_measurement_base') == NULL) {
             $data['measurement_base'] = $this->config->item('measurement_base');
@@ -728,9 +726,8 @@ class Logbook extends CI_Controller {
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		$html = "";
 
@@ -948,9 +945,8 @@ class Logbook extends CI_Controller {
 						$callsign['callsign'] = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
 					}
 					if (isset($data['callsign']['gridsquare'])) {
-						$CI = &get_instance();
-						$CI->load->model('logbook_model');
-						$callsign['grid_worked'] = $CI->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+						$this->load->model('logbook_model');
+						$callsign['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
 					}
 					if (isset($callsign['callsign']['error'])) {
 						$callsign['error'] = $callsign['callsign']['error'];
@@ -968,9 +964,8 @@ class Logbook extends CI_Controller {
 				}*/
 
 				if (isset($callsign['callsign']['gridsquare'])) {
-					$CI = &get_instance();
-					$CI->load->model('logbook_model');
-					$callsign['grid_worked'] = $CI->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($callsign['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+					$this->load->model('logbook_model');
+					$callsign['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($callsign['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
 				}
 				if (isset($callsign['callsign']['error'])) {
 					$callsign['error'] = $callsign['callsign']['error'];
@@ -1026,9 +1021,8 @@ class Logbook extends CI_Controller {
 
 						$data['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
 						if (isset($data['callsign']['gridsquare'])) {
-							$CI = &get_instance();
-							$CI->load->model('logbook_model');
-							$data['grid_worked'] = $CI->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+							$this->load->model('logbook_model');
+							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
 						}
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];
@@ -1051,9 +1045,8 @@ class Logbook extends CI_Controller {
 							$data['callsign'] = $this->hamqth->search($id, $this->session->userdata('hamqth_session_key'));
 						}
 						if (isset($data['callsign']['gridsquare'])) {
-							$CI = &get_instance();
-							$CI->load->model('logbook_model');
-							$data['grid_worked'] = $CI->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+							$this->load->model('logbook_model');
+							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
 						}
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];
@@ -1100,9 +1093,8 @@ class Logbook extends CI_Controller {
 
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		if (!$logbooks_locations_array) {
 			return null;
@@ -1134,9 +1126,8 @@ class Logbook extends CI_Controller {
 
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		if (!$logbooks_locations_array) {
 			return null;
@@ -1170,9 +1161,8 @@ class Logbook extends CI_Controller {
 
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
-		$CI =& get_instance();
-		$CI->load->model('logbooks_model');
-		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
 		if (!$logbooks_locations_array) {
 			return null;

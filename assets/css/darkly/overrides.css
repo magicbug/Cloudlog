@@ -1,6 +1,9 @@
 /*!
  * No overrides for the default theme as it aligns with general.css
 */
+:root {
+	--cl-border-btn-pwd: var(--bs-body-bg);
+}
 
 .table {
 	--bs-table-border-color: #444444;
@@ -186,4 +189,15 @@ div.alert-danger {
 	text-align: left !important;
 	white-space: nowrap;
 }
+
+.accordion {
+	--bs-accordion-active-color: #FFFFFF;
+	--bs-accordion-btn-bg: #444444;
+	--bs-accordion-active-bg: #444444;
+	--bs-accordion-border-color: #444444;
+}
+.accordion-button.collapsed {
+	border-bottom:1px solid var(--bs-body-bg);
+}
+
 

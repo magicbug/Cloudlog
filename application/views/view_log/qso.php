@@ -152,6 +152,23 @@
                     <tr>
                         <td>Gridsquare (Multi):</td>
                         <td><?php echo $row->COL_VUCC_GRIDS; ?> <a href="javascript:spawnQrbCalculator('<?php echo $row->station_gridsquare . '\',\'' . $row->COL_VUCC_GRIDS; ?>')"><i class="fas fa-globe"></i></a></td>
+                            <?php
+                                // Cacluate Distance
+                                $distance = $this->qra->distance($row->station_gridsquare, $row->COL_VUCC_GRIDS, $measurement_base);
+
+                                switch ($measurement_base) {
+                                    case 'M':
+                                        $distance .= " mi";
+                                        break;
+                                    case 'K':
+                                        $distance .= " km";
+                                        break;
+                                    case 'N':
+                                        $distance .= " nmi";
+                                        break;
+                                }
+                                echo $distance;
+                            ?>
                     </tr>
                     <?php } ?>
 
@@ -201,7 +218,7 @@
                     <?php if($row->name != null) { ?>
                     <tr>
                         <td><?php echo lang('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if ($dxccFlag != null) { echo " ".$dxccFlag; } if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
                     </tr>
                     <?php } ?>
 
@@ -379,7 +396,7 @@
                     <?php
 
                         if($row->COL_SAT_NAME != null) {
-                            $twitter_band_sat = $row->COL_SAT_NAME;
+                            $twitter_band_sat = $row->COL_SAT_NAME." \u{1F6F0}\u{FE0F}";
                             $hashtags = "#hamr #cloudlog #amsat";
                         } else {
                             $twitter_band_sat = $row->COL_BAND;
@@ -407,8 +424,23 @@
                             $twitter_string = urlencode("Just worked ".$row->COL_CALL." ");
                             if ($row->COL_DXCC != 0) {
                                $twitter_string .= urlencode("in ".ucwords(strtolower(($row->COL_COUNTRY)))." ");
+                               if ($dxccFlag != null) {
+                                  $twitter_string .= $dxccFlag." ";
+                               }
                             }
-                            $twitter_string .= urlencode("(Gridsquare: ".$row->COL_GRIDSQUARE." / distance: ".$distance.") on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
+                            $distancestring = '';
+                            if ($row->COL_VUCC_GRIDS == null) {
+                               $distancestring = "(Gridsquare: ".$row->COL_GRIDSQUARE." / distance: ".$distance.")";
+                            } else {
+                               if (substr_count($row->COL_VUCC_GRIDS, ',') == 1) {
+                                  $distancestring = "(Gridline: ".$row->COL_VUCC_GRIDS." / distance: ".$distance.")";
+                               } else if (substr_count($row->COL_VUCC_GRIDS, ',') == 3) {
+                                  $distancestring = "(Gridcorner: ".$row->COL_VUCC_GRIDS." / distance: ".$distance.")";
+                               } else {
+                                  $distancestring = "(Grids: ".$row->COL_VUCC_GRIDS.")";
+                               }
+                            }
+                            $twitter_string .= urlencode($distancestring." on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
                         }
                     ?>
 

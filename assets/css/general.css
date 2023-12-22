@@ -333,7 +333,7 @@ TD.lotw {
 *   Debug CSS
 */
 
-.debug_main .card {
+.card {
 	margin-bottom: 10px;
 }
 
@@ -743,4 +743,12 @@ table.dataTable tfoot td {
 
 #partial_view .table-responsive {
 	overflow-x: unset;
+}
+
+label {
+	margin-bottom: 0.25rem;
+}
+
+.btn-pwd-showhide, .btn-pwd-showhide:hover {
+	border: 1px solid var(--cl-border-btn-pwd);
 }

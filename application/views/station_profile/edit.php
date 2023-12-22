@@ -407,9 +407,14 @@
 				<h5 class="card-header">HRDLog.net</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="mb-3">
-						<label for="webadifApiKey">HRDLog.net API Code</label> <!-- This does not need Multilanguage Support -->
+						<label for="webadifApiKey"><?php echo lang("station_location_hrdlog_username"); ?></label>
+						<input type="text" class="form-control" name="hrdlog_username" id="hrdlog_username" aria-describedby="hrdlog_usernameHelp" value="<?php if(set_value('hrdlog_username') != "") { echo set_value('hrdlog_username'); } else { echo $my_station_profile->hrdlog_username; } ?>">
+						<small id="hrdlog_usernameHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_username_hint"); ?></a></small>
+					</div>
+					<div class="mb-3">
+						<label for="webadifApiKey"><?php echo lang("station_location_hrdlog_code"); ?></label> <!-- This does not need Multilanguage Support -->
 						<input type="text" class="form-control" name="hrdlog_code" id="hrdlog_code" aria-describedby="hrdlog_codeHelp" value="<?php if(set_value('hrdlog_code') != "") { echo set_value('hrdlog_code'); } else { echo $my_station_profile->hrdlog_code; } ?>">
-						<small id="hrdlog_codeHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_hint"); ?></a></small>
+						<small id="hrdlog_codeHelp" class="form-text text-muted"><?php echo lang("station_location_hrdlog_code_hint"); ?></a></small>
 					</div>
 					<div class="mb-3">
 						<label for="hrdlogrealtime"><?php echo lang("station_location_hrdlog_realtime_upload"); ?></label>

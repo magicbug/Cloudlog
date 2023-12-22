@@ -1,9 +1,13 @@
 /*!
  * No overrides for the default theme as it aligns with general.css
 */
+:root {
+	--cl-bg: #2b3e50;
+	--cl-border-btn-pwd: var(--cl-bg);
+}
 
 body {
-	background-color: #2b3e50;
+	background-color: var(--cl-bg);
 }
 
 .table {
@@ -12,7 +16,7 @@ body {
 	--bs-table-active-color: #fff;
 	--bs-table-hover-color: #fff;
 	--bs-table-bg: #3d4e5e;
-	--bs-table-accent-bg: #2b3e50;
+	--bs-table-accent-bg: var(--cl-bg);
 }
 
 .table-striped tbody > tr.activeRow {
@@ -106,7 +110,7 @@ div.alert-danger {
 }
 
 .bootstrap-dialog.type-primary .modal-header {
-	background-color: #2b3e50;
+	background-color: var(--cl-bg);
 }
 
 .selectize-dropdown,
@@ -174,4 +178,16 @@ div.alert-danger {
 
 #edit_qso:not(.btn) {
 	float: left;
+}
+
+.accordion {
+	--bs-accordion-bg: var(--cl-bg);
+	--bs-accordion-btn-bg: #4e5e6c;
+	--bs-accordion-active-bg: #4e5e6c;
+}
+.accordion-button.collapsed {
+	border-bottom: 1px solid var(--cl-bg);
+}
+.accordion-body {
+	border: 1px solid #4e5e6c;
 }
