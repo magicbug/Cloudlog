@@ -532,6 +532,9 @@ $(function () {
                     $(".searchbutton").removeClass('running');
                     $(".searchbutton").prop('disabled', false);
                     $("#btn-save").show();
+                    $('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function () {
+                        showQsoActionsMenu($(this).closest('.dropdown'));
+                    });
                 });
         } else {
             BootstrapDialog.show({
@@ -828,37 +831,6 @@ function showActivatorsMap(call, count, grids) {
 <script type="text/javascript">
   $(function () {
      $('[data-bs-toggle="tooltip"]').tooltip()
-  });
-
-  $(function () {
-    // hold onto the drop down menu
-    var dropdownMenu;
-
-    // and when you show it, move it to the body
-    $(window).on('show.bs.dropdown', function (e) {
-
-    // grab the menu
-    dropdownMenu = $(e.target).find('.dropdown-menu');
-
-    // detach it and append it to the body
-    $('body').append(dropdownMenu.detach());
-
-    // grab the new offset position
-    var eOffset = $(e.target).offset();
-
-    // make sure to place it where it would normally go (this could be improved)
-    dropdownMenu.css({
-        'display': 'block',
-            'top': eOffset.top + $(e.target).outerHeight(),
-            'left': eOffset.left
-       });
-    });
-
-    // and when you hide it, reattach the drop down, and hide it normally
-    $(window).on('hide.bs.dropdown', function (e) {
-        $(e.target).append(dropdownMenu.detach());
-        dropdownMenu.hide();
-    });
   });
 </script>
 
@@ -1654,6 +1626,9 @@ $(document).ready(function(){
 					  $('#exampleModal').modal('show');
 					  $('[data-bs-toggle="tooltip"]').tooltip({ boundary: 'window' });
 				  }
+                    $('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function () {
+                        showQsoActionsMenu($(this).closest('.dropdown'));
+                    });
 			  }
 		  });
   }
@@ -1788,6 +1763,9 @@ $(document).ready(function(){
 					  $('#exampleModal').modal('show');
 					  $('[data-bs-toggle="tooltip"]').tooltip({ boundary: 'window' });
 				  }
+                    $('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function () {
+                        showQsoActionsMenu($(this).closest('.dropdown'));
+                    });
 			  }
 		  });
 		  <?php } ?>
@@ -2197,6 +2175,9 @@ $(document).ready(function(){
                             message: html,
                             onshown: function(dialog) {
                                $('[data-bs-toggle="tooltip"]').tooltip();
+                               $('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function () {
+                                    showQsoActionsMenu($(this).closest('.dropdown'));
+                                });
                             },
                             buttons: [{
                                 label: lang_admin_close,
@@ -2503,6 +2484,9 @@ function viewEqsl(picture, callsign) {
                                 'csv'
                             ]
                         });
+                        $('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function () {
+                            showQsoActionsMenu($(this).closest('.dropdown'));
+                        });
                     },
                     buttons: [{
                         label: lang_admin_close,
@@ -2525,7 +2509,7 @@ function viewEqsl(picture, callsign) {
 			    'Mode': mode,
 			    'Type': type,
 			    'QSL' : qsl
-    },
+        },
 	    success: function (html) {
 		    var dialog = new BootstrapDialog({
 		    title: lang_general_word_qso_data,
@@ -2548,6 +2532,9 @@ function viewEqsl(picture, callsign) {
 						    'csv'
 					    ]
 				    });
+                    $('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function () {
+                        showQsoActionsMenu($(this).closest('.dropdown'));
+                    });
 			    },
 			    buttons: [{
 			    label: lang_admin_close,
