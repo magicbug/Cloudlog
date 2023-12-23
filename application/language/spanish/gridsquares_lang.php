@@ -19,6 +19,7 @@ $lang['gridsquares_sat'] = 'Satélite';
 $lang['gridsquares_confirmation'] = 'Confirmación';
 
 $lang['gridsquares_button_plot'] = 'Dibujar';
+$lang['gridsquares_button_clear_markers'] = 'Borrar marcadores';
 
 $lang['gridsquares_gridsquares'] = 'Gridsquares';
 $lang['gridsquares_gridsquares_confirmed'] = 'Gridsquares confirmados';
@@ -27,3 +28,9 @@ $lang['gridsquares_gridsquares_paper'] = 'Gridsquares confirmados por QSL físic
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Gridsquares sin confirmación';
 $lang['gridsquares_gridsquares_total_worked'] = 'Total de gridsquares logrados';
 $lang['gridsquares_gridsquares_total_activated'] = 'Total de gridsquares activados';
+
+$lang['gridsquares_coordinates_latitude'] = 'Latitud:';
+$lang['gridsquares_coordinates_longitude'] = 'Longitud:';
+$lang['gridsquares_coordinates_gridsquare'] = 'Gridsquare:';
+$lang['gridsquares_coordinates_distance'] = 'Distancia:';
+$lang['gridsquares_coordinates_bearing'] = 'Dirección:';

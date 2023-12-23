@@ -19,6 +19,7 @@ $lang['gridsquares_sat'] = 'Satellit';
 $lang['gridsquares_confirmation'] = 'Bestätigung';
 
 $lang['gridsquares_button_plot'] = 'Kartieren';
+$lang['gridsquares_button_clear_markers'] = 'Clear markers';
 
 $lang['gridsquares_gridsquares'] = 'Planquadrate';
 $lang['gridsquares_gridsquares_worked'] = 'Gearbeitete Planquadrate';
@@ -28,3 +29,9 @@ $lang['gridsquares_gridsquares_paper'] = 'Per Papier QSL bestätigte Planquadrat
 $lang['gridsquares_gridsquares_not_confirmed'] = 'Unbestätigte Planquadrate';
 $lang['gridsquares_gridsquares_total_worked'] = 'Summe gearbeiteter Planquadrate';
 $lang['gridsquares_gridsquares_total_activated'] = 'Summe aktivierter Planquadrate';
+
+$lang['gridsquares_coordinates_latitude'] = 'Latitude:';
+$lang['gridsquares_coordinates_longitude'] = 'Longitude:';
+$lang['gridsquares_coordinates_gridsquare'] = 'Gridsquare:';
+$lang['gridsquares_coordinates_distance'] = 'Distance:';
+$lang['gridsquares_coordinates_bearing'] = 'Bearing:';

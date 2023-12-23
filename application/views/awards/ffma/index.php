@@ -58,15 +58,15 @@
 	<div id="gridsquare_map" style="width: 100%; height: 800px"></div>
 </div>
 <div class="coordinates d-flex">
-        <div class="cohidden">Latitude: </div>
+        <div class="cohidden"><?php echo lang('gridsquares_coordinates_latitude'); ?> </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="latDeg"></div>
-        <div class="cohidden">Longitude: </div>
+        <div class="cohidden"><?php echo lang('gridsquares_coordinates_longitude'); ?> </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="lngDeg"></div>
-        <div class="cohidden">Gridsquare: </div>
+        <div class="cohidden"><?php echo lang('gridsquares_coordinates_gridsquare'); ?> </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="locator"></div>
-        <div class="cohidden">Distance: </div>
+        <div class="cohidden"><?php echo lang('gridsquares_coordinates_distance'); ?> </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="distance"></div>
-        <div class="cohidden">Bearing: </div>
+        <div class="cohidden"><?php echo lang('gridsquares_coordinates_bearing'); ?> </div>
         <div class="cohidden col-auto text-success font-weight-bold" id="bearing"></div>
 </div>
 <script>var gridsquaremap = true;

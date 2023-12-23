@@ -19,6 +19,7 @@ $lang['gridsquares_sat'] = '卫星';
 $lang['gridsquares_confirmation'] = '确认';
 
 $lang['gridsquares_button_plot'] = '绘制';
+$lang['gridsquares_button_clear_markers'] = 'Clear markers';
 
 $lang['gridsquares_gridsquares'] = '网格';
 $lang['gridsquares_gridsquares_confirmed'] = '已确认的网格';
@@ -27,3 +28,9 @@ $lang['gridsquares_gridsquares_lotw'] = 'Gridsquares confirmed on LoTW';
 $lang['gridsquares_gridsquares_paper'] = 'Gridsquares confirmed by paper QSL';
 $lang['gridsquares_gridsquares_total_worked'] = '总共工作过的网格';
 $lang['gridsquares_gridsquares_total_activated'] = 'Total gridsquares activated';
+
+$lang['gridsquares_coordinates_latitude'] = 'Latitude:';
+$lang['gridsquares_coordinates_longitude'] = 'Longitude:';
+$lang['gridsquares_coordinates_gridsquare'] = 'Gridsquare:';
+$lang['gridsquares_coordinates_distance'] = 'Distance:';
+$lang['gridsquares_coordinates_bearing'] = 'Bearing:';

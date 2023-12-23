@@ -18,6 +18,13 @@
     var lang_general_word_qso_data = "<?php echo lang('general_word_qso_data'); ?>";
     var lang_general_word_danger = "<?php echo lang('general_word_danger'); ?>";
     var lang_qso_delete_warning = "<?php echo lang('qso_delete_warning'); ?>";
+
+    var lang_phrases = new Map();
+    lang_phrases.set('gridsquares_qrb_negative_latitudes_longitudes', lang('gridsquares_qrb_negative_latitudes_longitudes'));
+    lang_phrases.set('gridsquares_qrb_latitude', lang('gridsquares_qrb_latitude'));
+    lang_phrases.set('gridsquares_qrb_longitude', lang('gridsquares_qrb_longitude'));
+    lang_phrases.set('gridsquares_qrb_distance_between', lang('gridsquares_qrb_distance_between'));
+    lang_phrases.set('gridsquares_qrb_the_bearing_is', lang('gridsquares_qrb_the_bearing_is'));
 </script>
 <!-- General JS Files used across Cloudlog -->
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
