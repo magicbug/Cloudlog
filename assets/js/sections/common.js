@@ -370,7 +370,7 @@ function calculateQrb() {
                     'locator2': locator2},
             success: function (html) {
 
-                var result = "<h5>" + lang_phrases.get("gridsquares_qrb_negative_latitudes_longitudes") + <br/>; //"<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
+                var result = "<h5>" + lang_phrases.get("gridsquares_qrb_negative_latitudes_longitudes") + "<br/>"; //"<h5>Negative latitudes are south of the equator, negative longitudes are west of Greenwich. <br/>";
                 result += ' ' + locator1.toUpperCase() + ' ' + lang_phrases.get("gridsquares_qrb_latitude") + ' = ' + html['latlng1'][0] + ' ' + lang_phrases.get("gridsquares_qrb_longitude") + ' = ' + html['latlng1'][1] + '<br/>';
                 result += ' ' + locator2.toUpperCase() + ' ' + lang_phrases.get("gridsquares_qrb_latitude") + ' = ' + html['latlng2'][0] + ' ' + lang_phrases.get("gridsquares_qrb_longitude") + ' = ' + html['latlng2'][1] + '<br/>';
                 result += 'Distance between ' + locator1.toUpperCase() + ' and ' + locator2.toUpperCase() + ' is ' + html['distance'] + '.<br />';

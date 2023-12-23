@@ -35,3 +35,5 @@ $lang['gridsquares_coordinates_longitude'] = 'Longitude:';
 $lang['gridsquares_coordinates_gridsquare'] = 'Gridsquare:';
 $lang['gridsquares_coordinates_distance'] = 'Distance:';
 $lang['gridsquares_coordinates_bearing'] = 'Bearing:';
+
+$lang['activated_gridmap_title'] = 'Activated Gridsquare Map';

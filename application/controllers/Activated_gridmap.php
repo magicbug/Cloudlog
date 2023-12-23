@@ -4,10 +4,15 @@ class Activated_gridmap extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
+
+		// Load language files
+		$this->lang->load(array(
+			'gridsquares',
+		));
 	}
 
     public function index() {
-		$data['page_title'] = "Activated Gridsquare Map";
+		$data['page_title'] = $this->lang->line('activated_gridmap_title');
 
         $this->load->model('bands');
         $this->load->model('activated_gridmap_model');

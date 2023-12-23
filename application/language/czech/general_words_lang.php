@@ -185,3 +185,5 @@ $lang['southamerica'] = 'Jižní Amerika';
 
 $lang['gen_band_selection'] = 'Výběr pásma';
 $lang['general_word_today'] = 'Dnes';
+
+$lang['datatables_language'] = "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json";

@@ -185,3 +185,5 @@ $lang['southamerica'] = 'América del Sur';
 
 $lang['gen_band_selection'] = 'Selección de Banda';
 $lang['general_word_today'] = 'Hoy';
+
+$lang['datatables_language'] = "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json";
