@@ -18,6 +18,8 @@
     -moz-transition: all 15s ease;
     -o-transition: all 15s ease;
     transition: all 15s ease;
+    --bs-table-bg: #5dade2;
+    --bs-table-accent-bg: #5dade2;
 }
 </style>
 
