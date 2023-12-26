@@ -10,7 +10,6 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
             <th class="center"><span class="larger_font band">Band</th>
             <th class="center">Mode</th>
             <th class="center">Callsign</th>
-            <th class="center">Name</th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +23,6 @@ The following QSO(s) were found. Please fill out the date and time and submit yo
                     echo '<td id="band">'. $qso->col_band .'</td>';
                     echo '<td id="mode">'; echo $qso->col_submode == null ? strtoupper($qso->col_mode) : strtoupper($qso->col_submode);  echo '</td>';      
                     echo '<td>'. $qso->station_callsign .'</td>';
-                    echo '<td>'. $qso->station_profile_name .'</td>';
                 echo '</tr>';
             }
         ?>
