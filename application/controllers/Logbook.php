@@ -209,7 +209,7 @@ class Logbook extends CI_Controller {
 		if(!empty($logbooks_locations_array)) {
 			$extrawhere='';
 			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
-				$extrawhere="COL_QSL_RCVD='Y'"; 
+				$extrawhere="COL_QSL_RCVD='Y'";
 			}
 			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 				if ($extrawhere!='') {
@@ -336,10 +336,10 @@ class Logbook extends CI_Controller {
 			$return['workedBefore'] = true;
 		}
 
-		
+
 		$extrawhere='';
 		if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
-			$extrawhere="COL_QSL_RCVD='Y'"; 
+			$extrawhere="COL_QSL_RCVD='Y'";
 		}
 		if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 			if ($extrawhere!='') {
@@ -427,7 +427,7 @@ class Logbook extends CI_Controller {
 
 			$extrawhere='';
 			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
-				$extrawhere="COL_QSL_RCVD='Y'"; 
+				$extrawhere="COL_QSL_RCVD='Y'";
 			}
 			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 				if ($extrawhere!='') {
@@ -528,7 +528,7 @@ class Logbook extends CI_Controller {
 
 			$extrawhere='';
 			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
-				$extrawhere="COL_QSL_RCVD='Y'"; 
+				$extrawhere="COL_QSL_RCVD='Y'";
 			}
 			if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
 				if ($extrawhere!='') {
@@ -683,7 +683,7 @@ class Logbook extends CI_Controller {
 
 		}
 		echo "]";
-		
+
 		// [MAP Custom] ADD Station //
 		$this->load->model('Stations');
 		$station_json = $this->Stations->get_station_json_for_map();
@@ -737,12 +737,13 @@ class Logbook extends CI_Controller {
 
 			$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 			$this->db->where_in('station_profile.station_id', $logbooks_locations_array);
-			$this->db->order_by(''.$this->config->item('table_name').'.COL_TIME_ON', "desc");
 
+			$this->db->group_start();
 			$this->db->where($this->config->item('table_name').'.COL_CALL', $id);
 			$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$id,'before');
 			$this->db->or_like($this->config->item('table_name').'.COL_CALL', $id.'/','after');
 			$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$id.'/');
+			$this->db->group_end();
 
 			$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "desc");
 			$this->db->limit(5);
