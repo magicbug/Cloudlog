@@ -58,6 +58,8 @@ $lang['options_global_text'] = 'Globaler Text';
 $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the_oqrs_page'] = 'Dies ist ein optionaler Text, der auf oben auf der OQRS Seite angezeigt werden kann.';
 $lang['options_grouped_search'] = 'Gruppierte Suche';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'Wenn aktiviert, werden alle Stationsstandorte auf einmal durchsucht.';
+$lang['options_grouped_search_show_station_name'] = "Zeige den Name des Stationsstandorts in der gruppierten Suche";
+$lang['options_grouped_search_show_station_name_hint'] = "Wenn die gruppierte Suche eingeschaltet ist, kannst du hier entscheiden, ob der Name des Stationsstandortes in der Ergebnistabelle gezeigt werden soll oder nicht.";
 $lang['options_oqrs_options_have_been_saved'] = 'OQRS Einstellungen wurden gespeichert.';
 
 $lang['options_dxcluster'] = 'DXCluster';
