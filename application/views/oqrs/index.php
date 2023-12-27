@@ -19,7 +19,7 @@
 		}
 		if ($groupedSearch == 'on') {
 			echo 'This search will search in all station locations where OQRS is active.<br /><br /><form class="d-flex align-items-center" onsubmit="return false;"><label class="my-1 me-2" for="oqrssearch">Enter your callsign: </label>
-			<input class="form-control me-sm-2" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required">
+			<input class="form-control me-sm-2 w-auto" id="oqrssearch" type="search" name="callsign" placeholder="Search Callsign" aria-label="Search" required="required">
 			<button onclick="searchOqrsGrouped();" class="btn btn-sm btn-primary" id="stationbuttonsubmit" type="button"><i class="fas fa-search"></i> Search</button>
 			</form>';
 			echo '<div class="searchinfo"></div>';

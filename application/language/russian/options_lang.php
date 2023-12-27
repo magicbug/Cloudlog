@@ -58,6 +58,8 @@ $lang['options_global_text'] = 'Сообщение на странице OQRS';
 $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the_oqrs_page'] = 'Необязательный текст, который может быть отображён в верхней части страницы OQRS.';
 $lang['options_grouped_search'] = 'Объединённый поиск';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'Если включено, то поиск будет осуществляться во всех местоположениях станций, где активен OQRS.';
+$lang['options_grouped_search_show_station_name'] = "Show station location name in grouped search results";
+$lang['options_grouped_search_show_station_name_hint'] = "If grouped search is ON, you can decide if the name of the station location shall be shown in the results table.";
 $lang['options_oqrs_options_have_been_saved'] = 'Настройки OQRS сохранены.';
 
 $lang['options_dxcluster'] = 'DXCluster';
