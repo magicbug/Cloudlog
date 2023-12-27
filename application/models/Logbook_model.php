@@ -2223,20 +2223,6 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
       }
     }
 
-    /* Return QSOs for the year for the active profile */
-    function map_all_qsos_for_active_station_profile() {
-      $CI =& get_instance();
-      $CI->load->model('stations');
-      $station_id = $CI->stations->find_active();
-
-      $this->db->where("station_id", $station_id);
-      $this->db->order_by("COL_TIME_ON", "ASC");
-      $query = $this->db->get($this->config->item('table_name'));
-
-      return $query;
-    }
-
-
     /* Return QSOs made during the current Year */
     function year_qsos($StationLocationsArray = null, $api_key = null) {
 

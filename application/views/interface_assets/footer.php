@@ -762,37 +762,6 @@ function showActivatorsMap(call, count, grids) {
     </script>
 <?php } ?>
 
-<?php if ($this->uri->segment(1) == "map" && $this->uri->segment(2) == "") { ?>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
-    <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
-    <script type="text/javascript">
-      $(function () {
-        $('[data-bs-toggle="tooltip"]').tooltip()
-      });
-
-        <?php if($qra == "set") { ?>
-        var q_lat = <?php echo $qra_lat; ?>;
-        var q_lng = <?php echo $qra_lng; ?>;
-        <?php } else { ?>
-        var q_lat = 40.313043;
-        var q_lng = -32.695312;
-        <?php } ?>
-
-        var qso_loc = '<?php echo site_url('map/map_plot_json');?>';
-        var q_zoom = 2;
-
-      $(document).ready(function(){
-            <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
-              var grid = "Yes";
-            <?php } else { ?>
-              var grid = "No";
-            <?php } ?>
-            initmap(grid,'map',{'dataPost':{'isFull':true}});
-
-      });
-    </script>
-<?php } ?>
-
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard" ) { ?>
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>

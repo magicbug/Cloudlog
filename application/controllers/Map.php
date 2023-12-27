@@ -3,32 +3,8 @@
 
 class Map extends CI_Controller {
 
-	function index()
-	{
-
-        // Calculate Lat/Lng from Locator to use on Maps
-        if($this->session->userdata('user_locator')) {
-            $this->load->library('qra');
-
-            $qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
-            $data['qra'] = "set";
-            $data['qra_lat'] = $qra_position[0];
-            $data['qra_lng'] = $qra_position[1];
-        } else {
-            $data['qra'] = "none";
-        }
-
-        $this->load->model('Stations');
-        $station_id = $this->Stations->find_active();
-        $station_data = $this->Stations->profile_clean($station_id);
-
-        // load the view
-        $data['station_profile'] = $station_data;
-		$data['page_title'] = "Map QSOs";
-
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('map/qsos');
-		$this->load->view('interface_assets/footer');
+	function index() {
+		redirect('map/custom');
     }
 
     function custom()
@@ -99,9 +75,6 @@ class Map extends CI_Controller {
 			$mode = xss_clean($this->input->post('mode'));
 			$prop_mode = xss_clean($this->input->post('prop_mode'));
 			$qsos = $this->logbook_model->map_custom_qsos($date_from, $date_to, $band, $mode, $prop_mode);
-		} else if ($this->input->post('isFull') == true) {
-            $station_id = $this->Stations->find_active();
-			$qsos = $this->logbook_model->get_qsos(null,null,array($station_id)); // no limit for full //
 		} else {
 			$nb_qso = (intval($this->input->post('nb_qso'))>0)?xss_clean($this->input->post('nb_qso')):18;
 			$offset = (intval($this->input->post('offset'))>0)?xss_clean($this->input->post('offset')):null;
