@@ -609,6 +609,12 @@ function showQsoActionsMenu(_this) {
         'left': eOffset.left - _dropdownMenu.width() + _this.find('.dropdown-toggle').outerWidth(),
         'display': 'block',
     });
+    _dropdownMenuClone.off('mouseenter').on('mouseenter', function () {
+        _dropdownMenuClone.attr('data-mouseenteronmenu','1');
+    });
+    _this.off('mouseleave').on('mouseleave', function () {
+        setTimeout(function(){ if (_dropdownMenuClone.attr('data-mouseenteronmenu')!='1') { _dropdownMenuClone.remove();}  }, 200);
+    });
     _dropdownMenuClone.off('mouseleave').on('mouseleave', function () {
         $(this).remove();
     });
