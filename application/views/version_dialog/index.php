@@ -42,7 +42,7 @@
 			$current_version=$this->optionslib->get_option('version');
                         if ($data !== null && !empty($data)) {
                             foreach ($data as $singledata) {
-				if ($singledata['name']==$current_version) {
+				if ($singledata['tag_name']==$current_version) {
                             		$firstRelease = $singledata;
 					continue;
 				}
