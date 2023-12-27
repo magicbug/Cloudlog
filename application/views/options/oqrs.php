@@ -49,6 +49,15 @@
                             <small id="groupedSearchHelp" class="form-text text-muted"><?php echo lang('options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'); ?></small>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="groupedSearchShowStationName"><?php echo lang('options_grouped_search_show_station_name'); ?></label>
+                            <select name="groupedSearchShowStationName" class="form-select" id="groupedSearchShowStationName">
+                                <option value="off" <?php if($this->optionslib->get_option('groupedSearchShowStationName') == "off") { echo "selected=\"selected\""; } ?>>Off</option>
+                                <option value="on" <?php if($this->optionslib->get_option('groupedSearchShowStationName') == "on") { echo "selected=\"selected\""; } ?>>On</option>
+                            </select>
+                            <small id="groupedSearchShowStationNameHelp" class="form-text text-muted"><?php echo lang('options_grouped_search_show_station_name_hint'); ?></small>
+                        </div>
+
                         <!-- Save the Form -->
                         <input class="btn btn-primary" type="submit" value="<?php echo lang('options_save'); ?>" />
                     </form>

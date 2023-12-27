@@ -338,6 +338,8 @@ class Options extends CI_Controller {
 
 		$global_oqrs_text = $this->optionslib->update('groupedSearch', $this->input->post('groupedSearch'), null);
 
+		$global_oqrs_text = $this->optionslib->update('groupedSearchShowStationName', $this->input->post('groupedSearchShowStationName'), null);
+
 		if($global_oqrs_text == TRUE) {
 			$this->session->set_flashdata('success', $this->lang->line('options_oqrs_options_have_been_saved'));
 		}
