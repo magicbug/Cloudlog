@@ -12,12 +12,12 @@
         <div class="row">
             <div class="mb-3 col-md-3">
                 <label for="from"><?php echo lang('gen_from_date') . ": " ?></label>
-                <input name="from" id="from" type="date" class="form-control w-auto">
+                <input name="from" id="from" type="date" class="form-control w-auto" value="<?php echo $date_from; ?>">
             </div>
 
             <div class="mb-3 col-md-3">
                 <label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
-                <input name="to" id="to" type="date" class="form-control w-auto">
+                <input name="to" id="to" type="date" class="form-control w-auto" value="<?php echo $date_to; ?>" max="<?php echo $date_to; ?>">
             </div>
         </div>
 
@@ -81,13 +81,19 @@
             </div>
         </div>
 
-        <input class="btn btn-primary" type="submit" value="Load Map">
-        <br><br>
+        <div class="row">
+            <div class="mb-1 col-md-1">
+                <input class="btn btn-primary btn_submit_map_custom" type="button" value="Load Map">
+            </div>
+            <div class="mb-4 col-md-4">
+                <div class="alert alert-danger warningOnSubmit" style="display:none;"><span><i class="fas fa-times-circle"></i></span> <span class="warningOnSubmit_txt ms-1">Error</span></div>
+            </div>
+        </div>
     </form>
 
 </div>
 
 <!-- Map -->
-<div id="custommap" class="map-leaflet" style="width: 100%; height: calc(100vh - 380px); max-height: 900px;"></div>
+<div id="custommap" class="map-leaflet mt-2" style="width: 100%; height: calc(100vh - 390px); max-height: 900px;"></div>
 
 <div class="alert alert-success" role="alert">Showing QSOs for Custom Date for Active Logbook <?php echo $logbook_name ?></div>

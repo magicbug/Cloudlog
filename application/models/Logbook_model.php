@@ -2129,7 +2129,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
     }
 
       $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
-      $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+      $this->db->where("COL_TIME_ON BETWEEN '".$start." 00:00:00' AND '".$end." 23:59:59'");
       $this->db->where_in("station_id", $logbooks_locations_array);
 
       if($band != "All" && $band != "SAT") {
@@ -2222,20 +2222,6 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         return null;
       }
     }
-
-    /* Return QSOs for the year for the active profile */
-    function map_all_qsos_for_active_station_profile() {
-      $CI =& get_instance();
-      $CI->load->model('stations');
-      $station_id = $CI->stations->find_active();
-
-      $this->db->where("station_id", $station_id);
-      $this->db->order_by("COL_TIME_ON", "ASC");
-      $query = $this->db->get($this->config->item('table_name'));
-
-      return $query;
-    }
-
 
     /* Return QSOs made during the current Year */
     function year_qsos($StationLocationsArray = null, $api_key = null) {
@@ -4510,6 +4496,67 @@ function lotw_last_qsl_date($user_id) {
             return true;
         }
         return false;
+    }
+
+    // [JSON PLOT] return array for plot qso for map //
+    public function get_plot_array_for_map($qsos_result, $isVisitor=false) {
+      $this->load->library('qra');
+
+      $json["markers"] = array();
+      
+      foreach ($qsos_result as $row) {
+        $plot = array('lat'=>0, 'lng'=>0, 'html'=>'', 'label'=>'', 'confirmed'=>'N');
+      
+        $plot['label'] = $row->COL_CALL;
+
+        $plot['html'] = "Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />";
+        $plot['html'] .= ($row->COL_SAT_NAME != null) ? ("SAT: ".$row->COL_SAT_NAME."<br />") : ("Band: ".$row->COL_BAND."<br />");
+        $plot['html'] .= "Mode: ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)."<br />";
+
+        // check if qso is confirmed //
+        if (!$isVisitor) {
+          if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) {
+            $plot['confirmed'] = "Y";
+          }
+        }
+        // check lat / lng (depend info source) //
+        if ($row->COL_GRIDSQUARE != null) {
+          $stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
+
+        } elseif ($row->COL_VUCC_GRIDS != null) {
+          $grids = explode(",", $row->COL_VUCC_GRIDS);
+          if (count($grids) == 2) {
+            $grid1 = $this->qra->qra2latlong(trim($grids[0]));
+            $grid2 = $this->qra->qra2latlong(trim($grids[1]));
+  
+            $coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
+            $coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);
+  
+            $stn_loc = $this->qra->get_midpoint($coords);
+          }
+          if (count($grids) == 4) {
+            $grid1 = $this->qra->qra2latlong(trim($grids[0]));
+            $grid2 = $this->qra->qra2latlong(trim($grids[1]));
+            $grid3 = $this->qra->qra2latlong(trim($grids[2]));
+            $grid4 = $this->qra->qra2latlong(trim($grids[3]));
+  
+            $coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
+            $coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);
+            $coords[]=array('lat' => $grid3[0],'lng'=> $grid3[1]);
+            $coords[]=array('lat' => $grid4[0],'lng'=> $grid4[1]);
+  
+            $stn_loc = $this->qra->get_midpoint($coords);
+          }
+        } else {
+          if (isset($row->lat) && isset($row->long)) {
+            $stn_loc = array($row->lat, $row->long);
+          }
+        }
+        list($plot['lat'], $plot['lng']) = $stn_loc;
+        // add plot //
+        $json["markers"][] = $plot;
+      }
+      return $json;
     }
 }
 
