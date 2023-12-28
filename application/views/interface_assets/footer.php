@@ -953,7 +953,7 @@ $(document).ready(function(){
     });
   <?php } ?>
 
-$(document).on('keypress',function(e) {
+$($('#callsign')).on('keypress',function(e) {
   if(e.which == 13) {
 
     if ($('#callsign').val()) {
