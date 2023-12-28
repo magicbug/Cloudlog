@@ -728,7 +728,7 @@ function showActivatorsMap(call, count, grids) {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('map/map_data_custom/');?><?php echo rawurlencode($date_from); ?>/<?php echo rawurlencode($date_to); ?>/<?php echo rawurlencode($this->input->post('band')); ?>/<?php echo rawurlencode($this->input->post('mode')); ?>/<?php echo rawurlencode($this->input->post('prop_mode')); ?>';
+        var qso_loc = '<?php echo site_url('map/map_plot_json/');?>';
         var q_zoom = 3;
 
       $(document).ready(function(){
@@ -737,38 +737,26 @@ function showActivatorsMap(call, count, grids) {
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            initmap(grid, 'custommap');
+            initmap(grid, 'custommap', {'initmap_only':true});
+            // Check and change date if to < from //
+            $('.custom-map-QSOs input[name="to"]').off('change').on('change', function() {
+                if ($('.custom-map-QSOs input[name="to"]').val().replaceAll('-','') < $('.custom-map-QSOs input[name="from"]').val().replaceAll('-','')) {
+                    $('.custom-map-QSOs input[name="from"]').val($('.custom-map-QSOs input[name="to"]').val());
+                }
+            });
+            $('.custom-map-QSOs input[name="from"]').off('change').on('change', function() {
+                if ($('.custom-map-QSOs input[name="from"]').val().replaceAll('-','') > $('.custom-map-QSOs input[name="to"]').val().replaceAll('-','')) {
+                    $('.custom-map-QSOs input[name="to"]').val($('.custom-map-QSOs input[name="from"]').val());
+                }
+            });
+            // Form "submit" //
+            $('.custom-map-QSOs .btn_submit_map_custom').off('click').on('click',function() {
+                var customdata = {'dataPost':{'date_from': $('.custom-map-QSOs input[name="from"]').val(), 'date_to': $('.custom-map-QSOs input[name="to"]').val(), 
+                                            'band': $('.custom-map-QSOs select[name="band"]').val(), 'mode': $('.custom-map-QSOs select[name="mode"]').val(),
+                                            'prop_mode': $('.custom-map-QSOs select[name="prop_mode"]').val(), 'isCustom':true }, 'map_id':'#custommap'};
+                initplot(qso_loc, customdata);
+            })
 
-      });
-    </script>
-<?php } ?>
-
-<?php if ($this->uri->segment(1) == "map" && $this->uri->segment(2) == "") { ?>
-    <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
-    <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server');?>"></script>
-    <script type="text/javascript">
-      $(function () {
-        $('[data-bs-toggle="tooltip"]').tooltip()
-      });
-
-        <?php if($qra == "set") { ?>
-        var q_lat = <?php echo $qra_lat; ?>;
-        var q_lng = <?php echo $qra_lng; ?>;
-        <?php } else { ?>
-        var q_lat = 40.313043;
-        var q_lng = -32.695312;
-        <?php } ?>
-
-        var qso_loc = '<?php echo site_url('map/map_data');?>';
-        var q_zoom = 2;
-
-      $(document).ready(function(){
-            <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
-              var grid = "Yes";
-            <?php } else { ?>
-              var grid = "No";
-            <?php } ?>
-            initmap(grid);
 
       });
     </script>
@@ -791,7 +779,7 @@ function showActivatorsMap(call, count, grids) {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('dashboard/map');?>';
+        var qso_loc = '<?php echo site_url('map/map_plot_json');?>';
         var q_zoom = 3;
 
       $(document).ready(function(){
@@ -800,7 +788,7 @@ function showActivatorsMap(call, count, grids) {
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            initmap(grid);
+            initmap(grid,'map',{'dataPost':{'nb_qso':'18'}});
 
       });
     </script>
@@ -990,7 +978,7 @@ $($('#callsign')).on('keypress',function(e) {
         var q_lng = -32.695312;
         <?php } ?>
 
-        var qso_loc = '<?php echo site_url('logbook/qso_map/25/'.$this->uri->segment(3)); ?>';
+        var qso_loc = '<?php echo site_url('map/map_plot_json'); ?>';
         var q_zoom = 3;
 
         <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
@@ -998,7 +986,7 @@ $($('#callsign')).on('keypress',function(e) {
         <?php } else { ?>
               var grid = "No";
         <?php } ?>
-            initmap(grid);
+            initmap(grid,'map',{'dataPost':{'nb_qso':'25','offset':'<?php echo $this->uri->segment(3); ?>'}});
 
     </script>
 <?php } ?>
