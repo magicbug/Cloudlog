@@ -528,6 +528,7 @@ function reset_fields() {
 	mymap.removeLayer(markers);
 	$('.callsign-suggest').hide();
 	$('.dxccsummary').remove();
+	$('#timesWorked').html('');
 }
 
 function resetTimers(manual) {
@@ -1049,6 +1050,7 @@ function resetDefaultQSOFields() {
 	$('#callsign-image').attr('style', 'display: none;');
 	$('#callsign-image-content').text("");
 	$('.dxccsummary').remove();
+	$('#timesWorked').html('');
 }
 
 function closeModal() {
