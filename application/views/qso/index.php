@@ -637,7 +637,7 @@
     <?php } ?>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h4 class="card-title" style="font-size: 16px; font-weight: bold;"><?php echo lang('qso_title_previous_contacts'); ?></h4></div>
+      <div class="card-header"><h4 class="card-title" style="font-size: 16px; font-weight: bold;"><span id="timesWorked"></span><?php echo lang('qso_title_previous_contacts'); ?></h4></div>
 
         <div id="partial_view" style="font-size: 0.95rem;"></div>
 
