@@ -6,7 +6,9 @@ defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
 $lang['qso_title_qso_map'] = 'QSO Kaart';
 $lang['qso_title_suggestions'] = 'Suggesties';
 $lang['qso_title_previous_contacts'] = 'Eerdere verbindingen';
+$lang['qso_title_times_worked_before'] = "times worked before";
 $lang['qso_title_image'] = 'Profile Picture';
+$lang['qso_previous_max_shown'] = "Max. 5 previous contacts are shown";
 
 // Quicklog on Dashboard
 $lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Enter Callsign';

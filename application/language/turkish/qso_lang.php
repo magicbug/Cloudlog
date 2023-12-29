@@ -6,7 +6,9 @@ defined('BASEPATH') OR exit('Doğrudan komut dosyası erişimine izin verilmez')
 $lang['qso_title_qso_map'] = 'QSO Haritası';
 $lang['qso_title_suggestions'] = 'Öneriler';
 $lang['qso_title_previous_contacts'] = 'Önceki Görüşmeler';
+$lang['qso_title_times_worked_before'] = "times worked before";
 $lang['qso_title_image'] = 'Profil Resmi';
+$lang['qso_previous_max_shown'] = "Max. 5 previous contacts are shown";
 
 // Quicklog on Dashboard
 $lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Enter Callsign';
