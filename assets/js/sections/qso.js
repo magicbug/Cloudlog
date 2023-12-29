@@ -758,6 +758,7 @@ $("#callsign").focusout(function() {
 					county_selectize.setValue(result.callsign_us_county, false);
 				}
 
+				$('#timesWorked').html(result.timesWorked + ' ');
 				if($('#iota_ref').val() == "") {
 					$('#iota_ref').val(result.callsign_iota);
 				}
