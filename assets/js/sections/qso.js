@@ -760,7 +760,7 @@ $("#callsign").focusout(function() {
 				}
 
 				if(result.timesWorked != "") {
-					$('#timesWorked').html(result.timesWorked + lang_qso_title_times_worked_before);
+					$('#timesWorked').html(result.timesWorked + ' ' + lang_qso_title_times_worked_before);
 				} else {
 					$('#timesWorked').html(lang_qso_title_previous_contacts);
 				}
