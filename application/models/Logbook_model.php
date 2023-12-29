@@ -1354,7 +1354,9 @@ class Logbook_model extends CI_Model {
 		$this->db->group_start();
 		$this->db->where($this->config->item('table_name').'.COL_CALL', $callsign);
 		$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$callsign,'before');
-		$this->db->or_like($this->config->item('table_name').'.COL_CALL', $callsign.'/','after');                                                                                                         $this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$callsign.'/');
+		$this->db->or_like($this->config->item('table_name').'.COL_CALL', $callsign.'/','after');
+		$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$callsign.'/');
+
 		$this->db->group_end();
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->where_in('station_profile.station_id', $logbooks_locations_array);
