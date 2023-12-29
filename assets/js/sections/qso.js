@@ -528,6 +528,7 @@ function reset_fields() {
 	mymap.removeLayer(markers);
 	$('.callsign-suggest').hide();
 	$('.dxccsummary').remove();
+	$('#timesWorked').html(lang_qso_title_previous_contacts);
 }
 
 function resetTimers(manual) {
@@ -758,6 +759,11 @@ $("#callsign").focusout(function() {
 					county_selectize.setValue(result.callsign_us_county, false);
 				}
 
+				if(result.timesWorked != "") {
+					$('#timesWorked').html(result.timesWorked + ' ' + lang_qso_title_times_worked_before);
+				} else {
+					$('#timesWorked').html(lang_qso_title_previous_contacts);
+				}
 				if($('#iota_ref').val() == "") {
 					$('#iota_ref').val(result.callsign_iota);
 				}
@@ -1048,6 +1054,7 @@ function resetDefaultQSOFields() {
 	$('#callsign-image').attr('style', 'display: none;');
 	$('#callsign-image-content').text("");
 	$('.dxccsummary').remove();
+	$('#timesWorked').html(lang_qso_title_previous_contacts);
 }
 
 function closeModal() {

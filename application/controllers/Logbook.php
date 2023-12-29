@@ -129,27 +129,16 @@ class Logbook extends CI_Controller {
 			"qsl_manager" => "",
 			"bearing" 		=> "",
 			"workedBefore" => false,
+			"timesWorked" => 0,
 			"lotw_member" => $lotw_member,
 			"lotw_days" => $lotw_days,
 			"image" => "",
 		];
 
 		$return['dxcc'] = $this->dxcheck($callsign);
-		$split_callsign=explode('/',$callsign);
-		if (count($split_callsign)==1) {				// case F0ABC --> return cel 0 //
-			$lookupcall = $split_callsign[0];
-		} else if (count($split_callsign)==3) {			// case EA/F0ABC/P --> return cel 1 //
-			$lookupcall = $split_callsign[1];
-		} else {										// case F0ABC/P --> return cel 0 OR  case EA/FOABC --> retunr 1  (normaly not exist) //
-			if (in_array(strtoupper($split_callsign[1]), array('P','M','MM','QRP','0','1','2','3','4','5','6','7','8','9'))) {
-				$lookupcall = $split_callsign[0];
-			} else if (strlen($split_callsign[1])>3) {	// Last Element longer than 3 chars? Take that as call
-				$lookupcall = $split_callsign[1];
-			} else {									// Last Element up to 3 Chars? Take first element as Call
-				$lookupcall = $split_callsign[0];
-			}
-		}
 
+		$lookupcall=$this->get_plaincall($callsign);
+	
 		$return['partial'] = $this->partial($lookupcall);
 
 		$callbook = $this->logbook_model->loadCallBook($callsign, $this->config->item('use_fullname'));
@@ -170,6 +159,7 @@ class Logbook extends CI_Controller {
 		$return['callsign_us_county'] 	= $this->nval($callbook['us_county'] ?? '', $this->logbook_model->call_us_county($callsign));
 		$return['workedBefore'] 		= $this->worked_grid_before($return['callsign_qra'], $type, $band, $mode);
 		$return['confirmed'] 		= $this->confirmed_grid_before($return['callsign_qra'], $type, $band, $mode);
+		$return['timesWorked'] 		= $this->logbook_model->times_worked($lookupcall);
 
 		if ($this->session->userdata('user_show_profile_image')) {
 			if (isset($callbook) && isset($callbook['image'])) {
@@ -191,6 +181,24 @@ class Logbook extends CI_Controller {
 		echo json_encode($return, JSON_PRETTY_PRINT);
 
 		return;
+	}
+
+	function get_plaincall($callsign) {
+		$split_callsign=explode('/',$callsign);
+		if (count($split_callsign)==1) {				// case F0ABC --> return cel 0 //
+			$lookupcall = $split_callsign[0];
+		} else if (count($split_callsign)==3) {			// case EA/F0ABC/P --> return cel 1 //
+			$lookupcall = $split_callsign[1];
+		} else {										// case F0ABC/P --> return cel 0 OR  case EA/FOABC --> retunr 1  (normaly not exist) //
+			if (in_array(strtoupper($split_callsign[1]), array('P','M','MM','QRP','0','1','2','3','4','5','6','7','8','9'))) {
+				$lookupcall = $split_callsign[0];
+			} else if (strlen($split_callsign[1])>3) {	// Last Element longer than 3 chars? Take that as call
+				$lookupcall = $split_callsign[1];
+			} else {									// Last Element up to 3 Chars? Take first element as Call
+				$lookupcall = $split_callsign[0];
+			}
+		}
+		return $lookupcall;
 	}
 
 	// Returns $val2 first if it has value, even if it is null or empty string, if not return $val1.
