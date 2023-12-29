@@ -1348,6 +1348,7 @@ class Logbook_model extends CI_Model {
 	}
 
 	function times_worked($callsign) {
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 		$this->db->select('count(1) as TWKED');
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->group_start();
@@ -1355,8 +1356,10 @@ class Logbook_model extends CI_Model {
 		$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$callsign,'before');
 		$this->db->or_like($this->config->item('table_name').'.COL_CALL', $callsign.'/','after');
 		$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$callsign.'/');
+
 		$this->db->group_end();
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+		$this->db->where_in('station_profile.station_id', $logbooks_locations_array);
 		$this->db->limit(1);
 		$query = $this->db->get($this->config->item('table_name'));
 		$name = "";
