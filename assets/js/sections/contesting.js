@@ -241,8 +241,8 @@ function checkIfWorkedBefore() {
 				'contest': $("#contestname").val()
 			},
 			success: function (result) {
-				if (result.message == 'Worked before') {
-					$('#callsign_info').text("Worked before!");
+				if (result.message.substr(0,6) == 'Worked') {
+					$('#callsign_info').text(result.message);
 				}
 			}
 		});
