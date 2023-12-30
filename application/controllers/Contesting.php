@@ -189,7 +189,8 @@ class Contesting extends CI_Controller {
 		
 		header('Content-Type: application/json');
 		if ($result && $result->num_rows()) {
-			echo json_encode(array('message' => 'Worked before'));
+			$timeb4=$result->row()->b4;
+			echo json_encode(array('message' => 'Worked '.$timeb4.' before'));
 		}
 		return;
 	}
