@@ -3279,12 +3279,18 @@ function lotw_last_qsl_date($user_id) {
 		  if (isset($record['gridsquare'])){
 			  $a_grids=explode(',',$record['gridsquare']);	// Split at , if there are junctions
 			  foreach ($a_grids as $singlegrid) {
+				  $singlegrid=strtoupper($singlegrid);
+				  if (strlen($singlegrid) == 4)  $singlegrid .= "LL";     // Only 4 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid) == 6)  $singlegrid .= "55";     // Only 6 Chars? Fill with center "55"
+				  if (strlen($singlegrid) == 8)  $singlegrid .= "LL";     // Only 8 Chars? Fill with center "LL" as only A-R allowed
 				  if (strlen($singlegrid)%2 != 0) {	// Check if grid is structually valid
 					  $record['gridsquare']='';	// If not: Set to ''
+				  } else {
+					  if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $singlegrid)) $record['gridsquare']='';
 				  }
 			  }
 			  $input_gridsquare = $record['gridsquare'];
-		  }else{
+		  } else {
 			  $input_gridsquare = NULL;
 		  }
 
@@ -3292,12 +3298,18 @@ function lotw_last_qsl_date($user_id) {
 		  if (isset($record['vucc_grids'])){
 			  $a_grids=explode(',',$record['vucc_grids']);	// Split at , if there are junctions
 			  foreach ($a_grids as $singlegrid) {
+				  $singlegrid=strtoupper($singlegrid);
+				  if (strlen($singlegrid) == 4)  $singlegrid .= "LL";     // Only 4 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid) == 6)  $singlegrid .= "55";     // Only 6 Chars? Fill with center "55"
+				  if (strlen($singlegrid) == 8)  $singlegrid .= "LL";     // Only 8 Chars? Fill with center "LL" as only A-R allowed
 				  if (strlen($singlegrid)%2 != 0) {	// Check if grid is structually valid
 					  $record['vucc_grids']='';	// If not: Set to ''
+				  } else {
+					  if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $singlegrid)) $record['vucc_grids']='';
 				  }
 			  }
 			  $input_vucc_grids = $record['vucc_grids'];
-		  }else{
+		  } else {
 			  $input_vucc_grids = NULL;
 		  }
 
