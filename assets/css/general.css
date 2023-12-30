@@ -701,11 +701,9 @@ table.dataTable tfoot td {
 .dropend .dropdown-toggle {
 	margin-left: 1em;
 }
-
-.dropdown .dropdown-menu {
+/*.dropdown .dropdown-menu {
 	display: none;
-}
-
+}*/
 .dropdown:hover>.dropdown-menu, .dropend:hover>.dropdown-menu {
 	display: block;
 	/* margin-top: .125em; */
@@ -718,15 +716,13 @@ table.dataTable tfoot td {
 		top: 0;
 		left: 100%;
 	}
-
 	.dropend .dropdown-toggle {
 		margin-left: .5em;
 	}
 }
-
-.navbar-nav li:hover > ul.dropdown-menu {
+/*.navbar-nav li:hover > ul.dropdown-menu {
     display: block;
-}
+}*/
 
 .dropdown-submenu {
     position:relative;
@@ -736,9 +732,13 @@ table.dataTable tfoot td {
     left:100%;
     margin-top:-9px;
 }
-
 .dropdown-menu > li > a:hover:after {
     transform: rotate(-90deg);
+}
+
+.table-responsive .dropdown-menu.notdisplay {
+	padding:0px!important;
+	border:0px!important;
 }
 
 #partial_view .table-responsive {
