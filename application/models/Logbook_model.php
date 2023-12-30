@@ -3275,6 +3275,44 @@ function lotw_last_qsl_date($user_id) {
 			  $cq_zone = NULL;
 		  }
 
+		  // Sanitise gridsquare input to make sure its a gridsquare
+		  if (isset($record['gridsquare'])){
+			  $a_grids=explode(',',$record['gridsquare']);	// Split at , if there are junctions
+			  foreach ($a_grids as $singlegrid) {
+				  $singlegrid=strtoupper($singlegrid);
+				  if (strlen($singlegrid) == 4)  $singlegrid .= "LL";     // Only 4 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid) == 6)  $singlegrid .= "55";     // Only 6 Chars? Fill with center "55"
+				  if (strlen($singlegrid) == 8)  $singlegrid .= "LL";     // Only 8 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid)%2 != 0) {	// Check if grid is structually valid
+					  $record['gridsquare']='';	// If not: Set to ''
+				  } else {
+					  if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $singlegrid)) $record['gridsquare']='';
+				  }
+			  }
+			  $input_gridsquare = $record['gridsquare'];
+		  } else {
+			  $input_gridsquare = NULL;
+		  }
+
+		  // Sanitise vucc-gridsquare input to make sure its a gridsquare
+		  if (isset($record['vucc_grids'])){
+			  $a_grids=explode(',',$record['vucc_grids']);	// Split at , if there are junctions
+			  foreach ($a_grids as $singlegrid) {
+				  $singlegrid=strtoupper($singlegrid);
+				  if (strlen($singlegrid) == 4)  $singlegrid .= "LL";     // Only 4 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid) == 6)  $singlegrid .= "55";     // Only 6 Chars? Fill with center "55"
+				  if (strlen($singlegrid) == 8)  $singlegrid .= "LL";     // Only 8 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid)%2 != 0) {	// Check if grid is structually valid
+					  $record['vucc_grids']='';	// If not: Set to ''
+				  } else {
+					  if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $singlegrid)) $record['vucc_grids']='';
+				  }
+			  }
+			  $input_vucc_grids = $record['vucc_grids'];
+		  } else {
+			  $input_vucc_grids = NULL;
+		  }
+
 		  // Sanitise lat input to make sure its 11 chars
 		  if (isset($record['lat'])){
 			  $input_lat = mb_strimwidth($record['lat'], 0, 11);
@@ -3540,7 +3578,7 @@ function lotw_last_qsl_date($user_id) {
 			  'COL_FORCE_INIT' => (!empty($record['force_init'])) ? $record['force_init'] : null,
 			  'COL_FREQ' => $freq,
 			  'COL_FREQ_RX' => (!empty($record['freq_rx'])) ? $freqRX : null,
-			  'COL_GRIDSQUARE' => (!empty($record['gridsquare'])) ? $record['gridsquare'] : '',
+			  'COL_GRIDSQUARE' => $input_gridsquare,
 			  'COL_HEADING' => (!empty($record['heading'])) ? $record['heading'] : null,
 			  'COL_HRDLOG_QSO_UPLOAD_DATE' => (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null,
 			  'COL_HRDLOG_QSO_UPLOAD_STATUS' => (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '',
@@ -3654,7 +3692,7 @@ function lotw_last_qsl_date($user_id) {
 			  'COL_TX_PWR' => (!empty($tx_pwr)) ? $tx_pwr : null,
 			  'COL_UKSMG' => (!empty($record['uksmg'])) ? $record['uksmg'] : '',
 			  'COL_USACA_COUNTIES' => (!empty($record['usaca_counties'])) ? $record['usaca_counties'] : '',
-			  'COL_VUCC_GRIDS' =>((!empty($record['vucc_grids']))) ? $record['vucc_grids'] : '',
+			  'COL_VUCC_GRIDS' => $input_vucc_grids,
 			  'COL_WEB' => (!empty($record['web'])) ? $record['web'] : ''
 		  );
 
