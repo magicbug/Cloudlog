@@ -220,7 +220,7 @@ class Contesting_model extends CI_Model {
 			$date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
 			$date = $date->format('Y-m-d H:i:s');
 
-			$this->db->select('timediff(UTC_TIMESTAMP(),col_time_on) b4');
+			$this->db->select('timediff(UTC_TIMESTAMP(),col_time_off) b4, COL_TIME_OFF');
 			$this->db->where('STATION_ID', $station_id);
 			$this->db->where('COL_CALL', xss_clean($call));
 			$this->db->where("COL_BAND", xss_clean($band));
