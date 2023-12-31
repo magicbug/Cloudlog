@@ -525,7 +525,12 @@ class eqsl extends CI_Controller {
 			$password = $q->user_eqsl_password;
 
 			$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
-			$file = file_get_contents($image_url, true);
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $image_url);
+			curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$file=curl_exec($ch);
 
 			$dom = new domDocument;
 			$dom->loadHTML($file);
@@ -540,7 +545,12 @@ class eqsl extends CI_Controller {
 			foreach ($images as $image)
 			{
 				header('Content-Type: image/jpg');
-				$content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, "https://www.eqsl.cc".$image->getAttribute('src'));
+			curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$content=curl_exec($ch);
 				if ($content === false) {
 					echo "No response";
 					exit;
@@ -584,7 +594,11 @@ class eqsl extends CI_Controller {
 		$error = '';
 
 		$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
-		$file = file_get_contents($image_url, true);
+		curl_setopt($ch, CURLOPT_URL, $image_url);
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$file=curl_exec($ch);
 		if (strpos($file, 'Error') !== false) {
 			$error = rtrim(preg_replace('/^\s*Error: /', '', $file));
 			return $error;
@@ -602,7 +616,11 @@ class eqsl extends CI_Controller {
 
 		foreach ($images as $image)
 		{
-			$content = file_get_contents("https://www.eqsl.cc".$image->getAttribute('src'));
+			curl_setopt($ch, CURLOPT_URL, "https://www.eqsl.cc".$image->getAttribute('src'));
+			curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$content=curl_exec($ch);
 			if ($content === false) {
 				$error = "No response";
 				return $error;

@@ -27,15 +27,12 @@
                 ?>
                 <div>
                     <?php
-                    $url = 'https://api.github.com/repos/magicbug/Cloudlog/releases';
-                    $options = [
-                        'http' => [
-                            'header' => 'User-Agent: Cloudlog - Amateur Radio Logbook'
-                        ]
-                    ];
-                    $context = stream_context_create($options);
-                    $response = file_get_contents($url, false, $context);
-
+		    $ch = curl_init();
+		    curl_setopt($ch, CURLOPT_URL, 'https://api.github.com/repos/magicbug/Cloudlog/releases');
+		    curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+		    curl_setopt($ch, CURLOPT_HEADER, false);
+		    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		    $response=curl_exec($ch);
                     if ($response !== false) {
                         $data = json_decode($response, true);
 

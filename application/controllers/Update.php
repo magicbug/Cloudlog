@@ -301,22 +301,24 @@ class Update extends CI_Controller {
         }
     }
 
-    public function download_lotw_users() {
-        $contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
+	public function download_lotw_users() {
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, 'https://lotw.arrl.org/lotw-user-activity.csv');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$contents=curl_exec($ch);
+		if($contents === FALSE) { 
+			echo "Something went wrong with fetching the LoTW users file.";
+		} else {
+			$file = './updates/lotw_users.csv';
 
-        if($contents === FALSE) { 
-            echo "Something went wrong with fetching the LoTW users file.";
-        } else {
-            $file = './updates/lotw_users.csv';
+			if (file_put_contents($file, $contents) !== FALSE) {     // Save our content to the file.
+				echo "LoTW User Data Saved.";
+			} else {
+				echo "FAILED: Could not write to LoTW users file";
+			}
+		}
 
-            if (file_put_contents($file, $contents) !== FALSE) {     // Save our content to the file.
-                echo "LoTW User Data Saved.";
-            } else {
-                echo "FAILED: Could not write to LoTW users file";
-            }
-        }
-
-    }
+	}
 
     public function lotw_users() {
         $mtime = microtime(); 
@@ -376,25 +378,28 @@ class Update extends CI_Controller {
      * Used for autoupdating the DOK file which is used in the QSO entry dialog for autocompletion.
      */
     public function update_dok() {
-        $contents = file_get_contents('https://www.df2et.de/cqrlog/dok_and_sdok.txt', true);
+	    $ch = curl_init();
+	    curl_setopt($ch, CURLOPT_URL, 'https://www.df2et.de/cqrlog/dok_and_sdok.txt');
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	    $contents=curl_exec($ch);
 
-        if($contents === FALSE) {
-            echo "Something went wrong with fetching the DOK file.";
-        } else {
-            $file = './assets/json/dok.txt';
+	    if($contents === FALSE) {
+		    echo "Something went wrong with fetching the DOK file.";
+	    } else {
+		    $file = './assets/json/dok.txt';
 
-            if (file_put_contents($file, $contents) !== FALSE) {     // Save our content to the file.
-                $nCount = count(file($file));
-                if ($nCount > 0)
-                {
-                    echo "DONE: " . number_format($nCount) . " DOKs and SDOKs saved";
-                } else {
-                    echo"FAILED: Empty file";
-                }
-            } else {
-                echo"FAILED: Could not write to dok.txt file";
-            }
-        }
+		    if (file_put_contents($file, $contents) !== FALSE) {     // Save our content to the file.
+			    $nCount = count(file($file));
+			    if ($nCount > 0)
+			    {
+				    echo "DONE: " . number_format($nCount) . " DOKs and SDOKs saved";
+			    } else {
+				    echo"FAILED: Empty file";
+			    }
+		    } else {
+			    echo"FAILED: Could not write to dok.txt file";
+		    }
+	    }
     }
 
     /*
