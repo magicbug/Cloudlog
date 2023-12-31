@@ -111,7 +111,13 @@ class EqslImporter
 							foreach ($matches[2] as $match) {
 								// Look for the link that has the .adi file, and download it to $file
 								if (substr($match, -4, 4) == ".adi") {
-									file_put_contents($this->adif_file, file_get_contents("https://eqsl.cc/qslcard/" . $match));
+									$ch = curl_init();
+									curl_setopt($ch, CURLOPT_URL, "https://eqsl.cc/qslcard/" . $match);
+									curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+									curl_setopt($ch, CURLOPT_HEADER, false);
+									curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+									$eqsl_adiffile=curl_exec($ch);
+									file_put_contents($this->adif_file, $eqsl_adiffile);
 									return $this->import();
 								}
 							}

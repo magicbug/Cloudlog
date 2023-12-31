@@ -16,7 +16,12 @@ class Components extends CI_Controller {
     public function index() {
         $this->load->model('stations');
         $url = 'https://oscarwatch.org/scripts/hamsat_json.php';
-        $json = file_get_contents($url);
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+	curl_setopt($ch, CURLOPT_HEADER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	$json=curl_exec($ch);
         $data['rovedata'] = json_decode($json, true);
         $data['gridsquare'] = strtoupper($this->stations->find_gridsquare());
         

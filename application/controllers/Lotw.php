@@ -595,7 +595,7 @@ class Lotw extends CI_Controller {
 				$data['lotw_table'] = $table;
 		}
 
-		unlink($filepath);
+		 unlink($filepath);
 
 		$this->load->model('user_model');
 		if ($this->user_model->authorize(2)) {	// Only Output results if authorized User
@@ -655,7 +655,7 @@ class Lotw extends CI_Controller {
 				}
 
 				// Get credentials for LoTW
-		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
+				$data['user_lotw_name'] = urlencode($user->user_lotw_name);
 				$data['user_lotw_password'] = urlencode($user->user_lotw_password);
 
 				$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
@@ -673,7 +673,12 @@ class Lotw extends CI_Controller {
 					$result = "Temporary download directory ".dirname($file)." is not writable. Aborting!";
 					continue;
 				}
-				file_put_contents($file, file_get_contents($lotw_url));
+				curl_setopt($ch, CURLOPT_URL, $lotw_url);
+				curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+				curl_setopt($ch, CURLOPT_HEADER, false);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$lotw_content=curl_exec($ch);
+				file_put_contents($file, $lotw_content);
 				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
 					$result = "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
 					continue;
@@ -747,7 +752,13 @@ class Lotw extends CI_Controller {
 			}
 
 			if (is_writable(dirname($file)) && (!file_exists($file) || is_writable($file))) {
-				file_put_contents($file, file_get_contents($lotw_url));
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $lotw_url);
+			curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			$lotw_content=curl_exec($ch);
+				file_put_contents($file, $lotw_content);
 
 				ini_set('memory_limit', '-1');
 				$this->loadFromFile($file);
@@ -917,19 +928,24 @@ class Lotw extends CI_Controller {
 		Load the ARRL LoTW User Activity CSV and saves into uploads/lotw_users.csv
 	*/
 	public function load_users() {
-		$contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, 'https://lotw.arrl.org/lotw-user-activity.csv');
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$contents=curl_exec($ch);
 
-        if($contents === FALSE) {
-            echo "Something went wrong with fetching the LoTW users file.";
-        } else {
-            $file = './updates/lotw_users.csv';
+		if($contents === FALSE) {
+			echo "Something went wrong with fetching the LoTW users file.";
+		} else {
+			$file = './updates/lotw_users.csv';
 
-            if (file_put_contents($file, $contents) !== FALSE) {     // Save our content to the file.
-                echo "LoTW User Data Saved.";
-            } else {
-                echo "FAILED: Could not write to LoTW users file";
-            }
-        }
+			if (file_put_contents($file, $contents) !== FALSE) {     // Save our content to the file.
+				echo "LoTW User Data Saved.";
+			} else {
+				echo "FAILED: Could not write to LoTW users file";
+			}
+		}
 	}
 
 	/*

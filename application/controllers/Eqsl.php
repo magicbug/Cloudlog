@@ -594,6 +594,7 @@ class eqsl extends CI_Controller {
 		$error = '';
 
 		$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
+		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $image_url);
 		curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
 		curl_setopt($ch, CURLOPT_HEADER, false);
@@ -616,6 +617,7 @@ class eqsl extends CI_Controller {
 
 		foreach ($images as $image)
 		{
+			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, "https://www.eqsl.cc".$image->getAttribute('src'));
 			curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
 			curl_setopt($ch, CURLOPT_HEADER, false);

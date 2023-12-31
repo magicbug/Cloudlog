@@ -142,8 +142,13 @@ class Clublog extends CI_Controller {
 		$clean_callsign = $this->security->xss_clean($callsign);
 		// Live lookup against Clublogs API
 		$url = "https://clublog.org/dxcc?call=".$clean_callsign."&api=a11c3235cd74b88212ce726857056939d52372bd&full=1";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$json=curl_exec($ch);
 
-		$json = file_get_contents($url);
 		$data = json_decode($json, TRUE);
 
 		// echo ucfirst(strtolower($data['Name']));
