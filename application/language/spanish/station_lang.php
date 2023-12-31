@@ -10,12 +10,12 @@ ________________________________________________________________________________
 
 $lang['station_logbooks'] = "Libros de Guardia de Estación";
 $lang['station_logbooks_description_header'] = "¿Qué son Libros de Guardia de Estación";
-$lang['station_logbooks_description_text'] = "Los Libros de Guardia de Estación le permiten agrupar Localizaciones de Estación, observando todas las localizaciones en una sola sesión, desde las áreas del libro de guardia hasta las analíticas. Muy útil cuando está operando en múltiples localizaciones, pero está siendo parte del mismo Círculo DXCC o VUCC.";
+$lang['station_logbooks_description_text'] = "Los Libros de Guardia de Estación le permiten agrupar Localizaciones de Estación, observando todas las localizaciones en una sola sesión, desde las áreas del libro de guardia hasta las analíticas. Muy útil cuando está operando en múltiples localizaciones, pero que son parte del mismo Círculo DXCC o VUCC.";
 $lang['station_logbooks_create'] = "Crear Libro de Guardia de Estación";
 $lang['station_logbooks_status'] = "Estado";
 $lang['station_logbooks_link'] = "Enlace";
 $lang['station_logbooks_public_search'] = "Búsqueda Pública";
-$lang['station_logbooks_set_active'] = "Configurar como Libro de Guardia Activo";
+$lang['station_logbooks_set_active'] = "Establecer como Libro de Guardia Activo";
 $lang['station_logbooks_active_logbook'] = "Libro de Guardia Activo";
 $lang['station_logbooks_edit_logbook'] = "Editar Libro de Guardia de Estación";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
 $lang['station_logbooks_confirm_delete'] = "¿Está seguro que desea eliminar el libro de guardia de estación a continuación? Deberá re-enlazar todas las localizaciones enlazadas aquí a otro Libro de Guardia: ";
@@ -28,7 +28,7 @@ $lang['station_logbooks_public_slug'] = "Abreviatura Pública";
 $lang['station_logbooks_public_slug_hint'] = "El configurar una abreviatura pública le permite compartir su libro de guardia con cualquier persona usando una dirección personalizada del sitio web, esta abreviatura debe contener solo letras y números.";
 $lang['station_logbooks_public_slug_format1'] = "Después se verá de esta manera:";
 $lang['station_logbooks_public_slug_format2'] = "[su abreviatura]";
-$lang['station_logbooks_public_slug_input'] = "Digite la elección de Abreviatura Pública";
+$lang['station_logbooks_public_slug_input'] = "Introduzca la elección de Abreviatura Pública";
 $lang['station_logbooks_public_slug_visit'] = "Visitar Página Pública";
 $lang['station_logbooks_public_search_hint'] = "El permitir la función de búsqueda pública le permite poner una casilla de búsqueda en la página pública del libro de guardia que sea accedida por una abreviatura pública. La búsqueda solo cubre este libro de guardia.";
 $lang['station_logbooks_public_search_enabled'] = "Activar búsqueda pública";
@@ -48,7 +48,7 @@ ________________________________________________________________________________
 
 $lang['station_location'] = 'Localización de Estación';
 $lang['station_location_plural'] = "Localizaciones de Estaciones";
-$lang['station_location_header_ln1'] = 'Las localizaciones de Estación le permiten definir localizaciones de operación, como su QTH, el QTH de un amigo o una estación portátil.';
+$lang['station_location_header_ln1'] = 'Las localizaciones de Estación le permiten definir localizaciones de operación, como su QTH, el QTH de un amigo o una estación portable.';
 $lang['station_location_header_ln2'] = 'De forma similar a los libros de guardia, un perfil de estación mantiene asociado un conjunto de QSOs.';
 $lang['station_location_header_ln3'] = 'Solo una estación puede estar activa en cualquier momento. En la tabla de abajo esta se muestra con la etiqueta de -Estación Activa-.';
 $lang['station_location_create_header'] = 'Crear Localización de Estación';
@@ -80,10 +80,10 @@ $lang['station_location_city_hint'] = 'Ciudad donde está ubicada la estación. 
 $lang['station_location_state'] = 'Estado/Departamento/Provincia de la Estación';
 $lang['station_location_state_hint'] = 'Estado/Departamento/Provincia de la estación. Aplica solo para ciertos países. Déjelo vacío si no aplica.';
 $lang['station_location_county'] = 'Condado de la Estación';
-$lang['station_location_county_hint'] = 'Condado de la Estación (Solo se usa en EUA/Alaska/Hawaii).';
+$lang['station_location_county_hint'] = 'Condado de la Estación (Solo se usa en USA/Alaska/Hawaii).';
 $lang['station_location_gridsquare'] = 'Gridsquare de la Estación';
 $lang['station_location_gridsquare_hint_ln1'] = "Gridsquare de la estación. Ejemplo: IO87IP. ¡Si no conoce su grid square haga <a href='https://zone-check.eu/?m=loc' target='_blank'>clic aquí</a>!";
-$lang['station_location_gridsquare_hint_ln2'] = "Si está localizado justo en una línea de la malla, ingrese múltiples gridsquares separados con comas. por ejemplo: IO77,IO78,IO87,IO88.";
+$lang['station_location_gridsquare_hint_ln2'] = "Si está localizado justo en una línea de la malla, introduzca múltiples gridsquares separados con comas. por ejemplo: IO77,IO78,IO87,IO88.";
 $lang['station_location_iota_hint_ln1'] = "Referencia IOTA de la Estación. Ejemplo: EU-005";
 $lang['station_location_iota_hint_ln2'] = "Puede buscar las referencias IOTA en el sitio web de <a target='_blank' href='https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html'>IOTA World</a>.";
 $lang['station_location_sota_hint_ln1'] = "Referencia SOTA de la Estación. Puede buscar las referencias SOTA en el sitio web de <a target='_blank' href='https://www.sotamaps.org/'>SOTA Maps</a>.";
@@ -96,9 +96,9 @@ $lang['station_location_signature_info'] = "Información de la Firma";
 $lang['station_location_signature_info_hint'] = "Información de la Firma de la Estación (ej. DA/NW-357).";
 $lang['station_location_eqsl_hint'] = 'El Apodo del QTH como está configurado en su perfil de eQSL';
 $lang['station_location_eqsl_defaultqslmsg'] = "QSLMSG por Defecto";
-$lang['station_location_eqsl_defaultqslmsg_hint'] = "Defina un mensaje por defecto que será ingresado y enviado para cada QSO para esta localización de estación.";
+$lang['station_location_eqsl_defaultqslmsg_hint'] = "Defina un mensaje por defecto que será añadido y enviado para cada QSO para esta localización de estación.";
 $lang['station_location_qrz_subscription'] = 'Requiere Suscripción';
-$lang['station_location_qrz_hint'] = "Encuentre su llave API en la <a href='https://logbook.qrz.com/logbook' target='_blank'>página de Configuración de libro de guardia en QRZ.com";
+$lang['station_location_qrz_hint'] = "Encuentre su clave API en la <a href='https://logbook.qrz.com/logbook' target='_blank'>página de Configuración de libro de guardia en QRZ.com";
 $lang['station_location_qrz_realtime_upload'] = 'Subida en Tiempo Real del Libro de Guardia a QRZ.com';
 $lang['station_location_hrdlog_username'] = "Nombre de Usuario de HRDLog.net";
 $lang['station_location_hrdlog_username_hint'] = "El nombre de usuario con el que se registró en HRDlog.net (usualmente su indicativo).";

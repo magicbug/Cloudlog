@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['error_no_active_station_profile'] = 'Atención: Debe configurar un perfil activo de estación.';
+$lang['error_no_active_station_profile'] = 'Atención: Debe configurar un perfil de estación activo.';
 
 $lang['notice_turn_the_radio_on'] = 'No ha realizado ninguna QSO hoy...¡Hora de encender la radio!';
 
@@ -22,7 +22,7 @@ $lang['general_word_disabled'] = "Desactivado";
 $lang['general_word_export'] = "Exportar";
 $lang['general_word_import'] = "Importar";
 $lang['general_word_count'] = "Conteo";
-$lang['general_word_filtering_on'] = "Filtrado en";
+$lang['general_word_filtering_on'] = "Filtrado por";
 $lang['general_word_not_display'] = "No mostrar";
 $lang['general_word_icon'] = "Icono";
 
@@ -30,8 +30,8 @@ $lang['general_word_date'] = 'Fecha';
 $lang['general_word_startdate'] = "Fecha de inicio";
 $lang['general_word_enddate'] = "Fecha de fin";
 $lang['general_word_time'] = 'Hora';
-$lang['general_word_time_on'] = 'Hora activada';
-$lang['general_word_time_off'] = 'Hora desactivada';
+$lang['general_word_time_on'] = 'Hora inicio';
+$lang['general_word_time_off'] = 'Hora fin';
 $lang['general_word_datetime'] = 'Fecha/Hora';
 $lang['general_word_none'] = 'Ninguno';
 $lang['general_word_name'] = 'Nombre';
@@ -51,7 +51,7 @@ $lang['general_word_month'] = 'Mes';
 $lang['general_word_colors'] = "Colores";
 $lang['general_word_light'] = "Luz/Láser";
 $lang['general_word_worked'] = 'Realizados';
-$lang['general_word_worked_not_confirmed'] = "Logrados no confirmados";
+$lang['general_word_worked_not_confirmed'] = "Trabajados no confirmados";
 $lang['general_word_not_worked'] = "No logrados";
 $lang['general_word_confirmed'] = 'Confirmados';
 $lang['general_word_confirmation'] = "Confirmación";
@@ -74,7 +74,7 @@ $lang['general_word_qslcards'] = 'Tarjetas QSL';
 $lang['general_word_qslcard_direct'] = 'Directo';
 $lang['general_word_qslcard_bureau'] = 'Buró';
 $lang['general_word_qslcard_electronic'] = 'Electrónico';
-$lang['general_word_qslcard_manager'] = 'Encargado';
+$lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Vía';
 $lang['general_word_eqslcard'] = 'Tarjeta eQSL';
 $lang['general_word_eqslcards'] = 'Tarjetas eQSL';
@@ -155,8 +155,8 @@ $lang['gen_hamradio_itu_zone'] = 'Zona ITU';
 $lang['gen_hamradio_dxcc'] = 'DXCC';
 $lang['gen_hamradio_deleted_dxcc'] = 'DXCC Eliminado';
 $lang['gen_hamradio_continent'] = 'Continente';
-$lang['gen_hamradio_usa_state'] = 'Estado EUA';
-$lang['gen_hamradio_county_reference'] = 'Condado EUA';
+$lang['gen_hamradio_usa_state'] = 'Estado USA';
+$lang['gen_hamradio_county_reference'] = 'Condado USA';
 $lang['gen_hamradio_iota_reference'] = 'Referencia IOTA';
 $lang['gen_hamradio_sota_reference'] = 'Referencia SOTA';
 $lang['gen_hamradio_wwff_reference'] = 'Referencia WWFF';
@@ -190,9 +190,9 @@ $lang['dashboard_you_have_had'] = '¡Ha tenido';
 $lang['dashboard_qsos_today'] = 'QSOs hoy!';
 $lang['dashboard_qso_breakdown'] = 'Desglose de QSO';
 $lang['dashboard_countries_breakdown'] = 'Desglose por Países';
-$lang['gen_to_date'] = 'A la Fecha';
+$lang['gen_to_date'] = 'Hasta la fecha';
 
-$lang['gen_from_date'] = 'Desde la fecha:';
+$lang['gen_from_date'] = 'Desde la fecha';
 
 $lang['gen_this_qso_was_confirmed_on'] = 'Esta QSO fue confirmada en';
 
@@ -201,7 +201,7 @@ $lang['error_no_logbook_found'] = 'No se encontraron libros de guardia. ¡Debe d
 $lang['copy_to_clipboard'] = 'Copiar al portapapeles';
 
 $lang['africa'] = 'África';
-$lang['antarctica'] = 'Antártica';
+$lang['antarctica'] = 'Antártida';
 $lang['asia'] = 'Asia';
 $lang['europe'] = 'Europa';
 $lang['northamerica'] = 'América del Norte';

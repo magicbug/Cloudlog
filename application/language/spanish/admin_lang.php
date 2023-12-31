@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['admin_user_line1'] = 'Cloudlog necesita al menos un usuario configurado para operar.';
-$lang['admin_user_line2'] = 'Los usuarios pueden tener roles que les entregan diferentes permisos, como añadir QSOs al libro de guardia y acceder las API de Cloudlog.';
+$lang['admin_user_line2'] = 'Los usuarios pueden tener roles que les entregan diferentes permisos, como añadir QSOs al libro de guardia y acceder a las APIs de Cloudlog.';
 $lang['admin_user_line3'] = 'El usuario actualmente en sesión se muestra en la parte superior derecha de la página.';
 
 $lang['admin_user_list'] = 'Lista de Usuarios';
@@ -30,8 +30,8 @@ $lang['admin_experimental'] = "Experimental";
 
 // Contest Menu
 
-$lang['admin_contest_menu_line_1'] = 'Usando la lista de concursos, puede controlar que Concursos se muestran cuando se registran QSOs en un concurso.';
-$lang['admin_contest_menu_line_2'] = 'Los concursos activos se mostrarán en la lista desplegable de Nomnbre de Concurso, sin embargo los inactivos están ocultos y no se pueden seleccionar.';
+$lang['admin_contest_menu_line_1'] = 'Usando la lista de concursos, puede controlar qe Concursos se muestran cuando se registran QSOs en un concurso.';
+$lang['admin_contest_menu_line_2'] = 'Los concursos activos se mostrarán en la lista desplegable de Nombre de Concurso, sin embargo los inactivos están ocultos y no se pueden seleccionar.';
 $lang['admin_contest_menu_name'] = 'Nombre';
 $lang['admin_contest_menu_adif'] = 'Nombre ADIF';
 $lang['admin_contest_menu_active'] = 'Activo';

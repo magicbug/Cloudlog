@@ -57,7 +57,7 @@ ________________________________________________________________________________
 */
 
 $lang['adif_export_take_it_anywhere'] = "¡Lleve su archivo de libro de guardia a cualquier lugar!";
-$lang['adif_export_take_it_anywhere_hint'] = "Exportar archivos ADIF le permite importar contactos en aplicaciones de terceros como LoTW, Premios o para simplemente tener una copia de seguridad.";
+$lang['adif_export_take_it_anywhere_hint'] = "Exportar archivos ADIF le permite importar contactos en aplicaciones de terceros como LoTW, Diplomas o para simplemente tener una copia de seguridad.";
 
 
 $lang['adif_mark_exported_lotw'] = "Marcar QSOs exportados como subidos a LoTW";
@@ -65,7 +65,7 @@ $lang['adif_mark_exported_no_lotw'] = "Exportar QSOs que no se hayan subido a Lo
 
 $lang['adif_export_qso'] = "Exportar QSOs";
 
-$lang['adif_export_sat_only_qso'] = "Exportar QSOs solo satélite";
+$lang['adif_export_sat_only_qso'] = "Exportar solo QSOs de satélite";
 $lang['adif_export_sat_only_qso_all'] = "Exportar todos los QSOs de satélite";
 $lang['adif_export_sat_only_qso_lotw'] = "Exportar todos los QSOs de satélite confirmados en LoTW";
 
@@ -97,7 +97,7 @@ $lang['overwrite_by_dcl'] = "Sobreescribir los DOK existentes en el registro por
 $lang['overwrite_by_dcl_hint'] = "Si está activo, Cloudlog forzará la sobreescritura de los DOK existentes con los DOK desde el libro de DCL.";
 
 $lang['ignore_ambiguous'] = "Ignorar QSOs que no concuerden";
-$lang['ignore_ambiguous_hint'] = "Si se deja desactivado, la información de QSOs que no se encuentren en Cloudlog se mostrarán.";
+$lang['ignore_ambiguous_hint'] = "Si se deja desactivado, se mostrará la información de QSOs que no se encuentren en Cloudlog.";
 
 /*
 ___________________________________________________________________________________________
@@ -113,7 +113,7 @@ $lang['adif_import_dupes_inserted'] = " <b>¡Se insertaron registros duplicados!
 $lang['adif_import_dupes_skipped'] = " Se descartaron registros duplicados.";
 
 $lang['adif_import_errors'] = "Errores ADIF";
-$lang['adif_import_errors_hint'] = "Tiene errores en su archivo ADIF, los QSOs han sido adicionados, pero estos campos no han sido importados.";
+$lang['adif_import_errors_hint'] = "Tiene errores en su archivo ADIF. Los QSOs han sido adicionados, pero estos campos no han sido importados.";
 
 /*
 ___________________________________________________________________________________________

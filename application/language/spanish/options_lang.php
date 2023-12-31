@@ -59,7 +59,7 @@ $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the
 $lang['options_grouped_search'] = 'Búsqueda agrupada';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'Cuando está activo, se buscarán en simultáneo todas las localizaciones de estación con OQRS activo';
 $lang['options_grouped_search_show_station_name'] = "Mostrar localización de la estación en los resultados de búsqueda agrupados";
-$lang['options_grouped_search_show_station_name_hint'] = "Si la búsqueda agrupada esta ACTIVA, puede decidir si el nombre de la localización de la estación se omsytrará en la tabla de resultados.";
+$lang['options_grouped_search_show_station_name_hint'] = "Si la búsqueda agrupada esta ACTIVA, puede decidir si el nombre de la localización de la estación se mostrará en la tabla de resultados.";
 $lang['options_oqrs_options_have_been_saved'] = 'Las opciones de OQRS se han guardado.';
 
 $lang['options_dxcluster'] = 'DXCluster';
@@ -68,12 +68,12 @@ $lang['options_dxcluster_longtext'] = 'El proveedor de DXCluster-Cache. Puede co
 $lang['options_dxcluster_hint'] = 'URL del DXCluster-Cache. ej. https://dxc.jo30.de/dxcache';
 $lang['options_dxcluster_settings'] = 'DXCluster';
 $lang['options_dxcache_url_changed_to'] = 'URL del DXCluster-Cache cambiada a ';
-$lang['options_dxcluster_maxage'] = 'Máxima edad de puntos a tomarse en cuenta';
-$lang['options_dxcluster_maxage_hint'] = 'La edad en minutos de los puntos que se tomarán en cuenta en el plan de bandas/búsqueda';
-$lang['options_dxcluster_decont'] = 'Mostrar puntos que se observen en el siguiente continente';
-$lang['options_dxcluster_maxage_changed_to']='Máxima edad de puntos cambiada a ';
+$lang['options_dxcluster_maxage'] = 'Máxima edad de spots a tomarse en cuenta';
+$lang['options_dxcluster_maxage_hint'] = 'La edad en minutos de los spots que se tomarán en cuenta en el plan de bandas/búsqueda';
+$lang['options_dxcluster_decont'] = 'Mostrar spots que se observen en el siguiente continente';
+$lang['options_dxcluster_maxage_changed_to']='Máxima edad de spots cambiada a ';
 $lang['options_dxcluster_decont_changed_to']='de continente cambiado a ';
-$lang['options_dxcluster_decont_hint']='Solo se muestran puntos por observadores de este continente';
+$lang['options_dxcluster_decont_hint']='Solo se muestran spots por observadores de este continente';
 
 $lang['options_version_dialog'] = "Información de Versión";
 $lang['options_version_dialog_close'] = "Cerrar";
@@ -93,7 +93,7 @@ $lang['options_version_dialog_custom_text_hint'] = "Este es el texto personaliza
 $lang['options_version_dialog_mode_changed_to'] = "Modo de Información de Versión ha cambiado a";
 $lang['options_version_dialog_custom_text_saved'] = "¡Texto Personalizado de la Información de Versión guardado!";
 $lang['options_version_dialog_success_show_all'] = "La Información de Versión será mostrada a todos los usuarios de nuevo";
-$lang['options_version_dialog_success_hide_all'] = "La Información de Versión no será mostrado a nadie";
+$lang['options_version_dialog_success_hide_all'] = "La Información de Versión no será mostrada a nadie";
 $lang['options_version_dialog_show_hide'] = "Mostrar/Ocultar el Diálogo de Información de Versión para todos los Usuarios";
 $lang['options_version_dialog_show_all'] = "Mostrar a todos los Usuarios";
 $lang['options_version_dialog_hide_all'] = "Ocultar a todos los Usuarios";
@@ -105,7 +105,7 @@ $lang['options_save'] = 'Guardar';
 // Bands
 
 $lang['options_bands'] = "Bandas";
-$lang['options_bands_text_ln1'] = "Usando la lista de bandas puede controlar que bandas se muestran cuando se crea un nuevo QSO.";
+$lang['options_bands_text_ln1'] = "Usando la lista de bandas puede controlar qué bandas se muestran cuando se crea un nuevo QSO.";
 $lang['options_bands_text_ln2'] = "Las bandas activas se mostrarán en la lista desplegable de 'Bandas' en QSO, mientras que las bandas inactivas se ocultarán y no pueden ser seleccionadas.";
 $lang['options_bands_create'] = "Crear una Banda";
 $lang['options_bands_edit'] = "Editar Banda";

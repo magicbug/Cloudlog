@@ -53,7 +53,7 @@ $lang['filter_lotw_sent'] = 'Enviado por LoTW';
 $lang['filter_lotw_recv'] = 'Recibido por LoTW';
 $lang['filter_eqsl_sent'] = 'Enviado por eQSL';
 $lang['filter_eqsl_recv'] = 'Recibido por eQSL';
-$lang['filter_qsl_via'] = 'QSL por';
+$lang['filter_qsl_via'] = 'QSL via';
 $lang['filter_qsl_images'] = 'Imágenes QSL';
 
 // $lang['general_word_all']                --> application/language/english/general_words_lang.php
@@ -100,7 +100,7 @@ ________________________________________________________________________________
 */
 
 $lang['filter_actions_w_selected'] = 'Con los seleccionados: ';
-$lang['filter_actions_update_f_callbook'] = 'Actualizar del Libro de Guardia';
+$lang['filter_actions_update_f_callbook'] = 'Actualizar de Callbook';
 $lang['filter_actions_queue_bureau'] = 'En Cola por Buró';
 $lang['filter_actions_queue_direct'] = 'En Cola por Directa';
 $lang['filter_actions_queue_electronic'] = 'En Cola por Electrónico';
@@ -155,5 +155,5 @@ $lang['filter_options_show'] = 'Mostrar';
 // $lang['gen_hamradio_wwff']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_pota']           --> application/language/english/general_words_lang.php
 // $lang['options_save']                --> application/language/english/options_lang.php
-$lang['filter_search_operator'] = 'Operador de Búsqueda';
+$lang['filter_search_operator'] = 'Buscar Operador';
 $lang['filter_options_close'] = 'Cerrar';

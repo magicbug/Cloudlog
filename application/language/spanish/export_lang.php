@@ -41,7 +41,7 @@ ________________________________________________________________________________
 */
 
 $lang['export_cabrillo_header'] = "Exportación Cabrillo";
-$lang['export_cabrillo_description'] = "Exportr un concurso a un registro Cabrillo";
+$lang['export_cabrillo_description'] = "Exportar un concurso a un registro Cabrillo";
 $lang['export_cabrillo_select_station'] = "Seleccione la localización de la estación:";
 $lang['export_cabrillo_proceed'] = "Continuar";
 $lang['export_cabrillo_select_year'] = "Seleccione año";
@@ -61,7 +61,7 @@ $lang['export_cabrillo_cat_mode'] = "Categoría - Modo";
 $lang['export_cabrillo_cat_power'] = "Categoría - Potencia";
 $lang['export_cabrillo_cat_station'] = "Categoría - Estación";
 $lang['export_cabrillo_cat_transmitter'] = "Categoría - Transmisor";
-$lang['export_cabrillo_cat_overlay'] = "Categoría - Superposición";
+$lang['export_cabrillo_cat_overlay'] = "Categoría - Overlay";
 $lang['export_cabrillo_operators'] = "Operadores";
 $lang['export_cabrillo_soapbox'] = "Soapbox";
 $lang['export_cabrillo_address'] = "Dirección";
@@ -69,7 +69,7 @@ $lang['export_cabrillo_address_city'] = "Dirección - Ciudad";
 $lang['export_cabrillo_address_state_province'] = "Dirección - Estado/Provincia";
 $lang['export_cabrillo_address_postalcode'] = "Dirección - Código Postal";
 $lang['export_cabrillo_address_country'] = "Dirección - País";
-$lang['export_cabrillo_no_contests_in_log'] = "¡No se encontraron concursos en tu registro!";
+$lang['export_cabrillo_no_contests_in_log'] = "No se encontraron concursos en tu registro.";
 $lang['export_cabrillo_no_contests_for_stationlocation'] = "¡No se encontraron concursos para esta localización de estación!";
 
 
