@@ -673,6 +673,7 @@ class Lotw extends CI_Controller {
 					$result = "Temporary download directory ".dirname($file)." is not writable. Aborting!";
 					continue;
 				}
+				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $lotw_url);
 				curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog - Amateur Radio Logbook');
 				curl_setopt($ch, CURLOPT_HEADER, false);
