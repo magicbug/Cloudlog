@@ -834,13 +834,14 @@ class User extends CI_Controller {
 				// Generate password reset code 50 characters long
 				$this->load->helper('string');
 				$reset_code = random_string('alnum', 50);
-				$user_first_name = $data->user_firstname;
 				$this->user_model->set_password_reset_code(($data->user_email), $reset_code);
 
 				// Send email with reset code and first Name of the User
 
 				$this->data['reset_code'] = $reset_code;
-				$this->data['user_first_name'] = $user_first_name;  // We can call the user by his first name in the E-Mail
+				$this->data['user_firstname'] = $data->user_firstname; // We can call the user by his first name in the E-Mail
+				$this->data['user_callsign'] = $data->user_callsign;
+				$this->data['user_name'] = $data->user_name;
 				$this->load->library('email');
 
 				if($this->optionslib->get_option('emailProtocol') == "smtp") {
@@ -862,7 +863,6 @@ class User extends CI_Controller {
 
 				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
 				$this->email->to($data->user_email);
-				$this->email->set_mailtype("html");
 				$this->email->subject('Cloudlog Account Password Reset');
 				$this->email->message($message);
 
