@@ -439,6 +439,18 @@
          ]
       }
    },
+   "SO-121":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145875000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"436666000"
+            }
+         ]
+      }
+   },
    "TEVEL-1":{
       "Modes":{
          "V/U":[
@@ -555,18 +567,6 @@
                "Uplink_Freq":"145925000",
                "Downlink_Mode":"FM",
                "Downlink_Freq":"436888000"
-            }
-         ]
-      }
-   },
-   "HADES-D":{
-      "Modes":{
-         "V/U":[
-            {
-               "Uplink_Mode":"FM",
-               "Uplink_Freq":"145875000",
-               "Downlink_Mode":"FM",
-               "Downlink_Freq":"436666000"
             }
          ]
       }
