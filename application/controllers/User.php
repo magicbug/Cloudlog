@@ -804,6 +804,84 @@ class User extends CI_Controller {
 		}
 	}
 
+	function admin_send_passwort_reset() {
+
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		$query = $this->user_model->get_by_id($this->uri->segment(3));
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('id', 'user_id', 'required');
+
+		$data = $query->row();
+
+		if ($this->form_validation->run() != FALSE)
+		{
+			$this->session->set_flashdata('notice', 'Something went wrong! User has no user_id.');
+			redirect('user');
+		}
+		else
+		{
+			// Check email address exists
+			$this->load->model('user_model');
+
+			$check_email = $this->user_model->check_email_address($data->user_email);
+
+			if($check_email == TRUE) {
+				// Generate password reset code 50 characters long
+				$this->load->helper('string');
+				$reset_code = random_string('alnum', 50);
+				$user_first_name = $data->user_firstname;
+				$this->user_model->set_password_reset_code(($data->user_email), $reset_code);
+
+				// Send email with reset code and first Name of the User
+
+				$this->data['reset_code'] = $reset_code;
+				$this->data['user_first_name'] = $user_first_name;
+				$this->load->library('email');
+
+				if($this->optionslib->get_option('emailProtocol') == "smtp") {
+					$config = Array(
+						'protocol' => $this->optionslib->get_option('emailProtocol'),
+						'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
+						'smtp_host' => $this->optionslib->get_option('smtpHost'),
+						'smtp_port' => $this->optionslib->get_option('smtpPort'),
+						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+						'crlf' => "\r\n",
+						'newline' => "\r\n"
+					  );
+
+					  $this->email->initialize($config);
+				}
+
+				$message = $this->load->view('email/admin_reset_password', $this->data,  TRUE);
+
+				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
+				$this->email->to($data->user_email);
+				$this->email->set_mailtype("html");
+				$this->email->subject('Cloudlog Account Password Reset');
+				$this->email->message($message);
+
+				if (! $this->email->send())
+				{
+					// Redirect to user page with message
+					$this->session->set_flashdata('notice', 'Email settings are incorrect.');
+					redirect('user');
+				} else {
+					// Redirect to user page with message
+					$this->session->set_flashdata('notice', 'Password Reset Processed.');
+					redirect('user');
+				}
+			} else {
+				// No account found just return to user page
+				$this->session->set_flashdata('notice', 'Nothing done. No user found.');
+				redirect('user');
+			}
+		}
+	}
+
 	function reset_password($reset_code = NULL)
 	{
 		$data['reset_code'] = $reset_code;
