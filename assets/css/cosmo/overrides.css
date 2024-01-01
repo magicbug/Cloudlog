@@ -39,3 +39,7 @@ TD.qrz {
 	--bs-accordion-btn-bg: #f9f9f9;
 	--bs-accordion-active-bg: #f9f9f9;
 }
+
+.dxccsummaryheader:after {
+	background-image: linear-gradient(to right, black 0, black 12ch, black 12ch, black 100%);
+}
