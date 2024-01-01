@@ -47,6 +47,8 @@ $lang['general_word_city'] = 'City';
 $lang['general_word_total'] = 'Yhteensä';
 $lang['general_word_year'] = 'Vuosi';
 $lang['general_word_month'] = 'Kuukausi';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Colors";
 $lang['general_word_light'] = "Light/Laser";

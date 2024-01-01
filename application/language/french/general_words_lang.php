@@ -47,6 +47,8 @@ $lang['general_word_city'] = "Ville";
 $lang['general_word_total'] = "Total";
 $lang['general_word_year'] = "Année";
 $lang['general_word_month'] = "Mois";
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Couleurs";
 $lang['general_word_light'] = "Lumière/Laser";

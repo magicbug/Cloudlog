@@ -47,6 +47,8 @@ $lang['general_word_city'] = 'City';
 $lang['general_word_total'] = 'Всего';
 $lang['general_word_year'] = 'Год';
 $lang['general_word_month'] = 'Месяц';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Цвета";
 $lang['general_word_light'] = "Свет/лазер";

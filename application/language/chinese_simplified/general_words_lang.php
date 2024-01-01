@@ -47,6 +47,8 @@ $lang['general_word_city'] = '城市';
 $lang['general_word_total'] = '总计';
 $lang['general_word_year'] = '年';
 $lang['general_word_month'] = '月';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "颜色";
 $lang['general_word_light'] = "浅色/激光";
