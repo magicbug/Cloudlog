@@ -213,7 +213,7 @@ $lang['general_word_today'] = 'Heute';
 
 $lang['dashboard_php_version_warning'] = 'Die PHP Version is zu alt. Benötigt wird mindestens die Version 7.4. Die installierte Version ist';
 $lang['dashboard_country_files_warning'] = 'Die Länderlisten müssen aktualisiert werden! Klicke <a href="'.site_url('update').'">hier</a>, um das zu tun!';
-$lang['dashboard_locations_warning'] = 'Ea wurde kein Stationsstandort angelegt! Klicke <a href="'. site_url('station') . '">hier</a>, um das zu tun!';
+$lang['dashboard_locations_warning'] = 'Es wurde kein Stationsstandort angelegt! Klicke <a href="'. site_url('station') . '">hier</a>, um das zu tun!';
 $lang['dashboard_logbooks_warning'] = 'Es wurde kein Stationslogbuch angelegt. Klicke <a href="'. site_url('logbooks') . '">hier</a>, um das zu tun!';
 
 $lang['hams_at_no_activations_found'] = 'Keine bevorstehenden Aktivierungen gefunden. Bitte später noch einmal vorbeischauen.';
