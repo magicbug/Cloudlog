@@ -23,6 +23,11 @@
 </tr>
 
 <tr>
+	<td style="padding: 0 0.3em 0 0:" align="left">DXCC</td>
+	<td style="padding: 0.3em 0 0.3em 0.5em;" align="left"><?php echo $callsign['dxcc']; ?></td>
+</tr>
+
+<tr>
 	<td style="padding: 0 0.3em 0 0;" align="left">Gridsquare</td>
 	<td style="padding: 0.3em 0 0.3em 0.5em;" align="left">
 	<?php
