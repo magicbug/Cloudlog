@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('Direkter Zugriff auf Skripte ist nicht erlaubt');
 $lang['admin_user_line1'] = 'Es muss mindestens ein Benutzer konfiguriert sein, damit Cloudlog funktioniert.';
 $lang['admin_user_line2'] = 'Benutzer können verschiedene Rollen zugewiesen bekommen, die ihnen unterschiedliche Rechte geben wie QSOs zum Logbuch hinzuzufügen und die APIs von Cloudlog zu benutzen';
 $lang['admin_user_line3'] = 'Der aktuell angemeldete Benutzer wird oben rechts auf jeder Seite angezeigt.';
+$lang['admin_user_line4'] = "Mit dem Passwort Reset Knopf kannst du dem Benutzer eine E-Mail mit einem Passwort-Reset Link zuschicken. Dafür müssen die E-Mail Einstellungen in den globalen Optionen korrekt eingerichtet sein.";
 
 $lang['admin_user_list'] = 'Benutzer Liste';
 
@@ -25,7 +26,10 @@ $lang['admin_close'] = 'Schliessen';
 $lang['admin_user_accounts'] = 'Benutzerkonten';
 $lang['admin_danger'] = 'ACHTUNG!';
 $lang['admin_experimental'] = "Experimentell";
+$lang['admin_password_reset'] = "Passwort zurücksetzen";
 
+$lang['admin_email_settings_incorrect'] = "E-Mail Einstellungen sind nicht korrekt.";
+$lang['admin_password_reset_processed'] = "Password Reset E-Mail verschickt.";
 
 
 // Contest Menu
