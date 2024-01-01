@@ -838,7 +838,7 @@ class User extends CI_Controller {
 				// Send email with reset code and first Name of the User
 
 				$this->data['reset_code'] = $reset_code;
-				$this->data['user_first_name'] = $user_first_name;
+				$this->data['user_first_name'] = $user_first_name;  // We can call the user by his first name in the E-Mail
 				$this->load->library('email');
 
 				if($this->optionslib->get_option('emailProtocol') == "smtp") {
@@ -867,16 +867,16 @@ class User extends CI_Controller {
 				if (! $this->email->send())
 				{
 					// Redirect to user page with message
-					$this->session->set_flashdata('notice', 'Email settings are incorrect.');
+					$this->session->set_flashdata('danger', lang('admin_email_settings_incorrect'));
 					redirect('user');
 				} else {
 					// Redirect to user page with message
-					$this->session->set_flashdata('notice', 'Password Reset Processed.');
+					$this->session->set_flashdata('success', lang('admin_password_reset_processed'));
 					redirect('user');
 				}
 			} else {
 				// No account found just return to user page
-				$this->session->set_flashdata('notice', 'Nothing done. No user found.');
+				$this->session->set_flashdata('danger', 'Nothing done. No user found.');
 				redirect('user');
 			}
 		}
