@@ -833,6 +833,11 @@ class Logbook extends CI_Controller {
 						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 						$callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
 					}
+					if (isset($callsign['callsign']['dxcc'])) {
+						$this->load->model('logbook_model');
+						$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
+						$callsign['callsign']['dxcc_name'] = $entity['name'];
+					}
 				} else if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
 					// Load the HamQTH library
 					$this->load->library('hamqth');
@@ -853,6 +858,11 @@ class Logbook extends CI_Controller {
 					if (isset($data['callsign']['gridsquare'])) {
 						$this->load->model('logbook_model');
 						$callsign['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+					}
+					if (isset($callsign['callsign']['dxcc'])) {
+						$this->load->model('logbook_model');
+						$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
+						$callsign['callsign']['dxcc_name'] = $entity['name'];
 					}
 					if (isset($callsign['callsign']['error'])) {
 						$callsign['error'] = $callsign['callsign']['error'];
@@ -876,8 +886,8 @@ class Logbook extends CI_Controller {
 				if (isset($callsign['callsign']['error'])) {
 					$callsign['error'] = $callsign['callsign']['error'];
 				}
-				$callsign['id'] = strtoupper($id);
 
+				$callsign['id'] = strtoupper($id);
 				return $this->load->view('search/result', $callsign, true);
 		}
 	}
