@@ -886,8 +886,8 @@ class Logbook extends CI_Controller {
 				if (isset($callsign['callsign']['error'])) {
 					$callsign['error'] = $callsign['callsign']['error'];
 				}
-				$callsign['id'] = strtoupper($id);
 
+				$callsign['id'] = strtoupper($id);
 				return $this->load->view('search/result', $callsign, true);
 		}
 	}
