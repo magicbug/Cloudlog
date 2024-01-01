@@ -423,6 +423,16 @@ class User_Model extends CI_Model {
 		return 0;
 	}
 
+	// FUNCTION: set's the last-login timestamp in user table
+	function set_last_login($user_id) {
+		$data = array(
+			'last_login_date' => date('Y-m-d H:i:s')
+		);
+		
+		$this->db->where('user_id', $user_id);
+		$this->db->update('users', $data);
+	}
+
 	// FUNCTION: bool authorize($level)
 	// Checks a user's level of access against the given $level
 	function authorize($level) {

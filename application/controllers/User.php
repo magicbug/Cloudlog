@@ -695,6 +695,7 @@ class User extends CI_Controller {
 			if($this->user_model->login() == 1) {
 				$this->session->set_flashdata('notice', 'User logged in');
 				$this->user_model->update_session($data['user']->user_id);
+				$this->user_model->set_last_login($data['user']->user_id);
 				$cookie= array(
 
 					'name'   => 'language',
