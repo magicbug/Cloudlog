@@ -47,6 +47,7 @@
 							<th scope="col"><?php echo lang('gen_hamradio_callsign'); ?></th>
 							<th scope="col"><?php echo lang('admin_email'); ?></th>
 							<th scope="col"><?php echo lang('admin_type'); ?></th>
+							<th scope="col">Last login</th>
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_edit'); ?></th>
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_password_reset'); ?></th>
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_delete'); ?></th>
@@ -64,6 +65,13 @@
 							<td><?php echo $row->user_email; ?></td>
 							<td><?php $l = $this->config->item('auth_level');
 								echo $l[$row->user_type]; ?></td>
+							<td><?php 
+								if ($row->last_login_date != null) {
+									echo $row->last_login_date;
+								} else {
+									echo lang('general_word_never');
+								}?>
+							</td>
 							<td style="text-align: center; vertical-align: middle;"><a href="<?php echo site_url('user/edit') . "/" . $row->user_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-edit"></i></a>
 							<td style="text-align: center; vertical-align: middle;">
 								<?php
