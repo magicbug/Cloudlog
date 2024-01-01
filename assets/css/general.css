@@ -752,3 +752,19 @@ label {
 .btn-pwd-showhide, .btn-pwd-showhide:hover {
 	border: 1px solid var(--cl-border-btn-pwd);
 }
+
+.dxccsummaryheader:after {
+	content: '\02795'; /* Unicode character for "plus" sign (+) */
+	float: right;
+	margin-left: 5px;
+	color: #000000;
+	background-image: linear-gradient(to right, white 0, white 12ch, black 12ch, black 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: transparent;
+}
+
+.dxccsummaryheaderopened:after {
+	content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
