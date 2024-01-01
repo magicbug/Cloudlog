@@ -805,6 +805,7 @@ class User extends CI_Controller {
 		}
 	}
 
+	// Send an E-Mail to the user. Function is similar to forgot_password()
 	function admin_send_passwort_reset() {
 
 		$this->load->model('user_model');

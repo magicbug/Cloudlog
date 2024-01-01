@@ -2,6 +2,8 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
+// Adding a column to users table for the timestamp of the last login
+
 class Migration_add_last_login extends CI_Migration
 {
 

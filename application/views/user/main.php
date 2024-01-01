@@ -47,7 +47,7 @@
 							<th scope="col"><?php echo lang('gen_hamradio_callsign'); ?></th>
 							<th scope="col"><?php echo lang('admin_email'); ?></th>
 							<th scope="col"><?php echo lang('admin_type'); ?></th>
-							<th scope="col">Last login</th>
+							<th scope="col"><?php echo lang('admin_last_login'); ?></th>
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_edit'); ?></th>
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_password_reset'); ?></th>
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_delete'); ?></th>
@@ -66,7 +66,7 @@
 							<td><?php $l = $this->config->item('auth_level');
 								echo $l[$row->user_type]; ?></td>
 							<td><?php 
-								if ($row->last_login_date != null) {
+								if ($row->last_login_date != null) { // if the user never logged in before the value is null. We can show "never" then.
 									echo $row->last_login_date;
 								} else {
 									echo lang('general_word_never');
