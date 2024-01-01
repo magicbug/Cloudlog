@@ -752,3 +752,13 @@ label {
 .btn-pwd-showhide, .btn-pwd-showhide:hover {
 	border: 1px solid var(--cl-border-btn-pwd);
 }
+
+.dxccsummaryheader:after {
+	content: '\02795'; /* Unicode character for "plus" sign (+) */
+	float: right;
+	margin-left: 5px;
+}
+
+.dxccsummaryheaderopened:after {
+	content: "\2796"; /* Unicode character for "minus" sign (-) */
+}
