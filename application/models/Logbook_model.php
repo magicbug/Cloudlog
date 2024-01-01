@@ -4291,6 +4291,12 @@ function lotw_last_qsl_date($user_id) {
                   }
 
                   $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
+
+                  if (isset($callbook['dxcc'])) {
+                    $this->load->model('logbook_model');
+                    $entity = $this->logbook_model->get_entity($callbook['dxcc']);
+                    $callbook['dxcc_name'] = $entity['name'];
+                  }
               }
 
               if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null)
@@ -4312,6 +4318,11 @@ function lotw_last_qsl_date($user_id) {
                       $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
                       $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
                       $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+                  }
+                  if (isset($callsign['dxcc'])) {
+                    $this->load->model('logbook_model');
+                    $entity = $this->logbook_model->get_entity($callsign['dxcc']);
+                    $callsign['dxcc_name'] = $entity['name'];
                   }
               }
               if (isset($callbook))
@@ -4406,6 +4417,10 @@ function lotw_last_qsl_date($user_id) {
                     $this->session->set_userdata('qrz_session_key', $qrz_session_key);
                     $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
                 }
+                if (isset($callbook['dxcc'])) {
+                  $entity = $this->get_entity($callbook['dxcc']);
+                  $callbook['dxcc_name'] = $entity['name'];
+                }
             }
 
             if ($this->config->item('callbook') == "hamqth" && $this->config->item('hamqth_username') != null && $this->config->item('hamqth_password') != null) {
@@ -4424,6 +4439,10 @@ function lotw_last_qsl_date($user_id) {
                     $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
                     $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
                     $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+                }
+                if (isset($callbook['dxcc'])) {
+                  $entity = $this->get_entity($callbook['dxcc']);
+                  $callbook['dxcc_name'] = $entity['name'];
                 }
             }
         } finally {
