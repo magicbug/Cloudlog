@@ -25,6 +25,7 @@ $lang['general_word_count'] = "Nombre";
 $lang['general_word_filtering_on'] = "Filtré sur";
 $lang['general_word_not_display'] = "Ne pas afficher";
 $lang['general_word_icon'] = "Icône";
+$lang['general_word_never'] = "Never";
 
 $lang['general_word_date'] = "Date";
 $lang['general_word_startdate'] = "Date début";

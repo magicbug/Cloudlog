@@ -25,6 +25,7 @@ $lang['general_word_count'] = "数量";
 $lang['general_word_filtering_on'] = "筛选打开";
 $lang['general_word_not_display'] = "Not display";
 $lang['general_word_icon'] = "Icon";
+$lang['general_word_never'] = "Never";
 
 $lang['general_word_date'] = '日期';
 $lang['general_word_startdate'] = "开始时间";

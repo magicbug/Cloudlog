@@ -25,6 +25,7 @@ $lang['general_word_count'] = "Счётчик";
 $lang['general_word_filtering_on'] = "Отфильтровано по";
 $lang['general_word_not_display'] = "Not display";
 $lang['general_word_icon'] = "Icon";
+$lang['general_word_never'] = "Never";
 
 $lang['general_word_date'] = 'Дата';
 $lang['general_word_startdate'] = "Дата начала";

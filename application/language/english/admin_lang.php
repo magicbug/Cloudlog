@@ -12,6 +12,7 @@ $lang['admin_user_list'] = 'User List';
 $lang['admin_user'] = 'User';
 $lang['admin_email'] = 'E-mail';
 $lang['admin_type'] = 'Type';
+$lang['admin_last_login'] = "Last Login";
 $lang['admin_options'] = 'Options';
 
 $lang['admin_create_user'] = 'Create user';

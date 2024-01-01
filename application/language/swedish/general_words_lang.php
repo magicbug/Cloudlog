@@ -25,6 +25,7 @@ $lang['general_word_enabled'] = "Enabled";
 $lang['general_word_disabled'] = "Disabled";
 $lang['general_word_count'] = "Count";
 $lang['general_word_filtering_on'] = "Filtering on";
+$lang['general_word_never'] = "Never";
 $lang['general_word_export'] = "Export";
 $lang['general_word_import'] = "Import";
 $lang['general_word_startdate'] = "Start Date";

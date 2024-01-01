@@ -12,6 +12,7 @@ $lang['admin_user_list'] = 'Seznam uživatelů';
 $lang['admin_user'] = 'Uživatel';
 $lang['admin_email'] = 'E-mail';
 $lang['admin_type'] = 'Typ';
+$lang['admin_last_login'] = "Last Login";
 $lang['admin_options'] = 'Možnosti';
 
 $lang['admin_create_user'] = 'Vytvořit uživatele';
