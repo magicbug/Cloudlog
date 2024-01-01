@@ -30,7 +30,7 @@ $lang['admin_experimental'] = "Experimental";
 
 // Contest Menu
 
-$lang['admin_contest_menu_line_1'] = 'Usando la lista de concursos, puede controlar qe Concursos se muestran cuando se registran QSOs en un concurso.';
+$lang['admin_contest_menu_line_1'] = 'Usando la lista de concursos, puede controlar qué Concursos se muestran cuando se registran QSOs en un concurso.';
 $lang['admin_contest_menu_line_2'] = 'Los concursos activos se mostrarán en la lista desplegable de Nombre de Concurso, sin embargo los inactivos están ocultos y no se pueden seleccionar.';
 $lang['admin_contest_menu_name'] = 'Nombre';
 $lang['admin_contest_menu_adif'] = 'Nombre ADIF';
