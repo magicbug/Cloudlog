@@ -48,6 +48,8 @@ $lang['general_word_country'] = 'Land';
 $lang['general_word_city'] = 'City';
 
 $lang['general_word_total'] = 'Totalt';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 $lang['general_word_year'] = 'I år';
 $lang['general_word_month'] = 'Denna månad';
 

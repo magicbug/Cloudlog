@@ -48,6 +48,8 @@ $lang['general_word_city'] = 'City';
 $lang['general_word_total'] = 'Total';
 $lang['general_word_year'] = 'Year';
 $lang['general_word_month'] = 'Month';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Colors";
 $lang['general_word_light'] = "Light/Laser";

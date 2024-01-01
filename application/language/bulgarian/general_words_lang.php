@@ -48,6 +48,8 @@ $lang['general_word_city'] = 'Град';
 $lang['general_word_total'] = 'Общо';
 $lang['general_word_year'] = 'Година';
 $lang['general_word_month'] = 'Месец';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Colors";
 $lang['general_word_light'] = "Light/Laser";

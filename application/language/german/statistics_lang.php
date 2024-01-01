@@ -42,3 +42,19 @@ $lang['statistics_distances_and_band'] = "und Band";
 
 $lang['statistics_timeline'] = "Zeitleiste";
 
+/*
+*
+* Days with QSO
+*
+*/
+
+$lang['statistics_days_with_qso'] = "Anzahl der Tage mit QSOs pro Jahr";
+$lang['statistics_days_with_qso_short'] = "Tage mit QSOs";
+$lang['statistics_dwq_longest_streak_in_log'] = "Längste Serie mit QSOs im Logbuch";
+$lang['statistics_dwq_longest_streak_in_log_hint'] = "Es werden maximal die 10 längsten Serien angezeigt!";
+$lang['statistics_dwq_streak_continuous_days'] = "Serie (fortlaufende Tage mit QSOs)";
+$lang['statistics_dwq_current_streak_in_log'] = "Aktuelle Serie mit QSOs im Logbuch";
+$lang['statistics_dwq_current_streak_continuous_days'] = "Aktuelle Serie (fortlaufende Tage mit QSOs)";
+$lang['statistics_dwq_make_qso_to_extend_streak'] = "Wenn Sie heute ein QSO machen, können Sie Ihre Serie verlängern... Andernfalls wird Ihre aktuelle Serie unterbrochen!";
+$lang['statistics_dwq_no_current_streak'] = "Keine aktuelle Serie gefunden!";
+
