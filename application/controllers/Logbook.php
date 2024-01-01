@@ -930,6 +930,11 @@ class Logbook extends CI_Controller {
 							$this->load->model('logbook_model');
 							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
 						}
+						if (isset($data['callsign']['dxcc'])) {
+							$this->load->model('logbook_model');
+							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
+							$data['callsign']['dxcc_name'] = $entity['name'];
+						}
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];
 						}
@@ -953,6 +958,11 @@ class Logbook extends CI_Controller {
 						if (isset($data['callsign']['gridsquare'])) {
 							$this->load->model('logbook_model');
 							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+						}
+						if (isset($data['callsign']['dxcc'])) {
+							$this->load->model('logbook_model');
+							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
+							$data['callsign']['dxcc_name'] = $entity['name'];
 						}
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];

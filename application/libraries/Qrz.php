@@ -91,6 +91,7 @@ class Qrz {
             $data['city'] = (string)$xml->Callsign->addr2;
             $data['lat'] = (string)$xml->Callsign->lat;
             $data['long'] = (string)$xml->Callsign->lon;
+            $data['dxcc'] = (string)$xml->Callsign->dxcc;
             $data['iota'] = (string)$xml->Callsign->iota;
             $data['qslmgr'] = (string)$xml->Callsign->qslmgr;
             $data['image'] = (string)$xml->Callsign->image;
