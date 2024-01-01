@@ -12,6 +12,22 @@
 
 	<?php } ?>
 
+	<?php if ($this->session->flashdata('success')) { ?>
+		<!-- Display Message -->
+		<div class="alert alert-success" role="alert">
+			<?php echo $this->session->flashdata('success'); ?>
+		</div>
+
+	<?php } ?>
+
+	<?php if ($this->session->flashdata('danger')) { ?>
+		<!-- Display Message -->
+		<div class="alert alert-danger" role="alert">
+			<?php echo $this->session->flashdata('danger'); ?>
+		</div>
+
+	<?php } ?>
+
 	<div class="card">
 		<div class="card-header">
 			<?php echo lang('admin_user_list'); ?>
@@ -20,6 +36,7 @@
 			<p class="card-text"><?php echo lang('admin_user_line1'); ?></p>
 			<p class="card-text"><?php echo lang('admin_user_line2'); ?></p>
 			<p class="card-text"><?php echo lang('admin_user_line3'); ?></p>
+			<p class="card-text"><?php echo lang('admin_user_line4'); ?></p>
 			<p><a class="btn btn-primary" href="<?php echo site_url('user/add'); ?>"><i class="fas fa-user-plus"></i> <?php echo lang('admin_create_user'); ?></a></p>
 
 			<div class="table-responsive">
@@ -31,7 +48,7 @@
 							<th scope="col"><?php echo lang('admin_email'); ?></th>
 							<th scope="col"><?php echo lang('admin_type'); ?></th>
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_edit'); ?></th>
-							<th style="text-align: center; vertical-align: middle;" scope="col">Password Reset</th>
+							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_password_reset'); ?></th>
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_delete'); ?></th>
 						</tr>
 					</thead>
