@@ -9,16 +9,16 @@ Topbar
 ___________________________________________________________________________________________
 */
 
-$lang['filter_quickfilters'] = 'Quickfilters';
-$lang['filter_qsl_filters'] = 'QSL Filters';
-$lang['filter_filters'] = 'Filters';
-$lang['filter_actions'] = 'Actions';
-$lang['filter_results'] = '# Results';
-$lang['filter_search'] = 'Search';
-$lang['filter_dupes'] = "Dupes";
-$lang['filter_map'] = 'Map';
-$lang['filter_options'] = 'Options';
-$lang['filter_reset'] = 'Reset';
+$lang['filter_quickfilters'] = 'Filtros rápidos';
+$lang['filter_qsl_filters'] = 'Filtros QSL';
+$lang['filter_filters'] = 'Filtros';
+$lang['filter_actions'] = 'Actiones';
+$lang['filter_results'] = 'No. Resultados';
+$lang['filter_search'] = 'Buscar';
+$lang['filter_dupes'] = "Duplicados";
+$lang['filter_map'] = 'Mapa';
+$lang['filter_options'] = 'Opciones';
+$lang['filter_reset'] = 'Reinicializar';
 
 /*
 ___________________________________________________________________________________________
@@ -26,18 +26,18 @@ Quickilters
 ___________________________________________________________________________________________
 */
 
-$lang['filter_quicksearch_w_sel'] = 'Quicksearch with selected: ';
-$lang['filter_search_callsign'] = 'Search Callsign';
-$lang['filter_search_dxcc'] = 'Search DXCC';
-$lang['filter_search_state'] = 'Search State';
-$lang['filter_search_gridsquare'] = 'Search Gridsquare';
-$lang['filter_search_cq_zone'] = 'Search CQ Zone';
-$lang['filter_search_mode'] = 'Search Mode';
-$lang['filter_search_band'] = 'Search Band';
-$lang['filter_search_iota'] = 'Search IOTA';
-$lang['filter_search_sota'] = 'Search SOTA';
-$lang['filter_search_wwff'] = 'Search WWFF';
-$lang['filter_search_pota'] = 'Search POTA';
+$lang['filter_quicksearch_w_sel'] = 'Búsqueda rápida con seleccionados: ';
+$lang['filter_search_callsign'] = 'Buscar Indicativo';
+$lang['filter_search_dxcc'] = 'Buscar DXCC';
+$lang['filter_search_state'] = 'Buscar Estado';
+$lang['filter_search_gridsquare'] = 'Buscar Gridsquare';
+$lang['filter_search_cq_zone'] = 'Buscar Zona CQ';
+$lang['filter_search_mode'] = 'Buscar Modo';
+$lang['filter_search_band'] = 'Buscar Banda';
+$lang['filter_search_iota'] = 'Buscar IOTA';
+$lang['filter_search_sota'] = 'Buscar SOTA';
+$lang['filter_search_wwff'] = 'Buscar WWFF';
+$lang['filter_search_pota'] = 'Buscar POTA';
 
 /*
 ___________________________________________________________________________________________
@@ -45,16 +45,16 @@ QSL Filters
 ___________________________________________________________________________________________
 */
 
-$lang['filter_qsl_sent'] = 'QSL sent';
-$lang['filter_qsl_recv'] = 'QSL received';
-$lang['filter_qsl_sent_method'] = 'QSL send. method';
-$lang['filter_qsl_recv_method'] = 'QSL recv. method';
-$lang['filter_lotw_sent'] = 'LoTW sent';
-$lang['filter_lotw_recv'] = 'LoTW received';
-$lang['filter_eqsl_sent'] = 'eQSL sent';
-$lang['filter_eqsl_recv'] = 'eQSL received';
+$lang['filter_qsl_sent'] = 'QSL enviadas';
+$lang['filter_qsl_recv'] = 'QSL recibidas';
+$lang['filter_qsl_sent_method'] = 'Método de Envío de QSL';
+$lang['filter_qsl_recv_method'] = 'Método de Recepción de QSL';
+$lang['filter_lotw_sent'] = 'Enviado por LoTW';
+$lang['filter_lotw_recv'] = 'Recibido por LoTW';
+$lang['filter_eqsl_sent'] = 'Enviado por eQSL';
+$lang['filter_eqsl_recv'] = 'Recibido por eQSL';
 $lang['filter_qsl_via'] = 'QSL via';
-$lang['filter_qsl_images'] = 'QSL Images';
+$lang['filter_qsl_images'] = 'Imágenes QSL';
 
 // $lang['general_word_all']                --> application/language/english/general_words_lang.php
 // $lang['general_word_yes']                --> application/language/english/general_words_lang.php
@@ -62,7 +62,7 @@ $lang['filter_qsl_images'] = 'QSL Images';
 // $lang['general_word_requested']          --> application/language/english/general_words_lang.php
 // $lang['general_word_queued']             --> application/language/english/general_words_lang.php
 // $lang['general_word_invalid_ignore']     --> application/language/english/general_words_lang.php
-$lang['filter_qsl_verified'] = 'Verified';
+$lang['filter_qsl_verified'] = 'Verificado';
 
 // $lang['general_word_qslcard_bureau']     --> application/language/english/general_words_lang.php
 // $lang['general_word_qslcard_direct']     --> application/language/english/general_words_lang.php
@@ -75,18 +75,18 @@ General Filters
 ___________________________________________________________________________________________
 */
 
-$lang['filter_general_from'] = 'From';
-$lang['filter_general_to'] = 'to';
+$lang['filter_general_from'] = 'Desde';
+$lang['filter_general_to'] = 'a';
 // $lang['gen_hamradio_de']             --> application/language/english/general_words_lang.php 
 // $lang['gen_hamradio_dx']             --> application/language/english/general_words_lang.php 
 // $lang['gen_hamradio_dxcc']           --> application/language/english/general_words_lang.php
-$lang['filter_general_none'] = '- NONE - (e.g. /MM, /AM)';
+$lang['filter_general_none'] = '- Ninguno - (ej. /MM, /AM)';
 // $lang['gen_hamradio_state']          --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_gridsquare']     --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_mode']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_band']           --> application/language/english/general_words_lang.php
 
-$lang['filter_general_propagation'] = 'Propagation';
+$lang['filter_general_propagation'] = 'Propagación';
 // $lang['gen_hamradio_cq_zone']        --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_iota']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_sota']           --> application/language/english/general_words_lang.php
@@ -99,29 +99,28 @@ Actions
 ___________________________________________________________________________________________
 */
 
-$lang['filter_actions_w_selected'] = 'With selected: ';
-$lang['filter_actions_update_f_callbook'] = 'Update from Callbook';
-$lang['filter_actions_queue_bureau'] = 'Queue Bureau';
-$lang['filter_actions_queue_direct'] = 'Queue Direct';
-$lang['filter_actions_queue_electronic'] = 'Queue Electronic';
-$lang['filter_actions_sent_bureau'] = 'Sent (Bureau)';
-$lang['filter_actions_sent_direct'] = 'Sent (Direct)';
-$lang['filter_actions_sent_electronic'] = 'Sent (Electronic)';
-$lang['filter_actions_not_sent'] = 'Not Sent';
-$lang['filter_actions_qsl_n_required'] = 'QSL Not Required';
-$lang['filter_actions_recv_bureau'] = 'Received (Bureau)';
-$lang['filter_actions_recv_direct'] = 'Received (Direct)';
-$lang['filter_actions_recv_electronic'] = 'Received (Electronic)';
-$lang['filter_actions_create_adif'] = 'Create ADIF';
-$lang['filter_actions_print_label'] = 'Print Label';
-$lang['filter_actions_start_print_title'] = 'Print Labels';
-$lang['filter_actions_print_include_via'] = "Include Via";
-$lang['filter_actions_print_include_grid'] = 'Include Grid?';
-$lang['filter_actions_start_print'] = 'Start printing at?';
-$lang['filter_actions_print'] = 'Print';
-$lang['filter_actions_qsl_slideshow'] = 'QSL Slideshow';
-$lang['filter_actions_delete'] = 'Delete';
-$lang['filter_actions_delete_warning'] = "Warning! Are you sure you want to delete the marked QSO(s)?";
+$lang['filter_actions_w_selected'] = 'Con los seleccionados: ';
+$lang['filter_actions_update_f_callbook'] = 'Actualizar de Callbook';
+$lang['filter_actions_queue_bureau'] = 'En Cola por Buró';
+$lang['filter_actions_queue_direct'] = 'En Cola por Directa';
+$lang['filter_actions_queue_electronic'] = 'En Cola por Electrónico';
+$lang['filter_actions_sent_bureau'] = 'Enviado (Buró)';
+$lang['filter_actions_sent_direct'] = 'Enviado (Directa)';
+$lang['filter_actions_sent_electronic'] = 'Enviado (Electrónico)';
+$lang['filter_actions_not_sent'] = 'No Enviado';
+$lang['filter_actions_qsl_n_required'] = 'QSL no Requerida';
+$lang['filter_actions_recv_bureau'] = 'Recibido (Buró)';
+$lang['filter_actions_recv_direct'] = 'Recibido (Directa)';
+$lang['filter_actions_recv_electronic'] = 'Recibido (Electrónico)';
+$lang['filter_actions_create_adif'] = 'Crear ADIF';
+$lang['filter_actions_print_label'] = 'Imprimir Etiqueta';
+$lang['filter_actions_start_print_title'] = 'Imprimir Etiquetas';
+$lang['filter_actions_print_include_via'] = "Incluir Vía";
+$lang['filter_actions_start_print'] = '¿Iniciar impresión desde?';
+$lang['filter_actions_print'] = 'Imprimir';
+$lang['filter_actions_qsl_slideshow'] = 'Presentación QSL';
+$lang['filter_actions_delete'] = 'Eliminar';
+$lang['filter_actions_delete_warning'] = "¡Advertencia! ¿Está seguro que desea eliminar las QSO marcadas?";
 
 
 /*
@@ -130,9 +129,9 @@ Options
 ___________________________________________________________________________________________
 */
 
-$lang['filter_options_title'] = 'Options for the Advanced Logbook';
-$lang['filter_options_column'] = 'Column';
-$lang['filter_options_show'] = 'Show';
+$lang['filter_options_title'] = 'Opciones para el Libro de Guardia Avanzado';
+$lang['filter_options_column'] = 'Columna';
+$lang['filter_options_show'] = 'Mostrar';
 // $lang['general_word_datetime']       --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_de']             --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_dx']             --> application/language/english/general_words_lang.php
@@ -156,5 +155,5 @@ $lang['filter_options_show'] = 'Show';
 // $lang['gen_hamradio_wwff']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_pota']           --> application/language/english/general_words_lang.php
 // $lang['options_save']                --> application/language/english/options_lang.php
-$lang['filter_search_operator']='Search Operator';
-$lang['filter_options_close'] = 'Close';
+$lang['filter_search_operator'] = 'Buscar Operador';
+$lang['filter_options_close'] = 'Cerrar';

@@ -484,3 +484,8 @@ $options = json_decode($options);
     </tbody>
 </table>
 </div>
+<script>
+<?php
+    echo 'var lang_datatables_language = "' . lang('datatables_language') . '";';
+?>
+</script>

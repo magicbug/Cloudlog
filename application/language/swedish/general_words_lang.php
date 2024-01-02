@@ -221,3 +221,5 @@ $lang['dashboard_locations_warning'] = 'You have no station locations. Go <a hre
 $lang['dashboard_logbooks_warning'] = 'You have no station logbook. Go <a href="'. site_url('logbooks') . '">here</a> to create it!';
 
 $lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';
+
+$lang['datatables_language'] = "en-GB";

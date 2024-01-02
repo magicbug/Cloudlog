@@ -220,3 +220,5 @@ $lang['dashboard_locations_warning'] = 'Es wurde kein Stationsstandort angelegt!
 $lang['dashboard_logbooks_warning'] = 'Es wurde kein Stationslogbuch angelegt. Klicke <a href="'. site_url('logbooks') . '">hier</a>, um das zu tun!';
 
 $lang['hams_at_no_activations_found'] = 'Keine bevorstehenden Aktivierungen gefunden. Bitte später noch einmal vorbeischauen.';
+
+$lang['datatables_language'] = "de-DE";

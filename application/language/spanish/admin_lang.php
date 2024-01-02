@@ -2,30 +2,29 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['admin_user_line1'] = 'Cloudlog needs at least one user configured in order to operate.';
-$lang['admin_user_line2'] = 'Users can be assigned roles which give them different permissions, such as adding QSOs to the logbook and accessing Cloudlog APIs.';
-$lang['admin_user_line3'] = 'The currently logged-in user is displayed at the upper-right of each page.';
-$lang['admin_user_line4'] = "With the password reset button, you can send a user an email containing a link to reset their password. To achieve this, ensure that the email settings in the global options are configured correctly.";
+$lang['admin_user_line1'] = 'Cloudlog necesita al menos un usuario configurado para operar.';
+$lang['admin_user_line2'] = 'Los usuarios pueden tener roles que les entregan diferentes permisos, como añadir QSOs al libro de guardia y acceder a las APIs de Cloudlog.';
+$lang['admin_user_line3'] = 'El usuario actualmente en sesión se muestra en la parte superior derecha de la página.';
 
-$lang['admin_user_list'] = 'User List';
+$lang['admin_user_list'] = 'Lista de Usuarios';
 
-$lang['admin_user'] = 'User';
-$lang['admin_email'] = 'E-mail';
-$lang['admin_type'] = 'Type';
-$lang['admin_last_login'] = "Last Login";
-$lang['admin_options'] = 'Options';
+$lang['admin_user'] = 'Usuario';
+$lang['admin_email'] = 'Email';
+$lang['admin_type'] = 'Tipo';
+$lang['admin_options'] = 'Opciones';
 
-$lang['admin_create_user'] = 'Create user';
-$lang['admin_delete'] = 'Delete';
-$lang['admin_remove'] = "Remove";
-$lang['admin_edit'] = 'Edit';
-$lang['admin_create'] = 'Create';
-$lang['admin_update'] = 'Update';
-$lang['admin_copy'] = 'Copy';
-$lang['admin_save'] = 'Save';
-$lang['admin_close'] = 'Close';
-$lang['admin_user_accounts'] = 'User Accounts';
-$lang['admin_danger'] = 'DANGER!';
+$lang['admin_create_user'] = 'Crear usuario';
+$lang['admin_delete'] = 'Eliminar';
+$lang['admin_remove'] = "Remover";
+$lang['admin_edit'] = 'Editar';
+$lang['admin_create'] = 'Crear';
+$lang['admin_update'] = 'Actualizar';
+$lang['admin_copy'] = 'Copiar';
+$lang['admin_save'] = 'Guardar';
+$lang['admin_close'] = 'Cerrar';
+$lang['admin_user_accounts'] = 'Cuentas de Usuario';
+$lang['admin_danger'] = '¡PELIGRO!';
+
 $lang['admin_experimental'] = "Experimental";
 $lang['admin_password_reset'] = "Password Reset";
 
@@ -35,26 +34,26 @@ $lang['admin_password_reset_processed'] = "Password Reset E-Mail sent.";
 
 // Contest Menu
 
-$lang['admin_contest_menu_line_1'] = 'Using the contest list, you can control which Contests are shown when logging QSOs in a contest.';
-$lang['admin_contest_menu_line_2'] = 'Active contests will be shown in the Contest Name drop-down, while inactive contests will be hidden and cannot be selected.';
-$lang['admin_contest_menu_name'] = 'Name';
-$lang['admin_contest_menu_adif'] = 'ADIF Name';
-$lang['admin_contest_menu_active'] = 'Active';
-$lang['admin_contest_menu_n_active'] = 'Not Active';
-$lang['admin_contest_menu_activate'] = 'Activate';
-$lang['admin_contest_menu_deactivate'] = 'Deactivate';
+$lang['admin_contest_menu_line_1'] = 'Usando la lista de concursos, puede controlar qué Concursos se muestran cuando se registran QSOs en un concurso.';
+$lang['admin_contest_menu_line_2'] = 'Los concursos activos se mostrarán en la lista desplegable de Nombre de Concurso, sin embargo los inactivos están ocultos y no se pueden seleccionar.';
+$lang['admin_contest_menu_name'] = 'Nombre';
+$lang['admin_contest_menu_adif'] = 'Nombre ADIF';
+$lang['admin_contest_menu_active'] = 'Activo';
+$lang['admin_contest_menu_n_active'] = 'Inactivo';
+$lang['admin_contest_menu_activate'] = 'Activar';
+$lang['admin_contest_menu_deactivate'] = 'Desactivar';
 
-$lang['admin_contest_add_contest'] = 'Add a Contest';
-$lang["admin_contest_create"] = "Create";
-$lang['admin_contest_all_active'] = 'Activate All';
-$lang['admin_contest_all_deactive'] = 'Deactivate All';
+$lang['admin_contest_add_contest'] = 'Añadir un concursos';
+$lang["admin_contest_create"] = "Crear";
+$lang['admin_contest_all_active'] = 'Activar Todo';
+$lang['admin_contest_all_deactive'] = 'Desactivar Todo';
 
-$lang['admin_contest_name_adif'] = 'Contest ADIF Name';
-$lang['admin_contest_name_of_contest'] = 'Name of the Contest';
-$lang['admin_contest_name_of_adif'] = 'Name of Contest in ADIF-specification';
-$lang['admin_contest_edit_active_hint'] = 'Set to active if to be listed in Contest-list';
-$lang['admin_contest_edit_update_contest'] = 'Update Contest';
-$lang['admin_contest_deletion_warning'] = 'Warning! Are you sure you want to delete the following contest: ';
-$lang['admin_contest_active_all_warning'] = 'Warning! Are you sure you want to activate all contests?';
-$lang['admin_contest_deactive_all_warning'] = 'Warning! Are you sure you want to deactivate all contests?';
+$lang['admin_contest_name_adif'] = 'Nombre ADIF del Concurso';
+$lang['admin_contest_name_of_contest'] = 'Nombre del Concurso';
+$lang['admin_contest_name_of_adif'] = 'Nombre del Concurso en la especificación ADIF';
+$lang['admin_contest_edit_active_hint'] = 'Configurar en activo si desea que esté en la lista de Concursos';
+$lang['admin_contest_edit_update_contest'] = 'Actualizar Concurso';
+$lang['admin_contest_deletion_warning'] = '¡Advertencia! ¿Está seguro que desea eliminar el siguiente concurso: ';
+$lang['admin_contest_active_all_warning'] = '¡Advertencia! ¿Está seguro que desea activar todos los concursos?';
+$lang['admin_contest_deactive_all_warning'] = '¡Advertencia! ¿Está seguro que desea desactivar todos los concursos?';
 

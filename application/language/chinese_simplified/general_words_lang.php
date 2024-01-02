@@ -220,3 +220,5 @@ $lang['dashboard_locations_warning'] = '您没有电台站位置。 前往<a hre
 $lang['dashboard_logbooks_warning'] = '你没有电台日志。 请前往<a href="'.site_url('logbooks') .'">此处</a>创建它！';
 
 $lang['hams_at_no_activations_found'] = '未找到即将进行的激活。 请稍后再回来查看。';
+
+$lang['datatables_language'] = "en-GB";
