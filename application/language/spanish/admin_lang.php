@@ -24,8 +24,12 @@ $lang['admin_save'] = 'Guardar';
 $lang['admin_close'] = 'Cerrar';
 $lang['admin_user_accounts'] = 'Cuentas de Usuario';
 $lang['admin_danger'] = '¡PELIGRO!';
-$lang['admin_experimental'] = "Experimental";
 
+$lang['admin_experimental'] = "Experimental";
+$lang['admin_password_reset'] = "Password Reset";
+
+$lang['admin_email_settings_incorrect'] = "Email settings are incorrect.";
+$lang['admin_password_reset_processed'] = "Password Reset E-Mail sent.";
 
 
 // Contest Menu

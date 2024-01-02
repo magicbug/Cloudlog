@@ -32,6 +32,7 @@ class Lookup_model extends CI_Model{
 			}
 		}
 
+		if (!(isset($resultArray))) $resultArray=[];
 		return $resultArray;
 	}
 

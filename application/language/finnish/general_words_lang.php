@@ -25,6 +25,7 @@ $lang['general_word_count'] = "Count";
 $lang['general_word_filtering_on'] = "Filtering on";
 $lang['general_word_not_display'] = "Not display";
 $lang['general_word_icon'] = "Icon";
+$lang['general_word_never'] = "Never";
 
 $lang['general_word_date'] = 'Päivä';
 $lang['general_word_startdate'] = "Start Date";
@@ -47,6 +48,8 @@ $lang['general_word_city'] = 'City';
 $lang['general_word_total'] = 'Yhteensä';
 $lang['general_word_year'] = 'Vuosi';
 $lang['general_word_month'] = 'Kuukausi';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Colors";
 $lang['general_word_light'] = "Light/Laser";

@@ -13,14 +13,21 @@
 </tr>
 
 <tr>
-	<td style="padding: 0 0.3em 0 0" align="left">Name</td>
+	<td style="padding: 0 0.3em 0 0;" align="left">Name</td>
 	<td style="padding: 0.3em 0 0.3em 0.5em;" align="left"><?php echo $callsign['name']; ?></td>
 </tr>
 
 <tr>
-	<td style="padding: 0 0.3em 0 0:" align="left">City</td>
+	<td style="padding: 0 0.3em 0 0;" align="left">City</td>
 	<td style="padding: 0.3em 0 0.3em 0.5em;" align="left"><?php echo $callsign['city']; ?></td>
 </tr>
+
+<?php if(isset($callsign['dxcc_name'])) { ?>
+<tr>
+	<td style="padding: 0 0.3em 0 0;" align="left">DXCC</td>
+	<td style="padding: 0.3em 0 0.3em 0.5em;" align="left"><?php echo $callsign['dxcc_name']; ?></td>
+</tr>
+<?php } ?>
 
 <tr>
 	<td style="padding: 0 0.3em 0 0;" align="left">Gridsquare</td>

@@ -1333,6 +1333,23 @@ $($('#callsign')).on('keypress',function(e) {
     <script>
     // Javascript for controlling rig frequency.
 	  var updateFromCAT = function() {
+      var cat2UI = function(ui, cat, allow_empty, allow_zero, callback_on_update) {
+        // Check, if cat-data is available
+        if(cat == null) {
+          return;
+        } else if (typeof allow_empty !== 'undefined' && !allow_empty && cat == '') {
+          return;
+        } else if (typeof allow_zero !== 'undefined' && !allow_zero && cat == '0' ) {
+          return;
+        }
+        // Only update the ui-element, if cat-data has changed
+        if (ui.data('catValue') != cat) {
+          ui.val(cat);
+          ui.data('catValue',cat);
+          if (typeof callback_on_update === 'function') { callback_on_update(cat); }
+        }
+      }
+
 		  if($('select.radios option:selected').val() != '0') {
 			  radioID = $('select.radios option:selected').val();
 			  $.getJSON( "radio/json/" + radioID, function( data ) {
@@ -1358,31 +1375,14 @@ $($('#callsign')).on('keypress',function(e) {
 					  if($('.radio_login_error').length != 0) {
 						  $(".radio_login_error" ).remove();
 					  }
-					  $('#frequency').val(data.frequency);
-					  $("#band").val(frequencyToBand(data.frequency));
-					  if (data.frequency_rx != "") {
-						  $('#frequency_rx').val(data.frequency_rx);
-						  $("#band_rx").val(frequencyToBand(data.frequency_rx));
-					  }
-
-					  if ((data.mode != "") && (data.mode != null)) {
-					  	old_mode = $(".mode").val();
-					  	$(".mode").val(data.mode);
-					  } else {
-					  	old_mode = $(".mode").val();
-					  }
-
-					  if (old_mode !== $(".mode").val()) {
-						  // Update RST on mode change via CAT
-						  setRst($(".mode").val());
-					  }
-					  $("#sat_name").val(data.satname);
-					  $("#sat_mode").val(data.satmode);
-					  if(data.power != null && data.power != 0) {
-						  $("#transmit_power").val(data.power);
-					  }
-					  $("#selectPropagation").val(data.prop_mode);
-
+            cat2UI($('#frequency'),data.frequency,false,true,function(d){$("#band").val(frequencyToBand(d))});
+            cat2UI($('#frequency_rx'),data.frequency_rx,false,true,function(d){$("#band_rx").val(frequencyToBand(d))});
+            cat2UI($('.mode'),data.mode,false,false,function(d){setRst($(".mode").val())});
+            cat2UI($('#sat_name'),data.satname,false,false);
+            cat2UI($('#sat_mode'),data.satmode,false,false);
+            cat2UI($('#transmit_power'),data.power,false,false);
+            cat2UI($('#selectPropagation'),data.prop_mode,false,false);
+            
 					  // Display CAT Timeout warning based on the figure given in the config file
 					  var minutes = Math.floor(<?php echo $this->optionslib->get_option('cat_timeout_interval'); ?> / 60);
 
@@ -1402,15 +1402,17 @@ $($('#callsign')).on('keypress',function(e) {
 						  if(data.power != null && data.power != 0) {
 							  text = text+'<span style="margin-left:10px"></span>'+data.power+' W';
 						  }
+              ptext = '';
 						  if(data.prop_mode != null && data.prop_mode != '') {
-							  text = text+'<span style="margin-left:10px"></span>('+data.prop_mode;
+							  ptext = ptext + data.prop_mode;
 							  if (data.prop_mode == 'SAT') {
-								  text = text+' '+data.satname;
+								  ptext = ptext + ' ' + data.satname;
 							  }
 						  }
 						  if(data.frequency_rx != null && data.frequency_rx != 0) {
-							  text = text+'<span style="margin-left:10px"></span><b>RX:</b> '+(Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3)+' MHz)';
+							  ptext = ptext + '<span style="margin-left:10px"></span><b>RX:</b> ' + (Math.round(parseInt(data.frequency_rx)/1000)/1000).toFixed(3) + ' MHz';
 						  }
+              if( ptext != '') { text = text + '<span style="margin-left:10px"></span>(' + ptext + ')';}
 						  if (! $('#radio_cat_state').length) {
 							  $('#radio_status').prepend('<div aria-hidden="true"><div id="radio_cat_state" class="alert alert-success radio_cat_state" role="alert">'+text+'</div></div>');
 						  } else {
