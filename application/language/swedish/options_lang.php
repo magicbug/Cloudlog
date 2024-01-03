@@ -58,6 +58,8 @@ $lang['options_global_text'] = 'Global text';
 $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the_oqrs_page'] = 'Denna text är en valfri text som kan visas överst på OQRS-sidan.';
 $lang['options_grouped_search'] = 'Grupperad sökning';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'När detta är på kommer alla stationsplatser med OQRS aktiv att sökas på en gång.';
+$lang['options_grouped_search_show_station_name'] = "Show station location name in grouped search results";
+$lang['options_grouped_search_show_station_name_hint'] = "If grouped search is ON, you can decide if the name of the station location shall be shown in the results table.";
 $lang['options_oqrs_options_have_been_saved'] = 'OQRS-alternativ har sparats.';
 
 $lang['options_dxcluster'] = 'DXCluster';

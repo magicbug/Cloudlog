@@ -25,6 +25,7 @@ $lang['general_word_count'] = "Счётчик";
 $lang['general_word_filtering_on'] = "Отфильтровано по";
 $lang['general_word_not_display'] = "Not display";
 $lang['general_word_icon'] = "Icon";
+$lang['general_word_never'] = "Never";
 
 $lang['general_word_date'] = 'Дата';
 $lang['general_word_startdate'] = "Дата начала";
@@ -47,6 +48,8 @@ $lang['general_word_city'] = 'City';
 $lang['general_word_total'] = 'Всего';
 $lang['general_word_year'] = 'Год';
 $lang['general_word_month'] = 'Месяц';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Цвета";
 $lang['general_word_light'] = "Свет/лазер";
@@ -218,3 +221,5 @@ $lang['dashboard_locations_warning'] = 'У вас нет расположени�
 $lang['dashboard_logbooks_warning'] = 'У вас нет аппаратного журнала! Перейдите <a href="'. site_url('logbooks') . '">сюда</a>, чтобы создать его!';
 
 $lang['hams_at_no_activations_found'] = 'не найдены предстоящие активации. Проверьте позже.';
+
+$lang['datatables_language'] = "en-GB";

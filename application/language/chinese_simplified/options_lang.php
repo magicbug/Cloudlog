@@ -58,6 +58,8 @@ $lang['options_global_text'] = '全局文本';
 $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the_oqrs_page'] = '该文本是一个可选文本，可以显示在OQRS页面的顶部。';
 $lang['options_grouped_search'] = '分组搜索';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = '当此选项打开时，所有具有OQRS活动的电台位置将同时搜索。';
+$lang['options_grouped_search_show_station_name'] = "Show station location name in grouped search results";
+$lang['options_grouped_search_show_station_name_hint'] = "If grouped search is ON, you can decide if the name of the station location shall be shown in the results table.";
 $lang['options_oqrs_options_have_been_saved'] = 'OQRS选项已保存';
 
 $lang['options_save'] = '保存';

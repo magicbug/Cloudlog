@@ -25,6 +25,7 @@ $lang['general_word_count'] = "Zähler";
 $lang['general_word_filtering_on'] = "Filtern auf";
 $lang['general_word_not_display'] = "Not display";
 $lang['general_word_icon'] = "Icon";
+$lang['general_word_never'] = "Nie";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_startdate'] = "Start Datum";
@@ -47,6 +48,8 @@ $lang['general_word_city'] = 'Stadt';
 $lang['general_word_total'] = 'Gesamt';
 $lang['general_word_year'] = 'Jahr';
 $lang['general_word_month'] = 'Monat';
+$lang['general_word_day'] = "Tag";
+$lang['general_word_days'] = "Tage";
 
 $lang['general_word_colors'] = "Farben";
 $lang['general_word_light'] = "Licht/Laser";
@@ -213,7 +216,9 @@ $lang['general_word_today'] = 'Heute';
 
 $lang['dashboard_php_version_warning'] = 'Die PHP Version is zu alt. Benötigt wird mindestens die Version 7.4. Die installierte Version ist';
 $lang['dashboard_country_files_warning'] = 'Die Länderlisten müssen aktualisiert werden! Klicke <a href="'.site_url('update').'">hier</a>, um das zu tun!';
-$lang['dashboard_locations_warning'] = 'Ea wurde kein Stationsstandort angelegt! Klicke <a href="'. site_url('station') . '">hier</a>, um das zu tun!';
+$lang['dashboard_locations_warning'] = 'Es wurde kein Stationsstandort angelegt! Klicke <a href="'. site_url('station') . '">hier</a>, um das zu tun!';
 $lang['dashboard_logbooks_warning'] = 'Es wurde kein Stationslogbuch angelegt. Klicke <a href="'. site_url('logbooks') . '">hier</a>, um das zu tun!';
 
 $lang['hams_at_no_activations_found'] = 'Keine bevorstehenden Aktivierungen gefunden. Bitte später noch einmal vorbeischauen.';
+
+$lang['datatables_language'] = "de-DE";

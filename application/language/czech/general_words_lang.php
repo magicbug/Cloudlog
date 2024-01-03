@@ -25,6 +25,7 @@ $lang['general_word_count'] = "Count";
 $lang['general_word_filtering_on'] = "Filtering on";
 $lang['general_word_not_display'] = "Not display";
 $lang['general_word_icon'] = "Icon";
+$lang['general_word_never'] = "Never";
 
 $lang['general_word_date'] = 'Datum';
 $lang['general_word_startdate'] = "Start Date";
@@ -47,6 +48,8 @@ $lang['general_word_city'] = 'Město';
 $lang['general_word_total'] = 'Celkem';
 $lang['general_word_year'] = 'Rok';
 $lang['general_word_month'] = 'Měsíc';
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Colors";
 $lang['general_word_light'] = "Light/Laser";
@@ -212,3 +215,5 @@ $lang['gen_band_selection'] = 'Výběr pásma';
 $lang['general_word_today'] = 'Dnes';
 
 $lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';
+
+$lang['datatables_language'] = "en-GB";

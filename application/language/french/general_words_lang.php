@@ -25,6 +25,7 @@ $lang['general_word_count'] = "Nombre";
 $lang['general_word_filtering_on'] = "Filtré sur";
 $lang['general_word_not_display'] = "Ne pas afficher";
 $lang['general_word_icon'] = "Icône";
+$lang['general_word_never'] = "Never";
 
 $lang['general_word_date'] = "Date";
 $lang['general_word_startdate'] = "Date début";
@@ -47,6 +48,8 @@ $lang['general_word_city'] = "Ville";
 $lang['general_word_total'] = "Total";
 $lang['general_word_year'] = "Année";
 $lang['general_word_month'] = "Mois";
+$lang['general_word_day'] = "Day";
+$lang['general_word_days'] = "Days";
 
 $lang['general_word_colors'] = "Couleurs";
 $lang['general_word_light'] = "Lumière/Laser";
@@ -217,3 +220,5 @@ $lang['dashboard_locations_warning'] = "Vous n'avez pas de lieu de station. Cliq
 $lang['dashboard_logbooks_warning'] = "Vous n'avez pas de journal de travail pour la station. Aller sur cette <a href=\"". site_url('logbooks') . "\">page</a> pour en créer un !";
 
 $lang['hams_at_no_activations_found'] = "Aucune activation à venir trouvée. Veuillez revenir plus tard.";
+
+$lang['datatables_language'] = "fr-FR";

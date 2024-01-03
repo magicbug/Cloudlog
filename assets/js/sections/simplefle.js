@@ -109,6 +109,7 @@ function handleInput() {
 
 	var extraQsoDate = qsodate;
 	var band = "";
+	var prevMode = "";
 	var mode = "";
 	var freq = "";
 	var callsign = "";
@@ -123,7 +124,7 @@ function handleInput() {
 		var rst_r = null;
 		items = row.startsWith("day ") ? [row] : row.split(" ");
 		var itemNumber = 0;
-		var freq = 0;
+
 		items.forEach((item) => {
 			if (item === "") {
 				return;
@@ -142,6 +143,10 @@ function handleInput() {
 			} else if (
 				item.match(/^CW$|^SSB$|^LSB$|^USB$|^FM$|^AM$|^PSK$|^FT8$/i)
 			) {
+				if (mode != "") {
+					freq = 0;
+					console.log("QRG is 0 now");
+				}
 				mode = item.toUpperCase();
 			} else if (
 				item.match(/^[0-9]{1,4}(?:m|cm|mm)$/) ||
@@ -151,7 +156,7 @@ function handleInput() {
 				freq = 0;
 			} else if (item.match(/^\d+\.\d+$/)) {
 				freq = item;
-				band = "";
+				band = getBandFromFreq(freq);
 			} else if (
 				item.match(/^[1-9]{1}$/) &&
 				qsotime &&
@@ -166,13 +171,13 @@ function handleInput() {
 				qsotime = qsotime.slice(0, -2) + item;
 			} else if (
 				item.match(
-					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4,5}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i,
+					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4,5}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
 				)
 			) {
 				sotaWwff = item.toUpperCase();
 			} else if (
 				item.match(
-					/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/,
+					/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/
 				)
 			) {
 				callsign = item.toUpperCase();
@@ -209,7 +214,7 @@ function handleInput() {
 
 			if (isValidDate(extraQsoDate) === false) {
 				addErrorMessage(
-					lang_qso_simplefle_error_date + " " + extraQsoDate,
+					lang_qso_simplefle_error_date + " " + extraQsoDate
 				);
 				extraQsoDate = qsodate;
 			}
@@ -257,40 +262,42 @@ function handleInput() {
 
 			localStorage.setItem(
 				`user_${user_id}_tabledata`,
-				$("#qsoTable").html(),
+				$("#qsoTable").html()
 			);
 			localStorage.setItem(
 				`user_${user_id}_my-call`,
-				$("#station-call").val(),
+				$("#station-call").val()
 			);
 			localStorage.setItem(
 				`user_${user_id}_operator`,
-				$("#operator").val(),
+				$("#operator").val()
 			);
 			localStorage.setItem(
 				`user_${user_id}_my-sota-wwff`,
-				$("#my-sota-wwff").val(),
+				$("#my-sota-wwff").val()
 			);
 			localStorage.setItem(
 				`user_${user_id}_qso-area`,
-				$(".qso-area").val(),
+				$(".qso-area").val()
 			);
 			localStorage.setItem(
 				`user_${user_id}_qsodate`,
-				$("#qsodate").val(),
+				$("#qsodate").val()
 			);
 			localStorage.setItem(
 				`user_${user_id}_my-power`,
-				$("#my-power").val(),
+				$("#my-power").val()
 			);
 			localStorage.setItem(
 				`user_${user_id}_my-grid`,
-				$("#my-grid").val(),
+				$("#my-grid").val()
 			);
 
 			callsign = "";
 			sotaWwff = "";
 		}
+
+		prevMode = mode;
 
 		showErrors();
 	}); //lines.forEach((row)
@@ -306,7 +313,7 @@ function handleInput() {
 				":</strong> " +
 				qsoCount +
 				" " +
-				lang_gen_hamradio_qso,
+				lang_gen_hamradio_qso
 		);
 	} else {
 		$(".js-qso-count").html("");
@@ -489,7 +496,7 @@ for (const [key, value] of Object.entries(Bands)) {
           <div class="form-group">
             <label for="${key.slice(1)}CW">CW</label>
             <input type="text" class="form-control text-uppercase" id="${key.slice(
-				1,
+				1
 			)}CW" value="${value.cw}">
           </div>
         </div>
@@ -497,7 +504,7 @@ for (const [key, value] of Object.entries(Bands)) {
           <div class="form-group">
             <label for="${key.slice(1)}SSB">SSB</label>
             <input type="text" class="form-control text-uppercase" id="${key.slice(
-				1,
+				1
 			)}SSB" value="${value.ssb}">
           </div>
         </div>
@@ -505,7 +512,7 @@ for (const [key, value] of Object.entries(Bands)) {
           <div class="form-group">
             <label for="${key.slice(1)}DIGI">DIGI</label>
             <input type="text" class="form-control text-uppercase" id="${key.slice(
-				1,
+				1
 			)}DIGI" value="${value.digi}">
           </div>
         </div>
@@ -760,7 +767,7 @@ $(".js-save-to-log").click(function () {
 								iota_ref: iota_ref,
 								pota_ref: pota_ref,
 								wwff_ref: wwff_ref,
-								isSFLE: true
+								isSFLE: true,
 							},
 							success: function (result) {},
 						});

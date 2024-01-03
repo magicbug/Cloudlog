@@ -58,6 +58,8 @@ $lang['options_global_text'] = 'Globální text';
 $lang['options_this_text_is_an_optional_text_that_can_be_displayed_on_top_of_the_oqrs_page'] = 'Tento text je nepovinný text, který lze zobrazit na horní části stránky OQRS.';
 $lang['options_grouped_search'] = 'Seskupené vyhledávání';
 $lang['options_when_this_is_on_all_station_locations_with_oqrs_active_will_be_searched_at_once'] = 'Když je tato možnost zapnutá, budou všechny stanice s aktivním OQRS vyhledávány najednou.';
+$lang['options_grouped_search_show_station_name'] = "Show station location name in grouped search results";
+$lang['options_grouped_search_show_station_name_hint'] = "If grouped search is ON, you can decide if the name of the station location shall be shown in the results table.";
 $lang['options_oqrs_options_have_been_saved'] = 'Možnosti OQRS byly uloženy.';
 
 $lang['options_dxcluster'] = 'DXCluster';

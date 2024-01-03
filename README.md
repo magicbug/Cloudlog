@@ -4,6 +4,10 @@
 
 Cloudlog is a self-hosted PHP application that allows you to log your amateur radio contacts anywhere. All you need is a web browser and active internet connection.
 
+While Cloudlog as started by Peter Goodhall, 2M0SQL, it is has gained a core group of contributors these are listed below. If you would like to contribute to Cloudlog please see the [Contributing](#contributing) section below.
+
+Core Contributors: 2M0SQL (@magicbug), LA8AJA (@AndreasK79), DF2ET (@phl0), HB9HIL (@HB9HIL), DJ7NT (@int2001)
+
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Requirements
@@ -37,7 +41,7 @@ If you would like to contribute in any way to Cloudlog, it is most appreciated. 
 
 Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components.
 
-When submitting PRs please make sure code is commented and includes one feature only, multiple features or bug fixes will not be accepted.
+When submitting PRs please make sure code is commented and includes one feature only, multiple features or bug fixes will not be accepted. Please include a description of what your PR does and why it is needed.
 
 ## Credits
 
@@ -47,6 +51,6 @@ Thanks to Andy (VE7CXZ), Gavin (M1BXF), Graham (W5ISP), Robert (M0VFC), Corby (K
 
 Cloudlog is supported by Patreon and donations via PayPal, thanks to the following people:
 
-Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB), Charlie (GM1TGY), Ondrej (OK1CDJ), Trystan (G0KAY), Oliver (DL6KBG), Volkmar Schirmer, Jordan (M0PIR), Thomas Ziegler, Mathis (DB9MAT), Ken (VE3HLS), Tyler (WL7T), Jeremy Taylor, Ben Kuhn, Eric Thresher, Michael Cullen, Juuso (OH1JW), Anthony Castiglia, Fernando Ramirez-Ferrer, Robert Dixon, Mark Percival, Julia (KV1V), Timo Tomasini, Ant (NU1U), Christopher Williams, Danny Barnes, Vic, Tom (M0LTE), smurphboy, Lars (SM0TGU), Theo (PD9DP), Stefan (SM0RGM). Peter (G0ABI), Lou (KI5FTY), Michael (DG3NAB), Dragan (4O4A), minorsecond, Emily (W7AYQ), Steve (M0SKM), Rob (M0VFC), Doug (WA6L), Petr (OK1PKR), Fabian (HB9HIL), Daniel (OK2VLK).
+Paul (M0TZO), Tim (G4VXE), Paul (N8HM), Michelle (W5NYV), Mitchell (AD0HJ), Dan (M0TCB), Martin (DK3ML), Juan Carlos (EA5WA), Iain (M0PCB), Charlie (GM1TGY), Ondrej (OK1CDJ), Trystan (G0KAY), Oliver (DL6KBG), Volkmar Schirmer, Jordan (M0PIR), Thomas Ziegler, Mathis (DB9MAT), Ken (VE3HLS), Tyler (WL7T), Jeremy Taylor, Ben Kuhn, Eric Thresher, Michael Cullen, Juuso (OH1JW), Anthony Castiglia, Fernando Ramirez-Ferrer, Robert Dixon, Mark Percival, Julia (KV1V), Timo Tomasini, Ant (NU1U), Christopher Williams, Danny Barnes, Vic, Tom (M0LTE), smurphboy, Lars (SM0TGU), Theo (PD9DP), Stefan (SM0RGM). Peter (G0ABI), Lou (KI5FTY), Michael (DG3NAB), Dragan (4O4A), minorsecond, Emily (W7AYQ), Steve (M0SKM), Rob (M0VFC), Doug (WA6L), Petr (OK1PKR), Fabian (HB9HIL), Daniel (OK2VLK), John (M5JFS).
 
 If you'd like to donate to Cloudlog to help allow @magicbug spend less time doing commercial work and more time coding Cloudlog then you can donate via [PayPal](https://paypal.me/PGoodhall), [Github Sponsor](https://github.com/sponsors/magicbug) or become a [Patreon](https://www.patreon.com/2m0sql) 

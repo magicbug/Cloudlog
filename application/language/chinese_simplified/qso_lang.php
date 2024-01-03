@@ -6,7 +6,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['qso_title_qso_map'] = 'QSO 地图';
 $lang['qso_title_suggestions'] = '建议';
 $lang['qso_title_previous_contacts'] = '先前通联';
+$lang['qso_title_times_worked_before'] = "times worked before";
 $lang['qso_title_image'] = '操作员照片';
+$lang['qso_previous_max_shown'] = "Max. 5 previous contacts are shown";
 
 // Quicklog on Dashboard
 $lang['qso_quicklog_enter_callsign'] = 'QUICKLOG 输入呼号';

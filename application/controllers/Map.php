@@ -3,32 +3,8 @@
 
 class Map extends CI_Controller {
 
-	function index()
-	{
-
-        // Calculate Lat/Lng from Locator to use on Maps
-        if($this->session->userdata('user_locator')) {
-            $this->load->library('qra');
-
-            $qra_position = $this->qra->qra2latlong($this->session->userdata('user_locator'));
-            $data['qra'] = "set";
-            $data['qra_lat'] = $qra_position[0];
-            $data['qra_lng'] = $qra_position[1];
-        } else {
-            $data['qra'] = "none";
-        }
-
-        $this->load->model('Stations');
-        $station_id = $this->Stations->find_active();
-        $station_data = $this->Stations->profile_clean($station_id);
-
-        // load the view
-        $data['station_profile'] = $station_data;
-		$data['page_title'] = "Map QSOs";
-
-		$this->load->view('interface_assets/header', $data);
-		$this->load->view('map/qsos');
-		$this->load->view('interface_assets/footer');
+	function index() {
+		redirect('map/custom');
     }
 
     function custom()
@@ -79,221 +55,38 @@ class Map extends CI_Controller {
         $data['logbook_name'] = $logbook_name;
 		$data['page_title'] = "Map QSOs";
 
-        if ($this->input->post('from')) {
-            $from = $this->input->post('from');
-            $footer_data['date_from'] = $from;
-        } else {
-            $footer_data['date_from'] = date('Y-m-d H:i:00');
-        }
-        if ($this->input->post('to')) {
-			$to = $this->input->post('to');
-			$footer_data['date_to'] = $to;
-        } else {
-            $temp_to = new DateTime('tomorrow');
-            $footer_data['date_to'] = $temp_to->format('Y-m-d H:i:00');
-        }
+        $data['date_from'] = $data['date_to'] = date('Y-m-d');
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('map/custom_date');
-		$this->load->view('interface_assets/footer',$footer_data);
+		$this->load->view('interface_assets/footer');
     }
 
-
-    function map_data_custom() {
-        $start_date = $this->uri->segment(3);
-        $end_date = $this->uri->segment(4);
-		$band = $this->uri->segment(5);
-		$mode = $this->uri->segment(6);
-		$propagation = $this->uri->segment(7);
+	// Generic fonction for return Json for MAP //
+	public function map_plot_json() {
+		$this->load->model('Stations');
 		$this->load->model('logbook_model');
-
-		$this->load->library('qra');
-
-		$qsos = $this->logbook_model->map_custom_qsos(rawurldecode($start_date), rawurldecode($end_date), $band, rawurldecode($mode), rawurldecode($propagation));
+		
+		// set informations //
+		if ($this->input->post('isCustom') == true) {
+			$date_from = xss_clean($this->input->post('date_from'));
+			$date_to = xss_clean($this->input->post('date_to'));
+			$band = xss_clean($this->input->post('band'));
+			$mode = xss_clean($this->input->post('mode'));
+			$prop_mode = xss_clean($this->input->post('prop_mode'));
+			$qsos = $this->logbook_model->map_custom_qsos($date_from, $date_to, $band, $mode, $prop_mode);
+		} else {
+			$nb_qso = (intval($this->input->post('nb_qso'))>0)?xss_clean($this->input->post('nb_qso')):18;
+			$offset = (intval($this->input->post('offset'))>0)?xss_clean($this->input->post('offset')):null;
+			$qsos = $this->logbook_model->get_qsos($nb_qso, $offset);
+		}
+		// [PLOT] ADD plot //
+		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result());
+		// [MAP Custom] ADD Station //
+		$station_array = $this->Stations->get_station_array_for_map();
+		
 		header('Content-Type: application/json; charset=utf-8');
-		echo "{\"markers\": [";
-		$count = 1;
-		if ($qsos) {
-			foreach ($qsos->result() as $row) {
-				// check if qso is confirmed //
-				if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) { $row->_is_confirmed = 'Y'; } else { $row->_is_confirmed = 'N'; }
-
-				//print_r($row);
-				if($row->COL_GRIDSQUARE != null) {
-					$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
-					if($count != 1) {
-						echo ",";
-					}
-	
-					if($row->COL_SAT_NAME != null) {
-							echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-					} else {
-							echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-					}
-	
-					$count++;
-				}elseif($row->COL_VUCC_GRIDS != null) {
-
-					$grids = explode(",", $row->COL_VUCC_GRIDS);
-					if (count($grids) == 2) {
-						$grid1 = $this->qra->qra2latlong(trim($grids[0]));
-						$grid2 = $this->qra->qra2latlong(trim($grids[1]));
-			
-						$coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
-						$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);    
-			
-						$stn_loc = $this->qra->get_midpoint($coords);
-					}
-					if (count($grids) == 4) {
-						$grid1 = $this->qra->qra2latlong(trim($grids[0]));
-						$grid2 = $this->qra->qra2latlong(trim($grids[1]));
-						$grid3 = $this->qra->qra2latlong(trim($grids[2]));
-						$grid4 = $this->qra->qra2latlong(trim($grids[3]));
-			
-						$coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
-						$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);    
-						$coords[]=array('lat' => $grid3[0],'lng'=> $grid3[1]);    
-						$coords[]=array('lat' => $grid4[0],'lng'=> $grid4[1]);    
-
-						$stn_loc = $this->qra->get_midpoint($coords);
-					}
-	
-					if($count != 1) {
-						echo ",";
-					}
-		
-					if($row->COL_SAT_NAME != null) { 
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-					} else {
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-					}
-		
-					$count++;
-				} else {
-					if($count != 1) {
-						echo ",";
-					}
-	
-					if(isset($row->lat) && isset($row->long)) {
-						$lat = $row->lat;
-						$lng = $row->long;
-					}
-					
-					echo "{\"lat\":\"".$lat."\",\"lng\":\"".$lng."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-					$count++;
-				}
-		}
-
-		}
-		echo "]";
-
-		// [MAP Custom] ADD Station //
-		$this->load->model('Stations');
-		$station_json = $this->Stations->get_station_json_for_map();
-		echo (!empty($station_json))?', '.$station_json:'';
-
-		echo "}";
-
+		echo json_encode(array_merge($plot_array, $station_array));
 	}
 
-    function map_data() {
-		$this->load->model('logbook_model');
-
-		$this->load->library('qra');
-
-		//echo date('Y-m-d')
-		$raw = strtotime('Monday last week');
-
-		$mon = date('Y-m-d', $raw);
-		$sun = date('Y-m-d', strtotime('Monday next week'));
-
-		$qsos = $this->logbook_model->map_all_qsos_for_active_station_profile();
-
-		echo "{\"markers\": [";
-		$count = 1;
-		foreach ($qsos->result() as $row) {
-			// check if qso is confirmed //
-			if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) { $row->_is_confirmed = 'Y'; } else { $row->_is_confirmed = 'N'; }
-
-			//print_r($row);
-			if($row->COL_GRIDSQUARE != null) {
-				$stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
-				if($count != 1) {
-					echo ",";
-				} 
-
-				if($row->COL_SAT_NAME != null) {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-				} else {
-						echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-				}
-
-				$count++;
-			} elseif($row->COL_VUCC_GRIDS != null) {
-
-				$grids = explode(",", $row->COL_VUCC_GRIDS);
-				if (count($grids) == 2) {
-					$grid1 = $this->qra->qra2latlong(trim($grids[0]));
-					$grid2 = $this->qra->qra2latlong(trim($grids[1]));
-		
-					$coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
-					$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);    
-		
-					$stn_loc = $this->qra->get_midpoint($coords);
-				}
-				if (count($grids) == 4) {
-					$grid1 = $this->qra->qra2latlong(trim($grids[0]));
-					$grid2 = $this->qra->qra2latlong(trim($grids[1]));
-					$grid3 = $this->qra->qra2latlong(trim($grids[2]));
-					$grid4 = $this->qra->qra2latlong(trim($grids[3]));
-		
-					$coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
-					$coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);    
-					$coords[]=array('lat' => $grid3[0],'lng'=> $grid3[1]);    
-					$coords[]=array('lat' => $grid4[0],'lng'=> $grid4[1]);    
-		
-					$stn_loc = $this->qra->get_midpoint($coords);
-
-				}
-
-				if($count != 1) {
-					echo ",";
-				}
-	
-				if($row->COL_SAT_NAME != null) { 
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />SAT: ".$row->COL_SAT_NAME."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-				} else {
-					echo "{\"lat\":\"".$stn_loc[0]."\",\"lng\":\"".$stn_loc[1]."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-				}
-	
-				$count++;
-			} else {
-				$query = $this->db->query('
-					SELECT *
-					FROM dxcc_entities
-					WHERE prefix = SUBSTRING( \''.$row->COL_CALL.'\', 1, LENGTH( prefix ) )
-					ORDER BY LENGTH( prefix ) DESC
-					LIMIT 1
-				');
-
-				foreach ($query->result() as $dxcc) {
-					if($count != 1) {
-					echo ",";
-						}
-					echo "{\"lat\":\"".$dxcc->lat."\",\"lng\":\"".$dxcc->long."\", \"html\":\"Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />Band: ".$row->COL_BAND."<br />Mode: ".$row->COL_MODE."\",\"label\":\"".$row->COL_CALL."\", \"confirmed\":\"".$row->_is_confirmed."\"}";
-					$count++;
-				}
-			}
-
-		}
-		echo "]";
-
-		// [MAP Custom] ADD Station //
-		$this->load->model('Stations');
-		$station_json = $this->Stations->get_station_json_for_map();
-		echo (!empty($station_json))?', '.$station_json:'';
-
-		echo "}";
-
-	}
 }

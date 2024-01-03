@@ -5,12 +5,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['admin_user_line1'] = 'Cloudlog至少需要配置一个用户才能运行。';
 $lang['admin_user_line2'] = '用户可以被分配不同的角色，这些角色赋予他们不同的权限，例如向日志簿添加 QSO 和访问Cloudlog API。';
 $lang['admin_user_line3'] = '页面右上方显示当前登录的用户。';
+$lang['admin_user_line4'] = "With the password reset button, you can send a user an email containing a link to reset their password. To achieve this, ensure that the email settings in the global options are configured correctly.";
 
 $lang['admin_user_list'] = '用户列表';
 
 $lang['admin_user'] = '用户名';
 $lang['admin_email'] = '电子邮件';
 $lang['admin_type'] = '用户类型';
+$lang['admin_last_login'] = "Last Login";
 $lang['admin_options'] = '设置';
 
 $lang['admin_create_user'] = '创建用户';
@@ -25,7 +27,10 @@ $lang['admin_close'] = '关闭';
 $lang['admin_user_accounts'] = '用户账户';
 $lang['admin_danger'] = '危险!';
 $lang['admin_experimental'] = "实验性功能";
+$lang['admin_password_reset'] = "Password Reset";
 
+$lang['admin_email_settings_incorrect'] = "Email settings are incorrect.";
+$lang['admin_password_reset_processed'] = "Password Reset E-Mail sent.";
 
 
 // Contest Menu

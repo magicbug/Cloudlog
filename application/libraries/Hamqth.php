@@ -80,6 +80,7 @@ class Hamqth {
             $data['city'] = (string)$xml->search->adr_city;
             $data['lat'] = (string)$xml->search->latitude;
             $data['long'] = (string)$xml->search->longitude;
+			$data['dxcc'] = (string)$xml->search->adif; 
             $data['iota'] = (string)$xml->search->iota;
             $data['image'] = (string)$xml->search->picture;
             $data['us_state'] = (string)$xml->search->us_state;

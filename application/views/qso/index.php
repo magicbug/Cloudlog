@@ -2,6 +2,8 @@
 <script language="javascript">
   var qso_manual  = "<?php echo $_GET['manual']; ?>";
   var text_error_timeoff_less_timeon = "<?php echo lang('qso_error_timeoff_less_timeon'); ?>";
+  var lang_qso_title_previous_contacts = "<?php echo lang('qso_title_previous_contacts'); ?>";
+  var lang_qso_title_times_worked_before = "<?php echo lang('qso_title_times_worked_before'); ?>";
 </script>
 
 <div class="row qsopane">
@@ -637,7 +639,7 @@
     <?php } ?>
 
     <div class="card previous-qsos">
-      <div class="card-header"><h4 class="card-title" style="font-size: 16px; font-weight: bold;"><?php echo lang('qso_title_previous_contacts'); ?></h4></div>
+      <div class="card-header"><h4 class="card-title" id="timesWorked" style="font-size: 16px; font-weight: bold;"><?php echo lang('qso_title_previous_contacts'); ?></h4></div>
 
         <div id="partial_view" style="font-size: 0.95rem;"></div>
 
@@ -645,6 +647,7 @@
 
         </div>
       </div>
+      <small class="mt-0.5" style="float: right;"><?php echo lang('qso_previous_max_shown'); ?></small>
     </div>
   </div>
 

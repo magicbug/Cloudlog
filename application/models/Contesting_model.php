@@ -219,7 +219,8 @@ class Contesting_model extends CI_Model {
 	
 			$date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
 			$date = $date->format('Y-m-d H:i:s');
-	
+
+			$this->db->select('timediff(UTC_TIMESTAMP(),col_time_off) b4, COL_TIME_OFF');
 			$this->db->where('STATION_ID', $station_id);
 			$this->db->where('COL_CALL', xss_clean($call));
 			$this->db->where("COL_BAND", xss_clean($band));
@@ -229,6 +230,7 @@ class Contesting_model extends CI_Model {
 			$this->db->where("COL_MODE", xss_clean($mode));
 			$this->db->or_where("COL_SUBMODE", xss_clean($mode));
 			$this->db->group_end();
+        		$this->db->order_by($this->config->item('table_name').".COL_TIME_ON", "DESC");
 			$query = $this->db->get($this->config->item('table_name'));
 	
 			return $query;

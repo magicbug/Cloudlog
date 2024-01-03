@@ -1347,6 +1347,31 @@ class Logbook_model extends CI_Model {
 		return $name;
 	}
 
+	function times_worked($callsign) {
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$this->db->select('count(1) as TWKED');
+		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+		$this->db->group_start();
+		$this->db->where($this->config->item('table_name').'.COL_CALL', $callsign);
+		$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$callsign,'before');
+		$this->db->or_like($this->config->item('table_name').'.COL_CALL', $callsign.'/','after');
+		$this->db->or_like($this->config->item('table_name').'.COL_CALL', '/'.$callsign.'/');
+
+		$this->db->group_end();
+		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+		$this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+		$this->db->limit(1);
+		$query = $this->db->get($this->config->item('table_name'));
+		$name = "";
+		if ($query->num_rows() > 0)
+		{
+			$data = $query->row();
+			$times_worked = $data->TWKED;
+		}
+
+		return $times_worked;
+	}
+
 	function call_qslvia($callsign) {
 		$this->db->select('COL_CALL, COL_QSL_VIA, COL_TIME_ON');
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
@@ -2129,7 +2154,7 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
     }
 
       $this->db->join('dxcc_entities', $this->config->item('table_name').'.col_dxcc = dxcc_entities.adif', 'left');
-      $this->db->where("COL_TIME_ON BETWEEN '".$start."' AND '".$end."'");
+      $this->db->where("COL_TIME_ON BETWEEN '".$start." 00:00:00' AND '".$end." 23:59:59'");
       $this->db->where_in("station_id", $logbooks_locations_array);
 
       if($band != "All" && $band != "SAT") {
@@ -2222,20 +2247,6 @@ function check_if_callsign_worked_in_logbook($callsign, $StationLocationsArray =
         return null;
       }
     }
-
-    /* Return QSOs for the year for the active profile */
-    function map_all_qsos_for_active_station_profile() {
-      $CI =& get_instance();
-      $CI->load->model('stations');
-      $station_id = $CI->stations->find_active();
-
-      $this->db->where("station_id", $station_id);
-      $this->db->order_by("COL_TIME_ON", "ASC");
-      $query = $this->db->get($this->config->item('table_name'));
-
-      return $query;
-    }
-
 
     /* Return QSOs made during the current Year */
     function year_qsos($StationLocationsArray = null, $api_key = null) {
@@ -3264,6 +3275,44 @@ function lotw_last_qsl_date($user_id) {
 			  $cq_zone = NULL;
 		  }
 
+		  // Sanitise gridsquare input to make sure its a gridsquare
+		  if (isset($record['gridsquare'])){
+			  $a_grids=explode(',',$record['gridsquare']);	// Split at , if there are junctions
+			  foreach ($a_grids as $singlegrid) {
+				  $singlegrid=strtoupper($singlegrid);
+				  if (strlen($singlegrid) == 4)  $singlegrid .= "LL";     // Only 4 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid) == 6)  $singlegrid .= "55";     // Only 6 Chars? Fill with center "55"
+				  if (strlen($singlegrid) == 8)  $singlegrid .= "LL";     // Only 8 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid)%2 != 0) {	// Check if grid is structually valid
+					  $record['gridsquare']='';	// If not: Set to ''
+				  } else {
+					  if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $singlegrid)) $record['gridsquare']='';
+				  }
+			  }
+			  $input_gridsquare = $record['gridsquare'];
+		  } else {
+			  $input_gridsquare = NULL;
+		  }
+
+		  // Sanitise vucc-gridsquare input to make sure its a gridsquare
+		  if (isset($record['vucc_grids'])){
+			  $a_grids=explode(',',$record['vucc_grids']);	// Split at , if there are junctions
+			  foreach ($a_grids as $singlegrid) {
+				  $singlegrid=strtoupper($singlegrid);
+				  if (strlen($singlegrid) == 4)  $singlegrid .= "LL";     // Only 4 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid) == 6)  $singlegrid .= "55";     // Only 6 Chars? Fill with center "55"
+				  if (strlen($singlegrid) == 8)  $singlegrid .= "LL";     // Only 8 Chars? Fill with center "LL" as only A-R allowed
+				  if (strlen($singlegrid)%2 != 0) {	// Check if grid is structually valid
+					  $record['vucc_grids']='';	// If not: Set to ''
+				  } else {
+					  if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $singlegrid)) $record['vucc_grids']='';
+				  }
+			  }
+			  $input_vucc_grids = $record['vucc_grids'];
+		  } else {
+			  $input_vucc_grids = NULL;
+		  }
+
 		  // Sanitise lat input to make sure its 11 chars
 		  if (isset($record['lat'])){
 			  $input_lat = mb_strimwidth($record['lat'], 0, 11);
@@ -3529,7 +3578,7 @@ function lotw_last_qsl_date($user_id) {
 			  'COL_FORCE_INIT' => (!empty($record['force_init'])) ? $record['force_init'] : null,
 			  'COL_FREQ' => $freq,
 			  'COL_FREQ_RX' => (!empty($record['freq_rx'])) ? $freqRX : null,
-			  'COL_GRIDSQUARE' => (!empty($record['gridsquare'])) ? $record['gridsquare'] : '',
+			  'COL_GRIDSQUARE' => $input_gridsquare,
 			  'COL_HEADING' => (!empty($record['heading'])) ? $record['heading'] : null,
 			  'COL_HRDLOG_QSO_UPLOAD_DATE' => (!empty($record['hrdlog_qso_upload_date'])) ? $record['hrdlog_qso_upload_date'] : null,
 			  'COL_HRDLOG_QSO_UPLOAD_STATUS' => (!empty($record['hrdlog_qso_upload_status'])) ? $record['hrdlog_qso_upload_status'] : '',
@@ -3643,7 +3692,7 @@ function lotw_last_qsl_date($user_id) {
 			  'COL_TX_PWR' => (!empty($tx_pwr)) ? $tx_pwr : null,
 			  'COL_UKSMG' => (!empty($record['uksmg'])) ? $record['uksmg'] : '',
 			  'COL_USACA_COUNTIES' => (!empty($record['usaca_counties'])) ? $record['usaca_counties'] : '',
-			  'COL_VUCC_GRIDS' =>((!empty($record['vucc_grids']))) ? $record['vucc_grids'] : '',
+			  'COL_VUCC_GRIDS' => $input_vucc_grids,
 			  'COL_WEB' => (!empty($record['web'])) ? $record['web'] : ''
 		  );
 
@@ -4510,6 +4559,67 @@ function lotw_last_qsl_date($user_id) {
             return true;
         }
         return false;
+    }
+
+    // [JSON PLOT] return array for plot qso for map //
+    public function get_plot_array_for_map($qsos_result, $isVisitor=false) {
+      $this->load->library('qra');
+
+      $json["markers"] = array();
+      
+      foreach ($qsos_result as $row) {
+        $plot = array('lat'=>0, 'lng'=>0, 'html'=>'', 'label'=>'', 'confirmed'=>'N');
+      
+        $plot['label'] = $row->COL_CALL;
+
+        $plot['html'] = "Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />";
+        $plot['html'] .= ($row->COL_SAT_NAME != null) ? ("SAT: ".$row->COL_SAT_NAME."<br />") : ("Band: ".$row->COL_BAND."<br />");
+        $plot['html'] .= "Mode: ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)."<br />";
+
+        // check if qso is confirmed //
+        if (!$isVisitor) {
+          if (($row->COL_EQSL_QSL_RCVD=='Y') || ($row->COL_LOTW_QSL_RCVD=='Y') || ($row->COL_QSL_RCVD=='Y')) {
+            $plot['confirmed'] = "Y";
+          }
+        }
+        // check lat / lng (depend info source) //
+        if ($row->COL_GRIDSQUARE != null) {
+          $stn_loc = $this->qra->qra2latlong($row->COL_GRIDSQUARE);
+
+        } elseif ($row->COL_VUCC_GRIDS != null) {
+          $grids = explode(",", $row->COL_VUCC_GRIDS);
+          if (count($grids) == 2) {
+            $grid1 = $this->qra->qra2latlong(trim($grids[0]));
+            $grid2 = $this->qra->qra2latlong(trim($grids[1]));
+  
+            $coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
+            $coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);
+  
+            $stn_loc = $this->qra->get_midpoint($coords);
+          }
+          if (count($grids) == 4) {
+            $grid1 = $this->qra->qra2latlong(trim($grids[0]));
+            $grid2 = $this->qra->qra2latlong(trim($grids[1]));
+            $grid3 = $this->qra->qra2latlong(trim($grids[2]));
+            $grid4 = $this->qra->qra2latlong(trim($grids[3]));
+  
+            $coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
+            $coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);
+            $coords[]=array('lat' => $grid3[0],'lng'=> $grid3[1]);
+            $coords[]=array('lat' => $grid4[0],'lng'=> $grid4[1]);
+  
+            $stn_loc = $this->qra->get_midpoint($coords);
+          }
+        } else {
+          if (isset($row->lat) && isset($row->long)) {
+            $stn_loc = array($row->lat, $row->long);
+          }
+        }
+        list($plot['lat'], $plot['lng']) = $stn_loc;
+        // add plot //
+        $json["markers"][] = $plot;
+      }
+      return $json;
     }
 }
 

@@ -126,6 +126,9 @@ function spawnGridsquareModal(loc_4char) {
                     if (isDarkModeTheme()) {
                         $(".buttons-csv").css("color", "white");
                     }
+					$('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function () {
+                        showQsoActionsMenu($(this).closest('.dropdown'));
+                    });
                     },
                 buttons: [{
                     label: lang_admin_close,
