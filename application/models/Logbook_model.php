@@ -1774,11 +1774,11 @@ class Logbook_model extends CI_Model {
      * Function returns all the station_id's with HRDLOG Code
      */
     function get_station_id_with_hrdlog_code() {
-        $sql = 'SELECT station_id, hrdlog_username, hrdlog_code 
+        $sql = 'SELECT station_id, hrdlog_username, hrdlog_code
                 FROM station_profile
-                WHERE coalesce(hrdlog_username, "") <> "" 
+                WHERE coalesce(hrdlog_username, "") <> ""
                 AND coalesce(hrdlog_code, "") <> ""';
-        
+
         $query = $this->db->query($sql);
 
         $result = $query->result();
@@ -4384,7 +4384,27 @@ function lotw_last_qsl_date($user_id) {
       }
     }
 
-    public function loadCallBook($callsign, $use_fullname=false)
+	// This should be in a helper? copied from Logbook controller
+	function get_plaincall($callsign) {
+		$split_callsign=explode('/',$callsign);
+		if (count($split_callsign)==1) {				// case F0ABC --> return cel 0 //
+			$lookupcall = $split_callsign[0];
+		} else if (count($split_callsign)==3) {			// case EA/F0ABC/P --> return cel 1 //
+			$lookupcall = $split_callsign[1];
+		} else {										// case F0ABC/P --> return cel 0 OR  case EA/FOABC --> retunr 1  (normaly not exist) //
+			if (in_array(strtoupper($split_callsign[1]), array('P','M','MM','QRP','0','1','2','3','4','5','6','7','8','9'))) {
+				$lookupcall = $split_callsign[0];
+			} else if (strlen($split_callsign[1])>3) {	// Last Element longer than 3 chars? Take that as call
+				$lookupcall = $split_callsign[1];
+			} else {									// Last Element up to 3 Chars? Take first element as Call
+				$lookupcall = $split_callsign[0];
+			}
+		}
+		return $lookupcall;
+	}
+
+
+	public function loadCallBook($callsign, $use_fullname=false)
     {
         $callbook = null;
         try {
@@ -4405,6 +4425,10 @@ function lotw_last_qsl_date($user_id) {
                     $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
                     $this->session->set_userdata('qrz_session_key', $qrz_session_key);
                     $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+					// if we still got nothing, and it's a compound callsign, then try a search for the base call
+					if (($callbook['callsign'] ?? '') == '' && strpos($callsign,"/")!==false){
+						$callbook = $this->qrz->search($this->get_plaincall($callsign), $this->session->userdata('qrz_session_key'), $use_fullname);
+					}
                 }
             }
 
@@ -4566,10 +4590,10 @@ function lotw_last_qsl_date($user_id) {
       $this->load->library('qra');
 
       $json["markers"] = array();
-      
+
       foreach ($qsos_result as $row) {
         $plot = array('lat'=>0, 'lng'=>0, 'html'=>'', 'label'=>'', 'confirmed'=>'N');
-      
+
         $plot['label'] = $row->COL_CALL;
 
         $plot['html'] = "Callsign: ".$row->COL_CALL."<br />Date/Time: ".$row->COL_TIME_ON."<br />";
@@ -4591,10 +4615,10 @@ function lotw_last_qsl_date($user_id) {
           if (count($grids) == 2) {
             $grid1 = $this->qra->qra2latlong(trim($grids[0]));
             $grid2 = $this->qra->qra2latlong(trim($grids[1]));
-  
+
             $coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
             $coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);
-  
+
             $stn_loc = $this->qra->get_midpoint($coords);
           }
           if (count($grids) == 4) {
@@ -4602,12 +4626,12 @@ function lotw_last_qsl_date($user_id) {
             $grid2 = $this->qra->qra2latlong(trim($grids[1]));
             $grid3 = $this->qra->qra2latlong(trim($grids[2]));
             $grid4 = $this->qra->qra2latlong(trim($grids[3]));
-  
+
             $coords[]=array('lat' => $grid1[0],'lng'=> $grid1[1]);
             $coords[]=array('lat' => $grid2[0],'lng'=> $grid2[1]);
             $coords[]=array('lat' => $grid3[0],'lng'=> $grid3[1]);
             $coords[]=array('lat' => $grid4[0],'lng'=> $grid4[1]);
-  
+
             $stn_loc = $this->qra->get_midpoint($coords);
           }
         } else {
