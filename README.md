@@ -4,6 +4,10 @@
 
 Cloudlog is a self-hosted PHP application that allows you to log your amateur radio contacts anywhere. All you need is a web browser and active internet connection.
 
+While Cloudlog as started by Peter Goodhall, 2M0SQL, it is has gained a core group of contributors these are listed below. If you would like to contribute to Cloudlog please see the [Contributing](#contributing) section below.
+
+Core Contributors: 2M0SQL (@magicbug), LA8AJA (@AndreasK79), DF2ET (@phl0), HB9HIL (@HB9HIL), DJ7NT (@int2001)
+
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 ## Requirements
@@ -37,7 +41,7 @@ If you would like to contribute in any way to Cloudlog, it is most appreciated. 
 
 Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components.
 
-When submitting PRs please make sure code is commented and includes one feature only, multiple features or bug fixes will not be accepted.
+When submitting PRs please make sure code is commented and includes one feature only, multiple features or bug fixes will not be accepted. Please include a description of what your PR does and why it is needed.
 
 ## Credits
 
