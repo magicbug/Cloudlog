@@ -82,8 +82,6 @@ class AdifHelper {
             'SAT_MODE',
             'SAT_NAME',
             'SFI',
-            'SIG',
-            'SIG_INFO',
             'SILENT_KEY',
             'SKCC',
             'SOTA_REF',
@@ -206,9 +204,25 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("MY_CNTY", $county);
 
-        $line .= $this->getAdifFieldLine("MY_SIG", $qso->station_sig);
+		$stationsSig = $qso->station_sig;
+		// If MY_SIG is WWFF or "" and there's a station_wwff set, use data from station_wwff
+		if ((empty($stationsSig) || $stationsSig === "WWFF") && !empty($qso->station_wwff)) {
+			$line .= $this->getAdifFieldLine("MY_SIG", "WWFF");
+			$line .= $this->getAdifFieldLine("MY_SIG_INFO", $qso->station_wwff);
+		} else {
+			$line .= $this->getAdifFieldLine("MY_SIG", $stationsSig);
+			$line .= $this->getAdifFieldLine("MY_SIG_INFO", $qso->station_sig_info);
+		}
 
-        $line .= $this->getAdifFieldLine("MY_SIG_INFO", $qso->station_sig_info);
+		$sig = $qso->{'COL_SIG'};
+		// If SIG is WWFF or "" and there's a WWFF_REF set, use data from COL_WWFF_REF
+		if ((empty($sig) || $sig === "WWFF") && !empty($qso->{'COL_WWFF_REF'})) {
+			$line .= $this->getAdifFieldLine("SIG", "WWFF");
+			$line .= $this->getAdifFieldLine("SIG_INFO", $qso->{'COL_WWFF_REF'});
+		} else {
+			$line .= $this->getAdifFieldLine("SIG", $sig);
+			$line .= $this->getAdifFieldLine("SIG_INFO", $qso->{'COL_SIG_INFO'});
+		}
 
         /*
             Missing:
