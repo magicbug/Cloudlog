@@ -632,3 +632,7 @@ if ($('.table-responsive .dropdown-toggle').length>0) {
         showQsoActionsMenu($(this).closest('.dropdown'));
     });
 }
+
+function getDatatablesLanguageUrl() {
+    return "../json/datatables_languages/" + lang_datatables_language + ".json";
+}

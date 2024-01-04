@@ -6,6 +6,9 @@ $('.contesttable').DataTable({
 	"scrollCollapse": true,
 	"paging": false,
 	"scrollX": true,
+	"language": {
+		url: getDatatablesLanguageUrl(),
+	},
 	dom: 'Bfrtip',
 	buttons: [
 		{

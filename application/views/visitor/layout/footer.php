@@ -171,6 +171,9 @@
                 "scrollCollapse": true,
                 "paging":         true,
                 "scrollX": true,
+                "language": {
+                    url: getDatatablesLanguageUrl(),
+                },
                 "order": [ 0, 'desc' ],
                 dom: 'Bfrtip',
                 buttons: [

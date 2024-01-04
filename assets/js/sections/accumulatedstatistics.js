@@ -119,6 +119,9 @@ function accumulatePlot(form) {
 					"scrollCollapse": true,
 					"paging": false,
 					"scrollX": true,
+					"language": {
+						url: getDatatablesLanguageUrl(),
+					},
 					dom: 'Bfrtip',
 					buttons: [
 						'csv'
