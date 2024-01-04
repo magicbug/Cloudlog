@@ -540,7 +540,7 @@ async function refresh_qso_table(data) {
 					"paging": false,
 					"scrollX": true,
 					"language": {
-						url: getDatatablesLanguageUrl(),
+						url: getDataTablesLanguageUrl(),
 					},
 					order: [0, 'desc'],
 					"columnDefs": [

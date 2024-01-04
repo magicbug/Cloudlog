@@ -71,7 +71,7 @@ function searchOqrsGrouped() {
                 "paging": false,
                 "scrollX": true,
                 "language": {
-                    url: getDatatablesLanguageUrl(),
+                    url: getDataTablesLanguageUrl(),
                 }
             });
 
@@ -209,7 +209,7 @@ function requestOqrs() {
                 "paging": false,
                 "scrollX": true,
                 "language": {
-                    url: getDatatablesLanguageUrl(),
+                    url: getDataTablesLanguageUrl(),
                 }
             });
             // Get the input field
@@ -392,7 +392,7 @@ function loadOqrsTable(rows) {
 			"paging":         false,
 			"scrollX": true,
             "language": {
-				url: getDatatablesLanguageUrl(),
+				url: getDataTablesLanguageUrl(),
 			},
 			"order": [ 0, 'asc' ],
             'white-space': 'nowrap',

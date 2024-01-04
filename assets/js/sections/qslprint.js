@@ -87,7 +87,7 @@ $('#qslprint_table').DataTable({
 	"stateSave": true,
 	paging: false,
 	"language": {
-		url: getDatatablesLanguageUrl(),
+		url: getDataTablesLanguageUrl(),
 	}
 });
 

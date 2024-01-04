@@ -25,7 +25,7 @@ $(function() {
 				}
 			],
 			"language": {
-				url: getDatatablesLanguageUrl(),
+				url: getDataTablesLanguageUrl(),
 			}
 		});
 		return table;

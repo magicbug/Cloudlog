@@ -160,7 +160,7 @@ function spawnGridsquareModal(loc_4char) {
 							"paging":         false,
 							"scrollX": true,
                             "language": {
-                                url: getDatatablesLanguageUrl(),
+                                url: getDataTablesLanguageUrl(),
                             },
 							dom: 'Bfrtip',
 							buttons: [

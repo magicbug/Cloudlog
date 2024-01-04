@@ -172,7 +172,7 @@
                 "paging":         true,
                 "scrollX": true,
                 "language": {
-                    url: getDatatablesLanguageUrl(),
+                    url: getDataTablesLanguageUrl(),
                 },
                 "order": [ 0, 'desc' ],
                 dom: 'Bfrtip',

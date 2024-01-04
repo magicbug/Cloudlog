@@ -120,7 +120,7 @@ function accumulatePlot(form) {
 					"paging": false,
 					"scrollX": true,
 					"language": {
-						url: getDatatablesLanguageUrl(),
+						url: getDataTablesLanguageUrl(),
 					},
 					dom: 'Bfrtip',
 					buttons: [

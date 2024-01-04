@@ -633,6 +633,6 @@ if ($('.table-responsive .dropdown-toggle').length>0) {
     });
 }
 
-function getDatatablesLanguageUrl() {
-    return "../json/datatables_languages/" + lang_datatables_language + ".json";
+function getDataTablesLanguageUrl() {
+    return "../assets/json/datatables_languages/" + lang_datatables_language + ".json";
 }

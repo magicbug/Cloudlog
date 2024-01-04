@@ -5,7 +5,7 @@ $(document).ready( function () {
     $('#station_locations_table').DataTable({
         "stateSave": true,
         "language": {
-            url: getDatatablesLanguageUrl(),
+            url: getDataTablesLanguageUrl(),
         }
     });
 

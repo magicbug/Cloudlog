@@ -35,7 +35,7 @@ $('.bandtable').DataTable({
 	"paging": false,
 	"scrollX": true,
 	"language": {
-		url: getDatatablesLanguageUrl(),
+		url: getDataTablesLanguageUrl(),
 	}
 });
 

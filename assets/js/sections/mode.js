@@ -7,7 +7,7 @@ $('.modetable').DataTable({
 	"paging": false,
 	"scrollX": true,	
 	"language": {
-		url: getDatatablesLanguageUrl(),
+		url: getDataTablesLanguageUrl(),
 	},
 	initComplete: function () {
 		this.api()
