@@ -209,6 +209,10 @@
             }
         </script>
     <?php } ?>
-
+    <script>
+      <?php
+      echo "var lang_datatables_language = '" . lang("datatables_language") . "';"
+      ?>
+    </script>
   </body>
 </html>

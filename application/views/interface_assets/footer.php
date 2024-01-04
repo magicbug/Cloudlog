@@ -3172,5 +3172,10 @@ if (isset($scripts) && is_array($scripts)){
 	}
 }
 ?>
+    <script>
+      <?php
+      echo "var lang_datatables_language = '" . lang("datatables_language") . "';"
+      ?>
+    </script>
   </body>
 </html>
