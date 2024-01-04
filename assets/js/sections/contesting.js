@@ -539,6 +539,9 @@ async function refresh_qso_table(data) {
 					"scrollCollapse": true,
 					"paging": false,
 					"scrollX": true,
+					"language": {
+						url: getDataTablesLanguageUrl(),
+					},
 					order: [0, 'desc'],
 					"columnDefs": [
 						{

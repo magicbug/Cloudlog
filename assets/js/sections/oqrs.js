@@ -70,6 +70,9 @@ function searchOqrsGrouped() {
                 "scrollCollapse": true,
                 "paging": false,
                 "scrollX": true,
+                "language": {
+                    url: getDataTablesLanguageUrl(),
+                }
             });
 
             // Get the input field
@@ -205,6 +208,9 @@ function requestOqrs() {
                 "scrollCollapse": true,
                 "paging": false,
                 "scrollX": true,
+                "language": {
+                    url: getDataTablesLanguageUrl(),
+                }
             });
             // Get the input field
             var input = document.getElementById("emailInput");
@@ -385,6 +391,9 @@ function loadOqrsTable(rows) {
 			"scrollCollapse": true,
 			"paging":         false,
 			"scrollX": true,
+            "language": {
+				url: getDataTablesLanguageUrl(),
+			},
 			"order": [ 0, 'asc' ],
             'white-space': 'nowrap',
 		});
