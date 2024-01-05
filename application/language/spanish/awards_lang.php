@@ -37,7 +37,7 @@ ________________________________________________________________________________
 $lang['awards_dok_description_ln1'] = "Diploma DOK";
 $lang['awards_dok_description_ln2'] = "Alemania se extiende más de 630 km de este a oeste, y aproximadamente 900 km de norte a sur. Alrededor de 70.000 de los 82 millones de habitantes de Alemania son radioaficionados, y más de 40.000 de ellos también son miembros del DARC (Club de Radioaficionados de Alemania). DOK es un sistema que provee a los capítulos locales e individuales con un identificador, que significa 'Deutscher Ortsverband Kenner' (Español: 'Identificador Alemán de Asociación Local').";
 $lang['awards_dok_description_ln3'] = "El DOK consiste de una letra para el distrito y un número de dos dígitos para el capítulo local, ej., P03 Friedrichshafen (la ciudad de la 'exhibición de radioafición') o F41 Baunatal (la ubicación del cuartel general del DARC). Nota: Un cero en un DOK es un error común, a menudo es registrado como la letra O.";
-$lang['awards_dok_description_ln4'] = "Esta información es entregada por el <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/districtsdoks/' target='_blank'>sitio web de la DARC</a> (en inglés). La información acerca de los diplomas DOK Awards y sus reglas puede ser hallada <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/award-check/' target='_blank'>aquí</a> (en inglés).";
+$lang['awards_dok_description_ln4'] = "Esta información es entregada por el <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/districtsdoks/' target='_blank'>sitio web de la DARC</a> (en inglés). La información acerca de los diplomas DOK y sus reglas puede ser hallada <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/award-check/' target='_blank'>aquí</a> (en inglés).";
 
 
 /*
@@ -49,7 +49,7 @@ ________________________________________________________________________________
 $lang['awards_dxcc_description_ln1'] = "Diploma DXCC";
 $lang['awards_dxcc_description_ln2'] = "DXCC significa 'DX Century Club' (Club del Siglo DX), un diploma basado en países trabajados. La Lista DXCC está basada en un artículo creado en 1935 por Clinton B. DeSoto, W1CBD, con título <a href='http://www.arrl.org/desoto' target='_blank'>'How to Count Countries Worked, A New DX Scoring System'</a> (enlace en inglés, título en español: 'Cómo Contar los Países Trabajados, Un Nuevo Sistema de Puntaje DX').";
 $lang['awards_dxcc_description_ln3'] = "Puede encontrar toda la información sobre el diploma DXCC Award en la <a href='https://www.arrl.org/dxcc-rules' target='_blank'>página web de la ARRL</a> (en inglés).";
-$lang['awards_dxcc_description_ln4'] = "Nota Importante: Con el tiempo, los criterios para la Lista DXCC han cambiado. La Lista continua sin cambios hasta que una entidad ya no satisfaga los criterios bajo los cuales fue añadida, en cuyo caso es movida a la Lista de Eliminaciones. Podrá encontrar entidades DXCC Eliminadas en las listas de Cloudlog. Tenga cuidado pues estas entidades DXCC están desactualizadas y ya no son válidas.";
+$lang['awards_dxcc_description_ln4'] = "Nota Importante: Con el tiempo, los criterios para la Lista DXCC han cambiado. La Lista continúa sin cambios hasta que una entidad ya no satisfaga los criterios bajo los cuales fue añadida, en cuyo caso es movida a la Lista de Eliminaciones. Podrá encontrar entidades DXCC Eliminadas en las listas de Cloudlog. Tenga cuidado pues estas entidades DXCC están desactualizadas y ya no son válidas.";
 
 
 /*
@@ -95,9 +95,9 @@ ________________________________________________________________________________
 */
 
 $lang['awards_sig_description_ln1'] = "Información SIG";
-$lang['awards_sig_description_ln2'] = "La Categoría SIG o Signature (Firma) permite la posibilidad de usar cualquier tipo de 'Award Signature' (Firmas de Diplomas) para diplomas que no están implementados en Cloudlog.";
-$lang['awards_sig_description_ln3'] = "La razón para esta funcionalidad es que el formato ADIF común solo contiene un par de campos dedicados para ciertos diplomas. SIG permite hacer posible usar y evaluar otros tipos de marcadores de firma.";
-$lang['awards_sig_description_ln4'] = "En el procesamiento de QSO, encontrará dos campos: 'SIG' contiene el marcador actual, que es también visible en la evaluación de los diplomas, y 'SIG INFO,' que contiene una descripción de la firma. Ambos campos son libremente personalizables.";
+$lang['awards_sig_description_ln2'] = "La Categoría SIG o Signature (Firma) provee la capacidad de usar cualquier tipo de 'Award Signature' (Firmas de Diplomas) para diplomas que no están implementados en Cloudlog.";
+$lang['awards_sig_description_ln3'] = "La razón para esta funcionalidad es que el formato ADIF común solo contiene un par de campos dedicados para ciertos diplomas específicos. SIG permite usar y evaluar otros tipos de marcadores de firma.";
+$lang['awards_sig_description_ln4'] = "En el procesamiento de QSOs, encontrará dos campos: 'SIG' contiene el marcador real, que es también visible en la evaluación de los diplomas, y 'SIG INFO,' que contiene una descripción de la firma. Ambos campos son libremente personalizables.";
 
 
 /*
@@ -108,7 +108,7 @@ ________________________________________________________________________________
 
 $lang['awards_sota_description_ln1'] = "Diplomas SOTA";
 $lang['awards_sota_description_ln2'] = "SOTA (Summits On The Air, Cumbres al Aire) es un esquema de diplomas para radioaficionados que fomenta la operación portátil en áreas montañosas.";
-$lang['awards_sota_description_ln3'] = "Es un programa que opera en alrededor de cien países alrededor del mundo. Cada país tiene su propia Asociación que define las cumbres SOTA reconocidas dentro de esta Asociación. Cada cumbre le entrega a los activadores y a los cazadores un puntaje de acuerdo con la altura de la cumbre. Hay certificados disponibles para varios puntajes, llevando a los prestigiosos trofeos 'Mountain Goat' (Cabra Montañosa) y 'Shack Sloth' (Perezoso de Shack). Una Lista de Honor para Activadores y Cazadores está disponible en la base de datos de SOTA en línea.";
+$lang['awards_sota_description_ln3'] = "Es un programa que opera en alrededor de cien países alrededor del mundo. Cada país tiene su propia Asociación que define las cumbres SOTA reconocidas dentro de esta Asociación. Cada cumbre le entrega a los activadores y a los cazadores un puntaje de acuerdo con la altura de la cumbre. Hay certificados disponibles para varios puntajes, llevando a los prestigiosos trofeos 'Mountain Goat' (Cabra de la Montaña) y 'Shack Sloth' (Perezoso de Shack). Una Lista de Honor para Activadores y Cazadores está disponible en la base de datos de SOTA en línea.";
 $lang['awards_sota_description_ln4'] = "Para más información, por favor visite: <a href='https://www.sota.org.uk/' target='_blank'>https://www.sota.org.uk/</a> (en inglés).";
 
 
@@ -120,7 +120,7 @@ ________________________________________________________________________________
 
 $lang['awards_counties_description_ln1'] = "Diploma de Condados de USA";
 $lang['awards_counties_description_ln2'] = "El Diploma de los Condados de los Estados Unidos de América (USA-CA), es patrocinado por la CQ Magazine, y se otorga a quienes hayan realizado contactos de radio de dos vías con números específicos de condados de los Estados Unidos bajo reglas y condiciones que podrá encontrar <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>aquí</a> (en inglés).";
-$lang['awards_counties_description_ln3'] = "El USA-CA está disponible para todos los radioaficionados licenciados alrededor del mundo y se otroga a individuos por todos los contactos realizados en los condados, sin importar que indicativos fueron usados, localizaciones o fechas de operación.";
+$lang['awards_counties_description_ln3'] = "El USA-CA está disponible para todos los radioaficionados licenciados alrededor del mundo y se otorga a individuos por todos los contactos realizados en los condados, sin importar que indicativos fueron usados, localizaciones o fechas de operación.";
 $lang['awards_counties_description_ln4'] = "Existen diplomas especiales USA-CA disponibles para SWLs con base en reportes de escucha.";
 
 
@@ -167,8 +167,8 @@ ________________________________________________________________________________
 */
 
 $lang['awards_was_description_ln1'] = "Diploma WAS";
-$lang['awards_was_description_ln2'] = "El diploma más popular de la ARRL es el diploma Worked All States (Trabajados todos los Estados). Miles y miles de diplomas se han otorgado a radioaficionados alrededor del mundo. En el aniversario 101 de la ARRL, han rediseñado el certificado y las reglas del programa con la esperanza de facilitar y mejorar el programa de diplomas.";
-$lang['awards_was_description_ln3'] = "El diploma WAS (Worked All States) está disponible para todos los radioaficionados alrededor del mundo que entreguen confirmaciones escritas de los contactos de cada uno de los 50 estados de los Estados Unidos de América. Los radioaficionados en los Estados Unidos y sus posesiones deben ser miembros de la ARRL para aplicar para un diploma WAS. Los aplicantes fuera de los Estados Unidos están exentos de este requerimiento.";
+$lang['awards_was_description_ln2'] = "El diploma más popular de la ARRL es el diploma Worked All States (Trabajados todos los Estados). Miles y miles de diplomas se han otorgado a radioaficionados alrededor del mundo. En el aniversario 101 de la ARRL, se ha rediseñado el certificado y las reglas del programa con la esperanza de facilitar y mejorar el programa de diplomas.";
+$lang['awards_was_description_ln3'] = "El diploma WAS (Worked All States) está disponible para todos los radioaficionados alrededor del mundo que demuestren confirmaciones escritas de contactos en cada uno de los 50 estados de los Estados Unidos de América. Los radioaficionados en los Estados Unidos y sus posesiones deberán ser miembros de la ARRL para aplicar para un diploma WAS. Los aplicantes fuera de los Estados Unidos están exentos de este requerimiento.";
 $lang['awards_was_description_ln4'] = "Toda la información y reglas para el diploma WAS de la ARRL puede ser encontrada <a href='https://www.arrl.org/was' target='_blank'>aquí</a> (en inglés).";
 
 
@@ -180,7 +180,7 @@ ________________________________________________________________________________
 
 $lang['awards_wwff_description_ln1'] = "WWFF - Diploma World Wide Flora and Fauna";
 $lang['awards_wwff_description_ln2'] = "WWFF, World Wide Flora and Fauna (Flora y Fauna Alrededor del Mundo) en la radioafición, fomenta que los operadores de radioafición licenciados salgan de sus shacks y operen de forma portable en áreas Protected Flora & Fauna (PFF, Flora y Fauna Protegidas) alrededor del mundo.";
-$lang['awards_wwff_description_ln3'] = "Más de 26.000 áreas Protected Flora & Fauna (PFF) alrededor del mundo están registradas en el Directorio WWFF. Los Cazadores y Activadores deben aplicar para premios coloridos, de forma global o nacional.";
+$lang['awards_wwff_description_ln3'] = "Más de 26.000 áreas de Flora y Fauna Protegidas (PFF) alrededor del mundo están registradas en el Directorio WWFF. Los Cazadores y Activadores pueden aplicar para obtener premios coloridos, de forma global o nacional.";
 $lang['awards_wwff_description_ln4'] = "Para más información, por favor visite: <a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a> (en inglés).";
 
 /*
@@ -190,6 +190,6 @@ ________________________________________________________________________________
 */
 
 $lang['awards_waja_description_ln1'] = "WAJA - Diploma Worked All Japan prefectures";
-$lang['awards_waja_description_ln2'] = "WAJA, Worked All Japan prefectures (Trabajadas todas las prefecturas de Japón) en la radioafición, formenta que los operadores de radioafición licenciados trabajen todas las prefecturas de Japón.";
-$lang['awards_waja_description_ln3'] = "Puede ser otorgado por haber contactado (escuchado) y recibido una tarjeta QSL de una estación de radioaficionado localizada en cada una de las 47 prefecturas de Japón. La lista de tarjetas QSL debe ser ordanda en orden de número de referencia WAJA (HAJA), sin embargo los nombres de las prefecturas pueden ser omitidos.";
+$lang['awards_waja_description_ln2'] = "WAJA, Worked All Japan prefectures (Trabajadas todas las prefecturas de Japón) en la radioafición, fomenta que los operadores de radioafición licenciados trabajen todas las prefecturas de Japón.";
+$lang['awards_waja_description_ln3'] = "Puede ser otorgado por haber contactado (escuchado) y recibido una tarjeta QSL de una estación de radioaficionado localizada en cada una de las 47 prefecturas de Japón. La lista de tarjetas QSL debe ser ordenada por su número de referencia WAJA (HAJA), sin embargo los nombres de las prefecturas pueden ser omitidos.";
 $lang['awards_waja_description_ln4'] = "Para más información, por favor visite: <a href='https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm' target='_blank'>https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm</a> (en inglés).";
