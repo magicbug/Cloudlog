@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['contesting_page_title'] = '竞赛日志';
-$lang['contesting_button_reset_contest_session'] = '重置竞赛会话';
+$lang['contesting_button_reset_contest_session'] = '重置竞赛';
 $lang['contesting_operator_callsign'] = '操作员呼号';
 
 $lang['contesting_exchange_type'] = '信息交换类型';
