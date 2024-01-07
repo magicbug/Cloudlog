@@ -2,21 +2,21 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['menu_badge_developer_mode'] = '开发模式';
+$lang['menu_badge_developer_mode'] = '开发者模式';
 
 $lang['menu_logbook'] = '日志簿';
 $lang['menu_overview'] = '概览';
 $lang['menu_advanced'] = '详细信息';
 
 $lang['menu_qso'] = 'QSO';
-$lang['menu_live_qso'] = '添加QSO（从电台获取信息）';
-$lang['menu_post_qso'] = '添加QSO（手动输入信息）';
-$lang['menu_fast_log_entry'] = "简单快速记录Log";
-$lang['menu_live_contest_logging'] = '比赛日志（从电台获取信息）';
-$lang['menu_post_contest_logging'] = '比赛日志（手动输入信息）';
-$lang['menu_bandmap'] = 'Bandmap';
+$lang['menu_live_qso'] = '添加QSO（实时）';
+$lang['menu_post_qso'] = '添加QSO（手动）';
+$lang['menu_fast_log_entry'] = "快速记录QSO";
+$lang['menu_live_contest_logging'] = '比赛日志（实时）';
+$lang['menu_post_contest_logging'] = '比赛日志（手动）';
+$lang['menu_bandmap'] = '波段地图';
 $lang['menu_view_qsl'] = '浏览QSL卡片';
-$lang['menu_view_eqsl'] = '浏览电子QSL卡片';
+$lang['menu_view_eqsl'] = '浏览eQSL卡片';
 
 $lang['menu_notes'] = '笔记';
 
