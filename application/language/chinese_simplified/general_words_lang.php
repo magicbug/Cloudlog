@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['error_no_active_station_profile'] = '注意：你需要设置一个活动的电台站地址。';
+$lang['error_no_active_station_profile'] = '注意：你需要设置一个活动的电台站地址';
 
 $lang['notice_turn_the_radio_on'] = '你今天还没进行QSO，是时候打开你的电台开始通联了！';
 
@@ -23,9 +23,9 @@ $lang['general_word_export'] = "导出";
 $lang['general_word_import'] = "导入";
 $lang['general_word_count'] = "数量";
 $lang['general_word_filtering_on'] = "筛选打开";
-$lang['general_word_not_display'] = "Not display";
-$lang['general_word_icon'] = "Icon";
-$lang['general_word_never'] = "Never";
+$lang['general_word_not_display'] = "不显示";
+$lang['general_word_icon'] = "图标";
+$lang['general_word_never'] = "从不";
 
 $lang['general_word_date'] = '日期';
 $lang['general_word_startdate'] = "开始时间";
@@ -48,11 +48,11 @@ $lang['general_word_city'] = '城市';
 $lang['general_word_total'] = '总计';
 $lang['general_word_year'] = '年';
 $lang['general_word_month'] = '月';
-$lang['general_word_day'] = "Day";
-$lang['general_word_days'] = "Days";
+$lang['general_word_day'] = "日";
+$lang['general_word_days'] = "天";
 
 $lang['general_word_colors'] = "颜色";
-$lang['general_word_light'] = "浅色/激光";
+$lang['general_word_light'] = "浅色/高光";
 $lang['general_word_worked'] = '已通联';
 $lang['general_word_worked_not_confirmed'] = "已通联未确认";
 $lang['general_word_not_worked'] = "未通联";
@@ -124,8 +124,8 @@ $lang['gen_hamradio_suffix'] = "后缀";
 $lang['gen_hamradio_mode'] = '模式';
 $lang['gen_hamradio_de'] = '本台呼号(De)';
 $lang['gen_hamradio_dx'] = '对方呼号(Dx)';
-$lang['gen_hamradio_rst_sent'] = '发';
-$lang['gen_hamradio_rst_rcvd'] = '收';
+$lang['gen_hamradio_rst_sent'] = 'Sent RST';
+$lang['gen_hamradio_rst_rcvd'] = 'Rcvd RST';
 $lang['gen_hamradio_band'] = '频段';
 $lang['gen_hamradio_bandgroup'] = "波段";
 $lang['gen_hamradio_band_rx'] = '频段 (RX)';
@@ -134,15 +134,15 @@ $lang['gen_hamradio_frequency_rx'] = '频率 (RX)';
 $lang['gen_hamradio_radio'] = '电台';
 $lang['gen_hamradio_rsts'] = '信号报告 (发)';
 $lang['gen_hamradio_rstr'] = '信号报告 (收)';
-$lang['gen_hamradio_refs'] = 'Refs';
-$lang['gen_hamradio_myrefs'] = 'My Refs';
+$lang['gen_hamradio_refs'] = '对方网格';
+$lang['gen_hamradio_myrefs'] = '电台网格';
 $lang['gen_hamradio_exchange_sent_short'] = '信号交换 (发)';
 $lang['gen_hamradio_exchange_rcvd_short'] = '信号交换 (收)';
 $lang['gen_hamradio_qsl'] = 'QSL';
 $lang['gen_hamradio_qsltype'] = "QSL 类型";
 $lang['gen_hamradio_qslvia'] = 'QSL via';
 $lang['gen_hamradio_qslmsg'] = 'QSL 信息';
-$lang['gen_hamradio_locator'] = '定位器';
+$lang['gen_hamradio_locator'] = '定位地图';
 $lang['gen_hamradio_transmit_power'] = '发射功率 (W)';
 $lang['gen_hamradio_propagation_mode'] = '传播模式';
 
@@ -172,7 +172,7 @@ $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_gridsquare'] = '网格';
 $lang['gen_hamradio_get_gridsquare'] = '获取网格座标';
-$lang['gen_hamradio_gridsquare_show'] = "Show Locator";
+$lang['gen_hamradio_gridsquare_show'] = "显示定位地图";
 $lang['gen_hamradio_latitude'] = "纬度";
 $lang['gen_hamradio_longitude'] = "经度";
 $lang['gen_hamradio_bearing'] = "方位角";
@@ -186,7 +186,7 @@ $lang['gen_hamradio_sig_info'] = 'Sig 属性';
 $lang['gen_find_zone_cq_part1'] = "如果您不知道自己的 CQ 分区";
 $lang['gen_find_zone_itu_part1'] = "如果您不知道自己的 ITU 分区";
 $lang['gen_find_zone_part2'] = "点击此处";
-$lang['gen_find_zone_part3'] = "来查询！";
+$lang['gen_find_zone_part3'] = "来查询";
 
 // Dashboard Words
 $lang['dashboard_you_have_had'] = '今天你有';
