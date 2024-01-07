@@ -104,7 +104,7 @@ $lang['options_save'] = '保存';
 
 // Bands
 
-$lang['options_bands'] = "波段";
+$lang['options_bands'] = "波段设置";
 $lang['options_bands_text_ln1'] = "使用波段列表，您可以控制创建新 QSO 时显示哪些波段。";
 $lang['options_bands_text_ln2'] = "启用的波段将显示在 QSO“波段”下拉列表中，而停用的频段将被隐藏且无法选择。";
 $lang['options_bands_create'] = "创建波段";
