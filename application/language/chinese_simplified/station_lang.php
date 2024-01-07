@@ -8,35 +8,35 @@ Station Logbooks
 ___________________________________________________________________________________________
 */
 
-$lang['station_logbooks'] = "Station Logbooks";
-$lang['station_logbooks_description_header'] = "What are Station Logbooks";
-$lang['station_logbooks_description_text'] = "Station Logbooks allow you to group Station Locations, this allows you to see all the locations across one session from the logbook areas to the analytics. Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.";
-$lang['station_logbooks_create'] = "Create Station Logbook";
-$lang['station_logbooks_status'] = "Status";
-$lang['station_logbooks_link'] = "Link";
-$lang['station_logbooks_public_search'] = "Public Search";
-$lang['station_logbooks_set_active'] = "Set as Active Logbook";
-$lang['station_logbooks_active_logbook'] = "Active Logbook";
-$lang['station_logbooks_edit_logbook'] = "Edit Station Logbook";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
-$lang['station_logbooks_confirm_delete'] = "Are you sure you want to delete the following station logbook? You must re-link any locations linked here to another logbook.: ";
-$lang['station_logbooks_view_public'] = "View Public Page for Logbook: ";
-$lang['station_logbooks_create_name'] = "Station Logbook Name";
-$lang['station_logbooks_create_name_hint'] = "You can call a station logbook anything.";
-$lang['station_logbooks_edit_name_hint'] = "Shortname for the station logbook. For example: Home Log (IO87IP)";
-$lang['station_logbooks_edit_name_update'] = "Update Station Logbook Name";
-$lang['station_logbooks_public_slug'] = "Public Slug";
-$lang['station_logbooks_public_slug_hint'] = "Setting a public slug allows you to share your logbook with anyone via a custom website address, this slug can contain letters & numbers only.";
-$lang['station_logbooks_public_slug_format1'] = "Later it looks like this:";
+$lang['station_logbooks'] = "台站日志";
+$lang['station_logbooks_description_header'] = "什么是台站日志";
+$lang['station_logbooks_description_text'] = "台站日志可以让您对自己的台站位置进行分组，这对在同一DXCC或VUCC下的不同站点位置非常方便";
+$lang['station_logbooks_create'] = "新建台站日志";
+$lang['station_logbooks_status'] = "状态";
+$lang['station_logbooks_link'] = "链接";
+$lang['station_logbooks_public_search'] = "公开搜索";
+$lang['station_logbooks_set_active'] = "设置为正在使用的日志";
+$lang['station_logbooks_active_logbook'] = "正在使用的日志";
+$lang['station_logbooks_edit_logbook'] = "编辑台站日志";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
+$lang['station_logbooks_confirm_delete'] = "确定删除此台站日志？你可能需要重新将台站位置链接到其他台站日志中: ";
+$lang['station_logbooks_view_public'] = "浏览日志公开页: ";
+$lang['station_logbooks_create_name'] = "台站日志名称";
+$lang['station_logbooks_create_name_hint'] = "你可以随意称呼你的台站日志";
+$lang['station_logbooks_edit_name_hint'] = "台站位置简称，例如：Home Log (IO87IP)";
+$lang['station_logbooks_edit_name_update'] = "更新台站日志名称";
+$lang['station_logbooks_public_slug'] = "自定义日志链接";
+$lang['station_logbooks_public_slug_hint'] = "通过自定义日志链接，你可以通过此链接让别人访问你的日志";
+$lang['station_logbooks_public_slug_format1'] = "他将会看起来像这样：";
 $lang['station_logbooks_public_slug_format2'] = "[your slug]";
 $lang['station_logbooks_public_slug_input'] = "Type in Public Slug choice";
 $lang['station_logbooks_public_slug_visit'] = "Visit Public Page";
 $lang['station_logbooks_public_search_hint'] = "Enabling public search function offers a search input box on the public logbook page accessed via public slug. Search only covers this logbook.";
 $lang['station_logbooks_public_search_enabled'] = "Public search enabled";
 $lang['station_logbooks_select_avail_loc'] = "Select Available Station Locations";
-$lang['station_logbooks_link_loc'] = "Link Location";
-$lang['station_logbooks_linked_loc'] = "Linked Locations";
-$lang['station_logbooks_no_linked_loc'] = "No Linked Locations";
-$lang['station_logbooks_unlink_station_location'] = "Unlink Station Location";
+$lang['station_logbooks_link_loc'] = "链接的台站位置";
+$lang['station_logbooks_linked_loc'] = "已链接的台站位置";
+$lang['station_logbooks_no_linked_loc'] = "未链接的台站位置";
+$lang['station_logbooks_unlink_station_location'] = "取消链接的台站位置";
 
 
 
