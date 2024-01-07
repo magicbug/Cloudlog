@@ -10,7 +10,7 @@ ________________________________________________________________________________
 */
 
 $lang['filter_quickfilters'] = '快速过滤';
-$lang['filter_qsl_filters'] = 'QSL 过滤';
+$lang['filter_qsl_filters'] = '过滤 QSL';
 $lang['filter_filters'] = '过滤器';
 $lang['filter_actions'] = '操作';
 $lang['filter_results'] = '每页结果数';
@@ -27,7 +27,7 @@ ________________________________________________________________________________
 */
 
 $lang['filter_quicksearch_w_sel'] = '用选中行的条件进行快速搜索：';
-$lang['filter_search_callsign'] = '搜索 呼号';
+$lang['filter_search_callsign'] = '搜索呼号';
 $lang['filter_search_dxcc'] = '搜索 DXCC';
 $lang['filter_search_state'] = '搜索 州/省';
 $lang['filter_search_gridsquare'] = '搜索 网格';
