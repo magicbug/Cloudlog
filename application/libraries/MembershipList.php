@@ -7,6 +7,8 @@ class MembershipList {
 	*/
 
     function searchFilesForCallsign($callsign) {
+
+        $callsign = strtoupper($callsign);
         $dir = 'assets/membership_lists/';
         if (!is_dir($dir)) {
             return "Directory does not exist";
