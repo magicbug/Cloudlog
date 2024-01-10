@@ -17,6 +17,28 @@ class Lookup extends CI_Controller {
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
+	public function membership($callsign) {
+		$this->load->library('MembershipList');
+		$data['results'] = $this->membershiplist->searchFilesForCallsign($callsign);
+    
+		print_r($data['results']);
+
+		foreach ($data['results'] as $key => $value) {
+			echo "Key: " . $key . "\n";
+			foreach ($value as $subKey => $subValue) {
+				echo "Sub-key: " . $subKey . "\n";
+				if (is_array($subValue)) {
+					foreach ($subValue as $innerKey => $innerValue) {
+						echo "Inner key: " . $innerKey . "\n";
+						echo "Inner value: " . $innerValue . "\n";
+					}
+				} else {
+					echo "Sub-value: " . $subValue . "\n";
+				}
+			}
+		}
+	}
+
 	public function index()
 	{
 		$data['page_title'] = "Quick Lookup";
