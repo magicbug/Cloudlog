@@ -49,8 +49,8 @@ $lang['general_word_city'] = 'Ciudad';
 $lang['general_word_total'] = 'Total';
 $lang['general_word_year'] = 'Año';
 $lang['general_word_month'] = 'Mes';
-$lang['general_word_day'] = "Day";
-$lang['general_word_days'] = "Days";
+$lang['general_word_day'] = "Día";
+$lang['general_word_days'] = "Días";
 
 $lang['general_word_colors'] = "Colores";
 $lang['general_word_light'] = "Luz/Láser";
@@ -61,7 +61,7 @@ $lang['general_word_confirmed'] = 'Confirmados';
 $lang['general_word_confirmation'] = "Confirmación";
 $lang['general_word_needed'] = 'Solicitadas';
 
-$lang['general_word_all'] = 'All';
+$lang['general_word_all'] = 'Todo';
 $lang['general_word_no'] = 'No';
 $lang['general_word_yes'] = 'Si';
 $lang['general_word_method'] = 'Método';

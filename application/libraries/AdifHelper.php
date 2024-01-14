@@ -85,7 +85,6 @@ class AdifHelper {
             'SILENT_KEY',
             'SKCC',
             'SOTA_REF',
-            'WWFF_REF',
             'POTA_REF',
             'SRX',
             'SRX_STRING',
@@ -188,7 +187,6 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("MY_SOTA_REF", $qso->station_sota);
 
-        $line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_wwff);
 
         $line .= $this->getAdifFieldLine("MY_POTA_REF", $qso->station_pota);
 
@@ -204,23 +202,32 @@ class AdifHelper {
 
         $line .= $this->getAdifFieldLine("MY_CNTY", $county);
 
-		$stationsSig = $qso->station_sig;
-		// If MY_SIG is WWFF or "" and there's a station_wwff set, use data from station_wwff
-		if ((empty($stationsSig) || $stationsSig === "WWFF") && !empty($qso->station_wwff)) {
-			$line .= $this->getAdifFieldLine("MY_SIG", "WWFF");
-			$line .= $this->getAdifFieldLine("MY_SIG_INFO", $qso->station_wwff);
+		$line .= $this->getAdifFieldLine("WWFF_REF", $qso->{'COL_WWFF_REF'});
+		$line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_wwff);
+
+		// If MY_SIG is WWFF it's a special case
+		// Else set MY_SIG and MY_SIG_INFO as usual
+		$station_sig = $qso->station_sig ?? "";
+		if ($station_sig === "WWFF") {
+			// If MY_WWFF_REF wasn't set yet, set it - end result is priority is given to STATION_WWFF
+			if (empty($qso->station_wwff)) {
+				$line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_sig_info);
+			}
 		} else {
-			$line .= $this->getAdifFieldLine("MY_SIG", $stationsSig);
+			$line .= $this->getAdifFieldLine("MY_SIG", $qso->station_sig);
 			$line .= $this->getAdifFieldLine("MY_SIG_INFO", $qso->station_sig_info);
 		}
 
-		$sig = $qso->{'COL_SIG'};
-		// If SIG is WWFF or "" and there's a WWFF_REF set, use data from COL_WWFF_REF
-		if ((empty($sig) || $sig === "WWFF") && !empty($qso->{'COL_WWFF_REF'})) {
-			$line .= $this->getAdifFieldLine("SIG", "WWFF");
-			$line .= $this->getAdifFieldLine("SIG_INFO", $qso->{'COL_WWFF_REF'});
+		// Same for COL_SIG If it's WWFF, it's a special case
+		// Else set SIG and SIG_INFO as usual
+		$sig = $qso->{'COL_SIG'} ?? "";
+		if ($sig === "WWFF") {
+			// If WWFF_REF wasn't set yet, set it - end result is priority is given to COL_WWFF_REF
+			if (empty($qso->{'COL_WWFF_REF'})){
+				$line .= $this->getAdifFieldLine("WWFF_REF", $qso->{'COL_SIG_INFO'});
+			}
 		} else {
-			$line .= $this->getAdifFieldLine("SIG", $sig);
+			$line .= $this->getAdifFieldLine("SIG", $qso->{'COL_SIG'});
 			$line .= $this->getAdifFieldLine("SIG_INFO", $qso->{'COL_SIG_INFO'});
 		}
 

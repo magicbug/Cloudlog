@@ -2,18 +2,18 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['awards_info_button'] = "Award Info";
-$lang['awards_show_worked'] = "Show worked";
-$lang['awards_show_confirmed'] = "Show confirmed";
-$lang['awards_show_not_worked'] = "Show not worked";
-$lang['awards_show_cq_map'] = "Show CQ Zone Map";
-$lang['awards_summary'] = "Summary";
+$lang['awards_info_button'] = "Información de Diploma";
+$lang['awards_show_worked'] = "Mostrar trabajados";
+$lang['awards_show_confirmed'] = "Mostrar confirmados";
+$lang['awards_show_not_worked'] = "Mostrar no trabajados";
+$lang['awards_show_cq_map'] = "Mostrar mapa de zonas CQ";
+$lang['awards_summary'] = "Resumen";
 $lang['awards_total'] = "Total";
-$lang['awards_total_worked'] = "Total worked";
-$lang['awards_total_confirmed'] = "Total confirmed";
+$lang['awards_total_worked'] = "Total de trabajados";
+$lang['awards_total_confirmed'] = "Total de confirmados";
 
 
-$lang['awards_cq_page_title'] = "Awards - CQ Magazine WAZ";
+$lang['awards_cq_page_title'] = "Diplomas - CQ Magazine WAZ";
 
 
 /*
@@ -22,10 +22,10 @@ CQ -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_cq_description_ln1'] = "CQ Magazine WAZ Award";
-$lang['awards_cq_description_ln2'] = "The CQ Magazine is located in the US and one of the most popular amateur radio magazines in the world. The magazine first appeared in January 1945 and focuses on awards and the practical aspects of amateur radio.";
-$lang['awards_cq_description_ln3'] = "The WAZ Award stands for 'Worked All Zones' and requires radio contacts to all 40 CQ Zones along with the corresponding confirmation.";
-$lang['awards_cq_description_ln4'] = "You can find all the information and rules on the Website of the <a href='https://cq-amateur-radio.com/cq_awards/cq_waz_awards/index_cq_waz_award.html' target='_blank'>CQ Magazine</a>.";
+$lang['awards_cq_description_ln1'] = "Diploma CQ Magazine WAZ";
+$lang['awards_cq_description_ln2'] = "La CQ Magazine fue originada en los Estados Unidos y es una de las revistas de radioafición más importantes del mundo. La revista comenzó publicación en enero de 1945 y se enfoca en diplomas y en los aspectos prácticos de la radioafición.";
+$lang['awards_cq_description_ln3'] = "El diploma WAZ significa 'Worked All Zones' (Todas las Zonas Trabajadas) y requiere contactos de radio a todas las 40 zonas CQ además de su correspondiente confirmación.";
+$lang['awards_cq_description_ln4'] = "Puede encontrar toda la información y las reglas en el sitio web de la <a href='https://cq-amateur-radio.com/cq_awards/cq_waz_awards/index_cq_waz_award.html' target='_blank'>CQ Magazine</a> (en inglés).";
 
 
 /*
@@ -34,10 +34,10 @@ DOK -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_dok_description_ln1'] = "DOK Award";
-$lang['awards_dok_description_ln2'] = "Germany extends over 630 km from East to West and nearly 900 km from North to South. Around 70,000 of Germany's 82 million inhabitants are licensed hams, with more than 40,000 of them being members of DARC. DOK is a system that provides individual local chapters with an identifier and means 'Deutscher Ortsverband Kenner' (English: 'German Local Association Identifier').";
-$lang['awards_dok_description_ln3'] = "The DOK consists of a letter for the district and a two-digit number for the local chapter, like P03 Friedrichshafen (city of the 'Hamradio exhibition') or F41 Baunatal (location of the DARC headquarters). Note: A zero in a DOK is a common mistake, often being logged as the letter O.";
-$lang['awards_dok_description_ln4'] = "This information is provided by the <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/districtsdoks/' target='_blank'>DARC website</a>. Information about the DOK Awards and its rules can be found <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/award-check/' target='_blank'>here</a>.";
+$lang['awards_dok_description_ln1'] = "Diploma DOK";
+$lang['awards_dok_description_ln2'] = "Alemania se extiende más de 630 km de este a oeste, y aproximadamente 900 km de norte a sur. Alrededor de 70.000 de los 82 millones de habitantes de Alemania son radioaficionados, y más de 40.000 de ellos también son miembros del DARC (Club de Radioaficionados de Alemania). DOK es un sistema que provee a los capítulos locales e individuales con un identificador, que significa 'Deutscher Ortsverband Kenner' (Español: 'Identificador Alemán de Asociación Local').";
+$lang['awards_dok_description_ln3'] = "El DOK consiste de una letra para el distrito y un número de dos dígitos para el capítulo local, ej., P03 Friedrichshafen (la ciudad de la 'exhibición de radioafición') o F41 Baunatal (la ubicación del cuartel general del DARC). Nota: Un cero en un DOK es un error común, a menudo es registrado como la letra O.";
+$lang['awards_dok_description_ln4'] = "Esta información es entregada por el <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/districtsdoks/' target='_blank'>sitio web de la DARC</a> (en inglés). La información acerca de los diplomas DOK y sus reglas puede ser hallada <a href='https://www.darc.de/der-club/referate/conteste/wag-contest/en/service/award-check/' target='_blank'>aquí</a> (en inglés).";
 
 
 /*
@@ -46,10 +46,10 @@ DXCC -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_dxcc_description_ln1'] = "DXCC Award";
-$lang['awards_dxcc_description_ln2'] = "DXCC stands for 'DX Century Club,' an award based on worked countries. The DXCC List is based on an article created in 1935 by Clinton B. DeSoto, W1CBD, titled <a href='http://www.arrl.org/desoto' target='_blank'>'How to Count Countries Worked, A New DX Scoring System'</a>.";
-$lang['awards_dxcc_description_ln3'] = "You can find all information about the DXCC Award on the <a href='https://www.arrl.org/dxcc-rules' target='_blank'>ARRL website</a>.";
-$lang['awards_dxcc_description_ln4'] = "Important Note: Over time, the criteria for the DXCC List have changed. The List remains unchanged until an entity no longer satisfies the criteria under which it was added, at which time it is moved to the Deleted List. You will find Deleted DXCC entities also in the lists on Cloudlog. Be aware that these DXCC entities are outdated and no longer valid.";
+$lang['awards_dxcc_description_ln1'] = "Diploma DXCC";
+$lang['awards_dxcc_description_ln2'] = "DXCC significa 'DX Century Club' (Club del Siglo DX), un diploma basado en países trabajados. La Lista DXCC está basada en un artículo creado en 1935 por Clinton B. DeSoto, W1CBD, con título <a href='http://www.arrl.org/desoto' target='_blank'>'How to Count Countries Worked, A New DX Scoring System'</a> (enlace en inglés, título en español: 'Cómo Contar los Países Trabajados, Un Nuevo Sistema de Puntaje DX').";
+$lang['awards_dxcc_description_ln3'] = "Puede encontrar toda la información sobre el diploma DXCC Award en la <a href='https://www.arrl.org/dxcc-rules' target='_blank'>página web de la ARRL</a> (en inglés).";
+$lang['awards_dxcc_description_ln4'] = "Nota Importante: Con el tiempo, los criterios para la Lista DXCC han cambiado. La Lista continúa sin cambios hasta que una entidad ya no satisfaga los criterios bajo los cuales fue añadida, en cuyo caso es movida a la Lista de Eliminaciones. Podrá encontrar entidades DXCC Eliminadas en las listas de Cloudlog. Tenga cuidado pues estas entidades DXCC están desactualizadas y ya no son válidas.";
 
 
 /*
@@ -58,10 +58,10 @@ FFMA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_ffma_description_ln1'] = "Fred Fish Memorial Award";
-$lang['awards_ffma_description_ln2'] = "The Fred Fish Memorial Award was created in honor of Fred Fish, W5FF (SK), who was the first amateur to have worked and confirmed all 488 Maidenhead grid squares in the 48 contiguous United States on 6 Meters.";
-$lang['awards_ffma_description_ln3'] = "The award will be given to any amateur who can duplicate W5FF's accomplishment.";
-$lang['awards_ffma_description_ln4'] = "For more information, you can visit this link: <a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a>.";
+$lang['awards_ffma_description_ln1'] = "Diploma en Memoria de Fred Fish";
+$lang['awards_ffma_description_ln2'] = "El diploma en Memoria de Fred Fish fue creado en honor de Fred Fish, W5FF (SK), quien fue el primer radioaficionado en haber trabajado y confirmado todos los gridsquares Maidenhead en los 48 estados contiguos de los Estados Unidos en la banda de 6 metros.";
+$lang['awards_ffma_description_ln3'] = "Este diploma será otorgado a cualquier radioaficionado que pueda replicar este logro.";
+$lang['awards_ffma_description_ln4'] = "Para más información, puede visitar este enlace: <a href='https://www.arrl.org/ffma' target='_blank'>https://www.arrl.org/ffma</a> (en inglés).";
 
 
 /*
@@ -70,10 +70,10 @@ IOTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_iota_description_ln1'] = "IOTA Awards";
-$lang['awards_iota_description_ln2'] = "IOTA is an exciting and innovative activity program that has captured the interest of thousands of radio amateurs worldwide. Established in 1964, it promotes radio contacts with stations located on islands around the world to enhance the experience of all those active on the amateur bands. To achieve this, it draws on the widespread mystique surrounding islands.";
-$lang['awards_iota_description_ln3'] = "It is administered by Islands On The Air (IOTA) Ltd (referred to as IOTA Management) in partnership with the Radio Society of Great Britain (RSGB). IOTA Management has grouped the world's islands into approximately 1200 'IOTA groups,' each having varying numbers of 'counters,' which are qualifying islands. These listings are published in the IOTA Directory and on the IOTA website. The objective for the IOTA Island Chaser is to make radio contact with at least one counter in as many of these groups as possible. The program has a well-defined set of rules and encourages friendly competition among chasers by publishing participant performance in an Honor Roll and annual listings, as well as recognizing it with certificates and prestigious awards.";
-$lang['awards_iota_description_ln4'] = "You can also find this information on the <a href='https://www.iota-world.org/' target='_blank'>IOTA WORLD website</a>.";
+$lang['awards_iota_description_ln1'] = "Diplomas IOTA";
+$lang['awards_iota_description_ln2'] = "IOTA es un emocionante e innovador programa de actividades que ha capturado el interés de miles de radioaficionados alrededor del mundo. Establecido en 1964, promueve los contactos de radio con estaciones localizadas en islas alrededor del mundo para mejorar la experiencia de todos los que estén activos en las bandas de radioaficionados. Para lograrlo, utiliza el atractivo místico que implica el estar en una isla.";
+$lang['awards_iota_description_ln3'] = "Es administrado por Islands On The Air (IOTA) Ltd (referido como la Administración de IOTA) en conjunto con la Sociedad de Radio de Gran Bretaña (RSGB). La Administración de IOTA ha agrupado las islas del mundo en aproximadamente 1200 'grupos IOTA', cada uno con un número variable de 'counters', que son islas que aplican al programa. Estos listados son publicados en el Directorio IOTA y en la página web de IOTA. El objetivo para el Cazador de Islas IOTA es hacer contactos de radio con al menos un counter en la mayor cantidad de grupos como sea posible. El programa tiene un conjunto bien definido de reglas y promueve la sana competencia entre cazadores al publicar el desempeño de los participantes en una Lista de Honor y listados anuales, además de reconocerles con certificados y diplomas prestigiosos.";
+$lang['awards_iota_description_ln4'] = "También puede encontrar esta información en el <a href='https://www.iota-world.org/' target='_blank'>sitio web de IOTA WORLD</a> (en inglés).";
 
 
 /*
@@ -82,10 +82,10 @@ POTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_pota_description_ln1'] = "POTA Awards";
-$lang['awards_pota_description_ln2'] = "Parks on the Air® (POTA) started in early 2017 when the ARRL's National Parks on the Air special event ended. A group of volunteers wanted to continue the fun beyond the one-year event, and thus, POTA was born.";
-$lang['awards_pota_description_ln3'] = "POTA works similarly to SOTA, with Activators and Hunters. For the awards, there are several categories based on the number of parks, geographic areas, and more.";
-$lang['awards_pota_description_ln4'] = "For more information about the available awards and categories, please visit the <a href='https://parksontheair.com/pota-awards/' target='_blank'>Parks on the Air® website</a>.";
+$lang['awards_pota_description_ln1'] = "Diplomas POTA";
+$lang['awards_pota_description_ln2'] = "Parks on the Air® (POTA) comenzó a principios de 2017 cuando finalizó el evento especial National Parks on the Air de la ARRL. Un grupo de voluntarios querían prolongar la diversión más allá de dicho evento que duró un año, y entonces, nació el programa POTA.";
+$lang['awards_pota_description_ln3'] = "POTA funciona de forma similar a SOTA, con Activadores y Cazadores. Para los diplomas, existen varias categorías basadas en el número de parques, áreas geográficas y más.";
+$lang['awards_pota_description_ln4'] = "Para más información acerca de los diplomas y categorías disponibles, por favor visite el <a href='https://parksontheair.com/pota-awards/' target='_blank'>sitio de Parks on the Air®</a> (en inglés).";
 
 
 /*
@@ -94,10 +94,10 @@ SIG -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_sig_description_ln1'] = "SIG Information";
-$lang['awards_sig_description_ln2'] = "The SIG or Signature Category provides the possibility to use any kind of 'Award Signature' for awards that are not implemented in Cloudlog.";
-$lang['awards_sig_description_ln3'] = "The reason for this is that the common ADIF format provides only a few dedicated fields for certain awards. SIG still makes it possible to use and evaluate all other types of signature markers.";
-$lang['awards_sig_description_ln4'] = "In the QSO processing, you will find two fields: 'SIG' contains the actual marker, which is also visible in the award evaluation, and 'SIG INFO,' which contains a description of the signature. Both fields are freely customizable.";
+$lang['awards_sig_description_ln1'] = "Información SIG";
+$lang['awards_sig_description_ln2'] = "La Categoría SIG o Signature (Firma) provee la capacidad de usar cualquier tipo de 'Award Signature' (Firmas de Diplomas) para diplomas que no están implementados en Cloudlog.";
+$lang['awards_sig_description_ln3'] = "La razón para esta funcionalidad es que el formato ADIF común solo contiene un par de campos dedicados para ciertos diplomas específicos. SIG permite usar y evaluar otros tipos de marcadores de firma.";
+$lang['awards_sig_description_ln4'] = "En el procesamiento de QSOs, encontrará dos campos: 'SIG' contiene el marcador real, que es también visible en la evaluación de los diplomas, y 'SIG INFO,' que contiene una descripción de la firma. Ambos campos son libremente personalizables.";
 
 
 /*
@@ -106,10 +106,10 @@ SOTA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_sota_description_ln1'] = "SOTA Awards";
-$lang['awards_sota_description_ln2'] = "SOTA (Summits On The Air) is an award scheme for radio amateurs that encourages portable operation in mountainous areas.";
-$lang['awards_sota_description_ln3'] = "It is fully operational in nearly a hundred countries worldwide. Each country has its own Association that defines the recognized SOTA summits within that Association. Each summit earns the activators and chasers a score related to the height of the summit. Certificates are available for various scores, leading to the prestigious 'Mountain Goat' and 'Shack Sloth' trophies. An Honor Roll for Activators and Chasers is maintained in the SOTA online database.";
-$lang['awards_sota_description_ln4'] = "For more information, please visit: <a href='https://www.sota.org.uk/' target='_blank'>https://www.sota.org.uk/</a>.";
+$lang['awards_sota_description_ln1'] = "Diplomas SOTA";
+$lang['awards_sota_description_ln2'] = "SOTA (Summits On The Air, Cumbres al Aire) es un esquema de diplomas para radioaficionados que fomenta la operación portátil en áreas montañosas.";
+$lang['awards_sota_description_ln3'] = "Es un programa que opera en alrededor de cien países alrededor del mundo. Cada país tiene su propia Asociación que define las cumbres SOTA reconocidas dentro de esta Asociación. Cada cumbre le entrega a los activadores y a los cazadores un puntaje de acuerdo con la altura de la cumbre. Hay certificados disponibles para varios puntajes, llevando a los prestigiosos trofeos 'Mountain Goat' (Cabra de la Montaña) y 'Shack Sloth' (Perezoso de Shack). Una Lista de Honor para Activadores y Cazadores está disponible en la base de datos de SOTA en línea.";
+$lang['awards_sota_description_ln4'] = "Para más información, por favor visite: <a href='https://www.sota.org.uk/' target='_blank'>https://www.sota.org.uk/</a> (en inglés).";
 
 
 /*
@@ -118,10 +118,10 @@ US Counties -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_counties_description_ln1'] = "US County Award";
-$lang['awards_counties_description_ln2'] = "The United States of America Counties Award (USA-CA), sponsored by CQ magazine, is issued for confirmed two-way radio contacts with specified numbers of U.S. counties under rules and conditions you can find <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>here</a>.";
-$lang['awards_counties_description_ln3'] = "USA-CA is available to all licensed amateurs worldwide and is issued to individuals for all county contacts made, regardless of callsigns used, operating locations, or dates.";
-$lang['awards_counties_description_ln4'] = "Special USA-CA awards are also available to SWLs on a heard basis.";
+$lang['awards_counties_description_ln1'] = "Diploma de Condados de USA";
+$lang['awards_counties_description_ln2'] = "El Diploma de los Condados de los Estados Unidos de América (USA-CA), es patrocinado por la CQ Magazine, y se otorga a quienes hayan realizado contactos de radio de dos vías con números específicos de condados de los Estados Unidos bajo reglas y condiciones que podrá encontrar <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>aquí</a> (en inglés).";
+$lang['awards_counties_description_ln3'] = "El USA-CA está disponible para todos los radioaficionados licenciados alrededor del mundo y se otorga a individuos por todos los contactos realizados en los condados, sin importar que indicativos fueron usados, localizaciones o fechas de operación.";
+$lang['awards_counties_description_ln4'] = "Existen diplomas especiales USA-CA disponibles para SWLs con base en reportes de escucha.";
 
 
 /*
@@ -130,10 +130,10 @@ US Gridmaster -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_us_gridmaster_description_ln1'] = "US Gridmaster Award";
-$lang['awards_us_gridmaster_description_ln2'] = "The GridMaster Award is the most prestigious AMSAT award, first introduced in 2014 by the Star Comm Group. It is available to all amateur radio operators worldwide who manage to work all 488 grid squares in the USA via satellite and can provide QSL confirmations for each contact.";
-$lang['awards_us_gridmaster_description_ln3'] = "Official information from the <a href='https://www.amsat.org/gridmaster/' target='_blank'>website</a>: Two-way communication must be established via amateur satellite with each grid. There is no minimum signal report required. Contacts must be made from the same location or from locations no two of which are more than 200 kilometers apart. The applicant's attestation in the award application serves as affirmation of abidance by the distance rule. Individuals may apply for and be granted multiple GridMaster awards when achieved from another location, which is in a different 200-kilometer circle.";
-$lang['awards_us_gridmaster_description_ln4'] = "This map shows only QSOs worked on SAT.";
+$lang['awards_us_gridmaster_description_ln1'] = "Diploma US Gridmaster";
+$lang['awards_us_gridmaster_description_ln2'] = "El diploma GridMaster es el premio más prestigioso de AMSAT, introducido en 2014 por el Grupo Star Comm. Está disponible para todos los operadores de radioafición que logren trabajar todos los 488 grid squares de los Estados Unidos via satélite y que pueda proveer confirmaciones QSL para cada contacto.";
+$lang['awards_us_gridmaster_description_ln3'] = "Información oficial del <a href='https://www.amsat.org/gridmaster/' target='_blank'>sitio web</a> (en inglés): La comunicación en dos vías debe ser establecida via satélites de radioaficionados con cada grid. No se requiere un mínimo de reporte de señal. Los contactos deben ser realizados en la misma localización o de múltiples localizaciones dónde dos de ellas no estén a más de 200 kilómetros de distancia. La certificación del aplicante en la aplicación del diploma sirve como una afirmación de cumplimiento de la regla de la distancia. Los individuos pueden aplicar a, y obtener, múltiples diplomas GridMaster cuando se realicen desde otra localización, que esté dentro del circulo de 200 kilómetros.";
+$lang['awards_us_gridmaster_description_ln4'] = "Este mapa solo muestra QSOs trabajados en satélites.";
 
 
 /*
@@ -142,9 +142,9 @@ JA Gridmaster -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_ja_gridmaster_description_ln1'] = "JA Gridmaster Award";
-$lang['awards_ja_gridmaster_description_ln2'] = "Just as the US Gridmaster this Award is based on working all gridsquares of Japan.";
-$lang['awards_ja_gridmaster_description_ln3'] = "Additional Information and the rules about this award are still pending.";
+$lang['awards_ja_gridmaster_description_ln1'] = "Diploma JA Gridmaster";
+$lang['awards_ja_gridmaster_description_ln2'] = "Al igual que el diploma US Gridmaster, este diploma se basa en trabajar todos los gridsquares de Japan.";
+$lang['awards_ja_gridmaster_description_ln3'] = "Información adicional y las reglas de este premio aún están en elaboración.";
 $lang['awards_ja_gridmaster_description_ln4'] = "";
 
 
@@ -154,10 +154,10 @@ VUCC -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_vucc_description_ln1'] = "VUCC - VHF/UHF Century Club Award";
-$lang['awards_vucc_description_ln2'] = "The VHF/UHF Century Club Award is given for a minimum number of worked and confirmed gridsquares on a desired band.";
-$lang['awards_vucc_description_ln3'] = "Official information and the rules can be found in this document: <a href='https://www.arrl.org/vucc' target='_blank'>Click here</a>.";
-$lang['awards_vucc_description_ln4'] = "Only VHF/UHF bands are relevant.";
+$lang['awards_vucc_description_ln1'] = "VUCC - Diploma VHF/UHF Century Club";
+$lang['awards_vucc_description_ln2'] = "El diploma VHF/UHF Century Club (Club del Siglo de VHF/UHF) es otorgado para un mínimo número de gridsquares trabajados y confirmados en una banda deseada.";
+$lang['awards_vucc_description_ln3'] = "La información oficial y las reglas pueden ser encontradas en este documento: <a href='https://www.arrl.org/vucc' target='_blank'>Clic aquí</a> (en inglés).";
+$lang['awards_vucc_description_ln4'] = "Solo las bandas de VHF/UHF son relevantes para este diploma.";
 
 
 /*
@@ -166,10 +166,10 @@ WAS -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_was_description_ln1'] = "WAS Award";
-$lang['awards_was_description_ln2'] = "ARRL's most popular award is the Worked All States Award. Thousands upon thousands of awards have been issued to hams around the world. In ARRL's 101st year, they have redesigned the certificates and the program in hopes of streamlining and improving the award program.";
-$lang['awards_was_description_ln3'] = "The WAS (Worked All States) Award is available to all amateurs worldwide who submit proof with written confirmation of contacts with each of the 50 states of the United States of America. Amateurs in the U.S. and its possessions must be members of ARRL to apply for a WAS. Applicants from outside the U.S. are exempt from this requirement.";
-$lang['awards_was_description_ln4'] = "All information and rules for the ARRL WAS Award can be found <a href='https://www.arrl.org/was' target='_blank'>here</a>.";
+$lang['awards_was_description_ln1'] = "Diploma WAS";
+$lang['awards_was_description_ln2'] = "El diploma más popular de la ARRL es el diploma Worked All States (Trabajados todos los Estados). Miles y miles de diplomas se han otorgado a radioaficionados alrededor del mundo. En el aniversario 101 de la ARRL, se ha rediseñado el certificado y las reglas del programa con la esperanza de facilitar y mejorar el programa de diplomas.";
+$lang['awards_was_description_ln3'] = "El diploma WAS (Worked All States) está disponible para todos los radioaficionados alrededor del mundo que demuestren confirmaciones escritas de contactos en cada uno de los 50 estados de los Estados Unidos de América. Los radioaficionados en los Estados Unidos y sus posesiones deberán ser miembros de la ARRL para aplicar para un diploma WAS. Los aplicantes fuera de los Estados Unidos están exentos de este requerimiento.";
+$lang['awards_was_description_ln4'] = "Toda la información y reglas para el diploma WAS de la ARRL puede ser encontrada <a href='https://www.arrl.org/was' target='_blank'>aquí</a> (en inglés).";
 
 
 /*
@@ -178,10 +178,10 @@ WWFF -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_wwff_description_ln1'] = "WWFF - World Wide Flora and Fauna Award";
-$lang['awards_wwff_description_ln2'] = "WWFF, World Wide Flora and Fauna in Amateur Radio, encourages licensed ham radio operators to leave their shacks and operate portable in Protected Flora & Fauna areas (PFF) worldwide.";
-$lang['awards_wwff_description_ln3'] = "More than 26,000 Protected Flora & Fauna (PFF) areas worldwide are already registered in the WWFF Directory. Hunters and Activators can apply for colorful awards, both globally and nationally.";
-$lang['awards_wwff_description_ln4'] = "For more information, please visit: <a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a>.";
+$lang['awards_wwff_description_ln1'] = "WWFF - Diploma World Wide Flora and Fauna";
+$lang['awards_wwff_description_ln2'] = "WWFF, World Wide Flora and Fauna (Flora y Fauna Alrededor del Mundo) en la radioafición, fomenta que los operadores de radioafición licenciados salgan de sus shacks y operen de forma portable en áreas Protected Flora & Fauna (PFF, Flora y Fauna Protegidas) alrededor del mundo.";
+$lang['awards_wwff_description_ln3'] = "Más de 26.000 áreas de Flora y Fauna Protegidas (PFF) alrededor del mundo están registradas en el Directorio WWFF. Los Cazadores y Activadores pueden aplicar para obtener premios coloridos, de forma global o nacional.";
+$lang['awards_wwff_description_ln4'] = "Para más información, por favor visite: <a href='https://wwff.co/awards/' target='_blank'>https://wwff.co/awards/</a> (en inglés).";
 
 /*
 ___________________________________________________________________________________________
@@ -189,7 +189,7 @@ WAJA -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
-$lang['awards_waja_description_ln1'] = "WAJA - Worked All Japan prefectures Award";
-$lang['awards_waja_description_ln2'] = "WAJA, Worked All Japan prefectures in Amateur Radio, encourages licensed ham radio operators to work all the prefectures in Japan.";
-$lang['awards_waja_description_ln3'] = "May be claimed for having contacted (heard) and received a QSL card from an amateur station located in each of the 47 prefectures of Japan. A list of QSL cards should be arranged in order of WAJA (HAJA) reference number, however names of prefectures may be omitted.";
-$lang['awards_waja_description_ln4'] = "For more information, please visit: <a href='https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm' target='_blank'>https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm</a>.";
+$lang['awards_waja_description_ln1'] = "WAJA - Diploma Worked All Japan prefectures";
+$lang['awards_waja_description_ln2'] = "WAJA, Worked All Japan prefectures (Trabajadas todas las prefecturas de Japón) en la radioafición, fomenta que los operadores de radioafición licenciados trabajen todas las prefecturas de Japón.";
+$lang['awards_waja_description_ln3'] = "Puede ser otorgado por haber contactado (escuchado) y recibido una tarjeta QSL de una estación de radioaficionado localizada en cada una de las 47 prefecturas de Japón. La lista de tarjetas QSL debe ser ordenada por su número de referencia WAJA (HAJA), sin embargo los nombres de las prefecturas pueden ser omitidos.";
+$lang['awards_waja_description_ln4'] = "Para más información, por favor visite: <a href='https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm' target='_blank'>https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm</a> (en inglés).";
