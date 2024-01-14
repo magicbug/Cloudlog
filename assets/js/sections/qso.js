@@ -1,3 +1,5 @@
+var lastCallsignUpdated=""
+
 $( document ).ready(function() {
 	setTimeout(function() {
 		var callsignValue = localStorage.getItem("quicklogCallsign");
@@ -113,7 +115,7 @@ var favs={};
 			}
 		});
 	}
-	
+
 
 	var bc_bandmap = new BroadcastChannel('qso_window');
 	bc_bandmap.onmessage = function (ev) {
@@ -540,10 +542,14 @@ function resetTimers(manual) {
 }
 
 $("#callsign").focusout(function() {
-	if ($(this).val().length >= 3) {
+	// Temp store the callsign
+	var temp_callsign = $(this).val();
+	if (temp_callsign == lastCallsignUpdated) {
+		return;
+	}
+	lastCallsignUpdated = temp_callsign;
 
-		// Temp store the callsign
-		var temp_callsign = $(this).val();
+	if ($(this).val().length >= 3) {
 
 		/* Find and populate DXCC */
 		$('.callsign-suggest').hide();
@@ -881,7 +887,7 @@ $("#locator").keyup(function(){
 					$('#locator').removeClass("workedGrid");
 					$('#locator').removeClass("newGrid");
 					$('#locator').attr('title', '');
-					
+
 					if (result.confirmed) {
 						$('#locator').addClass("confirmedGrid");
 						$('#locator').attr('title', 'Grid was already worked and confimred in the past');
@@ -1078,7 +1084,7 @@ function testTimeOffConsistency() {
 	$('#qso_input input[name="end_time"]').removeClass('inputError');
 	$('#qso_input .warningOnSubmit').hide();
 	$('#qso_input .warningOnSubmit_txt').empty();
-	if ( !( (parseInt(_start_time.replaceAll(':','')) <= parseInt(_end_time.replaceAll(':',''))) 
+	if ( !( (parseInt(_start_time.replaceAll(':','')) <= parseInt(_end_time.replaceAll(':','')))
 			|| ((_start_time.substring(0,2)=="23")&&(_end_time.substring(0,2)=="00")) ) ) {
 		$('#qso_input input[name="end_time"]').addClass('inputError');
 		$('#qso_input .warningOnSubmit_txt').html(text_error_timeoff_less_timeon);
@@ -1086,5 +1092,5 @@ function testTimeOffConsistency() {
 		$('#qso_input input[name="end_time"]').off('change').on('change',function(){ testTimeOffConsistency(); });
 		return false;
 	}
-	return true; 
+	return true;
 }
