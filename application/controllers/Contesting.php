@@ -50,6 +50,15 @@ class Contesting extends CI_Controller {
 		echo json_encode($this->Contesting_model->getSessionQsos($qso));
     }
 
+	public function getSessionFreshQsos() {
+        $this->load->model('Contesting_model');
+
+        $contest_id = $this->input->post('contest_id');
+
+		header('Content-Type: application/json');
+		echo json_encode($this->Contesting_model->getSessionFreshQsos($contest_id));
+    }
+
 	public function getSession() {
         $this->load->model('Contesting_model');
 

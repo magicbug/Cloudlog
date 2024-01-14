@@ -1,9 +1,9 @@
 // Callsign always has focus on load
 $("#callsign").focus();
 
-var sessiondata={};
+var sessiondata = {};
 $(document).ready(async function () {
-	sessiondata=await getSession();			// save sessiondata global (we need it later, when adding qso)
+	sessiondata = await getSession();			// save sessiondata global (we need it later, when adding qso)
 	await restoreContestSession(sessiondata);	// wait for restoring until finished
 	setRst($("#mode").val());
 });
@@ -66,13 +66,13 @@ function setSession(formdata) {
 }
 
 // realtime clock
-if ( ! manual ) {
+if (!manual) {
 	$(function ($) {
-		handleStart = setInterval(function() { getUTCTimeStamp($('.input_time')); }, 500);
+		handleStart = setInterval(function () { getUTCTimeStamp($('.input_time')); }, 500);
 	});
 
 	$(function ($) {
-		          handleDate = setInterval(function() { getUTCDateStamp($('.input_date')); }, 1000);
+		handleDate = setInterval(function () { getUTCDateStamp($('.input_date')); }, 1000);
 	});
 }
 
@@ -113,10 +113,10 @@ document.onkeyup = function (e) {
 		logQso();
 		// Enter in received exchange logs QSO
 	} else if ((e.which == 13) && (
-			($(document.activeElement).attr("id") == "exch_rcvd")
-			|| ($(document.activeElement).attr("id") == "exch_gridsquare_r")
-			|| ($(document.activeElement).attr("id") == "exch_serial_r")
-		)
+		($(document.activeElement).attr("id") == "exch_rcvd")
+		|| ($(document.activeElement).attr("id") == "exch_gridsquare_r")
+		|| ($(document.activeElement).attr("id") == "exch_serial_r")
+	)
 	) {
 		logQso();
 	} else if (e.which == 27) {
@@ -181,22 +181,22 @@ document.onkeyup = function (e) {
 };
 
 /* time input shortcut */
-$('#start_time').change(function() {
+$('#start_time').change(function () {
 	var raw_time = $(this).val();
-	if(raw_time.match(/^\d\[0-6]d$/)) {
-		raw_time = "0"+raw_time;
+	if (raw_time.match(/^\d\[0-6]d$/)) {
+		raw_time = "0" + raw_time;
 	}
-	if(raw_time.match(/^[012]\d[0-5]\d$/)) {
-		raw_time = raw_time.substring(0,2)+":"+raw_time.substring(2,4);
+	if (raw_time.match(/^[012]\d[0-5]\d$/)) {
+		raw_time = raw_time.substring(0, 2) + ":" + raw_time.substring(2, 4);
 		$('#start_time').val(raw_time);
 	}
 });
 
 /* date input shortcut */
-$('#start_date').change(function() {
-	 raw_date = $(this).val();
-	if(raw_date.match(/^[12]\d{3}[01]\d[0123]\d$/)) {
-		raw_date = raw_date.substring(0,4)+"-"+raw_date.substring(4,6)+"-"+raw_date.substring(6,8);
+$('#start_date').change(function () {
+	raw_date = $(this).val();
+	if (raw_date.match(/^[12]\d{3}[01]\d[0123]\d$/)) {
+		raw_date = raw_date.substring(0, 4) + "-" + raw_date.substring(4, 6) + "-" + raw_date.substring(6, 8);
 		$('#start_date').val(raw_date);
 	}
 });
@@ -210,13 +210,13 @@ $("#callsign").keyup(function () {
 			url: 'lookup/scp',
 			method: 'POST',
 			data: {
-			  callsign: $(this).val().toUpperCase()
+				callsign: $(this).val().toUpperCase()
 			},
-			success: function(result) {
-			  $('.callsign-suggestions').text(result);
-			  highlight(call.toUpperCase());
+			success: function (result) {
+				$('.callsign-suggestions').text(result);
+				highlight(call.toUpperCase());
 			}
-		  });
+		});
 
 		checkIfWorkedBefore();
 		var qTable = $('.qsotable').DataTable();
@@ -241,7 +241,7 @@ function checkIfWorkedBefore() {
 				'contest': $("#contestname").val()
 			},
 			success: function (result) {
-				if (result.message.substr(0,6) == 'Worked') {
+				if (result.message.substr(0, 6) == 'Worked') {
 					$('#callsign_info').text(result.message);
 				}
 			}
@@ -388,31 +388,31 @@ function logQso() {
 			case 'Exchange':
 				exchsent = $("#exch_sent").val();
 				exchrcvd = $("#exch_rcvd").val();
-			break;
+				break;
 
 			case 'Gridsquare':
 				gridr = gridsquare;
 				vuccr = vucc;
-			break;
+				break;
 
 			case 'Serial':
 				serials = $("#exch_serial_s").val();
 				serialr = $("#exch_serial_r").val();
-			break;
-			
+				break;
+
 			case 'Serialexchange':
 				exchsent = $("#exch_sent").val();
 				exchrcvd = $("#exch_rcvd").val();
 				serials = $("#exch_serial_s").val();
 				serialr = $("#exch_serial_r").val();
-			break;
-			
+				break;
+
 			case 'Serialgridsquare':
 				gridr = gridsquare;
 				vuccr = vucc;
 				serials = $("#exch_serial_s").val();
 				serialr = $("#exch_serial_r").val();
-			break;
+				break;
 		}
 
 		var data = [[
@@ -446,7 +446,7 @@ function logQso() {
 				}
 
 				$('#name').val("");
-				
+
 				$('#callsign').val("");
 				$('#comment').val("");
 				$('#exch_rcvd').val("");
@@ -455,6 +455,8 @@ function logQso() {
 				$("#callsign").focus();
 				setSession(formdata);
 				
+				// try setting session data
+				console.log(sessiondata);
 				await refresh_qso_table(sessiondata);
 				var qTable = $('.qsotable').DataTable();
 				qTable.search('').order([0, 'desc']).draw();
@@ -470,23 +472,23 @@ async function getSession() {
 		type: 'post',
 	});
 }
-	
+
 async function restoreContestSession(data) {
 	if (data) {
 		if (data.copytodok == "1") {
 			$('#copyexchangetodok').prop('checked', true);
 		}
-	
+
 		if (data.contestid != "") {
 			$("#contestname").val(data.contestid);
 		}
-	
+
 		if (data.exchangetype != "") {
 			$("#exchangetype").val(data.exchangetype);
 			setExchangetype(data.exchangetype);
 			setSerial(data);
 		}
-	
+
 		if (data.exchangesent != "") {
 			$("#exch_sent").val(data.exchangesent);
 		}
@@ -500,70 +502,137 @@ async function restoreContestSession(data) {
 }
 
 async function refresh_qso_table(data) {
-	$.ajax({
-		url: base_url + 'index.php/contesting/getSessionQsos',
-		type: 'post',
-		data: { 'qso': data.qso, },
-		success: function (html) {
-			var mode = '';
-			$(".contest_qso_table_contents").empty();
-			$.each(html, function () {
-				if (this.col_submode == null || this.col_submode == '') {
-					mode = this.col_mode;
-				} else {
-					mode = this.col_submode;
-				}
+	if (data && data.qso) {
+		$.ajax({
+			url: base_url + 'index.php/contesting/getSessionQsos',
+			type: 'post',
+			data: { 'qso': data.qso, },
+			success: function (html) {
+				var mode = '';
+				$(".contest_qso_table_contents").empty();
+				$.each(html, function () {
+					if (this.col_submode == null || this.col_submode == '') {
+						mode = this.col_mode;
+					} else {
+						mode = this.col_submode;
+					}
 
-				$(".qsotable tbody").prepend('<tr>' +
-					'<td>' + this.col_time_on + '</td>' +
-					'<td>' + this.col_call + '</td>' +
-					'<td>' + this.col_band + '</td>' +
-					'<td>' + mode + '</td>' +
-					'<td>' + this.col_rst_sent + '</td>' +
-					'<td>' + this.col_rst_rcvd + '</td>' +
-					'<td>' + this.col_stx_string + '</td>' +
-					'<td>' + this.col_srx_string + '</td>' +
-					'<td>' + this.col_stx + '</td>' +
-					'<td>' + this.col_srx + '</td>' +
-					'<td>' + this.col_gridsquare + '</td>' +
-					'<td>' + this.col_vucc_grids + '</td>' +
-					'</tr>');
-			});
-			if (!$.fn.DataTable.isDataTable('.qsotable')) {
-				$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
-				$('.qsotable').DataTable({
-					"stateSave": true,
-					"pageLength": 25,
-					responsive: false,
-					"scrollY": "400px",
-					"scrollCollapse": true,
-					"paging": false,
-					"scrollX": true,
-					"language": {
-						url: getDataTablesLanguageUrl(),
-					},
-					order: [0, 'desc'],
-					"columnDefs": [
-						{
-							"render": function ( data, type, row ) {
-								return pad(row[8],3);
-							},
-							"targets" : 8
-						},
-						{
-							"render": function ( data, type, row ) {
-								return pad(row[9],3);
-							},
-							"targets" : 9
-						}
-					]
+					$(".qsotable tbody").prepend('<tr>' +
+						'<td>' + this.col_time_on + '</td>' +
+						'<td>' + this.col_call + '</td>' +
+						'<td>' + this.col_band + '</td>' +
+						'<td>' + mode + '</td>' +
+						'<td>' + this.col_rst_sent + '</td>' +
+						'<td>' + this.col_rst_rcvd + '</td>' +
+						'<td>' + this.col_stx_string + '</td>' +
+						'<td>' + this.col_srx_string + '</td>' +
+						'<td>' + this.col_stx + '</td>' +
+						'<td>' + this.col_srx + '</td>' +
+						'<td>' + this.col_gridsquare + '</td>' +
+						'<td>' + this.col_vucc_grids + '</td>' +
+						'</tr>');
 				});
+				if (!$.fn.DataTable.isDataTable('.qsotable')) {
+					$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
+					$('.qsotable').DataTable({
+						"stateSave": true,
+						"pageLength": 25,
+						responsive: false,
+						"scrollY": "400px",
+						"scrollCollapse": true,
+						"paging": false,
+						"scrollX": true,
+						"language": {
+							url: getDataTablesLanguageUrl(),
+						},
+						order: [0, 'desc'],
+						"columnDefs": [
+							{
+								"render": function (data, type, row) {
+									return pad(row[8], 3);
+								},
+								"targets": 8
+							},
+							{
+								"render": function (data, type, row) {
+									return pad(row[9], 3);
+								},
+								"targets": 9
+							}
+						]
+					});
+				}
 			}
-		}
-	});
+		});
+	} else {
+		// Runs when no session is set usually when its a clean contest
+		var selectElement = document.getElementById('contestname');
+		var selected_contest_id = selectElement.options[selectElement.selectedIndex].value;
+		$.ajax({
+			url: base_url + 'index.php/contesting/getSessionFreshQsos',
+			type: 'post',
+			data: { 'contest_id': selected_contest_id },
+			success: function (html) {
+				var mode = '';
+				$(".contest_qso_table_contents").empty();
+				$.each(html, function () {
+					if (this.col_submode == null || this.col_submode == '') {
+						mode = this.col_mode;
+					} else {
+						mode = this.col_submode;
+					}
+
+					$(".qsotable tbody").prepend('<tr>' +
+						'<td>' + this.col_time_on + '</td>' +
+						'<td>' + this.col_call + '</td>' +
+						'<td>' + this.col_band + '</td>' +
+						'<td>' + mode + '</td>' +
+						'<td>' + this.col_rst_sent + '</td>' +
+						'<td>' + this.col_rst_rcvd + '</td>' +
+						'<td>' + this.col_stx_string + '</td>' +
+						'<td>' + this.col_srx_string + '</td>' +
+						'<td>' + this.col_stx + '</td>' +
+						'<td>' + this.col_srx + '</td>' +
+						'<td>' + this.col_gridsquare + '</td>' +
+						'<td>' + this.col_vucc_grids + '</td>' +
+						'</tr>');
+				});
+				if (!$.fn.DataTable.isDataTable('.qsotable')) {
+					$.fn.dataTable.moment('DD-MM-YYYY HH:mm:ss');
+					$('.qsotable').DataTable({
+						"stateSave": true,
+						"pageLength": 25,
+						responsive: false,
+						"scrollY": "400px",
+						"scrollCollapse": true,
+						"paging": false,
+						"scrollX": true,
+						"language": {
+							url: getDataTablesLanguageUrl(),
+						},
+						order: [0, 'desc'],
+						"columnDefs": [
+							{
+								"render": function (data, type, row) {
+									return pad(row[8], 3);
+								},
+								"targets": 8
+							},
+							{
+								"render": function (data, type, row) {
+									return pad(row[9], 3);
+								},
+								"targets": 9
+							}
+						]
+					});
+				}
+			}
+		});
+	}
 }
 
-function pad (str, max) {
+function pad(str, max) {
 	str = str.toString();
 	return str.length < max ? pad("0" + str, max) : str;
 }
@@ -572,12 +641,12 @@ function getUTCTimeStamp(el) {
 	var now = new Date();
 	var localTime = now.getTime();
 	var utc = localTime + (now.getTimezoneOffset() * 60000);
-	$(el).attr('value', ("0" + now.getUTCHours()).slice(-2)+':'+("0" + now.getUTCMinutes()).slice(-2)+':'+("0" + now.getUTCSeconds()).slice(-2));
+	$(el).attr('value', ("0" + now.getUTCHours()).slice(-2) + ':' + ("0" + now.getUTCMinutes()).slice(-2) + ':' + ("0" + now.getUTCSeconds()).slice(-2));
 }
 
 function getUTCDateStamp(el) {
 	var now = new Date();
 	var localTime = now.getTime();
 	var utc = localTime + (now.getTimezoneOffset() * 60000);
-	$(el).attr('value', ("0" + now.getUTCDate()).slice(-2)+'-'+("0" + (now.getUTCMonth()+1)).slice(-2)+'-'+now.getUTCFullYear());
+	$(el).attr('value', ("0" + now.getUTCDate()).slice(-2) + '-' + ("0" + (now.getUTCMonth() + 1)).slice(-2) + '-' + now.getUTCFullYear());
 }
