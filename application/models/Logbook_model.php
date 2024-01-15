@@ -302,7 +302,7 @@ class Logbook_model extends CI_Model {
 
     // Decide whether its single gridsquare or a multi which makes it vucc_grids
     if (strpos(trim(xss_clean($this->input->post('locator')) ?? ''), ',') !== false) {
-      $data['COL_VUCC_GRIDS'] = strtoupper(trim(xss_clean($this->input->post('locator')) ?? ''));
+      $data['COL_VUCC_GRIDS'] = strtoupper(preg_replace('/\s+/', '', xss_clean($this->input->post('locator')) ?? ''));
     } else {
       $data['COL_GRIDSQUARE'] = strtoupper(trim(xss_clean($this->input->post('locator')) ?? ''));
     }
@@ -1167,7 +1167,7 @@ class Logbook_model extends CI_Model {
 		  'COL_RST_RCVD' => $this->input->post('rst_rcvd'),
 		  'COL_RST_SENT' => $this->input->post('rst_sent'),
 		  'COL_GRIDSQUARE' => strtoupper(trim($this->input->post('locator'))),
-		  'COL_VUCC_GRIDS' => strtoupper(trim($this->input->post('vucc_grids'))),
+		  'COL_VUCC_GRIDS' => strtoupper(preg_replace('/\s+/', '', $this->input->post('vucc_grids'))),
 		  'COL_DISTANCE' => $this->input->post('distance'),
 		  'COL_COMMENT' => $this->input->post('comment'),
 		  'COL_NAME' => $this->input->post('name'),
@@ -3298,7 +3298,7 @@ function lotw_last_qsl_date($user_id) {
 		  if (isset($record['vucc_grids'])){
 			  $a_grids=explode(',',$record['vucc_grids']);	// Split at , if there are junctions
 			  foreach ($a_grids as $singlegrid) {
-				  $singlegrid=strtoupper($singlegrid);
+				  $singlegrid=strtoupper(trim($singlegrid));
 				  if (strlen($singlegrid) == 4)  $singlegrid .= "LL";     // Only 4 Chars? Fill with center "LL" as only A-R allowed
 				  if (strlen($singlegrid) == 6)  $singlegrid .= "55";     // Only 6 Chars? Fill with center "55"
 				  if (strlen($singlegrid) == 8)  $singlegrid .= "LL";     // Only 8 Chars? Fill with center "LL" as only A-R allowed
@@ -3308,7 +3308,7 @@ function lotw_last_qsl_date($user_id) {
 					  if (!preg_match('/^[A-R]{2}[0-9]{2}[A-X]{2}[0-9]{2}[A-X]{2}$/', $singlegrid)) $record['vucc_grids']='';
 				  }
 			  }
-			  $input_vucc_grids = $record['vucc_grids'];
+			  $input_vucc_grids = preg_replace('/\s+/', '', $record['vucc_grids']);
 		  } else {
 			  $input_vucc_grids = NULL;
 		  }

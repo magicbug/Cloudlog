@@ -433,9 +433,9 @@
                                $distancestring = "(Gridsquare: ".$row->COL_GRIDSQUARE." / distance: ".$distance.")";
                             } else {
                                if (substr_count($row->COL_VUCC_GRIDS, ',') == 1) {
-                                  $distancestring = "(Gridline: ".$row->COL_VUCC_GRIDS." / distance: ".$distance.")";
+                                  $distancestring = "(Gridline: ".preg_replace('/\s+/', '', $row->COL_VUCC_GRIDS)." / distance: ".$distance.")";
                                } else if (substr_count($row->COL_VUCC_GRIDS, ',') == 3) {
-                                  $distancestring = "(Gridcorner: ".$row->COL_VUCC_GRIDS." / distance: ".$distance.")";
+                                  $distancestring = "(Gridcorner: ".preg_replace('/\s+/', '', $row->COL_VUCC_GRIDS)." / distance: ".$distance.")";
                                } else {
                                   $distancestring = "(Grids: ".$row->COL_VUCC_GRIDS.")";
                                }
