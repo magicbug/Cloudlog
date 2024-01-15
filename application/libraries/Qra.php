@@ -173,7 +173,7 @@ function get_bearing($lat1, $lon1, $lat2, $lon2) {
 }
 
 function qra2latlong($strQRA) {
-	$strQRA=trim($strQRA);
+	$strQRA=preg_replace('/\s+/', '', $strQRA);
 	if (substr_count($strQRA, ',') > 0) {
 		if (substr_count($strQRA, ',') == 3) {
 			// Handle grid corners
