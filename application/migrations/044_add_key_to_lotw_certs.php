@@ -16,6 +16,6 @@ class Migration_add_key_to_lotw_certs extends CI_Migration {
 
     public function down()
     {
-        $this->dbforge->drop_column('lotw_certs', 'key');
+        $this->dbforge->drop_column('lotw_certs', 'cert_key');
     }
 }
