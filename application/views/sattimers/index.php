@@ -14,7 +14,10 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
            if ($activation['timestamp'] != null) {
               echo "var tevel".$i."Date = ".$activation['timestamp']." * 1000;\n";
               echo "dateArray.push(tevel".$i."Date);\n";
+              echo "var tevel".$i."Workable = ".($activation['timestamp'] > $activation['aos_time'] ? 1 : 0)."\n";
+              echo "dateArray.push(tevel".$i."Workable);\n";
            } else {
+              echo "dateArray.push(0);\n";
               echo "dateArray.push(0);\n";
            }
            $i++;
