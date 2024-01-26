@@ -3,7 +3,10 @@ $(document).ready( function () {
     // Use Jquery to hide div ca_state
 
     $('#station_locations_table').DataTable({
-        "stateSave": true
+        "stateSave": true,
+        "language": {
+            url: getDataTablesLanguageUrl(),
+        }
     });
 
     $("#canada_state").hide();

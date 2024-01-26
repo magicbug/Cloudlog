@@ -6,7 +6,7 @@ Cloudlog is a self-hosted PHP application that allows you to log your amateur ra
 
 While Cloudlog as started by Peter Goodhall, 2M0SQL, it is has gained a core group of contributors these are listed below. If you would like to contribute to Cloudlog please see the [Contributing](#contributing) section below.
 
-Core Contributors: 2M0SQL (@magicbug), LA8AJA (@AndreasK79), DF2ET (@phl0), HB9HIL (@HB9HIL), DJ7NT (@int2001)
+Core Contributors: 2M0SQL ([@magicbug](https://github.com/magicbug)), LA8AJA ([@AndreasK79](https://github.com/AndreasK79)), DF2ET ([@phl0](https://github.com/phl0)), HB9HIL ([@HB9HIL](https://github.com/HB9HIL)), DJ7NT ([@int2001](https://github.com/int2001))
 
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 

@@ -33,7 +33,10 @@ $('.bandtable').DataTable({
 	"scrollY": "500px",
 	"scrollCollapse": true,
 	"paging": false,
-	"scrollX": true
+	"scrollX": true,
+	"language": {
+		url: getDataTablesLanguageUrl(),
+	}
 });
 
 function createBandDialog() {

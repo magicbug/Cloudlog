@@ -153,6 +153,9 @@ function totalQsosPerYear() {
                         "scrollCollapse": true,
                         "paging": false,
                         "scrollX": true,
+                        "language": {
+                            url: getDataTablesLanguageUrl(),
+                        },
                         bFilter: false,
                         bInfo: false
                     });
@@ -421,6 +424,9 @@ function totalBandQsos() {
                     "scrollCollapse": true,
                     "paging": false,
                     "scrollX": true,
+                    "language": {
+                        url: getDataTablesLanguageUrl(),
+                    },
                     bFilter: false,
                     bInfo: false,
                 });
@@ -557,6 +563,9 @@ function totalSatQsos() {
                     ordering: false,
                     "scrollY": "330px",
                     "scrollX": true,
+                    "language": {
+                        url: getDataTablesLanguageUrl(),
+                    },
                     "ScrollCollapse": true,
                     "paging": false,
                     bFilter: false,

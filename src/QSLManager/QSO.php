@@ -31,6 +31,7 @@ class QSO
 	private string $deSigInfo;
 	private string $deIOTAIslandID;
 	private string $deSOTAReference;
+	private string $deWWFFReference;
 	/** Awards */
 	private string $cqzone;
 	private string $state;
@@ -163,6 +164,7 @@ class QSO
 		$this->deSigInfo = $data['station_sig_info'] ?? '';
 		$this->deIOTAIslandID = $data['COL_MY_IOTA_ISLAND_ID'] ?? '';
 		$this->deSOTAReference = $data['station_sota'] ?? '';
+		$this->deWWFFReference = $data['station_wwff'] ?? '';
 
 		$this->deVUCCGridsquares = $data['COL_MY_VUCC_GRIDS'] ?? '';
 
@@ -841,6 +843,7 @@ class QSO
 
 	private function getFormattedDeRefs(): string
 	{
+		$includedInRefs=[];
 		$refs = [];
 		if ($this->deVUCCGridsquares !== '') {
 			$refs[] = $this->deVUCCGridsquares;
@@ -859,14 +862,21 @@ class QSO
 		if ($this->deSOTAReference !== '') {
 			$refs[] = "SOTA:" . $this->deSOTAReference;
 		}
+		if ($this->deWWFFReference !== '') {
+			$includedInRefs[] = "WWFF";
+			$refs[] = "WWFF:" . $this->deWWFFReference;
+		}
 		if ($this->deSig !== '') {
-			$refs[] = $this->deSig . ":" . $this->deSigInfo;
+			if (!in_array($this->deSig, $includedInRefs)) {
+				$refs[] = $this->deSig . ":" . $this->deSigInfo;
+			}
 		}
 		return trim(implode(" ", $refs));
 	}
 
 	private function getFormattedDxRefs(): string
 	{
+		$includedInRefs=[];
 		$refs = [];
 		if ($this->dxVUCCGridsquares !== '') {
 			$refs[] = '<span id="dxgrid">' . $this->dxVUCCGridsquares . '</span> ' .$this->getQrbLink($this->deGridsquare, $this->dxVUCCGridsquares, $this->dxGridsquare);
@@ -880,10 +890,13 @@ class QSO
 			$refs[] = "POTA: " . '<span id="dxpota">' . $this->dxPOTAReference. '</span>';
 		}
 		if ($this->dxWWFFReference !== '') {
+			$includedInRefs[] = "WWFF";
 			$refs[] = "WWFF: " . '<span id="dxwwff">' . $this->dxWWFFReference. '</span>';
 		}
 		if ($this->dxSig !== '') {
-			$refs[] = $this->dxSig . ":" . $this->dxSigInfo;
+			if (!in_array($this->dxSig, $includedInRefs)) {
+				$refs[] = $this->dxSig . ":" . $this->dxSigInfo;
+			}
 		}
 		if ($this->dxDARCDOK !== '') {
 			$refs[] = "DOK:" . $this->dxDARCDOK;

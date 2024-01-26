@@ -117,6 +117,9 @@ function spawnGridsquareModal(loc_4char) {
                             "scrollCollapse": true,
                             "paging":         false,
                             "scrollX": true,
+                            "language": {
+                                url: getDataTablesLanguageUrl(),
+                            },
                             dom: 'Bfrtip',
                             buttons: [
                                 'csv'

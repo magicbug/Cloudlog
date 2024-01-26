@@ -6,15 +6,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['qso_title_qso_map'] = 'QSO 地图';
 $lang['qso_title_suggestions'] = '建议';
 $lang['qso_title_previous_contacts'] = '先前通联';
-$lang['qso_title_times_worked_before'] = "times worked before";
+$lang['qso_title_times_worked_before'] = "先前通联的次数";
 $lang['qso_title_image'] = '操作员照片';
-$lang['qso_previous_max_shown'] = "Max. 5 previous contacts are shown";
+$lang['qso_previous_max_shown'] = "最多五次先前通联将会被显示";
 
 // Quicklog on Dashboard
-$lang['qso_quicklog_enter_callsign'] = 'QUICKLOG 输入呼号';
+$lang['qso_quicklog_enter_callsign'] = '快速记录QSO输入呼号';
 
 // Input Help Text on the /QSO Display
-$lang['qso_transmit_power_helptext'] = '以瓦特为单位设置功率值。在输入中仅填写数值。';
+$lang['qso_transmit_power_helptext'] = '以W为单位设置功率值。在输入中仅填写数值';
 
 $lang['qso_sota_ref_helptext'] = '例如: GM/NS-001.';
 $lang['qso_wwff_ref_helptext'] = '例如: DLFF-0069.';
@@ -31,14 +31,14 @@ $lang['qsl_notes_helptext'] = '此笔记内容被导出到QSL服务，如 eqsl.c
 $lang['qso_eqsl_qslmsg_helptext'] = "获取该站的 eQSL 默认消息。";
 
 // error text //
-$lang['qso_error_timeoff_less_timeon'] = "TimeOff is less than TimeOn";
+$lang['qso_error_timeoff_less_timeon'] = "结束时间小于开始时间";
 
 // Button Text on /qso Display
 
 $lang['qso_btn_reset_qso'] = '重置';
 $lang['qso_btn_save_qso'] = '保存 QSO';
 $lang['qso_btn_edit_qso'] = '编辑 QSO';
-$lang['qso_delete_warning'] = "警告！您确定要删除 QSO 与 ";
+$lang['qso_delete_warning'] = "警告！您确定要删除 QSO 和 ";
 
 // QSO Details
 

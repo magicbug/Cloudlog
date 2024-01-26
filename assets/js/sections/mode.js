@@ -6,6 +6,9 @@ $('.modetable').DataTable({
 	"scrollCollapse": true,
 	"paging": false,
 	"scrollX": true,	
+	"language": {
+		url: getDataTablesLanguageUrl(),
+	},
 	initComplete: function () {
 		this.api()
 			.columns('.select-filter')

@@ -414,6 +414,9 @@
                         if($row->COL_WWFF_REF != null) {
                             $hashtags .= " #WWFF ".$row->COL_WWFF_REF;
                         }
+                        if($row->COL_SIG != null && $row->COL_SIG_INFO != null) {
+                            $hashtags .= " #".$row->COL_SIG." ".$row->COL_SIG_INFO;
+                        }
                         if (!isset($distance)) {
                             $twitter_string = urlencode("Just worked ".$row->COL_CALL." ");
                             if ($row->COL_DXCC != 0) {
@@ -433,9 +436,9 @@
                                $distancestring = "(Gridsquare: ".$row->COL_GRIDSQUARE." / distance: ".$distance.")";
                             } else {
                                if (substr_count($row->COL_VUCC_GRIDS, ',') == 1) {
-                                  $distancestring = "(Gridline: ".$row->COL_VUCC_GRIDS." / distance: ".$distance.")";
+                                  $distancestring = "(Gridline: ".preg_replace('/\s+/', '', $row->COL_VUCC_GRIDS)." / distance: ".$distance.")";
                                } else if (substr_count($row->COL_VUCC_GRIDS, ',') == 3) {
-                                  $distancestring = "(Gridcorner: ".$row->COL_VUCC_GRIDS." / distance: ".$distance.")";
+                                  $distancestring = "(Gridcorner: ".preg_replace('/\s+/', '', $row->COL_VUCC_GRIDS)." / distance: ".$distance.")";
                                } else {
                                   $distancestring = "(Grids: ".$row->COL_VUCC_GRIDS.")";
                                }

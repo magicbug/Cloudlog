@@ -171,6 +171,9 @@
                 "scrollCollapse": true,
                 "paging":         true,
                 "scrollX": true,
+                "language": {
+                    url: getDataTablesLanguageUrl(),
+                },
                 "order": [ 0, 'desc' ],
                 dom: 'Bfrtip',
                 buttons: [
@@ -206,6 +209,10 @@
             }
         </script>
     <?php } ?>
-
+    <script>
+      <?php
+      echo "var lang_datatables_language = '" . lang("datatables_language") . "';"
+      ?>
+    </script>
   </body>
 </html>

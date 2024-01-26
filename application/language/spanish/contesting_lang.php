@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('Acceso directo a los scripts restringido');
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['contesting_page_title'] = 'Registro de concurso';
 $lang['contesting_button_reset_contest_session'] = 'Reinicializar la sesión del concurso';
