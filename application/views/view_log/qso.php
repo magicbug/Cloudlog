@@ -414,6 +414,9 @@
                         if($row->COL_WWFF_REF != null) {
                             $hashtags .= " #WWFF ".$row->COL_WWFF_REF;
                         }
+                        if($row->COL_SIG != null && $row->COL_SIG_INFO != null) {
+                            $hashtags .= " #".$row->COL_SIG." ".$row->COL_SIG_INFO;
+                        }
                         if (!isset($distance)) {
                             $twitter_string = urlencode("Just worked ".$row->COL_CALL." ");
                             if ($row->COL_DXCC != 0) {
