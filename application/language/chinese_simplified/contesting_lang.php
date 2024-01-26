@@ -14,10 +14,10 @@ $lang['contesting_exchange_type_gridsquare'] = '网格座标';
 $lang['contesting_exchange_type_other'] = '其他';
 $lang['contesting_exchange_type_serial_exchange'] = '序列编号 + 交换信息';
 $lang['contesting_exchange_type_serial_gridsquare'] = '序列编号 + 网格座标';
-$lang['contesting_exchange_serial_s'] = '序列编号 (S)';
-$lang['contesting_exchange_serial_r'] = '序列编号 (R)';
-$lang['contesting_exchange_gridsquare_s'] = '网格座标 (S)';
-$lang['contesting_exchange_gridsquare_r'] = '网格座标 (R)';
+$lang['contesting_exchange_serial_s'] = '序列编号 (发)';
+$lang['contesting_exchange_serial_r'] = '序列编号 (收)';
+$lang['contesting_exchange_gridsquare_s'] = '网格座标 (发)';
+$lang['contesting_exchange_gridsquare_r'] = '网格座标 (收)';
 
 $lang['contesting_contest_name'] = '竞赛名称';
 
