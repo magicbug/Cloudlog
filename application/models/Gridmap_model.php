@@ -13,10 +13,6 @@ class Gridmap_model extends CI_Model {
             return null;
         }
 
-        if ($lotw != "true" && $qsl != "true" && $eqsl != "true" && $qrz != "true") {
-           return null;
-        }
-
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
 		$sql = 'SELECT distinct substring(COL_GRIDSQUARE,1,6) as GRID_SQUARES, COL_BAND FROM '
@@ -131,11 +127,6 @@ class Gridmap_model extends CI_Model {
         
         if (!$logbooks_locations_array) {
             return null;
-        }
-
-
-        if ($lotw != "true" && $qsl != "true" && $eqsl != "true" && $qrz != "true") {
-           return null;
         }
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
