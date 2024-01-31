@@ -173,7 +173,7 @@ class Gridmap extends CI_Controller {
 			}
 		}
 
-        $data['grid_2char_confirmed'] = ($array_grid_2char_confirmed);
+		$data['grid_2char_confirmed'] = ($array_grid_2char_confirmed);
 		$data['grid_4char_confirmed'] = ($array_grid_4char_confirmed);
 		$data['grid_6char_confirmed'] = ($array_grid_6char_confirmed);
 
