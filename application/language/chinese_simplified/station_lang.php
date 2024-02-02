@@ -98,14 +98,14 @@ $lang['station_location_eqsl_hint'] = '在您的 eQSL 配置文件中配置的 Q
 $lang['station_location_eqsl_defaultqslmsg'] = "默认的QSL信息";
 $lang['station_location_eqsl_defaultqslmsg_hint'] = "该设置将为此电台站站位置的每个 QSO 设置一个默认填充和发送的消息。";
 $lang['station_location_qrz_subscription'] = '需要 QRZ.com 的订阅';
-$lang['station_location_qrz_hint'] = "在 <a href='https://logbook.qrz.com/logbook' target='_blank'>上查找您的API KEY。";
+$lang['station_location_qrz_hint'] = "在 <a href='https://logbook.qrz.com/logbook' target='_blank'>QRZ.com的日志簿界面查找您的API KEY。";
 $lang['station_location_qrz_realtime_upload'] = 'QRZ.com 日志簿实时上传';
 $lang['station_location_hrdlog_username'] = "HRDLog.net 用户名";
 $lang['station_location_hrdlog_username_hint'] = "您在 HRDlog.net 注册时使用的用户名（通常是您的呼号）。";
 $lang['station_location_hrdlog_code'] = "HRDLog.net API Key";
 $lang['station_location_hrdlog_realtime_upload'] = "HRDLog.net 日志簿实时上传";
-$lang['station_location_hrdlog_code_hint'] = "在 <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>的用户资料页面创建你的API key。";
-$lang['station_location_qo100_hint'] = "在 <a href='https://qo100dx.club' target='_blank'>的用户资料页面创建你的API key";
+$lang['station_location_hrdlog_code_hint'] = "在 <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>hrdlog.net的用户资料页面创建你的API key。";
+$lang['station_location_qo100_hint'] = "在 <a href='https://qo100dx.club' target='_blank'>qo100dx.club的用户资料页面创建你的API key";
 $lang['station_location_qo100_realtime_upload'] = "QO-100 DX Club 实时上传";
 $lang['station_location_oqrs_enabled'] = "OQRS 启用";
 $lang['station_location_oqrs_email_alert'] = "OQRS 邮件提醒";
