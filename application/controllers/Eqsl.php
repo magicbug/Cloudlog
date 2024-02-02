@@ -128,8 +128,7 @@ class eqsl extends CI_Controller {
 		// Check if eQSL Nicknames have been defined
 			$this->load->model('stations');
 			if($this->stations->are_eqsl_nicks_defined() == 0) {
-				show_error('eQSL Nicknames in Station Profiles arent defined');
-				exit;
+				$this->session->set_flashdata('error', 'eQSL Nicknames in Station Profiles aren\'t defined!');
 			}
 
 		ini_set('memory_limit', '-1');
