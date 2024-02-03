@@ -45,15 +45,15 @@ QSL Filters
 ___________________________________________________________________________________________
 */
 
-$lang['filter_qsl_sent'] = 'QSL 发送';
-$lang['filter_qsl_recv'] = 'QSL 接收';
+$lang['filter_qsl_sent'] = 'QSL 发送状态';
+$lang['filter_qsl_recv'] = 'QSL 接收状态';
 $lang['filter_qsl_sent_method'] = 'QSL 发送方式';
 $lang['filter_qsl_recv_method'] = 'QSL 接收方式';
-$lang['filter_lotw_sent'] = 'LoTW 发送';
-$lang['filter_lotw_recv'] = 'LoTW 接收';
-$lang['filter_eqsl_sent'] = 'eQSL 发送';
-$lang['filter_eqsl_recv'] = 'eQSL 接收';
-$lang['filter_qsl_via'] = 'QSL 通过';
+$lang['filter_lotw_sent'] = 'LoTW 发送状态';
+$lang['filter_lotw_recv'] = 'LoTW 接收状态';
+$lang['filter_eqsl_sent'] = 'eQSL 发送状态';
+$lang['filter_eqsl_recv'] = 'eQSL 接收状态';
+$lang['filter_qsl_via'] = '通过（via）……发送QSL';
 $lang['filter_qsl_images'] = 'QSL 图片';
 
 // $lang['general_word_all']                --> application/language/english/general_words_lang.php
@@ -156,5 +156,5 @@ $lang['filter_options_show'] = '显示';
 // $lang['gen_hamradio_wwff']           --> application/language/english/general_words_lang.php
 // $lang['gen_hamradio_pota']           --> application/language/english/general_words_lang.php
 // $lang['options_save']                --> application/language/english/options_lang.php
-$lang['filter_search_operator']='Search Operator';
+$lang['filter_search_operator']='搜素操作员';
 $lang['filter_options_close'] = '关闭';

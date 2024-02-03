@@ -90,10 +90,10 @@ $lang['qso_simplefle_syntax_help_title'] = "FLE 语法帮助";
 $lang['qso_simplefle_syntax_help_ln1'] = "FLE 语法是一种简单的语法，用于快速记录 QSO。它的工作原理是，您只需输入每个 QSO 的更改部分。";
 $lang['qso_simplefle_syntax_help_ln2'] = "在每一行上，只写与上一个 QSO 不同的数据。";
 $lang['qso_simplefle_syntax_help_ln3'] = "例如，如果您在 20m 上与 DF3CB 进行了两次 QSO，您可以这样写：";
-$lang['qso_simplefle_syntax_help_ln4'] = "如果您不提供任何 RST 信息，语法将使用 59 (599 用于数据)。我们的下一个 QSO 不是双方都是 59，所以我们首先提供发送的 RST 信息。它比第一个 QSO 晚了 2 分钟。";
-$lang['qso_simplefle_syntax_help_ln5'] = "第一个 QSO 是在 21:34，第二个 QSO 在 21:36，比第一个 QSO 晚了 2 分钟。我们写下 6，因为这是这里唯一改变的数据。关于波段和模式的信息没有改变，因此省略了这些数据。";
-$lang['qso_simplefle_syntax_help_ln6'] = "我们的下一个 QSO 是在 2021 年 5 月 14 日的 21:40，我们将波段更改为 40m，但仍然在 SSB 上。如果没有给出 RST 信息，语法将为每个新的 QSO 使用 59。因此，我们可以添加另一个 QSO，它在两天后的同一时间发生。日期必须是 YYYY-MM-DD 格式。";
-$lang['qso_simplefle_syntax_help_ln7'] = "有关语法的更多信息，请查看 DF3CB 的网站<a href='https://df3cb.com/fle/documentation/' target='_blank'>此处</a>。";
-$lang['qso_simplefle_syntax_help_ln8'] = "";
-$lang['qso_simplefle_syntax_help_ln9'] = "";
+$lang['qso_simplefle_syntax_help_ln4'] = "";
+$lang['qso_simplefle_syntax_help_ln5'] = "如果您不提供任何 RST 信息，语法将使用 59 (599 用于数据)。我们的下一个 QSO 不是双方都是 59，所以我们首先提供发送的 RST 信息。它比第一个 QSO 晚了 2 分钟。";
+$lang['qso_simplefle_syntax_help_ln6'] = "第一个 QSO 是在 21:34，第二个 QSO 在 21:36，比第一个 QSO 晚了 2 分钟。我们写下 6，因为这是这里唯一改变的数据。关于波段和模式的信息没有改变，因此省略了这些数据。";
+$lang['qso_simplefle_syntax_help_ln7'] = "";
+$lang['qso_simplefle_syntax_help_ln8'] = "我们的下一个 QSO 是在 2021 年 5 月 14 日的 21:40，我们将波段更改为 40m，但仍然在 SSB 上。如果没有给出 RST 信息，语法将为每个新的 QSO 使用 59。因此，我们可以添加另一个 QSO，它在两天后的同一时间发生。日期必须是 YYYY-MM-DD 格式。";
+$lang['qso_simplefle_syntax_help_ln9'] = "有关语法的更多信息，请查看 DF3CB 的网站<a href='https://df3cb.com/fle/documentation/' target='_blank'>此处</a>。";
     
