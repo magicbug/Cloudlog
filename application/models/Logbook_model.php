@@ -294,11 +294,8 @@ class Logbook_model extends CI_Model
 
       $data['COL_STATION_CALLSIGN'] = strtoupper(trim($station['station_callsign']));
       $data['COL_MY_DXCC'] = strtoupper(trim($station['station_dxcc']));
-      if (isset($station['station_country'])) {
-        $data['COL_MY_COUNTRY'] = strtoupper(trim($station['station_country']));
-      } else {
-        $data['COL_MY_COUNTRY'] = null;
-      }
+      $data['COL_MY_COUNTRY'] = $station['station_country'] == null ? '' : strtoupper(trim($station['station_country']));
+
       $data['COL_MY_CNTY'] = strtoupper(trim($station['station_cnty']));
       $data['COL_MY_CQ_ZONE'] = strtoupper(trim($station['station_cq']));
       $data['COL_MY_ITU_ZONE'] = strtoupper(trim($station['station_itu']));
