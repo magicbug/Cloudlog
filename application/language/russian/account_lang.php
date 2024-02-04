@@ -77,10 +77,10 @@ $lang['account_logbook_of_the_world_lotw_username'] = 'Логин';
 $lang['account_logbook_of_the_world_lotw_password'] = 'Пароль';
 $lang['account_leave_blank_to_keep_existing_password'] = 'Оставьте пустым для сохранения текущего пароля';
 
-$lang['account_clublog'] = 'Club Log';
+$lang['account_clublog'] = 'Clublog';
 $lang['account_clublog_email_callsign'] = 'Емэйл/позывной';
 $lang['account_clublog_password'] = 'Пароль';
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Емэйл или позывной, которые вы используете для логина в Club Log';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Емэйл или позывной, которые вы используете для логина в Clublog';
 
 $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'Логин';
@@ -117,13 +117,13 @@ $lang['account_winkeyer'] = 'Winkeyer';
 $lang['account_winkeyer_hint'] = "Поддержка Winkeyer в Cloudlog в стадии эксперимента, прочитайте сначала вики (<a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a>) перед включением.";
 $lang['account_winkeyer_enabled'] = "Функционал Winkeyer включен";
 
-$lang['account_map_params'] = "Map Settings";
-$lang['account_map_qso_by_default'] = "QSO (by default)";
-$lang['account_map_qso_confirm'] = "QSO (confirmed)";
-$lang['account_map_qso_confirm_same_qso'] = "(If 'No', displayed as ".$lang['account_map_qso_by_default'].")";
+$lang['account_map_params'] = "Настройки карты";
+$lang['account_map_qso_by_default'] = "QSO (по умолчанию)";
+$lang['account_map_qso_confirm'] = "QSO (подтверждённые)";
+$lang['account_map_qso_confirm_same_qso'] = "(Если 'Нет', отображаются как ".$lang['account_map_qso_by_default'].")";
 
-$lang['account_general_information'] = "General Information";
-$lang['account_qso_logging_options'] = "QSO Logging Options";
-$lang['account_third_party_services'] = "Third Party Services";
-$lang['account_default_values'] = "Default Values";
-$lang['account_miscellaneous'] = "Miscellaneous";
+$lang['account_general_information'] = "Основные данные";
+$lang['account_qso_logging_options'] = "Настройки записи QSO";
+$lang['account_third_party_services'] = "Сторонние сервисы";
+$lang['account_default_values'] = "Значения по умолчанию";
+$lang['account_miscellaneous'] = "Разное";

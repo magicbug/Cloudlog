@@ -9,10 +9,10 @@ $lang['contesting_operator_callsign'] = 'Позывной оператора';
 $lang['contesting_exchange_type'] = 'Тип обмена';
 $lang['contesting_exchange_type_serial'] = 'Номер';
 $lang['contesting_exchange_type_none'] = 'нет';
-$lang['contesting_exchange_type_exchange'] = 'Обмен';
+$lang['contesting_exchange_type_exchange'] = 'Контроль';
 $lang['contesting_exchange_type_gridsquare'] = 'Квадрат';
 $lang['contesting_exchange_type_other'] = 'Другой';
-$lang['contesting_exchange_type_serial_exchange'] = 'Номер + Обмен';
+$lang['contesting_exchange_type_serial_exchange'] = 'Номер + контроль';
 $lang['contesting_exchange_type_serial_gridsquare'] = 'Номер + Квадрат';
 $lang['contesting_exchange_serial_s'] = 'Номер (TX)';
 $lang['contesting_exchange_serial_r'] = 'Номер (RX)';
@@ -27,6 +27,6 @@ $lang['contesting_btn_save_qso'] = 'Сохранить QSO';
 $lang['contesting_title_callsign_suggestions'] = 'Предложение позывных';
 $lang['contesting_title_contest_logbook'] = 'Журнал контеста';
 
-$lang['contesting_copy_exch_to_dok'] = 'Копировать принятый обмен в поле DOK базы данных!';
+$lang['contesting_copy_exch_to_dok'] = 'Копировать принятую контроль в поле DOK базы данных!';
 
 
