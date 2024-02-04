@@ -26,7 +26,7 @@ $lang['adif_alert_log_files_type'] = "Лог-файлы должны иметь 
 // $lang['general_word_warning']            --> application/language/english/general_words_lang.php "PHP Upload Warning"
 // $lang['gen_max_file_upload_size']        --> application/language/english/general_words_lang.php "PHP Upload Warning"
 
-$lang['adif_select_stationlocation'] = "Выберите расположение станции";
+$lang['adif_select_stationlocation'] = "Выберите местоположение станции";
 // $lang['gen_hamradio_callsign']           --> application/language/english/general_words_lang.php
 
 // The File Input is translated by the Browser
@@ -46,7 +46,7 @@ $lang['adif_dxcc_from_adif_hint'] = "Если не отмечено, Cloudlog б
 $lang['adif_always_use_login_call_as_op'] = "Всегда использовать позывной (логин) как имя оператора при импорте";
 
 $lang['adif_ignore_station_call'] = "Игнорировать позывной станции при импорте";
-$lang['adif_ignore_station_call_hint'] = "Если отмечено, Cloudlog попытается импортировать <b>все</b> QSO из ADIF, независимо от соответствия из выбранному расположению станции.";
+$lang['adif_ignore_station_call_hint'] = "Если отмечено, Cloudlog попытается импортировать <b>все</b> QSO из ADIF, независимо от соответствия из выбранному местоположению станции.";
 
 $lang['adif_upload'] = "Загрузить";
 
