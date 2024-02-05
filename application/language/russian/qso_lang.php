@@ -42,7 +42,7 @@ $lang['qso_delete_warning'] = "Предупреждение! Вы уверены
 
 // QSO Details
 
-$lang['qso_details'] = 'Детали QSO';
+$lang['qso_details'] = 'Основная информация';
 
 $lang['fav_add'] = 'Добавить диапазон/вид модуляции в избранное';
 $lang['qso_operator_callsign'] = 'Позывной оператора';

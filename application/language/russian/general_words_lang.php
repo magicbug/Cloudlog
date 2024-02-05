@@ -86,7 +86,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_word_qso_data'] = 'Данные QSO';
-$lang['general_word_details'] = 'Подробно';
+$lang['general_word_details'] = 'детально';
 
 $lang['general_edit_qso'] = 'Редактировать QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Отметить QSL полученной (через бюро)';
@@ -116,7 +116,7 @@ $lang['cloudlog_station_profile'] = 'Местоположение станции
 $lang['gen_hamradio_cq'] = "CQ";
 // ham radio terms
 $lang['gen_hamradio_qso'] = 'QSO';
-$lang['gen_hamradio_station'] = '';
+$lang['gen_hamradio_station'] = 'Местоположение';
 
 $lang['gen_hamradio_call'] = 'Позывной';
 $lang['gen_hamradio_prefix'] = "Префикс";
