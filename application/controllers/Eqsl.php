@@ -40,8 +40,7 @@ class eqsl extends CI_Controller {
 		$this->load->model('eqslmethods_model');
 		$eqsl_locations = $this->eqslmethods_model->all_of_user_with_eqsl_nick_defined();
 		if($eqsl_locations->num_rows() == 0) {
-			show_error("eQSL Nicknames in Station Profiles aren't defined");
-			exit;
+			$this->session->set_flashdata('error', 'eQSL Nicknames in Station Profiles aren\'t defined!');
 		}
 
 		ini_set('memory_limit', '-1');
