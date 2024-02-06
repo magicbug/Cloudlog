@@ -1059,6 +1059,10 @@ class Logbook_model extends CI_Model
 
     $station_profile = $CI->stations->profile_clean($stationId);
     $stationCallsign = $station_profile->station_callsign;
+    $iotaRef = $station_profile->station_iota;
+    $sotaRef = $station_profile->station_sota;
+    $wwffRef = $station_profile->station_wwff;
+    $potaRef = $station_profile->station_pota;
 
     $mode = $this->get_main_mode_if_submode($this->input->post('mode'));
     if ($mode == null) {
@@ -1233,6 +1237,10 @@ class Logbook_model extends CI_Model
       'COL_QSL_VIA' => $this->input->post('qsl_via_callsign'),
       'station_id' => $stationId,
       'COL_STATION_CALLSIGN' => $stationCallsign,
+      'COL_MY_IOTA' => $iotaRef,
+      'COL_MY_SOTA_REF' => $sotaRef,
+      'COL_MY_WWFF_REF' => $wwffRef,
+      'COL_MY_POTA_REF' => $potaRef,
       'COL_OPERATOR' => $this->input->post('operator_callsign'),
       'COL_STATE' => $this->input->post('usa_state'),
       'COL_CNTY' => $uscounty
