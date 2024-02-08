@@ -32,10 +32,10 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
                 <th>Time(d)-Out</th>
                 <th>AOS</th>
                 <th>LOS</th>
-                <th>AOS Azimuth</th>
-                <th>LOS Azimuth</th>
-                <th>Max Elevation</th>
-                <th>Duration</th>
+                <th style="text-align: center !important">AOS Azimuth</th>
+                <th style="text-align: center !important">LOS Azimuth</th>
+                <th style="text-align: center !important">Max Elevation</th>
+                <th style="text-align: center !important">Duration</th>
                 <th></th>
             </tr>
         </thead>
@@ -49,10 +49,10 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
                 <td><span id="tevel<?php echo $i; ?>Timeout">...</span></td>
                 <td><span id="tevel<?php echo $i; ?>AosTime"><?php echo date('H:i:s', $activation['aos_time']); ?></span></td>
                 <td><span id="tevel<?php echo $i; ?>LosTime"><?php echo date('H:i:s', $activation['los_time']); ?></span></td>
-                <td><span id="tevel<?php echo $i; ?>Aos"><?php echo $activation['aos']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(<?php echo (-45+$activation['aos']); ?>deg);"><i class="fas fa-location-arrow fa-xs"></i></span></td>
-                <td><span id="tevel<?php echo $i; ?>Los"><?php echo $activation['los']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(<?php echo (-45+$activation['los']); ?>deg);"><i class="fas fa-location-arrow fa-xs"></i></span></td>
-                <td><span id="tevel<?php echo $i; ?>MaxEl"><?php echo $activation['max_elev']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(-<?php echo ($activation['max_elev']); ?>deg);"><i class="fas fa-arrow-right fa-xs"></i></span></td>
-                <td><span id="tevel<?php echo $i; ?>Duration"><?php echo $activation['duration_min']; ?> min</span></td>
+                <td align="right"><span id="tevel<?php echo $i; ?>Aos"><?php echo $activation['aos']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(<?php echo (-45+$activation['aos']); ?>deg);"><i class="fas fa-location-arrow fa-xs"></i></span></td>
+                <td align="right"><span id="tevel<?php echo $i; ?>Los"><?php echo $activation['los']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(<?php echo (-45+$activation['los']); ?>deg);"><i class="fas fa-location-arrow fa-xs"></i></span></td>
+                <td align="right"><span id="tevel<?php echo $i; ?>MaxEl"><?php echo $activation['max_elev']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(-<?php echo ($activation['max_elev']); ?>deg);"><i class="fas fa-arrow-right fa-xs"></i></span></td>
+                <td align="right"><span id="tevel<?php echo $i; ?>Duration"><?php echo $activation['duration_min']; ?> min</span></td>
                 <td>
                 <?php
                    if (strpos($activation['sat'], 'TEVEL') !== false) {
