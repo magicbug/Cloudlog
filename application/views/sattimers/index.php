@@ -49,9 +49,9 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
                 <td><span id="tevel<?php echo $i; ?>Timeout">...</span></td>
                 <td><span id="tevel<?php echo $i; ?>AosTime"><?php echo date('H:i:s', $activation['aos_time']); ?></span></td>
                 <td><span id="tevel<?php echo $i; ?>LosTime"><?php echo date('H:i:s', $activation['los_time']); ?></span></td>
-                <td><span id="tevel<?php echo $i; ?>Aos"><?php echo $activation['aos']; ?>°</span></td>
-                <td><span id="tevel<?php echo $i; ?>Los"><?php echo $activation['los']; ?>°</span></td>
-                <td><span id="tevel<?php echo $i; ?>MaxEl"><?php echo $activation['max_elev']; ?>°</span></td>
+                <td><span id="tevel<?php echo $i; ?>Aos"><?php echo $activation['aos']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(<?php echo (-45+$activation['aos']); ?>deg);"><i class="fas fa-location-arrow fa-xs"></i></span></td>
+                <td><span id="tevel<?php echo $i; ?>Los"><?php echo $activation['los']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(<?php echo (-45+$activation['los']); ?>deg);"><i class="fas fa-location-arrow fa-xs"></i></span></td>
+                <td><span id="tevel<?php echo $i; ?>MaxEl"><?php echo $activation['max_elev']; ?>°</span><span style="margin-left: 10px; display: inline-block; transform: rotate(-<?php echo ($activation['max_elev']); ?>deg);"><i class="fas fa-arrow-right fa-xs"></i></span></td>
                 <td><span id="tevel<?php echo $i; ?>Duration"><?php echo $activation['duration_min']; ?> min</span></td>
                 <td>
                 <?php
