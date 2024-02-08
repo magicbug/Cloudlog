@@ -839,7 +839,7 @@ class User extends CI_Controller {
 				// Send email with reset code and first Name of the User
 
 				$this->data['reset_code'] = $reset_code;
-				$this->data['user_firstname'] = $data->user_firstname; // We can call the user by his first name in the E-Mail
+				$this->data['user_firstname'] = $data->user_firstname; // We can call the user by their first name in the E-Mail
 				$this->data['user_callsign'] = $data->user_callsign;
 				$this->data['user_name'] = $data->user_name;
 				$this->load->library('email');
