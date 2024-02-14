@@ -48,6 +48,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 </div>
 
 <!-- Map -->
+<!-- qrz.com blocks JavaScript when embedding Cloudlog. Map display doesn't work without JS. -->
+<noscript><style> #map { display: none } </style></noscript>
 <div id="map" class="map-leaflet" style="width: 100%; height: 350px"></div>
 
 <div id="container" style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
