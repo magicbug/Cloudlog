@@ -67,11 +67,11 @@
                        $direction = '';
                        if ($rove['mhz_direction'] == 'up') {
                           $direction = '&uarr;';
-                       } else if ($row['mhz_direction'] == 'down') {
+                       } else if ($rove['mhz_direction'] == 'down') {
                           $direction = '&darr;';
                        }
                        $modeclass = '';
-                       if ($rove['mode'] == 'SSB') {
+                       if ($rove['mode'] == 'SSB' || $rove['mode'] == 'CW') {
                           $modeclass = 'hamsatBgLin';
                        } else if ($rove['mode'] == 'Data') {
                           $modeclass = 'hamsatBgData';
