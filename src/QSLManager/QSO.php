@@ -194,7 +194,7 @@ class QSO
 		$this->lotw = $this->getLotwString($data, $custom_date_format);
 		$this->eqsl = $this->getEqslString($data, $custom_date_format);
 
-		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : '<a href="javascript:spawnLookupModal('.$data['COL_CQZ'].',\'cq\');">'.$data['COL_CQZ'].'</a>';
+		$this->cqzone = ($data['COL_CQZ'] === null) ? '' : $this->geCqLink($data['COL_CQZ']);
 		$this->state = ($data['COL_STATE'] === null) ? '' :$data['COL_STATE'];
 		$this->dxcc = (($data['name'] ?? null) === null) ? '- NONE -' : '<a href="javascript:spawnLookupModal('.$data['COL_DXCC'].',\'dxcc\');">'.ucwords(strtolower($data['name']), "- (/").'</a>';
 		$this->iota = ($data['COL_IOTA'] === null) ? '' : $this->getIotaLink($data['COL_IOTA']);
@@ -207,6 +207,18 @@ class QSO
 		$this->lastupload = (($data['lastupload'] ?? null) === null) ? '' : date($custom_date_format . " H:i", strtotime($data['lastupload'] ?? null));
 		$this->lotw_hint = $this->getLotwHint($data['lastupload'] ?? null);
 		$this->operator = ($data['COL_OPERATOR'] === null) ? '' :$data['COL_OPERATOR'];
+	}
+
+	/**
+	 * @return string
+	 */
+	function geCqLink($cqz): string
+	{
+		$cqz_link = '';
+		if ($cqz <= '40') {
+			return '<a href="javascript:spawnLookupModal('.$cqz.',\'cq\');">'.$cqz.'</a>';
+		}
+		return $cqz;
 	}
 
 	/**
