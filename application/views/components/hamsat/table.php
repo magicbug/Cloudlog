@@ -70,9 +70,17 @@
                        } else if ($row['mhz_direction'] == 'down') {
                           $direction = '&darr;';
                        }
+                       $modeclass = '';
+                       if ($rove['mode'] == 'SSB') {
+                          $modeclass = 'hamsatBgLin';
+                       } else if ($rove['mode'] == 'Data') {
+                          $modeclass = 'hamsatBgData';
+                       } else if ($rove['mode'] == 'FM') {
+                          $modeclass = 'hamsatBgFm';
+                       }
 
                     ?>
-                    <td><span data-bs-toggle="tooltip" title="<?php if ($rove['mhz'] != '') { printf("%.3f", $rove['mhz']); echo " ".$direction ?? ''; } ?>"><?= $rove['satellite']['name'] ?></span></td>
+                    <td><span data-bs-toggle="tooltip" title="<?php if ($rove['mhz'] != '') { printf("%.3f", $rove['mhz']); echo " ".$direction ?? ''; } ?>"><?= $rove['satellite']['name'] ?></span> <span title="<?php echo $rove['mode']; ?>" class="badge <?php echo $modeclass; ?>"><?php echo $rove['mode']; ?></span></td>
                     <td>
 
 
