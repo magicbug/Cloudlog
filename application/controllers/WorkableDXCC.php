@@ -23,7 +23,7 @@ class Workabledxcc extends CI_Controller {
 
     public function dxcclist() {
 
-        $json = file_get_contents('https://oscarwatch.org/scripts/read_ng3k_dxped_list.php');
+        $json = file_get_contents('https://cdn.cloudlog.org/read_ng3k_dxped_list.php');
 
         // Decode the JSON data into a PHP array
         $dataResult = json_decode($json, true);
