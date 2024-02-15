@@ -4,7 +4,7 @@
 	Controller to interact with the Clublog API
 */
 
-class WorkableDXCC extends CI_Controller {
+class Workabledxcc extends CI_Controller {
 
 	function __construct() {
 		parent::__construct();
