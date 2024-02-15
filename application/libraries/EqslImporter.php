@@ -8,6 +8,7 @@ class EqslImporter
 	private $callsign;
 	private $qth_nickname;
 	private $adif_file;
+	private $station_id;
 
 	// CodeIgniter super-ojbect
 	private $CI;
@@ -26,24 +27,26 @@ class EqslImporter
 		$this->adif_file = $adif_file;
 	}
 
-	public function from_callsign_and_QTH($callsign, $qth, $upload_path) {
+	public function from_callsign_and_QTH($callsign, $qth, $upload_path, $station_id) {
 		$this->init(
 			$qth . " - " . $callsign,
-			self::safe_filepath($callsign, $qth, $upload_path)
+			self::safe_filepath($callsign, $qth, $upload_path, $station_id)
 		);
 
 		$this->callsign = $callsign;
 		$this->qth_nickname = $qth;
+		$this->station_id = $station_id;
 	}
 
-	public function from_file($adif_file,$station_callsign) {
+	public function from_file($adif_file, $station_callsign, $station_id) {
 		$this->init('ADIF upload', $adif_file);
-		$this->callsign=$station_callsign;
+		$this->callsign = $station_callsign;
+		$this->station_id = $station_id;
 	}
 
 	// generate a sanitized file name from a callsign and a QTH nickname
-	private static function safe_filepath($callsign, $qth, $upload_path) {
-		$eqsl_id = $callsign . '-' . $qth;
+	private static function safe_filepath($callsign, $qth, $upload_path, $station_id) {
+		$eqsl_id = sprintf('%s-%s_%03d', $callsign, $qth, $station_id);
 
 		// Replace anything which isn't a word, whitespace, number or any of the following caracters -_~,;[](). with a '.'
 		$eqsl_id = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '.', $eqsl_id);
@@ -53,7 +56,7 @@ class EqslImporter
 	}
 
 	// Download confirmed QSO from eQSL inbox and import them
-	public function fetch($password, $eqsl_force_from_date="") {
+	public function fetch($password, $eqsl_force_from_date = false) {
 		if (empty($password) || empty($this->callsign)) {
 			return $this->result('Missing username and/or password');
 		}
@@ -137,7 +140,8 @@ class EqslImporter
 		$query = $this->CI->db->query('SELECT eqsl_rcvd_mark FROM config');
 		$q = $query->row();
 		$config['eqsl_rcvd_mark'] = $q->eqsl_rcvd_mark;
-		$station_callsign=$this->callsign;
+		$station_callsign = $this->callsign;
+		$station_id = $this->station_id;
 
 		$this->CI->adif_parser->load_from_file($this->adif_file);
 		$this->CI->adif_parser->initialize();
@@ -156,14 +160,14 @@ class EqslImporter
 				$record['qsl_sent'] = $config['eqsl_rcvd_mark'];
 			}
 
-			$status = $this->CI->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'],$station_callsign);
+			$status = $this->CI->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'], $station_callsign, $station_id);
 			$qsoid = 0;
 			if ($status[0] == "Found") {
 				$qsoid = $status[1];
-				$dupe = $this->CI->eqslmethods_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $record['mode'],$config['eqsl_rcvd_mark'],$station_callsign);
+				$dupe = $this->CI->eqslmethods_model->eqsl_dupe_check($time_on, $record['call'], $record['band'], $record['mode'], $config['eqsl_rcvd_mark'], $station_callsign, $station_id);
 				if ($dupe == false) {
 					$updated += 1;
-					$eqsl_status = $this->CI->eqslmethods_model->eqsl_update($time_on, $record['call'], $record['band'], $record['mode'], $config['eqsl_rcvd_mark'],$station_callsign);
+					$eqsl_status = $this->CI->eqslmethods_model->eqsl_update($time_on, $record['call'], $record['band'], $record['mode'], $config['eqsl_rcvd_mark'], $station_callsign, $station_id);
 				} else {
 					$dupes += 1;
 					$eqsl_status = "Already received an eQSL for this QSO.";

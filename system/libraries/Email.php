@@ -1059,7 +1059,7 @@ class CI_Email {
 	 *
 	 * Provides the raw message for use in plain-text headers of
 	 * HTML-formatted emails.
-	 * If the user hasn't specified his own alternative message
+	 * If the user hasn't specified their own alternative message
 	 * it creates one by stripping the HTML
 	 *
 	 * @return	string

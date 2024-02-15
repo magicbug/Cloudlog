@@ -31,20 +31,18 @@
 			  </label>
  			  <br>
 			  <p>Upload the Exported ADIF file from eQSL from the <a href="https://eqsl.cc/qslcard/DownloadInBox.cfm" target="_blank">Download Inbox</a> page, to mark QSOs as confirmed on eQSL.</p>
-					<p><span class="label important">Important</span> Log files must have the file type .adi</p>
-					<input type="file" name="userfile" size="20" />
-			  <br/><br/>
 			<p>Choose Station(location) eQSL File belongs to:</p>
                     <select name="station_profile" class="form-select mb-2 me-sm-2" style="width: 20%;">
                     <option value="0">Select Station Location</option>
-                    <?php foreach ($station_profile->result() as $station) { ?>
+                    <?php foreach ($station_profile->result() as $station) {
+                            if($station->eqslqthnickname) { ?>
                     <option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) { echo " selected =\"selected\""; } ?>>Callsign: <?php echo $station->station_callsign; ?> (<?php echo $station->station_profile_name.") eQSL: ".$station->eqslqthnickname; ?></option>
-                    <?php } ?>
+                    <?php } } ?>
                     </select>
+                    <p><span class="label important">Important</span>Log files must have the file type .adi</p>
+                    <input type="file" name="userfile" size="20" />
 			</div>
-
-			<br><br>
-			
+			<hr class="divider">
 			<div class="form-check">
 			  <input class="form-check-input" type="radio" name="eqslimport" id="fetch" value="fetch"  checked="checked"/>
 			  <label class="form-check-label" for="exampleRadios1">Import directly from eQSL</label>
@@ -58,8 +56,7 @@
 		         	<div class="mb-3 col-sm-5" style="vertical-align:middle;"><label class="form-label"><?php echo "(Select a date, only if you want to force an import with an older date)"; //$this->lang->line(''); ?></label></div>
 				</div>
 			</div>
-
-			<br>
+			<hr class="divider">
 			<div class="mb-3"><input class="btn btn-primary" type="submit" value="Import eQSL QSO Matches" /></div>
 		</form>
   </div>

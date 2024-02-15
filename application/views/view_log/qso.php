@@ -499,6 +499,20 @@
                     </tr>
                     <?php } ?>
 
+                    <?php if($row->COL_MY_IOTA) { ?>
+                    <tr>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_iota_reference'); ?></td>
+                        <td><?php echo $row->COL_MY_IOTA; ?></td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->COL_MY_SOTA_REF) { ?>
+                    <tr>
+                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_sota_reference'); ?></td>
+                        <td><?php echo $row->COL_MY_SOTA_REF; ?></td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->COL_MY_WWFF_REF) { ?>
                     <tr>
                         <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_wwff_reference'); ?></td>

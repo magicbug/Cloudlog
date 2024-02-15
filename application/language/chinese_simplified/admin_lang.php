@@ -54,7 +54,7 @@ $lang['admin_contest_name_of_contest'] = '竞赛 名称';
 $lang['admin_contest_name_of_adif'] = '竞赛 在 ADIF 中的名称';
 $lang['admin_contest_edit_active_hint'] = '如果要列在竞赛列表中，则设置为启用';
 $lang['admin_contest_edit_update_contest'] = '更新竞赛';
-$lang['admin_contest_deletion_warning'] = '注意！您确定要删除以下竞赛吗：';
-$lang['admin_contest_active_all_warning'] = '注意！您确定要启用所有竞赛吗？';
-$lang['admin_contest_deactive_all_warning'] = '注意！您确定要停用所有竞赛吗？';
+$lang['admin_contest_deletion_warning'] = '警告！您确定要删除以下竞赛吗：';
+$lang['admin_contest_active_all_warning'] = '警告！您确定要启用所有竞赛吗？';
+$lang['admin_contest_deactive_all_warning'] = '警告！您确定要停用所有竞赛吗？';
 

@@ -21,7 +21,7 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($rovedata as $rove) : ?>
+            <?php foreach ($rovedata['data'] as $rove) : ?>
                 <tr>
                     <td>
                         <?php
@@ -37,18 +37,18 @@
 
                         ?>
 
-                        <?php $timestamp = strtotime($rove['date']);
+                        <?php $timestamp = strtotime($rove['aos_at']);
                            echo date($custom_date_format, $timestamp); ?>
 
                     </td>
                     <td>
-                        <?php echo $rove['start_time']." - ".$rove['end_time']; ?>
+                        <?php echo date("H:i:s", $timestamp)." - ".date("H:i:s", strtotime($rove['los_at'])); ?>
                     </td>
                     <td>
                         <?php
                         $CI = &get_instance();
-			$CI->load->model('logbooks_model');
-			$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+                        $CI->load->model('logbooks_model');
+                        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
                         $CI->load->model('logbook_model');
                         $call_worked = $CI->logbook_model->check_if_callsign_worked_in_logbook($rove['callsign'], $logbooks_locations_array, "SAT");
                         if ($call_worked != 0) {
@@ -60,48 +60,54 @@
                     </td>
                     <td>
                         <?php
-                        echo xss_clean($rove['comment']);
+                        echo xss_clean($rove['comment'] ?? '-');
                         ?>
                     </td>
-                    <td><span data-bs-toggle="tooltip" title="<?php echo $rove['frequency']; ?> - <?php echo $rove['mode']; ?>"><?= $rove['satellite'] ?></span></td>
+                    <?php
+                       $direction = '';
+                       if ($rove['mhz_direction'] == 'up') {
+                          $direction = '&uarr;';
+                       } else if ($rove['mhz_direction'] == 'down') {
+                          $direction = '&darr;';
+                       }
+                       $modeclass = '';
+                       if ($rove['mode'] == 'SSB' || $rove['mode'] == 'CW') {
+                          $modeclass = 'hamsatBgLin';
+                       } else if ($rove['mode'] == 'Data') {
+                          $modeclass = 'hamsatBgData';
+                       } else if ($rove['mode'] == 'FM') {
+                          $modeclass = 'hamsatBgFm';
+                       }
+
+                    ?>
+                    <td><span data-bs-toggle="tooltip" title="<?php if ($rove['mhz'] != '') { printf("%.3f", $rove['mhz']); echo " ".$direction ?? ''; } ?>"><?= $rove['satellite']['name'] ?></span> <span title="<?php echo $rove['mode']; ?>" class="badge <?php echo $modeclass; ?>"><?php echo $rove['mode']; ?></span></td>
                     <td>
 
 
                         <?php
-
                         // Load the logbook model and call check_if_grid_worked_in_logbook
-                        if (strpos($rove['gridsquare'], '/') !== false) {
-                           $grids = explode('/', $rove['gridsquare']);
-                           foreach ($grids as $grid) {
-                           $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($grid, null, "SAT");
-                              if ($worked != 0) {
-                                  echo " <span data-bs-toggle=\"tooltip\" title=\"Worked\" class=\"badge bg-success\">" . $grid . "</span>";
-                              } else {
-                                  echo " <span data-bs-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge bg-danger\">" . $grid . "</span>";
-                              }
-                           }
-                        } else {
-                           $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($rove['gridsquare'], null, "SAT");
+                        foreach ($rove['grids'] as $grid) {
+                        $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($grid, null, "SAT");
                            if ($worked != 0) {
-                               echo " <span data-bs-toggle=\"tooltip\" title=\"Worked\" class=\"badge bg-success\">" . $rove['gridsquare'] . "</span>";
+                               echo " <span data-bs-toggle=\"tooltip\" title=\"Worked\" class=\"badge bg-success\">" . $grid . "</span>";
                            } else {
-                               echo " <span data-bs-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge bg-danger\">" . $rove['gridsquare'] . "</span>";
+                               echo " <span data-bs-toggle=\"tooltip\" title=\"Not Worked\" class=\"badge bg-danger\">" . $grid . "</span>";
                            }
                         }
                         ?>
 
 
                     </td>
-                    <td><a href="<?php echo $rove['track_link']; ?>" target="_blank">Track</a></td>
+                    <td><a href="<?php echo $rove['url']; ?>" target="_blank">Track</a></td>
                     <?php
-                        $sat = $rove['satellite'];
-                        switch (strtoupper($rove['satellite'])) {
+                        $sat = $rove['satellite']['name'];
+                        switch (strtoupper($rove['satellite']['name'])) {
                         case "GREENCUBE":
                            $sat = 'IO-117';
                            break;
                         }
                     ?>
-                    <td><a href="https://sat.fg8oj.com/sked.php?s%5B%5D=<?php echo $sat; ?>&l=<?php echo strtoupper($gridsquare); ?>&el1=0&l2=<?php echo $rove['gridsquare']; ?>&el2=0&duration=1&start=0&OK=Search" target="_blank">Sked</a></td>
+                    <td><a href="https://sat.fg8oj.com/sked.php?s%5B%5D=<?php echo $sat; ?>&l=<?php echo strtoupper($gridsquare); ?>&el1=0&l2=<?php echo $rove['grids'][0]; ?>&el2=0&duration=1&start=0&OK=Search" target="_blank">Sked</a></td>
                 </tr>
             <?php endforeach; ?>
         </tbody>

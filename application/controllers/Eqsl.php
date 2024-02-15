@@ -40,8 +40,7 @@ class eqsl extends CI_Controller {
 		$this->load->model('eqslmethods_model');
 		$eqsl_locations = $this->eqslmethods_model->all_of_user_with_eqsl_nick_defined();
 		if($eqsl_locations->num_rows() == 0) {
-			show_error("eQSL Nicknames in Station Profiles aren't defined");
-			exit;
+			$this->session->set_flashdata('error', 'eQSL Nicknames in Station Profiles aren\'t defined!');
 		}
 
 		ini_set('memory_limit', '-1');
@@ -74,10 +73,11 @@ class eqsl extends CI_Controller {
 				$this->eqslimporter->from_callsign_and_QTH(
 					$eqsl_location['station_callsign'],
 					$eqsl_location['eqslqthnickname'],
-					$config['upload_path']
+					$config['upload_path'],
+					$eqsl_location['station_id']
 				);
 
-				$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password,$eqsl_force_from_date);
+				$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password, $eqsl_force_from_date);
 			}
 		} elseif ($this->input->post('eqslimport') == 'upload') {
 			$station_id4upload=$this->input->post('station_profile');
@@ -97,7 +97,7 @@ class eqsl extends CI_Controller {
 					$data = array('upload_data' => $this->upload->data());
 
 					$this->load->library('EqslImporter');
-					$this->eqslimporter->from_file('./uploads/'.$data['upload_data']['file_name'],$station_callsign);
+					$this->eqslimporter->from_file('./uploads/'.$data['upload_data']['file_name'], $station_callsign, $station_id4upload);
 
 					$eqsl_results[] = $this->eqslimporter->import();
 				}
@@ -129,8 +129,7 @@ class eqsl extends CI_Controller {
 		// Check if eQSL Nicknames have been defined
 			$this->load->model('stations');
 			if($this->stations->are_eqsl_nicks_defined() == 0) {
-				show_error('eQSL Nicknames in Station Profiles arent defined');
-				exit;
+				$this->session->set_flashdata('error', 'eQSL Nicknames in Station Profiles aren\'t defined!');
 			}
 
 		ini_set('memory_limit', '-1');
@@ -728,7 +727,8 @@ class eqsl extends CI_Controller {
 			$this->eqslimporter->from_callsign_and_QTH(
 				$eqsl_location['station_callsign'],
 				$eqsl_location['eqslqthnickname'],
-				$config['upload_path']
+				$config['upload_path'],
+				$eqsl_location['station_id']
 			);
 
 			$eqsl_results[] = $this->eqslimporter->fetch($password);

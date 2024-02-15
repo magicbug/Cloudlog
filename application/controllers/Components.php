@@ -15,7 +15,7 @@ class Components extends CI_Controller {
 
     public function index() {
         $this->load->model('stations');
-        $url = 'https://oscarwatch.org/scripts/hamsat_json.php';
+        $url = 'https://hams.at/api/alerts/upcoming';
         $json = file_get_contents($url);
         $data['rovedata'] = json_decode($json, true);
         $data['gridsquare'] = strtoupper($this->stations->find_gridsquare());

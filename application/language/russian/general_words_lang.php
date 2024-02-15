@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['error_no_active_station_profile'] = 'Внимание: вам нужно назначить активный профиль месторасположения станции.';
+$lang['error_no_active_station_profile'] = 'Внимание: вам нужно назначить активное местоположение станции.';
 
 $lang['notice_turn_the_radio_on'] = 'За сегодня ни одного QSO, время вернуться к радио!';
 
@@ -23,9 +23,9 @@ $lang['general_word_export'] = "Экспорт";
 $lang['general_word_import'] = "Импорт";
 $lang['general_word_count'] = "Счётчик";
 $lang['general_word_filtering_on'] = "Отфильтровано по";
-$lang['general_word_not_display'] = "Not display";
-$lang['general_word_icon'] = "Icon";
-$lang['general_word_never'] = "Never";
+$lang['general_word_not_display'] = "Не отображать";
+$lang['general_word_icon'] = "Иконка";
+$lang['general_word_never'] = "Никогда";
 
 $lang['general_word_date'] = 'Дата';
 $lang['general_word_startdate'] = "Дата начала";
@@ -43,13 +43,13 @@ $lang['general_word_satellite'] = 'Спутник';
 $lang['general_word_satellite_short'] = 'Спутн.';
 $lang['general_word_notes'] = 'Заметки';
 $lang['general_word_country'] = 'Страна';
-$lang['general_word_city'] = 'City';
+$lang['general_word_city'] = 'Город';
 
 $lang['general_word_total'] = 'Всего';
 $lang['general_word_year'] = 'Год';
 $lang['general_word_month'] = 'Месяц';
-$lang['general_word_day'] = "Day";
-$lang['general_word_days'] = "Days";
+$lang['general_word_day'] = "День";
+$lang['general_word_days'] = "Дней";
 
 $lang['general_word_colors'] = "Цвета";
 $lang['general_word_light'] = "Свет/лазер";
@@ -57,7 +57,7 @@ $lang['general_word_worked'] = 'Сработано';
 $lang['general_word_worked_not_confirmed'] = "Сработано, не подтверждено";
 $lang['general_word_not_worked'] = "Не сработано";
 $lang['general_word_confirmed'] = 'Подтверждено';
-$lang['general_word_confirmation'] = "Пожтверждение";
+$lang['general_word_confirmation'] = "Подтверждение";
 $lang['general_word_needed'] = 'Необходимо';
 
 $lang['general_word_all'] = 'Все';
@@ -86,7 +86,7 @@ $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
 $lang['general_word_qso_data'] = 'Данные QSO';
-$lang['general_word_details'] = 'Подробно';
+$lang['general_word_details'] = 'детально';
 
 $lang['general_edit_qso'] = 'Редактировать QSO';
 $lang['general_mark_qsl_rx_bureau'] = 'Отметить QSL полученной (через бюро)';
@@ -111,12 +111,12 @@ $lang['general_total_distance'] = 'Суммарная дистанция';
 $lang['gen_max_file_upload_size'] = 'Максимальный размер загружаемого файла ';
 
 // Cloudlog Terms
-$lang['cloudlog_station_profile'] = 'Месторасположение станции';
+$lang['cloudlog_station_profile'] = 'Местоположение станции';
 
 $lang['gen_hamradio_cq'] = "CQ";
 // ham radio terms
 $lang['gen_hamradio_qso'] = 'QSO';
-$lang['gen_hamradio_station'] = 'Станция';
+$lang['gen_hamradio_station'] = 'Местоположение';
 
 $lang['gen_hamradio_call'] = 'Позывной';
 $lang['gen_hamradio_prefix'] = "Префикс";

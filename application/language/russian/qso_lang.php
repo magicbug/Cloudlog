@@ -6,12 +6,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $lang['qso_title_qso_map'] = 'Карта QSO';
 $lang['qso_title_suggestions'] = 'Предложения';
 $lang['qso_title_previous_contacts'] = 'Предыдущие контакты';
-$lang['qso_title_times_worked_before'] = "times worked before";
-$lang['qso_title_image'] = 'Profile Picture';
-$lang['qso_previous_max_shown'] = "Max. 5 previous contacts are shown";
+$lang['qso_title_times_worked_before'] = "раз сработано раньше";
+$lang['qso_title_image'] = 'Изображение профиля';
+$lang['qso_previous_max_shown'] = "Отображается до 5 предыдущих QSO";
 
 // Quicklog on Dashboard
-$lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Enter Callsign';
+$lang['qso_quicklog_enter_callsign'] = 'Для быстрой записи в журнал введите позывной';
 
 // Input Help Text on the /QSO Display
 $lang['qso_transmit_power_helptext'] = 'Укажите мощность в Ваттах (только цифры).';
@@ -28,10 +28,10 @@ $lang['qso_dok_helptext'] = 'Например: Q03';
 $lang['qso_notes_helptext'] = 'Содержание заметки используется только Cloudlog и не экспортируется на другие сервисы.';
 $lang['qsl_notes_helptext'] = 'СОдержимое этой заметки экспортируется в QSL сервисы, к примеру, eqsl.cc и т.п.';
 
-$lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
+$lang['qso_eqsl_qslmsg_helptext'] = "Сообщение в eQSL по умолчанию для этой станции.";
 
 // error text //
-$lang['qso_error_timeoff_less_timeon'] = "TimeOff is less than TimeOn";
+$lang['qso_error_timeoff_less_timeon'] = "Время окончания раньше, чем время начала";
 
 // Button Text on /qso Display
 
@@ -42,7 +42,7 @@ $lang['qso_delete_warning'] = "Предупреждение! Вы уверены
 
 // QSO Details
 
-$lang['qso_details'] = 'Детали QSO';
+$lang['qso_details'] = 'Основная информация';
 
 $lang['fav_add'] = 'Добавить диапазон/вид модуляции в избранное';
 $lang['qso_operator_callsign'] = 'Позывной оператора';
@@ -61,8 +61,8 @@ $lang['qso_simplefle_qso_list_total'] = "Всего";
 $lang['qso_simplefle_qso_date'] = "Дата QSO";
 $lang['qso_simplefle_operator'] = "Оператор";
 $lang['qso_simplefle_operator_hint'] = "к примеру, OK2CQR";
-$lang['qso_simplefle_station_call_location'] = "Позывной/расположение станции";
-$lang['qso_simplefle_station_call_location_hint'] = "Если вы работаете из нового расположения станции, сначала создайте его здесь: <a href=". site_url('station') . ">Расположение станции</a>";
+$lang['qso_simplefle_station_call_location'] = "Позывной/Местоположение станции";
+$lang['qso_simplefle_station_call_location_hint'] = "Если вы работаете из нового местоположения станции, сначала создайте его здесь: <a href=". site_url('station') . ">Местоположение станции</a>";
 $lang['qso_simplefle_utc_time'] = "Текущее время UTC";
 $lang['qso_simplefle_enter_the_data'] = "Введите данные";
 $lang['qso_simplefle_syntax_help_close_w_sample'] = "Закройте и загрузите образец данных";
