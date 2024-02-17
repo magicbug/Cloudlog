@@ -127,6 +127,15 @@ class Dashboard extends CI_Controller
 
 			$data['total_countries_needed'] = count($dxcc->result()) - $current;
 
+			$this->load->model('Workabledxcc_model');
+			$data['thisWeekRecords'] = $this->Workabledxcc_model->GetThisWeek();
+
+			usort($data['thisWeekRecords'], function($a, $b) {
+				$dateA = new DateTime($a['1']);
+				$dateB = new DateTime($b['1']);
+				return $dateA <=> $dateB;
+			});
+
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('dashboard/index');
 			$this->load->view('interface_assets/footer');
