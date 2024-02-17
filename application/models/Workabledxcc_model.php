@@ -63,7 +63,7 @@ class Workabledxcc_model extends CI_Model
 
                 $CI = &get_instance();
                 $CI->load->model('logbook_model');
-                $dxccInfo = $CI->logbook_model->dxcc_lookup($record['3'], $startDate->format('Y-m-d'));
+                $dxccInfo = $CI->logbook_model->dxcc_lookup($record['callsign'], $startDate->format('Y-m-d'));
 
                 // Call DXCC Worked function to check if the DXCC has been worked before
                 if (isset($dxccInfo['entity'])) {
