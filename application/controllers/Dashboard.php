@@ -128,9 +128,24 @@ class Dashboard extends CI_Controller
 			$data['total_countries_needed'] = count($dxcc->result()) - $current;
 
 			$this->load->model('Workabledxcc_model');
-			$data['thisWeekRecords'] = $this->Workabledxcc_model->GetThisWeek();
 
-			usort($data['thisWeekRecords'], function($a, $b) {
+			$this->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
+
+			// Get the user ID from the session data
+			$userID = $this->session->userdata('user_id');
+
+			// Use the user ID to create a unique cache name
+			$cacheName = 'thisWeekRecords_' . $userID;
+
+			if (!$thisWeekRecords = $this->cache->get($cacheName)) {
+				// If the cache does not exist, get the data and save it to the cache.
+				$thisWeekRecords = $this->Workabledxcc_model->GetThisWeek();
+				$this->cache->save($cacheName, $thisWeekRecords, 3600); // Cache for 1 hour (3600 seconds)
+			}
+
+			$data['thisWeekRecords'] = $thisWeekRecords;
+
+			usort($data['thisWeekRecords'], function ($a, $b) {
 				$dateA = new DateTime($a['1']);
 				$dateB = new DateTime($b['1']);
 				return $dateA <=> $dateB;
