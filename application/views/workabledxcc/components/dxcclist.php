@@ -1,3 +1,5 @@
+<p>Data is collected by Cloudlog from multiple sources.</p>
+
 <?php
 $grouped = [];
 
