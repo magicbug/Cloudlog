@@ -19,6 +19,7 @@ $('#version_dialog_mode').on('change', function () {
     showCustomTextarea();
 });
 
+
 // JavaScript-Funktion displayVersionDialog für Bootstrap 5
 function displayVersionDialog() {
 
