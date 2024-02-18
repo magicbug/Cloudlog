@@ -295,26 +295,10 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 
 
 				<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
-
-				<table class="table table-striped border-top">
-					<tr class="titles">
-						<td colspan="3"><i class="fas fa-chart-bar"></i> DXPeditions (This Week)</td>
-					</tr>
-
-					<?php
-					foreach ($thisWeekRecords as $record) {
-						$color = $record['workedBefore'] == 1 ? '#ddffdd' : '#ffdddd';
-						echo '<tr>';
-						echo '<td style="background-color: ' . $color . ';" width="33%">' . $record['daysLeft'] . '</td>'; // Date
-						echo '<td style="background-color: ' . $color . ';" width="33%">' . $record['callsign'] . '</td>'; // Callsign
-						echo '<td style="background-color: ' . $color . ';" width="33%">' . $record['2'] . '</td>'; // Country
-						echo '</tr>';
-					}
-					?>
-
-				</table>
-
-
+				<div>
+					<div id="upcoming_dxccs_component" hx-get="<?php echo site_url('dashboard/upcoming_dxcc_component'); ?>" hx-trigger="load" hx-indicator="#loading_upcoming_dxcc"></div>
+					<div id="loading_upcoming_dxcc" style="display: none;">Loading Upcoming DXPeditions.</div>
+				</div>
 				<table class="table table-striped border-top">
 					<tr class="titles">
 						<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>
