@@ -8,7 +8,7 @@
         $color = $record['workedBefore'] == 1 ? '#ddffdd' : '#ffdddd';
         echo '<tr>';
         echo '<td style="background-color: ' . $color . ';" width="33%">' . $record['daysLeft'] . '</td>'; // Date
-        echo '<td style="background-color: ' . $color . ';" width="33%">' . $record['callsign'] . '</td>'; // Callsign
+        echo '<td style="background-color: ' . $color . ';" width="33%">' . '<a href="#" data-bs-toggle="tooltip" data-bs-title="'.$record['6'].'">'.$record['callsign'] . '</a>'. '</td>'; // Callsign
         echo '<td style="background-color: ' . $color . ';" width="33%">' . $record['2'] . '</td>'; // Country
         echo '</tr>';
     }
