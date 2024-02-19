@@ -411,6 +411,10 @@ class DxccFlag
 
     public function get($dxcc)
     {
-        return $this->dxccFlags[$dxcc];
+        if (!isset($this->dxccFlags[$dxcc])) {
+            return null;
+        } else {
+            return $this->dxccFlags[$dxcc];
+        }
     }
 }
