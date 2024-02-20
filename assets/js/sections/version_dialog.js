@@ -2,39 +2,40 @@
 // Admin Menu - Version Dialog Settings
 
 function showCustomTextarea() {
-    var selectedOptionValue = $("#version_dialog_mode option:selected").val();
+	var selectedOptionValue = $("#version_dialog_mode option:selected").val();
 
-    if (selectedOptionValue === "custom_text" || selectedOptionValue === "both") {
-        $('#version_dialog_custom_textarea').show();
-    } else {
-        $('#version_dialog_custom_textarea').hide();
-    }
+	if (selectedOptionValue === "custom_text" || selectedOptionValue === "both") {
+		$('#version_dialog_custom_textarea').show();
+	} else {
+		$('#version_dialog_custom_textarea').hide();
+	}
 }
 
 $(document).ready(function () {
-    showCustomTextarea();
+	showCustomTextarea();
 });
 
 $('#version_dialog_mode').on('change', function () {
-    showCustomTextarea();
+	showCustomTextarea();
 });
 
-// JavaScript-Funktion displayVersionDialog für Bootstrap 5
+
+// JavaScript function displayVersionDialog for Bootstrap 5
 function displayVersionDialog() {
 
 	$.ajax({
 		url: base_url + "index.php/Version_Dialog/displayVersionDialog",
 		type: 'GET',
 		dataType: 'html',
-		success: function(data) {
+		success: function (data) {
 			$('body').append(data);
 
-			// Aktiviere das Bootstrap-Modal
+			// Activate the Bootstrap Modal
 			var versionDialogModal = new bootstrap.Modal(document.getElementById('versionDialogModal'));
 			versionDialogModal.show();
 		},
-		error: function() {
-			// Behandlung von Fehlern
+		error: function () {
+			// Handling of errors
 			console.log('Fehler beim Laden der PHP-Datei.');
 		}
 	});

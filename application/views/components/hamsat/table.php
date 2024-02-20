@@ -2,7 +2,7 @@
     <br>
     <h2>Hamsat - Satellite Rovers</h2>
     <p>This data is from <a target="_blank" href="https://hams.at/">https://hams.at/</a></p>
-    <?php if ($rovedata == []) { ?>
+    <?php if ($rovedata['data'] == []) { ?>
      <div class="alert alert-warning" role="warning">
        <?php echo lang('hams_at_no_activations_found');?>
     </div>
