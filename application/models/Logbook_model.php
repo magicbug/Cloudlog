@@ -3433,12 +3433,14 @@ class Logbook_model extends CI_Model
 
       if (isset($record['ant_az'])) {
         $input_ant_az = filter_var($record['ant_az'], FILTER_VALIDATE_FLOAT);
+        $input_ant_az = fmod($input_ant_az, 360);
       } else {
         $input_ant_az = NULL;
       }
 
       if (isset($record['ant_el'])) {
         $input_ant_el = filter_var($record['ant_el'], FILTER_VALIDATE_FLOAT);
+        $input_ant_el = fmod($input_ant_el, 90);
       } else {
         $input_ant_el = NULL;
       }
