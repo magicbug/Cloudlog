@@ -215,6 +215,21 @@
                         <td><?php echo (strlen($row->COL_SAT_MODE) == 2 ? (strtoupper($row->COL_SAT_MODE[0]).'/'.strtoupper($row->COL_SAT_MODE[1])) : strtoupper($row->COL_SAT_MODE)); ?></td>
                     </tr>
                     <?php } ?>
+
+                    <?php if($row->COL_ANT_AZ != null) { ?>
+                    <tr>
+                        <td><?php echo lang('gen_hamradio_ant_az'); ?></td>
+                        <td><?php echo $row->COL_ANT_AZ; ?>&deg;</td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->COL_ANT_EL != null) { ?>
+                    <tr>
+                        <td><?php echo lang('gen_hamradio_ant_el'); ?></td>
+                        <td><?php echo $row->COL_ANT_EL; ?>&deg;</td>
+                    </tr>
+                    <?php } ?>
+
                     <?php if($row->name != null) { ?>
                     <tr>
                         <td><?php echo lang('general_word_country'); ?></td>
