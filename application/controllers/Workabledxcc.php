@@ -58,12 +58,10 @@ class Workabledxcc extends CI_Controller
 
 			$EndDate = $oldEndDate->format($custom_date_format);
 
-
 			$oldStartDate1 = DateTime::createFromFormat('Y-m-d', $item['0']);
 
 			$StartDate1 = $oldStartDate1->format('Y-m-d');
 
-			echo $StartDate1;
 
 			$this->load->model('logbook_model');
 			$dxccInfo = $this->logbook_model->dxcc_lookup($item['callsign'], $StartDate1);
