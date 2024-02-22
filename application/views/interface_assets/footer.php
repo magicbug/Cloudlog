@@ -1191,6 +1191,9 @@ if ($this->session->userdata('user_id') != null) {
                     $('#callsign').val("");
                     $("#callsign").focus();
                     updateFromCAT();
+                    if (document.querySelector('#radio').value != '0') {
+                        updateFromCAT();
+                    }
                 }
             });
         });
