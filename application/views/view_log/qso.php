@@ -219,14 +219,14 @@
                     <?php if($row->COL_ANT_AZ != null) { ?>
                     <tr>
                         <td><?php echo lang('gen_hamradio_ant_az'); ?></td>
-                        <td><?php echo $row->COL_ANT_AZ; ?>&deg;</td>
+                        <td><?php echo $row->COL_ANT_AZ; ?>&deg; <span style="margin-left: 2px; display: inline-block; transform: rotate(<?php echo (-45+$row->COL_ANT_AZ); ?>deg);"><i class="fas fa-location-arrow fa-xs"></i></span></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_ANT_EL != null) { ?>
                     <tr>
                         <td><?php echo lang('gen_hamradio_ant_el'); ?></td>
-                        <td><?php echo $row->COL_ANT_EL; ?>&deg;</td>
+                        <td><?php echo $row->COL_ANT_EL; ?>&deg; <span style="margin-left: 2px; display: inline-block; transform: rotate(<?php echo (-$row->COL_ANT_EL); ?>deg);"><i class="fas fa-arrow-right fa-xs"></i></span></td>
                     </tr>
                     <?php } ?>
 
