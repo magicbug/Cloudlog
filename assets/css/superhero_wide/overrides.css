@@ -249,3 +249,18 @@ div.alert-danger {
 .accordion-body {
 	border: 1px solid #4e5e6c;
 }
+
+/* CSS for Upcoming DXCC Component */
+#upcoming_dxccs_component #worked_before {
+	background-color: #ddffdd;
+	width: 33%;
+	color: #000;
+	box-shadow: none !important;
+}
+
+#upcoming_dxccs_component #not_worked_before {
+	background-color: #ffdddd !important;
+	width: 33%;
+	color: #000;
+	box-shadow: none !important;
+}
