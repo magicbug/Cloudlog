@@ -634,5 +634,5 @@ if ($('.table-responsive .dropdown-toggle').length>0) {
 }
 
 function getDataTablesLanguageUrl() {
-    return "../assets/json/datatables_languages/" + lang_datatables_language + ".json";
+    return base_url + "/assets/json/datatables_languages/" + lang_datatables_language + ".json";
 }
