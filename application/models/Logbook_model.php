@@ -2984,8 +2984,9 @@ class Logbook_model extends CI_Model
   }
 
   /* Used to check if the qso is already in the database */
-  function import_check($datetime, $callsign, $band, $mode, $station_callsign, $station_id = null) {
-    $mode=$this->get_main_mode_from_mode($mode);
+  function import_check($datetime, $callsign, $band, $mode, $station_callsign, $station_id = null)
+  {
+    $mode = $this->get_main_mode_from_mode($mode);
 
     $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
     $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("' . $datetime . '", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
@@ -2995,8 +2996,8 @@ class Logbook_model extends CI_Model
     $this->db->where('COL_BAND', $band);
     $this->db->where('COL_MODE', $mode);
 
-    if(isset($station_id) && $station_id > 0) {
-        $this->db->where('station_id', $station_id);
+    if (isset($station_id) && $station_id > 0) {
+      $this->db->where('station_id', $station_id);
     }
 
     $query = $this->db->get($this->config->item('table_name'));
@@ -3412,8 +3413,15 @@ class Logbook_model extends CI_Model
         // Check if RX_PWR is "K" which N1MM+ uses to indicate 1000W
         if ($record['rx_pwr'] == "K") {
           $rx_pwr = 1000;
+        } elseif ($record['rx_pwr'] == "KW") {
+          $rx_pwr = 1000;
         } else {
-          $rx_pwr = filter_var($record['rx_pwr'], FILTER_VALIDATE_FLOAT);
+          if (isset($record['rx_pwr']) && is_numeric($record['rx_pwr'])) {
+            $rx_pwr = $record['rx_pwr'];
+          } else {
+            $rx_pwr = null;
+            $my_error .= "Error QSO: Date: " . $time_on . " Callsign: " . $record['call'] . " RX_PWR (".$record['rx_pwr'].") is not a number<br>";
+          }
         }
       } else {
         $rx_pwr = NULL;
@@ -3432,13 +3440,15 @@ class Logbook_model extends CI_Model
       }
 
       if (isset($record['ant_az'])) {
-        $input_ant_az = filter_var($record['ant_az'], FILTER_SANITIZE_NUMBER_INT);
+        $input_ant_az = filter_var($record['ant_az'], FILTER_VALIDATE_FLOAT);
+        $input_ant_az = fmod($input_ant_az, 360);
       } else {
         $input_ant_az = NULL;
       }
 
       if (isset($record['ant_el'])) {
-        $input_ant_el = filter_var($record['ant_el'], FILTER_SANITIZE_NUMBER_INT);
+        $input_ant_el = filter_var($record['ant_el'], FILTER_VALIDATE_FLOAT);
+        $input_ant_el = fmod($input_ant_el, 90);
       } else {
         $input_ant_el = NULL;
       }

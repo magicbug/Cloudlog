@@ -259,3 +259,16 @@ div.alert-danger {
 .accordion-button.collapsed {
 	border-bottom:1px solid var(--bs-body-bg);
 }
+
+/* CSS for Upcoming DXCC Component */
+#upcoming_dxccs_component #worked_before {
+	background-color: #ddffdd;
+	width: 33%;
+	color: #000;
+}
+
+#upcoming_dxccs_component #not_worked_before {
+	background-color: #ffdddd;
+	width: 33%;
+	color: #000;
+}

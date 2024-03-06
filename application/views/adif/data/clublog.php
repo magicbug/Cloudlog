@@ -9,5 +9,5 @@ $CI =& get_instance();
 $CI->load->library('AdifHelper');
 
 foreach ($qsos->result() as $qso) {
-    echo $CI->adifhelper->getAdifLine($qso);
+    echo $CI->adifhelper->getAdifLine($qso, $satellite_remap = true);
 }

@@ -1,15 +1,15 @@
-<table class="table table-striped border-top">
+<table id="upcoming_dxccs_component" class="table table-striped border-top">
     <tr class="titles">
         <td colspan="3"><i class="fas fa-chart-bar"></i> DXPeditions (This Week)</td>
     </tr>
 
     <?php
     foreach ($thisWeekRecords as $record) {
-        $color = $record['workedBefore'] == 1 ? '#ddffdd' : '#ffdddd';
+        $name = $record['workedBefore'] == 1 ? 'worked_before' : 'not_worked_before';
         echo '<tr>';
-        echo '<td style="background-color: ' . $color . ';" width="33%">' . $record['daysLeft'] . '</td>'; // Date
-        echo '<td style="background-color: ' . $color . ';" width="33%">' . '<a href="#" data-bs-toggle="tooltip" data-bs-title="'.$record['6'].'">'.$record['callsign'] . '</a>'. '</td>'; // Callsign
-        echo '<td style="background-color: ' . $color . ';" width="33%">' . $record['2'] . '</td>'; // Country
+        echo '<td id="' . $name . '">' . $record['daysLeft'] . '</td>'; // Date
+        echo '<td id="' . $name . '">' . '<a target="_blank" href="https://dxheat.com/db/'.$record['callsign'].'" data-bs-toggle="tooltip" data-bs-title="'.$record['6'].'">'.$record['callsign'] . '</a>'. '</td>'; // Callsign
+        echo '<td id="' . $name . '">' . $record['2'] . '</td>'; // Country
         echo '</tr>';
     }
     ?>
