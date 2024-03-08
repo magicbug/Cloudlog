@@ -248,13 +248,11 @@ function checkIfWorkedBefore() {
 			success: function (result) {
 				if (result.message.substr(0, 6) == 'Worked') {
 					$('#callsign_info').removeClass('text-bg-success');
-					$('#callsign_info').removeClass('text-bg-info');
 					$('#callsign_info').addClass('text-bg-danger');
 					$('#callsign_info').text(result.message);
 				}
 				else if (result.message == "OKAY") {
 					$('#callsign_info').removeClass('text-bg-danger');
-					$('#callsign_info').removeClass('text-bg-info');
 					$('#callsign_info').addClass('text-bg-success');
 					$('#callsign_info').text("Go Work Them!");
 				} else {
