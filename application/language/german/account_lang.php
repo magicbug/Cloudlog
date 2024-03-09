@@ -127,3 +127,8 @@ $lang['account_qso_logging_options'] = "QSO-Logging Optionen";
 $lang['account_third_party_services'] = "Externe Dienste";
 $lang['account_default_values'] = "Standardwerte / Favoriten";
 $lang['account_miscellaneous'] = "Verschiedenes";
+
+$lang['account_hamsat'] = "Hams.at";
+$lang['account_hamsat_private_feed_key'] = "Private Feed Key";
+$lang['account_hamsat_hint'] = "Siehe dein Profil unter <a href='https://hams.at/users/settings' target='_blank'>https://hams.at/users/settings</a>.";
+$lang['account_hamsat_workable_only'] = "Zeige nur Überflüge an, die gearbeitet werden können";
