@@ -202,6 +202,8 @@ class Contesting extends CI_Controller {
         		$custom_date_format = $this->session->userdata('user_date_format');
 			$abstimeb4=date($custom_date_format, strtotime($result->row()->COL_TIME_OFF)).' '.date('H:i',strtotime($result->row()->COL_TIME_OFF));
 			echo json_encode(array('message' => 'Worked at '.$abstimeb4.' ('.$timeb4.' ago) before'));
+		} else {
+			echo json_encode(array('message' => 'OKAY'));
 		}
 		return;
 	}
