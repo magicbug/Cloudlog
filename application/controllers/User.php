@@ -498,13 +498,22 @@ class User extends CI_Controller {
 			if($this->input->post('user_hamsat_key', true)) {
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key', true);
 			} else {
-				$data['user_hamsat_key'] = $q->hamsat_key;
+				// get $q->hamsat_key if its set if not null
+				if(isset($q->hamsat_key)) {
+					$data['user_hamsat_key'] = $q->hamsat_key;
+				} else {
+					$data['user_hamsat_key'] = "";
+				}
 			}
 
 			if($this->input->post('user_hamsat_workable_only')) {
 				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only', false);
 			} else {
-				$data['user_hamsat_workable_only'] = $q->hamsat_workable_only;
+				if(isset($q->hamsat_workable_only)) {
+					$data['user_hamsat_workable_only'] = $q->hamsat_workable_only;
+				} else {
+					$data['user_hamsat_workable_only'] = "";
+				}
 			}
 
 			// [MAP Custom] GET user options //
