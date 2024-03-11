@@ -764,6 +764,32 @@
 							</div>
 						</div>
 					</div>
+
+					<div class="row">
+						<!-- Hams.at Settings -->
+						<div class="col-md">
+							<div class="card">
+								<div class="card-header"><?php echo lang('account_hamsat'); ?></div>
+								<div class="card-body">
+									<div class="mb-3">
+									<label><?php echo lang('account_hamsat_private_feed_key'); ?></label>
+										<input class="form-control" type="text" name="user_hamsat_key" value="<?php if(isset($user_hamsat_key)) { echo $user_hamsat_key; } ?>" />
+										<small class="form-text text-muted"><?php echo lang('account_hamsat_hint'); ?></a></small>
+									</div>
+									<div class="mb-3">
+										<label><?php echo lang('account_hamsat_workable_only'); ?></label>
+										<?php if(!isset($user_hamsat_workable_only)) { $user_hamsat_workable_only='0'; }?>
+										<select class="form-select" name="user_hamsat_workable_only" id="user_hamsat_workable_only">
+											<option value="0" <?php if ($user_hamsat_workable_only == 0) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_no'); ?></option>
+											<option value="1" <?php if ($user_hamsat_workable_only == 1) { echo 'selected="selected"'; } ?>><?php echo lang('general_word_yes'); ?></option>
+										</select>
+										<small class="form-text text-muted"><?php echo lang('account_hamsat_workable_only_hint'); ?></small>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
 				</div>
 			</div>
 		</div>

@@ -127,3 +127,8 @@ $lang['account_qso_logging_options'] = "Opciones del Registro de QSO";
 $lang['account_third_party_services'] = "Servicios de Terceros";
 $lang['account_default_values'] = "Valores por Defecto";
 $lang['account_miscellaneous'] = "Otras Opciones";
+
+$lang['account_hamsat'] = "Hams.at";
+$lang['account_hamsat_private_feed_key'] = "Private Feed Key";
+$lang['account_hamsat_hint'] = "See your profile at <a href='https://hams.at/users/settings' target='_blank'>https://hams.at/users/settings</a>.";
+$lang['account_hamsat_workable_only'] = "Show Workable Passes Only";
