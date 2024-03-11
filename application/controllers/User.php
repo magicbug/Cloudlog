@@ -495,12 +495,15 @@ class User extends CI_Controller {
 				$data['user_winkey'] = $q->winkey;
 			}
 
+			$this->load->model('user_options_model');
+			$hamsat_user_object = $this->user_options_model->get_options('hamsat')->result();
+
 			if($this->input->post('user_hamsat_key', true)) {
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key', true);
 			} else {
 				// get $q->hamsat_key if its set if not null
-				if(isset($q->hamsat_key)) {
-					$data['user_hamsat_key'] = $q->hamsat_key;
+				if(isset($hamsat_user_object[0]->option_value)) {
+					$data['user_hamsat_key'] = $hamsat_user_object[0]->option_value;
 				} else {
 					$data['user_hamsat_key'] = "";
 				}
@@ -509,8 +512,8 @@ class User extends CI_Controller {
 			if($this->input->post('user_hamsat_workable_only')) {
 				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only', false);
 			} else {
-				if(isset($q->hamsat_workable_only)) {
-					$data['user_hamsat_workable_only'] = $q->hamsat_workable_only;
+				if(isset($hamsat_user_object[1]->option_value)) {
+					$data['user_hamsat_workable_only'] = $hamsat_user_object[1]->option_value;
 				} else {
 					$data['user_hamsat_workable_only'] = "";
 				}
