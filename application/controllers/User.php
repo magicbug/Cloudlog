@@ -95,6 +95,8 @@ class User extends CI_Controller {
 				$data['user_qso_end_times'] = $this->input->post('user_qso_end_times');
 				$data['user_quicklog'] = $this->input->post('user_quicklog');
 				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
+				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
+				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
 				$data['language'] = $this->input->post('language');
 				$this->load->view('user/edit', $data);
 			} else {
@@ -133,7 +135,9 @@ class User extends CI_Controller {
 				$this->input->post('user_qso_end_times'),
 				$this->input->post('user_quicklog'),
 				$this->input->post('user_quicklog_enter'),
-				$this->input->post('language')
+				$this->input->post('language'),
+				$this->input->post('user_hamsat_key'),
+				$this->input->post('user_hamsat_workable_only')                            
 				)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
@@ -491,6 +495,30 @@ class User extends CI_Controller {
 				$data['user_winkey'] = $q->winkey;
 			}
 
+			$this->load->model('user_options_model');
+			$hamsat_user_object = $this->user_options_model->get_options('hamsat')->result();
+
+			if($this->input->post('user_hamsat_key', true)) {
+				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key', true);
+			} else {
+				// get $q->hamsat_key if its set if not null
+				if(isset($hamsat_user_object[0]->option_value)) {
+					$data['user_hamsat_key'] = $hamsat_user_object[0]->option_value;
+				} else {
+					$data['user_hamsat_key'] = "";
+				}
+			}
+
+			if($this->input->post('user_hamsat_workable_only')) {
+				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only', false);
+			} else {
+				if(isset($hamsat_user_object[1]->option_value)) {
+					$data['user_hamsat_workable_only'] = $hamsat_user_object[1]->option_value;
+				} else {
+					$data['user_hamsat_workable_only'] = "";
+				}
+			}
+
 			// [MAP Custom] GET user options //
 			$this->load->model('user_options_model');
 			$options_object = $this->user_options_model->get_options('map_custom')->result();
@@ -614,6 +642,8 @@ class User extends CI_Controller {
 			$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 			$data['language'] = $this->input->post('language');
 			$data['user_winkey'] = $this->input->post('user_winkey');
+			$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
+			$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

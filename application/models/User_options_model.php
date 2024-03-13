@@ -33,8 +33,10 @@ class User_options_model extends CI_Model {
 		}
 	}	
 
-	public function get_options($option_type, $option_array=null) {
-		$uid=$this->session->userdata('user_id');
+	public function get_options($option_type, $option_array=null, $uid=null) {
+		if ($uid ?? '' == '') {
+			$uid=$this->session->userdata('user_id');
+		}
 		$sql_more = "";
 		$array_sql_value = array($uid, $option_type);
 		if (is_array($option_array)) {

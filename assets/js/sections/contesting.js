@@ -103,6 +103,11 @@ $(function () {
 	});
 });
 
+// checked if worked before after blur
+$("#callsign").blur(function () {
+	        checkIfWorkedBefore();
+});
+
 // Here we capture keystrokes to execute functions
 document.onkeyup = function (e) {
 	// ALT-W wipe
@@ -217,8 +222,8 @@ $("#callsign").keyup(function () {
 				highlight(call.toUpperCase());
 			}
 		});
-
-		checkIfWorkedBefore();
+		// moved to blur
+		// checkIfWorkedBefore();
 		var qTable = $('.qsotable').DataTable();
 		qTable.search(call).draw();
 	}
@@ -242,10 +247,21 @@ function checkIfWorkedBefore() {
 			},
 			success: function (result) {
 				if (result.message.substr(0, 6) == 'Worked') {
+					$('#callsign_info').removeClass('text-bg-success');
+					$('#callsign_info').addClass('text-bg-danger');
 					$('#callsign_info').text(result.message);
+				}
+				else if (result.message == "OKAY") {
+					$('#callsign_info').removeClass('text-bg-danger');
+					$('#callsign_info').addClass('text-bg-success');
+					$('#callsign_info').text("Go Work Them!");
+				} else {
+					$('#callsign_info').text("");
 				}
 			}
 		});
+	} else {
+		$('#callsign_info').text("");
 	}
 }
 
