@@ -133,7 +133,7 @@ class User extends CI_Controller {
 				$this->input->post('user_qso_end_times'),
 				$this->input->post('user_quicklog'),
 				$this->input->post('user_quicklog_enter'),
-				$this->input->post('language'),
+				$this->input->post('language')
 				)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
