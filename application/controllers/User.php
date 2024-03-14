@@ -137,7 +137,7 @@ class User extends CI_Controller {
 				$this->input->post('user_quicklog_enter'),
 				$this->input->post('language'),
 				$this->input->post('user_hamsat_key'),
-				$this->input->post('user_hamsat_workable_only'),
+				$this->input->post('user_hamsat_workable_only')                            
 				)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
