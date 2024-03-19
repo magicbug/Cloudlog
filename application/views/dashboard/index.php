@@ -296,8 +296,10 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 
 				<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
 				<div>
-					<div id="upcoming_dxccs_component" hx-get="<?php echo site_url('dashboard/upcoming_dxcc_component'); ?>" hx-trigger="load" hx-indicator="#loading_upcoming_dxcc"></div>
-					<div id="loading_upcoming_dxcc" style="display: none;">Loading Upcoming DXPeditions.</div>
+					<?php if ($dashboard_upcoming_dx_card != false) { ?>
+						<div id="upcoming_dxccs_component" hx-get="<?php echo site_url('dashboard/upcoming_dxcc_component'); ?>" hx-trigger="load" hx-indicator="#loading_upcoming_dxcc"></div>
+						<div id="loading_upcoming_dxcc" style="display: none;">Loading Upcoming DXPeditions.</div>
+					<?php } ?>
 				</div>
 				<table class="table table-striped border-top">
 					<tr class="titles">
@@ -345,7 +347,8 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 						<td width="50%"><?php echo $total_countries_needed; ?></td>
 					</tr>
 				</table>
-
+				
+				<?php if ($dashboard_qslcard_card != false) { ?>
 				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_rcvd != 0 || $total_qsl_requested != 0)) { ?>
 					<table class="table table-striped border-top">
 						<tr class="titles">
@@ -372,7 +375,9 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 						</tr>
 					</table>
 				<?php } ?>
+				<?php } ?>
 
+				<?php if ($dashboard_eqslcard_card != false) { ?>
 				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_rcvd != 0)) { ?>
 					<table class="table table-striped border-top">
 						<tr class="titles">
@@ -393,7 +398,9 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 						</tr>
 					</table>
 				<?php } ?>
+				<?php } ?>
 
+				<?php if ($dashboard_lotw_card != false) { ?>
 				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
 					<table class="table table-striped border-top">
 						<tr class="titles">
@@ -413,6 +420,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 							<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWRDATE','');"><?php echo $lotw_rcvd_today; ?></a></td>
 						</tr>
 					</table>
+				<?php } ?>
 				<?php } ?>
 
 				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_qrz_sent != 0 || $total_qrz_rcvd != 0)) { ?>
@@ -436,6 +444,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 					</table>
 				<?php } ?>
 
+				<?php if ($dashboard_vuccgrids_card != false) { ?>
 				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE)) { ?>
 					<table class="table table-striped border-top">
 						<tr class="titles">
@@ -456,6 +465,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 						</tr>
 
 					</table>
+				<?php } ?>
 				<?php } ?>
 			</div>
 		</div>
