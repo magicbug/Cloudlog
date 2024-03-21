@@ -89,6 +89,64 @@ class Dashboard extends CI_Controller
 			$data['total_countries_confirmed_eqsl'] = $CountriesBreakdown['Countries_Worked_EQSL'];
 			$data['total_countries_confirmed_lotw'] = $CountriesBreakdown['Countries_Worked_LOTW'];
 
+			$data['dashboard_upcoming_dx_card'] = false;
+			$data['dashboard_qslcard_card'] = false;
+			$data['dashboard_eqslcard_card'] = false;
+			$data['dashboard_lotw_card'] = false;
+			$data['dashboard_vuccgrids_card'] = false;
+
+			$dashboard_options = $this->user_options_model->get_options('dashboard')->result();
+
+			foreach ($dashboard_options as $item) {
+				$option_name = $item->option_name;
+				$option_key = $item->option_key;
+				$option_value = $item->option_value;
+			
+				if ($option_name == 'dashboard_upcoming_dx_card' && $option_key == 'enabled') {
+					if($option_value == 'true') {
+						$data['dashboard_upcoming_dx_card'] = true;
+					} else {				
+						$data['dashboard_upcoming_dx_card'] = false;
+					}
+				}
+
+				if ($option_name == 'dashboard_qslcards_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_qslcard_card'] = true;
+					} else {
+						$data['dashboard_qslcard_card'] = false;
+					}
+				}
+
+				if ($option_name == 'dashboard_eqslcards_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_eqslcard_card'] = true;
+					} else {
+						$data['dashboard_eqslcard_card'] = false;
+					}
+				}
+
+				if ($option_name == 'dashboard_lotw_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_lotw_card'] = true;
+					} else {
+						$data['dashboard_lotw_card'] = false;
+					}
+				}
+
+				if ($option_name == 'dashboard_vuccgrids_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_vuccgrids_card'] = true;
+
+						$data['vucc'] = $this->vucc->fetchVuccSummary();
+						$data['vuccSAT'] = $this->vucc->fetchVuccSummary('SAT');
+					} else {
+						$data['dashboard_vuccgrids_card'] = false;
+					}
+				}
+			}
+
+		
 			$QSLStatsBreakdownArray = $this->logbook_model->get_QSLStats($logbooks_locations_array);
 
 			$data['total_qsl_sent'] = $QSLStatsBreakdownArray['QSL_Sent'];
@@ -114,9 +172,6 @@ class Dashboard extends CI_Controller
 			$data['qrz_rcvd_today'] = $QSLStatsBreakdownArray['QRZ_Received_today'];
 
 			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
-
-			$data['vucc'] = $this->vucc->fetchVuccSummary();
-			$data['vuccSAT'] = $this->vucc->fetchVuccSummary('SAT');
 
 			$data['page_title'] = "Dashboard";
 

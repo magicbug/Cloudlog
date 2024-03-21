@@ -95,6 +95,8 @@ class User extends CI_Controller {
 				$data['user_qso_end_times'] = $this->input->post('user_qso_end_times');
 				$data['user_quicklog'] = $this->input->post('user_quicklog');
 				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
+				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
+				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
 				$data['language'] = $this->input->post('language');
 				$this->load->view('user/edit', $data);
 			} else {
@@ -134,6 +136,8 @@ class User extends CI_Controller {
 				$this->input->post('user_quicklog'),
 				$this->input->post('user_quicklog_enter'),
 				$this->input->post('language'),
+				$this->input->post('user_hamsat_key'),
+				$this->input->post('user_hamsat_workable_only')                            
 				)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
@@ -491,6 +495,87 @@ class User extends CI_Controller {
 				$data['user_winkey'] = $q->winkey;
 			}
 
+			$this->load->model('user_options_model');
+			$hamsat_user_object = $this->user_options_model->get_options('hamsat')->result();
+
+			if($this->input->post('user_hamsat_key', true)) {
+				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key', true);
+			} else {
+				// get $q->hamsat_key if its set if not null
+				if(isset($hamsat_user_object[0]->option_value)) {
+					$data['user_hamsat_key'] = $hamsat_user_object[0]->option_value;
+				} else {
+					$data['user_hamsat_key'] = "";
+				}
+			}
+
+			if($this->input->post('user_hamsat_workable_only')) {
+				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only', false);
+			} else {
+				if(isset($hamsat_user_object[1]->option_value)) {
+					$data['user_hamsat_workable_only'] = $hamsat_user_object[1]->option_value;
+				} else {
+					$data['user_hamsat_workable_only'] = "";
+				}
+			}
+
+			// Get Settings for Dashboard
+
+			// Set defaults
+			$data['dashboard_upcoming_dx_card'] = false;
+			$data['dashboard_qslcard_card'] = false;
+			$data['dashboard_eqslcard_card'] = false;
+			$data['dashboard_lotw_card'] = false;
+			$data['dashboard_vuccgrids_card'] = false;
+
+			$dashboard_options = $this->user_options_model->get_options('dashboard')->result();
+
+			foreach ($dashboard_options as $item) {
+				$option_name = $item->option_name;
+				$option_key = $item->option_key;
+				$option_value = $item->option_value;
+			
+				if ($option_name == 'dashboard_upcoming_dx_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_upcoming_dx_card'] = true;
+					} else {
+						$data['dashboard_upcoming_dx_card'] = false;
+					}
+				}
+
+				if ($option_name == 'dashboard_qslcards_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_qslcard_card'] = true;
+					} else {
+						$data['dashboard_qslcard_card'] = false;
+					}
+				}
+
+				if ($option_name == 'dashboard_eqslcards_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_eqslcard_card'] = true;
+					} else {
+						$data['dashboard_eqslcard_card'] = false;
+					}
+				}
+
+				if ($option_name == 'dashboard_lotw_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_lotw_card'] = true;
+					} else {
+						$data['dashboard_lotw_card'] = false;
+					}
+				}
+
+				if ($option_name == 'dashboard_vuccgrids_card' && $option_key == 'enabled') {
+					if($item->option_value == 'true') {
+						$data['dashboard_vuccgrids_card'] = true;
+					} else {
+						$data['dashboard_vuccgrids_card'] = false;
+					}
+				}
+			}
+
 			// [MAP Custom] GET user options //
 			$this->load->model('user_options_model');
 			$options_object = $this->user_options_model->get_options('map_custom')->result();
@@ -553,6 +638,36 @@ class User extends CI_Controller {
 						$this->input->set_cookie($cookie);
 					}
 					if($this->session->userdata('user_id') == $this->input->post('id', true)) {
+						if (isset($_POST['user_dashboard_enable_dxpedition_card'])) {
+							$this->user_options_model->set_option('dashboard', 'dashboard_upcoming_dx_card', array('enabled' => 'true'));
+						} else {
+							$this->user_options_model->set_option('dashboard', 'dashboard_upcoming_dx_card', array('enabled' => 'false'));
+						}
+
+						if (isset($_POST['user_dashboard_enable_qslcards_card'])) {
+							$this->user_options_model->set_option('dashboard', 'dashboard_qslcards_card', array('enabled' => 'true'));
+						} else {
+							$this->user_options_model->set_option('dashboard', 'dashboard_qslcards_card', array('enabled' => 'false'));
+						}
+
+						if (isset($_POST['user_dashboard_enable_eqslcards_card'])) {
+							$this->user_options_model->set_option('dashboard', 'dashboard_eqslcards_card', array('enabled' => 'true'));
+						} else {
+							$this->user_options_model->set_option('dashboard', 'dashboard_eqslcards_card', array('enabled' => 'false'));
+						}
+
+						if (isset($_POST['user_dashboard_enable_lotw_card'])) {
+							$this->user_options_model->set_option('dashboard', 'dashboard_lotw_card', array('enabled' => 'true'));
+						} else {
+							$this->user_options_model->set_option('dashboard', 'dashboard_lotw_card', array('enabled' => 'false'));
+						}
+
+						if (isset($_POST['user_dashboard_enable_vuccgrids_card'])) {
+							$this->user_options_model->set_option('dashboard', 'dashboard_vuccgrids_card', array('enabled' => 'true'));
+						} else {
+							$this->user_options_model->set_option('dashboard', 'dashboard_vuccgrids_card', array('enabled' => 'false'));
+						}
+						
 						// [MAP Custom] ADD to user options //
 						$array_icon = array('station','qso','qsoconfirm');
 						foreach ($array_icon as $icon) {
@@ -580,7 +695,6 @@ class User extends CI_Controller {
 					return;
 			}
 			$data['page_title'] = "Edit User";
-
 			$this->load->view('interface_assets/header', $data);
 			$data['user_name'] = $this->input->post('user_name', true);
 			$data['user_email'] = $this->input->post('user_email', true);
@@ -614,6 +728,11 @@ class User extends CI_Controller {
 			$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 			$data['language'] = $this->input->post('language');
 			$data['user_winkey'] = $this->input->post('user_winkey');
+			$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
+			$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
+
+
+
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}

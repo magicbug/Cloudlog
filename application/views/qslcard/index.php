@@ -18,7 +18,7 @@
 		$custom_date_format = $this->config->item('qso_date_format');
 	}
 
-    if (is_array($qslarray->result())) {
+    if ($qslarray !== FALSE && is_array($qslarray->result())) {
         echo '<table style="width:100%" class="qsltable table table-sm table-bordered table-hover table-striped table-condensed">
         <thead>
         <tr>
@@ -57,6 +57,8 @@
         }
 
         echo '</tbody></table>';
+    } else {
+        echo '<div class="alert alert-warning" role="alert">No QSL Cards Found.</div>';
     }
     ?>
 
