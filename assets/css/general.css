@@ -794,3 +794,6 @@ label {
 	background-color: #ffdddd;
 	width: 33%;
 }
+
+.table-responsive>table .dropdown{position:static;}
+.table-responsive>table .dropdown>.dropdown-menu{left:auto !important;top:auto !important;}
