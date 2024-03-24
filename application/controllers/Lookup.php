@@ -106,7 +106,7 @@ class Lookup extends CI_Controller {
 
 		foreach ($arCalls as $strCall)
 		{
-			echo " " . $strCall . " ";
+			echo $strCall . " ";
 		}
 
 	}
