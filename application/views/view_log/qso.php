@@ -32,6 +32,23 @@
 
         ?>
         <?php
+        if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2) && ($row->COL_MODE == 'SSTV')) {
+
+            echo '<li ';
+            if (count($qslimages) == 0) {
+                echo 'hidden ';
+            }
+                echo 'class="sstvimagetab nav-item">
+                <a class="nav-link" id="qsltab" data-bs-toggle="tab" href="#sstvimage" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_sstvimages') .'</a>
+                </li>';
+
+            echo '<li class="nav-item">
+            <a class="nav-link" id="sstvmanagementtab" data-bs-toggle="tab" href="#sstvupload" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_sstv_management') .'</a>
+            </li>';
+        }
+
+        ?>
+        <?php
         if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
 
             echo '<li ';
@@ -554,6 +571,23 @@
         <?php
         if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
         ?>
+        <div class="tab-pane fade" id="sstvupload" role="tabpanel" aria-labelledby="table-tab">
+            <p><div class="alert alert-warning" role="alert"><span class="badge text-bg-warning"><?php echo lang('general_word_warning'); ?></span><?php echo lang('gen_max_file_upload_size'); ?> <?php echo $max_upload; ?>B.</div></p>
+            <form class="form" id="sstvinfo" name="sstvinfo" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md">
+                            <fieldset>
+                                <div class="mb-3">
+                                    <label for="sstvimages"><?php echo lang('general_sstv_upload'); ?></label>
+                                    <input class="form-control" type="file" id="sstvimages" name="sstvimages" accept="image/*" multiple>
+                                </div>
+                                <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
+                                <button type="button" onclick="uploadSSTV();" id="button2id"  name="button2id" class="btn btn-primary"><?php echo lang('general_sstv_upload_button'); ?></button>
+                            </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="tab-pane fade" id="qslupload" role="tabpanel" aria-labelledby="table-tab">
             <?php
             if (count($qslimages) > 0) {

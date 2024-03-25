@@ -2686,6 +2686,22 @@ if ($this->session->userdata('user_id') != null) {
             }
         });
     }
+    function uploadSSTV() {
+        var baseURL = "<?php echo base_url(); ?>";
+        var formdata = new FormData(document.getElementById("sstvinfo"));
+        
+        $.ajax({
+            url: baseURL + 'index.php/sstv/uploadsstv',
+            type: 'post',
+            data: formdata,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                console.log("response data: ", data)
+            }
+        });
+    }
 
     function uploadQsl() {
         var baseURL = "<?php echo base_url(); ?>";
