@@ -68,4 +68,23 @@ class Sstv_model extends CI_Model
         $this->db->delete('sstv_images', array('id' => $clean_id));
     }
 
+    function getSstvForQsoId($id)
+    {
+        // Clean ID
+        $clean_id = $this->security->xss_clean($id);
+
+        // be sure that QSO belongs to user
+        $CI = &get_instance();
+        $CI->load->model('logbook_model');
+        if (!$CI->logbook_model->check_qso_is_accessible($clean_id)) {
+            return;
+        }
+
+        $this->db->select('*');
+        $this->db->from('sstv_images');
+        $this->db->where('qsoid', $clean_id);
+
+        return $this->db->get()->result();
+    }
+
 }

@@ -2580,7 +2580,8 @@ if ($this->session->userdata('user_id') != null) {
                             'id': id
                         },
                         success: function(data) {
-                            $("#" + id).parent("tr:first").remove(); // removes sstv image from table
+                            // remove selected sstv image from table
+                            $("#" + id).parent("tr:first").remove(); 
 
                             // remove sstv image from carousel
                             $("#sstvCarouselIndicators .carousel-indicators li:last-child").remove();
@@ -2796,7 +2797,10 @@ if ($this->session->userdata('user_id') != null) {
                             '</tr>' +
                             '</tbody></table>');
 
-                        // Make the SSTV image tab visible by remvoving the hidden attribute
+                        // Initialize the bootstrap image carousel
+                        $("#sstvCarouselIndicators").carousel();
+
+                        //  Make the SSTV image tab visible by remvoving the hidden attribute 
                         $('.sstvimagetab').removeAttr('hidden');
 
                         // Create SSTV Image carousel
@@ -2804,7 +2808,7 @@ if ($this->session->userdata('user_id') != null) {
                         $("#sstvCarouselIndicators .carousel-indicators").append('<li class="active" data-bs-target="#sstvCarouselIndicators" data-bs-slide-to="' + quantity + '" />');
                         $("#sstvCarouselIndicators .carousel-inner").append('<center><div class="active carousel-item carouselimageid_' + sstvImage.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/sstvimages/' + sstvImage.filename + '" alt="SSTV picture #' + (quantity + 1) + '"></div></center>');
 
-                        // Call the carousel bootstrap code
+                        // Initialize the bootstrap carousel
                         $("#sstvCarouselIndicators").carousel();
                     }
 
