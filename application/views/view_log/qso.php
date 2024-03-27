@@ -32,6 +32,22 @@
 
         ?>
         <?php
+        if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2) && ($row->COL_MODE == 'SSTV')) {
+            echo '<li ';
+            if (count($sstvimages) == 0) {
+                echo 'hidden ';
+            }
+                echo 'class="sstvimagetab nav-item">
+                <a class="nav-link" id="sstvtab" data-bs-toggle="tab" href="#sstvimage" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_sstvimages') .'</a>
+                </li>';
+
+            echo '<li class="nav-item">
+            <a class="nav-link" id="sstvmanagementtab" data-bs-toggle="tab" href="#sstvupload" role="tab" aria-controls="home" aria-selected="false">'. lang('general_word_sstv_management') .'</a>
+            </li>';
+        }
+
+        ?>
+        <?php
         if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
 
             echo '<li ';
@@ -554,6 +570,45 @@
         <?php
         if (($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) {
         ?>
+        <div class="tab-pane fade" id="sstvupload" role="tabpanel" aria-labelledby="table-tab">
+            <?php
+                if (count($sstvimages) > 0) {
+                echo '<table style="width:100%" class="sstvtable table table-sm table-bordered table-hover table-striped table-condensed">
+                    <thead>
+                    <tr>
+                        <th style=\'text-align: center\'>SSTV image file</th>
+                        <th style=\'text-align: center\'></th>
+                        <th style=\'text-align: center\'></th>
+                    </tr>
+                    </thead><tbody>';
+
+                    foreach ($sstvimages as $sstv) {
+                    echo '<tr>';
+                        echo '<td style=\'text-align: center\'>' . $sstv->filename . '</td>';
+                        echo '<td id="'.$sstv->id.'" style=\'text-align: center\'><button onclick="deleteSstv('.$sstv->id.')" class="btn btn-sm btn-danger">Delete</button></td>';
+                        echo '<td style=\'text-align: center\'><button onclick="viewSstv(\''.$sstv->filename.'\')" class="btn btn-sm btn-success">View</button></td>';
+                        echo '</tr>';
+                    }
+
+                    echo '</tbody></table>';
+                }
+            ?>
+            <p><div class="alert alert-warning" role="alert"><span class="badge text-bg-warning"><?php echo lang('general_word_warning'); ?></span><?php echo lang('gen_max_file_upload_size'); ?> <?php echo $max_upload; ?>B.</div></p>
+            <form class="form" id="sstvinfo" name="sstvinfo" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-md">
+                            <fieldset>
+                                <div class="mb-3">
+                                    <label for="sstvimages"><?php echo lang('general_sstv_upload'); ?></label>
+                                    <input class="form-control" type="file" id="sstvimages" name="sstvimages[]" accept="image/*" multiple>
+                                </div>
+                                <input type="hidden" class="form-control" id="qsoinputid" name="qsoid" value="<?php echo $row->COL_PRIMARY_KEY; ?>">
+                                <button type="button" onclick="uploadSSTV();" id="button2id"  name="button2id" class="btn btn-primary"><?php echo lang('general_sstv_upload_button'); ?></button>
+                            </fieldset>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="tab-pane fade" id="qslupload" role="tabpanel" aria-labelledby="table-tab">
             <?php
             if (count($qslimages) > 0) {
@@ -629,6 +684,11 @@
 
         <div class="tab-pane fade" id="qslcard" role="tabpanel" aria-labelledby="table-tab">
             <?php $this->load->view('qslcard/qslcarousel', $qslimages); ?>
+        </div>
+
+        
+        <div class="tab-pane fade" id="sstvimage" role="tabpanel" aria-labelledby="table-tab">
+            <?php $this->load->view('sstv/sstvcarousel', $sstvimages); ?>
         </div>
 
         <div class="tab-pane fade" id="eqslcard" role="tabpanel" aria-labelledby="table-tab">
