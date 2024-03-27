@@ -2535,6 +2535,71 @@ if ($this->session->userdata('user_id') != null) {
         });
     }
 </script>
+
+<script>
+    function viewSstv(picture, callsign) {
+        var baseURL = "<?php echo base_url(); ?>";
+        var $textAndPic = $('<div></div>');
+        $textAndPic.append('<center><img class="img-fluid w-qsl" style="height:auto;width:auto;"src="' + baseURL + '/assets/sstvimages/' + picture + '" /><center>');
+        var title = '';
+        if (callsign == null) {
+            title = 'SSTV Image';
+        } else {
+            title = 'SSTV Image for ' + callsign.replace('0', '&Oslash;');
+        }
+
+        BootstrapDialog.show({
+            title: title,
+            size: BootstrapDialog.SIZE_WIDE,
+            message: $textAndPic,
+            buttons: [{
+                label: lang_admin_close,
+                action: function(dialogRef) {
+                    dialogRef.close();
+                }
+            }]
+        });
+    }
+</script>
+<script>
+    function deleteSstv(id) {
+        BootstrapDialog.confirm({
+            title: 'DANGER',
+            message: 'Warning! Are you sure you want to delete this SSTV Image?',
+            type: BootstrapDialog.TYPE_DANGER,
+            closable: true,
+            draggable: true,
+            btnOKClass: 'btn-danger',
+            callback: function(result) {
+                if (result) {
+                    var baseURL = "<?php echo base_url(); ?>";
+                    $.ajax({
+                        url: baseURL + 'index.php/sstv/delete',
+                        type: 'post',
+                        data: {
+                            'id': id
+                        },
+                        success: function(data) {
+                            $("#" + id).parent("tr:first").remove(); // removes sstv image from table
+
+                            // remove sstv image from carousel
+                            $("#sstvCarouselIndicators .carousel-indicators li:last-child").remove();
+                            $("#sstvCarouselIndicators .carouselimageid_" + id).remove();
+                            $('#sstvCarouselIndicators').find('.carousel-item').first().addClass('active');
+
+                            // remove table and hide tab if all sstv images are deleted
+                            if ($('.sstvtable tr').length == 1) {
+                                $('.sstvtable').remove();
+                                $('.sstvimagetab').attr('hidden', '');
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>
+
 <script>
     function viewEqsl(picture, callsign) {
         var baseURL = "<?php echo base_url(); ?>";
@@ -2698,7 +2763,57 @@ if ($this->session->userdata('user_id') != null) {
             processData: false,
             contentType: false,
             success: function(data) {
-                console.log("response data: ", data)
+                data.forEach((sstvImage) => {
+                if (sstvImage.status == 'Success') {
+                    // Check if the table exists, if it does we'll update it, if not, we'll create it
+                    if ($('.sstvtable').length > 0) {
+                        // Update table on Manage SSTV Image tab
+                        $('.sstvtable tr:last').after('<tr><td style="text-align: center">' + sstvImage.filename + '</td>' +
+                            '<td id="' + sstvImage.insertid + '"style="text-align: center"><button onclick="deleteSstv(' + sstvImage.insertid + ');" class="btn btn-sm btn-danger">Delete</button></td>' +
+                            '<td style="text-align: center"><button onclick="viewSstv(\'' + sstvImage.filename + '\')" class="btn btn-sm btn-success">View</button></td>' +
+                            '</tr>');
+                        
+                        // Update SSTV Image carousel
+                        var quantity = $("#sstvCarouselIndicators .carousel-indicators li").length;
+                        $("#sstvCarouselIndicators .carousel-indicators").append('<li data-bs-target="#sstvCarouselIndicators" data-bs-slide-to="' + quantity + '"></li>');
+                        $("#sstvCarouselIndicators .carousel-inner").append('<center><div class="carousel-item carouselimageid_' + sstvImage.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/sstvimages/' + sstvImage.filename + '" alt="SSTV picture #' + (quantity + 1) + '"></div></center>');
+
+                        // Reset the image input
+                        $("#sstvimages").val(null);
+                    } else {
+                        // Create table on Manage SSTV Image tab
+                        $("#sstvupload").prepend('<table style="width:100%" class="sstvtable table table-sm table-bordered table-hover table-striped table-condensed">' +
+                            '<thead>' +
+                            '<tr>' +
+                            '<th style="text-align: center">SSTV image file</th>' +
+                            '<th style="text-align: center"></th>' +
+                            '<th style="text-align: center"></th>' +
+                            '</tr>' +
+                            '</thead><tbody>' +
+                            '<tr><td style="text-align: center">' + sstvImage.filename + '</td>' +
+                            '<td id="' + sstvImage.insertid + '"style="text-align: center"><button onclick="deleteSstv(' + sstvImage.insertid + ');" class="btn btn-sm btn-danger">Delete</button></td>' +
+                            '<td style="text-align: center"><button onclick="viewSstv(\'' + sstvImage.filename + '\')" class="btn btn-sm btn-success">View</button></td>' +
+                            '</tr>' +
+                            '</tbody></table>');
+
+                        // Make the SSTV image tab visible by remvoving the hidden attribute
+                        $('.sstvimagetab').removeAttr('hidden');
+
+                        // Create SSTV Image carousel
+                        var quantity = $(".carousel-indicators li").length;
+                        $("#sstvCarouselIndicators .carousel-indicators").append('<li class="active" data-bs-target="#sstvCarouselIndicators" data-bs-slide-to="' + quantity + '" />');
+                        $("#sstvCarouselIndicators .carousel-inner").append('<center><div class="active carousel-item carouselimageid_' + sstvImage.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/sstvimages/' + sstvImage.filename + '" alt="SSTV picture #' + (quantity + 1) + '"></div></center>');
+
+                        // Call the carousel bootstrap code
+                        $("#sstvCarouselIndicators").carousel();
+                    }
+
+                } else if (sstvImage.status != '') {
+                    $("#sstvupload").append('<div class="alert alert-danger">SSTV Image:' +
+                        sstvImage.error +
+                        '</div>');
+                }
+                })
             }
         });
     }

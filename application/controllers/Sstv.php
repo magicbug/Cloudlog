@@ -21,37 +21,41 @@ class Sstv extends CI_Controller {
             mkdir('./assets/sstvimages', 0755, true);
         }
         $qsoid = $this->input->post('qsoid');
-
-        error_log('qsoid: ' . $qsoid);
-
-        if (isset($_FILES['sstvimages']) && $_FILES['sstvimages']['name'] != "" && $_FILES['sstvimages']['error'] == 0)
+        
+        $results = array();
+        if (isset($_FILES['sstvimages']) && $_FILES['sstvimages']['error'][0] == 0)
         {
-            error_log("got file: ". $_FILES['sstvimages']['name']);
-            $result['front'] = $this->uploadSSTVImage($qsoid);
-        } else {
-            error_log('hit the else!!');
-            $result['front']['status'] = '';
+            for($i=0; $i<count($_FILES['sstvimages']['name']); $i++) {
+                $file = array(
+                    'name' => $_FILES['sstvimages']['name'][$i],
+                    'type' => $_FILES['sstvimages']['type'][$i],
+                    'tmp_name' => $_FILES['sstvimages']['tmp_name'][$i],
+                    'error' => $_FILES['sstvimages']['error'][$i],
+                    'size' => $_FILES['sstvimages']['size'][$i]
+                );
+                $result = $this->uploadSSTVImage($qsoid, $file);
+                array_push($results, $result);
+            }
         }
 
-
         header("Content-type: application/json");
-        echo json_encode(['status' => $result]);
+        echo json_encode($results);
     }
 
-    function uploadSSTVImage($qsoid) {
+    function uploadSSTVImage($qsoid, $file) {
         $config['upload_path']          = './assets/sstvimages';
-        $config['allowed_types']        = 'jpg|gif|png|jpeg|JPG|PNG';
-        $array = explode(".", $_FILES['sstvimages']['name']);
+        $config['allowed_types']        = 'jpg|gif|png|jpeg|JPG|PNG|bmp';
+        $array = explode(".", $file['name']);
         $ext = end($array);
         $config['file_name'] = $qsoid . '.sstv.' . '_' . time() . '.' . $ext;
-        error_log('config filename' . $config['file_name']);
-
+    
         $this->load->library('upload', $config);
-
-        if ( ! $this->upload->do_upload('sstvimages')) {
+    
+        $_FILES['sstvimage'] = $file;
+        if ( ! $this->upload->do_upload('sstvimage')) {
             // Upload of QSL card Failed
             $error = array('error' => $this->upload->display_errors());
-
+    
             return $error;
         }
         else {
@@ -70,5 +74,22 @@ class Sstv extends CI_Controller {
             $result['filename'] = $filename;
             return $result;
         }
+    }
+
+    
+    // Deletes SSTV Image
+    public function delete() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+        $id = $this->input->post('id');
+        $this->load->model('Qsl_model');
+
+        $path = './assets/sstvimages/';
+        $file = $this->Qsl_model->getSSTVFilename($id)->row();
+        $filename = $file->filename;
+        unlink($path.$filename);
+
+        $this->Qsl_model->deleteSstv($id);
     }
 }
