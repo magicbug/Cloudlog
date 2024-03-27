@@ -1,6 +1,5 @@
 <div id="sstvCarouselIndicators" class="carousel slide" data-bs-ride="carousel">
-<?php if (count($sstvimages) > 1) { ?>
-<ol class="carousel-indicators">
+<ol class="carousel-indicators" id="sstv-carousel-indicators">
     <?php
     $i = 0;
     foreach ($sstvimages as $image) {
@@ -13,7 +12,6 @@
     }
     ?>
 </ol>
-<?php } ?>
 <div id="sstv-carousel-inner" class="carousel-inner">
 
     <?php
@@ -29,7 +27,6 @@
     }
     ?>
 </div>
-<?php if (count($sstvimages) > 1) { ?>
 	<a class="carousel-control-prev" href="#sstvCarouselIndicators" role="button" data-bs-slide="prev">
 		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 		<span class="visually-hidden">Previous</span>
@@ -38,5 +35,4 @@
 		<span class="carousel-control-next-icon" aria-hidden="true"></span>
 		<span class="visually-hidden">Next</span>
 	</a>
-<?php } ?>
 </div>
