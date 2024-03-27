@@ -53,7 +53,7 @@ class Sstv extends CI_Controller {
     
         $_FILES['sstvimage'] = $file;
         if ( ! $this->upload->do_upload('sstvimage')) {
-            // Upload of QSL card Failed
+            // Upload of SSTV image Failed
             $error = array('error' => $this->upload->display_errors());
     
             return $error;
@@ -62,7 +62,7 @@ class Sstv extends CI_Controller {
             // Load database queries
             $this->load->model('Sstv_model');
 
-            //Upload of QSL card was successful
+            //Upload of SSTV image was successful
             $data = $this->upload->data();
 
             // Now we need to insert info into database about file
@@ -83,13 +83,13 @@ class Sstv extends CI_Controller {
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
         $id = $this->input->post('id');
-        $this->load->model('Qsl_model');
+        $this->load->model('Sstv_model');
 
         $path = './assets/sstvimages/';
-        $file = $this->Qsl_model->getSSTVFilename($id)->row();
+        $file = $this->Sstv_model->getSSTVFilename($id)->row();
         $filename = $file->filename;
         unlink($path.$filename);
 
-        $this->Qsl_model->deleteSstv($id);
+        $this->Sstv_model->deleteSstv($id);
     }
 }
