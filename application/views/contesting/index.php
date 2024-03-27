@@ -1,6 +1,6 @@
 <div class="container qso_panel contesting">
     <button type="button" class="btn btn-sm btn-warning float-end" onclick="reset_contest_session()"><i class="fas fa-sync-alt"></i> <?php echo lang('contesting_button_reset_contest_session'); ?></button>
-    <h2><?php echo lang('contesting_page_title'); ?></h2>
+    <h2 style="display:inline"><?php echo lang('contesting_page_title'); ?> </h2> <?php echo ($_GET['manual'] == 0 ? " <span style='display:inline' class='align-text-top badge text-bg-success'>LIVE</span>" : " <span style='display:inline' class='align-text-top badge text-bg-danger'>POST</span>");  ?>
     <div class="row">
 
         <div class="col-sm-12 col-md-12">
@@ -115,7 +115,7 @@
 								<label for="exch_serial_s"><?php echo lang('contesting_exchange_serial_s'); ?></label>
 								<input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
 							</div>
-                            
+
                             <div style="display:none" class="mb-3 col-md-1 exchanges">
                                 <label for="exch_sent"><?php echo lang('gen_hamradio_exchange_sent_short'); ?></label>
                                 <input type="text" class="form-control form-control-sm" name="exch_sent" id="exch_sent" value="">
@@ -135,7 +135,7 @@
 								<label for="exch_serial_r"><?php echo lang('contesting_exchange_serial_r'); ?></label>
 								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
 							</div>
-							
+
 							<div style="display:none" class="mb-3 col-md-1 exchanger">
 								<label for="exch_rcvd"><?php echo lang('gen_hamradio_exchange_rcvd_short'); ?></label>
 								<input type="text" class="form-control form-control-sm" name="exch_rcvd" id="exch_rcvd" value="">
