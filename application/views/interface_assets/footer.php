@@ -2537,16 +2537,11 @@ if ($this->session->userdata('user_id') != null) {
 </script>
 
 <script>
-    function viewSstv(picture, callsign) {
+    function viewSstv(picture) {
         var baseURL = "<?php echo base_url(); ?>";
         var $textAndPic = $('<div></div>');
         $textAndPic.append('<center><img class="img-fluid w-qsl" style="height:auto;width:auto;"src="' + baseURL + '/assets/sstvimages/' + picture + '" /><center>');
-        var title = '';
-        if (callsign == null) {
-            title = 'SSTV Image';
-        } else {
-            title = 'SSTV Image for ' + callsign.replace('0', '&Oslash;');
-        }
+        title = 'SSTV Image';
 
         BootstrapDialog.show({
             title: title,
