@@ -77,17 +77,10 @@ if (!manual) {
 }
 
 // We don't want spaces to be written in callsign
-$(function () {
-	$('#callsign').on('keypress', function (e) {
-		if (e.which == 32) {
-			return false;
-		}
-	});
-});
-
 // We don't want spaces to be written in exchange
+// We don't want spaces to be written in time :)
 $(function () {
-	$('#exch_rcvd').on('keypress', function (e) {
+	$('#callsign, #exch_rcvd, #start_time').on('keypress', function (e) {
 		if (e.which == 32) {
 			return false;
 		}
@@ -129,6 +122,12 @@ document.onkeyup = function (e) {
 		// Space to jump to either callsign or the various exchanges
 	} else if (e.which == 32) {
 		var exchangetype = $("#exchangetype").val();
+
+        if (manual && $(document.activeElement).attr("id") == "start_time") {
+          $("#callsign").focus();
+          return false;
+        }
+        
 		if (exchangetype == 'Exchange') {
 			if ($(document.activeElement).attr("id") == "callsign") {
 				$("#exch_rcvd").focus();
@@ -468,7 +467,11 @@ function logQso() {
 				$('#exch_rcvd').val("");
 				$('#exch_gridsquare_r').val("");
 				$('#exch_serial_r').val("");
-				$("#callsign").focus();
+                if (manual) {
+                  $("#start_time").focus().select();
+                } else {
+                  $("#callsign").focus();
+                }
 				setSession(formdata);
 				
 				// try setting session data
