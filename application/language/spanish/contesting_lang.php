@@ -28,5 +28,11 @@ $lang['contesting_title_callsign_suggestions'] = 'Indicativos sugeridos';
 $lang['contesting_title_contest_logbook'] = 'Libro de guardia del concurso';
 
 $lang['contesting_copy_exch_to_dok'] = '¡Copiar intercambio recibido al campo DOK de la base de datos!';
+$lang['contesting_copy_exch_to_none'] = '¡Copiar intercambio recibido al campo no additional de la base de datos!';
+$lang['contesting_copy_exch_to_power'] = '¡Copiar intercambio recibido al campo RX-Power de la base de datos!';
+$lang['contesting_copy_exch_to_state'] = '¡Copiar intercambio recibido al campo US-State de la base de datos!';
+$lang['contesting_copy_exch_to_age'] = '¡Copiar intercambio recibido al campo Age de la base de datos!';
+$lang['contesting_copy_exch_to_name'] = '¡Copiar intercambio recibido al campo Name de la base de datos!';
+$lang['contesting_copy_exch_to_locator'] = '¡Copiar intercambio recibido al campo Locator de la base de datos!';
 
 

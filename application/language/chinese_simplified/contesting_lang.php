@@ -28,5 +28,11 @@ $lang['contesting_title_callsign_suggestions'] = '呼号建议';
 $lang['contesting_title_contest_logbook'] = '竞赛日志簿';
 
 $lang['contesting_copy_exch_to_dok'] = '将收到的交换信息复制到数据库中的 DOK 字段！';
+$lang['contesting_copy_exch_to_none'] = '将收到的交换信息复制到数据库中的 no additional 字段！';
+$lang['contesting_copy_exch_to_power'] = '将收到的交换信息复制到数据库中的 RX-Power 字段！';
+$lang['contesting_copy_exch_to_state'] = '将收到的交换信息复制到数据库中的 US-State 字段！';
+$lang['contesting_copy_exch_to_age'] = '将收到的交换信息复制到数据库中的 Age 字段！';
+$lang['contesting_copy_exch_to_name'] = '将收到的交换信息复制到数据库中的 Name 字段！';
+$lang['contesting_copy_exch_to_locator'] = '将收到的交换信息复制到数据库中的 Locator 字段！';
 
 

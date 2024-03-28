@@ -157,6 +157,44 @@ class Logbook_model extends CI_Model
       $darc_dok = $this->input->post('darc_dok');
     }
 
+    //$darc_dok = $this->input->post('darc_dok');
+    $qso_locator = strtoupper(trim(xss_clean($this->input->post('locator')) ?? ''));
+    $qso_name = $this->input->post('name');
+    $qso_age = null;
+    $qso_usa_state = $this->input->post('usa_state') == null ? '' : $this->input->post('usa_state');
+    $qso_rx_power = null;
+
+    if ($this->input->post('copyexchangeto')) {
+      switch($this->input->post('copyexchangeto')) {
+        case 'dok':
+          $darc_dok = $srx_string;
+          break;
+        case 'locator':
+          $qso_locator = strtoupper(trim(xss_clean($srx_string)));
+          break;
+        case 'name':
+          $qso_name = $srx_string;
+          break;
+        case 'age':
+          $qso_age = $srx_string;
+          break;
+        case 'state':
+          $qso_usa_state = $srx_string;
+          break;
+        case 'power':
+          $qso_rx_power = $srx_string;
+          break;
+        // Example for more sophisticated exchanges and their split into the db:
+        //case 'name/power':
+        //  if (strlen($srx_string) == 0) break;
+        //  $exch_pt = explode(" ",$srx_string);
+        //  $qso_name = $exch_pt[0];
+        //  if (count($exch_pt)>1) $qso_power = $exch_pt[1];
+        //  break;
+        default:
+      }
+    }
+
     if ($this->input->post('qsl_sent')) {
       $qsl_sent = $this->input->post('qsl_sent');
     } else {
@@ -193,7 +231,7 @@ class Logbook_model extends CI_Model
       'COL_SUBMODE' => $submode,
       'COL_RST_RCVD' => $this->input->post('rst_rcvd'),
       'COL_RST_SENT' => $this->input->post('rst_sent'),
-      'COL_NAME' => $this->input->post('name'),
+      'COL_NAME' => $qso_name,
       'COL_COMMENT' => $this->input->post('comment'),
       'COL_SAT_NAME' => $this->input->post('sat_name') == null ? '' : strtoupper($this->input->post('sat_name')),
       'COL_SAT_MODE' => $this->input->post('sat_mode') == null ? '' : strtoupper($this->input->post('sat_mode')),
@@ -216,7 +254,7 @@ class Logbook_model extends CI_Model
       'COL_ANT_AZ' => null,
       'COL_ANT_EL' => null,
       'COL_A_INDEX' => null,
-      'COL_AGE' => null,
+      'COL_AGE' => $qso_age,
       'COL_TEN_TEN' => null,
       'COL_TX_PWR' => $tx_power,
       'COL_STX' => $stx,
@@ -229,12 +267,12 @@ class Logbook_model extends CI_Model
       'COL_MAX_BURSTS' => null,
       'COL_K_INDEX' => null,
       'COL_SFI' => null,
-      'COL_RX_PWR' => null,
+      'COL_RX_PWR' => $qso_rx_power,
       'COL_LAT' => null,
       'COL_LON' => null,
       'COL_DXCC' => $dxcc_id,
       'COL_CQZ' => $cqz,
-      'COL_STATE' => $this->input->post('usa_state') == null ? '' : trim($this->input->post('usa_state')),
+      'COL_STATE' => $qso_usa_state,
       'COL_CNTY' => $clean_county_input,
       'COL_SOTA_REF' => $this->input->post('sota_ref') == null ? '' : trim($this->input->post('sota_ref')),
       'COL_WWFF_REF' => $this->input->post('wwff_ref') == null ? '' : trim($this->input->post('wwff_ref')),
@@ -302,10 +340,10 @@ class Logbook_model extends CI_Model
     }
 
     // Decide whether its single gridsquare or a multi which makes it vucc_grids
-    if (strpos(trim(xss_clean($this->input->post('locator')) ?? ''), ',') !== false) {
-      $data['COL_VUCC_GRIDS'] = strtoupper(preg_replace('/\s+/', '', xss_clean($this->input->post('locator')) ?? ''));
+    if (strpos($qso_locator, ',') !== false) {
+      $data['COL_VUCC_GRIDS'] = strtoupper(preg_replace('/\s+/', '', $qso_locator));
     } else {
-      $data['COL_GRIDSQUARE'] = strtoupper(trim(xss_clean($this->input->post('locator')) ?? ''));
+      $data['COL_GRIDSQUARE'] = $qso_locator;
     }
 
     // if eQSL username set, default SENT & RCVD to 'N' else leave as null

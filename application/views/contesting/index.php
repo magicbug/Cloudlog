@@ -164,8 +164,15 @@
                         <div class="mb-3 row">
                           <div class="col-md-12">
                               <div class="form-check-inline">
-                                  <input class="form-check-input" type="checkbox" name="copyexchangetodok" value="1" id="copyexchangetodok">
-                                  <label class="form-check-label" for="copyexchangetodok"><?php echo lang('contesting_copy_exch_to_dok'); ?></label>
+                                  <select class="form-select form-select-sm" id="copyexchangeto" name="copyexchangeto">
+                                      <option value='None'><?php echo lang('contesting_copy_exch_to_none'); ?></option>
+                                      <option value='dok'><?php echo lang('contesting_copy_exch_to_dok'); ?></option>
+                                      <option value='name'><?php echo lang('contesting_copy_exch_to_name'); ?></option>
+                                      <option value='age'><?php echo lang('contesting_copy_exch_to_age'); ?></option>
+                                      <option value='state'><?php echo lang('contesting_copy_exch_to_state'); ?></option>
+                                      <option value='power'><?php echo lang('contesting_copy_exch_to_power'); ?></option>
+                                      <option value='locator'><?php echo lang('contesting_copy_exch_to_locator'); ?></option>
+                                  </select>
                               </div>
                           </div>
                       </div>
