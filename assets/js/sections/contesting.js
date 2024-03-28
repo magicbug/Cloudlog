@@ -8,6 +8,12 @@ $(document).ready(async function () {
 	setRst($("#mode").val());
 });
 
+var scp_data = {
+  request: "",
+  status: -1 , // -1 - never req, 0 - req in progress, 1 - request done
+  data: [],
+};
+
 // Resets the logging form and deletes session from database
 function reset_contest_session() {
 	$('#name').val("");
@@ -208,20 +214,35 @@ $('#start_date').change(function () {
 
 // On Key up check and suggest callsigns
 $("#callsign").keyup(function () {
-	var call = $(this).val();
+	var call = $(this).val().toUpperCase();
 	if (call.length >= 3) {
 
-		$.ajax({
-			url: 'lookup/scp',
-			method: 'POST',
-			data: {
-				callsign: $(this).val().toUpperCase()
-			},
-			success: function (result) {
-				$('.callsign-suggestions').text(result);
-				highlight(call.toUpperCase());
-			}
-		});
+        if (scp_data.status < 0 || scp_data.request != call.substr(0, scp_data.request.length)) {
+          scp_data.status = 0;
+          scp_data.request = call;
+          scp_data.data = [];
+          $.ajax({
+              url: 'lookup/scp',
+              method: 'POST',
+              data: {
+                  callsign: call
+              },
+              success: function (result) {
+                  scp_data.status = 1;
+                  scp_data.data = result.split(" ");
+
+                  var call = $("#callsign").val().toUpperCase(); // Might have changed while running the query...
+                  $('.callsign-suggestions').text(scp_data.data.filter((el) => el.startsWith(call)).join(' '));
+                  highlight(call);
+              }
+          });
+
+        } else {
+          // Filter the already obtained list:
+          $('.callsign-suggestions').text(scp_data.data.filter((el) => el.startsWith(call)).join(' '));
+          highlight(call);
+
+        }
 		// moved to blur
 		// checkIfWorkedBefore();
 		var qTable = $('.qsotable').DataTable();
