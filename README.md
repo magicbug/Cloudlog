@@ -46,7 +46,8 @@ Before you begin, you need to install Docker and Docker Compose. You can downloa
    ```
 
 2. Open the `.env` file and update the values to match your setup. The values from the `.env` file will be used to populate the database connection details on the install page. You should not need to change these unless your setup requires different values.
-   Note: The `DB_HOST` value in the `.env` file and on the install page should match the service name of the database in the `docker-compose.yml` file. For example, if the database service in `docker-compose.yml` is defined as db, then `DB_HOST` should be set as 'db'.
+
+   **Note:** Docker Compose creates a network for your application, and each service (container) in the Docker Compose file can reach each other via the service name. This is why the `DB_HOST` value in the `.env` file and on the install page should match the service name of the database in the `docker-compose.yml` file. For example, if the database service in `docker-compose.yml` is defined as `db`, then `DB_HOST` should be set as 'db'. This allows the application to communicate with the database service on its internal docker network.
 
 ## Starting the Development Environment
 
