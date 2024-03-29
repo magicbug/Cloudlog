@@ -10,7 +10,6 @@ $(document).ready(async function () {
 
 var scp_data = {
   request: "",
-  status: -1 , // -1 - never req, 0 - req in progress, 1 - request done
   data: [],
 };
 
@@ -214,11 +213,10 @@ $('#start_date').change(function () {
 
 // On Key up check and suggest callsigns
 $("#callsign").keyup(function () {
-	var call = $(this).val().toUpperCase();
+	let call = $(this).val().toUpperCase();
 	if (call.length >= 3) {
 
-        if (scp_data.status < 0 || scp_data.request != call.substr(0, scp_data.request.length)) {
-          scp_data.status = 0;
+        if ( scp_data.request == "" || ! call.startsWith(scp_data.request) ) {
           scp_data.request = call;
           scp_data.data = [];
           $.ajax({
@@ -228,18 +226,21 @@ $("#callsign").keyup(function () {
                   callsign: call
               },
               success: function (result) {
-                  scp_data.status = 1;
-                  scp_data.data = result.split(" ");
+                  var call_now = $("#callsign").val().toUpperCase(); // Might have changed while running the query...
+                  if (call_now.startsWith(call)) {
+                    scp_data.data = result.split(" ");
 
-                  var call = $("#callsign").val().toUpperCase(); // Might have changed while running the query...
-                  $('.callsign-suggestions').text(scp_data.data.filter((el) => el.startsWith(call)).join(' '));
-                  highlight(call);
+                    call_now = call_now.replace('0','Ø');
+                    $('.callsign-suggestions').text(filterCallsignList(call_now, scp_data.data));
+                    highlight(call_now);
+                  }
               }
           });
 
         } else {
           // Filter the already obtained list:
-          $('.callsign-suggestions').text(scp_data.data.filter((el) => el.startsWith(call)).join(' '));
+          call = call.replace('0','Ø');
+          $('.callsign-suggestions').text(filterCallsignList(call, scp_data.data));
           highlight(call);
 
         }
@@ -248,7 +249,7 @@ $("#callsign").keyup(function () {
 		var qTable = $('.qsotable').DataTable();
 		qTable.search(call).draw();
 	}
-	else if (call.length <= 2) {
+	else {
 		$('.callsign-suggestions').text("");
 	}
 });
@@ -686,4 +687,9 @@ function getUTCDateStamp(el) {
 	var localTime = now.getTime();
 	var utc = localTime + (now.getTimezoneOffset() * 60000);
 	$(el).attr('value', ("0" + now.getUTCDate()).slice(-2) + '-' + ("0" + (now.getUTCMonth() + 1)).slice(-2) + '-' + now.getUTCFullYear());
+}
+
+function filterCallsignList(call, list) {
+    let re = "(^|\/)" + call;
+    return list?.filter((el) => (el.search(re) !== -1)).join(' ') || '';
 }

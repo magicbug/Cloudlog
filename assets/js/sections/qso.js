@@ -1024,29 +1024,32 @@ $("#callsign").on("keypress", function(e) {
 // On Key up check and suggest callsigns
 $("#callsign").keyup(function() {
 	if ($(this).val().length >= 3) {
-	  $callsign = $(this).val().replace('Ø', '0').toUpperCase();
+	  let call = $(this).val().toUpperCase();
 
-      if (scp_data.status < 0 || scp_data.request != $callsign.substr(0, scp_data.request.length)) {
-        scp_data.status = 0;
-        scp_data.request = $callsign;
+      if ( scp_data.request == "" || ! call.startsWith(scp_data.request) )  {
+        scp_data.request = call;
         scp_data.data = [];
         $.ajax({
           url: 'lookup/scp',
           method: 'POST',
           data: {
-            callsign: $callsign
+            callsign: call
           },
           success: function(result) {
-            scp_data.status = 1;
-            scp_data.data = result.split(" ");
+            var call_now = $("#callsign").val().toUpperCase();
 
-            var call = $("#callsign").val().replace('Ø', '0').toUpperCase();
-            $('.callsign-suggestions').text(scp_data.data.filter((el) => el.startsWith(call)).join(' '));
-            $('.callsign-suggest').show();
+            if (call_now.startsWith(call)) {
+              scp_data.data = result.split(" ");
+
+              call_now = call_now.replace('0','Ø');
+              $('.callsign-suggestions').text(filterCallsignList(call_now, scp_data.data));
+              $('.callsign-suggest').show();
+            }
           }
         });
       } else {
-            $('.callsign-suggestions').text(scp_data.data.filter((el) => el.startsWith($callsign)).join(' '));
+            call = call.replace('0','Ø');
+            $('.callsign-suggestions').text(filterCallsignList(call, scp_data.data));
             $('.callsign-suggest').show();
       }
 	}
@@ -1111,4 +1114,9 @@ function testTimeOffConsistency() {
 		return false;
 	}
 	return true;
+}
+
+function filterCallsignList(call, list) {
+    let re = "(^|\/)" + call;
+    return list?.filter((el) => (el.search(re) !== -1)).join(' ') || '';
 }
