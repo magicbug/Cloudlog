@@ -15,10 +15,10 @@ class Sattimers extends CI_Controller {
         $footerData['scripts'] = [
            'assets/js/sections/sattimers.js?'
         ];
-        $url = 'https://www.df2et.de/tevel/api2.php?grid='.strtoupper($this->stations->find_gridsquare());
+        $data['gridsquare'] = substr(strtoupper($this->stations->find_gridsquare()), 0, 6);
+        $url = 'https://www.df2et.de/tevel/api2.php?grid=' . $data['gridsquare'];
         $json = file_get_contents($url);
         $data['activations'] = json_decode($json, true)['data'];
-        $data['gridsquare'] = strtoupper($this->stations->find_gridsquare());
 
         $data['page_title'] = "Satellite Timers";
 
