@@ -79,7 +79,6 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			</thead>
 
 			<?php
-			
 			$i = 0;
 			if(!empty($results)) {
 			foreach ($results->result() as $row) { ?>
