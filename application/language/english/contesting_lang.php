@@ -28,5 +28,11 @@ $lang['contesting_title_callsign_suggestions'] = 'Callsign Suggestions';
 $lang['contesting_title_contest_logbook'] = 'Contest Logbook';
 
 $lang['contesting_copy_exch_to_dok'] = 'Copy received exchange to DOK field in the database!';
+$lang['contesting_copy_exch_to_none'] = 'Copy received exchange to no additional field in the database!';
+$lang['contesting_copy_exch_to_power'] = 'Copy received exchange to RX-Power field in the database!';
+$lang['contesting_copy_exch_to_state'] = 'Copy received exchange to US-State field in the database!';
+$lang['contesting_copy_exch_to_age'] = 'Copy received exchange to Age field in the database!';
+$lang['contesting_copy_exch_to_name'] = 'Copy received exchange to Name field in the database!';
+$lang['contesting_copy_exch_to_locator'] = 'Copy received exchange to Locator field in the database!';
 
 

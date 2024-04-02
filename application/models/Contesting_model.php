@@ -66,6 +66,7 @@ class Contesting_model extends CI_Model {
         $sql = "SELECT * from contest_session where station_id = " . $station_id;
 
         $data = $this->db->query($sql);
+
         return $data->row();
     }
 
@@ -102,6 +103,10 @@ class Contesting_model extends CI_Model {
 			'qso' 					=> $qso,
 			'station_id' 			=> $station_id,
 		);
+
+        if ($this->input->post('copyexchangeto')) {
+          $data['copytodok'] = xss_clean($this->input->post('copyexchangeto'));
+        }
 
         $sql = "SELECT * from contest_session where station_id = " . $station_id;
 
