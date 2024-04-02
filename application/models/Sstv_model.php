@@ -88,4 +88,23 @@ class Sstv_model extends CI_Model
         return $this->db->get()->result();
     }
 
+    function getQsoWithSstvImageList()
+    {
+        $CI = &get_instance();
+        $CI->load->model('logbooks_model');
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (is_array($logbooks_locations_array) && !empty($logbooks_locations_array)) {
+            $this->db->select('*');
+            $this->db->from($this->config->item('table_name'));
+            $this->db->join('sstv_images', 'sstv_images.qsoid = ' . $this->config->item('table_name') . '.col_primary_key');
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $this->db->order_by("id", "desc");
+
+            return $this->db->get();
+        } else {
+            return false;
+        }
+    }
+
 }
