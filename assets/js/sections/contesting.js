@@ -88,10 +88,10 @@ $(function () {
 	});
 });
 
-// We don't want spaces to be written in serial
+// We don't want anything but numbers to be written in serial
 $(function () {
-	$('#exch_serial_r').on('keypress', function (e) {
-		if (e.which == 32) {
+	$('#exch_serial_r, #exch_serial_s').on('keypress', function (e) {
+		if (e.key.charCodeAt(0) < 48 || e.key.charCodeAt(0) > 57) {
 			return false;
 		}
 	});
