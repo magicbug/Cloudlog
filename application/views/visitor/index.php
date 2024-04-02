@@ -79,13 +79,13 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			</thead>
 
 			<?php
+			
 			$i = 0;
-			if(!empty($last_five_qsos) > 0) {
-			foreach ($last_five_qsos->result() as $row) { ?>
+			if(!empty($results) > 0) {
+			foreach ($results->result() as $row) { ?>
 				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 
 					<?php
-
 					// Get Date format
 					if($this->session->userdata('user_date_format')) {
 						// If Logged in and session exists
@@ -114,6 +114,11 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 				</tr>
 			<?php $i++; } } ?>
 		</table>
+		<?php if($this->CI->public_search_enabled($slug)) { ?>
+			<div class="pagination-links">
+				<?php echo $this->pagination->create_links(); ?>
+			</div>
+		<?php } ?>
 	</div>
   </div>
 
