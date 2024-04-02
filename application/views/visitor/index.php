@@ -81,7 +81,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 			<?php
 			
 			$i = 0;
-			if(!empty($results) > 0) {
+			if(!empty($results)) {
 			foreach ($results->result() as $row) { ?>
 				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
 
