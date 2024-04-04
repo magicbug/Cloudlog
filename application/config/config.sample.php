@@ -32,7 +32,6 @@ $config['datadir'] = null; // default to install directory
 $config['table_name'] = "TABLE_HRD_CONTACTS_V01";
 $config['locator'] = "";
 $config['display_freq'] = true;
-$config['dxped_list'] = "https://cdn.cloudlog.org/read_ng3k_dxped_list.php";
 
 /*
 |--------------------------------------------------------------------------
