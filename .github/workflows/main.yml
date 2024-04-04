@@ -25,5 +25,5 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
-          command-prefix: "npx cypress run --headless --browser chrome  --config-file=cypress.config.js"
+          command-prefix: "--headless --browser chrome"
           wait-on: "http://localhost"
