@@ -8,9 +8,25 @@ class Sstv extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->lang->load('qslcard');
+        $this->lang->load('sstv');
         $this->load->model('user_model');
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+    }
+
+    public function index() {
+        $this->load->helper('storage');
+        $folder_name = "assets/sstvimages";
+        $data['storage_used'] = sizeFormat(folderSize($folder_name));
+
+        // Render Page
+        $data['page_title'] = "SSTV Images";
+
+        $this->load->model('sstv_model');
+        $data['sstvArray'] = $this->sstv_model->getQsoWithSstvImageList();
+
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('sstv/index');
+        $this->load->view('interface_assets/footer');
     }
 
     public function uploadSSTV() {
