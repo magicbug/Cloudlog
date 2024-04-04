@@ -25,3 +25,4 @@ jobs:
           browser: edge
           headless: true
           wait-on: "http://localhost"
+          config-file: "cypress.config.json"
