@@ -148,10 +148,10 @@ if($_POST) {
 
         <fieldset>
           <legend>Database settings</legend>
-          <label for="hostname">Hostname</label><input type="text" id="hostname" value="localhost" class="input_text" name="hostname" />
-          <label for="username">Username</label><input type="text" id="username" class="input_text" name="username" />
-          <label for="password">Password</label><input type="password" id="password" class="input_text" name="password" />
-          <label for="database">Database Name</label><input type="text" id="database" class="input_text" name="database" />
+		  <label for="hostname">Hostname</label><input type="text" id="hostname" value="<?php echo getenv('MYSQL_HOST') ?: 'localhost'; ?>" class="input_text" name="hostname" />
+		  <label for="username">Username</label><input type="text" id="username" value="<?php echo getenv('MYSQL_USER'); ?>" class="input_text" name="username" />
+		  <label for="password">Password</label><input type="password" id="password" value="<?php echo getenv('MYSQL_PASSWORD'); ?>" class="input_text" name="password" />
+		  <label for="database">Database Name</label><input type="text" id="database" value="<?php echo getenv('MYSQL_DATABASE'); ?>" class="input_text" name="database" />
           <input type="submit" value="Install" id="submit" />
         </fieldset>
 		  </form>
