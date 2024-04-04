@@ -139,7 +139,7 @@ class Visitor extends CI_Controller {
                 $data['total_lotw_sent'] = $QSLStatsBreakdownArray['LoTW_Sent'];
                 $data['total_lotw_rcvd'] = $QSLStatsBreakdownArray['LoTW_Received'];
 				
-				// If public search is enabled, show paginated results, otherwise show last 18 qsos
+				// Show paginated results
 				$data['results'] = $this->logbook_model->get_qsos($config['per_page'], $this->uri->segment(4), $logbooks_locations_array);
 
                 $data['page_title'] = "Dashboard";
