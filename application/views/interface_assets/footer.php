@@ -2474,10 +2474,10 @@ if ($this->session->userdata('user_id') != null) {
 
 <script>
     function viewQsl(picture, callsign) {
-        var baseURL = "<?php echo base_url(); ?>";
-        var $textAndPic = $('<div></div>');
-        $textAndPic.append('<center><img class="img-fluid w-qsl" style="height:auto;width:auto;"src="' + baseURL + '/assets/qslcard/' + picture + '" /><center>');
-        var title = '';
+        let title = '';
+        const baseURL = "<?php echo base_url(); ?>";
+        const textAndPic = $('<div></div>').append('<center><img class="img-fluid w-qsl" style="height:auto;width:auto;"src="' + baseURL + '/assets/qslcard/' + picture + '" /><center>');
+
         if (callsign == null) {
             title = 'QSL Card';
         } else {
@@ -2487,7 +2487,7 @@ if ($this->session->userdata('user_id') != null) {
         BootstrapDialog.show({
             title: title,
             size: BootstrapDialog.SIZE_WIDE,
-            message: $textAndPic,
+            message: textAndPic,
             buttons: [{
                 label: lang_admin_close,
                 action: function(dialogRef) {
@@ -2499,6 +2499,7 @@ if ($this->session->userdata('user_id') != null) {
 </script>
 <script>
     function deleteQsl(id) {
+        const baseURL = "<?php echo base_url(); ?>";
         BootstrapDialog.confirm({
             title: 'DANGER',
             message: 'Warning! Are you sure you want to delete this QSL card?',
@@ -2508,7 +2509,6 @@ if ($this->session->userdata('user_id') != null) {
             btnOKClass: 'btn-danger',
             callback: function(result) {
                 if (result) {
-                    var baseURL = "<?php echo base_url(); ?>";
                     $.ajax({
                         url: baseURL + 'index.php/qsl/delete',
                         type: 'post',
@@ -2535,18 +2535,16 @@ if ($this->session->userdata('user_id') != null) {
         });
     }
 </script>
-
 <script>
     function viewSstv(picture) {
-        var baseURL = "<?php echo base_url(); ?>";
-        var $textAndPic = $('<div></div>');
-        $textAndPic.append('<center><img class="img-fluid w-qsl" style="height:auto;width:auto;"src="' + baseURL + '/assets/sstvimages/' + picture + '" /><center>');
-        title = 'SSTV Image';
+        const title = 'SSTV Image';
+        const baseURL = "<?php echo base_url(); ?>";
+        const textAndPic = $('<div></div>').append(`<center><img class="img-fluid w-qsl" style="height:auto;width:auto;"src="${baseURL}/assets/sstvimages/${picture}" /><center>`);
 
         BootstrapDialog.show({
             title: title,
             size: BootstrapDialog.SIZE_WIDE,
-            message: $textAndPic,
+            message: textAndPic,
             buttons: [{
                 label: lang_admin_close,
                 action: function(dialogRef) {
@@ -2555,9 +2553,9 @@ if ($this->session->userdata('user_id') != null) {
             }]
         });
     }
-</script>
-<script>
+
     function deleteSstv(id) {
+        const baseURL = "<?php echo base_url(); ?>";
         BootstrapDialog.confirm({
             title: 'DANGER',
             message: 'Warning! Are you sure you want to delete this SSTV Image?',
@@ -2567,7 +2565,6 @@ if ($this->session->userdata('user_id') != null) {
             btnOKClass: 'btn-danger',
             callback: function(result) {
                 if (result) {
-                    var baseURL = "<?php echo base_url(); ?>";
                     $.ajax({
                         url: baseURL + 'index.php/sstv/delete',
                         type: 'post',
@@ -2747,9 +2744,53 @@ if ($this->session->userdata('user_id') != null) {
             }
         });
     }
+
+    function createTable(title, type) {
+        const tableClass = type === 'sstv' ? 'sstvtable' : 'qsltable';
+        return `<table style="width:100%" class="${tableClass} table table-sm table-bordered table-hover table-striped table-condensed">` +
+                    '<thead>' +
+                        '<tr>' +
+                        '<th style="text-align: center">' + title + '</th>' +
+                        '<th style="text-align: center"></th>' +
+                        '<th style="text-align: center"></th>' +
+                        '</tr>' +
+                    '</thead>' +
+                    '<tbody></tbody>' +
+                '</table>'
+    }
+
+    function createTableRow(image, type){
+        const viewFunction = type === 'sstv' ? 'viewSstv' : 'viewQsl';
+        const deleteFunction = type === 'sstv' ? 'deleteSstv' : 'deleteQsl';
+        return '<tr><td style="text-align: center">' + image.filename + '</td>' +
+                    `<td id="${image.insertid}" style="text-align: center"><button onclick="${deleteFunction}(${image.insertid});" class="btn btn-sm btn-danger">Delete</button></td>` +
+                    `<td style="text-align: center"><button onclick="${viewFunction}('${image.filename}')" class="btn btn-sm btn-success">View</button></td>` +
+                '</tr>'
+    }
+
+    function handleSSTVImageUpload(sstvImage){
+        const baseURL = "<?php echo base_url(); ?>";
+        const numCarouselItems = $('#sstv-carousel-indicators li').length;
+
+        // Next, append card to the table
+        $('.sstvtable').length === 0 ? $("#sstvupload").prepend(createTable("SSTV image file", "sstv")) : null;
+        $('.sstvtable tbody:last').append(createTableRow(sstvImage, "sstv"));
+
+        // Append card to the carousel
+        const newCarouselItem = '<div class="' + (numCarouselItems === 0 ? 'active ' : '') + 'carousel-item carouselimageid_' + sstvImage.insertid +'"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/sstvimages/' + sstvImage.filename +  '" alt="QSL picture"></div>';
+        $("#sstv-carousel-inner").append(newCarouselItem);
+
+        // Append new carousel indicator
+        const newCarouselIndicator = '<li class="' + (numCarouselItems === 0 ? 'active ' : '') + '" data-bs-target="#sstvCarouselIndicators" data-bs-slide-to="' + numCarouselItems + '"></li>';
+        $("#sstv-carousel-indicators").append(newCarouselIndicator);
+
+        // Initialize the bootstrap carousel
+        $("#sstvCarouselIndicators").carousel();
+    }
+
     function uploadSSTV() {
-        var baseURL = "<?php echo base_url(); ?>";
-        var formdata = new FormData(document.getElementById("sstvinfo"));
+        const baseURL = "<?php echo base_url(); ?>";
+        const formdata = new FormData(document.getElementById("sstvinfo"));
         
         $.ajax({
             url: baseURL + 'index.php/sstv/uploadsstv',
@@ -2759,67 +2800,49 @@ if ($this->session->userdata('user_id') != null) {
             processData: false,
             contentType: false,
             success: function(data) {
+                // Iterate over each SSTV image and handle it
                 data.forEach((sstvImage) => {
-                if (sstvImage.status == 'Success') {
-                    // Check if the table exists, if it does we'll update it, if not, we'll create it
-                    if ($('.sstvtable').length > 0) {
-                        // Update table on Manage SSTV Image tab
-                        $('.sstvtable tr:last').after('<tr><td style="text-align: center">' + sstvImage.filename + '</td>' +
-                            '<td id="' + sstvImage.insertid + '"style="text-align: center"><button onclick="deleteSstv(' + sstvImage.insertid + ');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td style="text-align: center"><button onclick="viewSstv(\'' + sstvImage.filename + '\')" class="btn btn-sm btn-success">View</button></td>' +
-                            '</tr>');
-                        
-                        // Update SSTV Image carousel
-                        var quantity = $("#sstv-carousel-indicators").length;
-                        $("#sstvCarouselIndicators .sstv-carousel-indicators").append('<li data-bs-target="#sstvCarouselIndicators" data-bs-slide-to="' + quantity + '"></li>');
-                        $("#sstvCarouselIndicators .carousel-inner").append('<center><div class="carousel-item carouselimageid_' + sstvImage.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/sstvimages/' + sstvImage.filename + '" alt="SSTV picture #' + (quantity + 1) + '"></div></center>');
-
-                        // Initialize the bootstrap image carousel
-                        $("#sstvCarouselIndicators").carousel();
-
-                        // Reset the image input
-                        $("#sstvimages").val(null);
-                    } else {
-                        // Create table on Manage SSTV Image tab
-                        $("#sstvupload").prepend('<table style="width:100%" class="sstvtable table table-sm table-bordered table-hover table-striped table-condensed">' +
-                            '<thead>' +
-                            '<tr>' +
-                            '<th style="text-align: center">SSTV image file</th>' +
-                            '<th style="text-align: center"></th>' +
-                            '<th style="text-align: center"></th>' +
-                            '</tr>' +
-                            '</thead><tbody>' +
-                            '<tr><td style="text-align: center">' + sstvImage.filename + '</td>' +
-                            '<td id="' + sstvImage.insertid + '"style="text-align: center"><button onclick="deleteSstv(' + sstvImage.insertid + ');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td style="text-align: center"><button onclick="viewSstv(\'' + sstvImage.filename + '\')" class="btn btn-sm btn-success">View</button></td>' +
-                            '</tr>' +
-                            '</tbody></table>');
-
-                        //  Make the SSTV image tab visible by remvoving the hidden attribute 
+                    if (sstvImage.status == 'Success') {
+                        // Show the SSTV image tab
                         $('.sstvimagetab').removeAttr('hidden');
-
-                        // Create SSTV Image carousel
-                        var quantity = $("#sstv-carousel-indicators").length;
-                        $("#sstv-carousel-indicators").append('<li class="active" data-bs-target="#sstvCarouselIndicators" data-bs-slide-to="' + quantity + '" />');
-                        $("#sstv-carousel-inner").append('<center><div class="active carousel-item carouselimageid_' + sstvImage.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/sstvimages/' + sstvImage.filename + '" alt="SSTV picture #' + (quantity + 1) + '"></div></center>');
-
-                        // Initialize the bootstrap carousel
-                        $("#sstvCarouselIndicators").carousel();
+                        
+                        // Handle the SSTV image upload
+                        handleSSTVImageUpload(sstvImage);
+                    } else if (sstvImage.status != '') {
+                        $("#sstvupload").append('<div class="alert alert-danger">SSTV image:' +
+                            sstvImage.error +
+                            '</div>');
                     }
-
-                } else if (sstvImage.status != '') {
-                    $("#sstvupload").append('<div class="alert alert-danger">SSTV Image:' +
-                        sstvImage.error +
-                        '</div>');
-                }
+                    // Reset the image inputs
+                    $("#sstvimages").val(null);
                 })
             }
         });
     }
 
+    function handleQslCardUpload(qslCard) {
+        const baseURL = "<?php echo base_url(); ?>";
+        const numCarouselItems = $('#qsl-carousel-indicators li').length;
+
+        // append card to the qsl management table
+        $('.qsltable').length === 0 ? $("#qslupload").prepend(createTable("QSL image file", "qsl")) : null;
+        $('.qsltable tbody:last').append(createTableRow(qslCard, "qsl"));
+
+        // Append card image to the carousel
+        const newCarouselItem = '<div class="' + (numCarouselItems === 0 ? 'active ' : '') + 'carousel-item carouselimageid_' + qslCard.insertid +'"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/qslcard/' + qslCard.filename +  '" alt="QSL picture"></div>';
+        $("#qsl-carousel-inner").append(newCarouselItem);
+
+        // Append carousel indicator for the new card
+        const newCarouselIndicator = '<li class="' + (numCarouselItems === 0 ? 'active ' : '') + '" data-bs-target="#qslCarouselIndicators" data-bs-slide-to="' + numCarouselItems + '"></li>';
+        $("#qsl-carousel-indicators").append(newCarouselIndicator);
+
+        // Initialize the bootstrap carousel
+        $("#qslCarouselIndicators").carousel();
+    }
+
     function uploadQsl() {
-        var baseURL = "<?php echo base_url(); ?>";
-        var formdata = new FormData(document.getElementById("fileinfo"));
+        const baseURL = "<?php echo base_url(); ?>";
+        const formdata = new FormData(document.getElementById("fileinfo"));
 
         $.ajax({
             url: baseURL + 'index.php/qsl/uploadqsl',
@@ -2829,80 +2852,29 @@ if ($this->session->userdata('user_id') != null) {
             processData: false,
             contentType: false,
             success: function(data) {
+                const qslCard = data.status || {}
                 if (data.status.front.status == 'Success') {
-                    if ($('.qsltable').length > 0) {
-                        $('.qsltable tr:last').after('<tr><td style="text-align: center">' + data.status.front.filename + '</td>' +
-                            '<td id="' + data.status.front.insertid + '"style="text-align: center"><button onclick="deleteQsl(' + data.status.front.insertid + ');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.front.filename + '\')" class="btn btn-sm btn-success">View</button></td>' +
-                            '</tr>');
-                        var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="' + quantity + '"></li>');
-                        $(".carousel-inner").append('<center><div class="carousel-item carouselimageid_' + data.status.front.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/qslcard/' + data.status.front.filename + '" alt="QSL picture #' + (quantity + 1) + '"></div></center>');
-                        $("#qslcardfront").val(null);
-                    } else {
-                        $("#qslupload").prepend('<table style="width:100%" class="qsltable table table-sm table-bordered table-hover table-striped table-condensed">' +
-                            '<thead>' +
-                            '<tr>' +
-                            '<th style="text-align: center">QSL image file</th>' +
-                            '<th style="text-align: center"></th>' +
-                            '<th style="text-align: center"></th>' +
-                            '</tr>' +
-                            '</thead><tbody>' +
-                            '<tr><td style="text-align: center">' + data.status.front.filename + '</td>' +
-                            '<td id="' + data.status.front.insertid + '"style="text-align: center"><button onclick="deleteQsl(' + data.status.front.insertid + ');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.front.filename + '\')" class="btn btn-sm btn-success">View</button></td>' +
-                            '</tr>' +
-                            '</tbody></table>');
-                        $('.qslcardtab').removeAttr('hidden');
-                        var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li class="active" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="' + quantity + '"></li>');
-                        $(".carousel-inner").append('<center><div class="active carousel-item carouselimageid_' + data.status.front.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/qslcard/' + data.status.front.filename + '" alt="QSL picture #' + (quantity + 1) + '"></div></center>');
-                        $(".carouselExampleIndicators").carousel();
-                        $("#qslcardfront").val(null);
-                    }
-
-                } else if (data.status.front.status != '') {
+                    handleQslCardUpload(qslCard.front);
+                } else if (qslCard.front.status != '') {
                     $("#qslupload").append('<div class="alert alert-danger">Front QSL Card:' +
-                        data.status.front.error +
+                        qslCard.front.error +
                         '</div>');
                 }
-                if (data.status.back.status == 'Success') {
-                    var qsoid = $("#qsoid").text();
-                    if ($('.qsltable').length > 0) {
-                        $('.qsltable tr:last').after('<tr><td style="text-align: center">' + data.status.back.filename + '</td>' +
-                            '<td id="' + data.status.back.insertid + '"style="text-align: center"><button onclick="deleteQsl(' + data.status.back.insertid + ');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td style="text-align: center"><button onclick="viewQsl(\'' + data.status.back.filename + '\')" class="btn btn-sm btn-success">View</button></td>' +
-                            '</tr>');
-                        var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="' + quantity + '"></li>');
-                        $(".carousel-inner").append('<center><div class="carousel-item carouselimageid_' + data.status.back.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/qslcard/' + data.status.back.filename + '" alt="QSL picture #' + (quantity + 1) + '"></div></center>');
-                        $("#qslcardback").val(null);
-                    } else {
-                        $("#qslupload").prepend('<table style="width:100%" class="qsltable table table-sm table-bordered table-hover table-striped table-condensed">' +
-                            '<thead>' +
-                            '<tr>' +
-                            '<th style="text-align: center">QSL image file</th>' +
-                            '<th style="text-align: center"></th>' +
-                            '<th style="text-align: center"></th>' +
-                            '</tr>' +
-                            '</thead><tbody>' +
-                            '<tr><td style="text-align: center">' + data.status.back.filename + '</td>' +
-                            '<td id="' + data.status.back.insertid + '"style="text-align: center"><button onclick="deleteQsl(' + data.status.back.insertid + ');" class="btn btn-sm btn-danger">Delete</button></td>' +
-                            '<td><button onclick="viewQsl(\'' + data.status.back.filename + '\')" class="btn btn-sm btn-success">View</button></td>' +
-                            '</tr>' +
-                            '</tbody></table>');
-                        $('.qslcardtab').removeAttr('hidden');
-                        var quantity = $(".carousel-indicators li").length;
-                        $(".carousel-indicators").append('<li class="active" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="' + quantity + '"></li>');
-                        $(".carousel-inner").append('<center><div class="active carousel-item carouselimageid_' + data.status.back.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/qslcard/' + data.status.back.filename + '" alt="QSL picture #' + (quantity + 1) + '"></div></center>');
-                        $(".carouselExampleIndicators").carousel();
-                        $("#qslcardback").val(null);
-                    }
-                } else if (data.status.back.status != '') {
+
+                if (qslCard.back.status == 'Success') {
+                    handleQslCardUpload(qslCard.back);
+                } else if (qslCard.back.status != '') {
                     $("#qslupload").append('<div class="alert alert-danger">\nBack QSL Card: ' +
-                        data.status.back.error +
+                        qslCard.back.error +
                         '</div>');
                 }
+
+                // Show the QSL card tab
+                $('.qslcardtab').removeAttr('hidden');
+
+                // Reset the image inputs
+                $("#qslcardfront").val(null);
+                $("#qslcardback").val(null);
             }
         });
     }
