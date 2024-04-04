@@ -8,9 +8,12 @@ jobs:
         uses: actions/checkout@v2
       - name: Set up environment variables
         run: |
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "MYSQL_USER=cloudlog" >> .env
+          echo "MYSQL_PASSWORD=cloudlogpassword" >> .env
+          echo "MYSQL_DATABASE=cloudlog" >> .env
+          echo "MYSQL_ROOT_PASSWORD=rootpassword" >> .env
+          echo "MYSQL_HOST=db" >> .env
+          echo "MYSQL_PORT=3306" >> .env
       - name: Build and run Docker compose
         run: |
           docker-compose up -d
