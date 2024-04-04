@@ -18,8 +18,6 @@ jobs:
         run: |
           docker build -t cloudlog .
           docker run -d -p 80:80 cloudlog
-      - name: Start Apache
-        run: sudo service apache2 start
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
