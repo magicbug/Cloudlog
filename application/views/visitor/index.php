@@ -113,11 +113,9 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 				</tr>
 			<?php $i++; } } ?>
 		</table>
-		<?php if($this->CI->public_search_enabled($slug)) { ?>
-			<div class="pagination-links">
-				<?php echo $this->pagination->create_links(); ?>
-			</div>
-		<?php } ?>
+		<div class="pagination-links">
+			<?php echo $this->pagination->create_links(); ?>
+		</div>
 	</div>
   </div>
 
