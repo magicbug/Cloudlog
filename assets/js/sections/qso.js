@@ -1,9 +1,4 @@
 var lastCallsignUpdated=""
-var scp_data = {
-  request: "",
-  status: -1 , // -1 - never req, 0 - req in progress, 1 - request done
-  data: [],
-};
 
 $( document ).ready(function() {
 	setTimeout(function() {
@@ -1022,38 +1017,13 @@ $("#callsign").on("keypress", function(e) {
 });
 
 // On Key up check and suggest callsigns
-$("#callsign").keyup(function() {
-	if ($(this).val().length >= 3) {
-	  let call = $(this).val().toUpperCase();
-
-      if ( scp_data.request == "" || ! call.startsWith(scp_data.request) )  {
-        scp_data.request = call;
-        scp_data.data = [];
-        $.ajax({
-          url: 'lookup/scp',
-          method: 'POST',
-          data: {
-            callsign: call
-          },
-          success: function(result) {
-            var call_now = $("#callsign").val().toUpperCase();
-
-            if (call_now.startsWith(call)) {
-              scp_data.data = result.split(" ");
-
-              call_now = call_now.replace('0','Ø');
-              $('.callsign-suggestions').text(filterCallsignList(call_now, scp_data.data));
-              $('.callsign-suggest').show();
-            }
-          }
-        });
-      } else {
-            call = call.replace('0','Ø');
-            $('.callsign-suggestions').text(filterCallsignList(call, scp_data.data));
-            $('.callsign-suggest').show();
-      }
-	}
-  });
+$("#callsign").keyup( scp_keyup({ 
+  selector: $(this),
+  showSuggestions: function (call, text) {
+    $('.callsign-suggestions').text(text);
+    $('.callsign-suggest').show();
+  }
+}));
 
 //Reset QSO form Fields function
 function resetDefaultQSOFields() {
@@ -1116,7 +1086,61 @@ function testTimeOffConsistency() {
 	return true;
 }
 
-function filterCallsignList(call, list) {
-    let re = "(^|\/)" + call;
-    return list?.filter((el) => (el.search(re) !== -1)).join(' ') || '';
+function scp_keyup(options) {
+  // options must have two keys:
+  //   * selector - element, with .val() which gives the entered callsign
+  //   * showSuggestions - function(call, text), where the text is
+  //                       the list of callsign-suggestions
+  const scp = {
+    request: "",
+    data: []
+  };
+  const callFromInput = (el) => el.val().toUpperCase().replace('0','Ø');
+  const checkCacheValid = (call) => (scp.request != "" && call.includes(scp.request));
+  const filterCallsignList = function (call) {
+      return scp.data?.filter((el) => (el.includes(call) == true)).join(' ') || '';
+  };
+  const updateSuggestions = function (call) {
+    const suggestions = filterCallsignList(call);
+    options.showSuggestions(call, suggestions);
+  }
+
+  const keyup = function(){
+	const call = callFromInput(options.selector);
+
+    if (call.length < 3) {
+      options.showSuggestions("", "");
+      return;
+    }
+
+    if ( checkCacheValid(call) ) {
+      updateSuggestions(call);
+      return;
+    }
+
+    // Cache invalid, so update it and reset suggestions
+    options.showSuggestions("");
+
+    scp.request = call;
+    scp.data = [];
+    $.ajax({
+        url: 'lookup/scp',
+        method: 'POST',
+        data: {
+            callsign: call
+        },
+        success: function (result) {
+            const call_now = callFromInput(options.selector);
+            if (checkCacheValid(call_now)) {
+              scp.data = result.split(" ");
+
+              updateSuggestions(call_now);
+            }
+        }
+    });
+
+  };
+
+  return keyup;
 }
+

@@ -8,11 +8,6 @@ $(document).ready(async function () {
 	setRst($("#mode").val());
 });
 
-var scp_data = {
-  request: "",
-  data: [],
-};
-
 // Resets the logging form and deletes session from database
 function reset_contest_session() {
 	$('#name').val("");
@@ -212,47 +207,22 @@ $('#start_date').change(function () {
 });
 
 // On Key up check and suggest callsigns
-$("#callsign").keyup(function () {
-	let call = $(this).val().toUpperCase();
-	if (call.length >= 3) {
+$("#callsign").keyup(scp_keyup({
+  selector: $("#callsign"),
+  showSuggestions: function (call, text) {
+    $('.callsign-suggestions').text(text);
+    highlight(call);
+  }
+}));
 
-        if ( scp_data.request == "" || ! call.startsWith(scp_data.request) ) {
-          scp_data.request = call;
-          scp_data.data = [];
-          $.ajax({
-              url: 'lookup/scp',
-              method: 'POST',
-              data: {
-                  callsign: call
-              },
-              success: function (result) {
-                  var call_now = $("#callsign").val().toUpperCase(); // Might have changed while running the query...
-                  if (call_now.startsWith(call)) {
-                    scp_data.data = result.split(" ");
-
-                    call_now = call_now.replace('0','Ø');
-                    $('.callsign-suggestions').text(filterCallsignList(call_now, scp_data.data));
-                    highlight(call_now);
-                  }
-              }
-          });
-
-        } else {
-          // Filter the already obtained list:
-          call = call.replace('0','Ø');
-          $('.callsign-suggestions').text(filterCallsignList(call, scp_data.data));
-          highlight(call);
-
-        }
-		// moved to blur
-		// checkIfWorkedBefore();
-		var qTable = $('.qsotable').DataTable();
-		qTable.search(call).draw();
-	}
-	else {
-		$('.callsign-suggestions').text("");
-	}
+$("#callsign").keyup(function() {
+  const call = $(this).val().toUpperCase();
+  if (call.length >= 3) {
+	var qTable = $('.qsotable').DataTable();
+	qTable.search(call).draw();
+  }
 });
+
 
 function checkIfWorkedBefore() {
 	var call = $("#callsign").val();
@@ -689,7 +659,61 @@ function getUTCDateStamp(el) {
 	$(el).attr('value', ("0" + now.getUTCDate()).slice(-2) + '-' + ("0" + (now.getUTCMonth() + 1)).slice(-2) + '-' + now.getUTCFullYear());
 }
 
-function filterCallsignList(call, list) {
-    let re = "(^|\/)" + call;
-    return list?.filter((el) => (el.search(re) !== -1)).join(' ') || '';
+function scp_keyup(options) {
+  // options must have two keys:
+  //   * selector - element, with .val() which gives the entered callsign
+  //   * showSuggestions - function(call, text), where the text is
+  //                       the list of callsign-suggestions
+  const scp = {
+    request: "",
+    data: []
+  };
+  const callFromInput = (el) => el.val().toUpperCase().replace('0','Ø');
+  const checkCacheValid = (call) => (scp.request != "" && call.includes(scp.request));
+  const filterCallsignList = function (call) {
+      return scp.data?.filter((el) => (el.includes(call) == true)).join(' ') || '';
+  };
+  const updateSuggestions = function (call) {
+    const suggestions = filterCallsignList(call);
+    options.showSuggestions(call, suggestions);
+  }
+
+  const keyup = function(){
+	const call = callFromInput(options.selector);
+
+    if (call.length < 3) {
+      options.showSuggestions("", "");
+      return;
+    }
+
+    if ( checkCacheValid(call) ) {
+      updateSuggestions(call);
+      return;
+    }
+
+    // Cache invalid, so update it and reset suggestions
+    options.showSuggestions("");
+
+    scp.request = call;
+    scp.data = [];
+    $.ajax({
+        url: 'lookup/scp',
+        method: 'POST',
+        data: {
+            callsign: call
+        },
+        success: function (result) {
+            const call_now = callFromInput(options.selector);
+            if (checkCacheValid(call_now)) {
+              scp.data = result.split(" ");
+
+              updateSuggestions(call_now);
+            }
+        }
+    });
+
+  };
+
+  return keyup;
 }
+

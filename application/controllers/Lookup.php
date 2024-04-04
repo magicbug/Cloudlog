@@ -55,7 +55,7 @@ class Lookup extends CI_Controller {
 
 	public function scp() {
 		if($_POST['callsign']) {
-			$uppercase_callsign = strtoupper($_POST['callsign']);
+			$uppercase_callsign = str_replace('Ø', '0', strtoupper($_POST['callsign']));
 		}
 
 		// SCP results from logbook
