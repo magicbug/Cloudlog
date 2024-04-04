@@ -75,6 +75,37 @@ class Visitor extends CI_Controller {
 
                 $this->load->model('logbook_model');
 
+				// load config and init pagination
+				$this->load->library('pagination');
+			
+				//Pagination config
+				$config['base_url'] = base_url().'index.php/visitor/'. $public_slug . '/index';
+				$config['total_rows'] = $this->logbook_model->total_qsos($logbooks_locations_array);
+				$config['per_page'] = '25';
+				$config['num_links'] = $this->logbook_model->total_qsos($logbooks_locations_array) / 25;
+				$config['full_tag_open'] = '<ul class="pagination">';
+				$config['full_tag_close'] = '</ul>';
+				$config['attributes'] = ['class' => 'page-link'];
+				$config['first_link'] = false;
+				$config['last_link'] = false;
+				$config['first_tag_open'] = '<li class="page-item">';
+				$config['first_tag_close'] = '</li>';
+				$config['prev_link'] = '&laquo';
+				$config['prev_tag_open'] = '<li class="page-item">';
+				$config['prev_tag_close'] = '</li>';
+				$config['next_link'] = '&raquo';
+				$config['next_tag_open'] = '<li class="page-item">';
+				$config['next_tag_close'] = '</li>';
+				$config['last_tag_open'] = '<li class="page-item">';
+				$config['last_tag_close'] = '</li>';
+				$config['cur_tag_open'] = '<li class="page-item active"><a href="#" class="page-link">';
+				$config['cur_tag_close'] = '<span class="visually-hidden">(current)</span></a></li>';
+				$config['num_tag_open'] = '<li class="page-item">';
+				$config['num_tag_close'] = '</li>';
+
+				$this->pagination->initialize($config);
+
+
                 // Public visitor so no QRA to setup
                 $data['qra'] = "none";
 
@@ -107,8 +138,9 @@ class Visitor extends CI_Controller {
 
                 $data['total_lotw_sent'] = $QSLStatsBreakdownArray['LoTW_Sent'];
                 $data['total_lotw_rcvd'] = $QSLStatsBreakdownArray['LoTW_Received'];
-
-                $data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
+				
+				// Show paginated results
+				$data['results'] = $this->logbook_model->get_qsos($config['per_page'], $this->uri->segment(4), $logbooks_locations_array);
 
                 $data['page_title'] = "Dashboard";
                 $data['slug'] = $public_slug;
