@@ -18,6 +18,8 @@ jobs:
         run: |
           docker build -t cloudlog .
           docker run -d -p 80:80 cloudlog
+      - name: Output Docker logs
+        run: docker logs $(docker ps -q --filter ancestor=cloudlog)
       - name: Run Cypress tests
         uses: cypress-io/github-action@v2
         with:
