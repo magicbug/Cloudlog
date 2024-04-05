@@ -13,6 +13,7 @@ class Contesting_model extends CI_Model {
 
         $contestid = $qsoarray[2];
         $date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
+        if ($date == false) $date = DateTime::createFromFormat('d-m-Y H:i', $qsoarray[0]);
         $date = $date->format('Y-m-d H:i:s');
 
         $sql = "SELECT date_format(col_time_on, '%d-%m-%Y %H:%i:%s') as col_time_on, col_call, col_band, col_mode,
@@ -65,6 +66,7 @@ class Contesting_model extends CI_Model {
         $sql = "SELECT * from contest_session where station_id = " . $station_id;
 
         $data = $this->db->query($sql);
+
         return $data->row();
     }
 
@@ -101,6 +103,10 @@ class Contesting_model extends CI_Model {
 			'qso' 					=> $qso,
 			'station_id' 			=> $station_id,
 		);
+
+        if ($this->input->post('copyexchangeto')) {
+          $data['copytodok'] = xss_clean($this->input->post('copyexchangeto'));
+        }
 
         $sql = "SELECT * from contest_session where station_id = " . $station_id;
 
@@ -246,6 +252,7 @@ class Contesting_model extends CI_Model {
 			$qsoarray = explode(',', $contest_session->qso);
 	
 			$date = DateTime::createFromFormat('d-m-Y H:i:s', $qsoarray[0]);
+			if ($date == false) $date = DateTime::createFromFormat('d-m-Y H:i', $qsoarray[0]);
 			$date = $date->format('Y-m-d H:i:s');
 
 			$this->db->select('timediff(UTC_TIMESTAMP(),col_time_off) b4, COL_TIME_OFF');

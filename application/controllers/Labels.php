@@ -273,7 +273,7 @@ class Labels extends CI_Controller {
 			$qso_data[] = [
 				'time' => $qso->COL_TIME_ON,
 				'band' => $qso->COL_BAND,
-				'mode' => $qso->COL_MODE,
+				'mode' => (($qso->COL_SUBMODE ?? '') == '') ? $qso->COL_MODE : $qso->COL_SUBMODE,
 				'rst' => $qso->COL_RST_SENT,
 				'mygrid' => $qso->station_gridsquare,
 				'via' => $qso->COL_QSL_VIA,

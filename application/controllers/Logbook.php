@@ -618,7 +618,9 @@ class Logbook extends CI_Controller {
         }
 
         $this->load->model('Qsl_model');
+        $this->load->model('Sstv_model');
         $data['qslimages'] = $this->Qsl_model->getQslForQsoId($id);
+        $data['sstvimages'] = $this->Sstv_model->getSstvForQsoId($id);
         $data['primary_subdivision'] = $this->subdivisions->get_primary_subdivision_name($data['query']->result()[0]->COL_DXCC);
         $data['secondary_subdivision'] = $this->subdivisions->get_secondary_subdivision_name($data['query']->result()[0]->COL_DXCC);
 		$data['max_upload'] = ini_get('upload_max_filesize');
