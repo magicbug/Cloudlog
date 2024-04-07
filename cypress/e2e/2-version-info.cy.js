@@ -1,18 +1,23 @@
 describe("Version Info Modal", () => {
 	beforeEach(() => {
 		cy.login();
-		cy.request(
-			"POST",
-			"http://localhost/index.php/user_options/enableVersionDialog"
-		).wait(1000);
 	});
 
 	it("should open after login", () => {
-		// check if the modal is visible
+		// Make sure the dialog is enabled
+		cy.request({
+			method: "POST",
+			url: "http://localhost/index.php/user_options/enableVersionDialog",
+		}).wait(1000);
 		cy.get(".modal-title").contains("Version Info").should("be.visible");
 	});
 
 	it("should close after clicking 'Close' button", () => {
+		// Make sure the dialog is enabled
+		cy.request({
+			method: "POST",
+			url: "http://localhost/index.php/user_options/enableVersionDialog",
+		}).wait(1000);
 		// check if the modal is visible
 		cy.get(".modal-title").contains("Version Info").should("be.visible");
 		// click the 'Close' button
@@ -28,10 +33,16 @@ describe("Version Info Modal", () => {
 			.should("not.be.visible");
 	});
 
-	it("should not show again after clicking 'Don't show again' button", () => {
+	it("should close after clicking 'Don't show again' button", () => {
+		// Make sure the dialog is enabled
+		cy.request({
+			method: "POST",
+			url: "http://localhost/index.php/user_options/enableVersionDialog",
+		}).wait(1000);
+
 		// check if the modal is visible
 		cy.get(".modal-title").contains("Version Info").should("be.visible");
-		// click the 'Close' button
+		// click the "Don't show again" button
 		cy.get("button")
 			.contains("Don't show again")
 			.should("be.visible")
@@ -42,5 +53,10 @@ describe("Version Info Modal", () => {
 		cy.get(".modal-title")
 			.contains("Version Info")
 			.should("not.be.visible");
+	});
+
+	it("should not show the version info dialog after click 'Dont show again' button", () => {
+		// check if the modal is not visible
+		cy.get(".modal-title").should("not.exist");
 	});
 });
