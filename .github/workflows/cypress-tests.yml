@@ -1,7 +1,7 @@
 name: Cypress Tests
 on: [pull_request]
 jobs:
-  test:
+  cypress-e2e-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
