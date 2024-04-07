@@ -17,6 +17,7 @@ $lang['menu_post_contest_logging'] = 'Журнал прошедших сорев
 $lang['menu_bandmap'] = 'План диапазонов';
 $lang['menu_view_qsl'] = 'Просмотр QSL';
 $lang['menu_view_eqsl'] = 'Просмотр eQSL';
+$lang['menu_view_sstv'] = 'View SSTV Images';
 
 $lang['menu_notes'] = 'Заметки';
 
