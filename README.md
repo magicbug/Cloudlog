@@ -57,6 +57,47 @@ To start the development environment, run the following command in your terminal
 docker-compose up
 ```
 
+# Running Cypress Tests Locally
+
+Follow these steps to run the Cypress tests locally on your machine:
+
+1. **Clone the repository**
+
+   If you haven't already, clone the repository to your local machine
+
+2. **Setup .env file**
+
+   Copy the sample `.env` file and adjust it to your local environment:
+
+   ```bash
+   cd your-repo
+   cp .env.sample .env
+   ```
+
+3. **Build Docker services**
+
+   Build and start the Docker services:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Install Cypress**
+
+   Navigate into the project directory and install Cypress:
+
+   ```bash
+   npm install cypress
+   ```
+
+5. **Run the Cypress tests**
+
+   After the installation is complete, you can run the Cypress tests:
+
+   ```bash
+   npx cypress run
+   ```
+
 ## Support
 
 Cloudlog has two support systems for code issues use Github issues, however if you have general issues with setting up your server please use our general discussion forum [https://github.com/magicbug/Cloudlog/discussions](https://github.com/magicbug/Cloudlog/discussions).
