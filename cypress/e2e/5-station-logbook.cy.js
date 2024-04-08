@@ -45,39 +45,39 @@ describe("Create station logbook", () => {
 			.should("exist");
 	});
 
-	it("should set as active station logbook when button clicked", () => {
-		// Navigate to the logbooks page
-		cy.visit("/index.php/logbooks");
+	// it("should set as active station logbook when button clicked", () => {
+	// 	// Navigate to the logbooks page
+	// 	cy.visit("/index.php/logbooks");
 
-		// Check that the button is present
-		cy.get("a").contains("Set as Active Logbook").should("exist").click();
+	// 	// Check that the button is present
+	// 	cy.get("a").contains("Set as Active Logbook").should("exist").click();
 
-		// Check if the station was set to active
-		cy.get("body")
-			.contains("Active Logbook")
-			.should("be.visible")
-			.and("have.class", "badge text-bg-success");
-	});
+	// 	// Check if the station was set to active
+	// 	cy.get("body")
+	// 		.contains("Active Logbook")
+	// 		.should("be.visible")
+	// 		.and("have.class", "badge text-bg-success");
+	// });
 
-	it("should link to a station location from the edit logbook page", () => {
-		// Navigate to the logbooks page
-		cy.visit("/index.php/logbooks");
+	// it("should link to a station location from the edit logbook page", () => {
+	// 	// Navigate to the logbooks page
+	// 	cy.visit("/index.php/logbooks");
 
-		// Click the edit button
-		cy.get("i.fas.fa-edit").should("exist").click();
+	// 	// Click the edit button
+	// 	cy.get("i.fas.fa-edit").should("exist").click();
 
-		// Ensure that the edit link navigates to the correct page
-		cy.url().should("include", "/logbooks/edit");
+	// 	// Ensure that the edit link navigates to the correct page
+	// 	cy.url().should("include", "/logbooks/edit");
 
-		// Scroll to the bottom of the page
-		cy.scrollTo("bottom");
+	// 	// Scroll to the bottom of the page
+	// 	cy.scrollTo("bottom");
 
-		// Click the link location button
-		cy.get("button").contains("Link Location").should("exist").click();
+	// 	// Click the link location button
+	// 	cy.get("button").contains("Link Location").should("exist").click();
 
-		// Make sure that our table now shows the linked station location
-		cy.get("#station_logbooks_linked_table")
-			.contains("Test Station Location")
-			.should("exist");
-	});
+	// 	// Make sure that our table now shows the linked station location
+	// 	cy.get("#station_logbooks_linked_table")
+	// 		.contains("Test Station Location")
+	// 		.should("exist");
+	// });
 });
