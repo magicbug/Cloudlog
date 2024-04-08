@@ -1,10 +1,4 @@
 describe("Create station location", () => {
-	before(() => {
-		cy.request({
-			method: "GET",
-			url: "/index.php/update/dxcc_entities",
-		}).wait(1000);
-	});
 	beforeEach(() => {
 		cy.login();
 	});
