@@ -79,7 +79,5 @@ rm -rf /install
 
 echo "Replacement complete."
 
-php /var/www/html/index.php update dxcc_entities
-
 # Start Apache in the foreground
 exec apache2-foreground
