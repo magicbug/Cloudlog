@@ -13,6 +13,9 @@ jobs:
       - name: Build Docker services
         run: docker-compose up -d
 
+      - name: Wait for services to start
+        run: sleep 10
+
       - name: Populate dxcc_entities table
         run: curl "http://localhost/index.php/update/dxcc_entities"
 
