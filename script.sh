@@ -79,8 +79,5 @@ rm -rf /install
 
 echo "Replacement complete."
 
-# Send a GET request to populate the dxcc_entities table
-curl "${WEBSITE_URL}/index.php/update/dxcc_entities"
-
 # Start Apache in the foreground
 exec apache2-foreground
