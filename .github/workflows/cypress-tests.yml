@@ -7,20 +7,39 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Cache Cypress
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/Cypress
+          key: cypress-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            cypress-
+
+      - name: Install Cypress
+        run: npm install cypress
+
+      - name: Cache .env
+        uses: actions/cache@v2
+        with:
+          path: .env
+          key: .env-${{ hashFiles('.env.sample') }}
+          restore-keys: |
+            .env-
+
       - name: Setup .env
-        run: cp .env.sample .env
+        run: |
+          if [ ! -f .env ]; then
+            cp .env.sample .env
+          fi
 
       - name: Build Docker services
         run: docker-compose up -d
 
       - name: Wait for services to start
-        run: sleep 10
+        run: sleep 3
 
       - name: Populate dxcc_entities table
         run: curl "http://localhost/index.php/update/dxcc"
-
-      - name: Install Cypress
-        run: npm install cypress
 
       - name: Run Cypress tests
         run: npx cypress run
