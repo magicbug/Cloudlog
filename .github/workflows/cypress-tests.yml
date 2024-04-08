@@ -19,9 +19,6 @@ jobs:
       - name: Populate dxcc_entities table
         run: curl "http://localhost/index.php/update/dxcc"
 
-      - name: Populate dxcc_entities table
-        run: curl "http://localhost/index.php/update/dxcc_entities"
-
       - name: Install Cypress
         run: npm install cypress
 
