@@ -7,7 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  *  the endpoint, from where the dxpedition-data is being loaded.
  */
 
-class Migration_add_dxped_url_to_option extends CI_Migration {
+class Migration_add_dxped_url_option extends CI_Migration {
 
     public function up()
     {
