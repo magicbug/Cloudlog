@@ -59,6 +59,61 @@ class User extends CI_Controller {
 		$data['timezones'] = $this->user_model->timezones();
 		$data['language'] = 'english';
 
+					// Set defaults
+					$data['dashboard_upcoming_dx_card'] = false;
+					$data['dashboard_qslcard_card'] = false;
+					$data['dashboard_eqslcard_card'] = false;
+					$data['dashboard_lotw_card'] = false;
+					$data['dashboard_vuccgrids_card'] = false;
+		
+					$dashboard_options = $this->user_options_model->get_options('dashboard')->result();
+		
+					foreach ($dashboard_options as $item) {
+						$option_name = $item->option_name;
+						$option_key = $item->option_key;
+						$option_value = $item->option_value;
+					
+						if ($option_name == 'dashboard_upcoming_dx_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_upcoming_dx_card'] = true;
+							} else {
+								$data['dashboard_upcoming_dx_card'] = false;
+							}
+						}
+		
+						if ($option_name == 'dashboard_qslcards_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_qslcard_card'] = true;
+							} else {
+								$data['dashboard_qslcard_card'] = false;
+							}
+						}
+		
+						if ($option_name == 'dashboard_eqslcards_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_eqslcard_card'] = true;
+							} else {
+								$data['dashboard_eqslcard_card'] = false;
+							}
+						}
+		
+						if ($option_name == 'dashboard_lotw_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_lotw_card'] = true;
+							} else {
+								$data['dashboard_lotw_card'] = false;
+							}
+						}
+		
+						if ($option_name == 'dashboard_vuccgrids_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_vuccgrids_card'] = true;
+							} else {
+								$data['dashboard_vuccgrids_card'] = false;
+							}
+						}
+					}
+
 		if ($this->form_validation->run() == FALSE) {
 			$data['page_title'] = "Add User";
             $data['measurement_base'] = $this->config->item('measurement_base');
