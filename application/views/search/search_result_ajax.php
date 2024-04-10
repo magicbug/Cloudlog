@@ -116,10 +116,13 @@ function echo_table_col($row, $name)
             echo ($row->COL_OPERATOR);
             break;
         case 'Frequency':
+            $CI =& get_instance();
+            $CI->load->library('frequency');
+
             if ($row->COL_SAT_NAME != null) {
                 echo '<a href="https://db.satnogs.org/search/?q=' . $row->COL_SAT_NAME . '" target="_blank">';
 
-                if ($row->COL_FREQ != null && $ci->frequency->hz_to_mhz($row->COL_FREQ) != null) {
+                if ($row->COL_FREQ != null && $CI->frequency->hz_to_mhz($row->COL_FREQ) != null) {
                     echo ' <span data-bs-toggle="tooltip" title="' . $ci->frequency->hz_to_mhz($row->COL_FREQ) . '">' . $row->COL_SAT_NAME . '</span>';
                 } else {
                     echo $row->COL_SAT_NAME;
@@ -127,7 +130,7 @@ function echo_table_col($row, $name)
 
                 echo '</a></td>';
             } else {
-                if ($row->COL_FREQ != null && $ci->frequency->hz_to_mhz($row->COL_FREQ) != null) {
+                if ($row->COL_FREQ != null && $CI->frequency->hz_to_mhz($row->COL_FREQ) != null) {
                     echo ' <span data-bs-toggle="tooltip" title="' . $row->COL_BAND . '">' . $ci->frequency->hz_to_mhz($row->COL_FREQ) . '</span>';
                 } else {
                     echo strtolower($row->COL_BAND);
