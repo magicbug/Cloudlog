@@ -131,7 +131,7 @@ function echo_table_col($row, $name)
                 echo '</a></td>';
             } else {
                 if ($row->COL_FREQ != null && $CI->frequency->hz_to_mhz($row->COL_FREQ) != null) {
-                    echo ' <span data-bs-toggle="tooltip" title="' . $row->COL_BAND . '">' . $ci->frequency->hz_to_mhz($row->COL_FREQ) . '</span>';
+                    echo ' <span data-bs-toggle="tooltip" title="' . $row->COL_BAND . '">' . $CI->frequency->hz_to_mhz($row->COL_FREQ) . '</span>';
                 } else {
                     echo strtolower($row->COL_BAND);
                 }
