@@ -5,7 +5,7 @@ class Workabledxcc_model extends CI_Model
 
     public function GetThisWeek()
     {
-        $json = file_get_contents('https://cdn.cloudlog.org/read_ng3k_dxped_list.php');
+		$json = file_get_contents($this->optionslib->get_option('dxped_url'));
 
         // Step 2: Convert the JSON data to an array.
         $data = json_decode($json, true);

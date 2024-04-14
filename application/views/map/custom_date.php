@@ -94,6 +94,6 @@
 </div>
 
 <!-- Map -->
-<div id="custommap" class="map-leaflet mt-2" style="width: 100%; height: calc(100vh - 390px); max-height: 900px;"></div>
+<div id="custommap" class="map-leaflet mt-2" style="width: 100%; height: 1000px;"></div>
 
 <div class="alert alert-success" role="alert">Showing QSOs for Custom Date for Active Logbook <?php echo $logbook_name ?></div>
