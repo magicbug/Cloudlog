@@ -12,6 +12,12 @@
         </div>
     </div>
     <div class="mb-3 row">
+        <label class="my-1 me-2 col-md-4" for="via">Include awards?</label>
+        <div class="form-check-inline">
+            <input class="form-check-input" type="checkbox" name="awards" id="awards">
+        </div>
+    </div>
+    <div class="mb-3 row">
         <label class="my-1 me-2 col-md-4" for="startat">Start printing at?</label>
         <div class="d-flex align-items-center">
             <input class="form-control input-group-sm" type="number" id="startat" name="startat" value="1">
