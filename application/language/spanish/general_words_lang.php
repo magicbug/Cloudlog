@@ -82,6 +82,10 @@ $lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Vía';
 $lang['general_word_eqslcard'] = 'Tarjeta eQSL';
 $lang['general_word_eqslcards'] = 'Tarjetas eQSL';
+$lang['general_word_sstv_management'] = 'SSTV Management';
+$lang['general_word_sstvimages'] = 'SSTV Images';
+$lang['general_sstv_upload'] = 'Uploaded SSTV images';
+$lang['general_sstv_upload_button'] = 'Upload SSTV image(s)';
 $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
