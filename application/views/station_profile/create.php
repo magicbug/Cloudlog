@@ -36,8 +36,22 @@
 
 			<div class="mb-3">
 		    <label for="stationCallsignInput"><?php echo lang("station_location_callsign"); ?></label>
-		    <input type="text" class="form-control" name="station_callsign" id="stationCallsignInput" aria-describedby="stationCallsignInputHelp" placeholder="2M0SQL" required>
-		    <small id="stationCallsignInputHelp" class="form-text text-muted"><?php echo lang("station_location_callsign_hint"); ?></small>
+			<input type="text" class="form-control" name="station_callsign" id="stationCallsignInput" aria-describedby="stationCallsignInputHelp" placeholder="2M0SQL" pattern="[a-zA-Z0-9\/]*" required oninput="validateInput(this);">
+			<div id="stationCallsignInputError" style="display: none; color: red;">Only letters, numbers, and forward slashes are allowed.</div>
+
+			<script>
+			function validateInput(input) {
+				var errorDiv = document.getElementById('stationCallsignInputError');
+				if (input.checkValidity()) {
+					input.classList.remove('error-red-border');
+					errorDiv.style.display = 'none';
+				} else {
+					input.classList.add('error-red-border');
+					errorDiv.style.display = 'block';
+				}
+			}
+			</script>
+			<small id="stationCallsignInputHelp" class="form-text text-muted"><?php echo lang("station_location_callsign_hint"); ?></small>
 		  </div>
 
 			<div class="mb-3">

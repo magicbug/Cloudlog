@@ -797,3 +797,12 @@ label {
 
 .table-responsive>table .dropdown{position:static;}
 .table-responsive>table .dropdown>.dropdown-menu{left:auto !important;top:auto !important;}
+
+tr.htmx-swapping td {
+	opacity: 0;
+	transition: opacity 1s ease-out;
+}
+
+.error-red-border {
+    border-color: red;
+}

@@ -47,7 +47,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/eqslcharcounter.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/version_dialog.js"></script>
 
-<script src="https://unpkg.com/htmx.org@1.6.1"></script>
+<script src="<?php echo base_url(); ?>assets/js/htmx.min.js"></script>
 
 <script>
     // Reinitialize tooltips after new content has been loaded

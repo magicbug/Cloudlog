@@ -59,6 +59,61 @@ class User extends CI_Controller {
 		$data['timezones'] = $this->user_model->timezones();
 		$data['language'] = 'english';
 
+					// Set defaults
+					$data['dashboard_upcoming_dx_card'] = false;
+					$data['dashboard_qslcard_card'] = false;
+					$data['dashboard_eqslcard_card'] = false;
+					$data['dashboard_lotw_card'] = false;
+					$data['dashboard_vuccgrids_card'] = false;
+		
+					$dashboard_options = $this->user_options_model->get_options('dashboard')->result();
+		
+					foreach ($dashboard_options as $item) {
+						$option_name = $item->option_name;
+						$option_key = $item->option_key;
+						$option_value = $item->option_value;
+					
+						if ($option_name == 'dashboard_upcoming_dx_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_upcoming_dx_card'] = true;
+							} else {
+								$data['dashboard_upcoming_dx_card'] = false;
+							}
+						}
+		
+						if ($option_name == 'dashboard_qslcards_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_qslcard_card'] = true;
+							} else {
+								$data['dashboard_qslcard_card'] = false;
+							}
+						}
+		
+						if ($option_name == 'dashboard_eqslcards_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_eqslcard_card'] = true;
+							} else {
+								$data['dashboard_eqslcard_card'] = false;
+							}
+						}
+		
+						if ($option_name == 'dashboard_lotw_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_lotw_card'] = true;
+							} else {
+								$data['dashboard_lotw_card'] = false;
+							}
+						}
+		
+						if ($option_name == 'dashboard_vuccgrids_card' && $option_key == 'enabled') {
+							if($item->option_value == 'true') {
+								$data['dashboard_vuccgrids_card'] = true;
+							} else {
+								$data['dashboard_vuccgrids_card'] = false;
+							}
+						}
+					}
+
 		if ($this->form_validation->run() == FALSE) {
 			$data['page_title'] = "Add User";
             $data['measurement_base'] = $this->config->item('measurement_base');
@@ -755,6 +810,37 @@ class User extends CI_Controller {
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('user/profile');
 		$this->load->view('interface_assets/footer');
+	}
+
+
+	/**
+	 * Deletes a user by their ID.
+	 *
+	 * This function first loads the 'user_model'. It then checks if the current user has the authorization level of 99.
+	 * If not, it sets a flash message and redirects the user to the dashboard.
+	 * 
+	 * If the user is authorized, it gets the user to be deleted by their ID from the URI segment 3.
+	 * It then calls the 'delete' function from the 'user_model' with the user ID as a parameter.
+	 * 
+	 * If the 'delete' function executes successfully, it sets the HTTP status code to 200.
+	 * If the 'delete' function fails, it sets the HTTP status code to 500.
+	 *
+	 * @param int $id The ID of the user to delete.
+	 */
+	function delete_new($id) {
+		$this->load->model('user_model');
+		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+		$query = $this->user_model->get_by_id($this->uri->segment(3));
+
+		// call $this->user_model->delete and if no errors return true
+		if ($this->user_model->delete($id)) {
+			// request responds with a 200 status code and empty content
+			$this->output->set_status_header(200);
+		} else {
+			// request responds with a 500 status code and empty content
+			$this->output->set_status_header(500);
+		}
+
 	}
 
 	function delete() {

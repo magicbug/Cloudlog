@@ -185,7 +185,8 @@ class User_Model extends CI_Model {
 				'user_qso_end_times' => xss_clean($user_qso_end_times),
 				'user_quicklog' => xss_clean($user_quicklog),
 				'user_quicklog_enter' => xss_clean($user_quicklog_enter),
-				'language' => xss_clean($language)
+				'language' => xss_clean($language),
+				'user_eqsl_qth_nickname' => "",
 			);
 
 			// Check the password is valid

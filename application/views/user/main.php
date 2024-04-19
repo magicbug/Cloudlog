@@ -53,7 +53,7 @@
 							<th style="text-align: center; vertical-align: middle;" scope="col"><?php echo lang('admin_delete'); ?></th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody hx-confirm="Are you sure you want to delete the user?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
 
 						<?php
 
@@ -80,11 +80,10 @@
 								}
 								?></td>
 							<td style="text-align: center; vertical-align: middle;">
-								<?php
-								if ($_SESSION['user_id'] != $row->user_id) {
-									echo "<a href=" . site_url('user/delete') . "/" . $row->user_id . " class=\"btn btn-danger btn-sm\"><i class=\"fas fa-user-minus\"></i></a>";
-								}
-								?></td>
+								<?php if ($_SESSION['user_id'] != $row->user_id) { ?>
+									<button class="btn btn-danger btn-sm" hx-delete="<?php echo site_url('user/delete_new/'.$row->user_id);?>"><i class="fas fa-user-minus"></i></button>	
+								<?php } ?>
+							</td>
 							</td>
 							</tr>
 						<?php $i++;

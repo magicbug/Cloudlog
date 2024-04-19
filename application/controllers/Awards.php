@@ -498,6 +498,13 @@ class Awards extends CI_Controller {
         $this->load->view('awards/was/index');
         $this->load->view('interface_assets/footer', $footerData);
     }
+    public function wab() {
+          // Render page
+          $data['page_title'] = "Awards - Worked All Britain";
+          $this->load->view('interface_assets/header', $data);
+          $this->load->view('awards/wab/index');
+          $this->load->view('interface_assets/footer');
+      }
 
     public function iota ()	{
         $this->load->model('iota');

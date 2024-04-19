@@ -17,6 +17,7 @@ $lang['menu_post_contest_logging'] = 'Post Contest Logging';
 $lang['menu_bandmap'] = 'Bandikartta';
 $lang['menu_view_qsl'] = 'Näytä QSL';
 $lang['menu_view_eqsl'] = 'Näytä eQSL';
+$lang['menu_view_sstv'] = 'View SSTV Images';
 
 $lang['menu_notes'] = 'Muistio';
 
