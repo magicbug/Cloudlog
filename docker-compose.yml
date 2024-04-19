@@ -1,5 +1,8 @@
 version: "3.8"
 
+networks:
+  mynet:
+
 services:
   web:
     build: .
@@ -12,6 +15,8 @@ services:
     command: ["./script.sh"]
     depends_on:
       - db
+    networks:
+      - mynet
 
   db:
     build:
@@ -21,5 +26,7 @@ services:
       - .env
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - mynet
 volumes:
   db_data: {}

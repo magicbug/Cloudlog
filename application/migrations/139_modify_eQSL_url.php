@@ -13,4 +13,3 @@ class Migration_modify_eQSL_url extends CI_Migration {
 		// Will not go back to insecure connections
 	}
 }
-?>
