@@ -1627,6 +1627,19 @@ if ($this->session->userdata('user_id') != null) {
             hideControlContainer: true
         }).addTo(map);
 
+          /*Legend specific*/
+  var legend = L.control({ position: "topright" });
+
+legend.onAdd = function(map) {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h4>" + lang_general_word_colors + "</h4>";
+    div.innerHTML += "<i style='background: green'></i><span> Confirmed Square</span><br>";
+    div.innerHTML += "<i style='background: orange'></i><span> Unconfirmed Square</span><br>";
+    return div;
+};
+
+legend.addTo(map);
+
             //console.log(wab_squares.responseJSON);
             // Add requested external GeoJSON to map
             var kywab_squares = L.geoJSON(wab_squares.responseJSON, {
@@ -1634,13 +1647,13 @@ if ($this->session->userdata('user_id') != null) {
                     if (WorkedSquaresArray.indexOf(feature.properties.name) !== -1) {
                         if (ConfirmedSquaresArray.indexOf(feature.properties.name) !== -1) {
                             return {
-                                fillColor: 'red',
+                                fillColor: 'green',
                                 fill: true,
                                 fillOpacity: 1,
                             };
                         } else {
                             return {
-                                fillColor: '#5cb85c',
+                                fillColor: 'orange',
                                 fill: true,
                                 fillOpacity: 1,
                             };
