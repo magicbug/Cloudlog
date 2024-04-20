@@ -521,6 +521,8 @@ class Awards extends CI_Controller
 
         $wab = str_replace('"', "", $this->security->xss_clean($this->input->post("Wab")));
         
+        $wab = str_replace(["Small Square ", " Boundry Box"], "", $wab);
+
         $data['results'] = $this->logbook_model->wab_qso_details($wab);
 
         // Render Page
