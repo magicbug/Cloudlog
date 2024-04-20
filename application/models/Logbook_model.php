@@ -4702,6 +4702,21 @@ class Logbook_model extends CI_Model
     return $this->db->get($this->config->item('table_name'));
   }
 
+  function wab_qso_details($wab)
+  {
+    $CI = &get_instance();
+    $CI->load->model('logbooks_model');
+    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+    $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
+    $this->db->join('lotw_users', 'lotw_users.callsign = ' . $this->config->item('table_name') . '.col_call', 'left outer');
+    $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
+    $this->db->where('COL_SIG', "WAB");
+    $this->db->where('COL_SIG_INFO', $wab);
+
+    return $this->db->get($this->config->item('table_name'));
+  }
+
   public function check_qso_is_accessible($id)
   {
     // check if qso belongs to user
