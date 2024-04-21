@@ -17,6 +17,7 @@ $lang['menu_post_contest_logging'] = 'Registrar Entrada de Concurso';
 $lang['menu_bandmap'] = 'mapa de Bandas';
 $lang['menu_view_qsl'] = 'Ver Tarjetas QSL';
 $lang['menu_view_eqsl'] = 'Ver Tarjetas eQSL';
+$lang['menu_view_sstv'] = 'View SSTV Images';
 
 $lang['menu_notes'] = 'Notas';
 

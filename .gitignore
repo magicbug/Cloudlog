@@ -18,3 +18,5 @@
 sync.sh
 *.p12
 *.swp
+.env
+/node_modules

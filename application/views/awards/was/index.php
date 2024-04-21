@@ -4,7 +4,7 @@
 
 <style>
     #wasmap {
-	height: calc(100vh - 500px) !important;
+	height: calc(100vh) !important;
 	max-height: 900px !important;
 }
 /*Legend specific*/

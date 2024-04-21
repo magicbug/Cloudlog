@@ -1,6 +1,6 @@
 <style>
     #cqmap {
-	height: calc(100vh - 480px) !important;
+	height: calc(100vh) !important;
 	max-height: 900px !important;
 }
 /*Legend specific*/

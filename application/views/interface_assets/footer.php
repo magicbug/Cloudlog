@@ -1583,6 +1583,158 @@ if ($this->session->userdata('user_id') != null) {
 
 <?php } ?>
 
+<?php if ($this->uri->segment(1) == "awards" && $this->uri->segment(2) == "wab") { ?>
+    <script>
+        var WorkedSquaresObject = <?php echo json_encode($worked_squares); ?>;
+        var WorkedSquaresArray = Object.values(WorkedSquaresObject);
+
+        var ConfirmedSquaresObject = <?php echo json_encode($confirmed_squares); ?>;
+        var ConfirmedSquaresArray = Object.values(ConfirmedSquaresObject);
+
+        var wab_squares = $.ajax({
+            url: "<?php echo base_url(); ?>assets/json/WABSquares.geojson",
+            dataType: "json",
+            success: console.log("WAB data successfully loaded."),
+            error: function(xhr) {
+                alert(xhr.statusText)
+            }
+        })
+
+        // Load the external GeoJSON file
+        $.when(wab_squares).done(function() {
+        var layer = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>', {
+            maxZoom: 18,
+            attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright'); ?>',
+            id: 'mapbox.streets'
+        });
+
+        var map = L.map('map', {
+            layers: [layer],
+            center: [54.970901, -2.457140],
+            zoom: 8,
+            minZoom: 8,
+            fullscreenControl: true,
+            fullscreenControlOptions: {
+                position: 'topleft'
+            },
+        });
+
+        var printer = L.easyPrint({
+            tileLayer: layer,
+            sizeModes: ['Current'],
+            filename: 'myMap',
+            exportOnly: true,
+            hideControlContainer: true
+        }).addTo(map);
+
+          /*Legend specific*/
+  var legend = L.control({ position: "topright" });
+
+legend.onAdd = function(map) {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML += "<h4>" + lang_general_word_colors + "</h4>";
+    div.innerHTML += "<i style='background: green'></i><span> Confirmed Square</span><br>";
+    div.innerHTML += "<i style='background: orange'></i><span> Unconfirmed Square</span><br>";
+    return div;
+};
+
+legend.addTo(map);
+
+            //console.log(wab_squares.responseJSON);
+            // Add requested external GeoJSON to map
+            var kywab_squares = L.geoJSON(wab_squares.responseJSON, {
+                style: function(feature) {
+                    if (WorkedSquaresArray.indexOf(feature.properties.name) !== -1) {
+                        if (ConfirmedSquaresArray.indexOf(feature.properties.name) !== -1) {
+                            return {
+                                fillColor: 'green',
+                                fill: true,
+                                fillOpacity: 1,
+                            };
+                        } else {
+                            return {
+                                fillColor: 'orange',
+                                fill: true,
+                                fillOpacity: 1,
+                            };
+                        }
+                    } else {
+                        return {};
+                    }
+                },
+                pointToLayer: function(feature, latlng) {
+                    if (feature.properties && feature.properties.name) {
+                        // Create a custom icon that displays the name from the GeoJSON data
+                        var labelIcon = L.divIcon({
+                            className: 'text-labels', // Set class for CSS styling
+                            html: feature.properties.name
+                        });
+
+                        // Create a marker at the location of the point
+                        return L.marker(latlng, {
+                            icon: labelIcon
+                        });
+                    }
+                },
+                onEachFeature: function(feature, layer) {
+                    layer.on('click', function() {
+                        // Code to execute when the area is clicked
+                        displaywabcontacts(feature.properties.name);
+                    });
+                }
+            }).addTo(map);
+            // Function to update labels based on zoom level
+            function updateLabels() {
+                var currentZoom = map.getZoom();
+                kywab_squares.eachLayer(function(layer) {
+                    if (currentZoom >= 8) {
+                        // Show labels if zoom level is 10 or higher
+                        layer.getElement().style.display = 'block';
+                    } else {
+                        // Hide labels if zoom level is less than 10
+                        layer.getElement().style.display = 'none';
+                    }
+                });
+            }
+
+            // Update labels when the map zoom changes
+            map.on('zoomend', updateLabels);
+
+            // Update labels immediately after adding the GeoJSON data to the map
+            updateLabels();
+        });
+
+        function displaywabcontacts(wabsquare) {
+            var baseURL = "<?php echo base_url(); ?>";
+            $.ajax({
+                url: baseURL + 'index.php/awards/wab_details_ajax',
+                type: 'post',
+                data: {
+                    'Wab': wabsquare,
+                },
+                success: function(html) {
+                    BootstrapDialog.show({
+                        title: lang_general_word_qso_data,
+                        size: BootstrapDialog.SIZE_WIDE,
+                        cssClass: 'qso-counties-dialog',
+                        nl2br: false,
+                        message: html,
+                        onshown: function(dialog) {
+                            $('[data-bs-toggle="tooltip"]').tooltip();
+                        },
+                        buttons: [{
+                            label: lang_admin_close,
+                            action: function(dialogItself) {
+                                dialogItself.close();
+                            }
+                        }]
+                    });
+                }
+            });
+        }
+    </script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "gridsquares" && !empty($this->uri->segment(2))) { ?>
     <script>
         var gridsquaremap = true;
@@ -2573,7 +2725,7 @@ if ($this->session->userdata('user_id') != null) {
                         },
                         success: function(data) {
                             // remove selected sstv image from table
-                            $("#" + id).parent("tr:first").remove(); 
+                            $("#" + id).parent("tr:first").remove();
 
                             // remove sstv image from carousel
                             $("#sstvCarouselIndicators .carousel-indicators li:last-child").remove();
@@ -2748,27 +2900,27 @@ if ($this->session->userdata('user_id') != null) {
     function createTable(title, type) {
         const tableClass = type === 'sstv' ? 'sstvtable' : 'qsltable';
         return `<table style="width:100%" class="${tableClass} table table-sm table-bordered table-hover table-striped table-condensed">` +
-                    '<thead>' +
-                        '<tr>' +
-                        '<th style="text-align: center">' + title + '</th>' +
-                        '<th style="text-align: center"></th>' +
-                        '<th style="text-align: center"></th>' +
-                        '</tr>' +
-                    '</thead>' +
-                    '<tbody></tbody>' +
-                '</table>'
+            '<thead>' +
+            '<tr>' +
+            '<th style="text-align: center">' + title + '</th>' +
+            '<th style="text-align: center"></th>' +
+            '<th style="text-align: center"></th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody></tbody>' +
+            '</table>'
     }
 
-    function createTableRow(image, type){
+    function createTableRow(image, type) {
         const viewFunction = type === 'sstv' ? 'viewSstv' : 'viewQsl';
         const deleteFunction = type === 'sstv' ? 'deleteSstv' : 'deleteQsl';
         return '<tr><td style="text-align: center">' + image.filename + '</td>' +
-                    `<td id="${image.insertid}" style="text-align: center"><button onclick="${deleteFunction}(${image.insertid});" class="btn btn-sm btn-danger">Delete</button></td>` +
-                    `<td style="text-align: center"><button onclick="${viewFunction}('${image.filename}')" class="btn btn-sm btn-success">View</button></td>` +
-                '</tr>'
+            `<td id="${image.insertid}" style="text-align: center"><button onclick="${deleteFunction}(${image.insertid});" class="btn btn-sm btn-danger">Delete</button></td>` +
+            `<td style="text-align: center"><button onclick="${viewFunction}('${image.filename}')" class="btn btn-sm btn-success">View</button></td>` +
+            '</tr>'
     }
 
-    function handleSSTVImageUpload(sstvImage){
+    function handleSSTVImageUpload(sstvImage) {
         const baseURL = "<?php echo base_url(); ?>";
         const numCarouselItems = $('#sstv-carousel-indicators li').length;
 
@@ -2777,7 +2929,7 @@ if ($this->session->userdata('user_id') != null) {
         $('.sstvtable tbody:last').append(createTableRow(sstvImage, "sstv"));
 
         // Append card to the carousel
-        const newCarouselItem = '<div class="' + (numCarouselItems === 0 ? 'active ' : '') + 'carousel-item carouselimageid_' + sstvImage.insertid +'"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/sstvimages/' + sstvImage.filename +  '" alt="QSL picture"></div>';
+        const newCarouselItem = '<div class="' + (numCarouselItems === 0 ? 'active ' : '') + 'carousel-item carouselimageid_' + sstvImage.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/sstvimages/' + sstvImage.filename + '" alt="QSL picture"></div>';
         $("#sstv-carousel-inner").append(newCarouselItem);
 
         // Append new carousel indicator
@@ -2791,7 +2943,7 @@ if ($this->session->userdata('user_id') != null) {
     function uploadSSTV() {
         const baseURL = "<?php echo base_url(); ?>";
         const formdata = new FormData(document.getElementById("sstvinfo"));
-        
+
         $.ajax({
             url: baseURL + 'index.php/sstv/uploadsstv',
             type: 'post',
@@ -2805,7 +2957,7 @@ if ($this->session->userdata('user_id') != null) {
                     if (sstvImage.status == 'Success') {
                         // Show the SSTV image tab
                         $('.sstvimagetab').removeAttr('hidden');
-                        
+
                         // Handle the SSTV image upload
                         handleSSTVImageUpload(sstvImage);
                     } else if (sstvImage.status != '') {
@@ -2829,7 +2981,7 @@ if ($this->session->userdata('user_id') != null) {
         $('.qsltable tbody:last').append(createTableRow(qslCard, "qsl"));
 
         // Append card image to the carousel
-        const newCarouselItem = '<div class="' + (numCarouselItems === 0 ? 'active ' : '') + 'carousel-item carouselimageid_' + qslCard.insertid +'"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/qslcard/' + qslCard.filename +  '" alt="QSL picture"></div>';
+        const newCarouselItem = '<div class="' + (numCarouselItems === 0 ? 'active ' : '') + 'carousel-item carouselimageid_' + qslCard.insertid + '"><img class="img-fluid w-qsl" src="' + baseURL + '/assets/qslcard/' + qslCard.filename + '" alt="QSL picture"></div>';
         $("#qsl-carousel-inner").append(newCarouselItem);
 
         // Append carousel indicator for the new card
