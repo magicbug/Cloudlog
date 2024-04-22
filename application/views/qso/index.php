@@ -164,33 +164,33 @@
               <div class="row">
                 <div class="mb-3 col-md-6">
                   <label for="rst_sent"><?php echo lang('gen_hamradio_rsts'); ?></label>
-                  <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
+                  <input tabindex="2" type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                 </div>
 
                 <div class="mb-3 col-md-6">
                   <label for="rst_rcvd"><?php echo lang('gen_hamradio_rstr'); ?></label>
-                  <input tabindex="2" type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59">
+                  <input tabindex="3" type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59">
                 </div>
               </div>
 
               <div class="mb-3 row">
                   <label for="name" class="col-sm-3 col-form-label"><?php echo lang('general_word_name'); ?></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="name" id="name" value="">
+                    <input tabindex="4" type="text" class="form-control form-control-sm" name="name" id="name" value="">
                 </div>
               </div>
 
               <div class="mb-3 row">
                 <label for="qth" class="col-sm-3 col-form-label"><?php echo lang('general_word_location'); ?></label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="qth" id="qth" value="">
+                    <input tabindex="5" type="text" class="form-control form-control-sm" name="qth" id="qth" value="">
                 </div>
               </div>
 
               <div class="mb-3 row">
                   <label for="locator" class="col-sm-3 col-form-label"><?php echo lang('gen_hamradio_gridsquare'); ?></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
+                    <input tabindex="6" type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
                     <small id="locator_info" class="form-text text-muted"></small>
                 </div>
               </div>
@@ -200,7 +200,7 @@
               <div class="mb-3 row">
                   <label for="comment" class="col-sm-3 col-form-label"><?php echo lang('general_word_comment'); ?></label>
                   <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
+                    <input tabindex="7" type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
                 </div>
               </div>
 
