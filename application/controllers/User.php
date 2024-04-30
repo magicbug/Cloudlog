@@ -897,8 +897,9 @@ class User extends CI_Controller {
 			$decrypted_string = $this->encrypt->decode($encrypted_string);
 			$this->user_model->update_session($decrypted_string);
 			$this->user_model->set_last_login($decrypted_string);
-			// set a debug message
-			$this->session->set_flashdata('notice', 'User logged in');
+
+			log_message('debug', 'Remember Me Login Successful');
+
 			redirect('dashboard');
 		}
 		
