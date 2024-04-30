@@ -11,6 +11,7 @@ $lang['account_column5_text'] = 'Columna 5 (solo en libro de guardia)';
 
 $lang['account_create_user_account'] = 'Crear Cuenta de Usuario';
 $lang['account_edit_account'] = 'Editar Cuenta';
+$lang['account_remember_me'] = 'Remember me';
 
 $lang['account_account_information'] = 'Información de la Cuenta';
 $lang['account_user'] = "Usuario";

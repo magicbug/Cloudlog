@@ -11,6 +11,7 @@ $lang['account_column5_text'] = '第5列（仅日志页面展示）';
 
 $lang['account_create_user_account'] = '创建账户';
 $lang['account_edit_account'] = '编辑账户';
+$lang['account_remember_me'] = 'Remember me';
 
 $lang['account_account_information'] = '账户信息';
 $lang['account_user'] = "用户";

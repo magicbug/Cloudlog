@@ -8,6 +8,7 @@ $lang['account_column2_text'] = 'Wähle Spalte 2';
 $lang['account_column3_text'] = 'Wähle Spalte 3';
 $lang['account_column4_text'] = 'Wähle Spalte 4';
 $lang['account_column5_text'] = 'Wähle Spalte 5 (nur für Logbuch)';
+$lang['account_remember_me'] = 'Remember me';
 
 $lang['account_create_user_account'] = 'Benutzerkonto anlegen';
 $lang['account_edit_account'] = 'Benutzerkonto editieren';

@@ -11,6 +11,7 @@ $lang['account_column5_text'] = 'Επιλογή στήλης  5 (Μόνο για
 
 $lang['account_create_user_account'] = "Create User Account";
 $lang['account_edit_account'] = 'Edit Account';
+$lang['account_remember_me'] = 'Remember me';
 
 $lang['account_account_information'] = "Account";
 $lang['account_user'] = "User";

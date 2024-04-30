@@ -11,7 +11,7 @@ $lang['account_column5_text'] = 'Vybrat sloupec 5 (pouze pro deník)';
 
 $lang['account_create_user_account'] = 'Vytvořit uživatelský účet';
 $lang['account_edit_account'] = 'Upravit účet';
-
+$lang['account_remember_me'] = 'Remember me';
 $lang['account_account_information'] = 'Informace o účtu';
 $lang['account_user'] = "User";
 $lang['account_word_edited'] = "edited";

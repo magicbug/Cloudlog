@@ -11,6 +11,7 @@ $lang['account_column5_text'] = "Contenu colonne 5 (uniquement pour logbook)";
 
 $lang['account_create_user_account'] = "Créer un compte";
 $lang['account_edit_account'] = "Editer un compte";
+$lang['account_remember_me'] = 'Remember me';
 
 $lang['account_account_information'] = "Compte";
 $lang['account_user'] = "Compte";
