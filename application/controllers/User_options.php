@@ -59,6 +59,10 @@ class User_Options extends CI_Controller {
 		echo json_encode($jsonout);
 	}	
 
+	public function enableVersionDialog() {
+		$this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => 'false'));
+	}
+
 	public function dismissVersionDialog() {
 		$this->user_options_model->set_option('version_dialog', 'confirmed', array('boolean' => 'true'));
 	}

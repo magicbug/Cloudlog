@@ -1,0 +1,32 @@
+version: "3.8"
+
+networks:
+  mynet:
+
+services:
+  web:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html:rw
+    command: ["./script.sh"]
+    depends_on:
+      - db
+    networks:
+      - mynet
+
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-db
+    env_file:
+      - .env
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - mynet
+volumes:
+  db_data: {}

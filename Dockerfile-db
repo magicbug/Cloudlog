@@ -1,0 +1,8 @@
+# Dockerfile-db
+FROM mariadb:latest
+
+# Add the install.sql file to the docker image
+ADD install/assets/install.sql /docker-entrypoint-initdb.d
+
+# Expose port 3306
+EXPOSE 3306
