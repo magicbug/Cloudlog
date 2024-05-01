@@ -892,8 +892,8 @@ class User extends CI_Controller {
 		$data['user'] = $query->row();
 
 		// Read the cookie remeber_me and log the user in
-		if($this->input->cookie('remember_me')) {
-			$encrypted_string = $this->input->cookie('remember_me');
+		if($this->input->cookie(config_item('cookie_prefix').'remember_me')) {
+			$encrypted_string = $this->input->cookie(config_item('cookie_prefix').'remember_me');
 			$decrypted_string = $this->encrypt->decode($encrypted_string);
 			$this->user_model->update_session($decrypted_string);
 			$this->user_model->set_last_login($decrypted_string);
