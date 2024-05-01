@@ -898,7 +898,7 @@ class User extends CI_Controller {
 			$this->user_model->update_session($decrypted_string);
 			$this->user_model->set_last_login($decrypted_string);
 
-			log_message('debug', 'Remember Me Login Successful');
+			log_message('debug', '[User ID: '.$decrypted_string.'] Remember Me Login Successful');
 
 			redirect('dashboard');
 		}
