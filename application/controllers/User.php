@@ -893,14 +893,21 @@ class User extends CI_Controller {
 
 		// Read the cookie remeber_me and log the user in
 		if($this->input->cookie(config_item('cookie_prefix').'remember_me')) {
-			$encrypted_string = $this->input->cookie(config_item('cookie_prefix').'remember_me');
-			$decrypted_string = $this->encryption->decrypt($encrypted_string);
-			$this->user_model->update_session($decrypted_string);
-			$this->user_model->set_last_login($decrypted_string);
-
-			log_message('debug', '[User ID: '.$decrypted_string.'] Remember Me Login Successful');
-
-			redirect('dashboard');
+			try {
+				$encrypted_string = $this->input->cookie(config_item('cookie_prefix').'remember_me');
+				$decrypted_string = $this->encryption->decrypt($encrypted_string);
+				$this->user_model->update_session($decrypted_string);
+				$this->user_model->set_last_login($decrypted_string);
+	
+				log_message('debug', '[User ID: '.$decrypted_string.'] Remember Me Login Successful');
+	
+				redirect('dashboard');
+			} catch (Exception $e) {
+				// Something went wrong with the cookie
+				log_message('error', 'Remember Me Login Failed');
+				$this->session->set_flashdata('error', 'Remember Me Login Failed');
+				redirect('user/login');
+			}
 		}
 		
 		if ($this->form_validation->run() == FALSE) {
