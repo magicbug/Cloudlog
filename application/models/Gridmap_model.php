@@ -3,6 +3,7 @@
 class Gridmap_model extends CI_Model {
 
     function get_band_confirmed($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat, $logbooks_locations_array = NULL) {
+
         if ($logbooks_locations_array == NULL) {
            $CI =& get_instance();
            $CI->load->model('logbooks_model');
