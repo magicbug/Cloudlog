@@ -51,6 +51,12 @@ body {
                         placeholder="<?php echo lang('account_password'); ?>">
                 </div>
 
+                <!-- build a remember me checkbox -->
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="remember_me" value="1"> <?php echo lang('account_remember_me'); ?>
+                    </label>
+
                 <div>
                     <p><small><a class="" href="<?php echo site_url('user/forgot_password'); ?>"><?php echo lang('account_forgot_your_password'); ?></a></small></p>
                 </div>

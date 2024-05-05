@@ -11,6 +11,7 @@ $lang['account_column5_text'] = 'Выберите столбец 5 (только
 
 $lang['account_create_user_account'] = ' Создать аккаунт пользователя';
 $lang['account_edit_account'] = 'Редактировать аккаунт';
+$lang['account_remember_me'] = 'Remember me';
 
 $lang['account_account_information'] = 'Информация об аккаунте';
 $lang['account_user'] = "User";

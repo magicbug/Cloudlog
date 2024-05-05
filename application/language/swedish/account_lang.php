@@ -11,6 +11,7 @@ $lang['account_column5_text'] = 'Välj kolumn 5 (bara för logbok)';
 
 $lang['account_create_user_account'] = 'Skapa användarkonto';
 $lang['account_edit_account'] = 'Redigera användarkonto';
+$lang['account_remember_me'] = 'Remember me';
 
 $lang['account_account_information'] = 'Användarkontoinformation';
 $lang['account_user'] = "User";
