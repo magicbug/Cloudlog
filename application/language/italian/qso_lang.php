@@ -31,7 +31,7 @@ $lang['qsl_notes_helptext'] = 'Il contenuto di questa nota è esportato a serviz
 $lang['qso_eqsl_qslmsg_helptext'] = "Ottieni il messaggio predefinito per eQSL, per questa stazione.";
 
 // error text //
-$lang['qso_error_timeoff_less_timeon'] = "Orario di -fine minore di quello di Inizio";
+$lang['qso_error_timeoff_less_timeon'] = "Orario di fine minore di quello di Inizio";
 
 // Button Text on /qso Display
 
@@ -61,7 +61,7 @@ $lang['qso_simplefle_qso_date'] = "Data del QSO";
 $lang['qso_simplefle_operator'] = "Operatore";
 $lang['qso_simplefle_operator_hint'] = "es. OK2CQR";
 $lang['qso_simplefle_station_call_location'] = "Chiamata/Posizione della stazione";
-$lang['qso_simplefle_station_call_location_hint'] = "Se operi da una nuova posizione, crea prima un nuovo <a href=". site_url('stazione') . ">Posizione stazione</a>";
+$lang['qso_simplefle_station_call_location_hint'] = "Se operi da una nuova posizione, crea prima un nuovo <a href=". site_url('station') . ">Posizione stazione</a>";
 $lang['qso_simplefle_utc_time'] = "Ora UTC attuale";
 $lang['qso_simplefle_enter_the_data'] = "Inserisci i dati";
 $lang['qso_simplefle_syntax_help_close_w_sample'] = "Chiudi e carica dati di esempio";

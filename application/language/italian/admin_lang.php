@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('Non è consentito l\'accesso diretto allo script');
 $lang['admin_user_line1'] = 'Cloudlog necessita di almeno un utente configurato per funzionare.';
 $lang['admin_user_line2'] = 'Agli utenti possono essere assegnati ruoli che forniscono loro diversi permessi, come aggiungere QSO al registro e accedere alle API Cloudlog.';
 $lang['admin_user_line3'] = 'L\'utente attualmente connesso viene visualizzato in alto a destra di ogni pagina.';
-$lang['admin_user_line4'] = "Con il pulsante di reimpostazione della password, puoi inviare a un utente un'e-mail contenente un collegamento per reimpostare la password. Per ottenere ciò, assicurati che le impostazioni e-mail nelle opzioni globali siano configurate correttamente.";
+$lang['admin_user_line4'] = "Con il pulsante di reimpostazione della password, puoi inviare a un utente un\'e-mail contenente un collegamento per reimpostare la password. Per ottenere ciò, assicurati che le impostazioni e-mail nelle opzioni globali siano configurate correttamente.";
 
 $lang['admin_user_list'] = 'Elenco utenti';
 

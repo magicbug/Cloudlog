@@ -81,7 +81,7 @@ $lang['account_leave_blank_to_keep_existing_password'] = 'Lascia vuoto per mante
 $lang['account_clublog'] = 'Club Log';
 $lang['account_clublog_email_callsign'] = 'Club Log E-mail/Nominativo';
 $lang['account_clublog_password'] = 'Club Log Password';
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'L\'e-mail o il nominativo che utilizzi per accedere al registro del club';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'L\'E-mail o il nominativo che utilizzi per accedere a ClubLog';
 
 $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'eQSL.cc Utente';

@@ -75,15 +75,15 @@ $lang['general_word_qslcard'] = 'Cartolina QSL';
 $lang['general_word_qslcard_management'] = 'Gestione QSL';
 $lang['general_word_qslcards'] = 'Cartoline QSL';
 $lang['general_word_qslcard_direct'] = 'Diretta';
-$lang['general_word_qslcard_bureau'] = 'Ufficio';
+$lang['general_word_qslcard_bureau'] = 'Bureau';
 $lang['general_word_qslcard_electronic'] = 'Elettronica';
-$lang['general_word_qslcard_manager'] = 'Gestore';
+$lang['general_word_qslcard_manager'] = 'Manager';
 $lang['general_word_qslcard_via'] = 'Via';
-$lang['general_word_eqslcard'] = 'Carta eQSL';
+$lang['general_word_eqslcard'] = 'Cartolina eQSL';
 $lang['general_word_eqslcards'] = 'Cartoline eQSL';
 $lang['general_word_sstv_management'] = 'Gestione SSTV';
 $lang['general_word_sstvimages'] = 'Immagini SSTV';
-$lang['general_sstv_upload'] = 'Immagini SSTV caricate';
+$lang['general_sstv_upload'] = 'Caricamento Immagini SSTV';
 $lang['general_sstv_upload_button'] = 'Carica immagini SSTV';
 $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
@@ -97,13 +97,13 @@ $lang['general_mark_qsl_rx_direct'] = 'Segna QSL Ricevuta (Diretta)';
 $lang['general_mark_qsl_rx_electronic'] = 'Segna QSL Ricevuta (Elettronico)';
 $lang['general_mark_qsl_tx_bureau'] = 'Segna QSL Inviata (Bureau)';
 $lang['general_mark_qsl_tx_direct'] = 'Segna QSL Inviata (Direct)';
-$lang['general_mark_qsl_requested'] = 'Segna QSL come richiesto';
-$lang['general_mark_qsl_requested_bureau'] = 'Segna QSL come richiesto (Bureau)';
-$lang['general_mark_qsl_requested_direct'] = 'Segna QSL come richiesto (Diretta)';
-$lang['general_mark_qsl_not_required'] = 'Segna QSL non come richiesto';
+$lang['general_mark_qsl_requested'] = 'Segna QSL come richiesta';
+$lang['general_mark_qsl_requested_bureau'] = 'Segna QSL come richiesta (Bureau)';
+$lang['general_mark_qsl_requested_direct'] = 'Segna QSL come richiesta (Diretta)';
+$lang['general_mark_qsl_not_required'] = 'Segna QSL come non richiesta';
 
 $lang['general_delete_qso'] = 'Cancella QSO';
-$lang['general_more_qso'] = 'Più QSOs';
+$lang['general_more_qso'] = 'Altri QSOs';
 
 $lang['general_lookup_qrz'] = 'Cerca su QRZ.com';
 $lang['general_lookup_hamqth'] = 'Cerca su HamQTH';
@@ -117,14 +117,14 @@ $lang['gen_max_file_upload_size'] = 'La dimensione massima del caricamento del f
 $lang['cloudlog_station_profile'] = 'Luogo Stazione';
 
 // ham radio terms
-$lang['gen_hamradio_cq'] = "CQ";
+$lang['gen_hamradio_cq'] = 'CQ';
 $lang['gen_hamradio_qso'] = 'QSO';
 $lang['gen_hamradio_station'] = 'Stazione';
 
 $lang['gen_hamradio_call'] = 'Nominativo';
 $lang['gen_hamradio_callsign'] = 'Nominativo';
-$lang['gen_hamradio_prefix'] = "Prefisso";
-$lang['gen_hamradio_suffix'] = "Suffisso";
+$lang['gen_hamradio_prefix'] = 'Prefisso';
+$lang['gen_hamradio_suffix'] = 'Suffisso';
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Modo';
