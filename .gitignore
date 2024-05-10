@@ -22,3 +22,5 @@ sync.sh
 *.swp
 .env
 /node_modules
+/.vs
+/.gitignore
