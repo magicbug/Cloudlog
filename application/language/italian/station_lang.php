@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 /*
 ___________________________________________________________________________________________
@@ -8,35 +8,35 @@ Station Logbooks
 ___________________________________________________________________________________________
 */
 
-$lang['station_logbooks'] = "Station Logbooks";
-$lang['station_logbooks_description_header'] = "What are Station Logbooks";
-$lang['station_logbooks_description_text'] = "Station Logbooks allow you to group Station Locations, this allows you to see all the locations across one session from the logbook areas to the analytics. Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.";
-$lang['station_logbooks_create'] = "Create Station Logbook";
-$lang['station_logbooks_status'] = "Status";
-$lang['station_logbooks_link'] = "Link";
-$lang['station_logbooks_public_search'] = "Public Search";
-$lang['station_logbooks_set_active'] = "Set as Active Logbook";
-$lang['station_logbooks_active_logbook'] = "Active Logbook";
-$lang['station_logbooks_edit_logbook'] = "Edit Station Logbook";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
-$lang['station_logbooks_confirm_delete'] = "Are you sure you want to delete the following station logbook? You must re-link any locations linked here to another logbook.: ";
-$lang['station_logbooks_view_public'] = "View Public Page for Logbook: ";
-$lang['station_logbooks_create_name'] = "Station Logbook Name";
-$lang['station_logbooks_create_name_hint'] = "You can call a station logbook anything.";
-$lang['station_logbooks_edit_name_hint'] = "Shortname for the station logbook. For example: Home Log (IO87IP)";
-$lang['station_logbooks_edit_name_update'] = "Update Station Logbook Name";
-$lang['station_logbooks_public_slug'] = "Public Slug";
-$lang['station_logbooks_public_slug_hint'] = "Setting a public slug allows you to share your logbook with anyone via a custom website address, this slug can contain letters & numbers only.";
-$lang['station_logbooks_public_slug_format1'] = "Later it looks like this:";
-$lang['station_logbooks_public_slug_format2'] = "[your slug]";
-$lang['station_logbooks_public_slug_input'] = "Type in Public Slug choice";
-$lang['station_logbooks_public_slug_visit'] = "Visit Public Page";
-$lang['station_logbooks_public_search_hint'] = "Enabling public search function offers a search input box on the public logbook page accessed via public slug. Search only covers this logbook.";
-$lang['station_logbooks_public_search_enabled'] = "Public search enabled";
-$lang['station_logbooks_select_avail_loc'] = "Select Available Station Locations";
-$lang['station_logbooks_link_loc'] = "Link Location";
-$lang['station_logbooks_linked_loc'] = "Linked Locations";
-$lang['station_logbooks_no_linked_loc'] = "No Linked Locations";
-$lang['station_logbooks_unlink_station_location'] = "Unlink Station Location";
+$lang['station_logbooks'] = "Registri della stazione";
+$lang['station_logbooks_description_header'] = "Cosa sono i registri della stazione";
+$lang['station_logbooks_description_text'] = "I registri delle stazioni ti consentono di raggruppare le posizioni delle stazioni, questo ti consente di vedere tutte le posizioni in una sessione dalle aree del registro alle analisi. Ottimo per quando operi in più posizioni ma fanno parte di lo stesso Circolo DXCC o VUCC.";
+$lang['station_logbooks_create'] = "Crea registro della stazione";
+$lang['station_logbooks_status'] = "Stato";
+$lang['station_logbooks_link'] = "Collegamento";
+$lang['station_logbooks_public_search'] = "Ricerca pubblica";
+$lang['station_logbooks_set_active'] = "Imposta come registro attivo";
+$lang['station_logbooks_active_logbook'] = "Diario di bordo attivo";
+$lang['station_logbooks_edit_logbook'] = "Modifica registro della stazione"; // Verrà generata la frase completa "Modifica registro stazione: [Nome registro]"
+$lang['station_logbooks_confirm_delete'] = "Sei sicuro di voler eliminare il seguente registro della stazione? Devi ricollegare tutte le posizioni collegate qui a un altro registro della stazione.: ";
+$lang['station_logbooks_view_public'] = "Visualizza la pagina pubblica del registro: ";
+$lang['station_logbooks_create_name'] = "Nome registro della stazione";
+$lang['station_logbooks_create_name_hint'] = "Puoi chiamare qualsiasi cosa il diario di bordo della stazione.";
+$lang['station_logbooks_edit_name_hint'] = "Nome breve per il registro della stazione. Ad esempio: Home Log (IO87IP)";
+$lang['station_logbooks_edit_name_update'] = "Aggiorna nome registro stazione";
+$lang['station_logbooks_public_slug'] = "Slug pubblico";
+$lang['station_logbooks_public_slug_hint'] = "L\'impostazione di uno slug pubblico ti consente di condividere il tuo diario di bordo con chiunque tramite un indirizzo web personalizzato, questo slug può contenere solo lettere e numeri.";
+$lang['station_logbooks_public_slug_format1'] = "Più tardi apparirà così:";
+$lang['station_logbooks_public_slug_format2'] = "[il tuo slug]";
+$lang['station_logbooks_public_slug_input'] = "Digita la scelta Slug pubblica";
+$lang['station_logbooks_public_slug_visit'] = "Visita la pagina pubblica";
+$lang['station_logbooks_public_search_hint'] = "L\'abilitazione della funzione di ricerca pubblica offre una casella di input per la ricerca sulla pagina del registro pubblico accessibile tramite slug pubblico. La ricerca copre solo questo registro.";
+$lang['station_logbooks_public_search_enabled'] = "Ricerca pubblica abilitata";
+$lang['station_logbooks_select_avail_loc'] = "Seleziona le posizioni delle stazioni disponibili";
+$lang['station_logbooks_link_loc'] = "Posizione collegamento";
+$lang['station_logbooks_linked_loc'] = "Posizioni collegate";
+$lang['station_logbooks_no_linked_loc'] = "Nessuna posizione collegata";
+$lang['station_logbooks_unlink_station_location'] = "Scollega posizione stazione";
 
 
 
@@ -46,72 +46,72 @@ Station Locations
 ___________________________________________________________________________________________
 */
 
-$lang['station_location'] = 'Station Location';
-$lang['station_location_plural'] = "Station Locations";
-$lang['station_location_header_ln1'] = 'Station Locations define operating locations, such as your QTH, a friends QTH, or a portable station.';
-$lang['station_location_header_ln2'] = 'Similar to logbooks, a station profile keeps a set of QSOs together.';
-$lang['station_location_header_ln3'] = 'Only one station may be active at a time. In the table below this is shown with the -Active Station- badge.';
-$lang['station_location_create_header'] = 'Create Station Location';
-$lang['station_location_create'] = 'Create a Station Location';
-$lang['station_location_edit'] = 'Edit Station Location: ';
-$lang['station_location_updated_suff'] = ' Updated.';
-$lang['station_location_warning'] = 'Attention: You need to set an active station location. Go to Callsign->Station Location to select one.';
-$lang['station_location_reassign_at'] = 'Please reassign them at ';
-$lang['station_location_warning_reassign'] = 'Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.';
-$lang['station_location_name'] = 'Profile Name';
-$lang['station_location_name_hint'] = 'Shortname for the station location. For example: Home (IO87IP)';
-$lang['station_location_callsign'] = 'Station Callsign';
-$lang['station_location_callsign_hint'] = 'Station callsign. For example: 2M0SQL/P';
-$lang['station_location_power'] = 'Station Power (W)';
-$lang['station_location_power_hint'] = 'Default station power in Watt. Overwritten by CAT.';
-$lang['station_location_emptylog'] = 'Empty Log';
-$lang['station_location_confirm_active'] = 'Are you sure you want to make the following station the active station: ';
-$lang['station_location_set_active'] = 'Set Active';
-$lang['station_location_active'] = 'Active Station';
-$lang['station_location_claim_ownership'] = 'Claim Ownership';
-$lang['station_location_confirm_del_qso'] = 'Are you sure you want to delete all QSOs within this station profile?';
-$lang['station_location_confirm_del_stationlocation'] = 'Are you sure you want delete station profile  ';
-$lang['station_location_confirm_del_stationlocation_qso'] = 'This will delete all QSOs within this station profile?';
-$lang['station_location_dxcc'] = 'Station DXCC';
-$lang['station_location_dxcc_hint'] = 'Station DXCC entity. For example: Scotland';
-$lang['station_location_dxcc_warning'] = "Stop here for a Moment. Your chosen DXCC is outdated and not valid anymore. Check which DXCC for this particular location is the correct one. If you are sure, ignore this warning.";
-$lang['station_location_city'] = 'Station City';
-$lang['station_location_city_hint'] = 'Station city. For example: Inverness';
-$lang['station_location_state'] = 'Station State';
-$lang['station_location_state_hint'] = 'Station state. Applies to certain countries only. Leave blank if not applicable.';
-$lang['station_location_county'] = 'Station County';
-$lang['station_location_county_hint'] = 'Station County (Only used for USA/Alaska/Hawaii).';
-$lang['station_location_gridsquare'] = 'Station Gridsquare';
-$lang['station_location_gridsquare_hint_ln1'] = "Station gridsquare. For example: IO87IP. If you don't know your grid square then <a href='https://zone-check.eu/?m=loc' target='_blank'>click here</a>!";
-$lang['station_location_gridsquare_hint_ln2'] = "If you are located on a grid line, enter multiple grid squares separated with commas. For example: IO77,IO78,IO87,IO88.";
-$lang['station_location_iota_hint_ln1'] = "Station IOTA reference. For example: EU-005";
-$lang['station_location_iota_hint_ln2'] = "You can look up IOTA references at the <a target='_blank' href='https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html'>IOTA World</a> website.";
-$lang['station_location_sota_hint_ln1'] = "Station SOTA reference. You can look up SOTA references at the <a target='_blank' href='https://www.sotamaps.org/'>SOTA Maps</a> website.";
-$lang['station_location_wwff_hint_ln1'] = "Station WWFF reference. You can look up WWFF references at the <a target='_blank' href='https://www.cqgma.org/mvs/'>GMA Map</a> website.";
-$lang['station_location_pota_hint_ln1'] = "Station POTA reference. You can look up POTA references at the <a target='_blank' href='https://pota.app/#/map/'>POTA Map</a> website.";
-$lang['station_location_signature'] = "Signature";
-$lang['station_location_signature_name'] = "Signature Name";
-$lang['station_location_signature_name_hint'] = "Station Signature (e.g. GMA)..";
-$lang['station_location_signature_info'] = "Signature Information";
-$lang['station_location_signature_info_hint'] = "Station Signature Info (e.g. DA/NW-357).";
-$lang['station_location_eqsl_hint'] = 'The QTH Nickname which is configured in your eQSL Profile';
-$lang['station_location_eqsl_defaultqslmsg'] = "Default QSLMSG";
-$lang['station_location_eqsl_defaultqslmsg_hint'] = "Define a default message that will be populated and sent for each QSO for this station location.";
-$lang['station_location_qrz_subscription'] = 'Subscription Required';
-$lang['station_location_qrz_hint'] = "Find your API key on <a href='https://logbook.qrz.com/logbook' target='_blank'>the QRZ.com Logbook settings page";
-$lang['station_location_qrz_realtime_upload'] = 'QRZ.com Logbook Realtime Upload';
-$lang['station_location_hrdlog_username'] = "HRDLog.net Username";
-$lang['station_location_hrdlog_username_hint'] = "The username you are registered with at HRDlog.net (usually your callsign).";
-$lang['station_location_hrdlog_code'] = "HRDLog.net API Key";
-$lang['station_location_hrdlog_realtime_upload'] = "HRDLog.net Logbook Realtime Upload";
-$lang['station_location_hrdlog_code_hint'] = "Create your API Code on <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>HRDLog.net Userprofile page";
-$lang['station_location_qo100_hint'] = "Create your API key on <a href='https://qo100dx.club' target='_blank'>your QO-100 Dx Club's profile page";
-$lang['station_location_qo100_realtime_upload'] = "QO-100 Dx Club Realtime Upload";
-$lang['station_location_oqrs_enabled'] = "OQRS Enabled";
-$lang['station_location_oqrs_email_alert'] = "OQRS Email alert";
-$lang['station_location_oqrs_email_hint'] = "Make sure email is set up under admin and global options.";
-$lang['station_location_oqrs_text'] = "OQRS Text";
-$lang['station_location_oqrs_text_hint'] = "Some info you want to add regarding QSL'ing.";
-$lang['station_location_clublog_realtime_upload']='ClubLog Realtime Upload';
+$lang['station_location'] = 'Posizione della stazione';
+$lang['station_location_plural'] = "Posizioni delle stazioni";
+$lang['station_location_header_ln1'] = 'Le posizioni delle stazioni definiscono le posizioni operative, come il tuo QTH, un QTH di amici o una stazione portatile.';
+$lang['station_location_header_ln2'] = 'Simile ai registri, il profilo di una stazione tiene insieme una serie di QSO.';
+$lang['station_location_header_ln3'] = 'Può essere attiva solo una stazione alla volta. Nella tabella sottostante questa è mostrata con il badge -Stazione attiva-.';
+$lang['station_location_create_header'] = 'Crea posizione stazione';
+$lang['station_location_create'] = 'Crea una posizione della stazione';
+$lang['station_location_edit'] = 'Modifica posizione stazione: ';
+$lang['station_location_updated_suff'] = 'Aggiornato.';
+$lang['station_location_warning'] = 'Attenzione: è necessario impostare la posizione della stazione attiva. Vai su Segnale di chiamata->Posizione della stazione per selezionarne uno.';
+$lang['station_location_reassign_at'] = 'Per favore riassegnali a ';
+$lang['station_location_warning_reassign'] = 'A causa dei recenti cambiamenti all\'interno di Cloudlog è necessario riassegnare i QSO ai profili della stazione.';
+$lang['station_location_name'] = 'Nome profilo';
+$lang['station_location_name_hint'] = 'Nome breve per la posizione della stazione. Ad esempio: Casa (IO87IP)';
+$lang['station_location_callsign'] = 'Nominativo della stazione';
+$lang['station_location_callsign_hint'] = 'Nominativo della stazione. Ad esempio: 2M0SQL/P';
+$lang['station_location_power'] = 'Potenza della stazione (W)';
+$lang['station_location_power_hint'] = 'Potenza della stazione predefinita in Watt. Sovrascritto da CAT.';
+$lang['station_location_emptylog'] = 'Registro vuoto';
+$lang['station_location_confirm_active'] = 'Sei sicuro di voler rendere attiva la seguente stazione: ';
+$lang['station_location_set_active'] = 'Imposta attivo';
+$lang['station_location_active'] = 'Stazione attiva';
+$lang['station_location_claim_ownership'] = 'Rivendica proprietà';
+$lang['station_location_confirm_del_qso'] = 'Sei sicuro di voler eliminare tutti i QSO nel profilo di questa stazione?';
+$lang['station_location_confirm_del_stationlocation'] = 'Sei sicuro di voler eliminare il profilo della stazione ';
+$lang['station_location_confirm_del_stationlocation_qso'] = 'Questo cancellerà tutti i QSO all\'interno di questo profilo della stazione?';
+$lang['station_location_dxcc'] = 'Stazione DXCC';
+$lang['station_location_dxcc_hint'] = 'Entità DXCC della stazione. Ad esempio: Scozia';
+$lang['station_location_dxcc_warning'] = "Fermati qui per un momento. Il DXCC scelto è obsoleto e non più valido. Controlla quale DXCC per questa particolare posizione è quello corretto. Se sei sicuro, ignora questo avviso.";
+$lang['station_location_city'] = 'Città stazione';
+$lang['station_location_city_hint'] = 'Città della stazione. Ad esempio: Inverness';
+$lang['station_location_state'] = 'Stato della stazione';
+$lang['station_location_state_hint'] = 'Stato della stazione. Si applica solo ad alcuni paesi. Lascia vuoto se non applicabile.';
+$lang['station_location_county'] = 'Contea della stazione';
+$lang['station_location_county_hint'] = 'Contea di Station (utilizzato solo per USA/Alaska/Hawaii).';
+$lang['station_location_gridsquare'] = 'Griglia della Stazione';
+$lang['station_location_gridsquare_hint_ln1'] = "Griglia della Stazione. Ad esempio: IO87IP. Se non conosci il tuo quadrato della griglia, allora <a href='https://zone-check.eu/?m=loc' target=' _blank'>clicca qui</a>!";
+$lang['station_location_gridsquare_hint_ln2'] = "Se ti trovi su una linea della griglia, inserisci più riquadri della griglia separati da virgole. Ad esempio: IO77,IO78,IO87,IO88.";
+$lang['station_location_iota_hint_ln1'] = "Riferimento IOTA della stazione. Ad esempio: EU-005";
+$lang['station_location_iota_hint_ln2'] = "Puoi cercare i riferimenti IOTA su <a target='_blank' href='https://www.iota-world.org/iota-directory/annex-f-short-title -iota-reference-number-list.html'>IOTA World</a> sito web.";
+$lang['station_location_sota_hint_ln1'] = "Riferimento SOTA della stazione. Puoi cercare i riferimenti SOTA sul sito web <a target='_blank' href='https://www.sotamaps.org/'>SOTA Maps</a> .";
+$lang['station_location_wwff_hint_ln1'] = "Riferimento WWFF della stazione. Puoi cercare i riferimenti WWFF nella <a target='_blank' href='https://www.cqgma.org/mvs/'>Mappa GMA</a > sito web.";
+$lang['station_location_pota_hint_ln1'] = "Riferimento POTA della stazione. Puoi cercare i riferimenti POTA nella <a target='_blank' href='https://pota.app/#/map/'>Mappa POTA</a > sito web.";
+$lang['station_location_signature'] = "Firma";
+$lang['station_location_signature_name'] = "Nome firma";
+$lang['station_location_signature_name_hint'] = "Firma della stazione (ad es. GMA).";
+$lang['station_location_signature_info'] = "Informazioni sulla firma";
+$lang['station_location_signature_info_hint'] = "Informazioni sulla firma della stazione (ad esempio DA/NW-357).";
+$lang['station_location_eqsl_hint'] = 'Il nickname QTH configurato nel tuo profilo eQSL';
+$lang['station_location_eqsl_defaultqslmsg'] = "QSLMSG predefinito";
+$lang['station_location_eqsl_defaultqslmsg_hint'] = "Definisci un messaggio predefinito che verrà popolato e inviato per ogni QSO per questa posizione della stazione.";
+$lang['station_location_qrz_subscription'] = 'Abbonamento richiesto';
+$lang['station_location_qrz_hint'] = "Trova la tua chiave API nella <a href='https://logbook.qrz.com/logbook' target='_blank'>pagina delle impostazioni del registro di QRZ.com";
+$lang['station_location_qrz_realtime_upload'] = 'Caricamento in tempo reale del registro di QRZ.com';
+$lang['station_location_hrdlog_username'] = "Nome utente HRDLog.net";
+$lang['station_location_hrdlog_username_hint'] = "Il nome utente con cui sei registrato su HRDlog.net (solitamente il tuo nominativo).";
+$lang['station_location_hrdlog_code'] = "Chiave API HRDLog.net";
+$lang['station_location_hrdlog_realtime_upload'] = "Caricamento in tempo reale del registro di HRDLog.net";
+$lang['station_location_hrdlog_code_hint'] = "Crea il tuo codice API sulla <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>pagina del profilo utente HRDLog.net";
+$lang['station_location_qo100_hint'] = "Crea la tua chiave API sulla <a href='https://qo100dx.club' target='_blank'>pagina del profilo del tuo QO-100 Dx Club";
+$lang['station_location_qo100_realtime_upload'] = "Caricamento in tempo reale di QO-100 Dx Club";
+$lang['station_location_oqrs_enabled'] = "OQRS abilitato";
+$lang['station_location_oqrs_email_alert'] = "Avviso e-mail OQRS";
+$lang['station_location_oqrs_email_hint'] = "Assicurati che l\'e-mail sia impostata nelle opzioni di amministrazione e globali.";
+$lang['station_location_oqrs_text'] = "Testo OQRS";
+$lang['station_location_oqrs_text_hint'] = "Alcune informazioni che vuoi aggiungere riguardo alla QSL.";
+$lang['station_location_clublog_realtime_upload']='Caricamento in tempo reale di ClubLog';
 
 
