@@ -22,7 +22,7 @@ ________________________________________________________________________________
 */
 
 // $lang['general_word_important']           --> application/language/english/general_words_lang.php
-$lang['adif_alert_log_files_type'] = "I file di Log devono avere il tipo di file *.adi";
+$lang['adif_alert_log_files_type'] = "I file di Log devono essere del tipo *.adi";
 // $lang['general_word_warning']            --> application/language/english/general_words_lang.php "PHP Upload Warning"
 // $lang['gen_max_file_upload_size']        --> application/language/english/general_words_lang.php "PHP Upload Warning"
 
@@ -32,15 +32,15 @@ $lang['adif_select_stationlocation'] = "Seleziona la posizione della stazione";
 // The File Input is translated by the Browser
 $lang['adif_file_label'] = "File ADIF";
 
-$lang['adif_hint_no_info_in_file'] = "Selezionare se l'ADIF importato non contiene queste informazioni.";
+$lang['adif_hint_no_info_in_file'] = "Selezionare se l\'ADIF importato non contiene queste informazioni.";
 
 $lang['adif_import_dup'] = "Importa QSO duplicati";
 $lang['adif_mark_imported_lotw'] = "Segna i QSO importati come caricati su LoTW";
-$lang['adif_mark_imported_hrdlog'] = "Segna i QSO importati come caricati sul registro di HRDLog.net";
-$lang['adif_mark_imported_qrz'] = "Segna i QSO importati come caricati nel registro QRZ";
-$lang['adif_mark_imported_clublog'] = "Segna i QSO importati come caricati nel registro di Clublog";
+$lang['adif_mark_imported_hrdlog'] = "Segna i QSO importati come caricati su HRDLog.net";
+$lang['adif_mark_imported_qrz'] = "Segna i QSO importati come caricati su QRZ.com";
+$lang['adif_mark_imported_clublog'] = "Segna i QSO importati come caricati su Clublog";
 
-$lang['adif_dxcc_from_adif'] = "Utilizza le informazioni DXCC da ADIF";
+$lang['adif_dxcc_from_adif'] = "Utilizza le informazioni DXCC dell\'ADIF";
 $lang['adif_dxcc_from_adif_hint'] = "Se non selezionato, Cloudlog tenterà di determinare automaticamente le informazioni DXCC.";
 
 $lang['adif_always_use_login_call_as_op'] = "Utilizza sempre il nominativo di login come nome dell\'operatore durante l\'importazione";
@@ -65,7 +65,7 @@ $lang['adif_mark_exported_no_lotw'] = "Esporta QSO non caricati su LoTW";
 
 $lang['adif_export_qso'] = "Esporta QSO";
 
-$lang['adif_export_sat_only_qso'] = "Esporta QSO solo satellite";
+$lang['adif_export_sat_only_qso'] = "Esporta solo QSO via satellite";
 $lang['adif_export_sat_only_qso_all'] = "Esporta tutti i QSO satellitari";
 $lang['adif_export_sat_only_qso_lotw'] = "Esporta tutti i QSO satellitari confermati su LoTW";
 

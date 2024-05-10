@@ -27,13 +27,13 @@ ________________________________________________________________________________
 */
 
 $lang['filter_quicksearch_w_sel'] = 'Ricerca rapida con selezionato: ';
-$lang['filter_search_callsign'] = 'Cerca nominativo';
+$lang['filter_search_callsign'] = 'Cerca Nominativo';
 $lang['filter_search_dxcc'] = 'Cerca DXCC';
-$lang['filter_search_state'] = 'Stato di ricerca';
+$lang['filter_search_state'] = 'Cerca Nazione';
 $lang['filter_search_gridsquare'] = 'Cerca in Griglia';
 $lang['filter_search_cq_zone'] = 'Cerca zona CQ';
-$lang['filter_search_mode'] = 'Modalità di ricerca';
-$lang['filter_search_band'] = 'Cerca banda';
+$lang['filter_search_mode'] = 'Cerca Modo';
+$lang['filter_search_band'] = 'Cerca Banda';
 $lang['filter_search_iota'] = 'Cerca IOTA';
 $lang['filter_search_sota'] = 'Cerca SOTA';
 $lang['filter_search_wwff'] = 'Cerca WWFF';
@@ -62,7 +62,7 @@ $lang['filter_qsl_images'] = 'Immagini QSL';
 // $lang['general_word_requested']          --> application/language/english/general_words_lang.php
 // $lang['general_word_queued']             --> application/language/english/general_words_lang.php
 // $lang['general_word_invalid_ignore']     --> application/language/english/general_words_lang.php
-$lang['filter_qsl_verified'] = 'Verified';
+$lang['filter_qsl_verified'] = 'Verificato';
 
 // $lang['general_word_qslcard_bureau']     --> application/language/english/general_words_lang.php
 // $lang['general_word_qslcard_direct']     --> application/language/english/general_words_lang.php
