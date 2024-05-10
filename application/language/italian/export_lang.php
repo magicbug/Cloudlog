@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Non è permesso l\'accesso diretto allo script');
 
 /*
 ___________________________________________________________________________________________
@@ -8,9 +8,9 @@ KML Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_kml_header'] = "KML Export";
-$lang['export_kml_description'] = "Export your logbook to a KML file for use in Google Earth.";
-$lang['export_kml_grisquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
+$lang['export_kml_header'] = "Esportazione KML";
+$lang['export_kml_description'] = "Esporta il tuo diario di bordo in un file KML per utilizzarlo in Google Earth.";
+$lang['export_kml_grisquare_warning'] = "Verranno esportati solo i QSO con una griglia definita!";
 
 
 /*
@@ -19,9 +19,9 @@ DX Atlas Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_dxatlas_header'] = "DX Atlas Export";
-$lang['export_dxatlas_description'] = "Export your logbook for use in DX Atlas to display worked / confirmed gridsquares.";
-$lang['export_dxatlas_gridsquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
+$lang['export_dxatlas_header'] = "Esportazione DX Atlas";
+$lang['export_dxatlas_description'] = "Esporta il tuo registro per utilizzarlo in DX Atlas per visualizzare i quadrati della griglia lavorati/confermati.";
+$lang['export_dxatlas_gridsquare_warning'] = "Verranno esportati solo i QSO con una griglia definita!";
 
 
 /*
@@ -30,9 +30,9 @@ SOTA Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_sota_header'] = "SOTA CSV Export";
-$lang['export_sota_description'] = "Export your logbook for SOTA uploads.";
-$lang['export_sota_info_warning'] = "Only QSOs with SOTA information will be exported!";
+$lang['export_sota_header'] = "Esportazione SOTA CSV";
+$lang['export_sota_description'] = "Esporta il tuo registro per i caricamenti SOTA.";
+$lang['export_sota_info_warning'] = "Verranno esportati solo i QSO con informazioni SOTA!";
 
 /*
 ___________________________________________________________________________________________
@@ -40,36 +40,36 @@ Cabrillo Export
 ___________________________________________________________________________________________
 */
 
-$lang['export_cabrillo_header'] = "Cabrillo Export";
-$lang['export_cabrillo_description'] = "Export a contest to a Cabrillo log";
-$lang['export_cabrillo_select_station'] = "Select Station Location:";
-$lang['export_cabrillo_proceed'] = "Proceed";
-$lang['export_cabrillo_select_year'] = "Select Year";
-$lang['export_cabrillo_select_contest'] = "Select Contest";
-$lang['export_cabrillo_select_date_range'] = "Select Date Range";
+$lang['export_cabrillo_header'] = "Esportazione Cabrillo";
+$lang['export_cabrillo_description'] = "Esporta un concorso in un registro Cabrillo";
+$lang['export_cabrillo_select_station'] = "Seleziona posizione stazione:";
+$lang['export_cabrillo_proceed'] = "Procedi";
+$lang['export_cabrillo_select_year'] = "Seleziona anno";
+$lang['export_cabrillo_select_contest'] = "Seleziona concorso";
+$lang['export_cabrillo_select_date_range'] = "Seleziona intervallo di date";
 $lang['export_cabrillo_club'] = "Club";
-$lang['export_cabrillo_cat_operator'] = "Category Operator";
-$lang['export_cabrillo_cat_operator_single_op'] = "Single Operator";
-$lang['export_cabrillo_cat_operator_multi_op'] = "Multi Operator";
-$lang['export_cabrillo_cat_operator_checklog'] = "Checklog";
-$lang['export_cabrillo_cat_assisted'] = "Category Assisted";
-$lang['export_cabrillo_cat_assisted_not_ass'] = "Not Assisted";
-$lang['export_cabrillo_cat_assisted_ass'] = "Assisted";
-$lang['export_cabrillo_cat_band'] = "Category Band";
-$lang['export_cabrillo_cat_band_arrl_vhf'] = "VHF-3-BAND and VHF-FM-ONLY (ARRL VHF Contests only)";
-$lang['export_cabrillo_cat_mode'] = "Category Mode";
-$lang['export_cabrillo_cat_power'] = "Category Power";
-$lang['export_cabrillo_cat_station'] = "Category Station";
-$lang['export_cabrillo_cat_transmitter'] = "Category Transmitter";
-$lang['export_cabrillo_cat_overlay'] = "Category Overlay";
-$lang['export_cabrillo_operators'] = "Operators";
+$lang['export_cabrillo_cat_operator'] = "Operatore di categoria";
+$lang['export_cabrillo_cat_operator_single_op'] = "Operatore singolo";
+$lang['export_cabrillo_cat_operator_multi_op'] = "Multioperatore";
+$lang['export_cabrillo_cat_operator_checklog'] = "Registro di controllo";
+$lang['export_cabrillo_cat_assisted'] = "Categoria assistita";
+$lang['export_cabrillo_cat_assisted_not_ass'] = "Non assistito";
+$lang['export_cabrillo_cat_assisted_ass'] = "Assistito";
+$lang['export_cabrillo_cat_band'] = "Categoria Banda";
+$lang['export_cabrillo_cat_band_arrl_vhf'] = "VHF-3-BAND e VHF-FM-ONLY (solo concorsi VHF ARRL)";
+$lang['export_cabrillo_cat_mode'] = "Modalità categoria";
+$lang['export_cabrillo_cat_power'] = "Categoria Potenza";
+$lang['export_cabrillo_cat_station'] = "Stazione di categoria";
+$lang['export_cabrillo_cat_transmitter'] = "Categoria Trasmettitore";
+$lang['export_cabrillo_cat_overlay'] = "Sovrapposizione categoria";
+$lang['export_cabrillo_operators'] = "Operatori";
 $lang['export_cabrillo_soapbox'] = "Soapbox";
-$lang['export_cabrillo_address'] = "Address";
-$lang['export_cabrillo_address_city'] = "Address City";
-$lang['export_cabrillo_address_state_province'] = "Address State/Province";
-$lang['export_cabrillo_address_postalcode'] = "Address Postalcode";
-$lang['export_cabrillo_address_country'] = "Address Country";
-$lang['export_cabrillo_no_contests_in_log'] = "No contests were found in your log.";
-$lang['export_cabrillo_no_contests_for_stationlocation'] = "No contests were found for this station location!";
+$lang['export_cabrillo_address'] = "Indirizzo";
+$lang['export_cabrillo_address_city'] = "Indirizzo Città";
+$lang['export_cabrillo_address_state_province'] = "Indirizzo Stato/Provincia";
+$lang['export_cabrillo_address_postalcode'] = "Codice postale indirizzo";
+$lang['export_cabrillo_address_country'] = "Indirizzo Paese";
+$lang['export_cabrillo_no_contests_in_log'] = "Nessun concorso è stato trovato nel tuo registro.";
+$lang['export_cabrillo_no_contests_for_stationlocation'] = "Nessun concorso trovato per questa stazione!";
 
 
