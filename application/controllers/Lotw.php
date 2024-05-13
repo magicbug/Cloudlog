@@ -300,20 +300,22 @@ class Lotw extends CI_Controller {
 				//If the function curl_file_create exists
 				if(function_exists('curl_file_create')){
 					//Use the recommended way, creating a CURLFile object.
-					$filePath = curl_file_create($filePath);
+					$uploadfile = curl_file_create($filePath);
+					$uploadfile->setPostFilename(basename($filePath));
 				} else{
 					//Otherwise, do it the old way.
 					//Get the canonicalized pathname of our file and prepend
 					//the @ character.
-					$filePath = '@' . realpath($filePath);
+					$uploadfile = '@' . realpath($filePath).';filename='.basename($filePath);
 					//Turn off SAFE UPLOAD so that it accepts files
 					//starting with an @
 					curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
 				}
 
+
 				//Setup our POST fields
 				$postFields = array(
-					$uploadFieldName => $filePath
+					$uploadFieldName => $uploadfile
 				);
 
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
