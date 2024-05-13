@@ -967,7 +967,7 @@ class Lotw extends CI_Controller {
 		    openssl_free_key($pkeyid);
 		  }
 		  $signature_b64 = base64_encode($signature);
-		  return $signature_b64;
+		  return $signature_b64."\n";
 		}
 
 
