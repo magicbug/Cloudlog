@@ -1004,6 +1004,9 @@ class Lotw extends CI_Controller {
 			case "QC":
 				return "PQ";
 				break;
+			case "NL":
+				return "NF";
+				break;
 			default:
 				return $ca_prov;
 		endswitch;
