@@ -147,7 +147,7 @@
 							<option value="BC">British Columbia</option>
 							<option value="MB">Manitoba</option>
 							<option value="NB">New Brunswick</option>
-							<option value="NL">Newfoundland & Labrador</option>
+							<option value="NF">Newfoundland & Labrador</option>
 							<option value="NS">Nova Scotia</option>
 							<option value="NT">Northwest Territories</option>
 							<option value="NU">Nunavut</option>
