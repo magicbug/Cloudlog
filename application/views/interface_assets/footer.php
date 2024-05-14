@@ -1602,43 +1602,45 @@ if ($this->session->userdata('user_id') != null) {
 
         // Load the external GeoJSON file
         $.when(wab_squares).done(function() {
-        var layer = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>', {
-            maxZoom: 18,
-            attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright'); ?>',
-            id: 'mapbox.streets'
-        });
+            var layer = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>', {
+                maxZoom: 18,
+                attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright'); ?>',
+                id: 'mapbox.streets'
+            });
 
-        var map = L.map('map', {
-            layers: [layer],
-            center: [54.970901, -2.457140],
-            zoom: 8,
-            minZoom: 8,
-            fullscreenControl: true,
-            fullscreenControlOptions: {
-                position: 'topleft'
-            },
-        });
+            var map = L.map('map', {
+                layers: [layer],
+                center: [54.970901, -2.457140],
+                zoom: 8,
+                minZoom: 8,
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft'
+                },
+            });
 
-        var printer = L.easyPrint({
-            tileLayer: layer,
-            sizeModes: ['Current'],
-            filename: 'myMap',
-            exportOnly: true,
-            hideControlContainer: true
-        }).addTo(map);
+            var printer = L.easyPrint({
+                tileLayer: layer,
+                sizeModes: ['Current'],
+                filename: 'myMap',
+                exportOnly: true,
+                hideControlContainer: true
+            }).addTo(map);
 
-          /*Legend specific*/
-  var legend = L.control({ position: "topright" });
+            /*Legend specific*/
+            var legend = L.control({
+                position: "topright"
+            });
 
-legend.onAdd = function(map) {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += "<h4>" + lang_general_word_colors + "</h4>";
-    div.innerHTML += "<i style='background: green'></i><span> Confirmed Square</span><br>";
-    div.innerHTML += "<i style='background: orange'></i><span> Unconfirmed Square</span><br>";
-    return div;
-};
+            legend.onAdd = function(map) {
+                var div = L.DomUtil.create("div", "legend");
+                div.innerHTML += "<h4>" + lang_general_word_colors + "</h4>";
+                div.innerHTML += "<i style='background: green'></i><span> Confirmed Square</span><br>";
+                div.innerHTML += "<i style='background: orange'></i><span> Unconfirmed Square</span><br>";
+                return div;
+            };
 
-legend.addTo(map);
+            legend.addTo(map);
 
             //console.log(wab_squares.responseJSON);
             // Add requested external GeoJSON to map
@@ -3108,6 +3110,25 @@ legend.addTo(map);
 <?php if ($this->uri->segment(1) == "station") { ?>
     <script>
         var baseURL = "<?php echo base_url(); ?>";
+
+        $(document).ready(function() {
+            function checkSelectedValue() {
+                var selectedValue = $('#dxcc_select').val();
+                var valuesToShow = [223, 279, 294, 265, 106, 122];
+
+                if (valuesToShow.includes(Number(selectedValue))) {
+                    $('#WABbox').show();
+                } else {
+                    $('#WABbox').hide();
+                }
+            }
+
+            // Call on page load
+            checkSelectedValue();
+
+            // Call on change event
+            $('#dxcc_select').change(checkSelectedValue);
+        });
 
         var state = $("#StateHelp option:selected").text();
         if (state != "") {

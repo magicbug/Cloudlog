@@ -209,7 +209,7 @@ class AdifHelper {
         $line .= $this->getAdifFieldLine("MY_POTA_REF", $qso->station_pota);
 
         $line .= $this->getAdifFieldLine("MY_CQ_ZONE", $qso->station_cq);
-
+        $line .= $this->getAdifFieldLine("APP_CLOUDLOG_MY_WAB", $qso->station_wab);
         $line .= $this->getAdifFieldLine("MY_ITU_ZONE", $qso->station_itu);
 
 		if($qso->state) {

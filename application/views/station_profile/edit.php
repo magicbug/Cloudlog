@@ -319,6 +319,19 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="col-md" id="WABbox">
+			<div class="card">
+				<h5 class="card-header">Worked All Britain Reference</h5>
+				<div class="card-body">
+					<div class="mb-3">
+						<label for="stationWABInput">WAB Reference Number</label>
+						<input type="text" class="form-control" name="wab" id="stationWABInput" aria-describedby="stationWABInputHelp" value="<?php if(set_value('wab') != "") { echo set_value('wab'); } else { echo $my_station_profile->station_wab; } ?>">
+						<small id="stationWABInputHelp" class="form-text text-muted">Enter your WAB Square, if you dont know it use <a href="https://www.whatsmylocator.co.uk/" target="_blank">WhatsMyLocator</a></small>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="row">
