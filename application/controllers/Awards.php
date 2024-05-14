@@ -515,12 +515,73 @@ class Awards extends CI_Controller
         $this->load->view('interface_assets/footer');
     }
 
+
+    public function gmdxsummer()
+    {
+        // Load the GMDX Summer Challenge model
+        $this->load->model('gmdxsummer_model');
+
+        // Get Week 1
+        $data['week1_6m_cw'] = $this->gmdxsummer_model->get_week('2024-05-26 18:00:00', '6m', 'CW');
+        $data['week1_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-05-26 18:00:00', '6m');
+        $data['week1_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-05-26 18:00:00', '6m');
+        $data['week1_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-05-26 18:00:00', '6m');
+
+
+        $data['week1_4m_cw'] = $this->gmdxsummer_model->get_week('2024-05-26 18:00:00', '4m', 'CW');
+        $data['week1_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-05-26 18:00:00', '4m');
+        $data['week1_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-05-26 18:00:00', '4m');
+        $data['week1_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-05-26 18:00:00', '4m');
+
+        // Get Week 2
+        $data['week2_6m_cw'] = $this->gmdxsummer_model->get_week('2024-06-09 18:00:00', '6m', 'CW');
+        $data['week2_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-06-09 18:00:00', '6m');
+        $data['week2_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-06-09 18:00:00', '6m');
+        $data['week2_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-06-09 18:00:00', '6m');
+
+
+        $data['week2_4m_cw'] = $this->gmdxsummer_model->get_week('2024-06-09 18:00:00', '4m', 'CW');
+        $data['week2_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-06-09 18:00:00', '4m');
+        $data['week2_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-06-09 18:00:00', '4m');
+        $data['week2_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-06-09 18:00:00', '4m');
+
+
+        // Get Week 3
+        $data['week3_6m_cw'] = $this->gmdxsummer_model->get_week('2024-06-23 18:00:00', '6m', 'CW');
+        $data['week3_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-06-23 18:00:00', '6m');
+        $data['week3_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-06-23 18:00:00', '6m');
+        $data['week3_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-06-23 18:00:00', '6m');
+
+        $data['week3_4m_cw'] = $this->gmdxsummer_model->get_week('2024-06-23 18:00:00', '4m', 'CW');
+        $data['week3_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-06-23 18:00:00', '4m');
+        $data['week3_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-06-23 18:00:00', '4m');
+        $data['week3_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-06-23 18:00:00', '4m');
+
+        // Get Week 4
+        $data['week4_6m_cw'] = $this->gmdxsummer_model->get_week('2024-07-01 18:00:00', '6m', 'CW');
+        $data['week4_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-07-01 18:00:00', '6m');
+        $data['week4_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-07-01 18:00:00', '6m');
+        $data['week4_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-07-01 18:00:00', '6m');
+
+        $data['week4_4m_cw'] = $this->gmdxsummer_model->get_week('2024-07-01 18:00:00', '4m', 'CW');
+        $data['week4_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-07-01 18:00:00', '4m');
+        $data['week4_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-07-01 18:00:00', '4m');
+        $data['week4_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-07-01 18:00:00', '4m');
+
+
+        // Render page
+        $data['page_title'] = "Awards - GMDX Summer Challenge";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/gmdxsummer/index');
+        $this->load->view('interface_assets/footer');
+    }
+
     public function wab_details_ajax()
     {
         $this->load->model('logbook_model');
 
         $wab = str_replace('"', "", $this->security->xss_clean($this->input->post("Wab")));
-        
+
         $wab = str_replace(["Small Square ", " Boundry Box"], "", $wab);
 
         $data['results'] = $this->logbook_model->wab_qso_details($wab);
