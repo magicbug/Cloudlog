@@ -95,3 +95,4 @@ $lang['menu_logout'] = 'Logout';
 $lang['menu_ffma'] = "Fred Fish Memorial Award";
 $lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance'] = 'Wartung';
+$lang['menu_uk_gridmaster'] = 'UK Gridmaster';
