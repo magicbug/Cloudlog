@@ -17,7 +17,7 @@ class Gmdxsummer_model extends CI_Model
             SELECT COUNT(DISTINCT SUBSTRING(COL_GRIDSQUARE, 1, 4)) AS count
             FROM " . $table_name . "
             WHERE station_id in (" . $location_list . ") AND COL_MODE = '" . $mode . "' AND COL_BAND = '" . $band . "'
-            AND (COL_TIME_ON >= '2024-05-13 00:00:00' AND COL_TIME_ON <= '. $end_date .')
+            AND (COL_TIME_ON >= '2024-05-13 00:00:00' AND COL_TIME_ON <= '" . $end_date . "')
         ");
 
         return $query->row()->count;
