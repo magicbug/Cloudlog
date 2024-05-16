@@ -838,20 +838,20 @@ if ($this->session->userdata('user_id') != null) {
 
 
             
-            var map = L.map('map').setView([q_lat, q_lng], q_zoom);
+            var dashmap = L.map('map').setView([q_lat, q_lng], q_zoom);
 
             var osm = new L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 12,
                 attribution: osmCopyright
-            }).addTo(map);
+            }).addTo(dashmap);
 
-            map.addLayer(osm);
+            dashmap.addLayer(osm);
 
             var printer = L.easyPrint({
                 sizeModes: ['Current'],
                 filename: 'myMap',
                 exportOnly: true,
                 hideControlContainer: true
-            }).addTo(map);
+            }).addTo(dashmap);
 
             var markers = {};
 
@@ -866,13 +866,13 @@ if ($this->session->userdata('user_id') != null) {
                             if (!markers[key]) {
                                 L.marker([marker.lat, marker.lng], {
                                         icon: redIconImg
-                                    }).addTo(map)
+                                    }).addTo(dashmap)
                                     .bindPopup(marker.html);
                             }
                         });
                         Object.keys(markers).forEach(key => {
                             if (!newMarkers[key]) {
-                                map.removeLayer(markers[key]);
+                                dashmap.removeLayer(markers[key]);
                             }
                         });
                         markers = newMarkers;
@@ -882,6 +882,7 @@ if ($this->session->userdata('user_id') != null) {
             loadMarkers();
             setInterval(loadMarkers, 5000);
 
+            var layerControl = new L.Control.Layers(null, { 'Gridsquares': maidenhead = L.maidenhead() }).addTo(dashmap);
         });
     </script>
 <?php } ?>
