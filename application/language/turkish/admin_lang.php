@@ -1,60 +1,59 @@
 <?php
 
-defined('BASEPATH') OR exit('Doğrudan komut dosyası erişimine izin verilmez');
+defined('BASEPATH') OR exit('Doğrudan komut dosyalarının erişimine izin verilmez');
 
-$lang['admin_user_line1'] = 'Cloudlog needs at least one user configured in order to operate.';
-$lang['admin_user_line2'] = 'Users can be assigned roles which give them different permissions, such as adding QSOs to the logbook and accessing Cloudlog APIs.';
-$lang['admin_user_line3'] = 'The currently logged-in user is displayed at the upper-right of each page.';
-$lang['admin_user_line4'] = "With the password reset button, you can send a user an email containing a link to reset their password. To achieve this, ensure that the email settings in the global options are configured correctly.";
+$lang['admin_user_line1'] = "Cloudlog'un çalışması için en az bir kullanıcının yapılandırılmış olması gerekir.";
+$lang['admin_user_line2'] = "Kullanıcılara, kayıt defterine QSO eklemek ve Cloudlog API'lerine erişim gibi farklı izinler veren roller atanabilir.";
+$lang['admin_user_line3'] = 'Şu anda oturum açmış olan kullanıcı her sayfanın sağ üst köşesinde görüntülenir.';
+$lang['admin_user_line4'] = "Şifre sıfırlama butonu ile bir kullanıcıya şifresini sıfırlamak için bağlantı içeren bir e-posta gönderebilirsiniz. Bunu başarmak için genel seçeneklerdeki e-posta ayarlarının doğru yapılandırıldığından emin olun.";
 
-$lang['admin_user_list'] = 'User List';
+$lang['admin_user_list'] = 'Kullanıcı Listesi';
 
-$lang['admin_user'] = 'User';
-$lang['admin_email'] = 'E-mail';
-$lang['admin_type'] = 'Type';
-$lang['admin_last_login'] = "Last Login";
-$lang['admin_options'] = 'Options';
+$lang['admin_user'] = 'Kullanıcı';
+$lang['admin_email'] = 'E-posta';
+$lang['admin_type'] = 'Tür';
+$lang['admin_last_login'] = "Son Giriş";
+$lang['admin_options'] = 'Seçenekler';
 
-$lang['admin_create_user'] = 'Create user';
-$lang['admin_delete'] = 'Delete';
-$lang['admin_remove'] = "Remove";
-$lang['admin_edit'] = 'Edit';
-$lang['admin_create'] = 'Create';
-$lang['admin_update'] = 'Update';
-$lang['admin_copy'] = 'Copy';
-$lang['admin_save'] = 'Save';
-$lang['admin_close'] = 'Close';
-$lang['admin_user_accounts'] = 'User Accounts';
-$lang['admin_danger'] = 'DANGER!';
-$lang['admin_experimental'] = "Experimental";
-$lang['admin_password_reset'] = "Password Reset";
+$lang['admin_create_user'] = 'Kullanıcı oluştur';
+$lang['admin_delete'] = 'Sil';
+$lang['admin_remove'] = "Kaldır";
+$lang['admin_edit'] = 'Düzenle';
+$lang['admin_create'] = 'Oluştur';
+$lang['admin_update'] = 'Güncelleme';
+$lang['admin_copy'] = 'Kopyala';
+$lang['admin_save'] = 'Kaydet';
+$lang['admin_close'] = 'Kapat';
+$lang['admin_user_accounts'] = 'Kullanıcı Hesapları';
+$lang['admin_danger'] = 'TEHLİKE!';
+$lang['admin_experimental'] = "Deneysel";
+$lang['admin_password_reset'] = "Şifre Sıfırlama";
 
-$lang['admin_email_settings_incorrect'] = "Email settings are incorrect.";
-$lang['admin_password_reset_processed'] = "Password Reset E-Mail sent.";
+$lang['admin_email_settings_incorrect'] = "E-posta ayarları hatalı.";
+$lang['admin_password_reset_processed'] = "Şifre Sıfırlama E-Postası gönderildi.";
 
 
-// Contest Menu
+// Yarışma Menüsü
 
-$lang['admin_contest_menu_line_1'] = 'Using the contest list, you can control which Contests are shown when logging QSOs in a contest.';
-$lang['admin_contest_menu_line_2'] = 'Active contests will be shown in the Contest Name drop-down, while inactive contests will be hidden and cannot be selected.';
-$lang['admin_contest_menu_name'] = 'Name';
-$lang['admin_contest_menu_adif'] = 'ADIF Name';
-$lang['admin_contest_menu_active'] = 'Active';
-$lang['admin_contest_menu_n_active'] = 'Not Active';
-$lang['admin_contest_menu_activate'] = 'Activate';
-$lang['admin_contest_menu_deactivate'] = 'Deactivate';
+$lang['admin_contest_menu_line_1'] = "Yarışma listesini kullanarak, bir yarışmadaki QSO'ları kaydederken hangi Yarışmaların gösterileceğini kontrol edebilirsiniz.";
+$lang['admin_contest_menu_line_2'] = 'Aktif yarışmalar Yarışma Adı açılır menüsünde gösterilecek, etkin olmayan yarışmalar ise gizlenecek ve seçilemez.';
+$lang['admin_contest_menu_name'] = 'İsim';
+$lang['admin_contest_menu_adif'] = 'ADIF Adı';
+$lang['admin_contest_menu_active'] = 'Etkin';
+$lang['admin_contest_menu_n_active'] = 'Aktif Değil';
+$lang['admin_contest_menu_activate'] = 'Etkinleştir';
+$lang['admin_contest_menu_deactivate'] = 'Devre Dışı Bırak';
 
-$lang['admin_contest_add_contest'] = 'Add a Contest';
-$lang["admin_contest_create"] = "Create";
-$lang['admin_contest_all_active'] = 'Activate All';
-$lang['admin_contest_all_deactive'] = 'Deactivate All';
+$lang['admin_contest_add_contest'] = 'Yarışma Ekle';
+$lang["admin_contest_create"] = "Oluştur";
+$lang['admin_contest_all_active'] = 'Tümünü Etkinleştir';
+$lang['admin_contest_all_deactive'] = 'Tümünü Devre Dışı Bırak';
 
-$lang['admin_contest_name_adif'] = 'Contest ADIF Name';
-$lang['admin_contest_name_of_contest'] = 'Name of the Contest';
-$lang['admin_contest_name_of_adif'] = 'Name of Contest in ADIF-specification';
-$lang['admin_contest_edit_active_hint'] = 'Set to active if to be listed in Contest-list';
-$lang['admin_contest_edit_update_contest'] = 'Update Contest';
-$lang['admin_contest_deletion_warning'] = 'Warning! Are you sure you want to delete the following contest: ';
-$lang['admin_contest_active_all_warning'] = 'Warning! Are you sure you want to activate all contests?';
-$lang['admin_contest_deactive_all_warning'] = 'Warning! Are you sure you want to deactivate all contests?';
-
+$lang['admin_contest_name_adif'] = 'Yarışma ADIF Adı';
+$lang['admin_contest_name_of_contest'] = 'Yarışmanın Adı';
+$lang['admin_contest_name_of_adif'] = 'ADIF spesifikasyonunda Yarışmanın Adı';
+$lang['admin_contest_edit_active_hint'] = 'Yarışma listesinde yer alacaksa aktif olarak ayarlayın';
+$lang['admin_contest_edit_update_contest'] = 'Yarışmayı Güncelle';
+$lang['admin_contest_deletion_warning'] = 'Uyarı! Aşağıdaki yarışmayı silmek istediğinizden emin misiniz: ';
+$lang['admin_contest_active_all_warning'] = 'Uyarı! Tüm yarışmaları etkinleştirmek istediğinizden emin misiniz?';
+$lang['admin_contest_deactive_all_warning'] = 'Uyarı! Tüm yarışmaları devre dışı bırakmak istediğinizden emin misiniz?';
