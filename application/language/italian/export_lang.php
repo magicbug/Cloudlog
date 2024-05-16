@@ -9,7 +9,7 @@ ________________________________________________________________________________
 */
 
 $lang['export_kml_header'] = "Esportazione KML";
-$lang['export_kml_description'] = "Esporta il tuo diario di bordo in un file KML per utilizzarlo in Google Earth.";
+$lang['export_kml_description'] = "Esporta il tuo registro in un file KML per utilizzarlo in Google Earth.";
 $lang['export_kml_grisquare_warning'] = "Verranno esportati solo i QSO con una griglia definita!";
 
 
@@ -42,7 +42,7 @@ ________________________________________________________________________________
 
 $lang['export_cabrillo_header'] = "Esportazione Cabrillo";
 $lang['export_cabrillo_description'] = "Esporta un concorso in un registro Cabrillo";
-$lang['export_cabrillo_select_station'] = "Seleziona posizione stazione:";
+$lang['export_cabrillo_select_station'] = "Seleziona il luogo della stazione:";
 $lang['export_cabrillo_proceed'] = "Procedi";
 $lang['export_cabrillo_select_year'] = "Seleziona anno";
 $lang['export_cabrillo_select_contest'] = "Seleziona concorso";

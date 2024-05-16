@@ -42,7 +42,7 @@ $lang['general_word_general'] = 'Generale';
 $lang['general_word_satellite'] = 'Satellite';
 $lang['general_word_satellite_short'] = 'Sabato';
 $lang['general_word_notes'] = 'Nota';
-$lang['general_word_country'] = 'Paese';
+$lang['general_word_country'] = 'Nazione';
 $lang['general_word_city'] = 'Città';
 
 $lang['general_word_total'] = 'Totale';
@@ -128,7 +128,7 @@ $lang['gen_hamradio_suffix'] = 'Suffisso';
 $lang['gen_hamradio_de'] = 'De';
 $lang['gen_hamradio_dx'] = 'Dx';
 $lang['gen_hamradio_mode'] = 'Modo';
-$lang['gen_hamradio_ant_az'] = 'Antenna Azimuth';
+$lang['gen_hamradio_ant_az'] = 'Antenna Azimut';
 $lang['gen_hamradio_ant_el'] = 'Antenna Elevazione';
 $lang['gen_hamradio_rst_sent'] = 'Inviato';
 $lang['gen_hamradio_rst_rcvd'] = 'Ricevuto';
@@ -222,8 +222,8 @@ $lang['general_word_today'] = 'Oggi';
 
 $lang['dashboard_php_version_warning'] = 'Devi aggiornare la tua versione PHP. La versione minima è 7.4. La tua versione è';
 $lang['dashboard_country_files_warning'] = 'Devi aggiornare i file dei paesi! Vai <a href="'.site_url('update').'">qui</a> per farlo!';
-$lang['dashboard_locations_warning'] = 'Non hai posizioni delle stazioni. Vai <a href="'. site_url('station'). '">qui</a> per crearlo!';
-$lang['dashboard_logbooks_warning'] = 'Non hai il registro della stazione. Vai <a href="'. site_url('logbooks'). '">qui</a> per crearlo!';
+$lang['dashboard_locations_warning'] = 'Non hai luoghi delle stazioni. Vai <a href="'. site_url('station'). '">qui</a> per crearlo!';
+$lang['dashboard_logbooks_warning'] = 'Non hai il registro di stazione. Vai <a href="'. site_url('logbooks'). '">qui</a> per crearlo!';
 $lang['hams_at_no_activations_found'] = 'Nessuna attivazione imminente trovata. Per favore controllare più tardi.';
 
 $lang['datatables_language'] = "it-IT";
