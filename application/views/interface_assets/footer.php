@@ -805,7 +805,6 @@ if ($this->session->userdata('user_id') != null) {
 
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard") { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.js"></script>
-    <script id="leafembed" type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>"></script>
 
     <script type="text/javascript">
         $(function() {
@@ -822,6 +821,13 @@ if ($this->session->userdata('user_id') != null) {
 
         var qso_loc = '<?php echo site_url('map/map_plot_json'); ?>';
         var q_zoom = 3;
+        var osmUrl = '<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>';
+        var osmCopyright = '<?php echo $this->optionslib->get_option('map_tile_server_copyright'); ?>';
+
+        var redIconImg = L.icon({
+            iconUrl: icon_dot_url,
+            iconSize: [10, 10]
+        });
 
         $(document).ready(function() {
             <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
@@ -829,11 +835,52 @@ if ($this->session->userdata('user_id') != null) {
             <?php } else { ?>
                 var grid = "No";
             <?php } ?>
-            initmap(grid, 'map', {
-                'dataPost': {
-                    'nb_qso': '18'
-                }
-            });
+
+            var map = L.map('map').setView([q_lat, q_lng], q_zoom);
+
+            L.tileLayer(osmUrl, {
+                attribution: osmCopyright
+            }).addTo(map);
+
+            var printer = L.easyPrint({
+                sizeModes: ['Current'],
+                filename: 'myMap',
+                exportOnly: true,
+                hideControlContainer: true
+            }).addTo(map);
+
+            var layerControl = new L.Control.Layers(null, { 'Gridsquares': maidenhead = L.maidenhead() }).addTo(map);
+
+            var markers = {};
+
+            // Load maidenhead grid squares as a layer control
+
+            function loadMarkers() {
+                fetch(qso_loc)
+                    .then(response => response.json())
+                    .then(data => {
+                        var newMarkers = {};
+                        data.markers.forEach(marker => {
+                            var key = `${marker.lat},${marker.lng}`;
+                            newMarkers[key] = marker;
+                            if (!markers[key]) {
+                                L.marker([marker.lat, marker.lng], {
+                                        icon: redIconImg
+                                    }).addTo(map)
+                                    .bindPopup(marker.html);
+                            }
+                        });
+                        Object.keys(markers).forEach(key => {
+                            if (!newMarkers[key]) {
+                                map.removeLayer(markers[key]);
+                            }
+                        });
+                        markers = newMarkers;
+                    });
+            }
+
+            loadMarkers();
+            setInterval(loadMarkers, 5000);
 
         });
     </script>
