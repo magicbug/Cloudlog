@@ -831,16 +831,20 @@ if ($this->session->userdata('user_id') != null) {
 
         $(document).ready(function() {
             <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
-                var grid = "Yes";
+                var ShowGrid = "Yes";
             <?php } else { ?>
-                var grid = "No";
+                var ShowGrid = "No";
             <?php } ?>
 
+
+            
             var map = L.map('map').setView([q_lat, q_lng], q_zoom);
 
-            L.tileLayer(osmUrl, {
+            var osm = new L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 12,
                 attribution: osmCopyright
             }).addTo(map);
+
+            map.addLayer(osm);
 
             var printer = L.easyPrint({
                 sizeModes: ['Current'],
@@ -849,11 +853,7 @@ if ($this->session->userdata('user_id') != null) {
                 hideControlContainer: true
             }).addTo(map);
 
-            var layerControl = new L.Control.Layers(null, { 'Gridsquares': maidenhead = L.maidenhead() }).addTo(map);
-
             var markers = {};
-
-            // Load maidenhead grid squares as a layer control
 
             function loadMarkers() {
                 fetch(qso_loc)
