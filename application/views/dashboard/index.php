@@ -213,7 +213,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 	<?php } ?>
 </div>
 
-<?php if ($this->config->item('option_dashboard_map ') != "false" && $this->config->item('option_dashboard_map ') != "map_at_right") { ?>
+<?php if (($this->optionslib->get_option('dashboard_map') != "false") && ($this->optionslib->get_option('dashboard_map') != "map_at_right")) { ?>
 	<!-- Map -->
 	<div id="map" class="map-leaflet" style="width: 100%; height: 350px"></div>
 <?php } ?>
@@ -226,7 +226,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 		</div>
 
 		<div class="col-sm-4">
-			<?php if ($this->config->item('dashboard_map') == "map_at_right") { ?>
+			<?php if ($this->optionslib->get_option('dashboard_map') == "map_at_right") { ?>
 				<!-- Map -->
 				<div id="map" class="map-leaflet" style="width: 100%; height: 350px;  margin-bottom: 15px;"></div>
 			<?php } ?>
