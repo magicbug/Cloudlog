@@ -9,15 +9,15 @@ $lang['menu_overview'] = 'Обычный вид';
 $lang['menu_advanced'] = 'Расширенный вид';
 
 $lang['menu_qso'] = 'QSO';
-$lang['menu_live_qso'] = 'добавить QSO';
-$lang['menu_post_qso'] = 'добавить прошедшее QSO';
-$lang['menu_fast_log_entry'] = "Simple Fast Log Entry";
+$lang['menu_live_qso'] = 'Добавить QSO';
+$lang['menu_post_qso'] = 'Добавить прошедшее QSO';
+$lang['menu_fast_log_entry'] = "Простая быстрая запись в журнал";
 $lang['menu_live_contest_logging'] = 'Журнал соревнований';
 $lang['menu_post_contest_logging'] = 'Журнал прошедших соревнований';
 $lang['menu_bandmap'] = 'План диапазонов';
 $lang['menu_view_qsl'] = 'Просмотр QSL';
 $lang['menu_view_eqsl'] = 'Просмотр eQSL';
-$lang['menu_view_sstv'] = 'View SSTV Images';
+$lang['menu_view_sstv'] = 'Просмотр SSTV изображений';
 
 $lang['menu_notes'] = 'Заметки';
 
