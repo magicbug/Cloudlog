@@ -1,5 +1,5 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Doğrudan komut dosyası erişimine izin verilmiyor');
 
-$lang['sstv_string_disk_space'] = 'of disk space to store SSTV image assets';
+$lang['sstv_string_disk_space'] = 'SSTV resim varlıklarını depolamak için yeterli disk alanı';

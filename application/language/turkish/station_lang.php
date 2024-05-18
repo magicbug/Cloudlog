@@ -1,42 +1,42 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Doğrudan komut dosyası erişimine izin verilmiyor');
 
 /*
 ___________________________________________________________________________________________
-Station Logbooks
+İstasyon Kayıt Defterleri
 ___________________________________________________________________________________________
 */
 
-$lang['station_logbooks'] = "Station Logbooks";
-$lang['station_logbooks_description_header'] = "What are Station Logbooks";
-$lang['station_logbooks_description_text'] = "Station Logbooks allow you to group Station Locations, this allows you to see all the locations across one session from the logbook areas to the analytics. Great for when your operating in multiple locations but they are part of the same DXCC or VUCC Circle.";
-$lang['station_logbooks_create'] = "Create Station Logbook";
-$lang['station_logbooks_status'] = "Status";
-$lang['station_logbooks_link'] = "Link";
-$lang['station_logbooks_public_search'] = "Public Search";
-$lang['station_logbooks_set_active'] = "Set as Active Logbook";
-$lang['station_logbooks_active_logbook'] = "Active Logbook";
-$lang['station_logbooks_edit_logbook'] = "Edit Station Logbook";    // Full sentence will be generated 'Edit Station Logbook: [Logbook Name]'
-$lang['station_logbooks_confirm_delete'] = "Are you sure you want to delete the following station logbook? You must re-link any locations linked here to another logbook.: ";
-$lang['station_logbooks_view_public'] = "View Public Page for Logbook: ";
-$lang['station_logbooks_create_name'] = "Station Logbook Name";
-$lang['station_logbooks_create_name_hint'] = "You can call a station logbook anything.";
-$lang['station_logbooks_edit_name_hint'] = "Shortname for the station logbook. For example: Home Log (IO87IP)";
-$lang['station_logbooks_edit_name_update'] = "Update Station Logbook Name";
-$lang['station_logbooks_public_slug'] = "Public Slug";
-$lang['station_logbooks_public_slug_hint'] = "Setting a public slug allows you to share your logbook with anyone via a custom website address, this slug can contain letters & numbers only.";
-$lang['station_logbooks_public_slug_format1'] = "Later it looks like this:";
-$lang['station_logbooks_public_slug_format2'] = "[your slug]";
-$lang['station_logbooks_public_slug_input'] = "Type in Public Slug choice";
-$lang['station_logbooks_public_slug_visit'] = "Visit Public Page";
-$lang['station_logbooks_public_search_hint'] = "Enabling public search function offers a search input box on the public logbook page accessed via public slug. Search only covers this logbook.";
-$lang['station_logbooks_public_search_enabled'] = "Public search enabled";
-$lang['station_logbooks_select_avail_loc'] = "Select Available Station Locations";
-$lang['station_logbooks_link_loc'] = "Link Location";
-$lang['station_logbooks_linked_loc'] = "Linked Locations";
-$lang['station_logbooks_no_linked_loc'] = "No Linked Locations";
-$lang['station_logbooks_unlink_station_location'] = "Unlink Station Location";
+$lang['station_logbooks'] = "İstasyon Kayıt Defterleri";
+$lang['station_logbooks_description_header'] = "İstasyon Kayıt Defterleri nedir";
+$lang['station_logbooks_description_text'] = "İstasyon Kayıt Defterleri İstasyon Konumlarını gruplandırmanıza olanak tanır; bu, kayıt defteri alanlarından analitiklere kadar tek bir oturumdaki tüm konumları görmenizi sağlar. Birden fazla konumda çalıştığınızda harikadır ancak bunlar bir bölümün parçasıdır aynı DXCC veya VUCC Çevresi.";
+$lang['station_logbooks_create'] = "İstasyon Kayıt Defterini Oluşturun";
+$lang['station_logbooks_status'] = "Durum";
+$lang['station_logbooks_link'] = "Bağlantı";
+$lang['station_logbooks_public_search'] = "Genel Arama";
+$lang['station_logbooks_set_active'] = "Aktif Kayıt Defteri Olarak Ayarla";
+$lang['station_logbooks_active_logbook'] = "Aktif Kayıt Defteri";
+$lang['station_logbooks_edit_logbook'] = "İstasyon Kayıt Defterini Düzenle"; // Tam cümle oluşturulacak 'İstasyon Kayıt Defterini Düzenle: [Kayıt Defteri Adı]'
+$lang['station_logbooks_confirm_delete'] = "Aşağıdaki istasyon kayıt defterini silmek istediğinizden emin misiniz? Burada bağlantılı tüm konumları başka bir kayıt defterine yeniden bağlamanız gerekir.: ";
+$lang['station_logbooks_view_public'] = "Kayıt Defteri için Genel Sayfayı Görüntüle: ";
+$lang['station_logbooks_create_name'] = "İstasyon Kayıt Defteri Adı";
+$lang['station_logbooks_create_name_hint'] = "İstasyon kayıt defterini istediğiniz şekilde arayabilirsiniz.";
+$lang['station_logbooks_edit_name_hint'] = "İstasyon kayıt defterinin kısa adı. Örneğin: Ev Günlüğü (IO87IP)";
+$lang['station_logbooks_edit_name_update'] = "İstasyon Kayıt Defteri Adını Güncelle";
+$lang['station_logbooks_public_slug'] = "Genel Slug";
+$lang['station_logbooks_public_slug_hint'] = "Genel bilgi notu ayarlamak, kayıt defterinizi özel bir web sitesi adresi aracılığıyla herhangi biriyle paylaşmanıza olanak tanır, bu bilgi yalnızca harf ve rakam içerebilir.";
+$lang['station_logbooks_public_slug_format1'] = "Daha sonra şöyle görünecek:";
+$lang['station_logbooks_public_slug_format2'] = "[bilginiz]";
+$lang['station_logbooks_public_slug_input'] = "Genel Slug seçimini yazın";
+$lang['station_logbooks_public_slug_visit'] = "Genel Sayfayı Ziyaret Edin";
+$lang['station_logbooks_public_search_hint'] = "Genel arama işlevinin etkinleştirilmesi, genel bilgi yoluyla erişilen genel kayıt defteri sayfasında bir arama giriş kutusu sunar. Arama yalnızca bu kayıt defterini kapsar.";
+$lang['station_logbooks_public_search_enabled'] = "Genel arama etkin";
+$lang['station_logbooks_select_avail_loc'] = "Mevcut İstasyon Konumlarını Seçin";
+$lang['station_logbooks_link_loc'] = "Bağlantı Konumu";
+$lang['station_logbooks_linked_loc'] = "Bağlantılı Konumlar";
+$lang['station_logbooks_no_linked_loc'] = "Bağlantılı Konum Yok";
+$lang['station_logbooks_unlink_station_location'] = "İstasyon Konumunun Bağlantısını Kaldır";
 
 
 
@@ -46,72 +46,69 @@ Station Locations
 ___________________________________________________________________________________________
 */
 
-$lang['station_location'] = 'Station Location';
-$lang['station_location_plural'] = "Station Locations";
-$lang['station_location_header_ln1'] = 'Station Locations define operating locations, such as your QTH, a friends QTH, or a portable station.';
-$lang['station_location_header_ln2'] = 'Similar to logbooks, a station profile keeps a set of QSOs together.';
-$lang['station_location_header_ln3'] = 'Only one station may be active at a time. In the table below this is shown with the -Active Station- badge.';
-$lang['station_location_create_header'] = 'Create Station Location';
-$lang['station_location_create'] = 'Create a Station Location';
-$lang['station_location_edit'] = 'Edit Station Location: ';
-$lang['station_location_updated_suff'] = ' Updated.';
-$lang['station_location_warning'] = 'Attention: You need to set an active station location. Go to Callsign->Station Location to select one.';
-$lang['station_location_reassign_at'] = 'Please reassign them at ';
-$lang['station_location_warning_reassign'] = 'Due to recent changes within Cloudlog you need to reassign QSOs to your station profiles.';
-$lang['station_location_name'] = 'Profile Name';
-$lang['station_location_name_hint'] = 'Shortname for the station location. For example: Home (IO87IP)';
-$lang['station_location_callsign'] = 'Station Callsign';
-$lang['station_location_callsign_hint'] = 'Station callsign. For example: 2M0SQL/P';
-$lang['station_location_power'] = 'Station Power (W)';
-$lang['station_location_power_hint'] = 'Default station power in Watt. Overwritten by CAT.';
-$lang['station_location_emptylog'] = 'Empty Log';
-$lang['station_location_confirm_active'] = 'Are you sure you want to make the following station the active station: ';
-$lang['station_location_set_active'] = 'Set Active';
-$lang['station_location_active'] = 'Active Station';
-$lang['station_location_claim_ownership'] = 'Claim Ownership';
-$lang['station_location_confirm_del_qso'] = 'Are you sure you want to delete all QSOs within this station profile?';
-$lang['station_location_confirm_del_stationlocation'] = 'Are you sure you want delete station profile  ';
-$lang['station_location_confirm_del_stationlocation_qso'] = 'This will delete all QSOs within this station profile?';
-$lang['station_location_dxcc'] = 'Station DXCC';
-$lang['station_location_dxcc_hint'] = 'Station DXCC entity. For example: Scotland';
-$lang['station_location_dxcc_warning'] = "Stop here for a Moment. Your chosen DXCC is outdated and not valid anymore. Check which DXCC for this particular location is the correct one. If you are sure, ignore this warning.";
-$lang['station_location_city'] = 'Station City';
-$lang['station_location_city_hint'] = 'Station city. For example: Inverness';
-$lang['station_location_state'] = 'Station State';
-$lang['station_location_state_hint'] = 'Station state. Applies to certain countries only. Leave blank if not applicable.';
-$lang['station_location_county'] = 'Station County';
-$lang['station_location_county_hint'] = 'Station County (Only used for USA/Alaska/Hawaii).';
-$lang['station_location_gridsquare'] = 'Station Gridsquare';
-$lang['station_location_gridsquare_hint_ln1'] = "Station gridsquare. For example: IO87IP. If you don't know your grid square then <a href='https://zone-check.eu/?m=loc' target='_blank'>click here</a>!";
-$lang['station_location_gridsquare_hint_ln2'] = "If you are located on a grid line, enter multiple grid squares separated with commas. For example: IO77,IO78,IO87,IO88.";
-$lang['station_location_iota_hint_ln1'] = "Station IOTA reference. For example: EU-005";
-$lang['station_location_iota_hint_ln2'] = "You can look up IOTA references at the <a target='_blank' href='https://www.iota-world.org/iota-directory/annex-f-short-title-iota-reference-number-list.html'>IOTA World</a> website.";
-$lang['station_location_sota_hint_ln1'] = "Station SOTA reference. You can look up SOTA references at the <a target='_blank' href='https://www.sotamaps.org/'>SOTA Maps</a> website.";
-$lang['station_location_wwff_hint_ln1'] = "Station WWFF reference. You can look up WWFF references at the <a target='_blank' href='https://www.cqgma.org/mvs/'>GMA Map</a> website.";
-$lang['station_location_pota_hint_ln1'] = "Station POTA reference. You can look up POTA references at the <a target='_blank' href='https://pota.app/#/map/'>POTA Map</a> website.";
-$lang['station_location_signature'] = "Signature";
-$lang['station_location_signature_name'] = "Signature Name";
-$lang['station_location_signature_name_hint'] = "Station Signature (e.g. GMA)..";
-$lang['station_location_signature_info'] = "Signature Information";
-$lang['station_location_signature_info_hint'] = "Station Signature Info (e.g. DA/NW-357).";
-$lang['station_location_eqsl_hint'] = 'The QTH Nickname which is configured in your eQSL Profile';
-$lang['station_location_eqsl_defaultqslmsg'] = "Default QSLMSG";
-$lang['station_location_eqsl_defaultqslmsg_hint'] = "Define a default message that will be populated and sent for each QSO for this station location.";
-$lang['station_location_qrz_subscription'] = 'Subscription Required';
-$lang['station_location_qrz_hint'] = "Find your API key on <a href='https://logbook.qrz.com/logbook' target='_blank'>the QRZ.com Logbook settings page";
-$lang['station_location_qrz_realtime_upload'] = 'QRZ.com Logbook Realtime Upload';
-$lang['station_location_hrdlog_username'] = "HRDLog.net Username";
-$lang['station_location_hrdlog_username_hint'] = "The username you are registered with at HRDlog.net (usually your callsign).";
-$lang['station_location_hrdlog_code'] = "HRDLog.net API Key";
-$lang['station_location_hrdlog_realtime_upload'] = "HRDLog.net Logbook Realtime Upload";
-$lang['station_location_hrdlog_code_hint'] = "Create your API Code on <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>HRDLog.net Userprofile page";
-$lang['station_location_qo100_hint'] = "Create your API key on <a href='https://qo100dx.club' target='_blank'>your QO-100 Dx Club's profile page";
-$lang['station_location_qo100_realtime_upload'] = "QO-100 Dx Club Realtime Upload";
-$lang['station_location_oqrs_enabled'] = "OQRS Enabled";
-$lang['station_location_oqrs_email_alert'] = "OQRS Email alert";
-$lang['station_location_oqrs_email_hint'] = "Make sure email is set up under admin and global options.";
-$lang['station_location_oqrs_text'] = "OQRS Text";
-$lang['station_location_oqrs_text_hint'] = "Some info you want to add regarding QSL'ing.";
-$lang['station_location_clublog_realtime_upload']='ClubLog Realtime Upload';
-
-
+$lang['station_location'] = 'İstasyon Konumu';
+$lang['station_location_plural'] = "İstasyon Konumları";
+$lang['station_location_header_ln1'] = "İstasyon Konumları, sizin QTH'niz, bir arkadaşınızın QTH'si veya taşınabilir bir istasyon gibi çalışma konumlarını tanımlar.";
+$lang['station_location_header_ln2'] = "Kayıt defterlerine benzer şekilde, istasyon profili bir dizi QSO'yu bir arada tutar.";
+$lang['station_location_header_ln3'] = 'Aynı anda yalnızca bir istasyon etkin olabilir. Aşağıdaki tabloda bu, -Aktif İstasyon- etiketiyle gösterilmektedir.';
+$lang['station_location_create_header'] = 'İstasyon Konumunu Oluşturun';
+$lang['station_location_create'] = 'Bir İstasyon Konumu Oluşturun';
+$lang['station_location_edit'] = 'İstasyon Konumunu Düzenle: ';
+$lang['station_location_updated_suff'] = ' Güncellendi.';
+$lang['station_location_warning'] = "Dikkat: Aktif bir istasyon konumu ayarlamanız gerekiyor. Birini seçmek için Çağrı İşareti->İstasyon Konumu'na gidin.";
+$lang['station_location_resign_at'] = 'Lütfen bunları şu adrese yeniden atayın';
+$lang['station_location_warning_resign'] = "Cloudlog'daki son değişiklikler nedeniyle QSO'ları istasyon profillerinize yeniden atamanız gerekiyor.";
+$lang['station_location_name'] = 'Profil Adı';
+$lang['station_location_name_hint'] = 'İstasyon konumunun kısa adı. Örneğin: Ev (IO87IP)';
+$lang['station_location_callsign'] = 'İstasyon Çağrı İşareti';
+$lang['station_location_callsign_hint'] = 'İstasyon çağrı işareti. Örneğin: 2M0SQL/P';
+$lang['station_location_power'] = 'İstasyon Gücü (W)';
+$lang['station_location_power_hint'] = 'Watt cinsinden varsayılan istasyon gücü. CAT tarafından üzerine yazıldı.';
+$lang['station_location_emptylog'] = 'Günlüğü Boşalt';
+$lang['station_location_confirm_active'] = 'Aşağıdaki istasyonu aktif istasyon yapmak istediğinizden emin misiniz: ';
+$lang['station_location_set_active'] = 'Etkin Olarak Ayarla';
+$lang['station_location_active'] = 'Aktif İstasyon';
+$lang['station_location_claim_ownership'] = 'Sahiplik Talebi';
+$lang['station_location_confirm_del_qso'] = "Bu istasyon profilindeki tüm QSO'ları silmek istediğinizden emin misiniz?";
+$lang['station_location_confirm_del_stationlocation'] = 'İstasyon profilini silmek istediğinizden emin misiniz?';
+$lang['station_location_confirm_del_stationlocation_qso'] = "Bu, bu istasyon profilindeki tüm QSO'ları silecek mi?";
+$lang['station_location_dxcc'] = 'DXCC İstasyonu';
+$lang['station_location_dxcc_hint'] = 'İstasyon DXCC varlığı. Örneğin: İskoçya';
+$lang['station_location_dxcc_warning'] = "Burada bir dakika durun. Seçtiğiniz DXCC'nin tarihi geçmiş ve artık geçerli değil. Bu konum için hangi DXCC'nin doğru olduğunu kontrol edin. Eminseniz bu uyarıyı dikkate almayın.";
+$lang['station_location_city'] = 'İstasyon Şehri';
+$lang['station_location_city_hint'] = 'İstasyon şehri. Örneğin: Inverness';
+$lang['station_location_state'] = 'İstasyon Durumu';
+$lang['station_location_state_hint'] = 'İstasyon durumu. Yalnızca belirli ülkeler için geçerlidir. Uygun değilse boş bırakın.';
+$lang['station_location_county'] = 'İstasyon İlçesi';
+$lang['station_location_county_hint'] = 'İstasyon İlçesi (Yalnızca ABD/Alaska/Hawaii için kullanılır).';
+$lang['station_location_gridsquare'] = 'İstasyon Izgara Meydanı';
+$lang['station_location_gridsquare_hint_ln1'] = "İstasyon kare kare. Örneğin: IO87IP. Izgara karenizi bilmiyorsanız <a href='https://zone-check.eu/?m=loc' target=' _blank'>burayı tıklayın</a>!";
+$lang['station_location_gridsquare_hint_ln2'] = "Eğer bir ızgara çizgisi üzerinde bulunuyorsanız, virgüllerle ayrılmış birden fazla ızgara karesi girin. Örneğin: IO77,IO78,IO87,IO88.";
+$lang['station_location_iota_hint_ln1'] = "İstasyon IOTA referansı. Örneğin: EU-005";
+$lang['station_location_iota_hint_ln2'] = "IOTA referanslarını <a target='_blank' href='https://www.iota-world.org/iota-directory/annex-f-short-title adresinden arayabilirsiniz -iota-reference-number-list.html'>IOTA World</a> web sitesi.";
+$lang['station_location_sota_hint_ln1'] = "İstasyon SOTA referansı. SOTA referanslarını <a target='_blank' href='https://www.sotamaps.org/'>SOTA Haritaları</a> web sitesinde arayabilirsiniz. .";
+$lang['station_location_wwff_hint_ln1'] = "İstasyon WWFF referansı. WWFF referanslarını <a target='_blank' href='https://www.cqgma.org/mvs/'>GMA Haritası</a'nda arayabilirsiniz. > web sitesi.";
+$lang['station_location_pota_hint_ln1'] = "İstasyon POTA referansı. POTA referanslarını <a target='_blank' href='https://pota.app/#/map/'>POTA Haritası</a'nda arayabilirsiniz. > web sitesi.";
+$lang['station_location_signature'] = "İmza";
+$lang['station_location_signature_name'] = "İmza Adı";
+$lang['station_location_signature_name_hint'] = "İstasyon İmzası (örn. GMA)..";
+$lang['station_location_signature_info'] = "İmza Bilgileri";
+$lang['station_location_signature_info_hint'] = "İstasyon İmza Bilgisi (örn. DA/NW-357).";
+$lang['station_location_eqsl_hint'] = 'eQSL Profilinizde yapılandırılan QTH Takma Adı';
+$lang['station_location_eqsl_defaultqslmsg'] = "Varsayılan QSLMSG";
+$lang['station_location_eqsl_defaultqslmsg_hint'] = "Bu istasyon konumu için her QSO için doldurulacak ve gönderilecek varsayılan bir mesaj tanımlayın.";$lang['station_location_qrz_subscription'] = 'Abonelik Gerekli';
+$lang['station_location_qrz_hint'] = "API anahtarınızı <a href='https://logbook.qrz.com/logbook' target='_blank'>QRZ.com Kayıt Defteri ayarları sayfasında bulun";
+$lang['station_location_qrz_realtime_upload'] = 'QRZ.com Kayıt Defteri Gerçek Zamanlı Yükleme';
+$lang['station_location_hrdlog_username'] = "HRDLog.net Kullanıcı Adı";
+$lang['station_location_hrdlog_username_hint'] = "HRDlog.net'te kayıtlı olduğunuz kullanıcı adı (genellikle çağrı kodunuz).";
+$lang['station_location_hrdlog_code'] = "HRDLog.net API Anahtarı";
+$lang['station_location_hrdlog_realtime_upload'] = "HRDLog.net Kayıt Defteri Gerçek Zamanlı Yükleme";
+$lang['station_location_hrdlog_code_hint'] = "API Kodunuzu <a href='http://www.hrdlog.net/EditUser.aspx' target='_blank'>HRDLog.net Kullanıcı Profili sayfasında oluşturun";
+$lang['station_location_qo100_hint'] = "API anahtarınızı <a href='https://qo100dx.club' target='_blank'>QO-100 Dx Club'ınızın profil sayfasında oluşturun";
+$lang['station_location_qo100_realtime_upload'] = "QO-100 Dx Club Gerçek Zamanlı Yükleme";
+$lang['station_location_oqrs_enabled'] = "OQRS Etkin";
+$lang['station_location_oqrs_email_alert'] = "OQRS E-posta uyarısı";
+$lang['station_location_oqrs_email_hint'] = "Yönetici ve genel seçenekler altında e-postanın ayarlandığından emin olun.";
+$lang['station_location_oqrs_text'] = "OQRS Metni";
+$lang['station_location_oqrs_text_hint'] = "QSL'leme ile ilgili eklemek istediğiniz bazı bilgiler.";
+$lang['station_location_clublog_realtime_upload']='ClubLog Gerçek Zamanlı Yükleme';
