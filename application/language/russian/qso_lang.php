@@ -50,8 +50,8 @@ $lang['qso_operator_callsign'] = 'Позывной оператора';
 // Simple FLE (FastLogEntry)
 
 $lang['qso_simplefle_info'] = "Что это?";
-$lang['qso_simplefle_info_ln1'] = "Simple Fast Log Entry (FLE)";
-$lang['qso_simplefle_info_ln2'] = "Fast Log Entry, или просто FLE, - это система, позволяющая очень быстро и эффективно регистрировать QSO. Благодаря своему синтаксису, для регистрации большого количества QSO требуется минимум вводных данных при минимальных усилиях.";
+$lang['qso_simplefle_info_ln1'] = "Простая быстрая запись в журнал (FLE)";
+$lang['qso_simplefle_info_ln2'] = "Быстрая запись в журнал (Fast Log Entry), или просто FLE, - это система, позволяющая очень быстро и эффективно регистрировать QSO. Благодаря своему синтаксису, для регистрации большого количества QSO требуется минимум вводных данных при минимальных усилиях.";
 $lang['qso_simplefle_info_ln3'] = "Изначально FLE была написана DF3CB. На своем сайте он предлагает программу для Windows. Программа Simple FLE была написана OK2CQR на основе FLE от DF3CB и предоставляет веб-интерфейс для регистрации QSO.";
 $lang['qso_simplefle_info_ln4'] = "Часто используется для импорта бумажных журналов из открытых сессий, и теперь SimpleFLE также доступен в Cloudlog. Информацию о синтаксисе и принципах работы FLE можно найти <a href='https://df3cb.com/fle/documentation/' target='_blank'>здесь</a>.";
 $lang['qso_simplefle_qso_data'] = "Данные QSOa";
@@ -68,7 +68,7 @@ $lang['qso_simplefle_enter_the_data'] = "Введите данные";
 $lang['qso_simplefle_syntax_help_close_w_sample'] = "Закройте и загрузите образец данных";
 $lang['qso_simplefle_reload'] = "Перезагрузить список QSO";
 $lang['qso_simplefle_save'] = "Сохранить в Cloudlog";
-$lang['qso_simplefle_clear'] = "Очистить сессию логгирования";
+$lang['qso_simplefle_clear'] = "Очистить сессию записи";
 $lang['qso_simplefle_refs_hint'] = "Референции могут быть: <u>S</u>OTA, <u>I</u>OTA, <u>P</u>OTA или <u>W</u>WFF";
 
 $lang['qso_simplefle_error_band'] = "Отсутствует диапазон!";

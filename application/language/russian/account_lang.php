@@ -130,7 +130,7 @@ $lang['account_default_values'] = "Значения по умолчанию";
 $lang['account_miscellaneous'] = "Разное";
 
 $lang['account_hamsat'] = "Hams.at";
-$lang['account_hamsat_private_feed_key'] = "Private Feed Key";
-$lang['account_hamsat_hint'] = "See your profile at <a href='https://hams.at/users/settings' target='_blank'>https://hams.at/users/settings</a>.";
-$lang['account_hamsat_workable_only'] = "Show Workable Passes Only";
-$lang['account_hamsat_workable_only_hint'] = "If enabled shows only workable passes based on the gridsquare set in your hams.at account. Requires private feed key to be set.";
+$lang['account_hamsat_private_feed_key'] = "Частный ключ RSS потока";
+$lang['account_hamsat_hint'] = "Ключ можно найти в вашем профиле по ссылке <a href='https://hams.at/users/settings' target='_blank'>https://hams.at/users/settings</a>.";
+$lang['account_hamsat_workable_only'] = "Показывать только те витки, в которых возможно проведение QSO";
+$lang['account_hamsat_workable_only_hint'] = "Если включено, то будут показаны только те витки, в которых возможно проведение QSO, основываясь на квадрате, указанном в вашем аккаунте hams.at. Требует указания частного ключа RSS потока.";
