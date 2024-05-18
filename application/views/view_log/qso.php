@@ -1,6 +1,5 @@
 <?php if ($query->num_rows() > 0) {  foreach ($query->result() as $row) { ?>
 <div class="container-fluid">
-
     <ul style="margin-bottom: 10px;" class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="table-tab" data-bs-toggle="tab" href="#qsodetails" role="tab" aria-controls="table" aria-selected="true"><?php echo lang('qso_details'); ?></a>
@@ -492,71 +491,78 @@
 
             <table width="100%">
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_callsign'); ?></td>
+                        <td><?php echo lang('gen_hamradio_callsign'); ?></td>
                         <td><?php echo $row->station_callsign; ?></td>
                     </tr>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_name'); ?></td>
+                        <td><?php echo lang('general_word_name'); ?></td>
                         <td><?php echo $row->station_profile_name; ?></td>
                     </tr>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_gridsquare'); ?></td>
+                        <td><?php echo lang('gen_hamradio_gridsquare'); ?></td>
                         <td><?php echo $row->station_gridsquare; ?></td>
                     </tr>
 
                     <?php if($row->station_city) { ?>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_city'); ?></td>
+                        <td><?php echo lang('general_word_city'); ?></td>
                         <td><?php echo $row->station_city; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->station_country) { ?>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('general_word_country'); ?></td>
+                        <td><?php echo lang('general_word_country'); ?></td>
                         <td><?php echo ucwords(strtolower(($row->station_country)), "- (/"); if ($row->station_end != null) echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_OPERATOR) { ?>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_operator'); ?></td>
+                        <td><?php echo lang('gen_hamradio_operator'); ?></td>
                         <td><?php echo $row->COL_OPERATOR; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_TX_PWR) { ?>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_transmit_power'); ?></td>
+                        <td><?php echo lang('gen_hamradio_transmit_power'); ?></td>
                         <td><?php echo $row->COL_TX_PWR; ?> W</td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_MY_IOTA) { ?>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_iota_reference'); ?></td>
+                        <td><?php echo lang('gen_hamradio_iota_reference'); ?></td>
                         <td><?php echo $row->COL_MY_IOTA; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_MY_SOTA_REF) { ?>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_sota_reference'); ?></td>
+                        <td><?php echo lang('gen_hamradio_sota_reference'); ?></td>
                         <td><?php echo $row->COL_MY_SOTA_REF; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_MY_WWFF_REF) { ?>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_wwff_reference'); ?></td>
+                        <td><?php echo lang('gen_hamradio_wwff_reference'); ?></td>
                         <td><?php echo $row->COL_MY_WWFF_REF; ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($row->COL_MY_POTA_REF) { ?>
                     <tr>
-                        <td><?php echo lang('gen_hamradio_station') . ' ' . lang('gen_hamradio_pota_reference'); ?></td>
+                        <td><?php echo lang('gen_hamradio_pota_reference'); ?></td>
                         <td><?php echo $row->COL_MY_POTA_REF; ?></td>
+                    </tr>
+                    <?php } ?>
+
+                    <?php if($row->station_wab) { ?>
+                    <tr>
+                        <td>WAB Reference</td>
+                        <td><?php echo $row->station_wab; ?></td>
                     </tr>
                     <?php } ?>
             </table>

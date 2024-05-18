@@ -805,7 +805,6 @@ if ($this->session->userdata('user_id') != null) {
 
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard") { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.js"></script>
-    <script id="leafembed" type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>"></script>
 
     <script type="text/javascript">
         $(function() {
@@ -822,19 +821,68 @@ if ($this->session->userdata('user_id') != null) {
 
         var qso_loc = '<?php echo site_url('map/map_plot_json'); ?>';
         var q_zoom = 3;
+        var osmUrl = '<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>';
+        var osmCopyright = '<?php echo $this->optionslib->get_option('map_tile_server_copyright'); ?>';
+
+        var redIconImg = L.icon({
+            iconUrl: icon_dot_url,
+            iconSize: [10, 10]
+        });
 
         $(document).ready(function() {
             <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
-                var grid = "Yes";
+                var ShowGrid = "Yes";
             <?php } else { ?>
-                var grid = "No";
+                var ShowGrid = "No";
             <?php } ?>
-            initmap(grid, 'map', {
-                'dataPost': {
-                    'nb_qso': '18'
-                }
-            });
 
+
+            
+            var dashmap = L.map('map').setView([q_lat, q_lng], q_zoom);
+
+            var osm = new L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 12,
+                attribution: osmCopyright
+            }).addTo(dashmap);
+
+            dashmap.addLayer(osm);
+
+            var printer = L.easyPrint({
+                sizeModes: ['Current'],
+                filename: 'myMap',
+                exportOnly: true,
+                hideControlContainer: true
+            }).addTo(dashmap);
+
+            var markers = {};
+
+            function loadMarkers() {
+                fetch(qso_loc)
+                    .then(response => response.json())
+                    .then(data => {
+                        var newMarkers = {};
+                        data.markers.forEach(marker => {
+                            var key = `${marker.lat},${marker.lng}`;
+                            newMarkers[key] = marker;
+                            if (!markers[key]) {
+                                L.marker([marker.lat, marker.lng], {
+                                        icon: redIconImg
+                                    }).addTo(dashmap)
+                                    .bindPopup(marker.html);
+                            }
+                        });
+                        Object.keys(markers).forEach(key => {
+                            if (!newMarkers[key]) {
+                                dashmap.removeLayer(markers[key]);
+                            }
+                        });
+                        markers = newMarkers;
+                    });
+            }
+
+            loadMarkers();
+            setInterval(loadMarkers, 5000);
+
+            var layerControl = new L.Control.Layers(null, { 'Gridsquares': maidenhead = L.maidenhead() }).addTo(dashmap);
         });
     </script>
 <?php } ?>
@@ -1602,43 +1650,45 @@ if ($this->session->userdata('user_id') != null) {
 
         // Load the external GeoJSON file
         $.when(wab_squares).done(function() {
-        var layer = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>', {
-            maxZoom: 18,
-            attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright'); ?>',
-            id: 'mapbox.streets'
-        });
+            var layer = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>', {
+                maxZoom: 18,
+                attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright'); ?>',
+                id: 'mapbox.streets'
+            });
 
-        var map = L.map('map', {
-            layers: [layer],
-            center: [54.970901, -2.457140],
-            zoom: 8,
-            minZoom: 8,
-            fullscreenControl: true,
-            fullscreenControlOptions: {
-                position: 'topleft'
-            },
-        });
+            var map = L.map('map', {
+                layers: [layer],
+                center: [54.970901, -2.457140],
+                zoom: 8,
+                minZoom: 8,
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft'
+                },
+            });
 
-        var printer = L.easyPrint({
-            tileLayer: layer,
-            sizeModes: ['Current'],
-            filename: 'myMap',
-            exportOnly: true,
-            hideControlContainer: true
-        }).addTo(map);
+            var printer = L.easyPrint({
+                tileLayer: layer,
+                sizeModes: ['Current'],
+                filename: 'myMap',
+                exportOnly: true,
+                hideControlContainer: true
+            }).addTo(map);
 
-          /*Legend specific*/
-  var legend = L.control({ position: "topright" });
+            /*Legend specific*/
+            var legend = L.control({
+                position: "topright"
+            });
 
-legend.onAdd = function(map) {
-    var div = L.DomUtil.create("div", "legend");
-    div.innerHTML += "<h4>" + lang_general_word_colors + "</h4>";
-    div.innerHTML += "<i style='background: green'></i><span> Confirmed Square</span><br>";
-    div.innerHTML += "<i style='background: orange'></i><span> Unconfirmed Square</span><br>";
-    return div;
-};
+            legend.onAdd = function(map) {
+                var div = L.DomUtil.create("div", "legend");
+                div.innerHTML += "<h4>" + lang_general_word_colors + "</h4>";
+                div.innerHTML += "<i style='background: green'></i><span> Confirmed Square</span><br>";
+                div.innerHTML += "<i style='background: orange'></i><span> Unconfirmed Square</span><br>";
+                return div;
+            };
 
-legend.addTo(map);
+            legend.addTo(map);
 
             //console.log(wab_squares.responseJSON);
             // Add requested external GeoJSON to map
@@ -3108,6 +3158,25 @@ legend.addTo(map);
 <?php if ($this->uri->segment(1) == "station") { ?>
     <script>
         var baseURL = "<?php echo base_url(); ?>";
+
+        $(document).ready(function() {
+            function checkSelectedValue() {
+                var selectedValue = $('#dxcc_select').val();
+                var valuesToShow = [223, 279, 294, 265, 106, 122];
+
+                if (valuesToShow.includes(Number(selectedValue))) {
+                    $('#WABbox').show();
+                } else {
+                    $('#WABbox').hide();
+                }
+            }
+
+            // Call on page load
+            checkSelectedValue();
+
+            // Call on change event
+            $('#dxcc_select').change(checkSelectedValue);
+        });
 
         var state = $("#StateHelp option:selected").text();
         if (state != "") {
