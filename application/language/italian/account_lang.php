@@ -41,7 +41,7 @@ $lang['account_date_format'] = 'Formato Data';
 $lang['account_log_end_time'] = 'Salva Tempo Fine QSO Separatamente';
 $lang['account_log_end_time_hint'] = 'Scegli Si se vuoi salvare il tempo di inizio e fine QSO separatamente. Se imposti \'No\' il tempo di inizio e fine sarà lo stesso.';
 $lang['account_quicklog_feature'] = "Log Rapido";
-$lang['account_quicklog_feature_hint'] = "Con questa funzionalità potrai salvare il nominativo cercando nell\'intestazione.";
+$lang['account_quicklog_feature_hint'] = "Con questa funzionalità potrai salvare il nominativo cercando nell'intestazione.";
 $lang['account_quicklog_enter'] = "Log Rapido - Azione premendo Invio";
 $lang['account_quicklog_enter_hint'] = "Quale azione vuoi eseguire quando viene premuto Invio nel Log Rapido?";
 $lang['account_quicklog_enter_log'] = "Registro Nominativo";
@@ -55,13 +55,13 @@ $lang['account_choose_cloudlog_language'] = 'Scegli la lingua di Cloudlog.';
 $lang['account_main_menu'] = 'Menu Opzioni';
 $lang['account_show_notes_in_the_main_menu'] = 'Visualizza le note nel menu principale.';
 
-$lang['account_gridsquare_and_location_autocomplete'] = 'Completamento automatico Griglia e Posizione';
-$lang['account_location_auto_lookup'] = 'Ricerca automatica della posizione.';
-$lang['account_if_set_gridsquare_is_fetched_based_on_location_name'] = 'Se impostato, la Griglia viene recuperata in base al nome della posizione.';
+$lang['account_gridsquare_and_location_autocomplete'] = 'Completamento automatico Griglia e Luogo';
+$lang['account_location_auto_lookup'] = 'Ricerca automatica del luogo.';
+$lang['account_if_set_gridsquare_is_fetched_based_on_location_name'] = 'Se impostato, la Griglia viene recuperata in base al nome del luogo.';
 $lang['account_sota_auto_lookup_gridsquare_and_name_for_summit'] = 'Ricerca automatica di Griglia e vetta per SOTA.';
 $lang['account_wwff_auto_lookup_gridsquare_and_name_for_reference'] = 'Ricerca automatica di Griglia e nome referenza per WWFF.';
 $lang['account_pota_auto_lookup_gridsquare_and_name_for_park'] = 'Ricerca automatica di Griglia e parco per POTA.';
-$lang['account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'] = 'Se impostati, nome e griglia vengono recuperati dall\'API e compilati con posizione e locatore.';
+$lang['account_if_set_name_and_gridsquare_is_fetched_from_the_api_and_filled_in_location_and_locator'] = 'Se impostati, nome e griglia vengono recuperati dall\'API e compilati con luogo e locatore.';
 
 $lang['account_previous_qsl_type'] = 'Previous QSL Type';
 $lang['account_select_the_type_of_qsl_to_show_in_the_previous_qsos_section'] = 'Seleziona il tipo di QSL da mostrare nella precedente sezione QSO.';

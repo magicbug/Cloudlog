@@ -26,13 +26,13 @@ $lang['adif_alert_log_files_type'] = "I file di Log devono essere del tipo *.adi
 // $lang['general_word_warning']            --> application/language/english/general_words_lang.php "PHP Upload Warning"
 // $lang['gen_max_file_upload_size']        --> application/language/english/general_words_lang.php "PHP Upload Warning"
 
-$lang['adif_select_stationlocation'] = "Seleziona la posizione della stazione";
+$lang['adif_select_stationlocation'] = "Seleziona il luogo della stazione";
 // $lang['gen_hamradio_callsign']           --> application/language/english/general_words_lang.php
 
 // The File Input is translated by the Browser
 $lang['adif_file_label'] = "File ADIF";
 
-$lang['adif_hint_no_info_in_file'] = "Selezionare se l\'ADIF importato non contiene queste informazioni.";
+$lang['adif_hint_no_info_in_file'] = "Selezionare se l'ADIF importato non contiene queste informazioni.";
 
 $lang['adif_import_dup'] = "Importa QSO duplicati";
 $lang['adif_mark_imported_lotw'] = "Segna i QSO importati come caricati su LoTW";
@@ -40,13 +40,13 @@ $lang['adif_mark_imported_hrdlog'] = "Segna i QSO importati come caricati su HRD
 $lang['adif_mark_imported_qrz'] = "Segna i QSO importati come caricati su QRZ.com";
 $lang['adif_mark_imported_clublog'] = "Segna i QSO importati come caricati su Clublog";
 
-$lang['adif_dxcc_from_adif'] = "Utilizza le informazioni DXCC dell\'ADIF";
+$lang['adif_dxcc_from_adif'] = "Utilizza le informazioni DXCC dell'ADIF";
 $lang['adif_dxcc_from_adif_hint'] = "Se non selezionato, Cloudlog tenterà di determinare automaticamente le informazioni DXCC.";
 
-$lang['adif_always_use_login_call_as_op'] = "Utilizza sempre il nominativo di login come nome dell\'operatore durante l\'importazione";
+$lang['adif_always_use_login_call_as_op'] = "Utilizza sempre il nominativo di login come nome dell'operatore durante l'importazione";
 
-$lang['adif_ignore_station_call'] = "Ignora il nominativo della stazione durante l\'importazione";
-$lang['adif_ignore_station_call_hint'] = "Se selezionato, Cloudlog tenterà di importare <b>tutti</b> i QSO dell\'ADIF, indipendentemente dal fatto che corrispondano alla posizione della stazione scelta.";
+$lang['adif_ignore_station_call'] = "Ignora il nominativo della stazione durante l'importazione";
+$lang['adif_ignore_station_call_hint'] = "Se selezionato, Cloudlog tenterà di importare <b>tutti</b> i QSO dell'ADIF, indipendentemente dal fatto che corrispondano al luogo della stazione scelta.";
 
 $lang['adif_upload'] = "Carica";
 
@@ -57,7 +57,7 @@ ________________________________________________________________________________
 */
 
 $lang['adif_export_take_it_anywhere'] = "Porta il tuo file di Log ovunque!";
-$lang['adif_export_take_it_anywhere_hint'] = "L\'esportazione di ADIF ti consente di importare contatti in applicazioni di terze parti come LoTW, Awards o semplicemente per conservare un backup.";
+$lang['adif_export_take_it_anywhere_hint'] = "L'esportazione di ADIF ti consente di importare contatti in applicazioni di terze parti come LoTW, Awards o semplicemente per conservare un backup.";
 
 
 $lang['adif_mark_exported_lotw'] = "Segna i QSO esportati come caricati su LoTW";
