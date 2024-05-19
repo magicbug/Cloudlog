@@ -836,22 +836,27 @@ if ($this->session->userdata('user_id') != null) {
                 var ShowGrid = "No";
             <?php } ?>
 
+            var layer = L.tileLayer(osmUrl, {
+                maxZoom: 18,
+                attribution: osmCopyright,
+            });
 
-            
-            var dashmap = L.map('map').setView([q_lat, q_lng], q_zoom);
+            var map = L.map('map', {
+                layers: [layer],
+                center: [q_lat, q_lng],
+                zoom: q_zoom,
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft'
+                },
+            });
 
-            var osm = new L.tileLayer(osmUrl, {minZoom: 1, maxZoom: 12,
-                attribution: osmCopyright
-            }).addTo(dashmap);
-
-            dashmap.addLayer(osm);
-
-            var printer = L.easyPrint({
+            /*var printer = L.easyPrint({
                 sizeModes: ['Current'],
                 filename: 'myMap',
                 exportOnly: true,
                 hideControlContainer: true
-            }).addTo(dashmap);
+            }).addTo(map);*/
 
             var markers = {};
 
@@ -866,13 +871,13 @@ if ($this->session->userdata('user_id') != null) {
                             if (!markers[key]) {
                                 L.marker([marker.lat, marker.lng], {
                                         icon: redIconImg
-                                    }).addTo(dashmap)
+                                    }).addTo(map)
                                     .bindPopup(marker.html);
                             }
                         });
                         Object.keys(markers).forEach(key => {
                             if (!newMarkers[key]) {
-                                dashmap.removeLayer(markers[key]);
+                                map.removeLayer(markers[key]);
                             }
                         });
                         markers = newMarkers;
@@ -882,7 +887,6 @@ if ($this->session->userdata('user_id') != null) {
             loadMarkers();
             setInterval(loadMarkers, 5000);
 
-            var layerControl = new L.Control.Layers(null, { 'Gridsquares': maidenhead = L.maidenhead() }).addTo(dashmap);
         });
     </script>
 <?php } ?>
