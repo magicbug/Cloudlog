@@ -806,6 +806,37 @@ if ($this->session->userdata('user_id') != null) {
 <?php if ($this->uri->segment(1) == "" || $this->uri->segment(1) == "dashboard") { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.js"></script>
 
+    <script>
+        var iconsList = {
+            'qso': {
+                'color': '#FF0000',
+                'icon': 'fas fa-dot-circle'
+            }
+        };
+    </script>
+
+    <script>
+        // jquery onready
+        $(document).ready(function() {
+            $.ajax({
+                url: base_url + 'index.php/user_options/get_map_custom',
+                type: 'GET',
+                dataType: 'json',
+                error: function() {
+                    console.log('[ERROR] ajax get_map_custom() function return error.');
+                },
+                success: function(json_mapinfo) {
+                    console.log(json_mapinfo);
+                    if (typeof json_mapinfo.qso !== "undefined") {
+                        iconsList = json_mapinfo;
+                    }
+                }
+            });
+        });
+
+        console.log(iconsList);
+    </script>
+
     <script type="text/javascript">
         $(function() {
             $('[data-bs-toggle="tooltip"]').tooltip()
@@ -869,9 +900,14 @@ if ($this->session->userdata('user_id') != null) {
                             var key = `${marker.lat},${marker.lng}`;
                             newMarkers[key] = marker;
                             if (!markers[key]) {
+                                var icon = L.divIcon({
+                                    className: 'custom-icon',
+                                    html: `<i class="${iconsList.qso.icon}" style="color:${iconsList.qso.color}"></i>`
+                                });
                                 L.marker([marker.lat, marker.lng], {
-                                        icon: redIconImg
-                                    }).addTo(map)
+                                        icon: icon
+                                    })
+                                    .addTo(map)
                                     .bindPopup(marker.html);
                             }
                         });
