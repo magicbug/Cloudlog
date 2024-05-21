@@ -25,7 +25,7 @@ $lang['qso_sig_info_helptext'] = 'Per esempio: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Per esempio: Q03';
 
-$lang['qso_notes_helptext'] = 'Il contenuto della nota viene utilizzato solo all interno di Cloudlog e non viene esportato in altri servizi.';
+$lang['qso_notes_helptext'] = 'Il contenuto della nota viene utilizzato solo all\'interno di Cloudlog e non viene esportato in altri servizi.';
 $lang['qsl_notes_helptext'] = 'Il contenuto di questa nota è esportato a servizi QSL come eqsl.cc.';
 
 $lang['qso_eqsl_qslmsg_helptext'] = "Ottieni il messaggio predefinito per eQSL, per questa stazione.";
@@ -60,8 +60,8 @@ $lang['qso_simplefle_qso_list_total'] = "Totale";
 $lang['qso_simplefle_qso_date'] = "Data del QSO";
 $lang['qso_simplefle_operator'] = "Operatore";
 $lang['qso_simplefle_operator_hint'] = "es. OK2CQR";
-$lang['qso_simplefle_station_call_location'] = "Chiamata/Posizione della stazione";
-$lang['qso_simplefle_station_call_location_hint'] = "Se operi da una nuova posizione, crea prima un nuovo <a href=". site_url('station') . ">Posizione stazione</a>";
+$lang['qso_simplefle_station_call_location'] = "Chiamata/Luogo della stazione";
+$lang['qso_simplefle_station_call_location_hint'] = "Se operi da una nuovo Luogo, crea prima un nuovo <a href=". site_url('station') . ">Luoghi delle stazioni</a>";
 $lang['qso_simplefle_utc_time'] = "Ora UTC attuale";
 $lang['qso_simplefle_enter_the_data'] = "Inserisci i dati";
 $lang['qso_simplefle_syntax_help_close_w_sample'] = "Chiudi e carica dati di esempio";
@@ -71,7 +71,7 @@ $lang['qso_simplefle_clear'] = "Cancella sessione di registrazione";
 $lang['qso_simplefle_refs_hint'] = "I Ref possono essere <u>S</u>OTA, <u>I</u>OTA, <u>P</u>OTA or <u>W</u>WFF";
 
 $lang['qso_simplefle_error_band'] = "Manca la banda!";
-$lang['qso_simplefle_error_mode'] = "Modalità mancante!";
+$lang['qso_simplefle_error_mode'] = "Modo mancante!";
 $lang['qso_simplefle_error_time'] = "L'ora non è impostata!";
 $lang['qso_simplefle_error_stationcall'] = "Chiamata stazione non selezionata";
 $lang['qso_simplefle_error_operator'] = "Il campo 'Operatore' è vuoto";

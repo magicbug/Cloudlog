@@ -82,10 +82,10 @@ $lang['general_word_qslcard_manager'] = 'Менеджер';
 $lang['general_word_qslcard_via'] = 'через';
 $lang['general_word_eqslcard'] = 'eQSL Card';
 $lang['general_word_eqslcards'] = 'eQSL';
-$lang['general_word_sstv_management'] = 'SSTV Management';
-$lang['general_word_sstvimages'] = 'SSTV Images';
-$lang['general_sstv_upload'] = 'Uploaded SSTV images';
-$lang['general_sstv_upload_button'] = 'Upload SSTV image(s)';
+$lang['general_word_sstv_management'] = 'SSTV менеджмент';
+$lang['general_word_sstvimages'] = 'Изображения SSTV';
+$lang['general_sstv_upload'] = 'Загруженные изображения SSTV';
+$lang['general_sstv_upload_button'] = 'Загрзка изображений SSTV';
 $lang['general_word_lotw'] = 'Logbook of the World';
 $lang['general_word_lotw_short'] = 'LoTW';
 
@@ -101,10 +101,10 @@ $lang['general_mark_qsl_tx_direct'] = 'Отметить QSL отправлено
 $lang['general_mark_qsl_requested'] = 'Отметить запрос QSL-карточки';
 $lang['general_mark_qsl_requested_bureau'] = 'Отметить запрос QSL-карточки (через бюро)';
 $lang['general_mark_qsl_requested_direct'] = 'Отметить запрос QSL-карточки (напрямую)';
-$lang['general_mark_qsl_not_required'] = 'Отметить QSL-карточка не требуется';
+$lang['general_mark_qsl_not_required'] = 'Отметить, что QSL-карточка не требуется';
 
 $lang['general_delete_qso'] = 'Удалить QSO';
-$lang['general_more_qso'] = 'Больше QSO';
+$lang['general_more_qso'] = 'Ещё QSO';
 
 $lang['general_lookup_qrz'] = 'Поиск в QRZ.com';
 $lang['general_lookup_hamqth'] = 'Поиск в HamQTH';
@@ -178,7 +178,7 @@ $lang['gen_hamradio_sota'] = 'SOTA';
 $lang['gen_hamradio_wwff'] = 'WWFF';
 $lang['gen_hamradio_pota'] = 'POTA';
 $lang['gen_hamradio_get_gridsquare'] = 'Получить квадрат';
-$lang['gen_hamradio_gridsquare_show'] = "Show Locator";
+$lang['gen_hamradio_gridsquare_show'] = "Показать квадрат";
 $lang['gen_hamradio_latitude'] = "Широта";
 $lang['gen_hamradio_longitude'] = "Долгота";
 $lang['gen_hamradio_bearing'] = "Направление";
@@ -199,7 +199,7 @@ $lang['gen_find_zone_part3'] = "чтобы узнать её!";
 $lang['dashboard_you_have_had'] = '';
 $lang['dashboard_qsos_today'] = 'QSOs сегодня!';
 $lang['dashboard_qso_breakdown'] = 'Статистика QSO';
-$lang['gen_to_date'] = 'To date';
+$lang['gen_to_date'] = 'До даты';
 $lang['dashboard_countries_breakdown'] = 'Статистика по странам';
 
 $lang['gen_from_date'] = 'Начиная с даты';
@@ -228,4 +228,4 @@ $lang['dashboard_logbooks_warning'] = 'У вас нет аппаратного �
 
 $lang['hams_at_no_activations_found'] = 'не найдены предстоящие активации. Проверьте позже.';
 
-$lang['datatables_language'] = "en-GB";
+$lang['datatables_language'] = "ru-RU";

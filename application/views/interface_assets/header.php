@@ -158,6 +158,8 @@
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/ja'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_ja_gridmaster'); ?></a></li>
 										<div class="dropdown-divider"></div>
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/us'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_us_gridmaster'); ?></a></li>
+										<div class="dropdown-divider"></div>
+										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/uk'); ?>"><i class="fas fa-trophy"></i> <?php echo lang('menu_uk_gridmaster'); ?></a></li>
 									</ul>
 								</div>
 								<div class="dropdown-divider"></div>

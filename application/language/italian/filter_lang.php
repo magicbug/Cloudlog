@@ -29,7 +29,7 @@ ________________________________________________________________________________
 $lang['filter_quicksearch_w_sel'] = 'Ricerca rapida con selezionato: ';
 $lang['filter_search_callsign'] = 'Cerca Nominativo';
 $lang['filter_search_dxcc'] = 'Cerca DXCC';
-$lang['filter_search_state'] = 'Cerca Nazione';
+$lang['filter_search_state'] = 'Cerca US Stato';
 $lang['filter_search_gridsquare'] = 'Cerca in Griglia';
 $lang['filter_search_cq_zone'] = 'Cerca zona CQ';
 $lang['filter_search_mode'] = 'Cerca Modo';

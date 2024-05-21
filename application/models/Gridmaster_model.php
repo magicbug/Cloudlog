@@ -62,6 +62,11 @@ class Gridmaster_model extends CI_Model {
     private $lx_lon  = 6;
     private $lx_zoom = 8;
 
+    private $uk_grids = ['IN88', 'IN89', 'IO77', 'IO69', 'IO79', 'JO00', 'JO01', 'JO02', 'JO03', 'IN79', 'IO90', 'IO91', 'IO92', 'IO93', 'IO94', 'IO95', 'IO97', 'IO99', 'IP90', 'IO80', 'IO81', 'IO82', 'IO83', 'IO84', 'IO85', 'IO86', 'IO86', 'IO87', 'IO88', 'IO89', 'IP80', 'IO70', 'IO71', 'IO72', 'IO73', 'IO74', 'IO75', 'IO76', 'IO78', 'IN69', 'IO64', 'IO65', 'IO66', 'IO67', 'IO68', 'IO57', 'IO54'];
+    private $uk_lat  = 52.33;
+    private $uk_lon  = 1.27;
+    private $uk_zoom = 6;
+
     function get_lotw($dxcc) {
         $CI =& get_instance();
         $CI->load->model('logbooks_model');

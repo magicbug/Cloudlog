@@ -95,3 +95,4 @@ $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
 
 $lang['menu_maintenance']='Maintenance';
+$lang['menu_uk_gridmaster'] = 'UK Gridmaster';

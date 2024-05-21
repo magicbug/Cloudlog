@@ -1,75 +1,73 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Doğrudan komut dosyası erişimine izin verilmiyor');
 
 /*
 ___________________________________________________________________________________________
-KML Export
+KML Dışa Aktarma
 ___________________________________________________________________________________________
 */
 
-$lang['export_kml_header'] = "KML Export";
-$lang['export_kml_description'] = "Export your logbook to a KML file for use in Google Earth.";
-$lang['export_kml_grisquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
-
-
-/*
-___________________________________________________________________________________________
-DX Atlas Export
-___________________________________________________________________________________________
-*/
-
-$lang['export_dxatlas_header'] = "DX Atlas Export";
-$lang['export_dxatlas_description'] = "Export your logbook for use in DX Atlas to display worked / confirmed gridsquares.";
-$lang['export_dxatlas_gridsquare_warning'] = "Only QSOs with a gridsquare defined will be exported!";
+$lang['export_kml_header'] = "KML Dışa Aktarma";
+$lang['export_kml_description'] = "Günlük defterinizi Google Earth'te kullanmak üzere bir KML dosyasına aktarın.";
+$lang['export_kml_grisquare_warning'] = "Yalnızca kılavuz karesi tanımlanmış QSO'lar dışa aktarılacaktır!";
 
 
 /*
 ___________________________________________________________________________________________
-SOTA Export
+DX Atlası Dışa Aktarma
 ___________________________________________________________________________________________
 */
 
-$lang['export_sota_header'] = "SOTA CSV Export";
-$lang['export_sota_description'] = "Export your logbook for SOTA uploads.";
-$lang['export_sota_info_warning'] = "Only QSOs with SOTA information will be exported!";
+$lang['export_dxatlas_header'] = "DX Atlas Dışa Aktarma";
+$lang['export_dxatlas_description'] = "Çalışılan / onaylanmış kılavuz karelerini görüntülemek için kayıt defterinizi DX Atlas'ta kullanmak üzere dışarı aktarın.";
+$lang['export_dxatlas_gridsquare_warning'] = "Yalnızca kılavuz karesi tanımlanmış QSO'lar dışa aktarılacaktır!";
+
 
 /*
 ___________________________________________________________________________________________
-Cabrillo Export
+SOTA İhracatı
 ___________________________________________________________________________________________
 */
 
-$lang['export_cabrillo_header'] = "Cabrillo Export";
-$lang['export_cabrillo_description'] = "Export a contest to a Cabrillo log";
-$lang['export_cabrillo_select_station'] = "Select Station Location:";
-$lang['export_cabrillo_proceed'] = "Proceed";
-$lang['export_cabrillo_select_year'] = "Select Year";
-$lang['export_cabrillo_select_contest'] = "Select Contest";
-$lang['export_cabrillo_select_date_range'] = "Select Date Range";
-$lang['export_cabrillo_club'] = "Club";
-$lang['export_cabrillo_cat_operator'] = "Category Operator";
-$lang['export_cabrillo_cat_operator_single_op'] = "Single Operator";
-$lang['export_cabrillo_cat_operator_multi_op'] = "Multi Operator";
-$lang['export_cabrillo_cat_operator_checklog'] = "Checklog";
-$lang['export_cabrillo_cat_assisted'] = "Category Assisted";
-$lang['export_cabrillo_cat_assisted_not_ass'] = "Not Assisted";
-$lang['export_cabrillo_cat_assisted_ass'] = "Assisted";
-$lang['export_cabrillo_cat_band'] = "Category Band";
-$lang['export_cabrillo_cat_band_arrl_vhf'] = "VHF-3-BAND and VHF-FM-ONLY (ARRL VHF Contests only)";
-$lang['export_cabrillo_cat_mode'] = "Category Mode";
-$lang['export_cabrillo_cat_power'] = "Category Power";
-$lang['export_cabrillo_cat_station'] = "Category Station";
-$lang['export_cabrillo_cat_transmitter'] = "Category Transmitter";
-$lang['export_cabrillo_cat_overlay'] = "Category Overlay";
-$lang['export_cabrillo_operators'] = "Operators";
+$lang['export_sota_header'] = "SOTA CSV Dışa Aktarma";
+$lang['export_sota_description'] = "SOTA yüklemeleri için kayıt defterinizi dışarı aktarın.";
+$lang['export_sota_info_warning'] = "Yalnızca SOTA bilgisine sahip QSO'lar dışa aktarılacaktır!";
+
+/*
+___________________________________________________________________________________________
+Cabrillo İhracatı
+___________________________________________________________________________________________
+*/
+
+$lang['export_cabrillo_header'] = "Cabrillo Dışa Aktarımı";
+$lang['export_cabrillo_description'] = "Bir yarışmayı Cabrillo günlüğüne aktar";
+$lang['export_cabrillo_select_station'] = "İstasyon Konumunu Seçin:";
+$lang['export_cabrillo_proceed'] = "Devam et";
+$lang['export_cabrillo_select_year'] = "Yıl Seçin";
+$lang['export_cabrillo_select_contest'] = "Yarışma Seçin";
+$lang['export_cabrillo_select_date_range'] = "Tarih Aralığını Seçin";
+$lang['export_cabrillo_club'] = "Kulüp";
+$lang['export_cabrillo_cat_operator'] = "Kategori Operatörü";
+$lang['export_cabrillo_cat_operator_single_op'] = "Tek Operatör";
+$lang['export_cabrillo_cat_operator_multi_op'] = "Çoklu Operatör";
+$lang['export_cabrillo_cat_operator_checklog'] = "Kontrol günlüğü";
+$lang['export_cabrillo_cat_assisted'] = "Kategori Destekli";
+$lang['export_cabrillo_cat_assisted_not_ass'] = "Yardım Edilmedi";
+$lang['export_cabrillo_cat_assisted_ass'] = "Desteklendi";
+$lang['export_cabrillo_cat_band'] = "Kategori Bandı";
+$lang['export_cabrillo_cat_band_arrl_vhf'] = "VHF-3-BAND ve VHF-FM-ONLY (yalnızca ARRL VHF Yarışmaları)";
+$lang['export_cabrillo_cat_mode'] = "Kategori Modu";
+$lang['export_cabrillo_cat_power'] = "Kategori Gücü";
+$lang['export_cabrillo_cat_station'] = "Kategori İstasyonu";
+$lang['export_cabrillo_cat_transmitter'] = "Kategori Vericisi";
+$lang['export_cabrillo_cat_overlay'] = "Kategori Yer Paylaşımı";
+$lang['export_cabrillo_operators'] = "Operatörler";
 $lang['export_cabrillo_soapbox'] = "Soapbox";
-$lang['export_cabrillo_address'] = "Address";
-$lang['export_cabrillo_address_city'] = "Address City";
-$lang['export_cabrillo_address_state_province'] = "Address State/Province";
-$lang['export_cabrillo_address_postalcode'] = "Address Postalcode";
-$lang['export_cabrillo_address_country'] = "Address Country";
-$lang['export_cabrillo_no_contests_in_log'] = "No contests were found in your log.";
-$lang['export_cabrillo_no_contests_for_stationlocation'] = "No contests were found for this station location!";
-
-
+$lang['export_cabrillo_address'] = "Adres";
+$lang['export_cabrillo_address_city'] = "Adres Şehri";
+$lang['export_cabrillo_address_state_province'] = "Adres Eyalet/İl";
+$lang['export_cabrillo_address_postalcode'] = "Adres Posta Kodu";
+$lang['export_cabrillo_address_country'] = "Adres Ülkesi";
+$lang['export_cabrillo_no_contests_in_log'] = "Günlüğünüzde hiçbir yarışma bulunamadı.";
+$lang['export_cabrillo_no_contests_for_stationlocation'] = "Bu istasyon konumu için hiçbir yarışma bulunamadı!";

@@ -315,6 +315,9 @@ class Lotw extends CI_Controller {
 				//with the error message.
 				if(curl_errno($ch)){
 					throw new Exception(curl_error($ch));
+
+					// Upload of TQ8 Failed for unknown reason
+					echo $station_profile->station_callsign." (".$station_profile->station_profile_name.") Upload Failed"."<br>";
 				}
 
 				$pos = strpos($result, "<!-- .UPL.  accepted -->");
@@ -1003,6 +1006,9 @@ class Lotw extends CI_Controller {
 		switch ($ca_prov):
 			case "QC":
 				return "PQ";
+				break;
+			case "NL":
+				return "NF";
 				break;
 			default:
 				return $ca_prov;
