@@ -247,6 +247,22 @@
 						</div>
 
 
+						<div class="mb-3" id="belarus_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="MI" <?php if($my_station_profile->state == "MI") { echo "selected"; } ?>>Minsk (Minskaya voblasts')</option>
+								<option value="BR" <?php if($my_station_profile->state == "BR") { echo "selected"; } ?>>Brest (Brestskaya voblasts')</option>
+								<option value="HR" <?php if($my_station_profile->state == "HR") { echo "selected"; } ?>>Grodno (Hrodzenskaya voblasts')</option>
+								<option value="VI" <?php if($my_station_profile->state == "VI") { echo "selected"; } ?>>Vitebsk (Vitsyebskaya voblasts')</option>
+								<option value="MA" <?php if($my_station_profile->state == "MA") { echo "selected"; } ?>>Mogilev (Mahilyowskaya voblasts')</option>
+								<option value="HO" <?php if($my_station_profile->state == "HO") { echo "selected"; } ?>>Gomel (Homyel'skaya voblasts')</option>
+								<option value="HM" <?php if($my_station_profile->state == "HM") { echo "selected"; } ?>>Horad Minsk</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
+
 						<!-- US County -->
 						<div class="mb-3">
 							<label for="stationCntyInput"><?php echo lang("station_location_county"); ?></label>

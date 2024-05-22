@@ -12,6 +12,7 @@ $(document).ready( function () {
     $("#canada_state").hide();
     $("#aland_state").hide();
     $("#asiatic_russia_state").hide();
+    $("#belarus_state").hide();
 
     var selectedDXCCID = $('#dxcc_select').find(":selected").val();
 
@@ -37,6 +38,15 @@ $(document).ready( function () {
         $("#us_state").hide();
     }
 
+    // Show Belarus States if Belarus is selected
+    if(selectedDXCCID == '27'){
+        $("#belarus_state").show();
+        $("#asiatic_russia_state").hide();
+        $("#aland_state").hide();
+        $("#canada_state").hide();
+        $("#us_state").hide();
+    }
+
     $('#dxcc_select').change(function(){
         if($(this).val() == '1'){ // or this.value == 'volvo'
           console.log("CANADA!");
@@ -48,6 +58,12 @@ $(document).ready( function () {
             $("#us_state").hide();
         } else if($(this).val() == '15') {
             $("#asiatic_russia_state").show();
+            $("#aland_state").hide();
+            $("#canada_state").hide();
+            $("#us_state").hide();
+        } else if($(this).val() == '27') {
+            $("#belarus_state").show();
+            $("#asiatic_russia_state").hide();
             $("#aland_state").hide();
             $("#canada_state").hide();
             $("#us_state").hide();
