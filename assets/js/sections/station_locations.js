@@ -14,6 +14,7 @@ $(document).ready( function () {
     $("#asiatic_russia_state").hide();
     $("#belarus_state").hide();
     $("#mexico_state").hide();
+    $("#eu_russia_state").hide();
 
     var selectedDXCCID = $('#dxcc_select').find(":selected").val();
 
@@ -21,6 +22,10 @@ $(document).ready( function () {
         $("#canada_state").show();
         $("#us_state").hide();
         $("#asiatic_russia_state").hide();
+        $("#eu_russia_state").hide();
+        $("#belarus_state").hide();
+        $("#aland_state").hide();
+        $("#mexico_state").hide();
     }
 
     // Show Aland States if Aland is selected
@@ -29,6 +34,9 @@ $(document).ready( function () {
         $("#canada_state").hide();
         $("#us_state").hide();
         $("#asiatic_russia_state").hide();
+        $("#eu_russia_state").hide();
+        $("#belarus_state").hide();
+        $("#mexico_state").hide();
     }
 
     // Show Asiatic Russia States if Asiatic Russia is selected
@@ -37,6 +45,9 @@ $(document).ready( function () {
         $("#aland_state").hide();
         $("#canada_state").hide();
         $("#us_state").hide();
+        $("#eu_russia_state").hide();
+        $("#belarus_state").hide();
+        $("#mexico_state").hide();
     }
 
     // Show Belarus States if Belarus is selected
@@ -46,6 +57,8 @@ $(document).ready( function () {
         $("#aland_state").hide();
         $("#canada_state").hide();
         $("#us_state").hide();
+        $("#eu_russia_state").hide();
+        $("#mexico_state").hide();
     }
 
     // Show Mexico States if Mexico is selected
@@ -56,28 +69,53 @@ $(document).ready( function () {
         $("#aland_state").hide();
         $("#canada_state").hide();
         $("#us_state").hide();
+        $("#eu_russia_state").hide();
+    }
+
+    // Show EU Russia States if EU Russia is selected
+    if(selectedDXCCID == '54'){
+        $("#mexico_state").hide();
+        $("#belarus_state").hide();
+        $("#asiatic_russia_state").hide();
+        $("#aland_state").hide();
+        $("#canada_state").hide();
+        $("#us_state").hide();
+        $("#eu_russia_state").show();
     }
 
     $('#dxcc_select').change(function(){
         if($(this).val() == '1'){ // or this.value == 'volvo'
-          console.log("CANADA!");
-          $("#canada_state").show();
-          $("#us_state").hide();
+            $("#mexico_state").hide();
+            $("#belarus_state").hide();
+            $("#asiatic_russia_state").hide();
+            $("#aland_state").hide();
+            $("#canada_state").show();
+            $("#us_state").hide();
+            $("#eu_russia_state").hide();
         } else if($(this).val() == '5') {
+            $("#mexico_state").hide();
+            $("#belarus_state").hide();
+            $("#asiatic_russia_state").hide();
             $("#aland_state").show();
             $("#canada_state").hide();
             $("#us_state").hide();
+            $("#eu_russia_state").hide();
         } else if($(this).val() == '15') {
+            $("#mexico_state").hide();
+            $("#belarus_state").hide();
             $("#asiatic_russia_state").show();
             $("#aland_state").hide();
             $("#canada_state").hide();
             $("#us_state").hide();
+            $("#eu_russia_state").hide();
         } else if($(this).val() == '27') {
+            $("#mexico_state").hide();
             $("#belarus_state").show();
             $("#asiatic_russia_state").hide();
             $("#aland_state").hide();
             $("#canada_state").hide();
             $("#us_state").hide();
+            $("#eu_russia_state").hide();
         } else if($(this).val() == '50') {
             $("#mexico_state").show();
             $("#belarus_state").hide();
@@ -85,6 +123,15 @@ $(document).ready( function () {
             $("#aland_state").hide();
             $("#canada_state").hide();
             $("#us_state").hide();
+            $("#eu_russia_state").hide();
+        } else if($(this).val() == '54') {
+            $("#mexico_state").hide();
+            $("#belarus_state").hide();
+            $("#asiatic_russia_state").hide();
+            $("#aland_state").hide();
+            $("#canada_state").hide();
+            $("#us_state").hide();
+            $("#eu_russia_state").show();
         } else {
             $("#canada_state").hide();
             $("#us_state").show();

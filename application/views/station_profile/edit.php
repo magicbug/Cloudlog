@@ -301,6 +301,65 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="eu_russia_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="SP" <?php if($my_station_profile->state == "SP") { echo "selected"; } ?>>City of St. Petersburg</option>
+								<option value="LO" <?php if($my_station_profile->state == "LO") { echo "selected"; } ?>>Leningradskaya oblast</option>
+								<option value="KL" <?php if($my_station_profile->state == "KL") { echo "selected"; } ?>>Republic of Karelia</option>
+								<option value="AR" <?php if($my_station_profile->state == "AR") { echo "selected"; } ?>>Arkhangelsk (Arkhangelskaya oblast)</option>
+								<option value="NO" <?php if($my_station_profile->state == "NO") { echo "selected"; } ?>>Nenetsky Autonomous Okrug</option>
+								<option value="VO" <?php if($my_station_profile->state == "VO") { echo "selected"; } ?>>Vologda (Vologodskaya oblast)</option>
+								<option value="NV" <?php if($my_station_profile->state == "NV") { echo "selected"; } ?>>Novgorodskaya oblast</option>
+								<option value="PS" <?php if($my_station_profile->state == "PS") { echo "selected"; } ?>>Pskov (Pskovskaya oblast)</option>
+								<option value="MU" <?php if($my_station_profile->state == "MU") { echo "selected"; } ?>>Murmansk (Murmanskaya oblast)</option>
+								<option value="MA" <?php if($my_station_profile->state == "MA") { echo "selected"; } ?>>City of Moscow</option>
+								<option value="MO" <?php if($my_station_profile->state == "MO") { echo "selected"; } ?>>Moscowskaya oblast</option>
+								<option value="OR" <?php if($my_station_profile->state == "OR") { echo "selected"; } ?>>Oryel (Orlovskaya oblast)</option>
+								<option value="LP" <?php if($my_station_profile->state == "LP") { echo "selected"; } ?>>Lipetsk (Lipetskaya oblast)</option>
+								<option value="TV" <?php if($my_station_profile->state == "TV") { echo "selected"; } ?>>Tver' (Tverskaya oblast)</option>
+								<option value="SM" <?php if($my_station_profile->state == "SM") { echo "selected"; } ?>>Smolensk (Smolenskaya oblast)</option>
+								<option value="YR" <?php if($my_station_profile->state == "YR") { echo "selected"; } ?>>Yaroslavl (Yaroslavskaya oblast)</option>
+								<option value="KS" <?php if($my_station_profile->state == "KS") { echo "selected"; } ?>>Kostroma (Kostromskaya oblast)</option>
+								<option value="TL" <?php if($my_station_profile->state == "TL") { echo "selected"; } ?>>Tula (Tul'skaya oblast)</option>
+								<option value="VR" <?php if($my_station_profile->state == "VR") { echo "selected"; } ?>>Voronezh (Voronezhskaya oblast)</option>
+								<option value="TB" <?php if($my_station_profile->state == "TB") { echo "selected"; } ?>>Tambov (Tambovskaya oblast)</option>
+								<option value="RA" <?php if($my_station_profile->state == "RA") { echo "selected"; } ?>>Ryazan' (Ryazanskaya oblast)</option>
+								<option value="NN" <?php if($my_station_profile->state == "NN") { echo "selected"; } ?>>Nizhni Novgorod (Nizhegorodskaya oblast)</option>
+								<option value="IV" <?php if($my_station_profile->state == "IV") { echo "selected"; } ?>>Ivanovo (Ivanovskaya oblast)</option>
+								<option value="VL" <?php if($my_station_profile->state == "VL") { echo "selected"; } ?>>Vladimir (Vladimirskaya oblast)</option>
+								<option value="KU" <?php if($my_station_profile->state == "KU") { echo "selected"; } ?>>Kursk (Kurskaya oblast)</option>
+								<option value="KG" <?php if($my_station_profile->state == "KG") { echo "selected"; } ?>>Kaluga (Kaluzhskaya oblast)</option>
+								<option value="BR" <?php if($my_station_profile->state == "BR") { echo "selected"; } ?>>Bryansk (Bryanskaya oblast)</option>
+								<option value="BO" <?php if($my_station_profile->state == "BO") { echo "selected"; } ?>>Belgorod (Belgorodskaya oblast)</option>
+								<option value="VG" <?php if($my_station_profile->state == "VG") { echo "selected"; } ?>>Volgograd (Volgogradskaya oblast)</option>
+								<option value="SA" <?php if($my_station_profile->state == "SA") { echo "selected"; } ?>>Saratov (Saratovskaya oblast)</option>
+								<option value="PE" <?php if($my_station_profile->state == "PE") { echo "selected"; } ?>>Penza (Penzenskaya oblast)</option>
+								<option value="SR" <?php if($my_station_profile->state == "SR") { echo "selected"; } ?>>Samara (Samarskaya oblast)</option>
+								<option value="UL" <?php if($my_station_profile->state == "UL") { echo "selected"; } ?>>Ulyanovsk (Ulyanovskaya oblast)</option>
+								<option value="KI" <?php if($my_station_profile->state == "KI") { echo "selected"; } ?>>Kirov (Kirovskaya oblast)</option>
+								<option value="TA" <?php if($my_station_profile->state == "TA") { echo "selected"; } ?>>Republic of Tataria</option>
+								<option value="MR" <?php if($my_station_profile->state == "MR") { echo "selected"; } ?>>Republic of Marij-El</option>
+								<option value="MD" <?php if($my_station_profile->state == "MD") { echo "selected"; } ?>>Republic of Mordovia</option>
+								<option value="UD" <?php if($my_station_profile->state == "UD") { echo "selected"; } ?>>Republic of Udmurtia</option>
+								<option value="CU" <?php if($my_station_profile->state == "CU") { echo "selected"; } ?>>Republic of Chuvashia</option>
+								<option value="KR" <?php if($my_station_profile->state == "KR") { echo "selected"; } ?>>Krasnodar (Krasnodarsky Kraj)</option>
+								<option value="KC" <?php if($my_station_profile->state == "KC") { echo "selected"; } ?>>Republic of Karachaevo-Cherkessia</option>
+								<option value="ST" <?php if($my_station_profile->state == "ST") { echo "selected"; } ?>>Stavropol' (Stavropolsky Kraj)</option>
+								<option value="KM" <?php if($my_station_profile->state == "KM") { echo "selected"; } ?>>Republic of Kalmykia</option>
+								<option value="SO" <?php if($my_station_profile->state == "SO") { echo "selected"; } ?>>Republic of Northern Ossetia</option>
+								<option value="RO" <?php if($my_station_profile->state == "RO") { echo "selected"; } ?>>Rostov-on-Don (Rostovskaya oblast)</option>
+								<option value="CN" <?php if($my_station_profile->state == "CN") { echo "selected"; } ?>>Republic Chechnya</option>
+								<option value="IN" <?php if($my_station_profile->state == "IN") { echo "selected"; } ?>>Republic of Ingushetia</option>
+								<option value="AO" <?php if($my_station_profile->state == "AO") { echo "selected"; } ?>>Astrakhan' (Astrakhanskaya oblast)</option>
+								<option value="DA" <?php if($my_station_profile->state == "DA") { echo "selected"; } ?>>Republic of Daghestan</option>
+								<option value="KB" <?php if($my_station_profile->state == "KB") { echo "selected"; } ?>>Republic of Kabardino-Balkaria</option>
+								<option value="AD" <?php if($my_station_profile->state == "AD") { echo "selected"; } ?>>Republic of Adygeya</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
 
 						<!-- US County -->
 						<div class="mb-3">
