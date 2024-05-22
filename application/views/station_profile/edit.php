@@ -156,7 +156,7 @@
 					<!-- Canada State -->
 					<div class="mb-3" id="canada_state">
 		    			<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
-		    				<select class="form-select" name="station_ca_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+		    				<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
 								<option value=""></option>
 								<option value="AB" <?php if($my_station_profile->state == "AB") { echo "selected"; } ?>>Alberta</option>
 								<option value="BC" <?php if($my_station_profile->state == "BC") { echo "selected"; } ?>>British Columbia</option>
@@ -174,6 +174,32 @@
 							</select>
 		    				<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
+
+						<div class="mb-3" id="aland_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="001" <?php if($my_station_profile->state == "001") { echo "selected"; } ?>>Brändö</option>
+								<option value="002" <?php if($my_station_profile->state == "002") { echo "selected"; } ?>>Eckerö</option>
+								<option value="003" <?php if($my_station_profile->state == "003") { echo "selected"; } ?>>Finström</option>
+								<option value="004" <?php if($my_station_profile->state == "004") { echo "selected"; } ?>>Föglö</option>
+								<option value="005" <?php if($my_station_profile->state == "005") { echo "selected"; } ?>>Geta</option>
+								<option value="006" <?php if($my_station_profile->state == "006") { echo "selected"; } ?>>Hammarland</option>
+								<option value="007" <?php if($my_station_profile->state == "007") { echo "selected"; } ?>>Jomala</option>
+								<option value="008" <?php if($my_station_profile->state == "008") { echo "selected"; } ?>>Kumlinge</option>
+								<option value="009" <?php if($my_station_profile->state == "009") { echo "selected"; } ?>>Kökar</option>
+								<option value="010" <?php if($my_station_profile->state == "010") { echo "selected"; } ?>>Lemland</option>
+								<option value="011" <?php if($my_station_profile->state == "011") { echo "selected"; } ?>>Lumparland</option>
+								<option value="012" <?php if($my_station_profile->state == "012") { echo "selected"; } ?>>Maarianhamina</option>
+								<option value="013" <?php if($my_station_profile->state == "013") { echo "selected"; } ?>>Saltvik</option>
+								<option value="014" <?php if($my_station_profile->state == "014") { echo "selected"; } ?>>Sottunga</option>
+								<option value="015" <?php if($my_station_profile->state == "015") { echo "selected"; } ?>>Sund</option>
+								<option value="016" <?php if($my_station_profile->state == "016") { echo "selected"; } ?>>Vårdö</option>
+								<option value="051" <?php if($my_station_profile->state == "051") { echo "selected"; } ?>>Märket (Deleted)</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
 
 						<!-- US County -->
 						<div class="mb-3">
