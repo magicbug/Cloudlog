@@ -360,6 +360,38 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="argentina_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="C" <?php if($my_station_profile->state == "C") { echo "selected"; } ?>>Capital federal (Buenos Aires City)</option>
+								<option value="B" <?php if($my_station_profile->state == "B") { echo "selected"; } ?>>Buenos Aires Province</option>
+								<option value="S" <?php if($my_station_profile->state == "S") { echo "selected"; } ?>>Santa Fe</option>
+								<option value="H" <?php if($my_station_profile->state == "H") { echo "selected"; } ?>>Chaco</option>
+								<option value="P" <?php if($my_station_profile->state == "P") { echo "selected"; } ?>>Formosa</option>
+								<option value="X" <?php if($my_station_profile->state == "X") { echo "selected"; } ?>>Cordoba</option>
+								<option value="N" <?php if($my_station_profile->state == "N") { echo "selected"; } ?>>Misiones</option>
+								<option value="E" <?php if($my_station_profile->state == "E") { echo "selected"; } ?>>Entre Rios</option>
+								<option value="T" <?php if($my_station_profile->state == "T") { echo "selected"; } ?>>Tucumán</option>
+								<option value="W" <?php if($my_station_profile->state == "W") { echo "selected"; } ?>>Corrientes</option>
+								<option value="M" <?php if($my_station_profile->state == "M") { echo "selected"; } ?>>Mendoza</option>
+								<option value="G" <?php if($my_station_profile->state == "G") { echo "selected"; } ?>>Santiago del Estero</option>
+								<option value="A" <?php if($my_station_profile->state == "A") { echo "selected"; } ?>>Salta</option>
+								<option value="J" <?php if($my_station_profile->state == "J") { echo "selected"; } ?>>San Juan</option>
+								<option value="D" <?php if($my_station_profile->state == "D") { echo "selected"; } ?>>San Luis</option>
+								<option value="K" <?php if($my_station_profile->state == "K") { echo "selected"; } ?>>Catamarca</option>
+								<option value="F" <?php if($my_station_profile->state == "F") { echo "selected"; } ?>>La Rioja</option>
+								<option value="Y" <?php if($my_station_profile->state == "Y") { echo "selected"; } ?>>Jujuy</option>
+								<option value="L" <?php if($my_station_profile->state == "L") { echo "selected"; } ?>>La Pampa</option>
+								<option value="R" <?php if($my_station_profile->state == "R") { echo "selected"; } ?>>Rió Negro</option>
+								<option value="U" <?php if($my_station_profile->state == "U") { echo "selected"; } ?>>Chubut</option>
+								<option value="Z" <?php if($my_station_profile->state == "Z") { echo "selected"; } ?>>Santa Cruz</option>
+								<option value="V" <?php if($my_station_profile->state == "V") { echo "selected"; } ?>>Tierra del Fuego</option>
+								<option value="Q" <?php if($my_station_profile->state == "Q") { echo "selected"; } ?>>Neuquén</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
 
 						<!-- US County -->
 						<div class="mb-3">
