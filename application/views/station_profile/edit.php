@@ -246,7 +246,6 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
-
 						<div class="mb-3" id="belarus_state">
 							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
 							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
@@ -258,6 +257,46 @@
 								<option value="MA" <?php if($my_station_profile->state == "MA") { echo "selected"; } ?>>Mogilev (Mahilyowskaya voblasts')</option>
 								<option value="HO" <?php if($my_station_profile->state == "HO") { echo "selected"; } ?>>Gomel (Homyel'skaya voblasts')</option>
 								<option value="HM" <?php if($my_station_profile->state == "HM") { echo "selected"; } ?>>Horad Minsk</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
+						<div class="mb-3" id="mexico_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="COL" <?php if($my_station_profile->state == "COL") { echo "selected"; } ?>>Colima</option>
+								<option value="DF" <?php if($my_station_profile->state == "DF") { echo "selected"; } ?>>Distrito Federal</option>
+								<option value="EMX" <?php if($my_station_profile->state == "EMX") { echo "selected"; } ?>>Estado de México</option>
+								<option value="GTO" <?php if($my_station_profile->state == "GTO") { echo "selected"; } ?>>Guanajuato</option>
+								<option value="HGO" <?php if($my_station_profile->state == "HGO") { echo "selected"; } ?>>Hidalgo</option>
+								<option value="JAL" <?php if($my_station_profile->state == "JAL") { echo "selected"; } ?>>Jalisco</option>
+								<option value="MIC" <?php if($my_station_profile->state == "MIC") { echo "selected"; } ?>>Michoacán de Ocampo</option>
+								<option value="MOR" <?php if($my_station_profile->state == "MOR") { echo "selected"; } ?>>Morelos</option>
+								<option value="NAY" <?php if($my_station_profile->state == "NAY") { echo "selected"; } ?>>Nayarit</option>
+								<option value="PUE" <?php if($my_station_profile->state == "PUE") { echo "selected"; } ?>>Puebla</option>
+								<option value="QRO" <?php if($my_station_profile->state == "QRO") { echo "selected"; } ?>>Querétaro de Arteaga</option>
+								<option value="TLX" <?php if($my_station_profile->state == "TLX") { echo "selected"; } ?>>Tlaxcala</option>
+								<option value="VER" <?php if($my_station_profile->state == "VER") { echo "selected"; } ?>>Veracruz-Llave</option>
+								<option value="AGS" <?php if($my_station_profile->state == "AGS") { echo "selected"; } ?>>Aguascalientes</option>
+								<option value="BC" <?php if($my_station_profile->state == "BC") { echo "selected"; } ?>>Baja California</option>
+								<option value="BCS" <?php if($my_station_profile->state == "BCS") { echo "selected"; } ?>>Baja California Sur</option>
+								<option value="CHH" <?php if($my_station_profile->state == "CHH") { echo "selected"; } ?>>Chihuahua</option>
+								<option value="COA" <?php if($my_station_profile->state == "COA") { echo "selected"; } ?>>Coahuila de Zaragoza</option>
+								<option value="DGO" <?php if($my_station_profile->state == "DGO") { echo "selected"; } ?>>Durango</option>
+								<option value="NL" <?php if($my_station_profile->state == "NL") { echo "selected"; } ?>>Nuevo Leon</option>
+								<option value="SLP" <?php if($my_station_profile->state == "SLP") { echo "selected"; } ?>>San Luis Potosí</option>
+								<option value="SIN" <?php if($my_station_profile->state == "SIN") { echo "selected"; } ?>>Sinaloa</option>
+								<option value="SON" <?php if($my_station_profile->state == "SON") { echo "selected"; } ?>>Sonora</option>
+								<option value="TMS" <?php if($my_station_profile->state == "TMS") { echo "selected"; } ?>>Tamaulipas</option>
+								<option value="ZAC" <?php if($my_station_profile->state == "ZAC") { echo "selected"; } ?>>Zacatecas</option>
+								<option value="CAM" <?php if($my_station_profile->state == "CAM") { echo "selected"; } ?>>Campeche</option>
+								<option value="CHS" <?php if($my_station_profile->state == "CHS") { echo "selected"; } ?>>Chiapas</option>
+								<option value="GRO" <?php if($my_station_profile->state == "GRO") { echo "selected"; } ?>>Guerrero</option>
+								<option value="OAX" <?php if($my_station_profile->state == "OAX") { echo "selected"; } ?>>Oaxaca</option>
+								<option value="QTR" <?php if($my_station_profile->state == "QTR") { echo "selected"; } ?>>Quintana Roo</option>
+								<option value="TAB" <?php if($my_station_profile->state == "TAB") { echo "selected"; } ?>>Tabasco</option>
+								<option value="YUC" <?php if($my_station_profile->state == "YUC") { echo "selected"; } ?>>Yucatán</option>
 							</select>
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
