@@ -200,6 +200,52 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="asiatic_russia_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="UO" <?php if($my_station_profile->state == "UO") { echo "selected"; } ?>>Ust’-Ordynsky Autonomous Okrug - for contacts made before 2008-01-01</option>
+								<option value="AB" <?php if($my_station_profile->state == "AB") { echo "selected"; } ?>>Aginsky Buryatsky Autonomous Okrug - for contacts made before 2008-03-01</option>
+								<option value="CB" <?php if($my_station_profile->state == "CB") { echo "selected"; } ?>>Chelyabinsk (Chelyabinskaya oblast)</option>
+								<option value="SV" <?php if($my_station_profile->state == "SV") { echo "selected"; } ?>>Sverdlovskaya oblast</option>
+								<option value="PM" <?php if($my_station_profile->state == "PM") { echo "selected"; } ?>>Perm` (Permskaya oblast) - for contacts made on or after 2005-12-01</option>
+								<option value="PM" <?php if($my_station_profile->state == "PM") { echo "selected"; } ?>>Permskaya Kraj - for contacts made before 2005-12-01</option>
+								<option value="KP" <?php if($my_station_profile->state == "KP") { echo "selected"; } ?>>Komi-Permyatsky Autonomous Okrug - for contacts made before 2005-12-01</option>
+								<option value="TO" <?php if($my_station_profile->state == "TO") { echo "selected"; } ?>>Tomsk (Tomskaya oblast)</option>
+								<option value="HM" <?php if($my_station_profile->state == "HM") { echo "selected"; } ?>>Khanty-Mansyisky Autonomous Okrug</option>
+								<option value="YN" <?php if($my_station_profile->state == "YN") { echo "selected"; } ?>>Yamalo-Nenetsky Autonomous Okrug</option>
+								<option value="TN" <?php if($my_station_profile->state == "TN") { echo "selected"; } ?>>Tyumen' (Tyumenskaya oblast)</option>
+								<option value="OM" <?php if($my_station_profile->state == "OM") { echo "selected"; } ?>>Omsk (Omskaya oblast)</option>
+								<option value="NS" <?php if($my_station_profile->state == "NS") { echo "selected"; } ?>>Novosibirsk (Novosibirskaya oblast)</option>
+								<option value="KN" <?php if($my_station_profile->state == "KN") { echo "selected"; } ?>>Kurgan (Kurganskaya oblast)</option>
+								<option value="OB" <?php if($my_station_profile->state == "OB") { echo "selected"; } ?>>Orenburg (Orenburgskaya oblast)</option>
+								<option value="KE" <?php if($my_station_profile->state == "KE") { echo "selected"; } ?>>Kemerovo (Kemerovskaya oblast)</option>
+								<option value="BA" <?php if($my_station_profile->state == "BA") { echo "selected"; } ?>>Republic of Bashkortostan</option>
+								<option value="KO" <?php if($my_station_profile->state == "KO") { echo "selected"; } ?>>Republic of Komi</option>
+								<option value="AL" <?php if($my_station_profile->state == "AL") { echo "selected"; } ?>>Altaysky Kraj</option>
+								<option value="GA" <?php if($my_station_profile->state == "GA") { echo "selected"; } ?>>Republic Gorny Altay</option>
+								<option value="KK" <?php if($my_station_profile->state == "KK") { echo "selected"; } ?>>Krasnoyarsk (Krasnoyarsk Kraj)</option>
+								<option value="TM" <?php if($my_station_profile->state == "TM") { echo "selected"; } ?>>Taymyr Autonomous Okrug - for contacts made before 2007-01-01</option>
+								<option value="HK" <?php if($my_station_profile->state == "HK") { echo "selected"; } ?>>Khabarovsk (Khabarovsky Kraj)</option>
+								<option value="EA" <?php if($my_station_profile->state == "EA") { echo "selected"; } ?>>Yevreyskaya Autonomous Oblast</option>
+								<option value="SL" <?php if($my_station_profile->state == "SL") { echo "selected"; } ?>>Sakhalin (Sakhalinskaya oblast)</option>
+								<option value="EV" <?php if($my_station_profile->state == "EV") { echo "selected"; } ?>>Evenkiysky Autonomous Okrug - for contacts made before 2007-01-01</option>
+								<option value="MG" <?php if($my_station_profile->state == "MG") { echo "selected"; } ?>>Magadan (Magadanskaya oblast)</option>
+								<option value="AM" <?php if($my_station_profile->state == "AM") { echo "selected"; } ?>>Amurskaya oblast</option>
+								<option value="CK" <?php if($my_station_profile->state == "CK") { echo "selected"; } ?>>Chukotka Autonomous Okrug</option>
+								<option value="PK" <?php if($my_station_profile->state == "PK") { echo "selected"; } ?>>Primorsky Kraj</option>
+								<option value="BU" <?php if($my_station_profile->state == "BU") { echo "selected"; } ?>>Republic of Buryatia</option>
+								<option value="YA" <?php if($my_station_profile->state == "YA") { echo "selected"; } ?>>Sakha (Yakut) Republic</option>
+								<option value="IR" <?php if($my_station_profile->state == "IR") { echo "selected"; } ?>>Irkutsk (Irkutskaya oblast)</option>
+								<option value="CT" <?php if($my_station_profile->state == "CT") { echo "selected"; } ?>>Zabaykalsky Kraj - referred to as Chita (Chitinskaya oblast) before 2008-03-01</option>
+								<option value="HA" <?php if($my_station_profile->state == "HA") { echo "selected"; } ?>>Republic of Khakassia</option>
+								<option value="KY" <?php if($my_station_profile->state == "KY") { echo "selected"; } ?>>Koryaksky Autonomous Okrug - for contacts made before 2007-01-01</option>
+								<option value="TU" <?php if($my_station_profile->state == "TU") { echo "selected"; } ?>>Republic of Tuva</option>
+								<option value="KT" <?php if($my_station_profile->state == "KT") { echo "selected"; } ?>>Kamchatka (Kamchatskaya oblast)</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
 
 						<!-- US County -->
 						<div class="mb-3">
