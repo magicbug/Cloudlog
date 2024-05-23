@@ -476,6 +476,33 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="korea_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="A" <?php if($my_station_profile->state == "A") { echo "selected"; } ?>>Seoul (Seoul Teugbyeolsi)</option>
+								<option value="N" <?php if($my_station_profile->state == "N") { echo "selected"; } ?>>Incheon (Incheon Gwang'yeogsi)</option>
+								<option value="D" <?php if($my_station_profile->state == "D") { echo "selected"; } ?>>Kangwon-do (Gang 'weondo)</option>
+								<option value="C" <?php if($my_station_profile->state == "C") { echo "selected"; } ?>>Kyunggi-do (Gyeonggido)</option>
+								<option value="E" <?php if($my_station_profile->state == "E") { echo "selected"; } ?>>Choongchungbuk-do (Chungcheongbugdo)</option>
+								<option value="F" <?php if($my_station_profile->state == "F") { echo "selected"; } ?>>Choongchungnam-do (Chungcheongnamdo)</option>
+								<option value="R" <?php if($my_station_profile->state == "R") { echo "selected"; } ?>>Taejon (Daejeon Gwang'yeogsi)</option>
+								<option value="M" <?php if($my_station_profile->state == "M") { echo "selected"; } ?>>Cheju-do (Jejudo)</option>
+								<option value="G" <?php if($my_station_profile->state == "G") { echo "selected"; } ?>>Chollabuk-do (Jeonrabugdo)</option>
+								<option value="H" <?php if($my_station_profile->state == "H") { echo "selected"; } ?>>Chollanam-do (Jeonranamdo)</option>
+								<option value="Q" <?php if($my_station_profile->state == "Q") { echo "selected"; } ?>>Kwangju (Gwangju Gwang'yeogsi)</option>
+								<option value="K" <?php if($my_station_profile->state == "K") { echo "selected"; } ?>>Kyungsangbuk-do (Gyeongsangbugdo)</option>
+								<option value="L" <?php if($my_station_profile->state == "L") { echo "selected"; } ?>>Kyungsangnam-do (Gyeongsangnamdo)</option>
+								<option value="B" <?php if($my_station_profile->state == "B") { echo "selected"; } ?>>Pusan (Busan Gwang'yeogsi)</option>
+								<option value="P" <?php if($my_station_profile->state == "P") { echo "selected"; } ?>>Taegu (Daegu Gwang'yeogsi)</option>
+								<option value="S" <?php if($my_station_profile->state == "S") { echo "selected"; } ?>>Ulsan (Ulsan Gwanq'yeogsi)</option>
+								<option value="T" <?php if($my_station_profile->state == "T") { echo "selected"; } ?>>Sejong</option>
+								<option value="IS" <?php if($my_station_profile->state == "IS") { echo "selected"; } ?>>Special Island</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
+
 
 						<!-- US County -->
 						<div class="mb-3">
