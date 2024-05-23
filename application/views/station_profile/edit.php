@@ -502,6 +502,34 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="uruguay_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="MO" <?php if($my_station_profile->state == "MO") { echo "selected"; } ?>>Montevideo</option>
+								<option value="CA" <?php if($my_station_profile->state == "CA") { echo "selected"; } ?>>Canelones</option>
+								<option value="SJ" <?php if($my_station_profile->state == "SJ") { echo "selected"; } ?>>San José</option>
+								<option value="CO" <?php if($my_station_profile->state == "CO") { echo "selected"; } ?>>Colonia</option>
+								<option value="SO" <?php if($my_station_profile->state == "SO") { echo "selected"; } ?>>Soriano</option>
+								<option value="RN" <?php if($my_station_profile->state == "RN") { echo "selected"; } ?>>Rio Negro</option>
+								<option value="PA" <?php if($my_station_profile->state == "PA") { echo "selected"; } ?>>Paysandu</option>
+								<option value="SA" <?php if($my_station_profile->state == "SA") { echo "selected"; } ?>>Salto</option>
+								<option value="AR" <?php if($my_station_profile->state == "AR") { echo "selected"; } ?>>Artigas</option>
+								<option value="FD" <?php if($my_station_profile->state == "FD") { echo "selected"; } ?>>Florida</option>
+								<option value="FS" <?php if($my_station_profile->state == "FS") { echo "selected"; } ?>>Flores</option>
+								<option value="DU" <?php if($my_station_profile->state == "DU") { echo "selected"; } ?>>Durazno</option>
+								<option value="TA" <?php if($my_station_profile->state == "TA") { echo "selected"; } ?>>Tacuarembó</option>
+								<option value="RV" <?php if($my_station_profile->state == "RV") { echo "selected"; } ?>>Rivera</option>
+								<option value="MA" <?php if($my_station_profile->state == "MA") { echo "selected"; } ?>>Maldonado</option>
+								<option value="LA" <?php if($my_station_profile->state == "LA") { echo "selected"; } ?>>Lavalleja</option>
+								<option value="RO" <?php if($my_station_profile->state == "RO") { echo "selected"; } ?>>Rocha</option>
+								<option value="TT" <?php if($my_station_profile->state == "TT") { echo "selected"; } ?>>Treinta y Tres</option>
+								<option value="CL" <?php if($my_station_profile->state == "CL") { echo "selected"; } ?>>Cerro Largo</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
+
 
 
 						<!-- US County -->
