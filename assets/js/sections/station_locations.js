@@ -9,211 +9,40 @@ $(document).ready( function () {
         }
     });
 
-    $("#canada_state").hide();
-    $("#aland_state").hide();
-    $("#asiatic_russia_state").hide();
-    $("#belarus_state").hide();
-    $("#mexico_state").hide();
-    $("#eu_russia_state").hide();
-    $("#argentina_state").hide();
-    $("#brazil_state").hide();
+    var stateMap = {
+        '1': 'canada_state',
+        '5': 'aland_state',
+        '15': 'asiatic_russia_state',
+        '27': 'belarus_state',
+        '50': 'mexico_state',
+        '54': 'eu_russia_state',
+        '100': 'argentina_state',
+        '108': 'brazil_state',
+        '112': 'chile_state'
+    };
+
+    // Hide all states initially
+    $("#canada_state, #aland_state, #asiatic_russia_state, #belarus_state, #mexico_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #us_state").hide();
 
     var selectedDXCCID = $('#dxcc_select').find(":selected").val();
+    var stateToShow = stateMap[selectedDXCCID];
 
-    if(selectedDXCCID == '1'){
-        $("#canada_state").show();
-        $("#us_state").hide();
-        $("#asiatic_russia_state").hide();
-        $("#eu_russia_state").hide();
-        $("#belarus_state").hide();
-        $("#aland_state").hide();
-        $("#mexico_state").hide();
-        $("#argentina_state").hide();
-        $("#brazil_state").hide();
-    }
-
-    // Show Aland States if Aland is selected
-    if(selectedDXCCID == '5'){
-        $("#aland_state").show();
-        $("#canada_state").hide();
-        $("#us_state").hide();
-        $("#asiatic_russia_state").hide();
-        $("#eu_russia_state").hide();
-        $("#belarus_state").hide();
-        $("#mexico_state").hide();
-        $("#argentina_state").hide();
-        $("#brazil_state").hide();
-    }
-
-    // Show Asiatic Russia States if Asiatic Russia is selected
-    if(selectedDXCCID == '15'){
-        $("#asiatic_russia_state").show();
-        $("#aland_state").hide();
-        $("#canada_state").hide();
-        $("#us_state").hide();
-        $("#eu_russia_state").hide();
-        $("#belarus_state").hide();
-        $("#mexico_state").hide();
-        $("#argentina_state").hide();
-        $("#brazil_state").hide();
-    }
-
-    // Show Belarus States if Belarus is selected
-    if(selectedDXCCID == '27'){
-        $("#belarus_state").show();
-        $("#asiatic_russia_state").hide();
-        $("#aland_state").hide();
-        $("#canada_state").hide();
-        $("#us_state").hide();
-        $("#eu_russia_state").hide();
-        $("#mexico_state").hide();
-        $("#argentina_state").hide();
-        $("#brazil_state").hide();
-    }
-
-    // Show Mexico States if Mexico is selected
-    if(selectedDXCCID == '50'){
-        $("#mexico_state").show();
-        $("#belarus_state").hide();
-        $("#asiatic_russia_state").hide();
-        $("#aland_state").hide();
-        $("#canada_state").hide();
-        $("#us_state").hide();
-        $("#eu_russia_state").hide();
-        $("#argentina_state").hide();
-        $("#brazil_state").hide();
-    }
-
-    // Show EU Russia States if EU Russia is selected
-    if(selectedDXCCID == '54'){
-        $("#mexico_state").hide();
-        $("#belarus_state").hide();
-        $("#asiatic_russia_state").hide();
-        $("#aland_state").hide();
-        $("#canada_state").hide();
-        $("#us_state").hide();
-        $("#eu_russia_state").show();
-        $("#argentina_state").hide();
-        $("#brazil_state").hide();
-    }
-
-    // Show Argentina States if Argentina is selected
-    if(selectedDXCCID == '100'){
-        $("#mexico_state").hide();
-        $("#belarus_state").hide();
-        $("#asiatic_russia_state").hide();
-        $("#aland_state").hide();
-        $("#canada_state").hide();
-        $("#us_state").hide();
-        $("#eu_russia_state").hide();
-        $("#argentina_state").show();
-        $("#brazil_state").hide();
-    }
-
-    // Show Brazil States if Brazil is selected
-    if(selectedDXCCID == '108'){
-        $("#mexico_state").hide();
-        $("#belarus_state").hide();
-        $("#asiatic_russia_state").hide();
-        $("#aland_state").hide();
-        $("#canada_state").hide();
-        $("#us_state").hide();
-        $("#eu_russia_state").hide();
-        $("#argentina_state").hide();
-        $("#brazil_state").show();
+    if (stateToShow) {
+        // Show the selected state
+        $("#" + stateToShow).show();
+    } else {
+        // If no state matches the selected value, show 'us_state' by default
+        $("#us_state").show();
     }
 
     $('#dxcc_select').change(function(){
-        if($(this).val() == '1'){
-            $("#mexico_state").hide();
-            $("#belarus_state").hide();
-            $("#asiatic_russia_state").hide();
-            $("#aland_state").hide();
-            $("#canada_state").show();
-            $("#us_state").hide();
-            $("#eu_russia_state").hide();
-            $("#argentina_state").hide();
-            $("#brazil_state").hide();
-        } else if($(this).val() == '5') {
-            $("#mexico_state").hide();
-            $("#belarus_state").hide();
-            $("#asiatic_russia_state").hide();
-            $("#aland_state").show();
-            $("#canada_state").hide();
-            $("#us_state").hide();
-            $("#eu_russia_state").hide();
-            $("#argentina_state").hide();
-            $("#brazil_state").hide();
-        } else if($(this).val() == '15') {
-            $("#mexico_state").hide();
-            $("#belarus_state").hide();
-            $("#asiatic_russia_state").show();
-            $("#aland_state").hide();
-            $("#canada_state").hide();
-            $("#us_state").hide();
-            $("#eu_russia_state").hide();
-            $("#argentina_state").hide();
-            $("#brazil_state").hide();
-        } else if($(this).val() == '27') {
-            $("#mexico_state").hide();
-            $("#belarus_state").show();
-            $("#asiatic_russia_state").hide();
-            $("#aland_state").hide();
-            $("#canada_state").hide();
-            $("#us_state").hide();
-            $("#eu_russia_state").hide();
-            $("#argentina_state").hide();
-            $("#brazil_state").hide();
-        } else if($(this).val() == '50') {
-            $("#mexico_state").show();
-            $("#belarus_state").hide();
-            $("#asiatic_russia_state").hide();
-            $("#aland_state").hide();
-            $("#canada_state").hide();
-            $("#us_state").hide();
-            $("#eu_russia_state").hide();
-            $("#argentina_state").hide();
-            $("#brazil_state").hide();
-        } else if($(this).val() == '54') {
-            $("#mexico_state").hide();
-            $("#belarus_state").hide();
-            $("#asiatic_russia_state").hide();
-            $("#aland_state").hide();
-            $("#canada_state").hide();
-            $("#us_state").hide();
-            $("#eu_russia_state").show();
-            $("#argentina_state").hide();
-            $("#brazil_state").hide();
-        } else if($(this).val() == '100') {
-            $("#mexico_state").hide();
-            $("#belarus_state").hide();
-            $("#asiatic_russia_state").hide();
-            $("#aland_state").hide();
-            $("#canada_state").hide();
-            $("#us_state").hide();
-            $("#eu_russia_state").hide();
-            $("#argentina_state").show();
-            $("#brazil_state").hide();
-        } else if($(this).val() == '108') {
-            $("#mexico_state").hide();
-            $("#belarus_state").hide();
-            $("#asiatic_russia_state").hide();
-            $("#aland_state").hide();
-            $("#canada_state").hide();
-            $("#us_state").hide();
-            $("#eu_russia_state").hide();
-            $("#argentina_state").hide();
-            $("#brazil_state").show();
-        } else {
-            $("#mexico_state").hide();
-            $("#belarus_state").hide();
-            $("#asiatic_russia_state").hide();
-            $("#aland_state").hide();
-            $("#canada_state").hide();
-            $("#us_state").show();
-            $("#eu_russia_state").hide();
-            $("#argentina_state").hide();
-            $("#brazil_state").hide();
-        }
+        var selectedValue = $(this).val();
+        var stateToShow = stateMap[selectedValue] || stateMap['default'];
+    
+        // Hide all states
+        $("#mexico_state, #belarus_state, #asiatic_russia_state, #aland_state, #canada_state, #us_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state").hide();
+    
+        // Show the selected state
+        $("#" + stateToShow).show();
     });
 } );

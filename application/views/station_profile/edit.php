@@ -427,6 +427,29 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="chile_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="II" <?php if($my_station_profile->state == "II") { echo "selected"; } ?>>Antofagasta</option>
+								<option value="III" <?php if($my_station_profile->state == "III") { echo "selected"; } ?>>Atacama</option>
+								<option value="I" <?php if($my_station_profile->state == "I") { echo "selected"; } ?>>Tarapacá</option>
+								<option value="XV" <?php if($my_station_profile->state == "XV") { echo "selected"; } ?>>Arica y Parinacota</option>
+								<option value="IV" <?php if($my_station_profile->state == "IV") { echo "selected"; } ?>>Coquimbo</option>
+								<option value="V" <?php if($my_station_profile->state == "V") { echo "selected"; } ?>>Valparaíso</option>
+								<option value="RM" <?php if($my_station_profile->state == "RM") { echo "selected"; } ?>>Región Metropolitana de Santiago</option>
+								<option value="VI" <?php if($my_station_profile->state == "VI") { echo "selected"; } ?>>Libertador General Bernardo O'Higgins</option>
+								<option value="VII" <?php if($my_station_profile->state == "VII") { echo "selected"; } ?>>Maule</option>
+								<option value="VIII" <?php if($my_station_profile->state == "VIII") { echo "selected"; } ?>>Bío-Bío</option>
+								<option value="IX" <?php if($my_station_profile->state == "IX") { echo "selected"; } ?>>La Araucanía</option>
+								<option value="XIV" <?php if($my_station_profile->state == "XIV") { echo "selected"; } ?>>Los Ríos</option>
+								<option value="X" <?php if($my_station_profile->state == "X") { echo "selected"; } ?>>Los Lagos</option>
+								<option value="XI" <?php if($my_station_profile->state == "XI") { echo "selected"; } ?>>Aisén del General Carlos Ibáñez del Campo</option>
+								<option value="XII" <?php if($my_station_profile->state == "XII") { echo "selected"; } ?>>Magallanes</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
 
 						<!-- US County -->
 						<div class="mb-3">
