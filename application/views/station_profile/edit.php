@@ -450,6 +450,32 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="paraguay_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="16" <?php if($my_station_profile->state == "16") { echo "selected"; } ?>>Alto Paraguay</option>
+								<option value="19" <?php if($my_station_profile->state == "19") { echo "selected"; } ?>>Boquerón</option>
+								<option value="15" <?php if($my_station_profile->state == "15") { echo "selected"; } ?>>Presidente Hayes</option>
+								<option value="13" <?php if($my_station_profile->state == "13") { echo "selected"; } ?>>Amambay</option>
+								<option value="01" <?php if($my_station_profile->state == "01") { echo "selected"; } ?>>Concepción</option>
+								<option value="14" <?php if($my_station_profile->state == "14") { echo "selected"; } ?>>Canindeyú</option>
+								<option value="02" <?php if($my_station_profile->state == "02") { echo "selected"; } ?>>San Pedro</option>
+								<option value="ASU" <?php if($my_station_profile->state == "ASU") { echo "selected"; } ?>>Asunción</option>
+								<option value="11" <?php if($my_station_profile->state == "11") { echo "selected"; } ?>>Central</option>
+								<option value="03" <?php if($my_station_profile->state == "03") { echo "selected"; } ?>>Cordillera</option>
+								<option value="09" <?php if($my_station_profile->state == "09") { echo "selected"; } ?>>Paraguarí</option>
+								<option value="06" <?php if($my_station_profile->state == "06") { echo "selected"; } ?>>Caazapá</option>
+								<option value="05" <?php if($my_station_profile->state == "05") { echo "selected"; } ?>>Caaguazú</option>
+								<option value="04" <?php if($my_station_profile->state == "04") { echo "selected"; } ?>>Guairá</option>
+								<option value="08" <?php if($my_station_profile->state == "08") { echo "selected"; } ?>>Misiones</option>
+								<option value="12" <?php if($my_station_profile->state == "12") { echo "selected"; } ?>>Ñeembucú</option>
+								<option value="10" <?php if($my_station_profile->state == "10") { echo "selected"; } ?>>Alto Paraná</option>
+								<option value="07" <?php if($my_station_profile->state == "07") { echo "selected"; } ?>>Itapúa</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
 
 						<!-- US County -->
 						<div class="mb-3">

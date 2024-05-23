@@ -18,11 +18,12 @@ $(document).ready( function () {
         '54': 'eu_russia_state',
         '100': 'argentina_state',
         '108': 'brazil_state',
-        '112': 'chile_state'
+        '112': 'chile_state',
+        '132': 'paraguay_state'
     };
 
     // Hide all states initially
-    $("#canada_state, #aland_state, #asiatic_russia_state, #belarus_state, #mexico_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #us_state").hide();
+    $("#canada_state, #aland_state, #asiatic_russia_state, #belarus_state, #mexico_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #us_state, #paraguay_state").hide();
 
     var selectedDXCCID = $('#dxcc_select').find(":selected").val();
     var stateToShow = stateMap[selectedDXCCID];
@@ -40,7 +41,7 @@ $(document).ready( function () {
         var stateToShow = stateMap[selectedValue] || stateMap['default'];
     
         // Hide all states
-        $("#mexico_state, #belarus_state, #asiatic_russia_state, #aland_state, #canada_state, #us_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state").hide();
+        $("#mexico_state, #belarus_state, #asiatic_russia_state, #aland_state, #canada_state, #us_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #paraguay_state").hide();
     
         // Show the selected state
         $("#" + stateToShow).show();
