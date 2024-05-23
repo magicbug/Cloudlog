@@ -63,7 +63,7 @@ $lang['qso_simplefle_operator_hint'] = "es. OK2CQR";
 $lang['qso_simplefle_station_call_location'] = "Chiamata/Luogo della stazione";
 $lang['qso_simplefle_station_call_location_hint'] = "Se operi da una nuovo Luogo, crea prima un nuovo <a href=". site_url('station') . ">Luoghi delle stazioni</a>";
 $lang['qso_simplefle_utc_time'] = "Ora UTC attuale";
-$lang['qso_simplefle_enter_the_data'] = "Inserisci i dati";
+$lang['qso_simplefle_enter_the_data'] = "Inserisci la data";
 $lang['qso_simplefle_syntax_help_close_w_sample'] = "Chiudi e carica dati di esempio";
 $lang['qso_simplefle_reload'] = "Ricarica la lista dei QSO";
 $lang['qso_simplefle_save'] = "Salva in Cloudlog";
