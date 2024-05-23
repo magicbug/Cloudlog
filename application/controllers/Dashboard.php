@@ -188,6 +188,23 @@ class Dashboard extends CI_Controller
 		}
 	}
 
+	public function todays_qso_component() {
+		$this->load->model('user_model');
+
+		if ($this->user_model->validate_session() == 0) {
+			// User is not logged in
+		} else {
+			$this->load->model('logbook_model');
+			$this->load->model('logbooks_model');
+		}
+
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		$data['todays_qsos'] = $this->logbook_model->todays_qsos($logbooks_locations_array);
+		$this->load->view('components/dashboard_todays_qsos', $data);
+	
+	}
+
 	public function logbook_display_component() {
 		$this->load->model('user_model');
 
