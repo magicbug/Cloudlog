@@ -16,6 +16,7 @@ $(document).ready( function () {
     $("#mexico_state").hide();
     $("#eu_russia_state").hide();
     $("#argentina_state").hide();
+    $("#brazil_state").hide();
 
     var selectedDXCCID = $('#dxcc_select').find(":selected").val();
 
@@ -28,6 +29,7 @@ $(document).ready( function () {
         $("#aland_state").hide();
         $("#mexico_state").hide();
         $("#argentina_state").hide();
+        $("#brazil_state").hide();
     }
 
     // Show Aland States if Aland is selected
@@ -40,6 +42,7 @@ $(document).ready( function () {
         $("#belarus_state").hide();
         $("#mexico_state").hide();
         $("#argentina_state").hide();
+        $("#brazil_state").hide();
     }
 
     // Show Asiatic Russia States if Asiatic Russia is selected
@@ -52,6 +55,7 @@ $(document).ready( function () {
         $("#belarus_state").hide();
         $("#mexico_state").hide();
         $("#argentina_state").hide();
+        $("#brazil_state").hide();
     }
 
     // Show Belarus States if Belarus is selected
@@ -64,6 +68,7 @@ $(document).ready( function () {
         $("#eu_russia_state").hide();
         $("#mexico_state").hide();
         $("#argentina_state").hide();
+        $("#brazil_state").hide();
     }
 
     // Show Mexico States if Mexico is selected
@@ -76,6 +81,7 @@ $(document).ready( function () {
         $("#us_state").hide();
         $("#eu_russia_state").hide();
         $("#argentina_state").hide();
+        $("#brazil_state").hide();
     }
 
     // Show EU Russia States if EU Russia is selected
@@ -88,6 +94,7 @@ $(document).ready( function () {
         $("#us_state").hide();
         $("#eu_russia_state").show();
         $("#argentina_state").hide();
+        $("#brazil_state").hide();
     }
 
     // Show Argentina States if Argentina is selected
@@ -100,10 +107,24 @@ $(document).ready( function () {
         $("#us_state").hide();
         $("#eu_russia_state").hide();
         $("#argentina_state").show();
+        $("#brazil_state").hide();
+    }
+
+    // Show Brazil States if Brazil is selected
+    if(selectedDXCCID == '108'){
+        $("#mexico_state").hide();
+        $("#belarus_state").hide();
+        $("#asiatic_russia_state").hide();
+        $("#aland_state").hide();
+        $("#canada_state").hide();
+        $("#us_state").hide();
+        $("#eu_russia_state").hide();
+        $("#argentina_state").hide();
+        $("#brazil_state").show();
     }
 
     $('#dxcc_select').change(function(){
-        if($(this).val() == '1'){ // or this.value == 'volvo'
+        if($(this).val() == '1'){
             $("#mexico_state").hide();
             $("#belarus_state").hide();
             $("#asiatic_russia_state").hide();
@@ -112,6 +133,7 @@ $(document).ready( function () {
             $("#us_state").hide();
             $("#eu_russia_state").hide();
             $("#argentina_state").hide();
+            $("#brazil_state").hide();
         } else if($(this).val() == '5') {
             $("#mexico_state").hide();
             $("#belarus_state").hide();
@@ -121,6 +143,7 @@ $(document).ready( function () {
             $("#us_state").hide();
             $("#eu_russia_state").hide();
             $("#argentina_state").hide();
+            $("#brazil_state").hide();
         } else if($(this).val() == '15') {
             $("#mexico_state").hide();
             $("#belarus_state").hide();
@@ -130,6 +153,7 @@ $(document).ready( function () {
             $("#us_state").hide();
             $("#eu_russia_state").hide();
             $("#argentina_state").hide();
+            $("#brazil_state").hide();
         } else if($(this).val() == '27') {
             $("#mexico_state").hide();
             $("#belarus_state").show();
@@ -139,6 +163,7 @@ $(document).ready( function () {
             $("#us_state").hide();
             $("#eu_russia_state").hide();
             $("#argentina_state").hide();
+            $("#brazil_state").hide();
         } else if($(this).val() == '50') {
             $("#mexico_state").show();
             $("#belarus_state").hide();
@@ -148,6 +173,7 @@ $(document).ready( function () {
             $("#us_state").hide();
             $("#eu_russia_state").hide();
             $("#argentina_state").hide();
+            $("#brazil_state").hide();
         } else if($(this).val() == '54') {
             $("#mexico_state").hide();
             $("#belarus_state").hide();
@@ -157,6 +183,7 @@ $(document).ready( function () {
             $("#us_state").hide();
             $("#eu_russia_state").show();
             $("#argentina_state").hide();
+            $("#brazil_state").hide();
         } else if($(this).val() == '100') {
             $("#mexico_state").hide();
             $("#belarus_state").hide();
@@ -166,9 +193,27 @@ $(document).ready( function () {
             $("#us_state").hide();
             $("#eu_russia_state").hide();
             $("#argentina_state").show();
+            $("#brazil_state").hide();
+        } else if($(this).val() == '108') {
+            $("#mexico_state").hide();
+            $("#belarus_state").hide();
+            $("#asiatic_russia_state").hide();
+            $("#aland_state").hide();
+            $("#canada_state").hide();
+            $("#us_state").hide();
+            $("#eu_russia_state").hide();
+            $("#argentina_state").hide();
+            $("#brazil_state").show();
         } else {
+            $("#mexico_state").hide();
+            $("#belarus_state").hide();
+            $("#asiatic_russia_state").hide();
+            $("#aland_state").hide();
             $("#canada_state").hide();
             $("#us_state").show();
+            $("#eu_russia_state").hide();
+            $("#argentina_state").hide();
+            $("#brazil_state").hide();
         }
     });
 } );

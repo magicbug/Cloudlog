@@ -392,6 +392,41 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="brazil_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="ES" <?php if($my_station_profile->state == "ES") { echo "selected"; } ?>>Espírito Santo</option>
+								<option value="GO" <?php if($my_station_profile->state == "GO") { echo "selected"; } ?>>Goiás</option>
+								<option value="SC" <?php if($my_station_profile->state == "SC") { echo "selected"; } ?>>Santa Catarina</option>
+								<option value="SE" <?php if($my_station_profile->state == "SE") { echo "selected"; } ?>>Sergipe</option>
+								<option value="AL" <?php if($my_station_profile->state == "AL") { echo "selected"; } ?>>Alagoas</option>
+								<option value="AM" <?php if($my_station_profile->state == "AM") { echo "selected"; } ?>>Amazonas</option>
+								<option value="TO" <?php if($my_station_profile->state == "TO") { echo "selected"; } ?>>Tocantins</option>
+								<option value="AP" <?php if($my_station_profile->state == "AP") { echo "selected"; } ?>>Amapá</option>
+								<option value="PB" <?php if($my_station_profile->state == "PB") { echo "selected"; } ?>>Paraíba</option>
+								<option value="MA" <?php if($my_station_profile->state == "MA") { echo "selected"; } ?>>Maranhão</option>
+								<option value="RN" <?php if($my_station_profile->state == "RN") { echo "selected"; } ?>>Rio Grande do Norte</option>
+								<option value="PI" <?php if($my_station_profile->state == "PI") { echo "selected"; } ?>>Piauí</option>
+								<option value="DF" <?php if($my_station_profile->state == "DF") { echo "selected"; } ?>>Distrito Federal (Brasília)</option>
+								<option value="CE" <?php if($my_station_profile->state == "CE") { echo "selected"; } ?>>Ceará</option>
+								<option value="AC" <?php if($my_station_profile->state == "AC") { echo "selected"; } ?>>Acre</option>
+								<option value="MS" <?php if($my_station_profile->state == "MS") { echo "selected"; } ?>>Mato Grosso do Sul</option>
+								<option value="RR" <?php if($my_station_profile->state == "RR") { echo "selected"; } ?>>Roraima</option>
+								<option value="RO" <?php if($my_station_profile->state == "RO") { echo "selected"; } ?>>Rondônia</option>
+								<option value="RJ" <?php if($my_station_profile->state == "RJ") { echo "selected"; } ?>>Rio de Janeiro</option>
+								<option value="SP" <?php if($my_station_profile->state == "SP") { echo "selected"; } ?>>São Paulo</option>
+								<option value="RS" <?php if($my_station_profile->state == "RS") { echo "selected"; } ?>>Rio Grande do Sul</option>
+								<option value="MG" <?php if($my_station_profile->state == "MG") { echo "selected"; } ?>>Minas Gerais</option>
+								<option value="PR" <?php if($my_station_profile->state == "PR") { echo "selected"; } ?>>Paraná</option>
+								<option value="BA" <?php if($my_station_profile->state == "BA") { echo "selected"; } ?>>Bahia</option>
+								<option value="PE" <?php if($my_station_profile->state == "PE") { echo "selected"; } ?>>Pernambuco</option>
+								<option value="PA" <?php if($my_station_profile->state == "PA") { echo "selected"; } ?>>Pará</option>
+								<option value="MT" <?php if($my_station_profile->state == "MT") { echo "selected"; } ?>>Mato Grosso</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
 
 						<!-- US County -->
 						<div class="mb-3">
