@@ -64,7 +64,7 @@ class Debug extends CI_Controller {
 
         return false;
     }
-	
+  
     public function flags() {
 
         // load library called DxccFlag
