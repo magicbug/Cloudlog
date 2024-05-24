@@ -38,6 +38,7 @@ $lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Datum/Tid';
 $lang['general_word_none'] = 'Ingen';
 $lang['general_word_name'] = 'Namn';
+$lang['general_word_flag'] = 'Flagga';
 $lang['general_word_location'] = 'QTH';
 $lang['general_word_comment'] = 'Notering';
 $lang['general_word_general'] = 'Allmänt';

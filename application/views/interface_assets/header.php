@@ -22,6 +22,7 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox.min.css" />
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/flag-icons.min.css" />
 
 	<!-- Maps -->
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />

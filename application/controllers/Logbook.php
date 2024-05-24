@@ -609,7 +609,7 @@ class Logbook extends CI_Controller {
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
 		$data['dxccFlag'] = $this->dxccflag->get($data['query']->result()[0]->COL_DXCC);
-
+		
         if ($this->session->userdata('user_measurement_base') == NULL) {
             $data['measurement_base'] = $this->config->item('measurement_base');
         }
@@ -896,7 +896,7 @@ class Logbook extends CI_Controller {
 
 	function search_result($id="", $id2="") {
 		$this->load->model('user_model');
-
+		
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
 
 		$fixedid = $id;
@@ -926,6 +926,7 @@ class Logbook extends CI_Controller {
 				if ($iota_search->num_rows() > 0)
 				{
 					$data['results'] = $iota_search;
+
 					$this->load->view('view_log/partial/log_ajax.php', $data);
 				} else {
 					if ($this->config->item('callbook') == "qrz" && $this->config->item('qrz_username') != null && $this->config->item('qrz_password') != null) {
@@ -988,13 +989,14 @@ class Logbook extends CI_Controller {
 						$data['callsign'] = $this->hamli->callsign($id);
 					}*/
 
-					$data['id'] = strtoupper($id);
+					$data['id'] = strtoupper($id);					
 
 					$this->load->view('search/result', $data);
 				}
 			}
 		} else {
 			$data['results'] = $query;
+			
 			$this->load->view('view_log/partial/log_ajax.php', $data);
 		}
 	}
