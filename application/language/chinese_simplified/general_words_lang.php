@@ -36,6 +36,7 @@ $lang['general_word_time_off'] = '关闭时间';
 $lang['general_word_datetime'] = '日期/时间';
 $lang['general_word_none'] = '无';
 $lang['general_word_name'] = '名称';
+$lang['general_word_flag'] = '旗帜';
 $lang['general_word_location'] = '位置';
 $lang['general_word_comment'] = '备注';
 $lang['general_word_general'] = '通用';

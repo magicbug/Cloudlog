@@ -36,6 +36,7 @@ $lang['general_word_time_off'] = 'Время окончания';
 $lang['general_word_datetime'] = 'Дата/Время';
 $lang['general_word_none'] = '-';
 $lang['general_word_name'] = 'Имя';
+$lang['general_word_flag'] = 'Флаг';
 $lang['general_word_location'] = 'QTH';
 $lang['general_word_comment'] = 'Комментарий';
 $lang['general_word_general'] = 'Общее';

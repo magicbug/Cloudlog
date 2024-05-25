@@ -36,6 +36,7 @@ $lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Дата/Час';
 $lang['general_word_none'] = 'Нито едно';
 $lang['general_word_name'] = 'Име';
+$lang['general_word_flag'] = 'знаме';
 $lang['general_word_location'] = 'Местоположение';
 $lang['general_word_comment'] = 'Коментар';
 $lang['general_word_general'] = 'Общи';

@@ -37,6 +37,7 @@ $lang['general_word_time_off'] = 'Hora fin';
 $lang['general_word_datetime'] = 'Fecha/Hora';
 $lang['general_word_none'] = 'Ninguno';
 $lang['general_word_name'] = 'Nombre';
+$lang['general_word_flag'] = 'Bandera';
 $lang['general_word_location'] = 'Localización';
 $lang['general_word_comment'] = 'Comentario';
 $lang['general_word_general'] = 'General';

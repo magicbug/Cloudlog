@@ -17,6 +17,7 @@ function echo_table_header_col($ctx, $name) {
 		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
 		case 'Location': echo '<th>'.$ctx->lang->line('cloudlog_station_profile').'</th>'; break;
 		case 'Name': echo '<th>'.$ctx->lang->line('general_word_name').'</th>'; break;
+		case 'Flag': echo '<th>&nbsp;</th>'; break;
 	}
 }
 
@@ -39,6 +40,11 @@ function echo_table_col($row, $name) {
 		case 'Operator':echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
 		case 'Location':echo '<td>' . ($row->station_profile_name) . '</td>'; break;
 		case 'Name':echo '<td>' . ($row->COL_NAME) . '</td>'; break;
+		case 'Flag':
+			$ci->load->library('DxccFlag');	
+			$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
+			echo '<td><span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name==null?"- NONE -":$row->name))) . '"><span class="fi fi-' . $flag .'"></span></span></td>'; 
+			break;
 	}
 }
 
@@ -51,7 +57,10 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
 }
 ?>
 
-<?php if ($results) { ?>
+<?php
+$this->load->library('DxccFlag');
+if ($results) { 
+?>
 
 <div class="table-responsive">
     <table style="width:100%" class="table contacttable table-striped table-hover">
@@ -90,7 +99,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
         <tbody>
 
         <?php  $i = 0;  
-            foreach ($results->result() as $row) {
+            foreach ($results->result() as $row) {				
                 // Get Date format
                 if($this->session->userdata('user_date_format')) {
                     // If Logged in and session exists
@@ -102,7 +111,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
                 echo '<tr class="tr'.($i & 1).'" id="qso_'. $row->COL_PRIMARY_KEY .'">'; ?>
             <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-                <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
+            <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
             <?php } ?>
             <td>
                 <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
