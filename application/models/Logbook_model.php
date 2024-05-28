@@ -2057,6 +2057,37 @@ class Logbook_model extends CI_Model
     return $query->num_rows();
   }
 
+  function check_if_grid_4char_worked_in_logbook($grid, $StationLocationsArray = null, $band = null)
+  {
+      if ($StationLocationsArray == null) {
+          $CI = &get_instance();
+          $CI->load->model('logbooks_model');
+          $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      } else {
+          $logbooks_locations_array = $StationLocationsArray;
+      }
+  
+      $this->db->select('COL_GRIDSQUARE');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->group_start();
+      $this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($grid, 0, 4));
+      $this->db->or_like('SUBSTRING(COL_VUCC_GRIDS, 1, 4)', substr($grid, 0, 4));
+      $this->db->group_end();
+  
+      if ($band != null && $band != 'SAT') {
+          $this->db->where('COL_BAND', $band);
+      } else if ($band == 'SAT') {
+          // Where col_sat_name is not empty
+          $this->db->where('COL_SAT_NAME !=', '');
+      }
+      $this->db->limit('2');
+  
+      $query = $this->db->get($this->config->item('table_name'));
+  
+      return $query->num_rows();
+  }
+
+
   /* Get all QSOs with a valid grid for use in the KML export */
   function kml_get_all_qsos($band, $mode, $dxcc, $cqz, $propagation, $fromdate, $todate)
   {

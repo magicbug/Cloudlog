@@ -106,7 +106,7 @@
                            <?php
                            // Load the logbook model and call check_if_grid_worked_in_logbook
                            foreach ($rove['grids'] as $grid) {
-                           $worked = $CI->logbook_model->check_if_grid_worked_in_logbook($grid, null, "SAT");
+                           $worked = $CI->logbook_model->check_if_grid_4char_worked_in_logbook($grid, null, "SAT");
                               if ($worked != 0) {
                                   echo " <span data-bs-toggle=\"tooltip\" title=\"Worked\" class=\"badge bg-success\">" . $grid . "</span>";
                               } else {
