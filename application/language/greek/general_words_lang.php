@@ -36,6 +36,7 @@ $lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Ημερομηνία/Ωρα';
 $lang['general_word_none'] = 'None';
 $lang['general_word_name'] = 'όνομα';
+$lang['general_word_flag'] = 'Σημαία';
 $lang['general_word_location'] = 'Τοποθεσία';
 $lang['general_word_comment'] = 'Σχόλιο';
 $lang['general_word_general'] = 'Γενικα';

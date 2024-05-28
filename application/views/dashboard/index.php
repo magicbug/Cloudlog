@@ -47,6 +47,9 @@ function echo_table_header_col($ctx, $name)
 		case 'Name':
 			echo '<th>' . $ctx->lang->line('general_word_name') . '</th>';
 			break;
+		case 'Flag':
+			echo '<th>&nbsp;</th>';
+			break;
 	}
 }
 
@@ -136,6 +139,11 @@ function echo_table_col($row, $name)
 			break;
 		case 'Name':
 			echo '<td>' . ($row->COL_NAME) . '</td>';
+			break;
+		case 'Flag':
+			$ci->load->library('DxccFlag');
+			$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
+			echo '<td><span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name==null?"- NONE -":$row->name))) . '"><span class="fi fi-' . $flag .'"></span></span></td>';
 			break;
 	}
 }

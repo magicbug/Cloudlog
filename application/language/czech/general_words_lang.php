@@ -36,6 +36,7 @@ $lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Datum/čas';
 $lang['general_word_none'] = 'Žádné';
 $lang['general_word_name'] = 'Jméno';
+$lang['general_word_flag'] = 'Vlajka';
 $lang['general_word_location'] = 'Místo';
 $lang['general_word_comment'] = 'Komentář';
 $lang['general_word_general'] = 'Obecné';

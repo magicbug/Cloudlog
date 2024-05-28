@@ -366,6 +366,9 @@
 													<option value="Name" <?php if ($user_column1 == "Name") {
 																				echo " selected =\"selected\"";
 																			} ?>><?php echo lang('general_word_name'); ?></option>
+													<option value="Flag" <?php if ($user_column1 == "Flag") {
+																				echo " selected =\"selected\"";
+																			} ?>><?php echo lang('general_word_flag'); ?></option>
 												</select>
 											</div>
 
@@ -420,6 +423,9 @@
 													<option value="Name" <?php if ($user_column2 == "Name") {
 																				echo " selected =\"selected\"";
 																			} ?>><?php echo lang('general_word_name'); ?></option>
+													<option value="Flag" <?php if ($user_column2 == "Flag") {
+																				echo " selected =\"selected\"";
+																			} ?>><?php echo lang('general_word_flag'); ?></option>																			
 												</select>
 											</div>
 
@@ -474,6 +480,9 @@
 													<option value="Name" <?php if ($user_column3 == "Name") {
 																				echo " selected =\"selected\"";
 																			} ?>><?php echo lang('general_word_name'); ?></option>
+													<option value="Flag" <?php if ($user_column3 == "Flag") {
+																				echo " selected =\"selected\"";
+																			} ?>><?php echo lang('general_word_flag'); ?></option>
 												</select>
 											</div>
 
@@ -528,6 +537,9 @@
 													<option value="Name" <?php if ($user_column4 == "Name") {
 																				echo " selected =\"selected\"";
 																			} ?>><?php echo lang('general_word_name'); ?></option>
+													<option value="Flag" <?php if ($user_column4 == "Flag") {
+																				echo " selected =\"selected\"";
+																			} ?>><?php echo lang('general_word_flag'); ?></option>
 												</select>
 											</div>
 
@@ -588,6 +600,9 @@
 													<option value="Location" <?php if ($user_column5 == "Location") {
 																					echo " selected =\"selected\"";
 																				} ?>><?php echo lang('cloudlog_station_profile'); ?></option>
+													<option value="Flag" <?php if ($user_column5 == "Flag") {
+																				echo " selected =\"selected\"";
+																			} ?>><?php echo lang('general_word_flag'); ?></option>
 												</select>
 											</div>
 										</div>

@@ -36,6 +36,7 @@ $lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Date/Time';
 $lang['general_word_none'] = 'Geen';
 $lang['general_word_name'] = 'Naam';
+$lang['general_word_flag'] = 'Flag';
 $lang['general_word_location'] = 'Locatie';
 $lang['general_word_comment'] = 'Opmerking';
 $lang['general_word_general'] = 'Algemeen';

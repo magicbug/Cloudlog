@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('Non è consentito l\'accesso diretto allo script');
 
-$lang['awards_info_button'] = "Informazioni sull'Award'";
+$lang['awards_info_button'] = "Informazioni sull'Award";
 $lang['awards_show_worked'] = "Mostra lavorati";
 $lang['awards_show_confirmed'] = "Mostra confermati";
 $lang['awards_show_not_worked'] = "Mostra non lavorati";
