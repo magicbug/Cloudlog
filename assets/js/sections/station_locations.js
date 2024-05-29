@@ -21,7 +21,8 @@ $(document).ready( function () {
         '112': 'chile_state',
         '132': 'paraguay_state',
         '137': 'korea_state',
-        '144': 'uruguay_state'
+        '144': 'uruguay_state',
+        '291': 'us_state'
     };
 
     // Hide all states initially
