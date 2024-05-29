@@ -36,6 +36,7 @@ $lang['general_word_time_off'] = 'Time off';
 $lang['general_word_datetime'] = 'Päivä/Aika';
 $lang['general_word_none'] = 'None';
 $lang['general_word_name'] = 'Nimi';
+$lang['general_word_flag'] = 'Lippu';
 $lang['general_word_location'] = 'Sijainti';
 $lang['general_word_comment'] = 'Kommentti';
 $lang['general_word_general'] = 'Yleinen';

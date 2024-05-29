@@ -50,11 +50,15 @@ function echo_table_header_col($name)
         case 'Name':
             echo lang('general_word_name');
             break;
+		case 'Flag':
+			echo '&nbsp;';
+			break;			
     }
 }
 
 function echo_table_col($row, $name)
 {
+	$ci = &get_instance();
     switch ($name) {
         case 'Mode':
             echo $row->COL_SUBMODE == null ? $row->COL_MODE : $row->COL_SUBMODE;
@@ -96,6 +100,9 @@ function echo_table_col($row, $name)
         case 'POTA':
             echo ($row->COL_POTA_REF);
             break;
+        case 'State':
+            echo ($row->COL_STATE);
+            break;			
         case 'Grid':
             echo strlen($row->COL_GRIDSQUARE) == 0 ? $row->COL_VUCC_GRIDS : $row->COL_GRIDSQUARE;
             break;
@@ -109,15 +116,8 @@ function echo_table_col($row, $name)
                 echo strtolower($row->COL_BAND);
             };
             break;
-        case 'State':
-            echo ($row->COL_STATE);
-            break;
-        case 'Operator':
-            echo ($row->COL_OPERATOR);
-            break;
-        case 'Frequency':
-            $CI =& get_instance();
-            $CI->load->library('frequency');
+        case 'Frequency':            
+            $ci->load->library('frequency');
 
             if ($row->COL_SAT_NAME != null) {
                 echo '<a href="https://db.satnogs.org/search/?q=' . $row->COL_SAT_NAME . '" target="_blank">';
@@ -137,18 +137,20 @@ function echo_table_col($row, $name)
                 }
             }
             break;
-        case 'State':
-            echo ($row->COL_STATE);
-            break;
         case 'Operator':
             echo ($row->COL_OPERATOR);
-            break;
-        case 'Location':
+            break;			
+         case 'Location':
             echo ($row->station_profile_name);
             break;
         case 'Name':
             echo ($row->COL_NAME);
             break;
+		case 'Flag':
+			$ci->load->library('DxccFlag');
+			$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
+			echo '<span class="fi fi-' . $flag .'"></span>';
+			break;			
         default:
             echo '(unknown col)';
     }

@@ -36,6 +36,7 @@ $lang['general_word_time_off'] = 'Kapanma Zamanı';
 $lang['general_word_datetime'] = 'Tarih/Saat';
 $lang['general_word_none'] = 'Hiçbiri';
 $lang['general_word_name'] = 'İsim';
+$lang['general_word_flag'] = 'Bayrak';
 $lang['general_word_location'] = 'Konum';
 $lang['general_word_comment'] = 'Yorum';
 $lang['general_word_general'] = 'Genel';

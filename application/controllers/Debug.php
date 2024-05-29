@@ -64,4 +64,15 @@ class Debug extends CI_Controller {
 
         return false;
     }
+  
+    public function flags() {
+
+        // load library called DxccFlag
+        $this->load->library('DxccFlag');
+
+        // Call getISO function from DxccFlag library
+        $data['flags'] = $this->dxccflag->getISO('33');
+
+        print_r($data['flags']);
+    }	
 }

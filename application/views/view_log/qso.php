@@ -248,7 +248,12 @@
                     <?php if($row->name != null) { ?>
                     <tr>
                         <td><?php echo lang('general_word_country'); ?></td>
-                        <td><?php echo ucwords(strtolower(($row->name)), "- (/"); if (isset($dxccFlag)) { echo " ".$dxccFlag; } if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+                        <td><?php
+						$ci =& get_instance();
+						$ci->load->library('DxccFlag');	
+						$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
+						echo '<span class="fi fi-' . $flag .'"></span> '; 
+						echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
                     </tr>
                     <?php } ?>
 
