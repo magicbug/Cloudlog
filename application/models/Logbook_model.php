@@ -2239,7 +2239,6 @@ class Logbook_model extends CI_Model
   }
 
   
-  <?php
   /* Return most recent QSOs */
   function recent_qsos($StationLocationsArray = null, $api_key = null)
   {
@@ -2309,7 +2308,6 @@ class Logbook_model extends CI_Model
         return null;
       }
   }
-  ?>
 
   /* Return QSOs over a period of days */
   function map_week_qsos($start, $end)
