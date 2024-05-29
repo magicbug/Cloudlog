@@ -484,6 +484,17 @@ class API extends CI_Controller {
 
 	}
 
+	function recent_qsos($key = null) {
+		header('Content-type: application/json');
+		$this->load->model('logbook_model');
+
+		$data['qsos'] = $this->logbook_model->recent_qsos(null, $key);
+
+		http_response_code(201);
+		echo json_encode($data['qsos']);
+
+	}
+
 	function lookup() {
 		// start benchmarking
 		$this->output->enable_profiler(TRUE);

@@ -2238,6 +2238,60 @@ class Logbook_model extends CI_Model
     }
   }
 
+  
+  /* Return 10 most recent QSOs */
+  function recent_qsos($StationLocationsArray = null, $api_key = null)
+  {
+    $CI = &get_instance();
+    $detailed = $this->input->get('detailed') === 'true' ? true : false;
+    $limit = $this->input->get('limit');
+    $limit = is_numeric($limit) ? $limit : 10; // Default to 10 if limit is not a number
+
+    // Throw an error if limit is greater than 100
+    if ($limit > 100) {
+        show_error('The limit cannot be greater than 100.', 400);
+        return;
+    }
+
+
+    if ($StationLocationsArray == null) {
+      $CI->load->model('logbooks_model');
+      if ($api_key != null) {
+        $CI->load->model('api_model');
+        if (strpos($this->api_model->access($api_key), 'r') !== false) {
+          $this->api_model->update_last_used($api_key);
+          $user_id = $this->api_model->key_userid($api_key);
+          $active_station_logbook = $CI->logbooks_model->find_active_station_logbook_from_userid($user_id);
+          $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($active_station_logbook);
+        } else {
+          $logbooks_locations_array = [];
+        }
+      } else {
+        $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      }
+    } else {
+      $logbooks_locations_array = $StationLocationsArray;
+    }
+
+    if ($logbooks_locations_array) {
+      if ($detailed) {
+        $this->db->select('*');
+      } else {
+        $this->db->select('COL_CALL, COL_BAND, COL_FREQ, COL_MODE, COL_SUBMODE, COL_NAME, COL_MY_GRIDSQUARE, COL_COUNTRY, COL_DXCC, COL_CONTEST_ID, COL_FREQ_RX, COL_MY_CITY, COL_MY_CNTY, COL_MY_COUNTRY, COL_COMMENT, COL_DISTANCE, COL_NAME, COL_OPERATOR, COL_RST_RCVD, COL_RST_SENT, COL_STATION_CALLSIGN, COL_TIME_OFF, COL_TIME_ON, COL_TX_PWR');
+      }
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->order_by('COL_TIME_ON', 'DESC');
+      $this->db->limit($limit);
+      $query = $this->db->get($this->config->item('table_name'));
+
+      if ($query->num_rows() > 0) {
+        return $query->result();
+      }
+    } else {
+      return null;
+    }
+  }
+
   /* Return QSOs over a period of days */
   function map_week_qsos($start, $end)
   {
