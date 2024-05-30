@@ -143,7 +143,7 @@ function echo_table_col($row, $name)
 		case 'Flag':
 			$ci->load->library('DxccFlag');
 			$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
-			echo '<td><span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name==null?"- NONE -":$row->name))) . '"><span class="fi fi-' . $flag .'"></span></span></td>';
+			echo '<td><span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name == null ? "- NONE -" : $row->name))) . '"><span class="fi fi-' . $flag . '"></span></span></td>';
 			break;
 	}
 }
@@ -185,15 +185,17 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 		<?php } ?>
 
 		<?php if ($this->optionslib->get_option('dashboard_banner') != "false") { ?>
-			<?php if ($todays_qsos >= 1) { ?>
-				<div class="alert alert-success" role="alert">
-					<?php echo lang('dashboard_you_have_had'); ?> <strong><?php echo $todays_qsos; ?></strong> <?php echo $todays_qsos != 1 ? lang('dashboard_qsos_today') : str_replace('QSOs', 'QSO', lang('dashboard_qsos_today')); ?>
-				</div>
-			<?php } else { ?>
-				<div class="alert alert-warning" role="alert">
-					<span class="badge text-bg-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo lang('notice_turn_the_radio_on'); ?>
-				</div>
-			<?php } ?>
+			<div hx-get="<?php echo site_url('dashboard/todays_qso_component'); ?>" hx-trigger="every 30s">
+				<?php if ($todays_qsos >= 1) { ?>
+					<div class="alert alert-success" role="alert">
+						<?php echo lang('dashboard_you_have_had'); ?> <strong><?php echo $todays_qsos; ?></strong> <?php echo $todays_qsos != 1 ? lang('dashboard_qsos_today') : str_replace('QSOs', 'QSO', lang('dashboard_qsos_today')); ?>
+					</div>
+				<?php } else { ?>
+					<div class="alert alert-warning" role="alert">
+						<span class="badge text-bg-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo lang('notice_turn_the_radio_on'); ?>
+					</div>
+				<?php } ?>
+			</div>
 		<?php } ?>
 
 		<?php if ($current_active == 0) { ?>
@@ -294,80 +296,80 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 						<td width="50%"><?php echo $total_countries_needed; ?></td>
 					</tr>
 				</table>
-				
+
 				<?php if ($dashboard_qslcard_card != false) { ?>
-				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_rcvd != 0 || $total_qsl_requested != 0)) { ?>
-					<table class="table table-striped border-top">
-						<tr class="titles">
-							<td colspan="2"><i class="fas fa-envelope"></i> <?php echo lang('general_word_qslcards'); ?></td>
-							<td colspan="1"><?php echo lang('general_word_today'); ?></td>
-						</tr>
+					<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_rcvd != 0 || $total_qsl_requested != 0)) { ?>
+						<table class="table table-striped border-top">
+							<tr class="titles">
+								<td colspan="2"><i class="fas fa-envelope"></i> <?php echo lang('general_word_qslcards'); ?></td>
+								<td colspan="1"><?php echo lang('general_word_today'); ?></td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-							<td width="25%"><?php echo $total_qsl_sent; ?></td>
-							<td width="25%"><a href="javascript:displayContacts('','All','All','QSLSDATE','');"><?php echo $qsl_sent_today; ?></a></td>
-						</tr>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_sent'); ?></td>
+								<td width="25%"><?php echo $total_qsl_sent; ?></td>
+								<td width="25%"><a href="javascript:displayContacts('','All','All','QSLSDATE','');"><?php echo $qsl_sent_today; ?></a></td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_received'); ?></td>
-							<td width="25%"><?php echo $total_qsl_rcvd; ?></td>
-							<td width="25%"><a href="javascript:displayContacts('','All','All','QSLRDATE','');"><?php echo $qsl_rcvd_today; ?></a></td>
-						</tr>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_received'); ?></td>
+								<td width="25%"><?php echo $total_qsl_rcvd; ?></td>
+								<td width="25%"><a href="javascript:displayContacts('','All','All','QSLRDATE','');"><?php echo $qsl_rcvd_today; ?></a></td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_requested'); ?></td>
-							<td width="25%"><?php echo $total_qsl_requested; ?></td>
-							<td width="25%"><?php echo $qsl_requested_today; ?></td>
-						</tr>
-					</table>
-				<?php } ?>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_requested'); ?></td>
+								<td width="25%"><?php echo $total_qsl_requested; ?></td>
+								<td width="25%"><?php echo $qsl_requested_today; ?></td>
+							</tr>
+						</table>
+					<?php } ?>
 				<?php } ?>
 
 				<?php if ($dashboard_eqslcard_card != false) { ?>
-				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_rcvd != 0)) { ?>
-					<table class="table table-striped border-top">
-						<tr class="titles">
-							<td colspan="2"><i class="fas fa-address-card"></i> <?php echo lang('general_word_eqslcards'); ?></td>
-							<td colspan="1"><?php echo lang('general_word_today'); ?></td>
-						</tr>
+					<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_rcvd != 0)) { ?>
+						<table class="table table-striped border-top">
+							<tr class="titles">
+								<td colspan="2"><i class="fas fa-address-card"></i> <?php echo lang('general_word_eqslcards'); ?></td>
+								<td colspan="1"><?php echo lang('general_word_today'); ?></td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-							<td width="25%"><?php echo $total_eqsl_sent; ?></td>
-							<td width="25%"><a href="javascript:displayContacts('','All','All','EQSLSDATE','');"><?php echo $eqsl_sent_today; ?></a></td>
-						</tr>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_sent'); ?></td>
+								<td width="25%"><?php echo $total_eqsl_sent; ?></td>
+								<td width="25%"><a href="javascript:displayContacts('','All','All','EQSLSDATE','');"><?php echo $eqsl_sent_today; ?></a></td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_received'); ?></td>
-							<td width="25%"><?php echo $total_eqsl_rcvd; ?></td>
-							<td width="25%"><a href="javascript:displayContacts('','All','All','EQSLRDATE','');"><?php echo $eqsl_rcvd_today; ?></a></td>
-						</tr>
-					</table>
-				<?php } ?>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_received'); ?></td>
+								<td width="25%"><?php echo $total_eqsl_rcvd; ?></td>
+								<td width="25%"><a href="javascript:displayContacts('','All','All','EQSLRDATE','');"><?php echo $eqsl_rcvd_today; ?></a></td>
+							</tr>
+						</table>
+					<?php } ?>
 				<?php } ?>
 
 				<?php if ($dashboard_lotw_card != false) { ?>
-				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
-					<table class="table table-striped border-top">
-						<tr class="titles">
-							<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
-							<td colspan="1"><?php echo lang('general_word_today'); ?></td>
-						</tr>
+					<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
+						<table class="table table-striped border-top">
+							<tr class="titles">
+								<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
+								<td colspan="1"><?php echo lang('general_word_today'); ?></td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-							<td width="25%"><?php echo $total_lotw_sent; ?></td>
-							<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWSDATE','');"><?php echo $lotw_sent_today; ?></a></td>
-						</tr>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_sent'); ?></td>
+								<td width="25%"><?php echo $total_lotw_sent; ?></td>
+								<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWSDATE','');"><?php echo $lotw_sent_today; ?></a></td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_received'); ?></td>
-							<td width="25%"><?php echo $total_lotw_rcvd; ?></td>
-							<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWRDATE','');"><?php echo $lotw_rcvd_today; ?></a></td>
-						</tr>
-					</table>
-				<?php } ?>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_received'); ?></td>
+								<td width="25%"><?php echo $total_lotw_rcvd; ?></td>
+								<td width="25%"><a href="javascript:displayContacts('','all','all','LOTWRDATE','');"><?php echo $lotw_rcvd_today; ?></a></td>
+							</tr>
+						</table>
+					<?php } ?>
 				<?php } ?>
 
 				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === false) && ($total_qrz_sent != 0 || $total_qrz_rcvd != 0)) { ?>
@@ -392,27 +394,27 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 				<?php } ?>
 
 				<?php if ($dashboard_vuccgrids_card != false) { ?>
-				<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE)) { ?>
-					<table class="table table-striped border-top">
-						<tr class="titles">
-							<td colspan="2"><i class="fas fa-globe-europe"></i> VUCC-Grids</td>
-							<td colspan="1">SAT</td>
-						</tr>
+					<?php if ((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE)) { ?>
+						<table class="table table-striped border-top">
+							<tr class="titles">
+								<td colspan="2"><i class="fas fa-globe-europe"></i> VUCC-Grids</td>
+								<td colspan="1">SAT</td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_worked'); ?></td>
-							<td width="25%"><?php echo $vucc['All']['worked']; ?></td>
-							<td width="25%"><?php echo $vuccSAT['SAT']['worked'] ?? '0'; ?></td>
-						</tr>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_worked'); ?></td>
+								<td width="25%"><?php echo $vucc['All']['worked']; ?></td>
+								<td width="25%"><?php echo $vuccSAT['SAT']['worked'] ?? '0'; ?></td>
+							</tr>
 
-						<tr>
-							<td width="50%"><?php echo lang('general_word_confirmed'); ?></td>
-							<td width="25%"><?php echo $vucc['All']['confirmed']; ?></td>
-							<td width="25%"><?php echo $vuccSAT['SAT']['confirmed'] ?? '0'; ?></td>
-						</tr>
+							<tr>
+								<td width="50%"><?php echo lang('general_word_confirmed'); ?></td>
+								<td width="25%"><?php echo $vucc['All']['confirmed']; ?></td>
+								<td width="25%"><?php echo $vuccSAT['SAT']['confirmed'] ?? '0'; ?></td>
+							</tr>
 
-					</table>
-				<?php } ?>
+						</table>
+					<?php } ?>
 				<?php } ?>
 			</div>
 		</div>
