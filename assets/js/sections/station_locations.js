@@ -1,7 +1,5 @@
 $(document).ready( function () {
 
-    // Use Jquery to hide div ca_state
-
     $('#station_locations_table').DataTable({
         "stateSave": true,
         "language": {
