@@ -1,5 +1,13 @@
+/**
+ * Initializes the DataTable and handles the logic for showing/hiding states based on the selected DXCC ID.
+ */
 $(document).ready( function () {
 
+    /**
+     * Initializes the DataTable with state saving enabled and custom language settings.
+     *
+     * @type {DataTable}
+     */
     $('#station_locations_table').DataTable({
         "stateSave": true,
         "language": {
@@ -7,6 +15,11 @@ $(document).ready( function () {
         }
     });
 
+    /**
+     * Maps DXCC IDs to their corresponding state IDs.
+     *
+     * @type {Object}
+     */
     var stateMap = {
         '1': 'canada_state',
         '5': 'aland_state',
@@ -27,6 +40,9 @@ $(document).ready( function () {
     // Hide all states initially
     $("#canada_state, #aland_state, #asiatic_russia_state, #belarus_state, #mexico_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #us_state, #paraguay_state, #korea_state, #uruguay_state").hide();
 
+    /**
+     * Gets the selected DXCC ID and shows the corresponding state.
+     */
     var selectedDXCCID = $('#dxcc_select').find(":selected").val();
     var stateToShow = stateMap[selectedDXCCID];
 
@@ -38,6 +54,10 @@ $(document).ready( function () {
         $("#us_state").show();
     }
 
+    /**
+     * Handles the change event of the DXCC select element.
+     * Shows the corresponding state based on the selected DXCC ID.
+     */
     $('#dxcc_select').change(function(){
         var selectedValue = $(this).val();
         var stateToShow = stateMap[selectedValue] || stateMap['default'];
