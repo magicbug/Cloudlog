@@ -529,6 +529,37 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="venezuela_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="AM" <?php if($my_station_profile->state == "AM") { echo "selected"; } ?>>Amazonas</option>
+								<option value="AN" <?php if($my_station_profile->state == "AN") { echo "selected"; } ?>>Anzoátegui</option>
+								<option value="AP" <?php if($my_station_profile->state == "AP") { echo "selected"; } ?>>Apure</option>
+								<option value="AR" <?php if($my_station_profile->state == "AR") { echo "selected"; } ?>>Aragua</option>
+								<option value="BA" <?php if($my_station_profile->state == "BA") { echo "selected"; } ?>>Barinas</option>
+								<option value="BO" <?php if($my_station_profile->state == "BO") { echo "selected"; } ?>>Bolívar</option>
+								<option value="CA" <?php if($my_station_profile->state == "CA") { echo "selected"; } ?>>Carabobo</option>
+								<option value="CO" <?php if($my_station_profile->state == "CO") { echo "selected"; } ?>>Cojedes</option>
+								<option value="DA" <?php if($my_station_profile->state == "DA") { echo "selected"; } ?>>Delta Amacuro</option>
+								<option value="DC" <?php if($my_station_profile->state == "DC") { echo "selected"; } ?>>Distrito Capital</option>
+								<option value="FA" <?php if($my_station_profile->state == "FA") { echo "selected"; } ?>>Falcón</option>
+								<option value="GU" <?php if($my_station_profile->state == "GU") { echo "selected"; } ?>>Guárico</option>
+								<option value="LA" <?php if($my_station_profile->state == "LA") { echo "selected"; } ?>>Lara</option>
+								<option value="ME" <?php if($my_station_profile->state == "ME") { echo "selected"; } ?>>Mérida</option>
+								<option value="MI" <?php if($my_station_profile->state == "MI") { echo "selected"; } ?>>Miranda</option>
+								<option value="MO" <?php if($my_station_profile->state == "MO") { echo "selected"; } ?>>Monagas</option>
+								<option value="NE" <?php if($my_station_profile->state == "NE") { echo "selected"; } ?>>Nueva Esparta</option>
+								<option value="PO" <?php if($my_station_profile->state == "PO") { echo "selected"; } ?>>Portuguesa</option>
+								<option value="SU" <?php if($my_station_profile->state == "SU") { echo "selected"; } ?>>Sucre</option>
+								<option value="TA" <?php if($my_station_profile->state == "TA") { echo "selected"; } ?>>Táchira</option>
+								<option value="TR" <?php if($my_station_profile->state == "TR") { echo "selected"; } ?>>Trujillo</option>
+								<option value="VA" <?php if($my_station_profile->state == "VA") { echo "selected"; } ?>>Vargas</option>
+								<option value="YA" <?php if($my_station_profile->state == "YA") { echo "selected"; } ?>>Yaracuy</option>
+								<option value="ZU" <?php if($my_station_profile->state == "ZU") { echo "selected"; } ?>>Zulia</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
 
 
 

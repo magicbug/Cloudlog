@@ -34,11 +34,12 @@ $(document).ready( function () {
         '137': 'korea_state',
         '144': 'uruguay_state',
         '291': 'us_state',
+        '148': 'venezuela_state', 
         '6': 'us_state' // Alaska
     };
 
     // Hide all states initially
-    $("#canada_state, #aland_state, #asiatic_russia_state, #belarus_state, #mexico_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #us_state, #paraguay_state, #korea_state, #uruguay_state").hide();
+    $("#canada_state, #aland_state, #asiatic_russia_state, #belarus_state, #mexico_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #us_state, #paraguay_state, #korea_state, #uruguay_state, #venezuela_state").hide();
 
     /**
      * Gets the selected DXCC ID and shows the corresponding state.
@@ -63,7 +64,7 @@ $(document).ready( function () {
         var stateToShow = stateMap[selectedValue] || stateMap['default'];
     
         // Hide all states
-        $("#mexico_state, #belarus_state, #asiatic_russia_state, #aland_state, #canada_state, #us_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #paraguay_state, #korea_state, #uruguay_state").hide();
+        $("#mexico_state, #belarus_state, #asiatic_russia_state, #aland_state, #canada_state, #us_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #paraguay_state, #korea_state, #uruguay_state, #venezuela_state").hide();
     
         // Show the selected state
         $("#" + stateToShow).show();
