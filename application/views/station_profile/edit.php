@@ -561,6 +561,21 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="australia_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="ACT" <?php if($my_station_profile->state == "ACT") { echo "selected"; } ?>>Australian Capital Territory</option>
+								<option value="NSW" <?php if($my_station_profile->state == "NSW") { echo "selected"; } ?>>New South Wales</option>
+								<option value="VIC" <?php if($my_station_profile->state == "VIC") { echo "selected"; } ?>>Victoria</option>
+								<option value="QLD" <?php if($my_station_profile->state == "QLD") { echo "selected"; } ?>>Queensland</option>
+								<option value="SA" <?php if($my_station_profile->state == "SA") { echo "selected"; } ?>>South Australia</option>
+								<option value="WA" <?php if($my_station_profile->state == "WA") { echo "selected"; } ?>>Western Australia</option>
+								<option value="TAS" <?php if($my_station_profile->state == "TAS") { echo "selected"; } ?>>Tasmania</option>
+								<option value="NT" <?php if($my_station_profile->state == "NT") { echo "selected"; } ?>>Northern Territory</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
 
 
 						<!-- US County -->
