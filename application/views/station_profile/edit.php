@@ -629,6 +629,24 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="belgium_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="AN" <?php if($my_station_profile->state == "AN") { echo "selected"; } ?>>Antwerpen</option>
+								<option value="BR" <?php if($my_station_profile->state == "BR") { echo "selected"; } ?>>Brussels</option>
+								<option value="BW" <?php if($my_station_profile->state == "BW") { echo "selected"; } ?>>Brabant Wallon</option>
+								<option value="HT" <?php if($my_station_profile->state == "HT") { echo "selected"; } ?>>Hainaut</option>
+								<option value="LB" <?php if($my_station_profile->state == "LB") { echo "selected"; } ?>>Limburg</option>
+								<option value="LG" <?php if($my_station_profile->state == "LG") { echo "selected"; } ?>>Liêge</option>
+								<option value="NM" <?php if($my_station_profile->state == "NM") { echo "selected"; } ?>>Namur</option>
+								<option value="LU" <?php if($my_station_profile->state == "LU") { echo "selected"; } ?>>Luxembourg</option>
+								<option value="OV" <?php if($my_station_profile->state == "OV") { echo "selected"; } ?>>Oost-Vlaanderen</option>
+								<option value="VB" <?php if($my_station_profile->state == "VB") { echo "selected"; } ?>>Vlaams Brabant</option>
+								<option value="WV" <?php if($my_station_profile->state == "WV") { echo "selected"; } ?>>West-Vlaanderen</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
 
 
 						<!-- US County -->
