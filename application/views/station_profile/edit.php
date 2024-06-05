@@ -605,6 +605,31 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="nz_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="AUK" <?php if($my_station_profile->state == "AUK") { echo "selected"; } ?>>Auckland</option>
+								<option value="BOP" <?php if($my_station_profile->state == "BOP") { echo "selected"; } ?>>Bay of Plenty</option>
+								<option value="NTL" <?php if($my_station_profile->state == "NTL") { echo "selected"; } ?>>Northland</option>
+								<option value="WKO" <?php if($my_station_profile->state == "WKO") { echo "selected"; } ?>>Waikato</option>
+								<option value="GIS" <?php if($my_station_profile->state == "GIS") { echo "selected"; } ?>>Gisborne</option>
+								<option value="HKB" <?php if($my_station_profile->state == "HKB") { echo "selected"; } ?>>Hawkes Bay</option>
+								<option value="MWT" <?php if($my_station_profile->state == "MWT") { echo "selected"; } ?>>Manawatu-Wanganui</option>
+								<option value="TKI" <?php if($my_station_profile->state == "TKI") { echo "selected"; } ?>>Taranaki</option>
+								<option value="WGN" <?php if($my_station_profile->state == "WGN") { echo "selected"; } ?>>Wellington</option>
+								<option value="CAN" <?php if($my_station_profile->state == "CAN") { echo "selected"; } ?>>Canterbury</option>
+								<option value="MBH" <?php if($my_station_profile->state == "MBH") { echo "selected"; } ?>>Marlborough</option>
+								<option value="NSN" <?php if($my_station_profile->state == "NSN") { echo "selected"; } ?>>Nelson</option>
+								<option value="TAS" <?php if($my_station_profile->state == "TAS") { echo "selected"; } ?>>Tasman</option>
+								<option value="WTC" <?php if($my_station_profile->state == "WTC") { echo "selected"; } ?>>West Coast</option>
+								<option value="OTA" <?php if($my_station_profile->state == "OTA") { echo "selected"; } ?>>Otago</option>
+								<option value="STL" <?php if($my_station_profile->state == "STL") { echo "selected"; } ?>>Southland</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
+
 
 						<!-- US County -->
 						<div class="mb-3">
