@@ -1,12 +1,11 @@
-# Cloudlog
+[![Cypress Tests](https://github.com/magicbug/Cloudlog/actions/workflows/cypress-tests.yml/badge.svg)](https://github.com/magicbug/Cloudlog/actions/workflows/cypress-tests.yml)
 
+# Cloudlog
 > Important: Only accepting PRs on the "dev" branch.
 
 Cloudlog is a self-hosted PHP application that allows you to log your amateur radio contacts anywhere. All you need is a web browser and active internet connection.
 
-While Cloudlog as started by Peter Goodhall, 2M0SQL, it is has gained a core group of contributors these are listed below. If you would like to contribute to Cloudlog please see the [Contributing](#contributing) section below.
-
-Core Contributors: 2M0SQL ([@magicbug](https://github.com/magicbug)), LA8AJA ([@AndreasK79](https://github.com/AndreasK79)), DF2ET ([@phl0](https://github.com/phl0)), HB9HIL ([@HB9HIL](https://github.com/HB9HIL)), DJ7NT ([@int2001](https://github.com/int2001))
+While Cloudlog as started by Peter Goodhall, 2M0SQL, although since has received a lot of community code contributions. If you would like to contribute to Cloudlog please see the [Contributing](#contributing) section below.
 
 Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
@@ -114,7 +113,11 @@ If you would prefer not to setup Cloudlog yourself [magicbug](https://magicbug.c
 
 If you would like to contribute in any way to Cloudlog, it is most appreciated. This has been developed in free time, help coding new features or writing documentation is always useful.
 
-Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/docs) version 3 and uses Bootstrap 4 for the user CSS framework documentation is available for this when building components.
+Please note that Cloudlog was built using [Codeigniter](https://www.codeigniter.com/userguide3/) version 3 and uses [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/) as the frontend toolkit.
+
+We also [HTMX](https://htmx.org/) for AJAX requests and [jQuery](https://jquery.com/) for some of the frontend functionality. We use [Font Awesome](https://fontawesome.com/) for icons.
+
+At the moment we use [Cypress](https://www.cypress.io/) for end-to-end testing.
 
 When submitting PRs please make sure code is commented and includes one feature only, multiple features or bug fixes will not be accepted. Please include a description of what your PR does and why it is needed.
 

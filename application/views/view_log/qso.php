@@ -253,7 +253,7 @@
 						$ci->load->library('DxccFlag');	
 						$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
 						echo '<span class="fi fi-' . $flag .'"></span> '; 
-						echo ucwords(strtolower(($row->name)), "- (/"); if (isset($dxccFlag)) { echo " ".$dxccFlag; } if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
+						echo ucwords(strtolower(($row->name)), "- (/"); if ($row->end != null) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
                     </tr>
                     <?php } ?>
 
