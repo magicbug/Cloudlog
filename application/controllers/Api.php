@@ -193,13 +193,8 @@ class API extends CI_Controller {
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 		if ($obj === NULL) {
-			// Decoding not valid try simple www-x-form-urlencoded
-		    $objTmp = file_get_contents("php://input");
-		    parse_str($objTmp, $obj);
-		    if ($obj === NULL) {
-		        echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
-		        die();
-		    }
+		    echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
+		    die();
 		}
 
 		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
