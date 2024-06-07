@@ -529,7 +529,124 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="venezuela_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="AM" <?php if($my_station_profile->state == "AM") { echo "selected"; } ?>>Amazonas</option>
+								<option value="AN" <?php if($my_station_profile->state == "AN") { echo "selected"; } ?>>Anzoátegui</option>
+								<option value="AP" <?php if($my_station_profile->state == "AP") { echo "selected"; } ?>>Apure</option>
+								<option value="AR" <?php if($my_station_profile->state == "AR") { echo "selected"; } ?>>Aragua</option>
+								<option value="BA" <?php if($my_station_profile->state == "BA") { echo "selected"; } ?>>Barinas</option>
+								<option value="BO" <?php if($my_station_profile->state == "BO") { echo "selected"; } ?>>Bolívar</option>
+								<option value="CA" <?php if($my_station_profile->state == "CA") { echo "selected"; } ?>>Carabobo</option>
+								<option value="CO" <?php if($my_station_profile->state == "CO") { echo "selected"; } ?>>Cojedes</option>
+								<option value="DA" <?php if($my_station_profile->state == "DA") { echo "selected"; } ?>>Delta Amacuro</option>
+								<option value="DC" <?php if($my_station_profile->state == "DC") { echo "selected"; } ?>>Distrito Capital</option>
+								<option value="FA" <?php if($my_station_profile->state == "FA") { echo "selected"; } ?>>Falcón</option>
+								<option value="GU" <?php if($my_station_profile->state == "GU") { echo "selected"; } ?>>Guárico</option>
+								<option value="LA" <?php if($my_station_profile->state == "LA") { echo "selected"; } ?>>Lara</option>
+								<option value="ME" <?php if($my_station_profile->state == "ME") { echo "selected"; } ?>>Mérida</option>
+								<option value="MI" <?php if($my_station_profile->state == "MI") { echo "selected"; } ?>>Miranda</option>
+								<option value="MO" <?php if($my_station_profile->state == "MO") { echo "selected"; } ?>>Monagas</option>
+								<option value="NE" <?php if($my_station_profile->state == "NE") { echo "selected"; } ?>>Nueva Esparta</option>
+								<option value="PO" <?php if($my_station_profile->state == "PO") { echo "selected"; } ?>>Portuguesa</option>
+								<option value="SU" <?php if($my_station_profile->state == "SU") { echo "selected"; } ?>>Sucre</option>
+								<option value="TA" <?php if($my_station_profile->state == "TA") { echo "selected"; } ?>>Táchira</option>
+								<option value="TR" <?php if($my_station_profile->state == "TR") { echo "selected"; } ?>>Trujillo</option>
+								<option value="VA" <?php if($my_station_profile->state == "VA") { echo "selected"; } ?>>Vargas</option>
+								<option value="YA" <?php if($my_station_profile->state == "YA") { echo "selected"; } ?>>Yaracuy</option>
+								<option value="ZU" <?php if($my_station_profile->state == "ZU") { echo "selected"; } ?>>Zulia</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
 
+						<div class="mb-3" id="australia_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="ACT" <?php if($my_station_profile->state == "ACT") { echo "selected"; } ?>>Australian Capital Territory</option>
+								<option value="NSW" <?php if($my_station_profile->state == "NSW") { echo "selected"; } ?>>New South Wales</option>
+								<option value="VIC" <?php if($my_station_profile->state == "VIC") { echo "selected"; } ?>>Victoria</option>
+								<option value="QLD" <?php if($my_station_profile->state == "QLD") { echo "selected"; } ?>>Queensland</option>
+								<option value="SA" <?php if($my_station_profile->state == "SA") { echo "selected"; } ?>>South Australia</option>
+								<option value="WA" <?php if($my_station_profile->state == "WA") { echo "selected"; } ?>>Western Australia</option>
+								<option value="TAS" <?php if($my_station_profile->state == "TAS") { echo "selected"; } ?>>Tasmania</option>
+								<option value="NT" <?php if($my_station_profile->state == "NT") { echo "selected"; } ?>>Northern Territory</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
+						<div class="mb-3" id="png_state">
+    						<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="NCD" <?php if($my_station_profile->state == "NCD") { echo "selected"; } ?>>National Capital District (Port Moresby)</option>
+								<option value="CPM" <?php if($my_station_profile->state == "CPM") { echo "selected"; } ?>>Central</option>
+								<option value="CPK" <?php if($my_station_profile->state == "CPK") { echo "selected"; } ?>>Chimbu</option>
+								<option value="EHG" <?php if($my_station_profile->state == "EHG") { echo "selected"; } ?>>Eastern Highlands</option>
+								<option value="EBR" <?php if($my_station_profile->state == "EBR") { echo "selected"; } ?>>East New Britain</option>
+								<option value="ESW" <?php if($my_station_profile->state == "ESW") { echo "selected"; } ?>>East Sepik</option>
+								<option value="EPW" <?php if($my_station_profile->state == "EPW") { echo "selected"; } ?>>Enga</option>
+								<option value="GPK" <?php if($my_station_profile->state == "GPK") { echo "selected"; } ?>>Gulf</option>
+								<option value="MPM" <?php if($my_station_profile->state == "MPM") { echo "selected"; } ?>>Madang</option>
+								<option value="MRL" <?php if($my_station_profile->state == "MRL") { echo "selected"; } ?>>Manus</option>
+								<option value="MBA" <?php if($my_station_profile->state == "MBA") { echo "selected"; } ?>>Milne Bay</option>
+								<option value="MPL" <?php if($my_station_profile->state == "MPL") { echo "selected"; } ?>>Morobe</option>
+								<option value="NIK" <?php if($my_station_profile->state == "NIK") { echo "selected"; } ?>>New Ireland</option>
+								<option value="NPP" <?php if($my_station_profile->state == "NPP") { echo "selected"; } ?>>Northern</option>
+								<option value="NSA" <?php if($my_station_profile->state == "NSA") { echo "selected"; } ?>>North Solomons</option>
+								<option value="SAN" <?php if($my_station_profile->state == "SAN") { echo "selected"; } ?>>Santaun</option>
+								<option value="SHM" <?php if($my_station_profile->state == "SHM") { echo "selected"; } ?>>Southern Highlands</option>
+								<option value="WPD" <?php if($my_station_profile->state == "WPD") { echo "selected"; } ?>>Western</option>
+								<option value="WHM" <?php if($my_station_profile->state == "WHM") { echo "selected"; } ?>>Western Highlands</option>
+								<option value="WBR" <?php if($my_station_profile->state == "WBR") { echo "selected"; } ?>>West New Britain</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
+						<div class="mb-3" id="nz_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="AUK" <?php if($my_station_profile->state == "AUK") { echo "selected"; } ?>>Auckland</option>
+								<option value="BOP" <?php if($my_station_profile->state == "BOP") { echo "selected"; } ?>>Bay of Plenty</option>
+								<option value="NTL" <?php if($my_station_profile->state == "NTL") { echo "selected"; } ?>>Northland</option>
+								<option value="WKO" <?php if($my_station_profile->state == "WKO") { echo "selected"; } ?>>Waikato</option>
+								<option value="GIS" <?php if($my_station_profile->state == "GIS") { echo "selected"; } ?>>Gisborne</option>
+								<option value="HKB" <?php if($my_station_profile->state == "HKB") { echo "selected"; } ?>>Hawkes Bay</option>
+								<option value="MWT" <?php if($my_station_profile->state == "MWT") { echo "selected"; } ?>>Manawatu-Wanganui</option>
+								<option value="TKI" <?php if($my_station_profile->state == "TKI") { echo "selected"; } ?>>Taranaki</option>
+								<option value="WGN" <?php if($my_station_profile->state == "WGN") { echo "selected"; } ?>>Wellington</option>
+								<option value="CAN" <?php if($my_station_profile->state == "CAN") { echo "selected"; } ?>>Canterbury</option>
+								<option value="MBH" <?php if($my_station_profile->state == "MBH") { echo "selected"; } ?>>Marlborough</option>
+								<option value="NSN" <?php if($my_station_profile->state == "NSN") { echo "selected"; } ?>>Nelson</option>
+								<option value="TAS" <?php if($my_station_profile->state == "TAS") { echo "selected"; } ?>>Tasman</option>
+								<option value="WTC" <?php if($my_station_profile->state == "WTC") { echo "selected"; } ?>>West Coast</option>
+								<option value="OTA" <?php if($my_station_profile->state == "OTA") { echo "selected"; } ?>>Otago</option>
+								<option value="STL" <?php if($my_station_profile->state == "STL") { echo "selected"; } ?>>Southland</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
+						<div class="mb-3" id="belgium_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="AN" <?php if($my_station_profile->state == "AN") { echo "selected"; } ?>>Antwerpen</option>
+								<option value="BR" <?php if($my_station_profile->state == "BR") { echo "selected"; } ?>>Brussels</option>
+								<option value="BW" <?php if($my_station_profile->state == "BW") { echo "selected"; } ?>>Brabant Wallon</option>
+								<option value="HT" <?php if($my_station_profile->state == "HT") { echo "selected"; } ?>>Hainaut</option>
+								<option value="LB" <?php if($my_station_profile->state == "LB") { echo "selected"; } ?>>Limburg</option>
+								<option value="LG" <?php if($my_station_profile->state == "LG") { echo "selected"; } ?>>Liêge</option>
+								<option value="NM" <?php if($my_station_profile->state == "NM") { echo "selected"; } ?>>Namur</option>
+								<option value="LU" <?php if($my_station_profile->state == "LU") { echo "selected"; } ?>>Luxembourg</option>
+								<option value="OV" <?php if($my_station_profile->state == "OV") { echo "selected"; } ?>>Oost-Vlaanderen</option>
+								<option value="VB" <?php if($my_station_profile->state == "VB") { echo "selected"; } ?>>Vlaams Brabant</option>
+								<option value="WV" <?php if($my_station_profile->state == "WV") { echo "selected"; } ?>>West-Vlaanderen</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
 
 
 						<!-- US County -->
