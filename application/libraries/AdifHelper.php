@@ -218,7 +218,18 @@ class AdifHelper {
 			$county = trim($qso->station_cnty);
 		}
 
+	if ($qso->station_cnty && ( $qso->station_dxcc == '54'  || $qso->station_dxcc == '15')) {
+    	    $county = trim($qso->station_cnty);
+	}
+
         $line .= $this->getAdifFieldLine("MY_CNTY", $county);
+
+	if ($qso->state && ( $qso->station_dxcc == '54'  || $qso->station_dxcc == '15')) {
+    	    $state = trim($qso->state);
+            $line .= $this->getAdifFieldLine("MY_STATE", $state);
+	}
+
+
 
 		$line .= $this->getAdifFieldLine("WWFF_REF", $qso->{'COL_WWFF_REF'});
 		$line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_wwff);
@@ -259,7 +270,6 @@ class AdifHelper {
             MY_NAME
             MY_POSTAL_CODE
             MY_RIG
-            MY_STATE
             MY_STREET
             MY_USACA_COUNTIES
         */
