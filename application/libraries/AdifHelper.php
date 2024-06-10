@@ -212,22 +212,21 @@ class AdifHelper {
         $line .= $this->getAdifFieldLine("APP_CLOUDLOG_MY_WAB", $qso->station_wab);
         $line .= $this->getAdifFieldLine("MY_ITU_ZONE", $qso->station_itu);
 
-		if($qso->state) {
-			$county = trim($qso->state) . "," . trim($qso->station_cnty);
-		} else {
-			$county = trim($qso->station_cnty);
-		}
+	if($qso->state) {
+    	    $line .= $this->getAdifFieldLine("MY_STATE", $qso->state);
+	}
+
+	if($qso->state) {
+		$county = trim($qso->state) . "," . trim($qso->station_cnty);
+	} else {
+		$county = trim($qso->station_cnty);
+	}
 
 	if ($qso->station_cnty && ( $qso->station_dxcc == '54'  || $qso->station_dxcc == '15')) {
     	    $county = trim($qso->station_cnty);
 	}
 
         $line .= $this->getAdifFieldLine("MY_CNTY", $county);
-
-	if ($qso->state && ( $qso->station_dxcc == '54'  || $qso->station_dxcc == '15')) {
-    	    $state = trim($qso->state);
-            $line .= $this->getAdifFieldLine("MY_STATE", $state);
-	}
 
 
 
