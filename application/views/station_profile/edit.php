@@ -648,6 +648,117 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="italy_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="AG" <?php if($my_station_profile->state == "AG") { echo "selected"; } ?>>Agrigento</option>
+								<option value="AL" <?php if($my_station_profile->state == "AL") { echo "selected"; } ?>>Alessandria</option>
+								<option value="AN" <?php if($my_station_profile->state == "AN") { echo "selected"; } ?>>Ancona</option>
+								<option value="AO" <?php if($my_station_profile->state == "AO") { echo "selected"; } ?>>Aosta</option>
+								<option value="AP" <?php if($my_station_profile->state == "AP") { echo "selected"; } ?>>Ascoli Piceno</option>
+								<option value="AQ" <?php if($my_station_profile->state == "AQ") { echo "selected"; } ?>>L'Aquila</option>
+								<option value="AR" <?php if($my_station_profile->state == "AR") { echo "selected"; } ?>>Arezzo</option>
+								<option value="AT" <?php if($my_station_profile->state == "AT") { echo "selected"; } ?>>Asti</option>
+								<option value="AV" <?php if($my_station_profile->state == "AV") { echo "selected"; } ?>>Avellino</option>
+								<option value="BA" <?php if($my_station_profile->state == "BA") { echo "selected"; } ?>>Bari</option>
+								<option value="BG" <?php if($my_station_profile->state == "BG") { echo "selected"; } ?>>Bergamo</option>
+								<option value="BI" <?php if($my_station_profile->state == "BI") { echo "selected"; } ?>>Biella</option>
+								<option value="BL" <?php if($my_station_profile->state == "BL") { echo "selected"; } ?>>Belluno</option>
+								<option value="BN" <?php if($my_station_profile->state == "BN") { echo "selected"; } ?>>Benevento</option>
+								<option value="BO" <?php if($my_station_profile->state == "BO") { echo "selected"; } ?>>Bologna</option>
+								<option value="BR" <?php if($my_station_profile->state == "BR") { echo "selected"; } ?>>Brindisi</option>
+								<option value="BS" <?php if($my_station_profile->state == "BS") { echo "selected"; } ?>>Brescia</option>
+								<option value="BT" <?php if($my_station_profile->state == "BT") { echo "selected"; } ?>>Barletta-Andria-Trani</option>
+								<option value="BZ" <?php if($my_station_profile->state == "BZ") { echo "selected"; } ?>>Bolzano</option>
+								<option value="CB" <?php if($my_station_profile->state == "CB") { echo "selected"; } ?>>Campobasso</option>
+								<option value="CE" <?php if($my_station_profile->state == "CE") { echo "selected"; } ?>>Caserta</option>
+								<option value="CH" <?php if($my_station_profile->state == "CH") { echo "selected"; } ?>>Chieti</option>
+								<option value="CL" <?php if($my_station_profile->state == "CL") { echo "selected"; } ?>>Caltanissetta</option>
+								<option value="CN" <?php if($my_station_profile->state == "CN") { echo "selected"; } ?>>Cuneo</option>
+								<option value="CO" <?php if($my_station_profile->state == "CO") { echo "selected"; } ?>>Como</option>
+								<option value="CR" <?php if($my_station_profile->state == "CR") { echo "selected"; } ?>>Cremona</option>
+								<option value="CS" <?php if($my_station_profile->state == "CS") { echo "selected"; } ?>>Cosenza</option>
+								<option value="CT" <?php if($my_station_profile->state == "CT") { echo "selected"; } ?>>Catania</option>
+								<option value="CZ" <?php if($my_station_profile->state == "CZ") { echo "selected"; } ?>>Catanzaro</option>
+								<option value="EN" <?php if($my_station_profile->state == "EN") { echo "selected"; } ?>>Enna</option>
+								<option value="FC" <?php if($my_station_profile->state == "FC") { echo "selected"; } ?>>Forlì-Cesena</option>
+								<option value="FE" <?php if($my_station_profile->state == "FE") { echo "selected"; } ?>>Ferrara</option>
+								<option value="FG" <?php if($my_station_profile->state == "FG") { echo "selected"; } ?>>Foggia</option>
+								<option value="FI" <?php if($my_station_profile->state == "FI") { echo "selected"; } ?>>Firenze</option>
+								<option value="FM" <?php if($my_station_profile->state == "FM") { echo "selected"; } ?>>Fermo</option>
+								<option value="FO" <?php if($my_station_profile->state == "FO") { echo "selected"; } ?>>Forlì (import-only)</option>
+								<option value="FR" <?php if($my_station_profile->state == "FR") { echo "selected"; } ?>>Frosinone</option>
+								<option value="GE" <?php if($my_station_profile->state == "GE") { echo "selected"; } ?>>Genova</option>
+								<option value="GO" <?php if($my_station_profile->state == "GO") { echo "selected"; } ?>>Gorizia</option>
+								<option value="GR" <?php if($my_station_profile->state == "GR") { echo "selected"; } ?>>Grosseto</option>
+								<option value="IM" <?php if($my_station_profile->state == "IM") { echo "selected"; } ?>>Imperia</option>
+								<option value="IS" <?php if($my_station_profile->state == "IS") { echo "selected"; } ?>>Isernia</option>
+								<option value="KR" <?php if($my_station_profile->state == "KR") { echo "selected"; } ?>>Crotone</option>
+								<option value="LC" <?php if($my_station_profile->state == "LC") { echo "selected"; } ?>>Lecco</option>
+								<option value="LE" <?php if($my_station_profile->state == "LE") { echo "selected"; } ?>>Lecce</option>
+								<option value="LI" <?php if($my_station_profile->state == "LI") { echo "selected"; } ?>>Livorno</option>
+								<option value="LO" <?php if($my_station_profile->state == "LO") { echo "selected"; } ?>>Lodi</option>
+								<option value="LT" <?php if($my_station_profile->state == "LT") { echo "selected"; } ?>>Latina</option>
+								<option value="LU" <?php if($my_station_profile->state == "LU") { echo "selected"; } ?>>Lucca</option>
+								<option value="MB" <?php if($my_station_profile->state == "MB") { echo "selected"; } ?>>Monza e Brianza</option>
+								<option value="MC" <?php if($my_station_profile->state == "MC") { echo "selected"; } ?>>Macerata</option>
+								<option value="ME" <?php if($my_station_profile->state == "ME") { echo "selected"; } ?>>Messina</option>
+								<option value="MI" <?php if($my_station_profile->state == "MI") { echo "selected"; } ?>>Milano</option>
+								<option value="MN" <?php if($my_station_profile->state == "MN") { echo "selected"; } ?>>Mantova</option>
+								<option value="MO" <?php if($my_station_profile->state == "MO") { echo "selected"; } ?>>Modena</option>
+								<option value="MS" <?php if($my_station_profile->state == "MS") { echo "selected"; } ?>>Massa Carrara</option>
+								<option value="MT" <?php if($my_station_profile->state == "MT") { echo "selected"; } ?>>Matera</option>
+								<option value="NA" <?php if($my_station_profile->state == "NA") { echo "selected"; } ?>>Napoli</option>
+								<option value="NO" <?php if($my_station_profile->state == "NO") { echo "selected"; } ?>>Novara</option>
+								<option value="PA" <?php if($my_station_profile->state == "PA") { echo "selected"; } ?>>Palermo</option>
+								<option value="PC" <?php if($my_station_profile->state == "PC") { echo "selected"; } ?>>Piacenza</option>
+								<option value="PD" <?php if($my_station_profile->state == "PD") { echo "selected"; } ?>>Padova</option>
+								<option value="PE" <?php if($my_station_profile->state == "PE") { echo "selected"; } ?>>Pescara</option>
+								<option value="PG" <?php if($my_station_profile->state == "PG") { echo "selected"; } ?>>Perugia</option>
+								<option value="PI" <?php if($my_station_profile->state == "PI") { echo "selected"; } ?>>Pisa</option>
+								<option value="PN" <?php if($my_station_profile->state == "PN") { echo "selected"; } ?>>Pordenone</option>
+								<option value="PO" <?php if($my_station_profile->state == "PO") { echo "selected"; } ?>>Prato</option>
+								<option value="PR" <?php if($my_station_profile->state == "PR") { echo "selected"; } ?>>Parma</option>
+								<option value="PS" <?php if($my_station_profile->state == "PS") { echo "selected"; } ?>>Pesaro e Urbino (import-only)</option>
+								<option value="PT" <?php if($my_station_profile->state == "PT") { echo "selected"; } ?>>Pistoia</option>
+								<option value="PU" <?php if($my_station_profile->state == "PU") { echo "selected"; } ?>>Pesaro e Urbino</option>
+								<option value="PV" <?php if($my_station_profile->state == "PV") { echo "selected"; } ?>>Pavia</option>
+								<option value="PZ" <?php if($my_station_profile->state == "PZ") { echo "selected"; } ?>>Potenza</option>
+								<option value="RA" <?php if($my_station_profile->state == "RA") { echo "selected"; } ?>>Ravenna</option>
+								<option value="RC" <?php if($my_station_profile->state == "RC") { echo "selected"; } ?>>Reggio Calabria</option>
+								<option value="RE" <?php if($my_station_profile->state == "RE") { echo "selected"; } ?>>Reggio Emilia</option>
+								<option value="RG" <?php if($my_station_profile->state == "RG") { echo "selected"; } ?>>Ragusa</option>
+								<option value="RI" <?php if($my_station_profile->state == "RI") { echo "selected"; } ?>>Rieti</option>
+								<option value="RM" <?php if($my_station_profile->state == "RM") { echo "selected"; } ?>>Roma</option>
+								<option value="RN" <?php if($my_station_profile->state == "RN") { echo "selected"; } ?>>Rimini</option>
+								<option value="RO" <?php if($my_station_profile->state == "RO") { echo "selected"; } ?>>Rovigo</option>
+								<option value="SA" <?php if($my_station_profile->state == "SA") { echo "selected"; } ?>>Salerno</option>
+								<option value="SI" <?php if($my_station_profile->state == "SI") { echo "selected"; } ?>>Siena</option>
+								<option value="SO" <?php if($my_station_profile->state == "SO") { echo "selected"; } ?>>Sondrio</option>
+								<option value="SP" <?php if($my_station_profile->state == "SP") { echo "selected"; } ?>>La Spezia</option>
+								<option value="SR" <?php if($my_station_profile->state == "SR") { echo "selected"; } ?>>Siracusa</option>
+								<option value="SV" <?php if($my_station_profile->state == "SV") { echo "selected"; } ?>>Savona</option>
+								<option value="TA" <?php if($my_station_profile->state == "TA") { echo "selected"; } ?>>Taranto</option>
+								<option value="TE" <?php if($my_station_profile->state == "TE") { echo "selected"; } ?>>Teramo</option>
+								<option value="TN" <?php if($my_station_profile->state == "TN") { echo "selected"; } ?>>Trento</option>
+								<option value="TO" <?php if($my_station_profile->state == "TO") { echo "selected"; } ?>>Torino</option>
+								<option value="TP" <?php if($my_station_profile->state == "TP") { echo "selected"; } ?>>Trapani</option>
+								<option value="TR" <?php if($my_station_profile->state == "TR") { echo "selected"; } ?>>Terni</option>
+								<option value="TS" <?php if($my_station_profile->state == "TS") { echo "selected"; } ?>>Trieste</option>
+								<option value="TV" <?php if($my_station_profile->state == "TV") { echo "selected"; } ?>>Treviso</option>
+								<option value="UD" <?php if($my_station_profile->state == "UD") { echo "selected"; } ?>>Udine</option>
+								<option value="VA" <?php if($my_station_profile->state == "VA") { echo "selected"; } ?>>Varese</option>
+								<option value="VB" <?php if($my_station_profile->state == "VB") { echo "selected"; } ?>>Verbano Cusio Ossola</option>
+								<option value="VC" <?php if($my_station_profile->state == "VC") { echo "selected"; } ?>>Vercelli</option>
+								<option value="VE" <?php if($my_station_profile->state == "VE") { echo "selected"; } ?>>Venezia</option>
+								<option value="VI" <?php if($my_station_profile->state == "VI") { echo "selected"; } ?>>Vicenza</option>
+								<option value="VR" <?php if($my_station_profile->state == "VR") { echo "selected"; } ?>>Verona</option>
+								<option value="VT" <?php if($my_station_profile->state == "VT") { echo "selected"; } ?>>Viterbo</option>
+								<option value="VV" <?php if($my_station_profile->state == "VV") { echo "selected"; } ?>>Vibo Valentia</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
 
 						<!-- US County -->
 						<div class="mb-3">
