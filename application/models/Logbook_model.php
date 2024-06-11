@@ -4764,19 +4764,23 @@ class Logbook_model extends CI_Model
 
   // [JSON PLOT] return array for plot qso for map //
   public function get_plot_array_for_map($qsos_result, $isVisitor = false)
-  {
+{
     $this->load->library('qra');
-
+    $CI = &get_instance();
+    $CI->load->library('DxccFlag');
+    
     $json["markers"] = array();
-
+    
     foreach ($qsos_result as $row) {
-      $plot = array('lat' => 0, 'lng' => 0, 'html' => '', 'label' => '', 'confirmed' => 'N');
-
+      $plot = array('lat' => 0, 'lng' => 0, 'html' => '', 'label' => '', 'flag' => '', 'confirmed' => 'N');
+      
       $plot['label'] = $row->COL_CALL;
-
-      $plot['html'] = "Callsign: " . $row->COL_CALL . "<br />Date/Time: " . $row->COL_TIME_ON . "<br />";
-      $plot['html'] .= ($row->COL_SAT_NAME != null) ? ("SAT: " . $row->COL_SAT_NAME . "<br />") : ("Band: " . $row->COL_BAND . "<br />");
-      $plot['html'] .= "Mode: " . ($row->COL_SUBMODE == null ? $row->COL_MODE : $row->COL_SUBMODE) . "<br />";
+      $flag = strtolower($CI->dxccflag->getISO($row->COL_DXCC));
+      $plot['flag'] = '<span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name==null?"- NONE -":$row->name))) . '"><span class="fi fi-' . $flag .'"></span></span> ';
+      $plot['html'] = ($row->COL_GRIDSQUARE != null ?  "<b>Grid:</b> " . $row->COL_GRIDSQUARE . "<br />" : "");
+      $plot['html'] .= "<b>Date/Time:</b> " . $row->COL_TIME_ON . "<br />";
+      $plot['html'] .= ($row->COL_SAT_NAME != null) ? ("<b>SAT:</b> " . $row->COL_SAT_NAME . "<br />") : ("<b>Band:</b> " . $row->COL_BAND . " ");
+      $plot['html'] .= "<b>Mode:</b> " . ($row->COL_SUBMODE == null ? $row->COL_MODE : $row->COL_SUBMODE) . "<br />";
 
       // check if qso is confirmed //
       if (!$isVisitor) {

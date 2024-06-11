@@ -92,7 +92,7 @@ function createPlots(_plot) {
 	plotmark.data=_plot;
 	map.addLayer(plotmark);
 	if ((typeof _plot.label!=="undefined")&&(typeof _plot.html!=="undefined")) {
-		_plot.label = (_plot.label!="")?("<h3>"+_plot.label+"</h3>"):"";
+		_plot.label = (_plot.label!="")?("<h3>"+ _plot.flag  +  _plot.label+"</h3>"):"";
 		if ((_plot.label+_plot.html)!="") { plotmark.bindPopup(_plot.label+_plot.html); }
 	}
 	plotlayers.push(plotmark);

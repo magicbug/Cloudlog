@@ -898,17 +898,19 @@ if ($this->session->userdata('user_id') != null) {
                         var newMarkers = {};
                         data.markers.forEach(marker => {
                             var key = `${marker.lat},${marker.lng}`;
+							var html = `<h3>${marker.flag}${marker.label}</h3> ${marker.html}`;
                             newMarkers[key] = marker;
                             if (!markers[key]) {
                                 var icon = L.divIcon({
                                     className: 'custom-icon',
                                     html: `<i class="${iconsList.qso.icon}" style="color:${iconsList.qso.color}"></i>`
-                                });
+                                });								
+								
                                 L.marker([marker.lat, marker.lng], {
                                         icon: icon
                                     })
                                     .addTo(map)
-                                    .bindPopup(marker.html);
+                                    .bindPopup(html);
                             }
                         });
                         Object.keys(markers).forEach(key => {
