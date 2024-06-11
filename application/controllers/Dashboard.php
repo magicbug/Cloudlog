@@ -34,6 +34,16 @@ class Dashboard extends CI_Controller
 		$this->load->model('logbooks_model');
 		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+		/*
+			Setup Code
+		// Check if the user has any logbook locations if not its setup time
+		if (empty($logbooks_locations_array)) {
+			// user has no locations
+			$this->session->set_flashdata('notice', 'You have no locations, please add one to continue.');
+			redirect('information/welcome');
+		}
+		*/
+
 		// Calculate Lat/Lng from Locator to use on Maps
 		if ($this->session->userdata('user_locator')) {
 			$this->load->library('qra');
