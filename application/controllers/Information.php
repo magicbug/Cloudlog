@@ -32,6 +32,8 @@ class Information extends CI_Controller
 
         // Check country files are present
 
+        // Information about Cloudlog Aurora
+
         // If all is present welcome the user and redirect to the dashboard
     }
 }
