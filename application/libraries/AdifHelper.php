@@ -222,7 +222,7 @@ class AdifHelper {
 		$county = trim($qso->station_cnty);
 	}
 
-	if ($qso->station_cnty && ( $qso->station_dxcc == '54'  || $qso->station_dxcc == '15')) {
+	if ($qso->station_cnty && ( $qso->station_dxcc == '54'  || $qso->station_dxcc == '15' || $qso->station_dxcc == '61' || $qso->station_dxcc == '126' || $qso->station_dxcc == '151' )) {
     	    $county = trim($qso->station_cnty);
 	}
 
