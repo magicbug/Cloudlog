@@ -216,15 +216,27 @@ class AdifHelper {
     	    $line .= $this->getAdifFieldLine("MY_STATE", $qso->state);
 	}
 
-	if($qso->state) {
-		$county = trim($qso->state) . "," . trim($qso->station_cnty);
+	if ($qso->station_cnty) {
+		switch ($qso->station_dxcc) {
+		    case '291':
+		    case '6':
+		    case '110':
+			$county = trim($qso->state) . "," . trim($qso->station_cnty);
+		        break;
+		    case '54':
+		    case '15':
+		    case '61':
+		    case '126':
+		    case '151':
+	    	        $county = trim($qso->station_cnty);
+		        break;
+		    default:
+	    		$county = trim($qso->station_cnty);
+		}
 	} else {
-		$county = trim($qso->station_cnty);
+	    $county = '';
 	}
 
-	if ($qso->station_cnty && ( $qso->station_dxcc == '54'  || $qso->station_dxcc == '15' || $qso->station_dxcc == '61' || $qso->station_dxcc == '126' || $qso->station_dxcc == '151' )) {
-    	    $county = trim($qso->station_cnty);
-	}
 
         $line .= $this->getAdifFieldLine("MY_CNTY", $county);
 
