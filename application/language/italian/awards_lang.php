@@ -180,10 +180,10 @@ $lang['awards_waja_description_ln3'] = "Può essere rivendicato per aver contatt
 $lang['awards_waja_description_ln4'] = "Per ulteriori informazioni, visitare: <a href='https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm' target='_blank' >https://www.jarl.org/English/4_Library/A-4-2_Awards/Award_Main.htm</a>.";
 /*
 ___________________________________________________________________________________________
-WAB -- Use all 3 Lines of Text
+WAB -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
-$lang['awards_waja_description_ln1'] = "WAB - Worked All Britain Award";
+$lang['awards_wab_description_ln1'] = "WAB - Worked All Britain Award";
 $lang['awards_wab_description_ln2'] = "Il Worked All Britain Award (WAB) è un prestigioso programma di riconoscimento all\'interno della comunità dei radioamatori che celebra i risultati ottenuti nella comunicazione in tutto il Regno Unito. Il programma del premio WAB incoraggia gli operatori radio a stabilire un contatto con le stazioni situati in diverse regioni della Gran Bretagna, favorendo il cameratismo e promuovendo le capacità di comunicazione radiofonica. Per ottenere il premio WAB, i partecipanti devono stabilire contatti radio con successo con stazioni situate in aree WAB specifiche, definite dai quadrati della griglia dell\'Ordnance Survey. Questi quadrati della griglia coprono l\'intero della Gran Bretagna, tra cui Inghilterra, Scozia, Galles e alcune isole al largo.";
 $lang['awards_wab_description_ln3'] = "I partecipanti al programma WAB Award si scambiano informazioni come la loro posizione, la potenza del segnale e il riferimento quadrato WAB durante i contatti radio. I punti vengono assegnati in base alla posizione della stazione contattata, con diversi valori in punti assegnati ai contatti effettuati all\'interno di diverse aree WAB Accumulando punti dai contatti riusciti, gli operatori radiofonici possono progredire attraverso vari livelli di premio, ognuno dei quali rappresenta una pietra miliare significativa nel loro viaggio radioamatoriale. Il Premio WAB non solo riconosce la dedizione e l\'abilità degli operatori radiofonici, ma anche promuove la diversità geografica e incoraggia l\'esplorazione del ricco mosaico di luoghi in tutta la Gran Bretagna attraverso il mezzo della radio amatoriale.";
-$lang['awards_waja_description_ln4'] = "Per ulteriori informazioni, visitare: <a href='https://wab.intermip.net/default.php' target='_blank'>https://wab.intermip.net /default.php</a>.";
+$lang['awards_wab_description_ln4'] = "Per ulteriori informazioni, visitare: <a href='https://wab.intermip.net/default.php' target='_blank'>https://wab.intermip.net /default.php</a>.";
