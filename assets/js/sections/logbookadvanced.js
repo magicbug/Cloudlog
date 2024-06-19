@@ -1012,11 +1012,11 @@ function loadMap(data) {
 		var table = '<table><tbody>' +
 		'<tr>' +
 		'<td>' +
-		'Station callsign: ' + qso.mycallsign +
+		'<h3>' + qso.mycallsign + '</h3>' +
 		"</td></tr>" +
 		'<tr>' +
 		'<td>' +
-		'Gridsquare: ' + qso.mygridsquare +
+		'<b>Gridsquare</b> ' + qso.mygridsquare +
 		"</td></tr>";
 		return (table += "</tbody></table>");
 	}
@@ -1024,41 +1024,41 @@ function loadMap(data) {
 	function createContentMessageDx(qso) {
 		var table = '<table><tbody>' +
 		'<tr>' +
-		'<td>Callsign</td>' +
+		'<td><b>Callsign</b></td>' +
 		'<td>' + qso.callsign + '</td>' +
 		'</tr>' +
 		'<tr>' +
-		'<td>Date/time</td>' +
+		'<td><b>Date/time</b></td>' +
 		'<td>' + qso.datetime + '</td>' +
 		'</tr>' +
 		'<tr>';
 		if (qso.satname != "") {
-			table += '<td>Band</td>' +
+			table += '<td><b>Band</b></td>' +
 			'<td>' + qso.satname + '</td>' +
 			'</tr>' +
 			'<tr>';
 		} else {
-			table += '<td>Band</td>' +
+			table += '<td><b>Band</b></td>' +
 			'<td>' + qso.band + '</td>' +
 			'</tr>' +
 			'<tr>';
 		}
-		table += '<td>Mode</td>' +
+		table += '<td><b>Mode</b></td>' +
 		'<td>' + qso.mode + '</td>' +
 		'</tr>' +
 		'<tr>';
 		if (qso.gridsquare != undefined) {
-			table += '<td>Gridsquare</td>' +
+			table += '<td><b>Gridsquare</b></td>' +
 			'<td>' + qso.gridsquare + '</td>' +
 			'</tr>';
 		}
 		if (qso.distance != undefined) {
-			table += '<td>Distance</td>' +
+			table += '<td><b>Distance</b></td>' +
 			'<td>' + qso.distance + '</td>' +
 			'</tr>';
 		}
 		if (qso.bearing != undefined) {
-			table += '<td>Bearing</td>' +
+			table += '<td><b>Bearing</b></td>' +
 			'<td>' + qso.bearing + '</td>' +
 			'</tr>';
 		}
