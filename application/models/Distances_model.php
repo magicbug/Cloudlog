@@ -33,7 +33,7 @@ class Distances_model extends CI_Model
 						$this->db->where('col_sat_name', $postdata['sat']);
 					}
 				}
-				else {
+				elseif ($postdata['band'] != 'all') {
 					$this->db->where('col_band', $postdata['band']);
 				}
 
@@ -143,7 +143,7 @@ class Distances_model extends CI_Model
 			$dist = '20000';
 		}
 
-		if (!$this->valid_locator($stationgrid)) {
+		if (!$this->valid_locator(substr($stationgrid, 0, 6))) {
 			header('Content-Type: application/json');
 			echo json_encode(array('Error' => 'Error. There is a problem with the gridsquare set in your profile!'));
 			exit;
@@ -163,12 +163,16 @@ class Distances_model extends CI_Model
 				'Grid' => '',
 				'Distance' => '',
 				'Qsos' => '',
-				'Grids' => ''
+				'Grids' => '',
+				'Avg_distance' => ''
 			);
+
+			$avg_distance = 0;
 
 			foreach ($qsoArray as $qso) {
 				$qrb['Qsos']++;                                                        // Counts up number of qsos
 				$bearingdistance = $this->qra->distance($stationgrid, $qso['grid'], $measurement_base);
+				$avg_distance += ($bearingdistance - $avg_distance) / $qrb['Qsos'];    // Calculates running average of distance
 				if ($bearingdistance != $qso['COL_DISTANCE']) {
 					$data = array('COL_DISTANCE' => $bearingdistance);
 	  				$this->db->where('COL_PRIMARY_KEY', $qso['COL_PRIMARY_KEY']);
@@ -189,6 +193,8 @@ class Distances_model extends CI_Model
 					$dataarray[$arrayplacement]['callcount']++;
 				}
 			}
+
+			$qrb['Avg_distance'] = round($avg_distance, 1);
 
 			$data['ok'] = 'OK';
 			$data['qrb'] = $qrb;
