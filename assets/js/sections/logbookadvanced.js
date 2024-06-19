@@ -616,7 +616,15 @@ $(document).ready(function () {
 		var elements = $('#qsoList tbody input:checked');
 		var nElements = elements.length;
 		if (nElements == 0) {
-			return;
+			BootstrapDialog.alert({
+				title: 'INFO',
+				message: 'Select a row from the list for Quickfilter search.',
+				type: BootstrapDialog.TYPE_INFO,
+				closable: false,
+				draggable: false,
+				callback: function (result) {
+				}
+			});
 		}
 		if (nElements > 1) {
 			BootstrapDialog.alert({
