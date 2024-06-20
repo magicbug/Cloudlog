@@ -729,8 +729,8 @@ table.dataTable tfoot td {
 }
 .dropdown-submenu>.dropdown-menu {
     top:0;
-    left:100%;
-    margin-top:-9px;
+    left:50%;
+    margin-top:30px;
 }
 .dropdown-menu > li > a:hover:after {
     transform: rotate(-90deg);
