@@ -212,13 +212,35 @@ class AdifHelper {
         $line .= $this->getAdifFieldLine("APP_CLOUDLOG_MY_WAB", $qso->station_wab);
         $line .= $this->getAdifFieldLine("MY_ITU_ZONE", $qso->station_itu);
 
-		if($qso->state) {
+	if($qso->state) {
+    	    $line .= $this->getAdifFieldLine("MY_STATE", $qso->state);
+	}
+
+	if ($qso->station_cnty) {
+		switch ($qso->station_dxcc) {
+		    case '291':
+		    case '6':
+		    case '110':
 			$county = trim($qso->state) . "," . trim($qso->station_cnty);
-		} else {
-			$county = trim($qso->station_cnty);
+		        break;
+		    case '54':
+		    case '15':
+		    case '61':
+		    case '126':
+		    case '151':
+	    	        $county = trim($qso->station_cnty);
+		        break;
+		    default:
+	    		$county = trim($qso->station_cnty);
 		}
+	} else {
+	    $county = '';
+	}
+
 
         $line .= $this->getAdifFieldLine("MY_CNTY", $county);
+
+
 
 		$line .= $this->getAdifFieldLine("WWFF_REF", $qso->{'COL_WWFF_REF'});
 		$line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_wwff);
@@ -259,7 +281,6 @@ class AdifHelper {
             MY_NAME
             MY_POSTAL_CODE
             MY_RIG
-            MY_STATE
             MY_STREET
             MY_USACA_COUNTIES
         */
