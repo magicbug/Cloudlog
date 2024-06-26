@@ -481,6 +481,16 @@ class API extends CI_Controller {
 
 		http_response_code(201);
 		echo json_encode(['Today' => $data['todays_qsos'], 'total_qsos' => $data['total_qsos'], 'month_qsos' => $data['month_qsos'], 'year_qsos' => $data['year_qsos']]);
+	}
+
+	function recent_qsos($key = null) {
+		header('Content-type: application/json');
+		$this->load->model('logbook_model');
+
+		$data['qsos'] = $this->logbook_model->recent_qsos(null, $key);
+
+		http_response_code(201);
+		echo json_encode($data['qsos']);
 
 	}
 
