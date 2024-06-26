@@ -117,7 +117,8 @@ function distPlot(form) {
 				$('#information').html(tmp.qrb.Qsos + " " + lang_statistics_distances_part1_contacts_were_plotted_furthest + " " + tmp.qrb.Callsign
 					+ " " + lang_statistics_distances_part2_contacts_were_plotted_furthest + " " + tmp.qrb.Grid
 					+". " + lang_statistics_distances_part3_contacts_were_plotted_furthest + " "
-					+ tmp.qrb.Distance + tmp.unit + ".");
+					+ tmp.qrb.Distance + " " + tmp.unit + ". " + lang_statistics_distances_part4_contacts_were_plotted_furthest + " "
+					+ tmp.qrb.Avg_distance + " " + tmp.unit + ".");
 
 				var chart = new Highcharts.Chart(options);
 			}

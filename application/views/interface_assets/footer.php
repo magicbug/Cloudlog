@@ -895,28 +895,34 @@ if ($this->session->userdata('user_id') != null) {
                 fetch(qso_loc)
                     .then(response => response.json())
                     .then(data => {
-                        var newMarkers = {};
-                        data.markers.forEach(marker => {
-                            var key = `${marker.lat},${marker.lng}`;
-                            newMarkers[key] = marker;
-                            if (!markers[key]) {
-                                var icon = L.divIcon({
-                                    className: 'custom-icon',
-                                    html: `<i class="${iconsList.qso.icon}" style="color:${iconsList.qso.color}"></i>`
-                                });
-                                L.marker([marker.lat, marker.lng], {
-                                        icon: icon
-                                    })
-                                    .addTo(map)
-                                    .bindPopup(marker.html);
+                        if (data.error !== "No QSOs found") {
+                            var newMarkers = {};
+                            data.markers.forEach(marker => {
+                                var key = `${marker.lat},${marker.lng}`;
+                                var html = `<h3>${marker.flag}${marker.label}</h3> ${marker.html}`;
+                                newMarkers[key] = marker;
+                                if (!markers[key]) {
+                                    var icon = L.divIcon({
+                                        className: 'custom-icon',
+                                        html: `<i class="${iconsList.qso.icon}" style="color:${iconsList.qso.color}"></i>`
+                                    });								
+                                    
+                                    L.marker([marker.lat, marker.lng], {
+                                            icon: icon
+                                        })
+                                        .addTo(map)
+                                        .bindPopup(html);
+                                }
+                            });
+                            Object.keys(markers).forEach(key => {
+                                if (!newMarkers[key]) {
+                                    map.removeLayer(markers[key]);
+                                }
+                            });
+                            markers = newMarkers;
+                            } else {
+                                console.log("No QSOs found to populate dashboard map.");
                             }
-                        });
-                        Object.keys(markers).forEach(key => {
-                            if (!newMarkers[key]) {
-                                map.removeLayer(markers[key]);
-                            }
-                        });
-                        markers = newMarkers;
                     });
             }
 

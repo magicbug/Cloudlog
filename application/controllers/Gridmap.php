@@ -76,9 +76,7 @@ class Gridmap extends CI_Controller {
 			foreach ($query->result() as $row) 	{
 				$grid_2char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,2));
 				$grid_4char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,4));
-				if ($this->config->item('map_6digit_grids')) {
-					$grid_6char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,6));
-				}
+				$grid_6char_confirmed = strtoupper(substr($row->GRID_SQUARES,0,6));
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)){
@@ -89,10 +87,8 @@ class Gridmap extends CI_Controller {
 					array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
 				}
 
-				if ($this->config->item('map_6digit_grids')) {
-					if(!in_array($grid_6char_confirmed, $array_grid_6char_confirmed)){
+				if(!in_array($grid_6char_confirmed, $array_grid_6char_confirmed)){
 						array_push($array_grid_6char_confirmed, $grid_6char_confirmed);	
-					}
 				}
 			}
 		}
@@ -104,9 +100,7 @@ class Gridmap extends CI_Controller {
 
 				$grid_two = strtoupper(substr($row->GRID_SQUARES,0,2));
 				$grid_four = strtoupper(substr($row->GRID_SQUARES,0,4));
-				if ($this->config->item('map_6digit_grids')) {
-					$grid_six = strtoupper(substr($row->GRID_SQUARES,0,6));
-				}
+				$grid_six = strtoupper(substr($row->GRID_SQUARES,0,6));
 
 				// Check if 2 Char is in array
 				if(!in_array($grid_two, $array_grid_2char)){
@@ -116,12 +110,11 @@ class Gridmap extends CI_Controller {
 				if(!in_array($grid_four, $array_grid_4char)){
 					array_push($array_grid_4char, $grid_four);	
 				}
-
-				if ($this->config->item('map_6digit_grids')) {
-					if(!in_array($grid_six, $array_grid_6char)){
-						array_push($array_grid_6char, $grid_six);	
-					}
+				
+				if(!in_array($grid_six, $array_grid_6char)){
+					array_push($array_grid_6char, $grid_six);	
 				}
+
 			}
 		}
 		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat);

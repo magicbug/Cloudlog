@@ -55,6 +55,7 @@ function gridPlot(form, visitor=true) {
             sat: $("#sats").val(),
 		},
 		success: function (data) {
+            console.log(data);
             $('.cohidden').show();
             $(".ld-ext-right-plot").removeClass('running');
             $(".ld-ext-right-plot").prop('disabled', false);

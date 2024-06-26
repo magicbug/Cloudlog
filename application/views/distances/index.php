@@ -9,6 +9,7 @@
         var lang_statistics_distances_part1_contacts_were_plotted_furthest = '<?php echo lang('statistics_distances_part1_contacts_were_plotted_furthest'); ?>';
         var lang_statistics_distances_part2_contacts_were_plotted_furthest = '<?php echo lang('statistics_distances_part2_contacts_were_plotted_furthest'); ?>';
         var lang_statistics_distances_part3_contacts_were_plotted_furthest = '<?php echo lang('statistics_distances_part3_contacts_were_plotted_furthest'); ?>';
+        var lang_statistics_distances_part4_contacts_were_plotted_furthest = '<?php echo lang('statistics_distances_part4_contacts_were_plotted_furthest'); ?>';
         var lang_statistics_distances_number_of_qsos = '<?php echo lang('statistics_distances_number_of_qsos'); ?>';
         var lang_gen_hamradio_distance = '<?php echo lang('gen_hamradio_distance'); ?>';
         var lang_statistics_distances_callsigns_worked = '<?php echo lang('statistics_distances_callsigns_worked'); ?>';
@@ -18,6 +19,7 @@
         <form class="d-flex align-items-center">
             <label class="my-1 me-2" for="distplot_bands"><?php echo lang('gen_band_selection'); ?></label>
             <select class="form-select my-1 me-sm-2 w-auto"  id="distplot_bands">
+                <option value="all"><?php echo lang('statistics_distances_bands_all')?></option>
                 <?php if (count($sats_available) != 0) { ?>
                     <option value="sat">SAT</option>
                 <?php } ?>
@@ -27,7 +29,7 @@
             </select>
             <?php if (count($sats_available) != 0) { ?>
                 <label class="my-1 me-2" for="distplot_sats"><?php echo lang('general_word_satellite')?></label>
-                <select class="form-select my-1 me-sm-2 w-auto"  id="distplot_sats">
+                <select class="form-select my-1 me-sm-2 w-auto" disabled id="distplot_sats">
                     <option value="All"><?php echo lang('general_word_all')?></option>
                     <?php foreach($sats_available as $sat) {
                         echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";
