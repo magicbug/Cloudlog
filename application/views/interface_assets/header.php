@@ -77,11 +77,11 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <?php echo lang('menu_logbook'); ?></a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							<a class="dropdown-item" href="<?php echo site_url('logbook'); ?>"><i class="fas fa-book"></i> <?php echo lang('menu_overview'); ?></a>
+							<a class="dropdown-item" href="<?php echo site_url('logbook'); ?>"><i class="fas fa-atlas"></i> <?php echo lang('menu_overview'); ?></a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('logbookadvanced'); ?>"><i class="fas fa-book-open"></i> <?php echo lang('menu_advanced'); ?></a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('qsl'); ?>" title="QSL"><i class="fa fa-id-card"></i> <?php echo lang('menu_view_qsl'); ?></a>
+							<a class="dropdown-item" href="<?php echo site_url('qsl'); ?>" title="QSL"><i class="far fa-id-card"></i> <?php echo lang('menu_view_qsl'); ?></a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="<?php echo site_url('eqsl'); ?>" title="eQSL"><i class="fa fa-id-card"></i> <?php echo lang('menu_view_eqsl'); ?></a>
 							<div class="dropdown-divider"></div>
@@ -94,15 +94,15 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_qso'); ?></a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="<?php echo site_url('qso?manual=0'); ?>" title="Log Live QSOs"><i class="fas fa-list"></i> <?php echo lang('menu_live_qso'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('qso?manual=0'); ?>" title="Log Live QSOs"><i class="fas fa-list-ul"></i> <?php echo lang('menu_live_qso'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('qso?manual=1'); ?>" title="Log QSO made in the past"><i class="fas fa-list"></i> <?php echo lang('menu_post_qso'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('simplefle'); ?>" title="Simple Fast Log Entry"><i class="fas fa-list"></i> <?php echo lang('menu_fast_log_entry'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('simplefle'); ?>" title="Simple Fast Log Entry"><i class="fas fa-list-alt"></i> <?php echo lang('menu_fast_log_entry'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0'); ?>" title="Live contest QSOs"><i class="fas fa-list"></i> <?php echo lang('menu_live_contest_logging'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0'); ?>" title="Live contest QSOs"><i class="fas fa-list-ol"></i> <?php echo lang('menu_live_contest_logging'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1'); ?>" title="Post contest QSOs"><i class="fas fa-list"></i> <?php echo lang('menu_post_contest_logging'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('contesting?manual=1'); ?>" title="Post contest QSOs"><i class="fas fa-list-ol"></i> <?php echo lang('menu_post_contest_logging'); ?></a>
 							</div>
 						</li>
 
@@ -113,15 +113,15 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_analytics'); ?></a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="<?php echo site_url('statistics'); ?>" title="Statistics"><i class="fas fa-chart-area"></i> <?php echo lang('menu_statistics'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('statistics'); ?>" title="Statistics"><i class="fas fa-chart-line"></i> <?php echo lang('menu_statistics'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('gridmap'); ?>" title="Gridmap"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_gridmap'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('gridmap'); ?>" title="Gridmap"><i class="fas fa-layer-group"></i> <?php echo lang('menu_gridmap'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('activated_gridmap'); ?>" title="Activated Gridsquares"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_activated_gridsquares'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('activated_gridmap'); ?>" title="Activated Gridsquares"><i class="fas fa-th-large"></i> <?php echo lang('menu_activated_gridsquares'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('activators'); ?>" title="Gridsquare Activators"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_gridsquare_activators'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('activators'); ?>" title="Gridsquare Activators"><i class="fas fa-th"></i> <?php echo lang('menu_gridsquare_activators'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('distances'); ?>" title="Distances"><i class="fas fa-chart-area"></i> <?php echo lang('menu_distances_worked'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('distances'); ?>" title="Distances"><i class="fas fa-drafting-compass"></i> <?php echo lang('menu_distances_worked'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('dayswithqso'); ?>" title="Days with QSOs"><i class="fas fa-chart-area"></i> <?php echo lang('menu_days_with_qsos'); ?></a>
 								<div class="dropdown-divider"></div>
@@ -129,9 +129,9 @@
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('accumulated'); ?>" title="Accumulated Statistics"><i class="fas fa-chart-area"></i> <?php echo lang('menu_accumulated_statistics'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('timeplotter'); ?>" title="View time when worked"><i class="fas fa-chart-area"></i> <?php echo lang('menu_timeplotter'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('timeplotter'); ?>" title="View time when worked"><i class="fas fa-chart-bar"></i> <?php echo lang('menu_timeplotter'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('map/custom'); ?>" title="Custom Maps of QSOs"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_custom_maps'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('map/custom'); ?>" title="Custom Maps of QSOs"><i class="fas fa-map"></i> <?php echo lang('menu_custom_maps'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('continents'); ?>" title="Continents"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_continents'); ?></a>
 							</div>
@@ -196,7 +196,7 @@
 								<a class="dropdown-item" href="<?php echo site_url('hamsat'); ?>" title="Hams.at"><i class="fas fa-list"></i> Hams.at</a>
 								<?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
 									<div class="dropdown-divider"></div>
-									<a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title="Bandmap"><i class="fa fa-id-card"></i> <?php echo lang('menu_bandmap'); ?></a>
+									<a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title="Bandmap"><i class="fa fa-bezier-curve"></i> <?php echo lang('menu_bandmap'); ?></a>
 								<?php } ?>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title="SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a>
@@ -210,7 +210,7 @@
 								</a>
 
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-									<a class="dropdown-item" href="<?php echo site_url('user'); ?>" title="Manage user accounts"><i class="fas fa-user"></i> <?php echo lang('menu_user_account'); ?></a>
+									<a class="dropdown-item" href="<?php echo site_url('user'); ?>" title="Manage user accounts"><i class="fas fa-users"></i> <?php echo lang('menu_user_account'); ?></a>
 
 									<div class="dropdown-divider"></div>
 
@@ -222,11 +222,11 @@
 
 									<div class="dropdown-divider"></div>
 
-									<a class="dropdown-item" href="<?php echo site_url('contesting/add'); ?>" title="Manage Contest names"><i class="fas fa-broadcast-tower"></i> <?php echo lang('menu_contests'); ?></a>
+									<a class="dropdown-item" href="<?php echo site_url('contesting/add'); ?>" title="Manage Contest names"><i class="fas fa-medal"></i> <?php echo lang('menu_contests'); ?></a>
 
 									<div class="dropdown-divider"></div>
 
-									<a class="dropdown-item" href="<?php echo site_url('themes'); ?>" title="Manage Themes"><i class="fas fa-cog"></i> <?php echo lang('menu_themes'); ?></a>
+									<a class="dropdown-item" href="<?php echo site_url('themes'); ?>" title="Manage Themes"><i class="fas fa-palette"></i> <?php echo lang('menu_themes'); ?></a>
 
 									<div class="dropdown-divider"></div>
 
@@ -234,15 +234,15 @@
 
 									<div class="dropdown-divider"></div>
 
-									<a class="dropdown-item" href="<?php echo site_url('update'); ?>" title="Update Country Files"><i class="fas fa-sync"></i> <?php echo lang('menu_update_country_files'); ?></a>
+									<a class="dropdown-item" href="<?php echo site_url('update'); ?>" title="Update Country Files"><i class="fas fa-download"></i> <?php echo lang('menu_update_country_files'); ?></a>
 
 									<div class="dropdown-divider"></div>
 
-									<a class="dropdown-item" href="<?php echo site_url('maintenance'); ?>" title="maintenance"><i class="fas fa-tools"></i> <?php echo lang('menu_maintenance'); ?></a>
+									<a class="dropdown-item" href="<?php echo site_url('maintenance'); ?>" title="maintenance"><i class="fas fa-wrench"></i> <?php echo lang('menu_maintenance'); ?></a>
 
 									<div class="dropdown-divider"></div>
 
-									<a class="dropdown-item" href="<?php echo site_url('debug'); ?>" title="Debug Information"><i class="fas fa-tools"></i> <?php echo lang('menu_debug_information'); ?></a>
+									<a class="dropdown-item" href="<?php echo site_url('debug'); ?>" title="Debug Information"><i class="fas fa-bug"></i> <?php echo lang('menu_debug_information'); ?></a>
 
 								</div>
 							</li>
@@ -326,23 +326,37 @@
 
 								<a class="dropdown-item" href="<?php echo site_url('logbooks'); ?>" title="Manage station logbooks"><i class="fas fa-home"></i> <?php echo lang('menu_station_logbooks'); ?></a>
 
-								<a class="dropdown-item" href="<?php echo site_url('station'); ?>" title="Manage station locations"><i class="fas fa-home"></i> <?php echo lang('menu_station_locations'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('station'); ?>" title="Manage station locations"><i class="fas fa-map-marker-alt"></i> <?php echo lang('menu_station_locations'); ?></a>
 
-								<a class="dropdown-item" href="<?php echo site_url('band'); ?>" title="Manage Bands"><i class="fas fa-cog"></i> <?php echo lang('menu_bands'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('band'); ?>" title="Manage Bands"><i class="fas fa-sliders-h"></i> <?php echo lang('menu_bands'); ?></a>
 
 								<div class="dropdown-divider"></div>
 
-								<a class="dropdown-item" href="<?php echo site_url('adif'); ?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync"></i> <?php echo lang('menu_adif_import_export'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('adif'); ?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync-alt"></i> <?php echo lang('menu_adif_import_export'); ?></a>
 
-								<div class="nav-item dropdown dropdown-submenu" aria-labelledby="navbarDropdown"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-sync"></i> Other Export Options</a>
+								<div class="nav-item dropdown dropdown-submenu" aria-labelledby="navbarDropdown"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-file-export"></i> Other Export Options</a>
 									<ul class="dropdown-menu">
-										<a class="dropdown-item" href="<?php echo site_url('kmlexport'); ?>" title="KML Export for Google Earth"><i class="fas fa-sync"></i> <?php echo lang('menu_kml_export'); ?></a>
+										<a class="dropdown-item" href="<?php echo site_url('kmlexport'); ?>" title="KML Export for Google Earth"><i class="fas fa-file-export"></i> <?php echo lang('menu_kml_export'); ?></a>
 
-										<a class="dropdown-item" href="<?php echo site_url('dxatlas'); ?>" title="DX Atlas Gridsquare Export"><i class="fas fa-sync"></i> <?php echo lang('menu_dx_atlas_gridsquare_export'); ?></a>
+										<a class="dropdown-item" href="<?php echo site_url('dxatlas'); ?>" title="DX Atlas Gridsquare Export"><i class="fas fa-file-export"></i> <?php echo lang('menu_dx_atlas_gridsquare_export'); ?></a>
 
-										<a class="dropdown-item" href="<?php echo site_url('csv'); ?>" title="SOTA CSV Export"><i class="fas fa-sync"></i> <?php echo lang('menu_sota_csv_export'); ?></a>
+										<a class="dropdown-item" href="<?php echo site_url('csv'); ?>" title="SOTA CSV Export"><i class="fas fa-file-export"></i> <?php echo lang('menu_sota_csv_export'); ?></a>
 
-										<a class="dropdown-item" href="<?php echo site_url('cabrillo'); ?>" title="Cabrillo Export"><i class="fas fa-sync"></i> <?php echo lang('menu_cabrillo_export'); ?></a>
+										<a class="dropdown-item" href="<?php echo site_url('cabrillo'); ?>" title="Cabrillo Export"><i class="fas fa-file-export"></i> <?php echo lang('menu_cabrillo_export'); ?></a>
+									</ul>
+								</div>
+								
+								<div class="nav-item dropdown dropdown-submenu" aria-labelledby="navbarDropdown"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-sync"></i> Third Party Logbooks</a>
+									<ul class="dropdown-menu">
+										<a class="dropdown-item" href="<?php echo site_url('lotw'); ?>" title="Synchronise with Logbook of the World (LoTW)"><i class="fas fa-sync"></i> <?php echo lang('menu_logbook_of_the_world'); ?></a>
+
+										<a class="dropdown-item" href="<?php echo site_url('eqsl/import'); ?>" title="eQSL import / export"><i class="fas fa-sync"></i> <?php echo lang('menu_eqsl_import_export'); ?></a>
+
+										<a class="dropdown-item" href="<?php echo site_url('hrdlog/export'); ?>" title="Upload to HRDLog.net logbook"><i class="fas fa-upload"></i> <?php echo lang('menu_hrd_logbook'); ?></a>
+										
+										<a class="dropdown-item" href="<?php echo site_url('qrz/export'); ?>" title="Upload to QRZ.com logbook"><i class="fas fa-sync"></i> <?php echo lang('menu_qrz_logbook'); ?></a>
+
+										<a class="dropdown-item" href="<?php echo site_url('webadif/export'); ?>" title="Upload to webADIF"><i class="fas fa-upload"></i> <?php echo lang('menu_qo_100_dx_club_upload'); ?></a>
 									</ul>
 								</div>
 
@@ -361,24 +375,13 @@
 
 								$oqrs_requests = $CI->oqrs_model->oqrs_requests($location_list);
 								?>
-								<a class="dropdown-item" href="<?php echo site_url('oqrs/requests'); ?>" title="OQRS Requests"><i class="fa fa-id-card"></i> <?php echo lang('menu_oqrs_requests'); ?> <?php if ($oqrs_requests > 0) {
+								<a class="dropdown-item" href="<?php echo site_url('oqrs/requests'); ?>" title="OQRS Requests"><i class="fa fa-envelope-open-text"></i> <?php echo lang('menu_oqrs_requests'); ?> <?php if ($oqrs_requests > 0) {
 																																																			echo "<span class=\"badge text-bg-light\">" . $oqrs_requests . "</span>";
 																																																		} ?></a>
 
 								<a class="dropdown-item" href="<?php echo site_url('qslprint'); ?>" title="Print Requested QSLs"><i class="fas fa-print"></i> <?php echo lang('menu_print_requested_qsls'); ?></a>
 
-								<a class="dropdown-item" href="<?php echo site_url('labels'); ?>" title="Label setup"><i class="fas fa-print"></i> <?php echo lang('menu_labels'); ?></a>
-
-								<div class="dropdown-divider"></div>
-
-								<a class="dropdown-item" href="<?php echo site_url('lotw'); ?>" title="Synchronise with Logbook of the World (LoTW)"><i class="fas fa-sync"></i> <?php echo lang('menu_logbook_of_the_world'); ?></a>
-
-								<a class="dropdown-item" href="<?php echo site_url('eqsl/import'); ?>" title="eQSL import / export"><i class="fas fa-sync"></i> <?php echo lang('menu_eqsl_import_export'); ?></a>
-
-								<a class="dropdown-item" href="<?php echo site_url('hrdlog/export'); ?>" title="Upload to HRDLog.net logbook"><i class="fas fa-sync"></i> <?php echo lang('menu_hrd_logbook'); ?></a>
-								<a class="dropdown-item" href="<?php echo site_url('qrz/export'); ?>" title="Upload to QRZ.com logbook"><i class="fas fa-sync"></i> <?php echo lang('menu_qrz_logbook'); ?></a>
-
-								<a class="dropdown-item" href="<?php echo site_url('webadif/export'); ?>" title="Upload to webADIF"><i class="fas fa-sync"></i> <?php echo lang('menu_qo_100_dx_club_upload'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('labels'); ?>" title="Label setup"><i class="fas fa-address-card"></i> <?php echo lang('menu_labels'); ?></a>
 
 								<div class="dropdown-divider"></div>
 
