@@ -760,6 +760,26 @@
 							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
 						</div>
 
+						<div class="mb-3" id="netherlands_state">
+							<label for="stateInput"><?php echo lang("station_location_state"); ?></label>
+							<select class="form-select" name="station_state" id="StateHelp" aria-describedby="stationCntyInputHelp">
+								<option value=""></option>
+								<option value="DR" <?php if($my_station_profile->state == "DR") { echo "selected"; } ?>>Drenthe</option>
+								<option value="FL" <?php if($my_station_profile->state == "FL") { echo "selected"; } ?>>Flevoland</option>
+								<option value="FR" <?php if($my_station_profile->state == "FR") { echo "selected"; } ?>>Friesland</option>
+								<option value="GD" <?php if($my_station_profile->state == "GD") { echo "selected"; } ?>>Gelderland</option>
+								<option value="GR" <?php if($my_station_profile->state == "GR") { echo "selected"; } ?>>Groningen</option>
+								<option value="LB" <?php if($my_station_profile->state == "LB") { echo "selected"; } ?>>Limburg</option>
+								<option value="NB" <?php if($my_station_profile->state == "NB") { echo "selected"; } ?>>Noord-Brabant</option>
+								<option value="NH" <?php if($my_station_profile->state == "NH") { echo "selected"; } ?>>Noord-Holland</option>
+								<option value="OV" <?php if($my_station_profile->state == "OV") { echo "selected"; } ?>>Overijssel</option>
+								<option value="UT" <?php if($my_station_profile->state == "UT") { echo "selected"; } ?>>Utrecht</option>
+								<option value="ZH" <?php if($my_station_profile->state == "ZH") { echo "selected"; } ?>>Zuid-Holland</option>
+								<option value="ZL" <?php if($my_station_profile->state == "ZL") { echo "selected"; } ?>>Zeeland</option>
+							</select>
+							<small id="StateHelp" class="form-text text-muted"><?php echo lang("station_location_state_hint"); ?></small>
+						</div>
+
 						<!-- US County -->
 						<div class="mb-3">
 							<label for="stationCntyInput"><?php echo lang("station_location_county"); ?></label>
