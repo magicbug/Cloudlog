@@ -80,13 +80,23 @@ class Map extends CI_Controller {
 			$offset = (intval($this->input->post('offset'))>0)?xss_clean($this->input->post('offset')):null;
 			$qsos = $this->logbook_model->get_qsos($nb_qso, $offset);
 		}
-		// [PLOT] ADD plot //
-		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result());
-		// [MAP Custom] ADD Station //
-		$station_array = $this->Stations->get_station_array_for_map();
 		
-		header('Content-Type: application/json; charset=utf-8');
-		echo json_encode(array_merge($plot_array, $station_array));
-	}
+		if(empty($qsos)) {
+			// Handle the case where $qsos is empty
 
+			// return json with error "No QSOs found"
+			header('Content-Type: application/json; charset=utf-8');
+			echo json_encode(array('error' => 'No QSOs found'));
+		} else {
+			// Handle the case where $qsos is not empty
+			// [PLOT] ADD plot //
+			$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result());
+			// [MAP Custom] ADD Station //
+			$station_array = $this->Stations->get_station_array_for_map();
+			
+			header('Content-Type: application/json; charset=utf-8');
+			echo json_encode(array_merge($plot_array, $station_array));
+		}
+
+	}
 }

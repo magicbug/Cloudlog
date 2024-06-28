@@ -2037,6 +2037,9 @@ class Logbook_model extends CI_Model
       $logbooks_locations_array = $StationLocationsArray;
     }
 
+    // Only take the first 4 characters of the grid
+    $grid = substr($grid, 0, 4);
+
     $this->db->select('COL_GRIDSQUARE');
     $this->db->where_in('station_id', $logbooks_locations_array);
     $this->db->group_start();

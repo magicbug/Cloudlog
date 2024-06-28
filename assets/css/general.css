@@ -729,8 +729,8 @@ table.dataTable tfoot td {
 }
 .dropdown-submenu>.dropdown-menu {
     top:0;
-    left:100%;
-    margin-top:-9px;
+    left:50%;
+    margin-top:30px;
 }
 .dropdown-menu > li > a:hover:after {
     transform: rotate(-90deg);
@@ -796,7 +796,7 @@ label {
 }
 
 .table-responsive>table .dropdown{position:static;}
-.table-responsive>table .dropdown>.dropdown-menu{left:auto !important;top:auto !important;}
+.table-responsive>table .dropdown>.dropdown-menu{left: 75%;top:auto !important;}
 
 tr.htmx-swapping td {
 	opacity: 0;
