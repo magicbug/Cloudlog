@@ -346,6 +346,10 @@ TD.lotw {
 	position: absolute !important;
 }
 
+.dropdown-menu.menuOnResultTab {
+    left: -200px;
+}
+
 .was-map-dialog .modal-dialog {
 	width: 100%;
 }
