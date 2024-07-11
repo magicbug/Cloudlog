@@ -528,7 +528,7 @@ class Stations extends CI_Model {
 		$flag = "";
 		if (!empty($station_active)) { 
 			$flag = strtolower($CI->dxccflag->getISO($station_active->station_dxcc));
-			$flag = '<span class="fi fi-' . $flag .'"></span>';
+			$flag = '<span class="fi fi-' . $flag .'"></span> ';
 			list($station_lat, $station_lng) = $this->qra->qra2latlong($station_active->station_gridsquare); 
 		}
 		if (($station_lat!=0)&&($station_lng!=0)) { $_jsonresult = array('lat'=>$station_lat,'lng'=>$station_lng,'html'=>$station_active->station_gridsquare,'label'=>$station_active->station_profile_name,'icon'=>'stationIcon','flag'=>$flag); }
