@@ -522,8 +522,16 @@ class Stations extends CI_Model {
 		$_jsonresult = array();
 		list($station_lat, $station_lng) = array(0,0);
 		$station_active = $this->profile($this->find_active())->row();
-		if (!empty($station_active)) { list($station_lat, $station_lng) = $this->qra->qra2latlong($station_active->station_gridsquare); }
-		if (($station_lat!=0)&&($station_lng!=0)) { $_jsonresult = array('lat'=>$station_lat,'lng'=>$station_lng,'html'=>$station_active->station_gridsquare,'label'=>$station_active->station_profile_name,'icon'=>'stationIcon'); }
+
+		$CI = &get_instance();
+		$CI->load->library('DxccFlag');
+		$flag = "";
+		if (!empty($station_active)) { 
+			$flag = strtolower($CI->dxccflag->getISO($station_active->station_dxcc));
+			$flag = '<span class="fi fi-' . $flag .'"></span> ';
+			list($station_lat, $station_lng) = $this->qra->qra2latlong($station_active->station_gridsquare); 
+		}
+		if (($station_lat!=0)&&($station_lng!=0)) { $_jsonresult = array('lat'=>$station_lat,'lng'=>$station_lng,'html'=>$station_active->station_gridsquare,'label'=>$station_active->station_profile_name,'icon'=>'stationIcon','flag'=>$flag); }
 		return (count($_jsonresult)>0)?(array('station'=>$_jsonresult)):array();
 	}
 }
