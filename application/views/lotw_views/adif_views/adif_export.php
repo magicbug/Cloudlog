@@ -129,7 +129,7 @@ if($freq_in_mhz) {
 	$sign_string .= strtoupper($freq_in_mhz);
 }
 
-if($qso->COL_FREQ_RX != "" || $qso->COL_FREQ_RX != "0") {
+if($qso->COL_FREQ_RX != "" && $qso->COL_FREQ_RX != "0") {
 	$sign_string .= strtoupper($freq_in_mhz_rx);
 }
 
