@@ -4687,6 +4687,9 @@ class Logbook_model extends CI_Model
   function get_lotw_qsos_to_upload($station_id, $start_date, $end_date)
   {
 
+    // Missing in tqsl 2.7.3 config.xml
+    $lotw_unsupported_modes = array('INTERNET', 'RPT');
+
     $this->db->select('COL_PRIMARY_KEY,COL_CALL, COL_BAND, COL_BAND_RX, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_FREQ, COL_FREQ_RX, COL_GRIDSQUARE, COL_SAT_NAME, COL_PROP_MODE, COL_LOTW_QSL_SENT, station_id');
 
     $this->db->where("station_id", $station_id);
@@ -4694,7 +4697,7 @@ class Logbook_model extends CI_Model
     $this->db->where('COL_LOTW_QSL_SENT', NULL);
     $this->db->or_where('COL_LOTW_QSL_SENT !=', "Y");
     $this->db->group_end();
-    $this->db->where('COL_PROP_MODE !=', "INTERNET");
+    $this->db->where_not_in('COL_PROP_MODE', $lotw_unsupported_modes);
     $this->db->where('COL_TIME_ON >=', $start_date);
     $this->db->where('COL_TIME_ON <=', $end_date);
     $this->db->order_by("COL_TIME_ON", "desc");

@@ -44,9 +44,9 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <MODE:<?php echo strlen($CI->mode_map($qso->COL_MODE, $qso->COL_SUBMODE)); ?>><?php echo strtoupper($CI->mode_map(($qso->COL_MODE == null ? '' : strtoupper($qso->COL_MODE)), ($qso->COL_SUBMODE == null ? '' : strtoupper($qso->COL_SUBMODE)))); ?>
 
-<?php if($qso->COL_FREQ != "" || $qso->COL_FREQ != "0") { ?><?php $freq_in_mhz = $qso->COL_FREQ / 1000000; ?><FREQ:<?php echo strlen($freq_in_mhz); ?>><?php echo $freq_in_mhz; ?><?php } ?>
+<?php if($qso->COL_FREQ != "" && $qso->COL_FREQ != "0") { ?><?php $freq_in_mhz = $qso->COL_FREQ / 1000000; ?><FREQ:<?php echo strlen($freq_in_mhz); ?>><?php echo $freq_in_mhz; ?><?php } ?>
 
-<?php if($qso->COL_FREQ_RX != "" || $qso->COL_FREQ_RX != "0") { ?><?php $freq_in_mhz_rx = $qso->COL_FREQ_RX / 1000000; ?><FREQ_RX:<?php echo strlen($freq_in_mhz_rx); ?>><?php echo $freq_in_mhz_rx; ?><?php } ?>
+<?php if($qso->COL_FREQ_RX != "" && $qso->COL_FREQ_RX != "0") { ?><?php $freq_in_mhz_rx = $qso->COL_FREQ_RX / 1000000; ?><FREQ_RX:<?php echo strlen($freq_in_mhz_rx); ?>><?php echo $freq_in_mhz_rx; ?><?php } ?>
 
 <?php if($qso->COL_PROP_MODE) { ?><PROP_MODE:<?php echo strlen($qso->COL_PROP_MODE); ?>><?php echo strtoupper($qso->COL_PROP_MODE); ?><?php } ?>
 
