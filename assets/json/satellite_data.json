@@ -327,6 +327,18 @@
          ]
       }
    },
+   "MESAT-1":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145925000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435825000"
+            }
+         ]
+      }
+   },
    "MO-112":{
       "Modes":{
          "V/U":[
