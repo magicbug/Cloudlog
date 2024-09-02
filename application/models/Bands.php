@@ -224,6 +224,28 @@ class Bands extends CI_Model {
 		return $results;
 	}
 
+	function get_worked_powers() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+		if (!$logbooks_locations_array) {
+			return array();
+		}
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+        // get all worked powers from database
+        $sql = "SELECT distinct col_tx_pwr FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ") ORDER BY col_tx_pwr";
+
+        $data = $this->db->query($sql);
+
+        $worked_powers = array();
+        foreach($data->result() as $row) array_push($worked_powers, $row->col_tx_pwr);
+
+        return $worked_powers;
+    }
+
 	function activateall() {
         $data = array(
             'active' => '1',

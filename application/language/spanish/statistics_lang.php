@@ -26,6 +26,7 @@ $lang['statistics_number_of_qso_worked'] = "# de QSOs logradas";
 */
 
 $lang['statistics_distances_bands_all'] = "Todas";
+$lang['statistics_distances_modes_all'] = "Todas";
 $lang['statistics_distances_worked'] = "Distancias Logradas";
 $lang['statistics_distances_part1_contacts_were_plotted_furthest'] = "contactos fueron dibujados.<br /> Su contacto más lejano fue con";
 $lang['statistics_distances_part2_contacts_were_plotted_furthest'] = "en gridsquare";
@@ -33,8 +34,10 @@ $lang['statistics_distances_part3_contacts_were_plotted_furthest'] = "La distanc
 $lang['statistics_distances_part4_contacts_were_plotted_furthest'] = "La distancia promedio es";
 $lang['statistics_distances_number_of_qsos'] = "Número de QSOs";
 $lang['statistics_distances_callsigns_worked'] = "Indicativo(s) trabajados (se muestran máximo 5)";
-$lang['statistics_distances_qsos_with'] = "QSOs con";
-$lang['statistics_distances_and_band'] = "y banda";
+$lang['statistics_distances_qsos_with'] = "QSOs con distancia : ";
+$lang['statistics_distances_and_band'] = ", banda ; ";
+$lang['statistics_distances_and_mode'] = ", modo : ";
+$lang['statistics_distances_and_power'] = ", potencia : ";
 
 /*
 *
