@@ -207,30 +207,22 @@ $('#start_date').change(function () {
 });
 
 // On Key up check and suggest callsigns
-$("#callsign").keyup(function () {
-	var call = $(this).val();
-	if (call.length >= 3) {
+$("#callsign").keyup(scp_keyup({
+  selector: $("#callsign"),
+  showSuggestions: function (call, text) {
+    $('.callsign-suggestions').text(text);
+    highlight(call);
+  }
+}));
 
-		$.ajax({
-			url: 'lookup/scp',
-			method: 'POST',
-			data: {
-				callsign: $(this).val().toUpperCase()
-			},
-			success: function (result) {
-				$('.callsign-suggestions').text(result);
-				highlight(call.toUpperCase());
-			}
-		});
-		// moved to blur
-		// checkIfWorkedBefore();
-		var qTable = $('.qsotable').DataTable();
-		qTable.search(call).draw();
-	}
-	else if (call.length <= 2) {
-		$('.callsign-suggestions').text("");
-	}
+$("#callsign").keyup(function() {
+  const call = $(this).val().toUpperCase();
+  if (call.length >= 3) {
+	var qTable = $('.qsotable').DataTable();
+	qTable.search(call).draw();
+  }
 });
+
 
 function checkIfWorkedBefore() {
 	var call = $("#callsign").val();
@@ -670,3 +662,62 @@ function getUTCDateStamp(el) {
 	var utc = localTime + (now.getTimezoneOffset() * 60000);
 	$(el).attr('value', ("0" + now.getUTCDate()).slice(-2) + '-' + ("0" + (now.getUTCMonth() + 1)).slice(-2) + '-' + now.getUTCFullYear());
 }
+
+function scp_keyup(options) {
+  // options must have two keys:
+  //   * selector - element, with .val() which gives the entered callsign
+  //   * showSuggestions - function(call, text), where the text is
+  //                       the list of callsign-suggestions
+  const scp = {
+    request: "",
+    data: []
+  };
+  const callFromInput = (el) => el.val().toUpperCase().replace('0','Ø');
+  const checkCacheValid = (call) => (scp.request != "" && call.includes(scp.request));
+  const filterCallsignList = function (call) {
+      return scp.data?.filter((el) => (el.includes(call) == true)).join(' ') || '';
+  };
+  const updateSuggestions = function (call) {
+    const suggestions = filterCallsignList(call);
+    options.showSuggestions(call, suggestions);
+  }
+
+  const keyup = function(){
+	const call = callFromInput(options.selector);
+
+    if (call.length < 3) {
+      options.showSuggestions("", "");
+      return;
+    }
+
+    if ( checkCacheValid(call) ) {
+      updateSuggestions(call);
+      return;
+    }
+
+    // Cache invalid, so update it and reset suggestions
+    options.showSuggestions("");
+
+    scp.request = call;
+    scp.data = [];
+    $.ajax({
+        url: 'lookup/scp',
+        method: 'POST',
+        data: {
+            callsign: call
+        },
+        success: function (result) {
+            const call_now = callFromInput(options.selector);
+            if (checkCacheValid(call_now)) {
+              scp.data = result.split(" ");
+
+              updateSuggestions(call_now);
+            }
+        }
+    });
+
+  };
+
+  return keyup;
+}
+
