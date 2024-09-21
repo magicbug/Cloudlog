@@ -1024,6 +1024,10 @@ class Logbook_model extends CI_Model
       if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
         $sat_name = 'AO-7[B]';
       }
+    } else if ($data['COL_SAT_NAME'] == 'MESAT-1') {
+      $sat_name = 'MESAT1';
+    } else if ($data['COL_SAT_NAME'] == 'SONATE-2') {
+      $sat_name = 'SONATE-2 APRS';
     } else if ($data['COL_SAT_NAME'] == 'QO-100') {
       $sat_name = 'QO-100_NB';
     } else if ($data['COL_SAT_NAME'] == 'AO-92') {
