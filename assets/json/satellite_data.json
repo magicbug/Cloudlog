@@ -475,6 +475,18 @@
          ]
       }
    },
+   "SONATE-2":{
+      "Modes":{
+         "V":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145825000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"145825000"
+            }
+         ]
+      }
+   },
    "TEVEL-1":{
       "Modes":{
          "V/U":[
