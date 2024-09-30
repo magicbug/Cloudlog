@@ -26,6 +26,7 @@ $lang['statistics_number_of_qso_worked'] = "通联的 QSO 数量";
 */
 
 $lang['statistics_distances_bands_all'] = "全部";
+$lang['statistics_distances_modes_all'] = "全部";
 $lang['statistics_distances_worked'] = "通联距离";
 $lang['statistics_distances_part1_contacts_were_plotted_furthest'] = "次通联<br /> 您最远的通联是与";
 $lang['statistics_distances_part2_contacts_were_plotted_furthest'] = "在网格";
@@ -35,6 +36,8 @@ $lang['statistics_distances_number_of_qsos'] = "QSO 数量";
 $lang['statistics_distances_callsigns_worked'] = "通联的呼号（最多显示5个）：";
 $lang['statistics_distances_qsos_with'] = "QSO 与";
 $lang['statistics_distances_and_band'] = "和波段";
+$lang['statistics_distances_and_mode'] = ", 模式 : ";
+$lang['statistics_distances_and_power'] = ", 发射功率 : ";
 
 /*
 *

@@ -17,8 +17,12 @@ class Distances extends CI_Controller {
         $data['page_title'] = "Distances Worked";
 
         $this->load->model('bands');
+        $this->load->model('gridmap_model');
+
         $data['bands_available'] = $this->bands->get_worked_bands_distances();
         $data['sats_available'] = $this->bands->get_worked_sats();
+        $data['modes'] = $this->gridmap_model->get_worked_modes();
+        $data['powers'] = $this->bands->get_worked_powers();
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('distances/index');
@@ -72,12 +76,27 @@ class Distances extends CI_Controller {
 		$distance = $this->security->xss_clean($this->input->post('distance'));
 		$band = $this->security->xss_clean($this->input->post('band'));
 		$sat = $this->security->xss_clean($this->input->post('sat'));
+		$mode = $this->security->xss_clean($this->input->post('mode'));
+		$power = $this->security->xss_clean($this->input->post('pwr'));
 
-		$data['results'] = $this->distances_model->qso_details($distance, $band, $sat);
+		$data['results'] = $this->distances_model->qso_details($distance, $band, $sat, $mode, $power);
 
-		// Render Page
+        // Render Page
+        if (strtolower($band) == 'all') $band = lang('statistics_distances_bands_all');
+        (strtolower($mode) == 'all') ? $mode = lang('statistics_distances_modes_all') : $mode = strtoupper($mode);
+        switch (strtolower($power)) {
+            case 'all':
+                $power = lang('statistics_distances_bands_all');
+                break;
+            case '':
+                $power = lang('general_word_undefined');
+                break;
+            default:
+                $power .= 'W';
+        }
+
 		$data['page_title'] = "Log View - " . $distance;
-		$data['filter'] = lang('statistics_distances_qsos_with') . " " . $distance . " " . lang('statistics_distances_and_band'). " " . $band;
+		$data['filter'] = lang('statistics_distances_qsos_with') . " " . $distance . lang('statistics_distances_and_band') . " " . $band . lang('statistics_distances_and_mode') . $mode . lang('statistics_distances_and_power') . $power;
 		$this->load->view('awards/details', $data);
 	}
 }

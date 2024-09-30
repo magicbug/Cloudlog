@@ -26,6 +26,7 @@ $lang['general_word_filtering_on'] = "Filtro attivo";
 $lang['general_word_not_display'] = "Non visualizzare";
 $lang['general_word_icon'] = "Icona";
 $lang['general_word_never'] = "Mai";
+$lang['general_word_undefined'] = "Indefinito";
 
 $lang['general_word_date'] = 'Data';
 $lang['general_word_startdate'] = "Data di inizio";
