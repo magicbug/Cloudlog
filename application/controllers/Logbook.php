@@ -951,17 +951,21 @@ class Logbook extends CI_Controller {
 							$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
 							$this->session->set_userdata('qrz_session_key', $qrz_session_key);
 						}
-						$callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+						$data['callsign'] = $this->qrz->search($fixedid, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
 
-						if (empty($callsign['callsign']['callsign'])) {
+						if (empty($data['callsign']['callsign'])) {
 							$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
 							$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-							$callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+							$data['callsign'] = $this->qrz->search($fixedid, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
 						}
-						if (isset($callsign['callsign']['dxcc'])) {
+						if (isset($data['callsign']['dxcc'])) {
 							$this->load->model('logbook_model');
-							$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
-							$callsign['callsign']['dxcc_name'] = $entity['name'];
+							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
+							$data['callsign']['dxcc_name'] = $entity['name'];
+						}
+						if (isset($data['callsign']['gridsquare'])) {
+							$this->load->model('logbook_model');
+							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
 						}
 					} elseif ($this->session->userdata('callbook_type') == "HamQTH") {
 						// Load the HamQTH library
@@ -979,28 +983,28 @@ class Logbook extends CI_Controller {
 							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
 						}
 
-						$callsign['callsign'] = $this->hamqth->search($id, $this->session->userdata('hamqth_session_key'));
+						$data['callsign'] = $this->hamqth->search($fixedid, $this->session->userdata('hamqth_session_key'));
 
 						// If HamQTH session has expired, start a new session and retry the search.
-						if($callsign['callsign']['error'] == "Session does not exist or expired") {
+						if($data['callsign']['error'] == "Session does not exist or expired") {
 							$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
 							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-							$callsign['callsign'] = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+							$data['callsign'] = $this->hamqth->search($fixedid, $this->session->userdata('hamqth_session_key'));
 						}
 						if (isset($data['callsign']['gridsquare'])) {
 							$this->load->model('logbook_model');
-							$callsign['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
+							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'],0,4)), 0, $this->session->userdata('user_default_band'));
 						}
-						if (isset($callsign['callsign']['dxcc'])) {
+						if (isset($data['callsign']['dxcc'])) {
 							$this->load->model('logbook_model');
-							$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
-							$callsign['callsign']['dxcc_name'] = $entity['name'];
+							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
+							$data['callsign']['dxcc_name'] = $entity['name'];
 						}
-						if (isset($callsign['callsign']['error'])) {
-							$callsign['error'] = $callsign['callsign']['error'];
+						if (isset($data['callsign']['error'])) {
+							$data['error'] = $data['callsign']['error'];
 						}
 					} else {
-						$callsign['error'] = 'Lookup not configured. Please review configuration.';
+						$data['error'] = 'Lookup not configured. Please review configuration.';
 					}
 
 					$data['id'] = strtoupper($id);					
