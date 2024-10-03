@@ -217,7 +217,7 @@ class User_Model extends CI_Model {
 			$encrypted_password = $this->encryption->encrypt($callbook_password);
 
 			// Insert the encrypted password into the database
-			$this->db->query("INSERT INTO user_options (user_id, option_type, option_name, option_key, option_value) VALUES (" . $insert_id . ", 'callbook', 'callbook_password', 'password', '" . xss_clean($encrypted_password) . "');");
+			$this->db->query("INSERT INTO user_options (user_id, option_type, option_name, option_key, option_value) VALUES (" . $insert_id . ", 'callbook', 'callbook_password', 'value', '" . xss_clean($encrypted_password) . "');");
 
 			return OK;
 		} else {
