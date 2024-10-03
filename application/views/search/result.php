@@ -44,9 +44,9 @@
 
 </table>
 
+<?php if (!empty($error)) { ?>
+    <p><?php echo $error; ?></p>
 <?php } else { ?>
-
-<p><?php echo $error; ?></p>
-
+    <!-- Your existing code for displaying the result -->
 <?php } ?>
 </div>
