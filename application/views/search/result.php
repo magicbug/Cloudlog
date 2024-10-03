@@ -6,7 +6,6 @@
 <?php if (!empty($error)) { ?>
     <p><?php echo $error; ?></p>
 <?php } else { ?>
-    <!-- Your existing code for displaying the result -->
 	<h3>Callbook Search for <?php echo $id; ?></h3>
 <?php if(isset($callsign['callsign'])) { ?>
 <table>
