@@ -210,7 +210,10 @@ class User extends CI_Controller
 				$this->input->post('user_quicklog_enter'),
 				$this->input->post('language'),
 				$this->input->post('user_hamsat_key'),
-				$this->input->post('user_hamsat_workable_only')
+				$this->input->post('user_hamsat_workable_only'),
+				$this->input->post('user_callbook_type'),
+				$this->input->post('user_callbook_username'),
+				$this->input->post('user_callbook_password')
 			)) {
 					// Check for errors
 				case EUSERNAMEEXISTS:
@@ -228,6 +231,8 @@ class User extends CI_Controller
 					redirect('user');
 					return;
 			}
+
+
 			$data['page_title'] = "Users";
 
 			$this->load->view('interface_assets/header', $data);
@@ -572,6 +577,43 @@ class User extends CI_Controller
 			}
 
 			$this->load->model('user_options_model');
+			$callbook_type_object = $this->user_options_model->get_options('callbook')->result();
+
+			if ($this->input->post('user_callbook_type', true)) {
+				$data['user_callbook_type'] = $this->input->post('user_callbook_type', true);
+			} else {
+				if (isset($callbook_type_object[1]->option_value)) {
+					$data['user_callbook_type'] = $callbook_type_object[1]->option_value;
+				} else {
+					$data['user_callbook_type'] = "";
+				}
+			}
+
+
+			// Handle user_callbook_username
+			if ($this->input->post('user_callbook_username', true)) {
+				$data['user_callbook_username'] = $this->input->post('user_callbook_username', true);
+			} else {
+				if (isset($callbook_type_object[2]->option_value)) {
+					$data['user_callbook_username'] = $callbook_type_object[2]->option_value;
+				} else {
+					$data['user_callbook_username'] = "";
+				}
+			}
+
+			// Handle user_callbook_password
+			if ($this->input->post('user_callbook_password', true)) {
+				$data['user_callbook_password'] = $this->input->post('user_callbook_password', true);
+			} else {
+				if (isset($callbook_type_object[0]->option_value)) {
+					$data['user_callbook_password'] = $callbook_type_object[0]->option_value;
+				} else {
+					$data['user_callbook_password'] = "";
+				}
+			}
+
+
+			$this->load->model('user_options_model');
 			$hamsat_user_object = $this->user_options_model->get_options('hamsat')->result();
 
 			if ($this->input->post('user_hamsat_key', true)) {
@@ -594,8 +636,6 @@ class User extends CI_Controller
 					$data['user_hamsat_workable_only'] = "";
 				}
 			}
-
-			// Get Settings for Dashboard
 
 			// Set defaults
 			$data['dashboard_upcoming_dx_card'] = false;
@@ -715,6 +755,33 @@ class User extends CI_Controller
 						$this->input->set_cookie($cookie);
 					}
 					if ($this->session->userdata('user_id') == $this->input->post('id', true)) {
+
+						// Handle user_callbook_type
+						if (isset($_POST['user_callbook_type'])) {
+							$this->user_options_model->set_option('callbook', 'callbook_type', array('value' => $_POST['user_callbook_type']));
+						} else {
+							$this->user_options_model->set_option('callbook', 'callbook_type', array('value' => ''));
+						}
+						
+						// Handle user_callbook_username
+						if (isset($_POST['user_callbook_username'])) {
+							$this->user_options_model->set_option('callbook', 'callbook_username', array('value' => $_POST['user_callbook_username']));
+						} else {
+							$this->user_options_model->set_option('callbook', 'callbook_username', array('value' => ''));
+						}
+						
+						// Handle user_callbook_password
+						if (isset($_POST['user_callbook_password']) && !empty($_POST['user_callbook_password'])) {
+							// Load the encryption library
+							$this->load->library('encryption');
+
+							// Encrypt the password
+							$encrypted_password = $this->encryption->encrypt($_POST['user_callbook_password']);
+
+							// Save the encrypted password
+							$this->user_options_model->set_option('callbook', 'callbook_password', array('value' => $encrypted_password));
+						}
+
 						if (isset($_POST['user_dashboard_enable_dxpedition_card'])) {
 							$this->user_options_model->set_option('dashboard', 'dashboard_upcoming_dx_card', array('enabled' => 'true'));
 						} else {
@@ -958,7 +1025,6 @@ class User extends CI_Controller
 					'secure' => FALSE
 
 				);
-				$this->input->set_cookie($cookie);
 
 				// Create a remember me cookie
 				if ($this->input->post('remember_me') == '1') {

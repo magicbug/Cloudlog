@@ -26,6 +26,7 @@ $lang['statistics_number_of_qso_worked'] = "Çalışan QSO sayısı";
 */
 
 $lang['statistics_distances_bands_all'] = "Tüm";
+$lang['statistics_distances_modes_all'] = "Tüm";
 $lang['statistics_distances_worked'] = "Çalışılan Mesafeler";
 $lang['statistics_distances_part1_contacts_were_plotted_furthest'] = "kişiler planlandı.<br /> En uzak bağlantınız şununlaydı";
 $lang['statistics_distances_part2_contacts_were_plotted_furthest'] = "gridsquare'de";
@@ -33,8 +34,10 @@ $lang['statistics_distances_part3_contacts_were_plotted_furthest'] = "Mesafe şu
 $lang['statistics_distances_part4_contacts_were_plotted_furthest'] = "Ortalama mesafe";
 $lang['statistics_distances_number_of_qsos'] = "QSO sayısı";
 $lang['statistics_distances_callsigns_worked'] = "Çağrı işaretleri çalıştı (en fazla 5 tane gösterildi)";
-$lang['statistics_distances_qsos_with'] = "QSO'lar ile";
-$lang['statistics_distances_and_band'] = "ve bant";
+$lang['statistics_distances_qsos_with'] = "mesafeli QSO'lar ile";
+$lang['statistics_distances_and_band'] = ", bant : ";
+$lang['statistics_distances_and_mode'] = ", mode : ";
+$lang['statistics_distances_and_power'] = ", gücü : ";
 
 /*
 *

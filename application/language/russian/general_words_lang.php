@@ -26,6 +26,7 @@ $lang['general_word_filtering_on'] = "Отфильтровано по";
 $lang['general_word_not_display'] = "Не отображать";
 $lang['general_word_icon'] = "Иконка";
 $lang['general_word_never'] = "Никогда";
+$lang['general_word_undefined'] = "Undefined";
 
 $lang['general_word_date'] = 'Дата';
 $lang['general_word_startdate'] = "Дата начала";

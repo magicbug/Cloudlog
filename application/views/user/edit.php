@@ -1001,6 +1001,49 @@
 									</div>
 								</div>
 
+								<!-- QRZ -->
+								<div class="col-md">
+									<div class="card">
+										<div class="card-header">Callbook</div>
+										<div class="card-body">
+											<div class="mb-3">
+												<label>Callbook Provider</label>
+												<select class="form-control" name="user_callbook_type">
+													<option value="None" <?php if (isset($user_callbook_type) && $user_callbook_type == 'None') echo 'selected'; ?>>None</option>
+													<option value="QRZ" <?php if (isset($user_callbook_type) && $user_callbook_type == 'QRZ') echo 'selected'; ?>>QRZ</option>
+													<option value="HamQTH" <?php if (isset($user_callbook_type) && $user_callbook_type == 'HamQTH') echo 'selected'; ?>>HamQTH</option>
+												</select>
+												<?php if (isset($callbook_type_error)) {
+													echo "<small class=\"error\">" . $callbook_type_error . "</small>";
+												} ?>
+											</div>
+
+											<div class="mb-3">
+												<label>Callbook Username</label>
+												<input class="form-control" type="text" name="user_callbook_username" value="<?php if (isset($user_callbook_username)) {
+													echo $user_callbook_username;
+												} ?>" />
+												<?php if (isset($callbook_username_error)) {
+													echo "<small class=\"error\">" . $callbook_username_error . "</small>";
+												} ?>
+											</div>
+
+											<div class="mb-3">
+												<label>Callbook Password</label>
+												<div class="input-group">
+													<input class="form-control" type="password" name="user_callbook_password" />
+													<span class="input-group-btn"><button class="btn btn-default btn-pwd-showhide" type="button"><i class="fa fa-eye-slash"></i></button></span>
+												</div>
+												<?php if (isset($callbook_password_error)) {
+													echo "<small class=\"error\">" . $callbook_password_error . "</small>";
+												} else { ?>
+													<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
+												<?php } ?>
+											</div>
+										</div>
+									</div>
+								</div>
+
 								<!-- eQSL -->
 								<div class="col-md">
 									<div class="card">
@@ -1031,7 +1074,9 @@
 										</div>
 									</div>
 								</div>
+							</div>
 
+							<div class="row">
 								<!-- Club Log -->
 								<div class="col-md">
 									<div class="card">

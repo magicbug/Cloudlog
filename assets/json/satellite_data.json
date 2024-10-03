@@ -351,6 +351,18 @@
          ]
       }
    },
+   "MO-122":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"LSB",
+               "Uplink_Freq":"145925000",
+               "Downlink_Mode":"USB",
+               "Downlink_Freq":"435825000"
+            }
+         ]
+      }
+   },
    "NO-44":{
       "Modes":{
          "V":[
@@ -471,6 +483,18 @@
                "Uplink_Freq":"145875000",
                "Downlink_Mode":"FM",
                "Downlink_Freq":"436666000"
+            }
+         ]
+      }
+   },
+   "SONATE-2":{
+      "Modes":{
+         "V":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145825000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"145825000"
             }
          ]
       }

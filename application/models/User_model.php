@@ -150,7 +150,7 @@ class User_Model extends CI_Model {
 		$user_pota_lookup, $user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
 		$user_show_profile_image, $user_previous_qsl_type, $user_amsat_status_upload, $user_mastodon_url,
 		$user_default_band, $user_default_confirmation, $user_qso_end_times, $user_quicklog, $user_quicklog_enter,
-		$language, $user_hamsat_key, $user_hamsat_workable_only) {
+		$language, $user_hamsat_key, $user_hamsat_workable_only, $callbook_type, $callbook_username, $callbook_password) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -206,6 +206,19 @@ class User_Model extends CI_Model {
 			$this->db->query("insert into paper_types (user_id,paper_name,metric,width,orientation,height) SELECT ".$insert_id.", paper_name, metric, width, orientation,height FROM paper_types where user_id = -1;");
 			$this->db->query("insert into user_options (user_id, option_type, option_name, option_key, option_value) values (" . $insert_id . ", 'hamsat','hamsat_key','api','".xss_clean($user_hamsat_key)."');");
 			$this->db->query("insert into user_options (user_id, option_type, option_name, option_key, option_value) values (" . $insert_id . ", 'hamsat','hamsat_key','workable','".xss_clean($user_hamsat_workable_only)."');");
+
+			$this->db->query("insert into user_options (user_id, option_type, option_name, option_key, option_value) values (" . $insert_id . ", 'callbook','callbook_type','value','".xss_clean($callbook_type)."');");
+			$this->db->query("insert into user_options (user_id, option_type, option_name, option_key, option_value) values (" . $insert_id . ", 'callbook','callbook_username','value','".xss_clean($callbook_username)."');");
+
+			// Load the encryption library
+			$this->load->library('encryption');
+
+			// Encrypt the password
+			$encrypted_password = $this->encryption->encrypt($callbook_password);
+
+			// Insert the encrypted password into the database
+			$this->db->query("INSERT INTO user_options (user_id, option_type, option_name, option_key, option_value) VALUES (" . $insert_id . ", 'callbook', 'callbook_password', 'value', '" . xss_clean($encrypted_password) . "');");
+
 			return OK;
 		} else {
 			return EUSERNAMEEXISTS;
@@ -348,6 +361,31 @@ class User_Model extends CI_Model {
 	// TODO: This should return bool TRUE/FALSE or 0/1
 	function update_session($id) {
 
+		$CI =& get_instance();
+        $CI->load->model('user_options_model');
+        $callbook_type_object = $CI->user_options_model->get_options('callbook')->result();
+
+        // Get the callbook type
+        if (isset($callbook_type_object[1]->option_value)) {
+            $callbook_type = $callbook_type_object[1]->option_value;
+        } else {
+            $callbook_type =  "None";
+        }
+
+		// Get the callbook type
+		if (isset($callbook_type_object[2]->option_value)) {
+            $callbook_username = $callbook_type_object[2]->option_value;
+        } else {
+            $callbook_username =  "";
+        }
+
+		// Get the callbook type
+		if (isset($callbook_type_object[0]->option_value)) {
+            $callbook_password = $callbook_type_object[0]->option_value;
+        } else {
+            $callbook_password =  "";
+        }
+
 		$u = $this->get_by_id($id);
 
 		$userdata = array(
@@ -388,7 +426,10 @@ class User_Model extends CI_Model {
 			'active_station_logbook' => $u->row()->active_station_logbook,
 			'language' => isset($u->row()->language) ? $u->row()->language: 'english',
 			'isWinkeyEnabled' => $u->row()->winkey,
-			'hasQrzKey' => $this->hasQrzKey($u->row()->user_id)
+			'hasQrzKey' => $this->hasQrzKey($u->row()->user_id),
+			'callbook_type' => $callbook_type,
+			'callbook_username' => $callbook_username,
+			'callbook_password' => $callbook_password,
 		);
 
 		$this->session->set_userdata($userdata);
