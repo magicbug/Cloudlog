@@ -26,6 +26,7 @@ $lang['general_word_filtering_on'] = "Filtrele";
 $lang['general_word_not_display'] = "Gösterme";
 $lang['general_word_icon'] = "Ikon";
 $lang['general_word_never'] = "Asla";
+$lang['general_word_undefined'] = "Undefined";
 
 $lang['general_word_date'] = 'Tarih';
 $lang['general_word_startdate'] = "Başlama Tarihi";

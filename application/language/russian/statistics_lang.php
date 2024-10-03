@@ -26,6 +26,7 @@ $lang['statistics_number_of_qso_worked'] = "# QSO проведено";
 */
 
 $lang['statistics_distances_bands_all'] = "все";
+$lang['statistics_distances_modes_all'] = "все";
 $lang['statistics_distances_worked'] = "Сработанные дистанции";
 $lang['statistics_distances_part1_contacts_were_plotted_furthest'] = "контакты отображены.<br /> Наиболее дальний контакт с";
 $lang['statistics_distances_part2_contacts_were_plotted_furthest'] = "в квадрате";
@@ -34,7 +35,9 @@ $lang['statistics_distances_part4_contacts_were_plotted_furthest'] = "Средн
 $lang['statistics_distances_number_of_qsos'] = "Количество QSO";
 $lang['statistics_distances_callsigns_worked'] = "Сработанные позывные(ной) (максимально 5 показано)";
 $lang['statistics_distances_qsos_with'] = "QSOs с";
-$lang['statistics_distances_and_band'] = "и диапазоне";
+$lang['statistics_distances_and_band'] = ", диапазоне : ";
+$lang['statistics_distances_and_mode'] = ", Вид модуляции : ";
+$lang['statistics_distances_and_power'] = ", Мощность передачи : ";
 
 /*
 *

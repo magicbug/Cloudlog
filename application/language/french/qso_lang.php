@@ -14,7 +14,7 @@ $lang['qso_previous_max_shown'] = "Max. 5 previous contacts are shown";
 $lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Enter Callsign';
 
 // Input Help Text on the /QSO Display
-$lang['qso_transmit_power_helptext'] = 'Saisissez la ouissance en Watts en utilisant uniquement des chiffres.';
+$lang['qso_transmit_power_helptext'] = 'Saisissez la puissance en Watts en utilisant uniquement des chiffres.';
 
 $lang['qso_sota_ref_helptext'] = 'Par exemple: GM/NS-001.';
 $lang['qso_wwff_ref_helptext'] = 'Par exemple: DLFF-0069.';

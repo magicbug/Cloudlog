@@ -17,6 +17,8 @@ $lang['general_word_next'] = 'Next';
 $lang['general_word_previous'] = 'Previous';
 $lang['general_word_not_display'] = "Not display";
 $lang['general_word_icon'] = "Icon";
+$lang['general_word_never'] = "Never";
+$lang['general_word_undefined'] = "Undefined";
 
 $lang['general_word_cancel'] = "Cancel";
 $lang['general_word_ok'] = "OK";

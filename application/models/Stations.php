@@ -30,6 +30,8 @@ class Stations extends CI_Model {
 		$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as dxcc_end');
 		$this->db->where('user_id', $userid);
 		$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
+		$this->db->order_by('station_profile.station_callsign');
+		$this->db->order_by('station_profile.station_profile_name');
 		return $this->db->get('station_profile');
 	}
 

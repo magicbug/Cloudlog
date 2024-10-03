@@ -23,3 +23,4 @@ sync.sh
 .env
 /node_modules
 /.vs
+.vscode/sftp.json

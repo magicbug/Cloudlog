@@ -37,6 +37,19 @@ class Distances_model extends CI_Model
 					$this->db->where('col_band', $postdata['band']);
 				}
 
+				if ($postdata['mode'] != 'all') {
+					$this->db->group_start()->where('col_mode', $postdata['mode'])->or_where('col_submode', $postdata['mode'])->group_end();
+				}
+
+				if ($postdata['pwr'] != 'all') {
+					if ($postdata['pwr']) {
+						$this->db->where('col_tx_pwr', $postdata['pwr']);
+					} else {
+						$this->db->where('col_tx_pwr is NULL');
+					}
+				}
+
+
 				$this->db->where('station_id', $station_id);
 				$queryresult = $this->db->get($this->config->item('table_name'));
 
@@ -83,6 +96,7 @@ class Distances_model extends CI_Model
 				if(isset($result['qsodata'][$i]['callcount'])) {
 					if ($result['qsodata'][$i]['callcount'] < 5 && $add['qsodata'][$i]['callcount'] > 0) {
 						$calls = explode(',', $add['qsodata'][$i]['calls']);
+						$calls = array_unique($calls);
 						foreach ($calls as $c) {
 							if ($result['qsodata'][$i]['callcount'] < 5) {
 								if ($result['qsodata'][$i]['callcount'] > 0) {
@@ -178,19 +192,21 @@ class Distances_model extends CI_Model
 	  				$this->db->where('COL_PRIMARY_KEY', $qso['COL_PRIMARY_KEY']);
 	  				$this->db->update($this->config->item('table_name'), $data);
 				}
-				$arrayplacement = (int)($bearingdistance / 50);                                // Resolution is 50, calculates where to put result in array
+				$arrayplacement = (int)($bearingdistance / 50);                         // Resolution is 50, calculates where to put result in array
 				if ($bearingdistance > $qrb['Distance']) {                              // Saves the longest QSO
 					$qrb['Distance'] = $bearingdistance;
 					$qrb['Callsign'] = $qso['callsign'];
 					$qrb['Grid'] = $qso['grid'];
 				}
-				$dataarray[$arrayplacement]['count']++;                                               // Used for counting total qsos plotted
+				$dataarray[$arrayplacement]['count']++;                                 // Used for counting total qsos plotted
 				if ($dataarray[$arrayplacement]['callcount'] < 5) {                     // Used for tooltip in graph, set limit to 5 calls shown
-					if ($dataarray[$arrayplacement]['callcount'] > 0) {
-						$dataarray[$arrayplacement]['calls'] .= ', ';
+					if (strpos($dataarray[$arrayplacement]['calls'], $qso['callsign']) === false) {   // Avoids duplicated callsigns
+						if ($dataarray[$arrayplacement]['callcount'] > 0) {
+							$dataarray[$arrayplacement]['calls'] .= ', ';
+						}
+						$dataarray[$arrayplacement]['calls'] .= $qso['callsign'];
+						$dataarray[$arrayplacement]['callcount']++;
 					}
-					$dataarray[$arrayplacement]['calls'] .= $qso['callsign'];
-					$dataarray[$arrayplacement]['callcount']++;
 				}
 			}
 
@@ -223,7 +239,7 @@ class Distances_model extends CI_Model
     	/*
 	 * Used to fetch QSOs from the logbook in the awards
 	 */
-	public function qso_details($distance, $band, $sat){
+	public function qso_details($distance, $band, $sat, $mode, $power){
 		$distarray = $this->getdistparams($distance);
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
@@ -238,8 +254,8 @@ class Distances_model extends CI_Model
 
 		$this->db->where_in($this->config->item('table_name').'.station_id', $logbooks_locations_array);
 
-		if ($band != 'All') {
-			if($band != "sat") {
+		if ($band != 'all') {
+			if ($band != "sat") {
 				$this->db->where('COL_PROP_MODE !=', 'SAT');
 				$this->db->where('COL_BAND', $band);
 			} else {
@@ -249,6 +265,19 @@ class Distances_model extends CI_Model
 				}
 			}
 		}
+
+		if ($mode != 'all') {
+			$this->db->group_start()->where('COL_MODE', $mode)->or_where('COL_SUBMODE', $mode)->group_end();
+		}
+
+		if ($power != 'all') {
+			if ($power) {
+				$this->db->where('COL_TX_PWR', $power);
+			} else {
+				$this->db->where('COL_TX_PWR is NULL');
+			}
+		}
+
 		$this->db->order_by("COL_TIME_ON", "desc");
 
 		return $this->db->get($this->config->item('table_name'));

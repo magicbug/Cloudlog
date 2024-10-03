@@ -14,7 +14,9 @@ function distPlot(form) {
 		url: base_url+'index.php/distances/get_distances',
 		type: 'post',
 		data: {'band': form.distplot_bands.value,
-			'sat': form.distplot_sats.value},
+			'sat': form.distplot_sats.value,
+			'mode': form.distplot_modes.value,
+			'pwr': form.distplot_powers.value},
 		success: function(tmp) {
 			if (tmp.ok == 'OK') {
 				if (!($('#information').length > 0))
@@ -142,6 +144,8 @@ function getDistanceQsos(distance) {
 			'distance': distance,
 			'band': $("#distplot_bands").val(),
 			'sat' : $("#distplot_sats").val(),
+			'mode': $("#distplot_modes").val(),
+			'pwr': $("#distplot_powers").val(),
 		},
 		success: function (html) {
 			BootstrapDialog.show({
