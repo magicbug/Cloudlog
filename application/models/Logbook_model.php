@@ -4628,7 +4628,7 @@ class Logbook_model extends CI_Model
 
         // If HamQTH session has expired, start a new session and retry the search.
         if ($callbook['error'] == "Session does not exist or expired") {
-          $hamqth_session_key = $this->hamqth->session($this->config->item('hamqth_username'), $this->config->item('hamqth_password'));
+          $hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
           $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
           $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
         }
