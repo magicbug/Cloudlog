@@ -4599,7 +4599,7 @@ class Logbook_model extends CI_Model
 
         // if we got nothing, it's probably because our session key is invalid, try again
         if (($callbook['callsign'] ?? '') == '') {
-          $qrz_session_key = $this->qrz->session($this->config->item('qrz_username'), $this->config->item('qrz_password'));
+          $qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
           $this->session->set_userdata('qrz_session_key', $qrz_session_key);
           $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
           // if we still got nothing, and it's a compound callsign, then try a search for the base call
