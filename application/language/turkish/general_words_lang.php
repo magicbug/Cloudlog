@@ -228,3 +228,5 @@ $lang['dashboard_logbooks_warning'] = 'İstasyon Kayıt kitabınız yok. Buraya 
 $lang['hams_at_no_activations_found'] = 'Yakın gelecekte aktivasyon bulunamadı. Sonra tekrar deneyin.';
 
 $lang['datatables_language'] = "tr-TR";
+
+$lang['set_log_to_full_dates'] = "Set log to full dates";

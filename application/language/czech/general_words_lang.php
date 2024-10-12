@@ -225,3 +225,5 @@ $lang['general_word_today'] = 'Dnes';
 $lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';
 
 $lang['datatables_language'] = "en-GB";
+
+$lang['set_log_to_full_dates'] = "Set log to full dates";

@@ -229,3 +229,5 @@ $lang['dashboard_logbooks_warning'] = 'Non hai il registro di stazione. Vai <a h
 $lang['hams_at_no_activations_found'] = 'Nessuna attivazione imminente trovata. Per favore controllare più tardi.';
 
 $lang['datatables_language'] = "it-IT";
+
+$lang['set_log_to_full_dates'] = "Set log to full dates";

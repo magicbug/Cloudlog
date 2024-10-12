@@ -232,3 +232,5 @@ $lang['dashboard_logbooks_warning'] = 'You have no station logbook. Go <a href="
 $lang['hams_at_no_activations_found'] = 'No upcoming activations found. Please check back later.';
 
 $lang['datatables_language'] = "en-GB";
+
+$lang['set_log_to_full_dates'] = "Set log to full dates";

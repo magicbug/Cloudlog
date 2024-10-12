@@ -10,10 +10,10 @@ class Map extends CI_Controller {
     function custom()
 	{
 		$this->load->model('bands');
-        $this->load->model('modes');
+        $this->load->model('gridmap_model');
 
-        $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
-		$data['modes'] = $this->modes->active(); 					// Used in the view for mode select
+        $data['worked_bands'] = $this->bands->get_worked_bands();  // Used in the view for band select
+		$data['modes'] = $this->gridmap_model->get_worked_modes(); // Used in the view for mode select
 
         if ($this->input->post('band') != NULL) {   			// Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {          // Did the user specify a band? If not, use all bands
@@ -98,5 +98,12 @@ class Map extends CI_Controller {
 			echo json_encode(array_merge($plot_array, $station_array));
 		}
 
+	}
+
+	// Function to fetch the date of the oldest QSO in the log
+	public function get_oldest_qso_date() {
+		$this->load->model('logbook_model');
+		$oldestQSOdate = $this->logbook_model->get_oldest_qso_date();
+		echo $oldestQSOdate;
 	}
 }

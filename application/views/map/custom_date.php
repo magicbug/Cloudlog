@@ -1,6 +1,6 @@
 <div class="container custom-map-QSOs">
     <br>
-    <h2><?php echo $logbook_name ?> logbook QSOs (Custom Date)</h2>
+    <h2><?php echo $logbook_name; echo strpos($logbook_name, 'logbook') ? '' : ' logbook'; ?> QSOs (Custom Dates)</h2>
 
     <?php if ($this->session->flashdata('notice')) { ?>
         <div class="alert alert-info" role="alert">
@@ -19,6 +19,10 @@
                 <label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
                 <input name="to" id="to" type="date" class="form-control w-auto" value="<?php echo $date_to; ?>" max="<?php echo $date_to; ?>">
             </div>
+
+            <div class="mb-3 col-md-3 d-flex align-items-end">
+                <input class="btn btn-secondary" type="button" value="<?php echo lang('set_log_to_full_dates'); ?>" onclick="get_oldest_qso_date();">
+            </div>
         </div>
 
         <div class="row">
@@ -34,21 +38,14 @@
                 </select>
             </div>
 
-
             <div class="mb-3 col-md-3">
                 <label for="mode">Mode</label>
                 <select id="mode" name="mode" class="form-select">
-                    <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>>All</option>
+                    <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>><?php echo lang('general_word_all') ?></option>
                     <?php
-                    foreach ($modes->result() as $mode) {
-                        if ($mode->submode == null) {
-                            echo '<option value="' . $mode->mode . '"';
-                            if ($this->input->post('mode') == $mode->mode) echo ' selected';
-                            echo '>' . $mode->mode . '</option>' . "\n";
-                        } else {
-                            echo '<option value="' . $mode->submode . '"';
-                            if ($this->input->post('mode') == $mode->submode) echo ' selected';
-                            echo '>' . $mode->submode . '</option>' . "\n";
+                    foreach ($modes as $mode) {
+                        if ($mode->submode ?? '' == '') {
+                            echo '<option value="' . $mode . '">' . strtoupper($mode) . '</option>'."\n";
                         }
                     }
                     ?>
@@ -58,7 +55,8 @@
             <div class="mb-3 col-md-3">
                 <label for="selectPropagation">Propagation Mode</label>
                 <select class="form-select" id="selectPropagation" name="prop_mode">
-                    <option value="All" <?php if ($this->input->post('prop_mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>>All</option>
+                    <option value="All" <?php if ($this->input->post('prop_mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>><?php echo lang('general_word_all') ?></option>
+                    <option value="" <?php if ($this->input->post('prop_mode') == "" && $this->input->method() == 'post') echo ' selected'; ?>><?php echo lang('general_word_undefined') ?></option>
                     <option value="AS" <?php if ($this->input->post('prop_mode') == "AS") echo ' selected'; ?>>Aircraft Scatter</option>
                     <option value="AUR" <?php if ($this->input->post('prop_mode') == "AUR") echo ' selected'; ?>>Aurora</option>
                     <option value="AUE" <?php if ($this->input->post('prop_mode') == "AUE") echo ' selected'; ?>>Aurora-E</option>
@@ -82,7 +80,7 @@
         </div>
 
         <div class="row">
-            <div class="mb-1 col-md-1">
+            <div class="mb-2 col-md-2">
                 <input class="btn btn-primary btn_submit_map_custom" type="button" value="Load Map">
             </div>
             <div class="mb-4 col-md-4">
@@ -96,4 +94,4 @@
 <!-- Map -->
 <div id="custommap" class="map-leaflet mt-2" style="width: 100%; height: 1000px;"></div>
 
-<div class="alert alert-success" role="alert">Showing QSOs for Custom Date for Active Logbook <?php echo $logbook_name ?></div>
+<div class="alert alert-success" role="alert">Showing QSOs for Custom Dates for Active Logbook <?php echo $logbook_name ?></div>

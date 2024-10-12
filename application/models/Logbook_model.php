@@ -4856,6 +4856,15 @@ class Logbook_model extends CI_Model
     }
     return $json;
   }
+
+  public function get_oldest_qso_date()
+  {
+    $query = $this->db->query('SELECT DATE(min(col_time_on)) as oldest_qso_date FROM TABLE_HRD_CONTACTS_V01');
+    $row = $query->row();
+    if (isset($row)) {
+      return $row->oldest_qso_date;
+    }
+  }
 }
 
 function validateADIFDate($date, $format = 'Ymd')

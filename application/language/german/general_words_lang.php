@@ -230,3 +230,5 @@ $lang['dashboard_logbooks_warning'] = 'Es wurde kein Stationslogbuch angelegt. K
 $lang['hams_at_no_activations_found'] = 'Keine bevorstehenden Aktivierungen gefunden. Bitte später noch einmal vorbeischauen.';
 
 $lang['datatables_language'] = "de-DE";
+
+$lang['set_log_to_full_dates'] = "Set log to full dates";

@@ -797,9 +797,20 @@ if ($this->session->userdata('user_id') != null) {
                 };
                 initplot(qso_loc, customdata);
             })
-
-
         });
+
+        function get_oldest_qso_date() {
+            $.ajax({
+                url: base_url + 'index.php/map/get_oldest_qso_date',
+                type: 'post',
+                success: function(data) {
+                    document.getElementById('from').value = data;
+                    document.getElementById('to').value = new Date().toISOString().split('T')[0];
+                },
+                error: function() {
+                },
+            });
+        }
     </script>
 <?php } ?>
 
