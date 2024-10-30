@@ -231,3 +231,5 @@ $lang['dashboard_logbooks_warning'] = 'У вас нет аппаратного �
 $lang['hams_at_no_activations_found'] = 'не найдены предстоящие активации. Проверьте позже.';
 
 $lang['datatables_language'] = "ru-RU";
+
+$lang['set_log_to_full_dates'] = "Set log to full dates";

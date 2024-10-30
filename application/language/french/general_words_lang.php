@@ -230,3 +230,5 @@ $lang['dashboard_logbooks_warning'] = "Vous n'avez pas de journal de travail pou
 $lang['hams_at_no_activations_found'] = "Aucune activation à venir trouvée. Veuillez revenir plus tard.";
 
 $lang['datatables_language'] = "fr-FR";
+
+$lang['set_log_to_full_dates'] = "Dates du log complet";

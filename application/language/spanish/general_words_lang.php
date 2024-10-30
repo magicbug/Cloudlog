@@ -231,3 +231,5 @@ $lang['dashboard_logbooks_warning'] = 'No tiene libro de guardias. ¡Haga clic <
 $lang['hams_at_no_activations_found'] = 'No hay activaciones próximas. Por favor vuelve a revisar más tarde.';
 
 $lang['datatables_language'] = "es-ES";
+
+$lang['set_log_to_full_dates'] = "Set log to full dates";
