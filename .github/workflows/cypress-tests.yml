@@ -5,10 +5,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            npm-
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Cache Cypress
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.cache/Cypress
           key: cypress-${{ hashFiles('package-lock.json') }}
@@ -19,7 +30,7 @@ jobs:
         run: npm install cypress
 
       - name: Cache .env
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: .env
           key: .env-${{ hashFiles('.env.sample') }}
@@ -36,7 +47,12 @@ jobs:
         run: docker-compose up -d
 
       - name: Wait for services to start
-        run: sleep 5
+        run: |
+          for i in `seq 1 30`; do
+            curl -s http://localhost:80 > /dev/null && break
+            echo "Waiting for services to start..."
+            sleep 5
+          done
 
       - name: Populate dxcc_entities table
         run: curl "http://localhost/index.php/update/dxcc"
