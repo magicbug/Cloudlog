@@ -4340,14 +4340,13 @@ class Logbook_model extends CI_Model
 
   public function get_entity($dxcc)
   {
-    $sql = "select name, cqz, lat, 'long' from dxcc_entities where adif = " . $dxcc;
-    $query = $this->db->query($sql);
-
-    if ($query->result() > 0) {
-      $row = $query->row_array();
-      return $row;
-    }
-    return '';
+      $sql = "SELECT name, cqz, lat, `long` FROM dxcc_entities WHERE adif = ?";
+      $query = $this->db->query($sql, array($dxcc));
+  
+      if ($query->num_rows() > 0) {
+          return $query->row_array();
+      }
+      return '';
   }
 
   /*
