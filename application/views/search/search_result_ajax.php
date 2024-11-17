@@ -471,6 +471,8 @@ function echo_table_col($row, $name)
 
                                 <a class="dropdown-item" href="https://www.hamqth.com/<?php echo $row->COL_CALL; ?>" target="_blank"><i class="fas fa-question"></i><?php echo lang('general_lookup_hamqth'); ?></a>
 
+                                <a class="dropdown-item" href="https://www.qrzcq.com/call/<?php echo $row->COL_CALL; ?>" target="_blank"><i class="fas fa-question"></i><?php echo lang('general_lookup_qrzcq'); ?></a>
+
                                 <div class="dropdown-divider"></div>
 
                                 <a class="dropdown-item" href="javascript:qso_delete(<?php echo $row->COL_PRIMARY_KEY; ?>, '<?php echo $row->COL_CALL; ?>')"><i class="fas fa-trash-alt"></i> <?php echo lang('general_delete_qso'); ?></a>

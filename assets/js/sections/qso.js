@@ -489,6 +489,7 @@ function reset_fields() {
 	$('#lotw_info').removeClass("lotw_info_orange");
 	$('#qrz_info').text("");
 	$('#hamqth_info').text("");
+	$('#qrzcq_info').text("");
 	$('#sota_info').text("");
 	$('#dxcc_id').val("");
 	$('#cqz').val("");
@@ -654,6 +655,8 @@ $("#callsign").focusout(function() {
 				$('#qrz_info').attr('title', 'Lookup '+callsign+' info on qrz.com');
 				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>');
 				$('#hamqth_info').attr('title', 'Lookup '+callsign+' info on hamqth.com');
+				$('#qrzcq_info').html('<a target="_blank" href="https://www.qrzcq.com/call/'+callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/qrzcq.com.png"></a>');
+				$('#qrzcq_info').attr('title', 'Lookup '+callsign+' info on qrzcq.com');
 
 				var $dok_select = $('#darc_dok').selectize();
 				var dok_selectize = $dok_select[0].selectize;
