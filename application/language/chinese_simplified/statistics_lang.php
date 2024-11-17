@@ -38,6 +38,8 @@ $lang['statistics_distances_qsos_with'] = "QSO 与";
 $lang['statistics_distances_and_band'] = "和波段";
 $lang['statistics_distances_and_mode'] = ", 模式 : ";
 $lang['statistics_distances_and_power'] = ", 发射功率 : ";
+$lang['statistics_distances_and_propagation'] = ", 传播模式 : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *

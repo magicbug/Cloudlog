@@ -33,8 +33,12 @@ $lang['statistics_distances_part3_contacts_were_plotted_furthest'] = "The distan
 $lang['statistics_distances_part4_contacts_were_plotted_furthest'] = "The average distance is";
 $lang['statistics_distances_number_of_qsos'] = "Number of QSOs";
 $lang['statistics_distances_callsigns_worked'] = "Callsign(s) worked (max 5 shown)";
-$lang['statistics_distances_qsos_with'] = "QSOs with";
-$lang['statistics_distances_and_band'] = "and band";
+$lang['statistics_distances_qsos_with'] = "QSOs with distance : ";
+$lang['statistics_distances_and_band'] = ", band : ";
+$lang['statistics_distances_and_mode'] = ", mode : ";
+$lang['statistics_distances_and_power'] = ", power : ";
+$lang['statistics_distances_and_propagation'] = ", propagation : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *

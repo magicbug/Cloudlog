@@ -38,6 +38,8 @@ $lang['statistics_distances_qsos_with'] = "mesafeli QSO'lar ile";
 $lang['statistics_distances_and_band'] = ", bant : ";
 $lang['statistics_distances_and_mode'] = ", mode : ";
 $lang['statistics_distances_and_power'] = ", gücü : ";
+$lang['statistics_distances_and_propagation'] = ", Yayın Mode : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *
