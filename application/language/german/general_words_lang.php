@@ -109,6 +109,7 @@ $lang['general_more_qso'] = 'Mehr QSOs';
 
 $lang['general_lookup_qrz'] = 'Nachschlagen auf QRZ.com';
 $lang['general_lookup_hamqth'] = 'Nachschlagen auf HamQTH';
+$lang['general_lookup_qrzcq'] = 'Nachschlagen auf QRZCQ';
 
 $lang['general_total_distance'] = 'Entfernung';
 
