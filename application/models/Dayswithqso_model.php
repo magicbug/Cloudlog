@@ -180,4 +180,27 @@ class Dayswithqso_model extends CI_Model
         return $query->result();
     }
 
+    /*
+     * Returns the total number of QSOs made for each day of the week (Monday to Sunday)
+     */
+    function getDaysOfWeek()
+    {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+        $sql = "SELECT DAYNAME(col_time_off) AS weekday, COUNT(*) AS qsos FROM " . $this->config->item('table_name')
+              . " WHERE WEEKDAY(col_time_off) BETWEEN 0 AND 6 AND station_id in (" . $location_list . ")"
+              . " GROUP BY weekday ORDER BY FIELD(weekday, 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')";
+
+        $query = $this->db->query($sql);
+
+        return $query->result();
+    }
 }

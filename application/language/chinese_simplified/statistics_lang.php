@@ -53,8 +53,13 @@ $lang['statistics_timeline'] = "时间线";
 *
 */
 
-$lang['statistics_days_with_qso'] = "本年QSO总数";
-$lang['statistics_days_with_qso_short'] = "QSO的日期";
+$lang['statistics_tab_yearly'] = "Yearly";
+$lang['statistics_tab_streaks'] = "Streaks";
+$lang['statistics_tab_weekdays'] = "Days of the week";
+$lang['statistics_days_yearly'] = "Number of days with QSOs each year";
+$lang['statistics_days_with_qso'] = "QSO的日期";
+$lang['statistics_weekdays_with_qso'] = "QSOs breakdown by day of the week";
+$lang['statistics_number_of_qsos_this_weekday'] = "Number of QSOs for this day of the week";
 $lang['statistics_dwq_longest_streak_in_log'] = "日志中最长QSO连续记录";
 $lang['statistics_dwq_longest_streak_in_log_hint'] = "最多显示10条最长QSO连续记录";
 $lang['statistics_dwq_streak_continuous_days'] = "最长QSO连续记录";
