@@ -51,30 +51,40 @@
                     ?>
                 </select>
             </div>
-
+            <?php
+                // Sort translated propagation modes alphabetically
+                $prop_modes = ['AS' => lang('gen_hamradio_propagation_AS'),
+                               'AUR' => lang('gen_hamradio_propagation_AUR'),
+                               'AUE' => lang('gen_hamradio_propagation_AUE'),
+                               'BS' => lang('gen_hamradio_propagation_BS'),
+                               'ECH' => lang('gen_hamradio_propagation_ECH'),
+                               'EME' => lang('gen_hamradio_propagation_EME'),
+                               'ES' => lang('gen_hamradio_propagation_ES'),
+                               'FAI' => lang('gen_hamradio_propagation_FAI'),
+                               'F2' => lang('gen_hamradio_propagation_F2'),
+                               'INTERNET' => lang('gen_hamradio_propagation_INTERNET'),
+                               'ION' => lang('gen_hamradio_propagation_ION'),
+                               'IRL' => lang('gen_hamradio_propagation_IRL'),
+                               'MS' => lang('gen_hamradio_propagation_MS'),
+                               'RPT' => lang('gen_hamradio_propagation_RPT'),
+                               'RS' => lang('gen_hamradio_propagation_RS'),
+                               'SAT' => lang('gen_hamradio_propagation_SAT'),
+                               'TEP' => lang('gen_hamradio_propagation_TEP'),
+                               'TR' => lang('gen_hamradio_propagation_TR')];
+                asort($prop_modes);
+            ?>
             <div class="mb-3 col-md-3">
                 <label for="selectPropagation">Propagation Mode</label>
                 <select class="form-select" id="selectPropagation" name="prop_mode">
                     <option value="All" <?php if ($this->input->post('prop_mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>><?php echo lang('general_word_all') ?></option>
                     <option value="" <?php if ($this->input->post('prop_mode') == "" && $this->input->method() == 'post') echo ' selected'; ?>><?php echo lang('general_word_undefined') ?></option>
-                    <option value="AS" <?php if ($this->input->post('prop_mode') == "AS") echo ' selected'; ?>>Aircraft Scatter</option>
-                    <option value="AUR" <?php if ($this->input->post('prop_mode') == "AUR") echo ' selected'; ?>>Aurora</option>
-                    <option value="AUE" <?php if ($this->input->post('prop_mode') == "AUE") echo ' selected'; ?>>Aurora-E</option>
-                    <option value="BS" <?php if ($this->input->post('prop_mode') == "BS") echo ' selected'; ?>>Back scatter</option>
-                    <option value="ECH" <?php if ($this->input->post('prop_mode') == "ECH") echo ' selected'; ?>>EchoLink</option>
-                    <option value="EME" <?php if ($this->input->post('prop_mode') == "EME") echo ' selected'; ?>>Earth-Moon-Earth</option>
-                    <option value="ES" <?php if ($this->input->post('prop_mode') == "ES") echo ' selected'; ?>>Sporadic E</option>
-                    <option value="FAI" <?php if ($this->input->post('prop_mode') == "FAI") echo ' selected'; ?>>Field Aligned Irregularities</option>
-                    <option value="F2" <?php if ($this->input->post('prop_mode') == "F2") echo ' selected'; ?>>F2 Reflection</option>
-                    <option value="INTERNET" <?php if ($this->input->post('prop_mode') == "INTERNET") echo ' selected'; ?>>Internet-assisted</option>
-                    <option value="ION" <?php if ($this->input->post('prop_mode') == "ION") echo ' selected'; ?>>Ionoscatter</option>
-                    <option value="IRL" <?php if ($this->input->post('prop_mode') == "IRL") echo ' selected'; ?>>IRLP</option>
-                    <option value="MS" <?php if ($this->input->post('prop_mode') == "MS") echo ' selected'; ?>>Meteor scatter</option>
-                    <option value="RPT" <?php if ($this->input->post('prop_mode') == "RPT") echo ' selected'; ?>>Terrestrial or atmospheric repeater or transponder</option>
-                    <option value="RS" <?php if ($this->input->post('prop_mode') == "RS") echo ' selected'; ?>>Rain scatter</option>
-                    <option value="SAT" <?php if ($this->input->post('prop_mode') == "SAT") echo ' selected'; ?>>Satellite</option>
-                    <option value="TEP" <?php if ($this->input->post('prop_mode') == "TEP") echo ' selected'; ?>>Trans-equatorial</option>
-                    <option value="TR" <?php if ($this->input->post('prop_mode') == "TR") echo ' selected'; ?>>Tropospheric ducting</option>
+                    <?php
+                        foreach($prop_modes as $key => $label) {
+                            echo '<option value="' . $key . '">';
+                            if ($this->input->post('prop_mode') == $key) echo ' selected';
+                            echo $label . '</option>';
+                        }
+                    ?>
                 </select>
             </div>
         </div>

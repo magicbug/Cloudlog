@@ -78,8 +78,9 @@ class Distances extends CI_Controller {
 		$sat = $this->security->xss_clean($this->input->post('sat'));
 		$mode = $this->security->xss_clean($this->input->post('mode'));
 		$power = $this->security->xss_clean($this->input->post('pwr'));
+		$propag = $this->security->xss_clean($this->input->post('propag'));
 
-		$data['results'] = $this->distances_model->qso_details($distance, $band, $sat, $mode, $power);
+		$data['results'] = $this->distances_model->qso_details($distance, $band, $sat, $mode, $power, $propag);
 
         // Render Page
         if (strtolower($band) == 'all') $band = lang('statistics_distances_bands_all');
@@ -95,8 +96,19 @@ class Distances extends CI_Controller {
                 $power .= 'W';
         }
 
+        switch (strtolower($propag)) {
+            case 'all':
+                $propag = lang('general_word_all');
+                break;
+            case '':
+                $propag = lang('general_word_undefined');
+                break;
+            default:
+                $propag = lang("gen_hamradio_propagation_$propag");
+        }
+
 		$data['page_title'] = "Log View - " . $distance;
-		$data['filter'] = lang('statistics_distances_qsos_with') . " " . $distance . lang('statistics_distances_and_band') . " " . $band . lang('statistics_distances_and_mode') . $mode . lang('statistics_distances_and_power') . $power;
+		$data['filter'] = lang('statistics_distances_qsos_with') . " " . $distance . lang('statistics_distances_and_band') . " " . $band . lang('statistics_distances_and_mode') . $mode . lang('statistics_distances_and_power') . $power . lang('statistics_distances_and_propagation') . $propag;
 		$this->load->view('awards/details', $data);
 	}
 }

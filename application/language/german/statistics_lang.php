@@ -38,6 +38,8 @@ $lang['statistics_distances_qsos_with'] = "QSOs mit Distanz : ";
 $lang['statistics_distances_and_band'] = ", Band : ";
 $lang['statistics_distances_and_mode'] = ", Mode : ";
 $lang['statistics_distances_and_power'] = ", Sendeleistung : ";
+$lang['statistics_distances_and_propagation'] = ", Wellenausbreitung : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *
