@@ -1364,7 +1364,7 @@ class Logbook extends CI_Controller {
 		case 'WWFF':    $ret.= '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
 		case 'POTA':    $ret.= '<td>' . ($row->COL_POTA_REF) . '</td>'; break;
 		case 'Grid':    $ret.= '<td>' . $this->part_QrbCalcLink($row->COL_MY_GRIDSQUARE, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE) . '</td>'; break;
-		case 'Distance':    $ret.= '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</td>'; break;
+		case 'Distance': $ret .= '<td>' . (property_exists($row, 'COL_DISTANCE') && $row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</td>'; break;		
 		case 'Band':    $ret.= '<td>'; if($row->COL_SAT_NAME != null) { $ret.= '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { $ret.= strtolower($row->COL_BAND); } $ret.= '</td>'; break;
 		case 'Frequency':    $ret.= '<td>'; if($row->COL_SAT_NAME != null) { $ret.= '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { if($row->COL_FREQ != null) { $ret.= $ci->frequency->hz_to_mhz($row->COL_FREQ); } else { $ret.= strtolower($row->COL_BAND); } } $ret.= '</td>'; break;
 		case 'State':   $ret.= '<td>' . ($row->COL_STATE) . '</td>'; break;
