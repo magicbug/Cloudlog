@@ -1,5 +1,6 @@
 <script>
     var lang_days_with_qso = "<?php echo lang('statistics_days_with_qso'); ?>";
+    var lang_qsos_this_day = "<?php echo lang('statistics_number_of_qsos_this_day'); ?>";
     var lang_qsos_this_weekday = "<?php echo lang('statistics_number_of_qsos_this_weekday'); ?>";
 </script>
 
@@ -18,6 +19,9 @@
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" id="streaks-tab" data-bs-toggle="tab" href="#streaks" role="tab" aria-controls="streaks" aria-selected="false"><?php echo lang('statistics_tab_streaks'); ?></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="daily-tab" data-bs-toggle="tab" href="#daily" role="tab" aria-controls="daily" aria-selected="false"><?php echo lang('statistics_tab_daily'); ?></a>
 			</li>
 		</ul>
 	</div>
@@ -151,6 +155,12 @@
                 echo '<div class="alert alert-danger" role="alert">' . lang('statistics_dwq_no_current_streak') . '</div>';
             }
             ?>
+        </div>
+
+        <div class="tab-pane fade" id="daily" role="tabpanel" aria-labelledby="daily-tab">
+            <br/>
+            <h3><?php echo lang('statistics_qsos_each_day'); ?></h3>
+            <canvas id="dailyChart" width="400" height="150"></canvas>
         </div>
     </div>
 </div>

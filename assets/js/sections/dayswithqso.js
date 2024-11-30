@@ -1,5 +1,6 @@
 daysPerYear();
 weekDays();
+historyDays();
 
 function daysPerYear() {
 	$.ajax({
@@ -87,6 +88,64 @@ function weekDays() {
 								ticks: {
 									beginAtZero: true,
 									color: color
+								}
+							},
+							x: {
+								ticks: {
+									color: color
+								}
+							}
+						},
+						plugins: {
+							legend: {
+								labels: {
+									color: color
+								}
+							}
+						}
+					}
+				});
+			}
+		}
+	});
+}
+
+function historyDays() {
+	$.ajax({
+		url: base_url + 'index.php/dayswithqso/get_historydays',
+		success: function (data) {
+			if ($.trim(data)) {
+				var labels = [];
+				var dataDays = [];
+				$.each(data, function () {
+					labels.push(this.day);
+					dataDays.push(this.qsos);
+				});
+				var ctx = document.getElementById("dailyChart").getContext('2d');
+				var color = ifDarkModeThemeReturn('white', 'grey');
+				var myChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: labels,
+						datasets: [{
+							label: lang_qsos_this_day,
+							data: dataDays,
+							pointRadius: 0,
+							pointHoverRadius: 6,
+							hitRadius: 4,
+							backgroundColor: 'rgba(54, 162, 235, 0.2)',
+							borderColor: 'rgba(54, 162, 235, 1)',
+							borderWidth: 2,
+							color: color
+						}]
+					},
+					options: {
+						scales: {
+							y: {
+								ticks: {
+									beginAtZero: true,
+									color: color,
+									precision: 0
 								}
 							},
 							x: {

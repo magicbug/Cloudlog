@@ -203,4 +203,44 @@ class Dayswithqso_model extends CI_Model
 
         return $query->result();
     }
+
+    /*
+     * Returns the number of QSOs made for each day in the log
+     */
+    function getHistoryDays()
+    {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
+        $min_date_query = $this->db->query('SELECT MIN(DATE(col_time_off)) AS min_date FROM ' . $this->config->item('table_name'));
+        $min_date = $min_date_query->row()->min_date;
+        $max_date_query = $this->db->query('SELECT MAX(DATE(col_time_off)) AS max_date FROM ' . $this->config->item('table_name'));
+        $max_date = $max_date_query->row()->max_date;
+
+		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+
+        $sql = "WITH RECURSIVE all_dates AS (
+                    SELECT ? AS date
+                    UNION ALL
+                    SELECT DATE_ADD(date, INTERVAL 1 DAY)
+                    FROM all_dates
+                    WHERE DATE_ADD(date, INTERVAL 1 DAY) <= ?
+                )
+                SELECT all_dates.date AS day, COUNT(" . $this->config->item('table_name') . ".col_time_off) AS qsos
+                FROM all_dates
+                LEFT JOIN " . $this->config->item('table_name') . " ON DATE(" . $this->config->item('table_name') . ".col_time_off) = all_dates.date
+                AND station_id in (" . $location_list . ")
+                GROUP BY all_dates.date
+                ORDER BY all_dates.date";
+
+        $query = $this->db->query($sql, [$min_date, $max_date]);
+        $days = $query->result_array();
+
+        return $days;
+    }
 }

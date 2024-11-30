@@ -56,9 +56,12 @@ $lang['statistics_timeline'] = "Línea de tiempo";
 $lang['statistics_tab_yearly'] = "Yearly";
 $lang['statistics_tab_streaks'] = "Streaks";
 $lang['statistics_tab_weekdays'] = "Days of the week";
+$lang['statistics_tab_daily'] = "Daily";
 $lang['statistics_days_yearly'] = "Number of days with QSOs each year";
 $lang['statistics_days_with_qso'] = "Días con QSOs";
+$lang['statistics_qsos_each_day'] = "Number of QSOs each day";
 $lang['statistics_weekdays_with_qso'] = "QSOs breakdown by day of the week";
+$lang['statistics_number_of_qsos_this_day'] = "Number of QSOs this day";
 $lang['statistics_number_of_qsos_this_weekday'] = "Number of QSOs for this day of the week";
 $lang['statistics_dwq_longest_streak_in_log'] = "Mayor racha de QSOs en el libro";
 $lang['statistics_dwq_longest_streak_in_log_hint'] = "¡Se muestra un máximo de 10 rachas más largas!";
@@ -67,4 +70,3 @@ $lang['statistics_dwq_current_streak_in_log'] = "Racha actual con QSOs en el lib
 $lang['statistics_dwq_current_streak_continuous_days'] = "Racha actual (días continuos con QSOs)";
 $lang['statistics_dwq_make_qso_to_extend_streak'] = "Si hace un QSO hoy, ¡puede continuar y extender su racha... De lo contrario, su racha actual se perderá!";
 $lang['statistics_dwq_no_current_streak'] = "¡No se encuentra una racha actual!";
-
