@@ -38,6 +38,8 @@ $lang['statistics_distances_qsos_with'] = "QSO con distanza : ";
 $lang['statistics_distances_and_band'] = ", banda : ";
 $lang['statistics_distances_and_mode'] = ", modo : ";
 $lang['statistics_distances_and_power'] = ", potenza : ";
+$lang['statistics_distances_and_propagation'] = ", propagazione : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *

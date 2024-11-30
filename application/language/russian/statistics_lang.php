@@ -38,6 +38,8 @@ $lang['statistics_distances_qsos_with'] = "QSOs с";
 $lang['statistics_distances_and_band'] = ", диапазоне : ";
 $lang['statistics_distances_and_mode'] = ", Вид модуляции : ";
 $lang['statistics_distances_and_power'] = ", Мощность передачи : ";
+$lang['statistics_distances_and_propagation'] = ", Тип прохождения : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *
