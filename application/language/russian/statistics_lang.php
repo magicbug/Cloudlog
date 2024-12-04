@@ -58,9 +58,12 @@ $lang['statistics_timeline'] = "Лента времени";
 $lang['statistics_tab_yearly'] = "Yearly";
 $lang['statistics_tab_streaks'] = "Streaks";
 $lang['statistics_tab_weekdays'] = "Days of the week";
+$lang['statistics_tab_daily'] = "Daily";
 $lang['statistics_days_yearly'] = "Number of days with QSOs each year";
 $lang['statistics_days_with_qso'] = "Дней с QSO";
+$lang['statistics_qsos_each_day'] = "Number of QSOs each day";
 $lang['statistics_weekdays_with_qso'] = "QSOs breakdown by day of the week";
+$lang['statistics_number_of_qsos_this_day'] = "Number of QSOs this day";
 $lang['statistics_number_of_qsos_this_weekday'] = "Number of QSOs for this day of the week";
 $lang['statistics_dwq_longest_streak_in_log'] = "Самый длинный интервал дней с QSO в журнале";
 $lang['statistics_dwq_longest_streak_in_log_hint'] = "Отображаются 10 самых длинных интервалов!";
@@ -69,4 +72,3 @@ $lang['statistics_dwq_current_streak_in_log'] = "Текущий интервал
 $lang['statistics_dwq_current_streak_continuous_days'] = "Текущий интервал (непрерывных дней с QSO)";
 $lang['statistics_dwq_make_qso_to_extend_streak'] = "Если вы проведёте QSO сегодня, вы можете удлинить текущий интерывл дней с QSO... иначе текущий интервал будет прерван!";
 $lang['statistics_dwq_no_current_streak'] = "Текущий интервал не найден!";
-

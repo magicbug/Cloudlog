@@ -58,9 +58,12 @@ $lang['statistics_timeline'] = "Timeline";
 $lang['statistics_tab_yearly'] = "Yearly";
 $lang['statistics_tab_streaks'] = "Streaks";
 $lang['statistics_tab_weekdays'] = "Days of the week";
+$lang['statistics_tab_daily'] = "Daily";
 $lang['statistics_days_yearly'] = "Number of days with QSOs each year";
 $lang['statistics_days_with_qso'] = "Days with QSOs";
+$lang['statistics_qsos_each_day'] = "Number of QSOs each day";
 $lang['statistics_weekdays_with_qso'] = "QSOs breakdown by day of the week";
+$lang['statistics_number_of_qsos_this_day'] = "Number of QSOs this day";
 $lang['statistics_number_of_qsos_this_weekday'] = "Number of QSOs for this day of the week";
 $lang['statistics_dwq_longest_streak_in_log'] = "Longest streak with QSOs in the log";
 $lang['statistics_dwq_longest_streak_in_log_hint'] = "A maximum of the 10 longest streaks are shown!";
@@ -69,4 +72,3 @@ $lang['statistics_dwq_current_streak_in_log'] = "Current streak with QSOs in the
 $lang['statistics_dwq_current_streak_continuous_days'] = "Current streak (continuous days with QSOs)";
 $lang['statistics_dwq_make_qso_to_extend_streak'] = "If you make a QSO today, you can continue to extend your streak... or else your current streak will be broken!";
 $lang['statistics_dwq_no_current_streak'] = "No current streak found!";
-

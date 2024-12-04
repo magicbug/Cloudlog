@@ -50,4 +50,15 @@ class Dayswithqso extends CI_Controller {
         echo json_encode($data);
     }
 
+    public function get_historydays(){
+
+        //load model
+        $this->load->model('dayswithqso_model');
+
+        // get data
+        $data = $this->dayswithqso_model->getHistoryDays();
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+
 }

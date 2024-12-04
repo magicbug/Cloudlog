@@ -55,12 +55,15 @@ $lang['statistics_timeline'] = "Chronologie";
 *
 */
 
-$lang['statistics_tab_yearly'] = "Statistiques annuelles";
+$lang['statistics_tab_yearly'] = "Années";
 $lang['statistics_tab_streaks'] = "Séries de jours";
 $lang['statistics_tab_weekdays'] = "Jours de la semaine";
+$lang['statistics_tab_daily'] = "Historique par jour";
 $lang['statistics_days_yearly'] = "Nombre de jours avec des QSOs par année";
 $lang['statistics_days_with_qso'] = "Jours avec des QSOs";
+$lang['statistics_qsos_each_day'] = "Nombre de QSOs chaque jour";
 $lang['statistics_weekdays_with_qso'] = "QSOs par jour de la semaine";
+$lang['statistics_number_of_qsos_this_day'] = "Nombre de QSOs ce jour";
 $lang['statistics_number_of_qsos_this_weekday'] = "Nombre de QSOs pour ce jour de la semaine";
 $lang['statistics_dwq_longest_streak_in_log'] = "Plus longue série de jours avec des QSOs";
 $lang['statistics_dwq_longest_streak_in_log_hint'] = "Seules les 10 plus longues séries sont affichées";
