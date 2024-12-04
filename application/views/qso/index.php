@@ -113,14 +113,15 @@
 
               <!-- Callsign Input -->
               <div class="row">
-                <div class="mb-3 col-md-9">
+                <div class="mb-3 col-md-8">
                   <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label><?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>&nbsp;<i id="check_cluster" data-bs-toggle="tooltip" title="Search DXCluster for latest Spot" class="fas fa-search"></i> <?php } ?>
                   <input type="text" class="form-control" id="callsign" name="callsign" required>
                   <small id="callsign_info" class="badge text-bg-secondary"></small> <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
                 </div>
-                <div class="mb-3 col-md-3 align-self-center">
+                <div class="mb-3 col-md-4 align-self-center">
                   <small id="qrz_info" class="text-bg-secondary me-1"></small>
                   <small id="hamqth_info" class="text-bg-secondary me-1"></small>
+                  <small id="qrzcq_info" class="text-bg-secondary me-1"></small>
                 </div>
               </div>
 

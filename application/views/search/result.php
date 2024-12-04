@@ -12,7 +12,11 @@
 
 				<tr>
 					<td align="left">Callsign</td>
-					<td style="padding: 0.3em 0 0.3em 0.5em;" align="left"><?php echo str_replace("0", "&Oslash;", strtoupper($callsign['callsign'])); ?> <a target="_blank" href="https://www.qrz.com/db/<?php echo strtoupper($callsign['callsign']); ?>"><img style="vertical-align: baseline" width="16" height="16" src="<?php echo base_url(); ?>images/icons/qrz.png" alt="Lookup <?php echo strtoupper($callsign['callsign']); ?> on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/<?php echo strtoupper($callsign['callsign']); ?>"><img style="vertical-align: baseline" width="16" height="16" src="<?php echo base_url(); ?>images/icons/hamqth.png" alt="Lookup <?php echo strtoupper($callsign['callsign']); ?> on HamQTH"></a></td>
+					<td style="padding: 0.3em 0 0.3em 0.5em;" align="left"><?php echo str_replace("0", "&Oslash;", strtoupper($callsign['callsign'])); ?> 
+						<a target="_blank" href="https://www.qrz.com/db/<?php echo strtoupper($callsign['callsign']); ?>"><img style="vertical-align: baseline" width="16" height="16" src="<?php echo base_url(); ?>images/icons/qrz.png" alt="Lookup <?php echo strtoupper($callsign['callsign']); ?> on QRZ.com"></a> 
+						<a target="_blank" href="https://www.hamqth.com/<?php echo strtoupper($callsign['callsign']); ?>"><img style="vertical-align: baseline" width="16" height="16" src="<?php echo base_url(); ?>images/icons/hamqth.png" alt="Lookup <?php echo strtoupper($callsign['callsign']); ?> on HamQTH"></a>
+						<a target="_blank" href="https://www.qrzcq.com/call/<?php echo strtoupper($callsign['callsign']); ?>"><img style="vertical-align: baseline" width="16" height="16" src="<?php echo base_url(); ?>images/icons/qrzcq.png" alt="Lookup <?php echo strtoupper($callsign['callsign']); ?> on QRZCQ"></a>
+					</td>
 				</tr>
 
 				<tr>

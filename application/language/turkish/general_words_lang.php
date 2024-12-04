@@ -108,6 +108,7 @@ $lang['general_more_qso'] = 'Daha QSOlar';
 
 $lang['general_lookup_qrz'] = "QRZ.com\'dan bak";
 $lang['general_lookup_hamqth'] = "HamQTH\'den bak";
+$lang['general_lookup_qrzcq'] = "QRZCQ\'dan bak";
 
 $lang['general_total_distance'] = 'Topam mesafe';
 

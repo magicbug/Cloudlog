@@ -109,6 +109,7 @@ $lang['general_more_qso'] = '更多 QSO';
 
 $lang['general_lookup_qrz'] = '在 QRZ.com 上查询';
 $lang['general_lookup_hamqth'] = '在 HamQTH 上查询';
+$lang['general_lookup_qrzcq'] = '在 QRZCQ 上查询';
 
 $lang['general_total_distance'] = '总计距离';
 
