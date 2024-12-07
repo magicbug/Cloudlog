@@ -119,6 +119,18 @@
          ]
       }
    },
+   "AO-123":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145850000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"435400000"
+            }
+         ]
+      }
+   },
    "CAS-4A":{
       "Modes":{
          "U/V":[
