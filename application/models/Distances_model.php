@@ -11,7 +11,7 @@ class Distances_model extends CI_Model
 
 		if (!$logbooks_locations_array) {
 			header('Content-Type: application/json');
-			echo json_encode(array('Error' => 'No QSOs found to plot.'));
+			echo json_encode(array('Error' => lang('statistics_distances_no_qsos_to_plot')));
 			return;
 		}
 
@@ -49,6 +49,13 @@ class Distances_model extends CI_Model
 					}
 				}
 
+				if ($postdata['propag'] != 'all') {
+					if ($postdata['propag']) {
+						$this->db->where('col_prop_mode', $postdata['propag']);
+					} else {
+						$this->db->where("col_prop_mode = ''");
+					}
+				}
 
 				$this->db->where('station_id', $station_id);
 				$queryresult = $this->db->get($this->config->item('table_name'));
@@ -70,7 +77,7 @@ class Distances_model extends CI_Model
 		}
 		else {
 			header('Content-Type: application/json');
-			echo json_encode(array('Error' => 'No QSOs found to plot.'));
+			echo json_encode(array('Error' => lang('statistics_distances_no_qsos_to_plot')));
 		}
 
 	}
@@ -236,10 +243,10 @@ class Distances_model extends CI_Model
 		}
 	}
 
-    	/*
+    /*
 	 * Used to fetch QSOs from the logbook in the awards
 	 */
-	public function qso_details($distance, $band, $sat, $mode, $power){
+	public function qso_details($distance, $band, $sat, $mode, $power, $propag){
 		$distarray = $this->getdistparams($distance);
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
@@ -278,8 +285,15 @@ class Distances_model extends CI_Model
 			}
 		}
 
-		$this->db->order_by("COL_TIME_ON", "desc");
+		if ($propag != 'all') {
+			if ($propag) {
+				$this->db->where('COL_PROP_MODE', $propag);
+			} else {
+				$this->db->where('COL_PROP_MODE is NULL');
+			}
+		}
 
+		$this->db->order_by("COL_TIME_ON", "desc");
 		return $this->db->get($this->config->item('table_name'));
 	}
 

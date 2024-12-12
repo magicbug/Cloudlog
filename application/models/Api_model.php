@@ -6,21 +6,25 @@
  *
  */
 
-class API_Model extends CI_Model {
+class API_Model extends CI_Model
+{
 
-    // GET API Keys
-    function keys() {
+	// GET API Keys
+	function keys()
+	{
 		$this->db->where('user_id', $this->session->userdata('user_id'));
-    	return $this->db->get('api');
-    }
+		return $this->db->get('api');
+	}
 
-	function CountKeysWithNoUserID() {
+	function CountKeysWithNoUserID()
+	{
 		$this->db->where('user_id =', NULL);
 		$query = $this->db->get('api');
 		return $query->num_rows();
-    }
+	}
 
-	function ClaimAllAPIKeys($id = NULL) {
+	function ClaimAllAPIKeys($id = NULL)
+	{
 		// if $id is empty then use session user_id
 		if (empty($id)) {
 			// Get the first USER ID from user table in the database
@@ -28,117 +32,116 @@ class API_Model extends CI_Model {
 		}
 
 		$data = array(
-				'user_id' => $id,
+			'user_id' => $id,
 		);
-			
+
 		$this->db->update('api', $data);
 	}
 
-    function key_description($key) {
+	function key_description($key)
+	{
 		$this->db->where('user_id', $this->session->userdata('user_id'));
-    	$this->db->where('key', $key);
-    	$query = $this->db->get('api');
+		$this->db->where('key', $key);
+		$query = $this->db->get('api');
 
-    	return $query->result_array()[0];
-    }
+		return $query->result_array()[0];
+	}
 
-	function key_userid($key) {
-    	$this->db->where('key', $key);
-    	$query = $this->db->get('api');
+	function key_userid($key)
+	{
+		$this->db->where('key', $key);
+		$query = $this->db->get('api');
 
-    	return $query->result_array()[0]['user_id'];
-    }
+		return $query->result_array()[0]['user_id'];
+	}
 
-    function update_key_description($key, $description) {
+	function update_key_description($key, $description)
+	{
 
-    	$data = array(
-        'description' => xss_clean($description),
+		$data = array(
+			'description' => xss_clean($description),
 		);
 
 		$this->db->where('key', xss_clean($key));
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->update('api', xss_clean($data));
+	}
 
-    }
 
-
-    function delete_key($key) {
+	function delete_key($key)
+	{
 		$this->db->where('user_id', $this->session->userdata('user_id'));
-    	$this->db->where('key', xss_clean($key));
+		$this->db->where('key', xss_clean($key));
 		$this->db->delete('api');
-    }
-    // Generate API Key
-    function generate_key($rights) {
+	}
+	// Generate API Key
+	function generate_key($rights)
+	{
 
-    	// Expects either rw (Read, Write) or r (read only)
+		// Expects either rw (Read, Write) or r (read only)
 
-    	// Generate Unique Key
-    	$data['key'] = uniqid("cl");
+		// Generate Unique Key
+		$data['key'] = uniqid("cl");
 
-    	$data['rights'] = $rights;
+		$data['rights'] = $rights;
 
-    	// Set API key to active
-    	$data['status'] = "active";
+		// Set API key to active
+		$data['status'] = "active";
 
 		$data['user_id'] = $this->session->userdata('user_id');
 
-    	$this->db->insert('api', $data);
+		$this->db->insert('api', $data);
+	}
 
-    }
+	function access($key)
+	{
+		// No key = no access
+		if (!$key) {
+			return "No Key Found";
+		}
 
-    function access($key) {
+		// Check that the key is valid
+		$this->db->where('key', $key);
+		$query = $this->db->get('api', 1); // Limit to 1 row for performance
 
-      // No key = no access, mate
-      if(!$key) {
-        return $status = "No Key Found";
-      }
+		if ($query->num_rows() > 0) {
+			$row = $query->row();
+			if ($row->status == "active") {
+				return $row->rights;
+			} else {
+				return "Key Disabled";
+			}
+		} else {
+			return "No Key Found";
+		}
+	}
 
-    	// Check that the key is valid
-    	$this->db->where('key', $key);
-     	$query = $this->db->get('api');
+	function authorize($key)
+	{
+		$r = $this->access($key);
+		if ($r == "rw") {
+			return 2;
+		} else if ($r == "r") {
+			return 1;
+		} else {
+			return 0;
+		}
+	}
 
-		  if ($query->num_rows() > 0)
-  		{
-        foreach ($query->result() as $row)
-	      {
-	     	  if($row->status == "active") {
-	   	  	  return $status = $row->rights;
-	   		  } else {
- 		   		 	return $status = "Key Disabled";
-  	   		}
-	      }
-		  } else {
-			  return $status = "No Key Found";
-  		}
-    }
-
-  function authorize($key) {
-    $r = $this->access($key);
-    if($r == "rw") {
-      return 2;
-    } else if($r == "r") {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-
-  function update_last_used($key) {
-    $this->db->set('last_used', 'NOW()', FALSE);
-    $this->db->where('key', xss_clean($key));
-    $this->db->update('api');
-  }
+	function update_last_used($key)
+	{
+		$this->db->set('last_used', 'NOW()', FALSE);
+		$this->db->where('key', xss_clean($key));
+		$this->db->update('api');
+	}
 
 	// FUNCTION: string name(string $column)
 	// Converts a MySQL column name to a more friendly name
 	function name($col)
 	{
-		if($this->_columnName[$col])
-		{
+		if ($this->_columnName[$col]) {
 			return $this->_columnName[$col]['Name'];
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
@@ -147,19 +150,13 @@ class API_Model extends CI_Model {
 	// Returns the description for a MySQL column name
 	function description($col)
 	{
-		if($this->_columnName[$col])
-		{
-			if($this->_columnName[$col]['Description'] != "")
-			{
+		if ($this->_columnName[$col]) {
+			if ($this->_columnName[$col]['Description'] != "") {
 				return $this->_columnName[$col]['Description'];
-			}
-			else
-			{
+			} else {
 				return "No description available";
 			}
-		}
-		else
-		{
+		} else {
 			return 0;
 		}
 	}
@@ -168,10 +165,8 @@ class API_Model extends CI_Model {
 	// Converts a friendly name to a MySQL column name
 	function column($name)
 	{
-		while ($column = current($this->_columnName))
-		{
-			if($this->_columnName[key($this->_columnName)]['Name'] == $name)
-			{
+		while ($column = current($this->_columnName)) {
+			if ($this->_columnName[key($this->_columnName)]['Name'] == $name) {
 				$a = key($this->_columnName);
 				reset($this->_columnName);
 				return $a;
@@ -183,7 +178,7 @@ class API_Model extends CI_Model {
 		return 0;
 	}
 
-	
+
 	// ARRAY: $_columnName
 	// An array matching MySQL column names to friendly names, descriptions and types
 	private $_columnName = array(
@@ -307,7 +302,4 @@ class API_Model extends CI_Model {
 		'COL_CREDIT_GRANTED'			=> array('Name' => 'UNK_CREDIT_GRANTED', 'Description' => '', 'Type' => ''),
 		'COL_CREDIT_SUBMITTED'			=> array('Name' => 'UNK_CREDIT_SUBMITTED', 'Description' => '', 'Type' => ''),
 	);
-
 }
-
-?>

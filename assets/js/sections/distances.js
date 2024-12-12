@@ -2,8 +2,10 @@ $('#distplot_bands').change(function(){
 	var band = $("#distplot_bands option:selected").text();
 	if (band != "SAT") {
 		$("#distplot_sats").prop('disabled', true);
+		$("#distplot_sats, #distplot_sats_lbl").hide();
 	} else {
 		$("#distplot_sats").prop('disabled', false);
+		$("#distplot_sats, #distplot_sats_lbl").show();
 	}
 });
 
@@ -16,7 +18,9 @@ function distPlot(form) {
 		data: {'band': form.distplot_bands.value,
 			'sat': form.distplot_sats.value,
 			'mode': form.distplot_modes.value,
-			'pwr': form.distplot_powers.value},
+			'pwr': form.distplot_powers.value,
+			'propag': form.distplot_propag.value
+		},
 		success: function(tmp) {
 			if (tmp.ok == 'OK') {
 				if (!($('#information').length > 0))
@@ -146,6 +150,7 @@ function getDistanceQsos(distance) {
 			'sat' : $("#distplot_sats").val(),
 			'mode': $("#distplot_modes").val(),
 			'pwr': $("#distplot_powers").val(),
+			'propag': $("#distplot_propag").val(),
 		},
 		success: function (html) {
 			BootstrapDialog.show({

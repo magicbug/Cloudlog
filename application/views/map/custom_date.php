@@ -1,6 +1,6 @@
 <div class="container custom-map-QSOs">
     <br>
-    <h2><?php echo $logbook_name ?> logbook QSOs (Custom Date)</h2>
+    <h2><?php echo $logbook_name; echo strpos($logbook_name, 'logbook') ? '' : ' logbook'; ?> QSOs (Custom Dates)</h2>
 
     <?php if ($this->session->flashdata('notice')) { ?>
         <div class="alert alert-info" role="alert">
@@ -19,6 +19,10 @@
                 <label for="to"><?php echo lang('gen_to_date') . ": " ?></label>
                 <input name="to" id="to" type="date" class="form-control w-auto" value="<?php echo $date_to; ?>" max="<?php echo $date_to; ?>">
             </div>
+
+            <div class="mb-3 col-md-3 d-flex align-items-end">
+                <input class="btn btn-secondary" type="button" value="<?php echo lang('set_log_to_full_dates'); ?>" onclick="get_oldest_qso_date();">
+            </div>
         </div>
 
         <div class="row">
@@ -34,55 +38,59 @@
                 </select>
             </div>
 
-
             <div class="mb-3 col-md-3">
                 <label for="mode">Mode</label>
                 <select id="mode" name="mode" class="form-select">
-                    <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>>All</option>
+                    <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>><?php echo lang('general_word_all') ?></option>
                     <?php
-                    foreach ($modes->result() as $mode) {
-                        if ($mode->submode == null) {
-                            echo '<option value="' . $mode->mode . '"';
-                            if ($this->input->post('mode') == $mode->mode) echo ' selected';
-                            echo '>' . $mode->mode . '</option>' . "\n";
-                        } else {
-                            echo '<option value="' . $mode->submode . '"';
-                            if ($this->input->post('mode') == $mode->submode) echo ' selected';
-                            echo '>' . $mode->submode . '</option>' . "\n";
+                    foreach ($modes as $mode) {
+                        if ($mode->submode ?? '' == '') {
+                            echo '<option value="' . $mode . '">' . strtoupper($mode) . '</option>'."\n";
                         }
                     }
                     ?>
                 </select>
             </div>
-
+            <?php
+                // Sort translated propagation modes alphabetically
+                $prop_modes = ['AS' => lang('gen_hamradio_propagation_AS'),
+                               'AUR' => lang('gen_hamradio_propagation_AUR'),
+                               'AUE' => lang('gen_hamradio_propagation_AUE'),
+                               'BS' => lang('gen_hamradio_propagation_BS'),
+                               'ECH' => lang('gen_hamradio_propagation_ECH'),
+                               'EME' => lang('gen_hamradio_propagation_EME'),
+                               'ES' => lang('gen_hamradio_propagation_ES'),
+                               'FAI' => lang('gen_hamradio_propagation_FAI'),
+                               'F2' => lang('gen_hamradio_propagation_F2'),
+                               'INTERNET' => lang('gen_hamradio_propagation_INTERNET'),
+                               'ION' => lang('gen_hamradio_propagation_ION'),
+                               'IRL' => lang('gen_hamradio_propagation_IRL'),
+                               'MS' => lang('gen_hamradio_propagation_MS'),
+                               'RPT' => lang('gen_hamradio_propagation_RPT'),
+                               'RS' => lang('gen_hamradio_propagation_RS'),
+                               'SAT' => lang('gen_hamradio_propagation_SAT'),
+                               'TEP' => lang('gen_hamradio_propagation_TEP'),
+                               'TR' => lang('gen_hamradio_propagation_TR')];
+                asort($prop_modes);
+            ?>
             <div class="mb-3 col-md-3">
                 <label for="selectPropagation">Propagation Mode</label>
                 <select class="form-select" id="selectPropagation" name="prop_mode">
-                    <option value="All" <?php if ($this->input->post('prop_mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>>All</option>
-                    <option value="AS" <?php if ($this->input->post('prop_mode') == "AS") echo ' selected'; ?>>Aircraft Scatter</option>
-                    <option value="AUR" <?php if ($this->input->post('prop_mode') == "AUR") echo ' selected'; ?>>Aurora</option>
-                    <option value="AUE" <?php if ($this->input->post('prop_mode') == "AUE") echo ' selected'; ?>>Aurora-E</option>
-                    <option value="BS" <?php if ($this->input->post('prop_mode') == "BS") echo ' selected'; ?>>Back scatter</option>
-                    <option value="ECH" <?php if ($this->input->post('prop_mode') == "ECH") echo ' selected'; ?>>EchoLink</option>
-                    <option value="EME" <?php if ($this->input->post('prop_mode') == "EME") echo ' selected'; ?>>Earth-Moon-Earth</option>
-                    <option value="ES" <?php if ($this->input->post('prop_mode') == "ES") echo ' selected'; ?>>Sporadic E</option>
-                    <option value="FAI" <?php if ($this->input->post('prop_mode') == "FAI") echo ' selected'; ?>>Field Aligned Irregularities</option>
-                    <option value="F2" <?php if ($this->input->post('prop_mode') == "F2") echo ' selected'; ?>>F2 Reflection</option>
-                    <option value="INTERNET" <?php if ($this->input->post('prop_mode') == "INTERNET") echo ' selected'; ?>>Internet-assisted</option>
-                    <option value="ION" <?php if ($this->input->post('prop_mode') == "ION") echo ' selected'; ?>>Ionoscatter</option>
-                    <option value="IRL" <?php if ($this->input->post('prop_mode') == "IRL") echo ' selected'; ?>>IRLP</option>
-                    <option value="MS" <?php if ($this->input->post('prop_mode') == "MS") echo ' selected'; ?>>Meteor scatter</option>
-                    <option value="RPT" <?php if ($this->input->post('prop_mode') == "RPT") echo ' selected'; ?>>Terrestrial or atmospheric repeater or transponder</option>
-                    <option value="RS" <?php if ($this->input->post('prop_mode') == "RS") echo ' selected'; ?>>Rain scatter</option>
-                    <option value="SAT" <?php if ($this->input->post('prop_mode') == "SAT") echo ' selected'; ?>>Satellite</option>
-                    <option value="TEP" <?php if ($this->input->post('prop_mode') == "TEP") echo ' selected'; ?>>Trans-equatorial</option>
-                    <option value="TR" <?php if ($this->input->post('prop_mode') == "TR") echo ' selected'; ?>>Tropospheric ducting</option>
+                    <option value="All" <?php if ($this->input->post('prop_mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>><?php echo lang('general_word_all') ?></option>
+                    <option value="" <?php if ($this->input->post('prop_mode') == "" && $this->input->method() == 'post') echo ' selected'; ?>><?php echo lang('general_word_undefined') ?></option>
+                    <?php
+                        foreach($prop_modes as $key => $label) {
+                            echo '<option value="' . $key . '">';
+                            if ($this->input->post('prop_mode') == $key) echo ' selected';
+                            echo $label . '</option>';
+                        }
+                    ?>
                 </select>
             </div>
         </div>
 
         <div class="row">
-            <div class="mb-1 col-md-1">
+            <div class="mb-2 col-md-2">
                 <input class="btn btn-primary btn_submit_map_custom" type="button" value="Load Map">
             </div>
             <div class="mb-4 col-md-4">
@@ -96,4 +104,4 @@
 <!-- Map -->
 <div id="custommap" class="map-leaflet mt-2" style="width: 100%; height: 1000px;"></div>
 
-<div class="alert alert-success" role="alert">Showing QSOs for Custom Date for Active Logbook <?php echo $logbook_name ?></div>
+<div class="alert alert-success" role="alert">Showing QSOs for Custom Dates for Active Logbook <?php echo $logbook_name ?></div>

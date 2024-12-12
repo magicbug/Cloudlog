@@ -28,8 +28,8 @@
                 } ?>
             </select>
             <?php if (count($sats_available) != 0) { ?>
-                <label class="my-1 me-2" for="distplot_sats"><?php echo lang('general_word_satellite')?></label>
-                <select class="form-select my-1 me-sm-2 w-auto" disabled id="distplot_sats">
+                <label class="my-1 me-2" for="distplot_sats" id="distplot_sats_lbl" style="display: none"><?php echo lang('general_word_satellite')?></label>
+                <select class="form-select my-1 me-sm-2 w-auto" disabled id="distplot_sats" style="display: none">
                     <option value="All"><?php echo lang('statistics_distances_modes_all')?></option>
                     <?php foreach($sats_available as $sat) {
                         echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";
@@ -48,6 +48,38 @@
                         }
                     }
                     ?>
+            </select>
+            <?php
+                // Sort translated propagation modes alphabetically
+                $prop_modes = ['AS' => lang('gen_hamradio_propagation_AS'),
+                               'AUR' => lang('gen_hamradio_propagation_AUR'),
+                               'AUE' => lang('gen_hamradio_propagation_AUE'),
+                               'BS' => lang('gen_hamradio_propagation_BS'),
+                               'ECH' => lang('gen_hamradio_propagation_ECH'),
+                               'EME' => lang('gen_hamradio_propagation_EME'),
+                               'ES' => lang('gen_hamradio_propagation_ES'),
+                               'FAI' => lang('gen_hamradio_propagation_FAI'),
+                               'F2' => lang('gen_hamradio_propagation_F2'),
+                               'INTERNET' => lang('gen_hamradio_propagation_INTERNET'),
+                               'ION' => lang('gen_hamradio_propagation_ION'),
+                               'IRL' => lang('gen_hamradio_propagation_IRL'),
+                               'MS' => lang('gen_hamradio_propagation_MS'),
+                               'RPT' => lang('gen_hamradio_propagation_RPT'),
+                               'RS' => lang('gen_hamradio_propagation_RS'),
+                               'SAT' => lang('gen_hamradio_propagation_SAT'),
+                               'TEP' => lang('gen_hamradio_propagation_TEP'),
+                               'TR' => lang('gen_hamradio_propagation_TR')];
+                asort($prop_modes);
+            ?>
+			<label class="my-1 me-2" for="distplot_propag"><?php echo lang('gen_hamradio_propagation_mode') ?></label>
+            <select class="form-select my-1 me-sm-2 w-auto" id="distplot_propag">
+                <option value="all" <?php if ($this->input->post('prop_mode') == "all" || $this->input->method() !== 'post') echo ' selected'; ?>><?php echo lang('general_word_all') ?></option>
+                <option value="" <?php if ($this->input->post('prop_mode') == "" && $this->input->method() == 'post') echo ' selected'; ?>><?php echo lang('general_word_undefined') ?></option>
+                <?php
+                    foreach($prop_modes as $key => $label) {
+                        echo '<option value="' . $key . '">' . $label . '</option>';
+                    }
+                ?>
             </select>
 			<label class="my-1 me-2" for="distplot_powers"><?php echo lang('gen_hamradio_transmit_power'); ?></label>
             <select class="form-select my-1 me-sm-2 w-auto" id="distplot_powers">

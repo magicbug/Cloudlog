@@ -483,10 +483,10 @@
                             $twitter_string .= urlencode($distancestring." on ".$twitter_band_sat." using ".($row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE)." ".$hashtags);
                         }
                     ?>
-
-                    <div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fab fa-twitter"></i> Tweet</a></div>
-                    <?php if($this->session->userdata('user_mastodon_url') != null) { echo '<div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="'.$this->session->userdata('user_mastodon_url').'/share?text='.$twitter_string.'"><i class="fab fa-mastodon"></i> Toot</a></div>'; } ?>
-
+                    <br>
+                    <div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo $twitter_string; ?>"><i class="fa-brands fa-x"></i> Post</a></div>
+                    <?php if($this->session->userdata('user_mastodon_url') != null) { echo '<div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="'.$this->session->userdata('user_mastodon_url').'/share?text='.$twitter_string.'"><i class="fa-brands fa-mastodon"></i> Toot</a></div>'; } ?>
+                    <div style="display: inline-block;"><a class="btn btn-primary twitter-share-button" target="_blank" href="https://bsky.app/intent/compose?text=<?php echo $twitter_string; ?>"><i class="fa-brands fa-bluesky"></i> Skeet</a></div>
                 </div>
             </div>
         </div>

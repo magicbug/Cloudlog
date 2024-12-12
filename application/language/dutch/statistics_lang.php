@@ -26,6 +26,7 @@ $lang['statistics_number_of_qso_worked'] = "# of QSO's worked";
 */
 
 $lang['statistics_distances_bands_all'] = "All";
+$lang['statistics_distances_modes_all'] = "All";
 $lang['statistics_distances_worked'] = "Distances Worked";
 $lang['statistics_distances_part1_contacts_were_plotted_furthest'] = "contacts were plotted.<br /> Your furthest contact was with";
 $lang['statistics_distances_part2_contacts_were_plotted_furthest'] = "in gridsquare";
@@ -33,8 +34,12 @@ $lang['statistics_distances_part3_contacts_were_plotted_furthest'] = "The distan
 $lang['statistics_distances_part4_contacts_were_plotted_furthest'] = "The average distance is";
 $lang['statistics_distances_number_of_qsos'] = "Number of QSOs";
 $lang['statistics_distances_callsigns_worked'] = "Callsign(s) worked (max 5 shown)";
-$lang['statistics_distances_qsos_with'] = "QSOs with";
-$lang['statistics_distances_and_band'] = "and band";
+$lang['statistics_distances_qsos_with'] = "QSOs with distance : ";
+$lang['statistics_distances_and_band'] = ", band : ";
+$lang['statistics_distances_and_mode'] = ", mode : ";
+$lang['statistics_distances_and_power'] = ", power : ";
+$lang['statistics_distances_and_propagation'] = ", propagation : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *
@@ -50,8 +55,16 @@ $lang['statistics_timeline'] = "Timeline";
 *
 */
 
-$lang['statistics_days_with_qso'] = "Number of days with QSOs each year";
-$lang['statistics_days_with_qso_short'] = "Days with QSOs";
+$lang['statistics_tab_yearly'] = "Yearly";
+$lang['statistics_tab_streaks'] = "Streaks";
+$lang['statistics_tab_weekdays'] = "Days of the week";
+$lang['statistics_tab_daily'] = "Daily";
+$lang['statistics_days_yearly'] = "Number of days with QSOs each year";
+$lang['statistics_days_with_qso'] = "Days with QSOs";
+$lang['statistics_qsos_each_day'] = "Number of QSOs each day";
+$lang['statistics_weekdays_with_qso'] = "QSOs breakdown by day of the week";
+$lang['statistics_number_of_qsos_this_day'] = "Number of QSOs this day";
+$lang['statistics_number_of_qsos_this_weekday'] = "Number of QSOs for this day of the week";
 $lang['statistics_dwq_longest_streak_in_log'] = "Longest streak with QSOs in the log";
 $lang['statistics_dwq_longest_streak_in_log_hint'] = "A maximum of the 10 longest streaks are shown!";
 $lang['statistics_dwq_streak_continuous_days'] = "Streak (continuous days with QSOs)";
@@ -59,4 +72,3 @@ $lang['statistics_dwq_current_streak_in_log'] = "Current streak with QSOs in the
 $lang['statistics_dwq_current_streak_continuous_days'] = "Current streak (continuous days with QSOs)";
 $lang['statistics_dwq_make_qso_to_extend_streak'] = "If you make a QSO today, you can continue to extend your streak... or else your current streak will be broken!";
 $lang['statistics_dwq_no_current_streak'] = "No current streak found!";
-

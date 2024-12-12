@@ -38,6 +38,8 @@ $lang['statistics_distances_qsos_with'] = "QSO 与";
 $lang['statistics_distances_and_band'] = "和波段";
 $lang['statistics_distances_and_mode'] = ", 模式 : ";
 $lang['statistics_distances_and_power'] = ", 发射功率 : ";
+$lang['statistics_distances_and_propagation'] = ", 传播模式 : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *
@@ -53,8 +55,16 @@ $lang['statistics_timeline'] = "时间线";
 *
 */
 
-$lang['statistics_days_with_qso'] = "本年QSO总数";
-$lang['statistics_days_with_qso_short'] = "QSO的日期";
+$lang['statistics_tab_yearly'] = "Yearly";
+$lang['statistics_tab_streaks'] = "Streaks";
+$lang['statistics_tab_weekdays'] = "Days of the week";
+$lang['statistics_tab_daily'] = "Daily";
+$lang['statistics_days_yearly'] = "Number of days with QSOs each year";
+$lang['statistics_days_with_qso'] = "QSO的日期";
+$lang['statistics_qsos_each_day'] = "Number of QSOs each day";
+$lang['statistics_weekdays_with_qso'] = "QSOs breakdown by day of the week";
+$lang['statistics_number_of_qsos_this_day'] = "Number of QSOs this day";
+$lang['statistics_number_of_qsos_this_weekday'] = "Number of QSOs for this day of the week";
 $lang['statistics_dwq_longest_streak_in_log'] = "日志中最长QSO连续记录";
 $lang['statistics_dwq_longest_streak_in_log_hint'] = "最多显示10条最长QSO连续记录";
 $lang['statistics_dwq_streak_continuous_days'] = "最长QSO连续记录";
@@ -62,4 +72,3 @@ $lang['statistics_dwq_current_streak_in_log'] = "目前的QSO连续记录";
 $lang['statistics_dwq_current_streak_continuous_days'] = "当前连续天数";
 $lang['statistics_dwq_make_qso_to_extend_streak'] = "如果你今天进行了QSO，那么就能延长你的连续天数，否则将会被打破清零";
 $lang['statistics_dwq_no_current_streak'] = "没有找到连续的天数";
-

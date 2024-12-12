@@ -190,7 +190,7 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function delete_oqrs_line($id) {
-        $sql = 'delete from oqrs where id =' . xss_clean($id);
+		$sql = 'delete from oqrs where id =' . xss_clean((intval($id)));
 
         $query = $this->db->query($sql);
 

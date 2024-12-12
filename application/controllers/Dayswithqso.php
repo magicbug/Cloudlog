@@ -21,6 +21,7 @@ class Dayswithqso extends CI_Controller {
         $data['streaks'] = $this->dayswithqso_model->getLongestStreak();
         $data['currentstreak'] = $this->dayswithqso_model->getCurrentStreak();
         $data['almostcurrentstreak'] = $this->dayswithqso_model->getAlmostCurrentStreak();
+        $data['daysofweek'] = $this->dayswithqso_model->getDaysOfWeek();
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('dayswithqso/index');
@@ -34,6 +35,28 @@ class Dayswithqso extends CI_Controller {
 
         // get data
         $data = $this->dayswithqso_model->getDaysWithQso();
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+
+    public function get_weekdays(){
+
+        //load model
+        $this->load->model('dayswithqso_model');
+
+        // get data
+        $data = $this->dayswithqso_model->getDaysOfWeek();
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+
+    public function get_historydays(){
+
+        //load model
+        $this->load->model('dayswithqso_model');
+
+        // get data
+        $data = $this->dayswithqso_model->getHistoryDays();
         header('Content-Type: application/json');
         echo json_encode($data);
     }

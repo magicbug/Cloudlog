@@ -38,6 +38,8 @@ $lang['statistics_distances_qsos_with'] = "QSOs avec distance : ";
 $lang['statistics_distances_and_band'] = ", bande : ";
 $lang['statistics_distances_and_mode'] = ", mode : ";
 $lang['statistics_distances_and_power'] = ", puissance : ";
+$lang['statistics_distances_and_propagation'] = ", propagation : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "Pas de QSOs correspondants à tracer.";
 
 /*
 *
@@ -53,13 +55,20 @@ $lang['statistics_timeline'] = "Chronologie";
 *
 */
 
-$lang['statistics_days_with_qso'] = "Number of days with QSOs each year";
-$lang['statistics_days_with_qso_short'] = "Days with QSOs";
-$lang['statistics_dwq_longest_streak_in_log'] = "Longest streak with QSOs in the log";
-$lang['statistics_dwq_longest_streak_in_log_hint'] = "A maximum of the 10 longest streaks are shown!";
-$lang['statistics_dwq_streak_continuous_days'] = "Streak (continuous days with QSOs)";
-$lang['statistics_dwq_current_streak_in_log'] = "Current streak with QSOs in the log";
-$lang['statistics_dwq_current_streak_continuous_days'] = "Current streak (continuous days with QSOs)";
-$lang['statistics_dwq_make_qso_to_extend_streak'] = "If you make a QSO today, you can continue to extend your streak... or else your current streak will be broken!";
-$lang['statistics_dwq_no_current_streak'] = "No current streak found!";
-
+$lang['statistics_tab_yearly'] = "Années";
+$lang['statistics_tab_streaks'] = "Séries de jours";
+$lang['statistics_tab_weekdays'] = "Jours de la semaine";
+$lang['statistics_tab_daily'] = "Historique par jour";
+$lang['statistics_days_yearly'] = "Nombre de jours avec des QSOs par année";
+$lang['statistics_days_with_qso'] = "Jours avec des QSOs";
+$lang['statistics_qsos_each_day'] = "Nombre de QSOs chaque jour";
+$lang['statistics_weekdays_with_qso'] = "QSOs par jour de la semaine";
+$lang['statistics_number_of_qsos_this_day'] = "Nombre de QSOs ce jour";
+$lang['statistics_number_of_qsos_this_weekday'] = "Nombre de QSOs pour ce jour de la semaine";
+$lang['statistics_dwq_longest_streak_in_log'] = "Plus longue série de jours avec des QSOs";
+$lang['statistics_dwq_longest_streak_in_log_hint'] = "Seules les 10 plus longues séries sont affichées";
+$lang['statistics_dwq_streak_continuous_days'] = "Série (jours consécutifs avec des QSOs)";
+$lang['statistics_dwq_current_streak_in_log'] = "Série en cours";
+$lang['statistics_dwq_current_streak_continuous_days'] = "Série en cours (jours consécutifs avec des QSOs)";
+$lang['statistics_dwq_make_qso_to_extend_streak'] = "Si vous faites un QSO aujourd'hui, vous pouvez continuer la série en cours... sinon elle sera perdue !";
+$lang['statistics_dwq_no_current_streak'] = "Aucune série en cours !";

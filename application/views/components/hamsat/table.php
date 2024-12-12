@@ -129,7 +129,7 @@
                                         echo "<span data-bs-toggle=\"tooltip\" title=\"No\" class=\"badge bg-danger\">No</span>";
                                     }
                                 } else {
-                                    echo "<span data-bs-toggle=\"tooltip\" title=\"Unkown\" class=\"badge bg-warning\">Unknown</span>";
+                                    echo "<span data-bs-toggle=\"tooltip\" title=\"Unknown\" class=\"badge bg-warning\">Unknown</span>";
                                 }
                                 ?>
                             </td>

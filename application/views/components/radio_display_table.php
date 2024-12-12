@@ -2,7 +2,7 @@
 
 <table class="table table-striped">
         <tr class="titles">
-            <td colspan="2"><i class="fas fa-broadcast-tower"></i> Radio Status</td>
+            <td colspan="2"><i class="fa-solid fa-radio"></i> Radio Status</td>
         </tr>
 
         <?php foreach ($radio_status->result_array() as $row) { ?>

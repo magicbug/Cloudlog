@@ -252,7 +252,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 				</div>
 				<table class="table table-striped border-top">
 					<tr class="titles">
-						<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>
+						<td colspan="2"><i class="fa-solid fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>
 					</tr>
 
 					<tr>

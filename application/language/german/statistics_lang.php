@@ -38,6 +38,8 @@ $lang['statistics_distances_qsos_with'] = "QSOs mit Distanz : ";
 $lang['statistics_distances_and_band'] = ", Band : ";
 $lang['statistics_distances_and_mode'] = ", Mode : ";
 $lang['statistics_distances_and_power'] = ", Sendeleistung : ";
+$lang['statistics_distances_and_propagation'] = ", Wellenausbreitung : ";
+$lang['statistics_distances_no_qsos_to_plot'] = "No QSOs found to plot.";
 
 /*
 *
@@ -53,8 +55,16 @@ $lang['statistics_timeline'] = "Zeitleiste";
 *
 */
 
-$lang['statistics_days_with_qso'] = "Anzahl der Tage mit QSOs pro Jahr";
-$lang['statistics_days_with_qso_short'] = "Tage mit QSOs";
+$lang['statistics_tab_yearly'] = "Yearly";
+$lang['statistics_tab_streaks'] = "Streaks";
+$lang['statistics_tab_weekdays'] = "Days of the week";
+$lang['statistics_tab_daily'] = "Daily";
+$lang['statistics_days_yearly'] = "Number of days with QSOs each year";
+$lang['statistics_days_with_qso'] = "Tage mit QSOs";
+$lang['statistics_qsos_each_day'] = "Number of QSOs each day";
+$lang['statistics_weekdays_with_qso'] = "QSOs breakdown by day of the week";
+$lang['statistics_number_of_qsos_this_day'] = "Number of QSOs this day";
+$lang['statistics_number_of_qsos_this_weekday'] = "Number of QSOs for this day of the week";
 $lang['statistics_dwq_longest_streak_in_log'] = "Längste Serie mit QSOs im Logbuch";
 $lang['statistics_dwq_longest_streak_in_log_hint'] = "Es werden maximal die 10 längsten Serien angezeigt!";
 $lang['statistics_dwq_streak_continuous_days'] = "Serie (fortlaufende Tage mit QSOs)";
@@ -62,4 +72,3 @@ $lang['statistics_dwq_current_streak_in_log'] = "Aktuelle Serie mit QSOs im Logb
 $lang['statistics_dwq_current_streak_continuous_days'] = "Aktuelle Serie (fortlaufende Tage mit QSOs)";
 $lang['statistics_dwq_make_qso_to_extend_streak'] = "Wenn Sie heute ein QSO machen, können Sie Ihre Serie verlängern... Andernfalls wird Ihre aktuelle Serie unterbrochen!";
 $lang['statistics_dwq_no_current_streak'] = "Keine aktuelle Serie gefunden!";
-

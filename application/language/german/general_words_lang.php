@@ -153,6 +153,24 @@ $lang['gen_hamradio_qslmsg'] = 'QSL Msg';
 $lang['gen_hamradio_locator'] = 'Locator';
 $lang['gen_hamradio_transmit_power'] = 'Sendeleistung (W)';
 $lang['gen_hamradio_propagation_mode'] = 'Propagation';
+$lang['gen_hamradio_propagation_AS'] = "Aircraft Scatter";
+$lang['gen_hamradio_propagation_AUR'] = "Aurora";
+$lang['gen_hamradio_propagation_AUE'] = "Aurora-E";
+$lang['gen_hamradio_propagation_BS'] = "Back scatter";
+$lang['gen_hamradio_propagation_ECH'] = "EchoLink";
+$lang['gen_hamradio_propagation_EME'] = "Earth-Moon-Earth";
+$lang['gen_hamradio_propagation_ES'] = "Sporadic E";
+$lang['gen_hamradio_propagation_FAI'] = "Field Aligned Irregularities";
+$lang['gen_hamradio_propagation_F2'] = "F2 Reflection";
+$lang['gen_hamradio_propagation_INTERNET'] = "Internet-assisted";
+$lang['gen_hamradio_propagation_ION'] = "Ionoscatter";
+$lang['gen_hamradio_propagation_IRL'] = "IRLP";
+$lang['gen_hamradio_propagation_MS'] = "Meteor scatter";
+$lang['gen_hamradio_propagation_RPT'] = "Terrestrial or atmospheric repeater or transponder";
+$lang['gen_hamradio_propagation_RS'] = "Rain scatter";
+$lang['gen_hamradio_propagation_SAT'] = "Satellite";
+$lang['gen_hamradio_propagation_TEP'] = "Trans-equatorial";
+$lang['gen_hamradio_propagation_TR'] = "Tropospheric ducting";
 
 $lang['gen_hamradio_satellite_name'] = 'Satellit';
 $lang['gen_hamradio_satellite_mode'] = 'Satellitenmodus';
@@ -230,3 +248,5 @@ $lang['dashboard_logbooks_warning'] = 'Es wurde kein Stationslogbuch angelegt. K
 $lang['hams_at_no_activations_found'] = 'Keine bevorstehenden Aktivierungen gefunden. Bitte später noch einmal vorbeischauen.';
 
 $lang['datatables_language'] = "de-DE";
+
+$lang['set_log_to_full_dates'] = "Set log to full dates";

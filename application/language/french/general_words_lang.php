@@ -50,8 +50,8 @@ $lang['general_word_city'] = "Ville";
 $lang['general_word_total'] = "Total";
 $lang['general_word_year'] = "Année";
 $lang['general_word_month'] = "Mois";
-$lang['general_word_day'] = "Day";
-$lang['general_word_days'] = "Days";
+$lang['general_word_day'] = "Jour";
+$lang['general_word_days'] = "Jours";
 
 $lang['general_word_colors'] = "Couleurs";
 $lang['general_word_light'] = "Lumière/Laser";
@@ -153,6 +153,24 @@ $lang['gen_hamradio_qslmsg'] = "QSL Msg";
 $lang['gen_hamradio_locator'] = "Locator";
 $lang['gen_hamradio_transmit_power'] = "Puissance d'émission (W)";
 $lang['gen_hamradio_propagation_mode'] = "Mode de propagation";
+$lang['gen_hamradio_propagation_AS'] = "Réflexion sur avion (Aircraft scatter)";
+$lang['gen_hamradio_propagation_AUR'] = "Aurore boréale (Aurora)";
+$lang['gen_hamradio_propagation_AUE'] = "Aurore boréale avec couche E (Aurora-E)";
+$lang['gen_hamradio_propagation_BS'] = "Rétrodiffusion (Back scatter)";
+$lang['gen_hamradio_propagation_ECH'] = "EchoLink";
+$lang['gen_hamradio_propagation_EME'] = "EME (Terre-Lune-Terre)";
+$lang['gen_hamradio_propagation_ES'] = "Couche E sporadique";
+$lang['gen_hamradio_propagation_FAI'] = "Irrégularités ionosphériques";
+$lang['gen_hamradio_propagation_F2'] = "Couche F2 de l'ionosphère";
+$lang['gen_hamradio_propagation_INTERNET'] = "Internet";
+$lang['gen_hamradio_propagation_ION'] = "Diffusion dans l'ionosphère";
+$lang['gen_hamradio_propagation_IRL'] = "IRLP";
+$lang['gen_hamradio_propagation_MS'] = "Diffusion par météorite (Meteor scatter)";
+$lang['gen_hamradio_propagation_RPT'] = "Relais, répéteur ou transpondeur";
+$lang['gen_hamradio_propagation_RS'] = "Diffusion par la pluie (Rain scatter)";
+$lang['gen_hamradio_propagation_SAT'] = "Satellite";
+$lang['gen_hamradio_propagation_TEP'] = "Trans-équatoriale";
+$lang['gen_hamradio_propagation_TR'] = "Conduit troposphérique";
 
 $lang['gen_hamradio_satellite_name'] = "Nom du satellite";
 $lang['gen_hamradio_satellite_mode'] = "Mode du satellite";
@@ -230,3 +248,5 @@ $lang['dashboard_logbooks_warning'] = "Vous n'avez pas de journal de travail pou
 $lang['hams_at_no_activations_found'] = "Aucune activation à venir trouvée. Veuillez revenir plus tard.";
 
 $lang['datatables_language'] = "fr-FR";
+
+$lang['set_log_to_full_dates'] = "Dates du log complet";
