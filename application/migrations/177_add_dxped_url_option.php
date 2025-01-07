@@ -11,11 +11,17 @@ class Migration_add_dxped_url_option extends CI_Migration {
 
     public function up()
     {
-        $data = array(
-            array('option_name' => "dxped_url", 'option_value' => "https://cdn.cloudlog.org/read_ng3k_dxped_list.php", 'autoload' => "yes"),
-         );
+        // Check if dxped_url is already in the options table
+        if ($this->db->where('option_name', 'dxped_url')->count_all_results('options') == 0) {
+            // Insert dxped_url option
+            $data = array(
+            'option_name' => "dxped_url",
+            'option_value' => "https://cdn.cloudlog.org/read_ng3k_dxped_list.php",
+            'autoload' => "yes"
+            );
+            $this->db->insert('options', $data);
+        }
 
-         $this->db->insert_batch('options', $data);
     }
 
     public function down()
