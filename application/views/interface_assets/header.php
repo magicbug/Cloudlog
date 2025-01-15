@@ -22,10 +22,7 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/fontawesome.css">
 	<link href="<?php echo base_url(); ?>assets/fontawesome/css/brands.css" rel="stylesheet" />
   	<link href="<?php echo base_url(); ?>assets/fontawesome/css/solid.css" rel="stylesheet" />
-  	<link href="<?php echo base_url(); ?>assets/fontawesome/css/sharp-thin.css" rel="stylesheet" />
-  	<link href="<?php echo base_url(); ?>assets/fontawesome/css/duotone-thin.css" rel="stylesheet" />
-  	<link href="<?php echo base_url(); ?>assets/fontawesome/css/sharp-duotone-thin.css" rel="stylesheet" />
-
+  
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox.min.css" />
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/flag-icons.min.css" />
 
