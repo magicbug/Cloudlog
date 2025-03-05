@@ -499,6 +499,18 @@
          ]
       }
    },
+   "SO-124":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145925000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"436885000"
+            }
+         ]
+      }
+   },
    "SONATE-2":{
       "Modes":{
          "V":[
