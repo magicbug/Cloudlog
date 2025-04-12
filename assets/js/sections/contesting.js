@@ -433,7 +433,7 @@ function logQso() {
 
 		var data = [[
 			$("#start_date").val() + ' ' + $("#start_time").val(),
-			$("#callsign").val().toUpperCase(),
+			$("#callsign").val($("#callsign").val().replace(/\s+/g, '').toUpperCase()),
 			$("#band").val(),
 			$("#mode").val(),
 			$("#rst_sent").val(),
