@@ -328,7 +328,7 @@ class Qrz extends CI_Controller {
 
 		$post_data['KEY'] = $qrz_api_key;      // Correct parameter
 		$post_data['ACTION'] = 'FETCH';         // Correct parameter
-		$post_data['OPTION'] = 'BAND:80m,TYPE:ADIF'; // Correct parameter for fetching all confirmed in ADIF
+		$post_data['OPTION'] = 'TYPE:ADIF'; // Correct parameter for fetching all confirmed in ADIF
 
 		$ch = curl_init( $url );
 		curl_setopt( $ch, CURLOPT_POST, true);            // Correct method
