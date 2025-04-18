@@ -469,7 +469,6 @@ class Qrz extends CI_Controller {
 		$tableheaders .= "<td>Mode</td>";
 		$tableheaders .= "<td>QRZ QSL Received</td>";
 		$tableheaders .= "<td>QRZ Confirmed</td>";
-		$tableheaders .= "<td>Log Status</td>";
 		$tableheaders .= "</tr>";
 
 		$table = "";

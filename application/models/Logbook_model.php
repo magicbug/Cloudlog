@@ -4931,7 +4931,6 @@ class Logbook_model extends CI_Model
       $table .= "<td>" . $record['mode'] . "</td>";
       $table .= "<td>" . $record['qsl_date'] . "</td>";
       $table .= "<td>" . ($record['qsl_rcvd'] == 'Y' ? '<span class="badge text-bg-success">Yes</span>' : '<span class="badge text-bg-danger">No</span>') . "</td>";
-      $table .= "<td>" . $log_status . "</td>";
       $table .= "</tr>";
     }
 
