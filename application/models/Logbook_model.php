@@ -4890,8 +4890,6 @@ class Logbook_model extends CI_Model
       $this->db->where($this->config->item('table_name').'.COL_CALL', $record['call']);
       $this->db->where($this->config->item('table_name').'.COL_TIME_ON', $record['time_on']);
       $this->db->where($this->config->item('table_name').'.COL_BAND', $record['band']);
-      // Optional: Add mode check if necessary, but it might reduce matches if modes differ slightly (e.g., SSB vs USB)
-      // $this->db->where($this->config->item('table_name').'.COL_MODE', $record['mode']);
       $this->db->group_end(); // End group for this record's AND conditions
     }
     $this->db->group_end(); // End grouping OR conditions
@@ -4947,6 +4945,10 @@ class Logbook_model extends CI_Model
   }
 }
 
+// Function to validate ADIF date format
+// This function checks if the date is in the correct format (YYYYMMDD) and is a valid date.
+// It uses the DateTime class to create a date object from the given date string and format. If the date is valid, it returns true; otherwise, it returns false.
+// The function also allows specifying a different format if needed, defaulting to 'Ymd' (YYYYMMDD).
 function validateADIFDate($date, $format = 'Ymd')
 {
   $d = DateTime::createFromFormat($format, $date);
