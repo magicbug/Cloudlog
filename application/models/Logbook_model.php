@@ -4882,7 +4882,7 @@ class Logbook_model extends CI_Model
     }
 
     // Step 1: Build WHERE clause for fetching potential matches
-    $this->db->select($this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_STATION_CALLSIGN');
+    $this->db->select($this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_MODE, ');
     $this->db->from($this->config->item('table_name'));
     $this->db->group_start(); // Start grouping OR conditions
     foreach ($batch_data as $record) {
@@ -4892,7 +4892,6 @@ class Logbook_model extends CI_Model
       $this->db->where($this->config->item('table_name').'.COL_BAND', $record['band']);
       // Optional: Add mode check if necessary, but it might reduce matches if modes differ slightly (e.g., SSB vs USB)
       // $this->db->where($this->config->item('table_name').'.COL_MODE', $record['mode']);
-      $this->db->where($this->config->item('table_name').'.COL_STATION_CALLSIGN', $record['station_callsign']);
       $this->db->group_end(); // End group for this record's AND conditions
     }
     $this->db->group_end(); // End grouping OR conditions
@@ -4904,13 +4903,13 @@ class Logbook_model extends CI_Model
     // Index DB results for faster lookup
     $indexed_results = [];
     foreach ($db_results as $row) {
-      $key = $row['COL_CALL'] . '|' . $row['COL_TIME_ON'] . '|' . $row['COL_BAND'] . '|' . $row['COL_STATION_CALLSIGN'];
+      $key = $row['COL_CALL'] . '|' . $row['COL_TIME_ON'] . '|' . $row['COL_BAND'];
       $indexed_results[$key] = $row['COL_PRIMARY_KEY'];
     }
 
     // Step 3 & 4: Prepare Batch Update and Build Table Rows
     foreach ($batch_data as $record) {
-      $match_key = $record['call'] . '|' . $record['time_on'] . '|' . $record['band'] . '|' . $record['station_callsign'];
+      $match_key = $record['call'] . '|' . $record['time_on'] . '|' . $record['band'];
       $log_status = '<span class="badge text-bg-danger">Not Found</span>';
       $primary_key = null;
 
