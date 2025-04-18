@@ -4244,6 +4244,7 @@ class Logbook_model extends CI_Model
       # try: $a looks like a call (.\d[A-Z]) and $b doesn't (.\d), they are
       # swapped. This still does not properly handle calls like DJ1YFK/KH7K where
       # only the OP's experience says that it's DJ1YFK on KH7K.
+
       if (!$c && $a && $b) {                          # $a and $b exist, no $c
         if (preg_match($lidadditions, $b)) {        # check if $b is a lid-addition
           $b = $a;
@@ -4863,6 +4864,87 @@ class Logbook_model extends CI_Model
     if (isset($row)) {
       return $row->oldest_qso_date;
     }
+  }
+
+  /**
+  * Processes a batch of QRZ ADIF records for efficient database updates.
+  *
+  * @param array $batch_data Array of records from the ADIF file.
+  * @return string HTML table rows for the processed batch.
+  */
+  public function process_qrz_batch($batch_data) {
+    $table = "";
+    $update_batch_data = [];
+    $this->load->model('Stations');
+
+    if (empty($batch_data)) {
+      return '';
+    }
+
+    // Step 1: Build WHERE clause for fetching potential matches
+    $this->db->select($this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_STATION_CALLSIGN');
+    $this->db->from($this->config->item('table_name'));
+    $this->db->group_start(); // Start grouping OR conditions
+    foreach ($batch_data as $record) {
+      $this->db->or_group_start(); // Start group for this record's AND conditions
+      $this->db->where($this->config->item('table_name').'.COL_CALL', $record['call']);
+      $this->db->where($this->config->item('table_name').'.COL_TIME_ON', $record['time_on']);
+      $this->db->where($this->config->item('table_name').'.COL_BAND', $record['band']);
+      // Optional: Add mode check if necessary, but it might reduce matches if modes differ slightly (e.g., SSB vs USB)
+      // $this->db->where($this->config->item('table_name').'.COL_MODE', $record['mode']);
+      $this->db->where($this->config->item('table_name').'.COL_STATION_CALLSIGN', $record['station_callsign']);
+      $this->db->group_end(); // End group for this record's AND conditions
+    }
+    $this->db->group_end(); // End grouping OR conditions
+
+    // Step 2: Fetch Matches
+    $query = $this->db->get();
+    $db_results = $query->result_array();
+
+    // Index DB results for faster lookup
+    $indexed_results = [];
+    foreach ($db_results as $row) {
+      $key = $row['COL_CALL'] . '|' . $row['COL_TIME_ON'] . '|' . $row['COL_BAND'] . '|' . $row['COL_STATION_CALLSIGN'];
+      $indexed_results[$key] = $row['COL_PRIMARY_KEY'];
+    }
+
+    // Step 3 & 4: Prepare Batch Update and Build Table Rows
+    foreach ($batch_data as $record) {
+      $match_key = $record['call'] . '|' . $record['time_on'] . '|' . $record['band'] . '|' . $record['station_callsign'];
+      $log_status = '<span class="badge text-bg-danger">Not Found</span>';
+      $primary_key = null;
+
+      if (isset($indexed_results[$match_key])) {
+        $primary_key = $indexed_results[$match_key];
+        $log_status = '<span class="badge text-bg-success">Confirmed</span>';
+
+        // Prepare data for batch update
+        $update_batch_data[] = [
+          'COL_PRIMARY_KEY' => $primary_key,
+          'COL_QRZCOM_QSO_DOWNLOAD_DATE' => $record['qsl_date'],
+          'COL_QRZCOM_QSO_UPLOAD_STATUS' => $record['qsl_rcvd'] // Should be 'Y' if confirmed
+        ];
+      }
+
+      // Build table row
+      $table .= "<tr>";
+      $table .= "<td>" . $record['station_callsign'] . "</td>";
+      $table .= "<td>" . $record['time_on'] . "</td>";
+      $table .= "<td>" . $record['call'] . "</td>";
+      $table .= "<td>" . $record['mode'] . "</td>";
+      $table .= "<td>" . $record['qsl_date'] . "</td>";
+      $table .= "<td>" . ($record['qsl_rcvd'] == 'Y' ? '<span class="badge text-bg-success">Yes</span>' : '<span class="badge text-bg-danger">No</span>') . "</td>";
+      $table .= "<td>" . $log_status . "</td>";
+      $table .= "</tr>";
+    }
+
+    // Step 5: Execute Batch Update
+    if (!empty($update_batch_data)) {
+      $this->db->update_batch($this->config->item('table_name'), $update_batch_data, 'COL_PRIMARY_KEY');
+    }
+
+    // Step 6: Return Table HTML
+    return $table;
   }
 }
 
