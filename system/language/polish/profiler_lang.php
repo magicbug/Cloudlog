@@ -35,26 +35,26 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Brak bezpośredniego dostępu do skryptu');
 
-$lang['profiler_database'] = 'DATABASE';
-$lang['profiler_controller_info'] = 'CLASS/METHOD';
-$lang['profiler_benchmarks'] = 'BENCHMARKS';
-$lang['profiler_queries'] = 'QUERIES';
-$lang['profiler_get_data'] = 'GET DATA';
-$lang['profiler_post_data'] = 'POST DATA';
-$lang['profiler_uri_string'] = 'URI STRING';
-$lang['profiler_memory_usage'] = 'MEMORY USAGE';
-$lang['profiler_config'] = 'CONFIG VARIABLES';
-$lang['profiler_session_data'] = 'SESSION DATA';
-$lang['profiler_headers'] = 'HTTP HEADERS';
-$lang['profiler_no_db'] = 'Database driver is not currently loaded';
-$lang['profiler_no_queries'] = 'No queries were run';
-$lang['profiler_no_post'] = 'No POST data exists';
-$lang['profiler_no_get'] = 'No GET data exists';
-$lang['profiler_no_uri'] = 'No URI data exists';
-$lang['profiler_no_memory'] = 'Memory Usage Unavailable';
-$lang['profiler_no_profiles'] = 'No Profile data - all Profiler sections have been disabled.';
-$lang['profiler_section_hide'] = 'Hide';
-$lang['profiler_section_show'] = 'Show';
-$lang['profiler_seconds'] = 'seconds';
+$lang['profiler_database'] = 'BAZA DANYCH';
+$lang['profiler_controller_info'] = 'KLASA/METODA';
+$lang['profiler_benchmarks'] = 'TESTY PORÓWNAWCZE';
+$lang['profiler_queries'] = 'ZAPYTANIA';
+$lang['profiler_get_data'] = 'POBIERZ DANE';
+$lang['profiler_post_data'] = 'POST DANE';
+$lang['profiler_uri_string'] = 'CIĄG URI';
+$lang['profiler_memory_usage'] = 'UŻYCIE PAMIĘCI';
+$lang['profiler_config'] = 'ZMIENNE KONFIGURACJI';
+$lang['profiler_session_data'] = 'DANE SESJI';
+$lang['profiler_headers'] = 'NAGŁÓWKI HTTP';
+$lang['profiler_no_db'] = 'Sterownik bazy danych nie jest obecnie załadowany';
+$lang['profiler_no_queries'] = 'Nie uruchomiono żadnych zapytań';
+$lang['profiler_no_post'] = 'Brak danych POST';
+$lang['profiler_no_get'] = 'Brak danych GET';
+$lang['profiler_no_uri'] = 'Brak danych URI';
+$lang['profiler_no_memory'] = 'Użycie pamięci niedostępne';
+$lang['profiler_no_profiles'] = 'Brak danych profilu — wszystkie sekcje Profilera zostały wyłączone.';
+$lang['profiler_section_hide'] = 'Ukryj';
+$lang['profiler_section_show'] = 'Pokaż';
+$lang['profiler_seconds'] = 'sekundy';

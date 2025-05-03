@@ -35,17 +35,17 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Bezpośredni dostęp do skryptu nie jest dozwolony');
 
-$lang['ftp_no_connection']		= 'Unable to locate a valid connection ID. Please make sure you are connected before performing any file routines.';
-$lang['ftp_unable_to_connect']		= 'Unable to connect to your FTP server using the supplied hostname.';
-$lang['ftp_unable_to_login']		= 'Unable to login to your FTP server. Please check your username and password.';
-$lang['ftp_unable_to_mkdir']		= 'Unable to create the directory you have specified.';
-$lang['ftp_unable_to_changedir']	= 'Unable to change directories.';
-$lang['ftp_unable_to_chmod']		= 'Unable to set file permissions. Please check your path.';
-$lang['ftp_unable_to_upload']		= 'Unable to upload the specified file. Please check your path.';
-$lang['ftp_unable_to_download']		= 'Unable to download the specified file. Please check your path.';
-$lang['ftp_no_source_file']		= 'Unable to locate the source file. Please check your path.';
-$lang['ftp_unable_to_rename']		= 'Unable to rename the file.';
-$lang['ftp_unable_to_delete']		= 'Unable to delete the file.';
-$lang['ftp_unable_to_move']		= 'Unable to move the file. Please make sure the destination directory exists.';
+$lang['ftp_no_connection'] = 'Nie można zlokalizować prawidłowego identyfikatora połączenia. Przed wykonaniem jakichkolwiek procedur dotyczących plików upewnij się, że jesteś połączony.';
+$lang['ftp_unable_to_connect'] = 'Nie można połączyć się z serwerem FTP przy użyciu podanej nazwy hosta.';
+$lang['ftp_unable_to_login'] = 'Nie można zalogować się do serwera FTP. Sprawdź nazwę użytkownika i hasło.';
+$lang['ftp_unable_to_mkdir'] = 'Nie można utworzyć określonego katalogu.';
+$lang['ftp_unable_to_changedir'] = 'Nie można zmienić katalogów.';
+$lang['ftp_unable_to_chmod'] = 'Nie można ustawić uprawnień do pliku. Sprawdź ścieżkę.';
+$lang['ftp_unable_to_upload'] = 'Nie można przesłać określonego pliku. Sprawdź ścieżkę.';
+$lang['ftp_unable_to_download'] = 'Nie można pobrać określonego pliku. Sprawdź ścieżkę.';
+$lang['ftp_no_source_file'] = 'Nie można zlokalizować pliku źródłowego. Sprawdź ścieżkę.';
+$lang['ftp_unable_to_rename'] = 'Nie można zmienić nazwy pliku.';
+$lang['ftp_unable_to_delete'] = 'Nie można usunąć pliku.';
+$lang['ftp_unable_to_move'] = 'Nie można przenieść pliku. Upewnij się, że katalog docelowy istnieje.';

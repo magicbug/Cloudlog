@@ -1,20 +1,20 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Brak bezpośredniego dostępu do skryptu');
 
-// Tiles
+// Kafelki
 $lang['qso_title_qso_map'] = 'Mapa łączności';
 $lang['qso_title_suggestions'] = 'Sugestie';
 $lang['qso_title_previous_contacts'] = 'Poprzednie łączności';
-$lang['qso_title_times_worked_before'] = "times worked before";
-$lang['qso_title_image'] = 'Profile Picture';
-$lang['qso_previous_max_shown'] = "Max. 5 previous contacts are shown";
+$lang['qso_title_times_worked_before'] = "times working before";
+$lang['qso_title_image'] = 'Zdjęcie profilowe';
+$lang['qso_previous_max_shown'] = "Wyświetlono maks. 5 poprzednich kontaktów";
 
-// Quicklog on Dashboard
+// Quicklog na pulpicie nawigacyjnym
 $lang['qso_quicklog_enter_callsign'] = 'QUICKLOG Enter Callsign';
 
-// Input Help Text on the /QSO Display
-$lang['qso_transmit_power_helptext'] = 'Wpisz wartość mocy w watach. W polu podaj same cyfry.';
+// Wprowadź tekst pomocy na wyświetlaczu /QSO
+$lang['qso_transmit_power_helptext'] = 'Wpisz wartość mocy w zegarku. W polu podaj same cyfry.';
 
 $lang['qso_sota_ref_helptext'] = 'Na przykład: GM/NS-001.';
 $lang['qso_wwff_ref_helptext'] = 'Na przykład: DLFF-0069.';
@@ -25,75 +25,73 @@ $lang['qso_sig_info_helptext'] = 'Na przykład: DA/NW-357';
 
 $lang['qso_dok_helptext'] = 'Na przykład: Q03';
 
-$lang['qso_notes_helptext'] = 'Notatka jest widoczna tylko w Cloudlog, nie jest wysyłana z potwierdzeniami.';
-$lang['qsl_notes_helptext'] = 'This note content is exported to QSL services like eqsl.cc.';
+$lang['qso_notes_helptext'] = 'Notatka jest tylko udostępniona w Cloudlog, nie jest wysyłana z potwierdzeniem.';
+$lang['qsl_notes_helptext'] = 'Treść tej notatki jest eksportowana do usług QSL, takich jak eqsl.cc.';
 
-$lang['qso_eqsl_qslmsg_helptext'] = "Get the default message for eQSL, for this station.";
+$lang['qso_eqsl_qslmsg_helptext'] = "Pobierz domyślną wiadomość dla eQSL dla tej stacji.";
 
-// error text //
-$lang['qso_error_timeoff_less_timeon'] = "TimeOff is less than TimeOn";
+// tekst błędu //
+$lang['qso_error_timeoff_less_timeon'] = "Czas wolny jest krótszy niż czas włączenia";
 
-// Button Text on /qso Display
+// Tekst przycisku na wyświetlaczu /qso
 
 $lang['qso_btn_reset_qso'] = 'Resetuj';
 $lang['qso_btn_save_qso'] = 'Zapisz QSO';
 $lang['qso_btn_edit_qso'] = 'Edytuj QSO';
-$lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
+$lang['qso_delete_warning'] = "Uwaga! Czy na pewno chcesz usunąć QSO z ";
 
-// QSO Details
+// Szczegóły QSO
 
 $lang['qso_details'] = 'Szczegóły QSO';
 
-$lang['fav_add'] = 'Add Band/Mode to Favs';
-$lang['qso_operator_callsign'] = 'Operator Callsign';
+$lang['fav_add'] = 'Dodaj pasmo/moduł do ulubionych';
+$lang['qso_operator_callsign'] = 'Znak wywoławczy operatora';
 
-// Simple FLE (FastLogEntry)
+// Prosty FLE (FastLogEntry)
 
-$lang['qso_simplefle_info'] = "What is that?";
-$lang['qso_simplefle_info_ln1'] = "Simple Fast Log Entry (FLE)";
-$lang['qso_simplefle_info_ln2'] = "'Fast Log Entry', or simply 'FLE' is a system to log QSOs very quickly and efficiently. Due to its syntax, only a minimum of input is required to log many QSOs with as little effort as possible.";
-$lang['qso_simplefle_info_ln3'] = "FLE was originally written by DF3CB. He offers a program for Windows on his website. Simple FLE was written by OK2CQR based on DF3CB's FLE and provides a web interface to log QSOs.";
-$lang['qso_simplefle_info_ln4'] = "A common use-case is if you have to import your paperlogs from a outdoor session and now SimpleFLE is also available in Cloudlog. Information about the syntax and how FLE works can be found <a href='https://df3cb.com/fle/documentation/' target='_blank'>here</a>.";
-$lang['qso_simplefle_qso_data'] = "QSO Data";
-$lang['qso_simplefle_qso_date_hint'] = "If you don't choose a date, today's date will be used.";
-$lang['qso_simplefle_qso_list'] = "QSO List";
-$lang['qso_simplefle_qso_list_total'] = "Total";
-$lang['qso_simplefle_qso_date'] = "QSO Date";
+$lang['qso_simplefle_info'] = "Co to jest?";
+$lang['qso_simplefle_info_ln1'] = "Prosty szybki wpis do dziennika (FLE)";
+$lang['qso_simplefle_info_ln2'] = "'Szybki wpis do dziennika' lub po prostu 'FLE' to system do bardzo szybkiego i wydajnego rejestrowania QSO. Ze względu na składnię, do rejestrowania wielu QSO przy jak najmniejszym wysiłku wymagane jest tylko minimalne wprowadzanie danych.";
+$lang['qso_simplefle_info_ln3'] = "FLE został pierwotnie napisany przez DF3CB. Oferuje on program dla systemu Windows na swojej stronie internetowej. Simple FLE został napisany przez OK2CQR na podstawie FLE DF3CB i zapewnia interfejs sieciowy do rejestrowania QSO.";
+$lang['qso_simplefle_info_ln4'] = "Powszechnym przypadkiem użycia jest importowanie dzienników papierowych z sesji na świeżym powietrzu, a teraz SimpleFLE jest również dostępny w Cloudlog. Informacje o składni i sposobie działania FLE można znaleźć <a href='https://df3cb.com/fle/documentation/' target='_blank'>tutaj</a>.";
+$lang['qso_simplefle_qso_data'] = "Dane QSO";
+$lang['qso_simplefle_qso_date_hint'] = "Jeśli nie wybierzesz daty, zostanie użyta dzisiejsza data.";
+$lang['qso_simplefle_qso_list'] = "Lista QSO";
+$lang['qso_simplefle_qso_list_total'] = "Suma";
+$lang['qso_simplefle_qso_date'] = "Data QSO";
 $lang['qso_simplefle_operator'] = "Operator";
-$lang['qso_simplefle_operator_hint'] = "e.g. OK2CQR";
-$lang['qso_simplefle_station_call_location'] = "Station Call/Location";
-$lang['qso_simplefle_station_call_location_hint'] = "If you did operate from a new location, first create a new <a href=". site_url('station') . ">Station Location</a>";
-$lang['qso_simplefle_utc_time'] = "Current UTC Time";
-$lang['qso_simplefle_enter_the_data'] = "Enter the Data";
-$lang['qso_simplefle_syntax_help_close_w_sample'] = "Close and Load Sample Data";
-$lang['qso_simplefle_reload'] = "Reload QSO List";
-$lang['qso_simplefle_save'] = "Save in Cloudlog";
-$lang['qso_simplefle_clear'] = "Clear Logging Session";
-$lang['qso_simplefle_refs_hint'] = "The Refs can be either <u>S</u>OTA, <u>I</u>OTA, <u>P</u>OTA or <u>W</u>WFF";
+$lang['qso_simplefle_operator_hint'] = "np. OK2CQR";
+$lang['qso_simplefle_station_call_location'] = "Wywołanie stacji/Lokalizacja";
+$lang['qso_simplefle_station_call_location_hint'] = "Jeśli operujesz z nowej lokalizacji, najpierw utwórz nową <a href=". site_url('station') . ">Lokalizację stacji</a>";
+$lang['qso_simplefle_utc_time'] = "Bieżący czas UTC";
+$lang['qso_simplefle_enter_the_data'] = "Wprowadź dane";
+$lang['qso_simplefle_syntax_help_close_w_sample'] = "Zamknij i wczytaj przykładowe dane";
+$lang['qso_simplefle_reload'] = "Ponownie wczytaj listę QSO";
+$lang['qso_simplefle_save'] = "Zapisz w Cloudlog";
+$lang['qso_simplefle_clear'] = "Wyczyść sesję rejestrowania";
+$lang['qso_simplefle_refs_hint'] = "Referencje mogą być <u>S</u>OTA, <u>I</u>OTA, <u>P</u>OTA lub <u>W</u>WFF";
 
-$lang['qso_simplefle_error_band'] = "Band is missing!";
-$lang['qso_simplefle_error_mode'] = "Mode is missing!";
-$lang['qso_simplefle_error_time'] = "Time is not set!";
-$lang['qso_simplefle_error_stationcall'] = "Station Call is not selected";
-$lang['qso_simplefle_error_operator'] = "'Operator' Field is empty";
-$lang['qso_simplefle_warning_reset'] = "Warning! Do you really want to reset everything?";
-$lang['qso_simplefle_warning_missing_band_mode'] = "Warning! You can't log the QSO List, because some QSO don't have band and/or mode defined!";
-$lang['qso_simplefle_warning_missing_time'] = "Warning! You can't log the QSO List, because some QSO don't have a time defined!";
-$lang['qso_simplefle_warning_example_data'] = "Attention! The Data Field containes example data. First Clear Logging Session!";
-$lang['qso_simplefle_confirm_save_to_log'] = "Are you sure that you want to add these QSO to the Log and clear the session?";
-$lang['qso_simplefle_success_save_to_log_header'] = "QSO Logged!";
-$lang['qso_simplefle_success_save_to_log'] = "The QSO were successfully logged in the logbook!";
-$lang['qso_simplefle_error_date'] = "Invalid date";
+$lang['qso_simplefle_error_band'] = "Brakuje pasma!";
+$lang['qso_simplefle_error_mode'] = "Brakuje trybu!";
+$lang['qso_simplefle_error_time'] = "Czas nie jest ustawiony!";
+$lang['qso_simplefle_error_stationcall'] = "Wywołanie stacji nie jest wybrane";
+$lang['qso_simplefle_error_operator'] = "Pole 'Operator' jest puste";
+$lang['qso_simplefle_warning_reset'] = "Ostrzeżenie! Czy na pewno chcesz zresetować wszystko?";
+$lang['qso_simplefle_warning_missing_band_mode'] = "Ostrzeżenie! Nie możesz zalogować listy QSO, ponieważ niektóre QSO nie mają zdefiniowanego pasma i/lub trybu!";
+$lang['qso_simplefle_warning_missing_time'] = "Ostrzeżenie! Nie możesz zalogować listy QSO, ponieważ niektóre QSO nie mają zdefiniowanego czasu!";$lang['qso_simplefle_warning_example_data'] = "Uwaga! Pole danych zawiera przykładowe dane. Najpierw wyczyść sesję rejestrowania!";
+$lang['qso_simplefle_confirm_save_to_log'] = "Czy na pewno chcesz dodać te QSO do dziennika i wyczyścić sesję?";
+$lang['qso_simplefle_success_save_to_log_header'] = "QSO zarejestrowane!";
+$lang['qso_simplefle_success_save_to_log'] = "QSO zostały pomyślnie zarejestrowane w dzienniku!";
+$lang['qso_simplefle_error_date'] = "Nieprawidłowa data";
 
-$lang['qso_simplefle_syntax_help_button'] = "Syntax Help";
-$lang['qso_simplefle_syntax_help_title'] = "Syntax for FLE";
-$lang['qso_simplefle_syntax_help_ln1'] = "Before starting to log a QSO, please note the basic rules.";
-$lang['qso_simplefle_syntax_help_ln2'] = "- Each new QSO should be on a new line.";
-$lang['qso_simplefle_syntax_help_ln3'] = "- On each new line, only write data that has changed from the previous QSO.";
-$lang['qso_simplefle_syntax_help_ln4'] = "To begin, ensure you have already filled in the form on the left with the date, station call, and operator's call. The main data includes the band (or QRG in MHz, e.g., '7.145'), mode, and time. After the time, you provide the first QSO, which is essentially the callsign.";
-$lang['qso_simplefle_syntax_help_ln5'] = "For example, a QSO that started at 21:34 (UTC) with 2M0SQL on 20m SSB.";
-$lang['qso_simplefle_syntax_help_ln6'] = "If you don't provide any RST information, the syntax will use 59 (599 for data). Our next QSO wasn't 59 on both sides, so we provide the information with the sent RST first. It was 2 minutes later than the first QSO.";
-$lang['qso_simplefle_syntax_help_ln7'] = "The first QSO was at 21:34, and the second one 2 minutes later at 21:36. We write down 6 because this is the only data that changed here. The information about band and mode didn't change, so this data is omitted.";
-$lang['qso_simplefle_syntax_help_ln8'] = "For our next QSO at 21:40 on 14th May, 2021, we changed the band to 40m but still on SSB. If no RST information is given, the syntax will use 59 for every new QSO. Therefore we can add another QSO which took place at the exact same time two days later. The date must be in format YYYY-MM-DD.";
-$lang['qso_simplefle_syntax_help_ln9'] = "For further information about the syntax, please check the website of DF3CB <a href='https://df3cb.com/fle/documentation/' target='_blank'>here.</a>";
-    
+$lang['qso_simplefle_syntax_help_button'] = "Pomoc dotycząca składni";
+$lang['qso_simplefle_syntax_help_title'] = "Składnia dla FLE";
+$lang['qso_simplefle_syntax_help_ln1'] = "Przed rozpoczęciem rejestrowania QSO zapoznaj się z podstawowymi zasadami.";
+$lang['qso_simplefle_syntax_help_ln2'] = "- Każde nowe QSO powinno znajdować się w nowym wierszu.";
+$lang['qso_simplefle_syntax_help_ln3'] = "- W każdym nowym wierszu zapisuj tylko dane, które uległy zmianie od poprzedniego QSO.";
+$lang['qso_simplefle_syntax_help_ln4'] = "Na początek upewnij się, że wypełniłeś formularz po lewej stronie, podając datę, wywołanie stacji i wywołanie operatora. Główne dane obejmują pasmo (lub QRG w MHz, np. '7.145'), tryb i czas. Po czasie podajesz pierwsze QSO, które jest zasadniczo znakiem wywoławczym.";
+$lang['qso_simplefle_syntax_help_ln5'] = "Na przykład QSO, które rozpoczęło się o 21:34 (UTC) z 2M0SQL na 20m SSB.";
+$lang['qso_simplefle_syntax_help_ln6'] = "Jeśli nie podasz żadnych informacji RST, składnia użyje 59 (599 dla danych). Nasze następne QSO nie było 59 po obu stronach, więc najpierw podajemy informacje z wysłanym RST. Było to 2 minuty później niż pierwsze QSO.";
+$lang['qso_simplefle_syntax_help_ln7'] = "Pierwsze QSO było o 21:34, a drugie 2 minuty później o 21:36. Zapisujemy 6, ponieważ są to jedyne dane, które się tutaj zmieniły. Informacje o paśmie i trybie nie uległy zmianie, więc te dane są pomijane.";
+$lang['qso_simplefle_syntax_help_ln8'] = "W przypadku naszego następnego QSO o 21:40 14 maja 2021 r. zmieniliśmy pasmo na 40 m, ale nadal na SSB. Jeśli nie podano informacji RST, składnia będzie używać 59 dla każdego nowego QSO. Dlatego możemy dodać kolejne QSO, które miało miejsce dokładnie o tej samej porze dwa dni później. Data musi być w formacie RRRR-MM-DD.";
+$lang['qso_simplefle_syntax_help_ln9'] = "Aby uzyskać więcej informacji na temat składni, sprawdź stronę internetową DF3CB <a href='https://df3cb.com/fle/documentation/' target='_blank'>tutaj.</a>";

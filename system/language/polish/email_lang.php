@@ -35,24 +35,24 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Bezpośredni dostęp do skryptu nie jest dozwolony');
 
-$lang['email_must_be_array'] = 'The email validation method must be passed an array.';
-$lang['email_invalid_address'] = 'Invalid email address: %s';
-$lang['email_attachment_missing'] = 'Unable to locate the following email attachment: %s';
-$lang['email_attachment_unreadable'] = 'Unable to open this attachment: %s';
-$lang['email_no_from'] = 'Cannot send mail with no "From" header.';
-$lang['email_no_recipients'] = 'You must include recipients: To, Cc, or Bcc';
-$lang['email_send_failure_phpmail'] = 'Unable to send email using PHP mail(). Your server might not be configured to send mail using this method.';
-$lang['email_send_failure_sendmail'] = 'Unable to send email using PHP Sendmail. Your server might not be configured to send mail using this method.';
-$lang['email_send_failure_smtp'] = 'Unable to send email using PHP SMTP. Your server might not be configured to send mail using this method.';
-$lang['email_sent'] = 'Your message has been successfully sent using the following protocol: %s';
-$lang['email_no_socket'] = 'Unable to open a socket to Sendmail. Please check settings.';
-$lang['email_no_hostname'] = 'You did not specify a SMTP hostname.';
-$lang['email_smtp_error'] = 'The following SMTP error was encountered: %s';
-$lang['email_no_smtp_unpw'] = 'Error: You must assign a SMTP username and password.';
-$lang['email_failed_smtp_login'] = 'Failed to send AUTH LOGIN command. Error: %s';
-$lang['email_smtp_auth_un'] = 'Failed to authenticate username. Error: %s';
-$lang['email_smtp_auth_pw'] = 'Failed to authenticate password. Error: %s';
-$lang['email_smtp_data_failure'] = 'Unable to send data: %s';
-$lang['email_exit_status'] = 'Exit status code: %s';
+$lang['email_must_be_array'] = 'Metodzie walidacji adresu e-mail należy przekazać tablicę.';
+$lang['email_invalid_address'] = 'Nieprawidłowy adres e-mail: %s';
+$lang['email_attachment_missing'] = 'Nie można znaleźć następującego załącznika e-mail: %s';
+$lang['email_attachment_unreadable'] = 'Nie można otworzyć tego załącznika: %s';
+$lang['email_no_from'] = 'Nie można wysłać wiadomości bez nagłówka „Od”.';
+$lang['email_no_recipients'] = 'Musisz uwzględnić odbiorców: Do, DW lub UDW';
+$lang['email_send_failure_phpmail'] = 'Nie można wysłać wiadomości e-mail za pomocą PHP mail(). Twój serwer może nie być skonfigurowany do wysyłania wiadomości e-mail za pomocą tej metody.';
+$lang['email_send_failure_sendmail'] = 'Nie można wysłać wiadomości e-mail za pomocą PHP Sendmail. Twój serwer może nie być skonfigurowany do wysyłania wiadomości e-mail za pomocą tej metody.';
+$lang['email_send_failure_smtp'] = 'Nie można wysłać wiadomości e-mail za pomocą PHP SMTP. Twój serwer może nie być skonfigurowany do wysyłania wiadomości e-mail za pomocą tej metody.';
+$lang['email_sent'] = 'Twoja wiadomość została pomyślnie wysłana za pomocą następującego protokołu: %s';
+$lang['email_no_socket'] = 'Nie można otworzyć gniazda dla Sendmail. Sprawdź ustawienia.';
+$lang['email_no_hostname'] = 'Nie określono nazwy hosta SMTP.';
+$lang['email_smtp_error'] = 'Napotkano następujący błąd SMTP: %s';
+$lang['email_no_smtp_unpw'] = 'Błąd: Musisz przypisać nazwę użytkownika i hasło SMTP.';
+$lang['email_failed_smtp_login'] = 'Nie udało się wysłać polecenia AUTH LOGIN. Błąd: %s';
+$lang['email_smtp_auth_un'] = 'Nie udało się uwierzytelnić nazwy użytkownika. Błąd: %s';
+$lang['email_smtp_auth_pw'] = 'Nie udało się uwierzytelnić hasła. Błąd: %s';
+$lang['email_smtp_data_failure'] = 'Nie można wysłać danych: %s';
+$lang['email_exit_status'] = 'Kod statusu wyjścia: %s';

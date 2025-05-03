@@ -1,5 +1,5 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Bezpośredni dostęp do skryptu nie jest dozwolony');
 
-$lang['sstv_string_disk_space'] = 'of disk space to store SSTV image assets';
+$lang['sstv_string_disk_space'] = 'miejsca na dysku do przechowywania zasobów obrazu SSTV';

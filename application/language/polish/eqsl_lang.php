@@ -1,5 +1,5 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('Bezpośredni dostęp do skryptu nie jest dozwolony');
 
 $lang['eqsl_short'] = 'eQSL';
