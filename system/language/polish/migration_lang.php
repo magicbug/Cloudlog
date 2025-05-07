@@ -35,13 +35,13 @@
  * @since	Version 3.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Bezpośredni dostęp do skryptu nie jest dozwolony');
 
-$lang['migration_none_found'] = 'No migrations were found.';
-$lang['migration_not_found'] = 'No migration could be found with the version number: %s.';
-$lang['migration_sequence_gap'] = 'There is a gap in the migration sequence near version number: %s.';
-$lang['migration_multiple_version'] = 'There are multiple migrations with the same version number: %s.';
-$lang['migration_class_doesnt_exist'] = 'The migration class "%s" could not be found.';
-$lang['migration_missing_up_method'] = 'The migration class "%s" is missing an "up" method.';
-$lang['migration_missing_down_method'] = 'The migration class "%s" is missing a "down" method.';
-$lang['migration_invalid_filename'] = 'Migration "%s" has an invalid filename.';
+$lang['migration_none_found'] = 'Nie znaleziono migracji.';
+$lang['migration_not_found'] = 'Nie znaleziono migracji o numerze wersji: %s.';
+$lang['migration_sequence_gap'] = 'W sekwencji migracji jest przerwa w pobliżu numeru wersji: %s.';
+$lang['migration_multiple_version'] = 'Istnieją liczne migracje o tym samym numerze wersji: %s.';
+$lang['migration_class_doesnt_exist'] = 'Nie znaleziono klasy migracji "%s".';
+$lang['migration_missing_up_method'] = 'W klasie migracji "%s" brakuje metody "up".';
+$lang['migration_missing_down_method'] = 'Klasa migracji "%s" nie ma metody "down".';
+$lang['migration_invalid_filename'] = 'Migracja "%s" ma nieprawidłową nazwę pliku.';

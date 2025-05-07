@@ -35,9 +35,9 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Bezpośredni dostęp do skryptu nie jest dozwolony');
 
-$lang['pagination_first_link'] = '&lsaquo; First';
+$lang['pagination_first_link'] = '&lsaquo; Pierwszy';
 $lang['pagination_next_link'] = '&gt;';
 $lang['pagination_prev_link'] = '&lt;';
-$lang['pagination_last_link'] = 'Last &rsaquo;';
+$lang['pagination_last_link'] = 'Ostatni &rsaquo;';

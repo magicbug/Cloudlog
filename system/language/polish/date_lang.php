@@ -35,22 +35,21 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') OR exit('Bezpośredni dostęp do skryptu nie jest dozwolony');
 
-$lang['date_year'] = 'Year';
-$lang['date_years'] = 'Years';
-$lang['date_month'] = 'Month';
-$lang['date_months'] = 'Months';
-$lang['date_week'] = 'Week';
-$lang['date_weeks'] = 'Weeks';
-$lang['date_day'] = 'Day';
-$lang['date_days'] = 'Days';
-$lang['date_hour'] = 'Hour';
-$lang['date_hours'] = 'Hours';
-$lang['date_minute'] = 'Minute';
-$lang['date_minutes'] = 'Minutes';
-$lang['date_second'] = 'Second';
-$lang['date_seconds'] = 'Seconds';
+$lang['date_year'] = 'Rok';
+$lang['date_years'] = 'Lata';
+$lang['date_month'] = 'Miesiące';
+$lang['date_week'] = 'Tydzień';
+$lang['date_weeks'] = 'Tygodnie';
+$lang['date_day'] = 'Dzień';
+$lang['date_days'] = 'Dni';
+$lang['date_hour'] = 'Godzina';
+$lang['date_hours'] = 'Godziny';
+$lang['date_minute'] = 'Minuta';
+$lang['date_minut'] = 'Minuty';
+$lang['data_sekunda'] = 'Sekunda';
+$lang['date_sekundy'] = 'Sekundy';
 
 $lang['UM12']	= '(UTC -12:00) Baker/Howland Island';
 $lang['UM11']	= '(UTC -11:00) Niue';

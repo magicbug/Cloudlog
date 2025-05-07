@@ -102,7 +102,7 @@
                         <div class="row">
                             <div class="mb-3 col-md-3">
                                 <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label>
-                                <input type="text" class="form-control form-control-sm" id="callsign" name="callsign" required>
+                                <input type="text" class="form-control form-control-sm" id="callsign" name="callsign" required pattern="\S+" title="Whitespace is not allowed">
                                 <small id="callsign_info" class="badge text-bg-danger"></small>
                             </div>
 

@@ -1,7 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+defined('BASEPATH') OR exit('Bezpośredni dostęp do skryptu nie jest dozwolony');
 
 /*
 ___________________________________________________________________________________________
@@ -11,129 +10,136 @@ ________________________________________________________________________________
 
 $lang['adif_import'] = "ADIF Import";
 $lang['adif_export'] = "ADIF Export";
-// $lang['lotw_title']                      --> application/language/english/lotw_lang.php
+// $lang['lotw_title'] --> application/language/english/lotw_lang.php
 $lang['darc_dcl'] = "DARC DCL";
 
-
 /*
-___________________________________________________________________________________________
+______________________________________________________________________________________________________
 ADIF Import
 ___________________________________________________________________________________________
 */
 
-// $lang['general_word_important']           --> application/language/english/general_words_lang.php
-$lang['adif_alert_log_files_type'] = "Log Files must have the file type *.adi";
-// $lang['general_word_warning']            --> application/language/english/general_words_lang.php "PHP Upload Warning"
-// $lang['gen_max_file_upload_size']        --> application/language/english/general_words_lang.php "PHP Upload Warning"
+// $lang['general_word_important'] --> application/language/english/general_words_lang.php
+$lang['adif_alert_log_files_type'] = "Pliki dziennika muszą mieć typ pliku *.adi";
+// $lang['general_word_warning'] --> application/language/english/general_words_lang.php "Ostrzeżenie przed przesyłaniem PHP"
+// $lang['gen_max_file_upload_size'] --> application/language/english/general_words_lang.php "Ostrzeżenie przed przesyłaniem PHP"
 
-$lang['adif_select_stationlocation'] = "Select Station Location";
-// $lang['gen_hamradio_callsign']           --> application/language/english/general_words_lang.php
+$lang['adif_select_stationlocation'] = "Wybierz lokalizację stacji";
+// $lang['gen_hamradio_callsign'] --> application/language/english/general_words_lang.php
 
-// The File Input is translated by the Browser
-$lang['adif_file_label'] = "ADIF File";
+// Dane wejściowe pliku są tłumaczone przez przeglądarkę
+$lang['adif_file_label'] = "Plik ADIF";
 
-$lang['adif_hint_no_info_in_file'] = "Select if ADIF being imported does not contain this information.";
+$lang['adif_hint_no_info_in_file'] = "Wybierz, jeśli importowany plik ADIF nie zawiera tych informacji.";
 
-$lang['adif_import_dup'] = "Import duplicate QSOs";
-$lang['adif_mark_imported_lotw'] = "Mark imported QSOs as uploaded to LoTW";
-$lang['adif_mark_imported_hrdlog'] = "Mark imported QSOs as uploaded to HRDLog.net Logbook";
-$lang['adif_mark_imported_qrz'] = "Mark imported QSOs as uploaded to QRZ Logbook";
-$lang['adif_mark_imported_clublog'] = "Mark imported QSOs as uploaded to Clublog Logbook";
+$lang['adif_import_dup'] = "Importuj zduplikowane QSO";
+$lang['adif_mark_imported_lotw'] = "Oznacz importowane QSO jako przesłane do LoTW";
+$lang['adif_mark_imported_hrdlog'] = "Oznacz importowane QSO jako przesłane do HRDLog.net Logbook";
+$lang['adif_mark_imported_qrz'] = "Oznacz importowane QSO jako przesłane do dziennika QRZ";
 
-$lang['adif_dxcc_from_adif'] = "Use DXCC information from ADIF";
-$lang['adif_dxcc_from_adif_hint'] = "If not selected, Cloudlog will attempt to determine DXCC information automatically.";
+$lang['adif_mark_imported_clublog'] = "Oznacz importowane QSO jako przesłane do dziennika Clublog";
 
-$lang['adif_always_use_login_call_as_op'] = "Always use login-callsign as operator-name on import";
+$lang['adif_dxcc_from_adif'] = "Użyj informacji DXCC z ADIF";
 
-$lang['adif_ignore_station_call'] = "Ignore Stationcallsign on import";
-$lang['adif_ignore_station_call_hint'] = "If selected, Cloudlog will try to import <b>all</b> QSO's of the ADIF, regardless if they match to the chosen station-location.";
+$lang['adif_dxcc_from_adif_hint'] = "Jeśli nie zaznaczono, Cloudlog spróbuje automatycznie ustalić informacje DXCC.";
 
-$lang['adif_upload'] = "Upload";
+$lang['adif_always_use_login_call_as_op'] = "Zawsze używaj login-znaku wywoławczego jako nazwy operatora podczas importu";
+
+$lang['adif_ignore_station_call'] = "Ignoruj ​​znak wywoławczy stacji podczas importu";
+$lang['adif_ignore_station_call_hint'] = "Jeśli zaznaczone, Cloudlog spróbuje zaimportować <b>wszystkie</b> QSO ADIF, niezależnie od tego, czy pasują do wybranej lokalizacji stacji.";
+
+$lang['adif_upload'] = "Prześlij";
 
 /*
 ___________________________________________________________________________________________
-ADIF Export
+Eksport ADIF
 ___________________________________________________________________________________________
 */
 
-$lang['adif_export_take_it_anywhere'] = "Take your logbook file anywhere!";
-$lang['adif_export_take_it_anywhere_hint'] = "Exporting ADIFs allows you to import contacts into third party applications like LoTW, Awards or just for keeping a backup.";
+$lang['adif_export_take_it_anywhere'] = "Zabierz swój plik dziennika wszędzie!";
 
+$lang['adif_export_take_it_anywhere_hint'] = "Eksportowanie ADIF pozwala na importowanie kontaktów do aplikacji innych firm, takich jak LoTW, Awards lub po prostu w celu utworzenia kopii zapasowej.";
 
-$lang['adif_mark_exported_lotw'] = "Mark exported QSOs as uploaded to LoTW";
-$lang['adif_mark_exported_no_lotw'] = "Export QSOs not uploaded to LoTW";
+$lang['adif_mark_exported_lotw'] = "Oznacz wyeksportowane QSO jako przesłane do LoTW";
+$lang['adif_mark_exported_no_lotw'] = "Eksportuj QSO, które nie zostały przesłane do LoTW";
 
-$lang['adif_export_qso'] = "Export QSO's";
+$lang['adif_export_qso'] = "Eksportuj QSO";
 
-$lang['adif_export_sat_only_qso'] = "Export Satellite-Only QSOs";
-$lang['adif_export_sat_only_qso_all'] = "Export All Satellite QSOs";
-$lang['adif_export_sat_only_qso_lotw'] = "Export All Satellite QSOs Confirmed on LoTW";
+$lang['adif_export_sat_only_qso'] = "Eksportuj QSO tylko z satelity";
+$lang['adif_export_sat_only_qso_all'] = "Eksportuj wszystkie QSO z satelity";
+$lang['adif_export_sat_only_qso_lotw'] = "Eksportuj wszystkie QSO z satelity potwierdzone w LoTW";
 
 /*
-___________________________________________________________________________________________
+______________________________________________________________________________________________________
 Logbook of the World
 ___________________________________________________________________________________________
 */
 
-$lang['adif_lotw_export_if_selected'] = "If a date range is not selected then all QSOs will be marked!";
-$lang['adif_mark_qso_as_exported_to_lotw'] = "Mark QSOs as exported to LoTW";
+$lang['adif_lotw_export_if_selected'] = "Jeśli zakres dat nie zostanie wybrany, wszystkie QSO zostaną oznaczone!";
 
-$lang['adif_qso_marked'] = "QSOs marked";
-$lang['adif_yay_its_done'] = "Yay, its done!";
-$lang['adif_qso_lotw_marked_confirm'] = "The QSOs are marked as exported to LoTW.";
+$lang['adif_mark_qso_as_exported_to_lotw'] = "Oznacz QSO jako wyeksportowane do LoTW";
+
+$lang['adif_qso_marked'] = "Oznaczone QSO";
+
+$lang['adif_yay_its_done'] = "Yay, gotowe!";
+
+$lang['adif_qso_lotw_marked_confirm'] = "QSO zostały oznaczone jako wyeksportowane do LoTW.";
 
 /*
 ___________________________________________________________________________________________
 DARC DCL
-___________________________________________________________________________________________
+________________________________________________________________________________________________
 */
-$lang['adif_dcl_text_pre'] = "Go to";
-$lang['adif_dcl_text_post'] = "and export your logbook with confirmed DOKs. To speed up the process you can select only DL QSOs to download (i.e. put \"DL\" into Prefix List). The downloaded ADIF file can be uploaded here in order to update QSOs with DOK info.";
+$lang['adif_dcl_text_pre'] = "Przejdź do";
+$lang['adif_dcl_text_post'] = "i wyeksportuj swój dziennik z potwierdzonymi DOK. Aby przyspieszyć ten proces, możesz wybrać do pobrania tylko QSO DL (tj. umieścić „DL” na liście prefiksów). Pobrany plik ADIF można przesłać tutaj, aby zaktualizować QSO o informacje DOK.";
 
-$lang['only_confirmed_qsos'] = "Only import DOK data from QSOs confirmed on DCL.";
-$lang['only_confirmed_qsos_hint'] = "Uncheck if you also want to update DOK with data from unconfirmed QSOs in DCL.";
+$lang['only_confirmed_qsos'] = "Importuj tylko dane DOK z QSO potwierdzonych na DCL.";
+$lang['only_confirmed_qsos_hint'] = "Odznacz, jeśli chcesz również zaktualizować DOK o dane z niepotwierdzonych QSO w DCL.";
 
-$lang['overwrite_by_dcl'] = "Overwrite exisiting DOK in log by DCL (if different)";
-$lang['overwrite_by_dcl_hint'] = "If checked Cloudlog will forcibly overwrite existing DOK with DOK from DCL log.";
+$lang['overwrite_by_dcl'] = "Nadpisz istniejący DOK w logu przez DCL (jeśli jest inny)";
 
-$lang['ignore_ambiguous'] = "Ignore QSOs that cannot be matched";
-$lang['ignore_ambiguous_hint'] = "If unchecked information about QSO which could not be found in Cloudlog will be displayed.";
+$lang['overwrite_by_dcl_hint'] = "Jeśli zaznaczone, Cloudlog wymusi nadpisanie istniejącego DOK przez DOK z logu DCL.";
+
+$lang['ignore_ambiguous'] = "Ignoruj ​​QSO, których nie można dopasować";
+
+$lang['ignore_ambiguous_hint'] = "Jeśli niezaznaczone, zostaną wyświetlone informacje o QSO, których nie można znaleźć w Cloudlog.";
 
 /*
-___________________________________________________________________________________________
-Import Success
+___________________________________________________________________________________________________________
+Import zakończony sukcesem
 ___________________________________________________________________________________________
 */
 
-$lang['adif_imported'] = "ADIF Imported";
-$lang['adif_yay_its_imported'] = "Yay, its imported!";
-$lang['adif_import_confirm'] = "The ADIF File has been imported.";
+$lang['adif_imported'] = "ADIF zaimportowany";
 
-$lang['adif_import_dupes_inserted'] = " <b>Dupes were inserted!</b>";
-$lang['adif_import_dupes_skipped'] = " Dupes were skipped.";
+$lang['adif_yay_its_imported'] = "Hurra, zaimportowano!";
+$lang['adif_import_confirm'] = "Plik ADIF został zaimportowany.";
 
-$lang['adif_import_errors'] = "ADIF Errors";
-$lang['adif_import_errors_hint'] = "You have ADIF errors, the QSOs have still been added but these fields have not been populated.";
+$lang['adif_import_dupes_inserted'] = " <b>Dupy zostały wstawione!</b>";
+$lang['adif_import_dupes_skipped'] = "Dupy zostały pominięte.";
+
+$lang['adif_import_errors'] = "Błędy ADIF";
+$lang['adif_import_errors_hint'] = "Masz błędy ADIF, QSO zostały dodane, ale te pola nie zostały wypełnione.";
 
 /*
-___________________________________________________________________________________________
-DCL Success
+___________________________________________________________________________________________________________
+Sukces DCL
 ___________________________________________________________________________________________
 */
 
-$lang['dcl_results'] = "Results of DCL DOK Update";
-$lang['dcl_info_updated'] = "DCL information for DOKs has been updated.";
-$lang['dcl_qsos_updated'] = "QSOs updated";
-$lang['dcl_qsos_ignored'] = "QSOs ignored";
-$lang['dcl_qsos_unmatched'] = "QSOs unmatched";
-$lang['dcl_no_qsos_updated'] = "No QSOs found which could be updated.";
-$lang['dcl_dok_errors'] = "DOK Errors";
-$lang['dcl_dok_errors_details'] = "There is different data for DOK in your log compared to DCL";
-$lang['dcl_qsl_status'] = "DCL QSL Status";
-$lang['dcl_qsl_status_c'] = "confirmed by LoTW/Clublog/eQSL/Contest";
-$lang['dcl_qsl_status_mno'] = "confirmed by award manager";
-$lang['dcl_qsl_status_i'] = "confirmed by cross-check of DCL data";
-$lang['dcl_qsl_status_w'] = "confirmation pending";
-$lang['dcl_qsl_status_x'] = "unconfirmed";
-$lang['dcl_qsl_status_unknown'] = "unknown";
-$lang['dcl_no_match'] = "QSO could not be matched";
+$lang['dcl_results'] = "Wyniki aktualizacji DCL DOK";
+$lang['dcl_info_updated'] = "Informacje DCL dla DOK zostały zaktualizowane.";
+$lang['dcl_qsos_updated'] = "Zaktualizowano QSO";
+$lang['dcl_qsos_ignored'] = "Zignorowano QSO";
+$lang['dcl_qsos_unmatched'] = "Niezgodne QSO";
+$lang['dcl_no_qsos_updated'] = "Nie znaleziono QSO, które można by zaktualizować.";
+$lang['dcl_dok_errors'] = "Błędy DOK";
+$lang['dcl_dok_errors_details'] = "W Twoim logu znajdują się inne dane dla DOK niż dla DCL";
+$lang['dcl_qsl_status'] = "Status QSL DCL";
+$lang['dcl_qsl_status_c'] = "potwierdzone przez LoTW/Clublog/eQSL/Contest";
+$lang['dcl_qsl_status_mno'] = "potwierdzone przez kierownika nagrody";
+$lang['dcl_qsl_status_i'] = "potwierdzone przez krzyżową kontrolę danych DCL";
+$lang['dcl_qsl_status_w'] = "oczekiwanie na potwierdzenie";
+$lang['dcl_qsl_status_x'] = "niepotwierdzone";
+$lang['dcl_qsl_status_unknown'] = "nieznane";
+$lang['dcl_no_match'] = "Nie można dopasować QSO";
