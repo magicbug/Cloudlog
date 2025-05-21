@@ -37,27 +37,33 @@ class Clublog extends CI_Controller {
 
 		$this->load->model('clublog_model');
 
+		// Retrieve all station profiles for the user with their QSO counts
 		$station_profiles = $this->clublog_model->all_with_count($clean_userid);
 
 		if($station_profiles->num_rows()){
 			foreach ($station_profiles->result() as $station_row)
 			{
+				// Only process stations that have QSOs to upload
 				if($station_row->qso_total > 0) {
+					// Get QSOs for this station that haven't been uploaded to Clublog yet
 					$data['qsos'] = $this->clublog_model->get_clublog_qsos($station_row->station_id);
 
 					if($data['qsos']->num_rows()){
+						// Generate ADIF file content from the view template
 						$string = $this->load->view('adif/data/clublog', $data, TRUE);
 
+						// Generate a unique ID for the temporary file
 						$ranid = uniqid();
 
+						// Write the ADIF data to a temporary file
 						if ( ! write_file('uploads/clublog'.$ranid.$station_row->station_id.'.adi', $string)) {
 						     echo 'Unable to write the file - Make the folder Upload folder has write permissions.';
 						}
 						else {
-
+							// Get details of the created ADIF file
 							$file_info = get_file_info('uploads/clublog'.$ranid.$station_row->station_id.'.adi');
 
-							// initialise the curl request
+							// Initialize the CURL request to Clublog's API endpoint
 							$request = curl_init('https://clublog.org/putlogs.php');
 
 							if($this->config->item('directory') != "") {
@@ -138,12 +144,11 @@ class Clublog extends CI_Controller {
 		$this->clublog_model->mark_qsos_sent($clean_station_id);
 	}
 
-	function markallnotsent() {
+	function markallnotsent($station_id) {
 		$clean_station_id = $this->security->xss_clean($station_id);
 		$this->load->model('clublog_model');
 		$this->clublog_model->mark_all_qsos_notsent($clean_station_id);
 	}
-
 
 	// Find DXCC
 	function find_dxcc($callsign) {
