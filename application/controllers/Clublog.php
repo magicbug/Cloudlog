@@ -107,6 +107,14 @@ class Clublog extends CI_Controller {
 							} else {
 								echo "Error ".$response;
 								log_message('error', 'Clublog upload for '.$station_row->station_callsign.' failed reason '.$response);
+
+								// If Clublog responds with a 403
+								if ($info['http_code'] == 403) {
+									$this->load->model('clublog_model');
+									echo "Clublog API access denied for ".$station_row->station_callsign."<br>";
+									log_message('error', 'Clublog API access denied for '.$station_row->station_callsign);
+									$this->clublog_model->reset_clublog_user_fields($station_row->user_id);
+								}
 							}
 
 							// Delete the ADIF file used for clublog
