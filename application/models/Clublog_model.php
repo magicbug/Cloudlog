@@ -17,6 +17,17 @@ class Clublog_model extends CI_Model {
 		return $row = $query->row_array();
 	}
 
+	// function to reset clublog fields for the user in the auth table
+	function reset_clublog_user_fields($user_id) {
+		$data = array(
+			'user_clublog_name' => null,
+			'user_clublog_password' => null,
+		);
+
+		$this->db->where('user_id', $user_id);
+		$this->db->update($this->config->item('auth_table'), $data);
+	}
+
 	function mark_qsos_sent($station_id) {
 		$data = array(
 	        'COL_CLUBLOG_QSO_UPLOAD_DATE' => date('Y-m-d'),
