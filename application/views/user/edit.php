@@ -46,56 +46,71 @@
 							<!-- Account Information -->
 							<div class="col-md">
 								<div class="card">
-									<div class="card-header"><?php echo lang('account_account_information'); ?></div>
+									<div class="card-header">
+										<?php echo lang('account_account_information'); ?>
+									</div>
 									<div class="card-body">
 										<div class="mb-3">
-											<label><?php echo lang('account_username'); ?></label>
-											<input class="form-control" type="text" name="user_name" value="<?php if (isset($user_name)) {
+											<label class="form-label"><?php echo lang('account_username'); ?></label>
+											<div class="input-group">
+												<span class="input-group-text"><i class="fa fa-user"></i></span>
+												<input class="form-control" type="text" name="user_name" value="<?php if (isset($user_name)) {
 																												echo $user_name;
 																											} ?>" />
+											</div>
 											<?php if (isset($username_error)) {
-												echo "<small class=\"error\">" . $username_error . "</small>";
+												echo "<small class=\"text-danger\"><i class=\"fa fa-exclamation-circle\"></i> " . $username_error . "</small>";
 											} ?>
 										</div>
 
 										<div class="mb-3">
-											<label><?php echo lang('account_email_address'); ?></label>
-											<input class="form-control" type="text" name="user_email" value="<?php if (isset($user_email)) {
+											<label class="form-label"><?php echo lang('account_email_address'); ?></label>
+											<div class="input-group">
+												<span class="input-group-text"><i class="fa fa-envelope"></i></span>
+												<input class="form-control" type="email" name="user_email" value="<?php if (isset($user_email)) {
 																													echo $user_email;
 																												} ?>" />
+											</div>
 											<?php if (isset($email_error)) {
-												echo "<small class=\"error\">" . $email_error . "</small>";
+												echo "<small class=\"text-danger\"><i class=\"fa fa-exclamation-circle\"></i> " . $email_error . "</small>";
 											} ?>
 										</div>
 
 										<div class="mb-3">
-											<label><?php echo lang('account_password'); ?></label>
+											<label class="form-label"><?php echo lang('account_password'); ?></label>
 											<div class="input-group">
+												<span class="input-group-text"><i class="fa fa-lock"></i></span>
 												<input class="form-control" type="password" name="user_password" />
-												<span class="input-group-btn"><button class="btn btn-default btn-pwd-showhide" type="button"><i class="fa fa-eye-slash"></i></button></span>
+												<button class="btn btn-outline-secondary btn-pwd-showhide" type="button"><i class="fa fa-eye-slash"></i></button>
 											</div>
 											<?php if (isset($password_error)) {
-												echo "<small class=\"error\">" . $password_error . "</small>";
+												echo "<small class=\"text-danger\"><i class=\"fa fa-exclamation-circle\"></i> " . $password_error . "</small>";
 											} else { ?>
-												<small class="form-text text-muted"><?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
+												<small class="form-text text-muted"><i class="fa fa-info-circle"></i> <?php echo lang('account_leave_blank_to_keep_existing_password'); ?></small>
 											<?php } ?>
 										</div>
 
-										<hr />
+										<hr class="my-4" />
 										<div class="mb-3">
-											<label><?php echo lang('account_user_role'); ?></label>
+											<label class="form-label"><?php echo lang('account_user_role'); ?></label>
 											<?php if ($this->session->userdata('user_type') == 99) { ?>
-												<select class="form-select" name="user_type">
-													<?php
-													$levels = $this->config->item('auth_level');
-													foreach ($levels as $key => $value) {
-														echo '<option value="' . $key . '" ' . (($user_type == $key) ? "selected=\"selected\"" : "") . '>' . $value . '</option>';
-													}
-													?>
-												</select>
+												<div class="input-group">
+													<span class="input-group-text"><i class="fa fa-users"></i></span>
+													<select class="form-select" name="user_type">
+														<?php
+														$levels = $this->config->item('auth_level');
+														foreach ($levels as $key => $value) {
+															echo '<option value="' . $key . '" ' . (($user_type == $key) ? "selected=\"selected\"" : "") . '>' . $value . '</option>';
+														}
+														?>
+													</select>
+												</div>
 											<?php } else {
 												$l = $this->config->item('auth_level');
-												echo $l[$user_type];
+												echo '<div class="input-group">
+													<span class="input-group-text"><i class="fa fa-user-tag"></i></span>
+													<input type="text" class="form-control" value="' . $l[$user_type] . '" disabled>
+												</div>';
 											} ?>
 										</div>
 									</div>
@@ -1162,24 +1177,29 @@
 
 								<!-- Winkeyer -->
 								<div class="col-md">
-									<div class="card">
-										<div class="card-header"><?php echo lang('account_winkeyer'); ?> <span class="badge text-bg-danger float-end"><?php echo lang('admin_experimental'); ?></span></div>
-										<div class="card-body">
-											<div class="mb-3">
-												<label><?php echo lang('account_winkeyer_enabled'); ?></label>
-												<?php if (!isset($user_winkey)) {
-													$user_winkey = '0';
-												} ?>
-												<select class="form-select" name="user_winkey" id="user_winkeyer">
-													<option value="0" <?php if ($user_winkey == 0) {
-																			echo 'selected="selected"';
-																		} ?>><?php echo lang('general_word_no'); ?></option>
-													<option value="1" <?php if ($user_winkey == 1) {
-																			echo 'selected="selected"';
-																		} ?>><?php echo lang('general_word_yes'); ?></option>
-												</select>
-												<small class="form-text text-muted"><?php echo lang('account_winkeyer_hint'); ?></small>
+									<div class="card">										<div class="card-header"><?php echo lang('account_winkeyer'); ?> <span class="badge text-bg-danger float-end"><?php echo lang('admin_experimental'); ?></span></div>
+										<div class="card-body">											<div class="mb-3">
+												<div class="form-check form-switch">
+													<?php if (!isset($user_winkey)) {
+														$user_winkey = '0';
+													} ?>
+													<input name="user_winkey" class="form-check-input" type="checkbox" role="switch" id="user_winkeyer" value="1" <?php if ($user_winkey == 1) { echo 'checked'; } ?>>
+													<label class="form-check-label" for="user_winkeyer"><?php echo lang('account_winkeyer_enabled'); ?></label>
+												</div>
 											</div>
+
+											<hr />
+													<div class="mb-3">
+												<div class="form-check form-switch">
+													<?php if (!isset($user_winkey_websocket)) {
+														$user_winkey_websocket = '0';
+													} ?>
+													<input name="user_winkey_websocket" class="form-check-input" type="checkbox" role="switch" id="user_winkey_websocket" value="1" <?php if (isset($user_winkey_websocket) && $user_winkey_websocket == 1) { echo 'checked'; } ?>>
+													<label class="form-check-label" for="user_winkey_websocket">Winkey Web Sockets</label>
+												</div>
+											</div>
+											
+											<small class="form-text text-muted d-block mt-3"><?php echo lang('account_winkeyer_hint'); ?></small>
 										</div>
 									</div>
 								</div>
