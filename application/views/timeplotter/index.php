@@ -8,8 +8,8 @@
                 <div class="col-md-3">
                     <select id="band" name="band" class="form-select">
                         <option value="All">All</option>
-                        <?php foreach($worked_bands as $band) {
-                            echo '<option value="' . $band . '">' . $band . '</option>'."\n";
+                        <?php foreach ($worked_bands as $band) {
+                            echo '<option value="' . $band . '">' . $band . '</option>' . "\n";
                         } ?>
                     </select>
                 </div>
@@ -17,16 +17,16 @@
                 <label class="col-md-1 control-label" for="dxcc">DXCC</label>
                 <div class="col-md-3">
                     <select id="dxcc" name="dxcc" class="form-select">
-                        <option value = 'All'>All</option>
+                        <option value='All'>All</option>
                         <?php
                         if ($dxcc_list->num_rows() > 0) {
-                                foreach ($dxcc_list->result() as $dxcc) {
-                                    echo '<option value=' . $dxcc->adif . '> ' . ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix;
-                                    if ($dxcc->end != null) {
-                                        echo ' ('.lang('gen_hamradio_deleted_dxcc').')';
-                                    }
-                                    echo '</option>';
+                            foreach ($dxcc_list->result() as $dxcc) {
+                                echo '<option value=' . $dxcc->adif . '> ' . ucwords(strtolower($dxcc->name)) . ' - ' . $dxcc->prefix;
+                                if ($dxcc->end != null) {
+                                    echo ' (' . lang('gen_hamradio_deleted_dxcc') . ')';
                                 }
+                                echo '</option>';
+                            }
                         }
                         ?>
                     </select>
@@ -37,10 +37,10 @@
                 <label class="col-md-1 control-label" for="cqzone">CQ Zone</label>
                 <div class="col-md-3">
                     <select id="cqzone" name="cqzone" class="form-select">
-                        <option value = 'All'>All</option>
+                        <option value='All'>All</option>
                         <?php
-                        for ($i = 1; $i<=40; $i++) {
-                            echo '<option value='. $i . '>'. $i .'</option>';
+                        for ($i = 1; $i <= 40; $i++) {
+                            echo '<option value=' . $i . '>' . $i . '</option>';
                         }
                         ?>
                     </select>

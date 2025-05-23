@@ -55,8 +55,8 @@
 											<div class="input-group">
 												<span class="input-group-text"><i class="fa fa-user"></i></span>
 												<input class="form-control" type="text" name="user_name" value="<?php if (isset($user_name)) {
-																												echo $user_name;
-																											} ?>" />
+																													echo $user_name;
+																												} ?>" />
 											</div>
 											<?php if (isset($username_error)) {
 												echo "<small class=\"text-danger\"><i class=\"fa fa-exclamation-circle\"></i> " . $username_error . "</small>";
@@ -68,8 +68,8 @@
 											<div class="input-group">
 												<span class="input-group-text"><i class="fa fa-envelope"></i></span>
 												<input class="form-control" type="email" name="user_email" value="<?php if (isset($user_email)) {
-																													echo $user_email;
-																												} ?>" />
+																														echo $user_email;
+																													} ?>" />
 											</div>
 											<?php if (isset($email_error)) {
 												echo "<small class=\"text-danger\"><i class=\"fa fa-exclamation-circle\"></i> " . $email_error . "</small>";
@@ -296,28 +296,38 @@
 									<div class="card-body">
 										<div class="mb-3">
 											<div class="form-check form-switch">
-												<input name="user_dashboard_enable_dxpedition_card" class="form-check-input" type="checkbox" role="switch" id="DashboardUpcomingDXpeditionCheck" <?php if ($dashboard_upcoming_dx_card) { echo 'checked'; } ?>>
-												<label class="form-check-label" for="DashboardUpcomingDXpeditionCheck" >Enable Upcoming DXPedition Card</label>
+												<input name="user_dashboard_enable_dxpedition_card" class="form-check-input" type="checkbox" role="switch" id="DashboardUpcomingDXpeditionCheck" <?php if ($dashboard_upcoming_dx_card) {
+																																																		echo 'checked';
+																																																	} ?>>
+												<label class="form-check-label" for="DashboardUpcomingDXpeditionCheck">Enable Upcoming DXPedition Card</label>
 											</div>
 
 											<div class="form-check form-switch">
-												<input name="user_dashboard_enable_qslcards_card" class="form-check-input" type="checkbox" role="switch" id="DashboardQSLCardCheck" <?php if ($dashboard_qslcard_card) { echo 'checked'; } ?>>
-												<label class="form-check-label" for="DashboardQSLCardCheck" >Enable QSL Cards Card</label>
+												<input name="user_dashboard_enable_qslcards_card" class="form-check-input" type="checkbox" role="switch" id="DashboardQSLCardCheck" <?php if ($dashboard_qslcard_card) {
+																																														echo 'checked';
+																																													} ?>>
+												<label class="form-check-label" for="DashboardQSLCardCheck">Enable QSL Cards Card</label>
 											</div>
 
 											<div class="form-check form-switch">
-												<input name="user_dashboard_enable_eqslcards_card" class="form-check-input" type="checkbox" role="switch" id="DashboardeQSLCardCheck" <?php if ($dashboard_eqslcard_card) { echo 'checked'; } ?>>
-												<label class="form-check-label" for="DashboardeQSLCardCheck" >Enable eQSL Cards Card</label>
+												<input name="user_dashboard_enable_eqslcards_card" class="form-check-input" type="checkbox" role="switch" id="DashboardeQSLCardCheck" <?php if ($dashboard_eqslcard_card) {
+																																															echo 'checked';
+																																														} ?>>
+												<label class="form-check-label" for="DashboardeQSLCardCheck">Enable eQSL Cards Card</label>
 											</div>
 
 											<div class="form-check form-switch">
-												<input name="user_dashboard_enable_lotw_card" class="form-check-input" type="checkbox" role="switch" id="DashboardlotwCardCheck" <?php if ($dashboard_lotw_card) { echo 'checked'; } ?>>
-												<label class="form-check-label" for="DashboardlotwCardCheck" >Enable Logbook of the World Card</label>
+												<input name="user_dashboard_enable_lotw_card" class="form-check-input" type="checkbox" role="switch" id="DashboardlotwCardCheck" <?php if ($dashboard_lotw_card) {
+																																														echo 'checked';
+																																													} ?>>
+												<label class="form-check-label" for="DashboardlotwCardCheck">Enable Logbook of the World Card</label>
 											</div>
 
 											<div class="form-check form-switch">
-												<input name="user_dashboard_enable_vuccgrids_card" class="form-check-input" type="checkbox" role="switch" id="DashboardvuccgridsCardCheck" <?php if ($dashboard_vuccgrids_card) { echo 'checked'; } ?>>
-												<label class="form-check-label" for="DashboardvuccgridsCardCheck" >Enable VUCC-Grids Card</label>
+												<input name="user_dashboard_enable_vuccgrids_card" class="form-check-input" type="checkbox" role="switch" id="DashboardvuccgridsCardCheck" <?php if ($dashboard_vuccgrids_card) {
+																																																echo 'checked';
+																																															} ?>>
+												<label class="form-check-label" for="DashboardvuccgridsCardCheck">Enable VUCC-Grids Card</label>
 											</div>
 										</div>
 									</div>
@@ -440,7 +450,7 @@
 																			} ?>><?php echo lang('general_word_name'); ?></option>
 													<option value="Flag" <?php if ($user_column2 == "Flag") {
 																				echo " selected =\"selected\"";
-																			} ?>><?php echo lang('general_word_flag'); ?></option>																			
+																			} ?>><?php echo lang('general_word_flag'); ?></option>
 												</select>
 											</div>
 
@@ -1036,8 +1046,8 @@
 											<div class="mb-3">
 												<label>Callbook Username</label>
 												<input class="form-control" type="text" name="user_callbook_username" value="<?php if (isset($user_callbook_username)) {
-													echo $user_callbook_username;
-												} ?>" />
+																																	echo $user_callbook_username;
+																																} ?>" />
 												<?php if (isset($callbook_username_error)) {
 													echo "<small class=\"error\">" . $callbook_username_error . "</small>";
 												} ?>
@@ -1177,28 +1187,34 @@
 
 								<!-- Winkeyer -->
 								<div class="col-md">
-									<div class="card">										<div class="card-header"><?php echo lang('account_winkeyer'); ?> <span class="badge text-bg-danger float-end"><?php echo lang('admin_experimental'); ?></span></div>
-										<div class="card-body">											<div class="mb-3">
+									<div class="card">
+										<div class="card-header"><?php echo lang('account_winkeyer'); ?> <span class="badge text-bg-danger float-end"><?php echo lang('admin_experimental'); ?></span></div>
+										<div class="card-body">
+											<div class="mb-3">
 												<div class="form-check form-switch">
 													<?php if (!isset($user_winkey)) {
 														$user_winkey = '0';
 													} ?>
-													<input name="user_winkey" class="form-check-input" type="checkbox" role="switch" id="user_winkeyer" value="1" <?php if ($user_winkey == 1) { echo 'checked'; } ?>>
+													<input name="user_winkey" class="form-check-input" type="checkbox" role="switch" id="user_winkeyer" value="1" <?php if ($user_winkey == 1) {
+																																										echo 'checked';
+																																									} ?>>
 													<label class="form-check-label" for="user_winkeyer"><?php echo lang('account_winkeyer_enabled'); ?></label>
 												</div>
 											</div>
 
 											<hr />
-													<div class="mb-3">
+											<div class="mb-3">
 												<div class="form-check form-switch">
 													<?php if (!isset($user_winkey_websocket)) {
 														$user_winkey_websocket = '0';
 													} ?>
-													<input name="user_winkey_websocket" class="form-check-input" type="checkbox" role="switch" id="user_winkey_websocket" value="1" <?php if (isset($user_winkey_websocket) && $user_winkey_websocket == 1) { echo 'checked'; } ?>>
+													<input name="user_winkey_websocket" class="form-check-input" type="checkbox" role="switch" id="user_winkey_websocket" value="1" <?php if (isset($user_winkey_websocket) && $user_winkey_websocket == 1) {
+																																														echo 'checked';
+																																													} ?>>
 													<label class="form-check-label" for="user_winkey_websocket">Winkey Web Sockets</label>
 												</div>
 											</div>
-											
+
 											<small class="form-text text-muted d-block mt-3"><?php echo lang('account_winkeyer_hint'); ?></small>
 										</div>
 									</div>
