@@ -1,16 +1,19 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Activated_gridmap extends CI_Controller {
+class Activated_gridmap extends CI_Controller
+{
 
-	function __construct() {
+	function __construct()
+	{
 		parent::__construct();
 	}
 
-    public function index() {
+	public function index()
+	{
 		$data['page_title'] = "Activated Gridsquare Map";
 
-        $this->load->model('bands');
-        $this->load->model('activated_gridmap_model');
+		$this->load->model('bands');
+		$this->load->model('activated_gridmap_model');
 		$this->load->model('stations');
 
 		$data['visitor'] = false;
@@ -32,25 +35,26 @@ class Activated_gridmap extends CI_Controller {
 		$data['gridsquares_gridsquares_not_confirmed'] 	= lang('gridsquares_gridsquares_not_confirmed');
 		$data['gridsquares_gridsquares_total_activated'] 	= lang('gridsquares_gridsquares_total_activated');
 
-        $footerData = [];
+		$footerData = [];
 		$footerData['scripts'] = [
 			'assets/js/leaflet/geocoding.js',
 			'assets/js/leaflet/L.MaidenheadColouredGridMap.js',
 			'assets/js/sections/gridmap.js?'
 		];
-		
+
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('activated_gridmap/index');
 		$this->load->view('interface_assets/footer', $footerData);
-    }
+	}
 
-	public function getGridsjs() {
-        $band = $this->security->xss_clean($this->input->post('band'));
-        $mode = $this->security->xss_clean($this->input->post('mode'));
-        $qsl = $this->security->xss_clean($this->input->post('qsl'));
-        $lotw = $this->security->xss_clean($this->input->post('lotw'));
-        $eqsl = $this->security->xss_clean($this->input->post('eqsl'));
-        $qrz = $this->security->xss_clean($this->input->post('qrz'));
+	public function getGridsjs()
+	{
+		$band = $this->security->xss_clean($this->input->post('band'));
+		$mode = $this->security->xss_clean($this->input->post('mode'));
+		$qsl = $this->security->xss_clean($this->input->post('qsl'));
+		$lotw = $this->security->xss_clean($this->input->post('lotw'));
+		$eqsl = $this->security->xss_clean($this->input->post('eqsl'));
+		$qrz = $this->security->xss_clean($this->input->post('qrz'));
 		$sat = $this->security->xss_clean($this->input->post('sat'));
 		$this->load->model('activated_gridmap_model');
 
@@ -73,27 +77,27 @@ class Activated_gridmap extends CI_Controller {
 		$query = $this->activated_gridmap_model->get_band_confirmed($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat);
 
 		if ($query && $query->num_rows() > 0) {
-			foreach ($query->result() as $row) 	{
+			foreach ($query->result() as $row) {
 				$gridlist = explode(',', $row->GRID_SQUARES);
 				foreach ($gridlist as $grid) {
-					$grid_2char_confirmed = strtoupper(substr($grid,0,2));
-					$grid_4char_confirmed = strtoupper(substr($grid,0,4));
+					$grid_2char_confirmed = strtoupper(substr($grid, 0, 2));
+					$grid_4char_confirmed = strtoupper(substr($grid, 0, 4));
 					if ($this->config->item('map_6digit_grids')) {
-						$grid_6char_confirmed = strtoupper(substr($grid,0,6));
+						$grid_6char_confirmed = strtoupper(substr($grid, 0, 6));
 					}
 
 					// Check if 2 Char is in array
-					if(!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)){
-						array_push($array_grid_2char_confirmed, $grid_2char_confirmed);	
+					if (!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)) {
+						array_push($array_grid_2char_confirmed, $grid_2char_confirmed);
 					}
 
-					if(!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)){
-						array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
+					if (!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)) {
+						array_push($array_grid_4char_confirmed, $grid_4char_confirmed);
 					}
 
 					if ($this->config->item('map_6digit_grids')) {
-						if(!in_array($grid_6char_confirmed, $array_grid_6char_confirmed)){
-							array_push($array_grid_6char_confirmed, $grid_6char_confirmed);	
+						if (!in_array($grid_6char_confirmed, $array_grid_6char_confirmed)) {
+							array_push($array_grid_6char_confirmed, $grid_6char_confirmed);
 						}
 					}
 				}
@@ -107,24 +111,24 @@ class Activated_gridmap extends CI_Controller {
 
 				$gridlist = explode(',', $row->GRID_SQUARES);
 				foreach ($gridlist as $grid) {
-					$grid_two = strtoupper(substr($grid,0,2));
-					$grid_four = strtoupper(substr($grid,0,4));
+					$grid_two = strtoupper(substr($grid, 0, 2));
+					$grid_four = strtoupper(substr($grid, 0, 4));
 					if ($this->config->item('map_6digit_grids')) {
-						$grid_six = strtoupper(substr($grid,0,6));
+						$grid_six = strtoupper(substr($grid, 0, 6));
 					}
 
 					// Check if 2 Char is in array
-					if(!in_array($grid_two, $array_grid_2char)){
-						array_push($array_grid_2char, $grid_two);	
+					if (!in_array($grid_two, $array_grid_2char)) {
+						array_push($array_grid_2char, $grid_two);
 					}
 
-					if(!in_array($grid_four, $array_grid_4char)){
-						array_push($array_grid_4char, $grid_four);	
+					if (!in_array($grid_four, $array_grid_4char)) {
+						array_push($array_grid_4char, $grid_four);
 					}
 
 					if ($this->config->item('map_6digit_grids')) {
-						if(!in_array($grid_six, $array_grid_6char)){
-							array_push($array_grid_6char, $grid_six);	
+						if (!in_array($grid_six, $array_grid_6char)) {
+							array_push($array_grid_6char, $grid_six);
 						}
 					}
 				}
@@ -137,18 +141,18 @@ class Activated_gridmap extends CI_Controller {
 
 				$grids = explode(",", $row->COL_VUCC_GRIDS);
 
-				foreach($grids as $key) {    
-					$grid_two = strtoupper(substr($key,0,2));
-					$grid_four = strtoupper(substr($key,0,4));
+				foreach ($grids as $key) {
+					$grid_two = strtoupper(substr($key, 0, 2));
+					$grid_four = strtoupper(substr($key, 0, 4));
 
 					// Check if 2 Char is in array
-					if(!in_array($grid_two, $array_grid_2char)){
-						array_push($array_grid_2char, $grid_two);	
+					if (!in_array($grid_two, $array_grid_2char)) {
+						array_push($array_grid_2char, $grid_two);
 					}
 
 
-					if(!in_array($grid_four, $array_grid_4char)){
-						array_push($array_grid_4char, $grid_four);	
+					if (!in_array($grid_four, $array_grid_4char)) {
+						array_push($array_grid_4char, $grid_four);
 					}
 				}
 			}
@@ -158,28 +162,28 @@ class Activated_gridmap extends CI_Controller {
 		$query_vucc = $this->activated_gridmap_model->get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
-			foreach ($query_vucc->result() as $row) 			{
+			foreach ($query_vucc->result() as $row) {
 
 				$grids = explode(",", $row->COL_VUCC_GRIDS);
 
-				foreach($grids as $key) {    
-					$grid_2char_confirmed = strtoupper(substr($key,0,2));
-					$grid_4char_confirmed = strtoupper(substr($key,0,4));
+				foreach ($grids as $key) {
+					$grid_2char_confirmed = strtoupper(substr($key, 0, 2));
+					$grid_4char_confirmed = strtoupper(substr($key, 0, 4));
 
 					// Check if 2 Char is in array
-					if(!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)){
-						array_push($array_grid_2char_confirmed, $grid_2char_confirmed);	
+					if (!in_array($grid_2char_confirmed, $array_grid_2char_confirmed)) {
+						array_push($array_grid_2char_confirmed, $grid_2char_confirmed);
 					}
 
 
-					if(!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)){
-						array_push($array_grid_4char_confirmed, $grid_4char_confirmed);	
+					if (!in_array($grid_4char_confirmed, $array_grid_4char_confirmed)) {
+						array_push($array_grid_4char_confirmed, $grid_4char_confirmed);
 					}
 				}
 			}
 		}
 
-        $data['grid_2char_confirmed'] = ($array_grid_2char_confirmed);
+		$data['grid_2char_confirmed'] = ($array_grid_2char_confirmed);
 		$data['grid_4char_confirmed'] = ($array_grid_4char_confirmed);
 		$data['grid_6char_confirmed'] = ($array_grid_6char_confirmed);
 
@@ -187,7 +191,7 @@ class Activated_gridmap extends CI_Controller {
 		$data['grid_4char'] = ($array_grid_4char);
 		$data['grid_6char'] = ($array_grid_6char);
 
-        header('Content-Type: application/json');
-        echo json_encode($data);
-    }
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
 }
