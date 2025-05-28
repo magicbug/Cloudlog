@@ -1205,10 +1205,7 @@
 											<hr />
 											<div class="mb-3">
 												<div class="form-check form-switch">
-													<?php if (!isset($user_winkey_websocket)) {
-														$user_winkey_websocket = '0';
-													} ?>
-													<input name="user_winkey_websocket" class="form-check-input" type="checkbox" role="switch" id="user_winkey_websocket" value="1" <?php if (isset($user_winkey_websocket) && $user_winkey_websocket == 1) {
+													<input name="user_winkey_websocket" class="form-check-input" type="checkbox" role="switch" id="user_winkey_websocket" value="1" <?php if ($user_winkey_websocket == 1) {
 																																														echo 'checked';
 																																													} ?>>
 													<label class="form-check-label" for="user_winkey_websocket">Winkey Web Sockets</label>
