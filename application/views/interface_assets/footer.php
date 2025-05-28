@@ -1323,7 +1323,7 @@ if ($this->session->userdata('user_id') != null) {
                     });
             }
 
-            
+
             function sendMyMessage() {
                 const message = document.getElementById('sendText').value;
                 if (message.trim() === '') {
@@ -1338,7 +1338,6 @@ if ($this->session->userdata('user_id') != null) {
                 // Clear the input field
                 document.getElementById('sendText').value = '';
             }
-
         </script>
     <?php } ?>
     <?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
@@ -1834,6 +1833,28 @@ if ($this->session->userdata('user_id') != null) {
 
         // Event listeners
         $(document).ready(() => {
+
+            /**
+             * Prevents multiple form submissions by tracking submission state
+             * 
+             * This script prevents duplicate QSO (contact) submissions by:
+             * - Maintaining an isSubmitting flag to track form submission state
+             * - Adding an event listener to the 'qso_input' form
+             * - Preventing form submission if a submission is already in progress
+             * - Setting the flag to true when a valid submission begins
+             * 
+             * @since Unknown
+             * @global boolean isSubmitting Flag to track if form is currently being submitted
+             */
+            let isSubmitting = false;
+            document.getElementById('qso_input').addEventListener('submit', function(e) {
+                if (isSubmitting) {
+                    e.preventDefault();
+                    return false;
+                }
+                isSubmitting = true;
+            });
+
             // Update frequency every three seconds for the selected radio
             setInterval(() => {
                 const selectedRadioID = $('select.radios option:selected').val();
