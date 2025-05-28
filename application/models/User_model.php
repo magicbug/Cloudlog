@@ -427,6 +427,7 @@ class User_Model extends CI_Model {
 			'active_station_logbook' => $u->row()->active_station_logbook,
 			'language' => isset($u->row()->language) ? $u->row()->language: 'english',
 			'isWinkeyEnabled' => $u->row()->winkey,
+			'isWinkeyWebsocketEnabled' => (bool)$u->row()->winkey_websocket,
 			'hasQrzKey' => $this->hasQrzKey($u->row()->user_id),
 			'callbook_type' => $callbook_type,
 			'callbook_username' => $callbook_username,

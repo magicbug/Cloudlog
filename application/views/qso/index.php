@@ -673,9 +673,49 @@
 
       <!-- Winkey Starts -->
 
+      <?php if ($this->session->userdata('isWinkeyEnabled') && $this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
+        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
+          <div class="card-header">
+            <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey Web Sockets
+
+                <div id="cw_socket_status" class="badge text-bg-danger">
+                Status: Disconnected
+                </div>
+
+              <button type="button" class="btn btn-secondary"
+                hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
+                hx-target="#modals-here"
+                hx-trigger="click"
+                class="btn btn-primary"
+                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
+            </h4>
+          </div>
+
+          <div id="modals-here"></div>
+
+          <div id="winkey_buttons" class="card-body">
+            <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+            <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+            <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+            <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+            <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+            <br><br>
+            <input id="sendText" type="text"><input onclick="sendMyMessage()" id="sendButton" type="button" value="Send" class="btn btn-success">
+
+            <div>
+              <strong>Message Log:</strong>
+              <textarea id="messageLog" class="form-control mt-2" rows="4" readonly></textarea>
+            </div>
+
+          </div>
+        </div>
+      <?php } ?>
+
+
       <?php
-      // if isWinkeyEnabled in session data is true
-      if ($this->session->userdata('isWinkeyEnabled')) { ?>
+      // if isWinkeyEnabled in session data is true and isWinkeyWebsocketEnabled  is false
+
+      if ($this->session->userdata('isWinkeyEnabled') && !$this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
 
         <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
           <div class="card-header">
