@@ -1681,7 +1681,7 @@ if ($this->session->userdata('user_id') != null) {
         $('#notice-alerts').delay(1000).fadeOut(5000);
 
         function setRst(mode) {
-            if (mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS') {
+            if (mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS' || mode == 'Q65' || mode == 'FST4' || mode == 'FST4W') {
                 $('#rst_sent').val('-5');
                 $('#rst_rcvd').val('-5');
             } else if (mode == 'FSK441' || mode == 'JT6M') {
