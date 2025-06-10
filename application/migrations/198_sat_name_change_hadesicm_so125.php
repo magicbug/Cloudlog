@@ -5,7 +5,6 @@ class Migration_198_sat_name_change_hadesicm_so125 extends CI_Migration
 {
 	public function up()
 	{
-
         // update column COL_SAT_NAME to SO-125 if its HADES-ICM
         $this->db->set('COL_SAT_NAME', 'SO-125');
         $this->db->where('COL_SAT_NAME', 'HADES-ICM');
