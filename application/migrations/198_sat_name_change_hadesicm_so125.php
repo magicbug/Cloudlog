@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Migration_198_sat_name_change_hadesicm_so125 extends CI_Migration
+class Migration_sat_name_change_hadesicm_so125 extends CI_Migration
 {
 	public function up()
 	{
