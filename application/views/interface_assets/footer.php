@@ -1125,11 +1125,222 @@ if ($this->session->userdata('user_id') != null) {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
     <script src="<?php echo base_url(); ?>assets/js/sections/qso.js"></script>
-    <?php if ($this->session->userdata('isWinkeyEnabled')) { ?>
+    <?php if ($this->session->userdata('isWinkeyEnabled') && !$this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
         <script src="<?php echo base_url(); ?>assets/js/winkey.js"></script>
-    <?php }
+    <?php } elseif ($this->session->userdata('isWinkeyEnabled') && $this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
+        <script>
+            console.log('Winkey Websocket enabled');
+        </script>
 
-    if ($this->optionslib->get_option('dxcache_url') != '') { ?>
+        <script>
+            let ws = null;
+
+            function connectWebSocket() {
+                if (ws !== null) {
+                    ws.close();
+                }
+
+                const chatRoom = "cw_room";
+                const wsUrl = `ws://localhost:8181?chatRoom=${encodeURIComponent(chatRoom)}`;
+
+                ws = new WebSocket(wsUrl);
+
+                ws.onopen = function() {
+                    document.getElementById('cw_socket_status').className = 'badge bg-success';
+                    document.getElementById('cw_socket_status').innerHTML = `Status: Connected`;
+                    logMessage(`Connected to WebSocket server in room: ${chatRoom}`);
+                };
+
+                ws.onclose = function() {
+                    document.getElementById('cw_socket_status').className = 'badge bg-secondary';
+                    document.getElementById('cw_socket_status').innerHTML = 'Status: Disconnected';
+                    logMessage('Disconnected from WebSocket server');
+                    ws = null;
+                };
+
+                ws.onerror = function(error) {
+                    logMessage('WebSocket Error: ' + error);
+                };
+
+                ws.onmessage = function(event) {
+                    logMessage('Received: ' + event.data);
+                };
+            }
+
+            function disconnectWebSocket() {
+                if (ws !== null) {
+                    ws.close();
+                }
+            }
+
+            function sendMessage() {
+                if (ws === null) {
+                    alert('Please connect to the WebSocket server first');
+                    return;
+                }
+
+                const message = document.getElementById('message').value;
+                if (message.trim() === '') {
+                    alert('Please enter a message');
+                    return;
+                }
+
+                // Prefix the message with "CW:" to indicate it's a CW message
+                const cwMessage = 'CW:' + message;
+                ws.send(cwMessage);
+                logMessage('Sent: ' + cwMessage);
+
+                // Clear the input field
+                document.getElementById('message').value = '';
+            }
+
+            function logMessage(message) {
+                const messageLog = document.getElementById('messageLog');
+                messageLog.value += message + '\n';
+                // Auto-scroll to bottom
+                messageLog.scrollTop = messageLog.scrollHeight;
+            }
+
+            // Support for Enter key in the input field
+            document.getElementById('message').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        </script>
+
+        <script>
+            connectWebSocket();
+
+
+            function morsekey_func1() {
+                console.log("F1: " + UpdateMacros(function1Macro));
+
+                const cwMessage = 'CW:' + UpdateMacros(function1Macro);
+                ws.send(cwMessage);
+            }
+
+            function morsekey_func2() {
+                console.log("F2: " + UpdateMacros(function2Macro));
+                const cwMessage = 'CW:' + UpdateMacros(function2Macro);
+                ws.send(cwMessage);
+            }
+
+            function morsekey_func3() {
+                console.log("F3: " + UpdateMacros(function3Macro));
+                const cwMessage = 'CW:' + UpdateMacros(function3Macro);
+                ws.send(cwMessage);
+            }
+
+            function morsekey_func4() {
+                console.log("F4: " + UpdateMacros(function4Macro));
+                const cwMessage = 'CW:' + UpdateMacros(function4Macro);
+                ws.send(cwMessage);
+            }
+
+            function morsekey_func5() {
+                console.log("F5: " + UpdateMacros(function5Macro));
+                const cwMessage = 'CW:' + UpdateMacros(function5Macro);
+                ws.send(cwMessage);
+            }
+
+            let function1Name, function1Macro, function2Name, function2Macro, function3Name, function3Macro, function4Name, function4Macro, function5Name, function5Macro;
+
+            getMacros();
+
+            document.addEventListener('keydown', function(event) {
+
+                if (event.key === 'F1') {
+                    event.preventDefault();
+                    morsekey_func1();
+                }
+
+                if (event.key === 'F2') {
+                    event.preventDefault();
+                    morsekey_func2();
+                }
+
+                if (event.key === 'F3') {
+                    event.preventDefault();
+                    morsekey_func3();
+                }
+
+                if (event.key === 'F4') {
+                    event.preventDefault();
+                    morsekey_func4();
+                }
+
+                if (event.key === 'F5') {
+                    event.preventDefault();
+                    morsekey_func5();
+                }
+            });
+
+            function UpdateMacros(macrotext) {
+
+                // Get the values from the form set to uppercase
+                let CALL = document.getElementById("callsign").value.toUpperCase();
+                let RSTS = document.getElementById("rst_sent").value;
+
+                let newString;
+                newString = macrotext.replace(/\[MYCALL\]/g, my_call);
+                newString = newString.replace(/\[CALL\]/g, CALL);
+                newString = newString.replace(/\[RSTS\]/g, RSTS);
+                console.log(newString);
+                return newString;
+            }
+
+            // Call url and store the returned json data as variables
+            function getMacros() {
+                fetch(base_url + 'index.php/qso/cwmacros_json')
+                    .then(response => response.json())
+                    .then(data => {
+                        function1Name = data.function1_name;
+                        function1Macro = data.function1_macro;
+                        function2Name = data.function2_name;
+                        function2Macro = data.function2_macro;
+                        function3Name = data.function3_name;
+                        function3Macro = data.function3_macro;
+                        function4Name = data.function4_name;
+                        function4Macro = data.function4_macro;
+                        function5Name = data.function5_name;
+                        function5Macro = data.function5_macro;
+
+                        const morsekey_func1_Button = document.getElementById('morsekey_func1');
+                        morsekey_func1_Button.textContent = 'F1 (' + function1Name + ')';
+
+                        const morsekey_func2_Button = document.getElementById('morsekey_func2');
+                        morsekey_func2_Button.textContent = 'F2 (' + function2Name + ')';
+
+                        const morsekey_func3_Button = document.getElementById('morsekey_func3');
+                        morsekey_func3_Button.textContent = 'F3 (' + function3Name + ')';
+
+                        const morsekey_func4_Button = document.getElementById('morsekey_func4');
+                        morsekey_func4_Button.textContent = 'F4 (' + function4Name + ')';
+
+                        const morsekey_func5_Button = document.getElementById('morsekey_func5');
+                        morsekey_func5_Button.textContent = 'F5 (' + function5Name + ')';
+                    });
+            }
+
+
+            function sendMyMessage() {
+                const message = document.getElementById('sendText').value;
+                if (message.trim() === '') {
+                    alert('Please enter a message');
+                    return;
+                }
+
+                const cwMessage = 'CW:' + message;
+                ws.send(cwMessage);
+                logMessage('Sent: ' + cwMessage);
+
+                // Clear the input field
+                document.getElementById('sendText').value = '';
+            }
+        </script>
+    <?php } ?>
+    <?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
         <script type="text/javascript">
             var dxcluster_provider = '<?php echo base_url(); ?>index.php/dxcluster';
             $(document).ready(function() {
@@ -1470,7 +1681,7 @@ if ($this->session->userdata('user_id') != null) {
         $('#notice-alerts').delay(1000).fadeOut(5000);
 
         function setRst(mode) {
-            if (mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS') {
+            if (mode == 'JT65' || mode == 'JT65B' || mode == 'JT6C' || mode == 'JTMS' || mode == 'ISCAT' || mode == 'MSK144' || mode == 'JTMSK' || mode == 'QRA64' || mode == 'FT8' || mode == 'FT4' || mode == 'JS8' || mode == 'JT9' || mode == 'JT9-1' || mode == 'ROS' || mode == 'Q65' || mode == 'FST4' || mode == 'FST4W') {
                 $('#rst_sent').val('-5');
                 $('#rst_rcvd').val('-5');
             } else if (mode == 'FSK441' || mode == 'JT6M') {
@@ -1622,6 +1833,28 @@ if ($this->session->userdata('user_id') != null) {
 
         // Event listeners
         $(document).ready(() => {
+
+            /**
+             * Prevents multiple form submissions by tracking submission state
+             * 
+             * This script prevents duplicate QSO (contact) submissions by:
+             * - Maintaining an isSubmitting flag to track form submission state
+             * - Adding an event listener to the 'qso_input' form
+             * - Preventing form submission if a submission is already in progress
+             * - Setting the flag to true when a valid submission begins
+             * 
+             * @since Unknown
+             * @global boolean isSubmitting Flag to track if form is currently being submitted
+             */
+            let isSubmitting = false;
+            document.getElementById('qso_input').addEventListener('submit', function(e) {
+                if (isSubmitting) {
+                    e.preventDefault();
+                    return false;
+                }
+                isSubmitting = true;
+            });
+
             // Update frequency every three seconds for the selected radio
             setInterval(() => {
                 const selectedRadioID = $('select.radios option:selected').val();
@@ -1642,15 +1875,15 @@ if ($this->session->userdata('user_id') != null) {
         });
     </script>
 
-<script>
-    $(document).ready(function () {
-        // Synchronize the two selects
-        $('.radios').on('change', function () {
-            const selectedValue = $(this).val(); // Get the selected value
-            $('.radios').not(this).val(selectedValue); // Update other selects to match
+    <script>
+        $(document).ready(function() {
+            // Synchronize the two selects
+            $('.radios').on('change', function() {
+                const selectedValue = $(this).val(); // Get the selected value
+                $('.radios').not(this).val(selectedValue); // Update other selects to match
+            });
         });
-    });
-</script>
+    </script>
 
 
 

@@ -65,12 +65,12 @@
 							<td><?php echo $row->user_email; ?></td>
 							<td><?php $l = $this->config->item('auth_level');
 								echo $l[$row->user_type]; ?></td>
-							<td><?php 
+							<td><?php
 								if ($row->last_login_date != null) { // if the user never logged in before the value is null. We can show "never" then.
 									echo $row->last_login_date;
 								} else {
 									echo lang('general_word_never');
-								}?>
+								} ?>
 							</td>
 							<td style="text-align: center; vertical-align: middle;"><a href="<?php echo site_url('user/edit') . "/" . $row->user_id; ?>" class="btn btn-outline-primary btn-sm"><i class="fas fa-user-edit"></i></a>
 							<td style="text-align: center; vertical-align: middle;">
@@ -81,7 +81,7 @@
 								?></td>
 							<td style="text-align: center; vertical-align: middle;">
 								<?php if ($_SESSION['user_id'] != $row->user_id) { ?>
-									<button class="btn btn-danger btn-sm" hx-delete="<?php echo site_url('user/delete_new/'.$row->user_id);?>"><i class="fas fa-user-minus"></i></button>	
+									<button class="btn btn-danger btn-sm" hx-delete="<?php echo site_url('user/delete_new/' . $row->user_id); ?>"><i class="fas fa-user-minus"></i></button>
 								<?php } ?>
 							</td>
 							</td>

@@ -88,6 +88,45 @@ async function clickConnect() {
 
 //Define outputstream, inputstream and port so they can be used throughout the sketch
 var outputStream, inputStream, port;
+
+// Auto-reconnect functionality
+async function autoReconnect() {
+    try {
+        // Get previously connected ports
+        const ports = await navigator.serial.getPorts();
+        if (ports.length > 0) {
+            // Try to reconnect to the first available port
+            port = ports[0];
+            await port.open({ baudRate: 1200 });
+            await port.setSignals({ dataTerminalReady: true });
+
+            statusBar.innerText = "Auto-reconnected";
+            connectButton.innerText = "Disconnect";
+
+            let decoder = new TextDecoderStream();
+            inputDone = port.readable.pipeTo(decoder.writable);
+            inputStream = decoder.readable;
+
+            const encoder = new TextEncoderStream();
+            outputDone = encoder.readable.pipeTo(port.writable);
+            outputStream = encoder.writable;
+            
+            writeToByte("0x00, 0x02");
+            writeToByte("0x02, 0x00");
+
+            $('#winkey_buttons').show();
+
+            reader = inputStream.getReader();
+            readLoop();
+        }
+    } catch (e) {
+        console.log("Auto-reconnect failed:", e);
+        // If auto-reconnect fails, just continue with normal flow
+    }
+}
+
+// Call auto-reconnect when page loads
+window.addEventListener('load', autoReconnect);
 navigator.serial.addEventListener('connect', e => {
     statusBar.innerText = `Connected to ${e.port}`;
     connectButton.innerText = "Disconnect"
@@ -182,8 +221,10 @@ async function disconnect() {
     statusBar.innerText = "Disconnected";
     connectButton.innerText = "Connect"
     //Close the port.
-    await port.close();
-    port = null;
+    if (port) {
+        await port.close();
+        port = null;
+    }
 }
 
 //When the send button is pressed

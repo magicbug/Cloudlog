@@ -174,14 +174,13 @@ function handleInput() {
 					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4,5}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
 				)
 			) {
-				sotaWwff = item.toUpperCase();
-			} else if (
+				sotaWwff = item.toUpperCase();			} else if (
 				item.match(
 					/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/
 				)
 			) {
 				callsign = item.toUpperCase();
-			} else if (itemNumber > 0 && item.match(/^\d{1,3}$/)) {
+			} else if (itemNumber > 0 && (item.match(/^\d{1,3}$/) || item.match(/^[+-]\d{1,2}$/))) {
 				if (rst_s === null) {
 					rst_s = item;
 				} else {
@@ -565,6 +564,15 @@ function getReportByMode(rst, mode) {
 		}
 
 		return "599";
+	}
+	// Handle digital modes with dB signal reports (e.g., -09, +00)
+	if ((mode.toUpperCase() === "FT8" || mode.toUpperCase() === "FT4" || mode.toUpperCase() === "JS8" || 
+		 mode.toUpperCase() === "JT65" || mode.toUpperCase() === "JT65B" || mode.toUpperCase() === "JT6C" || 
+		 mode.toUpperCase() === "JTMS" || mode.toUpperCase() === "ISCAT" || mode.toUpperCase() === "MSK144" || 
+		 mode.toUpperCase() === "JTMSK" || mode.toUpperCase() === "QRA64" || mode.toUpperCase() === "JT9" || 
+		 mode.toUpperCase() === "JT9-1" || mode.toUpperCase() === "ROS" || mode.toUpperCase() === "Q65" || 
+		 mode.toUpperCase() === "FST4" || mode.toUpperCase() === "FST4W") && rst.match(/^[+-]\d{1,2}$/)) {
+		return rst;
 	}
 
 	if (settingsMode === "SSB") {
