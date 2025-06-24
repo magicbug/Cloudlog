@@ -427,6 +427,181 @@ class API extends CI_Controller {
 
 	}
 
+
+	/**
+	 * Check if a country has been worked before and confirmed in various ways
+	 * 
+	 * This API endpoint checks if a specific country (derived from callsign) has been
+	 * worked before in a given logbook, and whether it has been confirmed via different
+	 * confirmation methods (QSL, LoTW, eQSL, QRZ).
+	 * 
+	 * @api POST /api/logbook_check_country
+	 * @header Content-Type application/json
+	 * 
+	 * @param string key Required. API authentication key
+	 * @param string logbook_public_slug Required. Public slug identifier for the logbook
+	 * @param string callsign Required. Callsign to lookup country for
+	 * @param string type Optional. Type of contact ("sat" for satellite, empty for regular)
+	 * @param string band Optional. Amateur radio band (required for non-satellite contacts)
+	 * @param string mode Optional. Amateur radio mode (required for non-satellite contacts)
+	 * 
+	 * @return json Returns JSON object with:
+	 *   - workedBefore: boolean indicating if country was worked before
+	 *   - confirmed: object with confirmation status for qsl, lotw, eqsl, qrz
+	 * 
+	 * @throws 401 Unauthorized - Missing or invalid API key, missing required fields
+	 * @throws 404 Not Found - Logbook not found or empty logbook
+	 * @throws 400 Bad Request - Invalid JSON format
+	 * 
+	 * @example
+	 * Request:
+	 * {
+	 *   "key": "your-api-key",
+	 *   "logbook_public_slug": "my-logbook",
+	 *   "callsign": "W1AW",
+	 *   "band": "20M",
+	 *   "mode": "SSB"
+	 * }
+	 * 
+	 * Response:
+	 * {
+	 *   "workedBefore": true,
+	 *   "confirmed": {
+	 *     "qsl": true,
+	 *     "lotw": false,
+	 *     "eqsl": false,
+	 *     "qrz": false
+	 *   }
+	 * }
+	 */
+	function logbook_check_country()
+	{
+		header('Content-type: application/json');
+
+		$this->load->model('api_model');
+
+		// Decode JSON and store
+		$obj = json_decode(file_get_contents("php://input"), true);
+		if ($obj === NULL) {
+			echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
+			return;
+		}
+
+		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+		   http_response_code(401);
+		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+		   return;
+		}
+
+		if(!isset($obj['logbook_public_slug']) || !isset($obj['callsign'])) {
+		   http_response_code(401);
+		   echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
+		   return;
+		}
+
+		// Load models
+		$this->load->model('logbook_model');
+		$this->load->model('logbooks_model');
+
+		$date = date("Y-m-d");
+		$callsign = $obj['callsign'];
+		$logbook_slug = $obj['logbook_public_slug'];
+		$type = isset($obj['type']) ? $obj['type'] : '';
+		$band = isset($obj['band']) ? $obj['band'] : '';
+		$mode = isset($obj['mode']) ? $obj['mode'] : '';
+
+		$callsign_dxcc_lookup = $this->logbook_model->dxcc_lookup($callsign, $date);
+		$country = $callsign_dxcc_lookup['entity'];
+
+		$return = [
+			"workedBefore" => false,
+			"confirmed" => [
+				"qsl" => false,
+				"lotw" => false,
+				"eqsl" => false,
+				"qrz" => false
+			]
+		];
+
+		if($this->logbooks_model->public_slug_exists($logbook_slug)) {
+			$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($logbook_slug);
+			if($logbook_id != false)
+			{
+				// Get associated station locations for mysql queries
+				$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+
+				if (!$logbooks_locations_array) {
+					// Logbook not found
+					http_response_code(404);
+					echo json_encode(['status' => 'failed', 'reason' => "Empty Logbook"]);
+					die();
+				}
+			} else {
+				// Logbook not found
+				http_response_code(404);
+				echo json_encode(['status' => 'failed', 'reason' => $logbook_slug." has no associated station locations"]);
+				die();
+			}
+
+			if (!empty($logbooks_locations_array)) {
+				if ($type == "sat") {
+					$this->db->where('COL_PROP_MODE', 'SAT');
+				} else {
+					$this->db->where('COL_MODE', $this->logbook_model->get_main_mode_from_mode($mode));
+					$this->db->where('COL_BAND', $band);
+					$this->db->where('COL_PROP_MODE !=', 'SAT');
+				}
+
+				$this->db->where_in('station_id', $logbooks_locations_array);
+				$this->db->where('COL_COUNTRY', urldecode($country));
+
+				$query = $this->db->get($this->config->item('table_name'), 1, 0);
+				foreach ($query->result() as $workedBeforeRow) {
+					$return['workedBefore'] = true;
+				}
+
+				// Check each confirmation type separately
+				$confirmation_types = [
+					'qsl' => "COL_QSL_RCVD='Y'",
+					'lotw' => "COL_LOTW_QSL_RCVD='Y'",
+					'eqsl' => "COL_EQSL_QSL_RCVD='Y'",
+					'qrz' => "COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y'"
+				];
+
+				foreach ($confirmation_types as $type_key => $where_clause) {
+					if ($type == "SAT") {
+						$this->db->where('COL_PROP_MODE', 'SAT');
+					} else {
+						$this->db->where('COL_MODE', $this->logbook_model->get_main_mode_from_mode($mode));
+						$this->db->where('COL_BAND', $band);
+						$this->db->where('COL_PROP_MODE !=', 'SAT');
+					}
+
+					$this->db->where_in('station_id', $logbooks_locations_array);
+					$this->db->where('COL_COUNTRY', urldecode($country));
+					$this->db->where($where_clause);
+
+					$query = $this->db->get($this->config->item('table_name'), 1, 0);
+
+					if ($query->num_rows() > 0) {
+						$return['confirmed'][$type_key] = true;
+					}
+				}
+
+				http_response_code(201);
+				echo json_encode($return, JSON_PRETTY_PRINT);
+			} else {
+				http_response_code(201);
+				echo json_encode($return, JSON_PRETTY_PRINT);
+			}
+		} else {
+			// Logbook not found
+			http_response_code(404);
+			echo json_encode(['status' => 'failed', 'reason' => "logbook not found"]);
+			die();
+		}
+	}
+
 	/* ENDPOINT for Rig Control */
 
 	function radio() {
