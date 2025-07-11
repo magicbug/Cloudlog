@@ -4,6 +4,8 @@ class Migration_fix_brazil_dxcc_data extends CI_Migration {
 
 	public function up()
 	{
+	  // Fixes Brazilian DXCC data: Typos, ITU zone, 
+	  // Callsign assignment plan, time zone
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 3 WHERE CountryCode = 108 AND DXCCSort = 1;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 3, ITUZone = 15, PrefixList = 'PP1, PU1[A-I], ZV1[A-I], ZW1[A-I], ZX1[A-I], ZY1[A-I], ZZ1[A-I]', location = 'Espirito Santo <Pri:ES>' WHERE CountryCode = 108 AND DXCCSort = 12;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 3, ITUZone = 13, PrefixList = 'PP2, PU2[F-H], Z[V-Z]2F, Z[V-Z]2G, Z[V-Z]2H', location = 'Goias <Pri:GO>' WHERE CountryCode = 108 AND DXCCSort = 22;");
@@ -20,9 +22,9 @@ class Migration_fix_brazil_dxcc_data extends CI_Migration {
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 3, ITUZone = 13, PrefixList = 'PT2, PU2[A-E], Z[V-Z]2A, Z[V-Z]2B, Z[V-Z]2C, Z[V-Z]2D, Z[V-Z]2E', location = 'Brasilia <Pri:DF>' WHERE CountryCode = 108 AND DXCCSort = 24;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 3, ITUZone = 13, PrefixList = 'PT7, PU7[M-P], Z[V-Z]7M, Z[V-Z]7N, Z[V-Z]7O, Z[V-Z]7P', location = 'Ceara <Pri:CE>' WHERE CountryCode = 108 AND DXCCSort = 75;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 5, ITUZone = 12, PrefixList = 'PT8, PU8[J-L], Z[V-Z]8J, Z[V-Z]8K, Z[V-Z]8L', location = 'Acre <Pri:AC>' WHERE CountryCode = 108 AND DXCCSort = 86;");
+	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 4, ITUZone = 13, PrefixList = 'PT9, PU9[A-N], Z[V-Z]9', location = 'Mato Grosso do Sul <Pri:MS>' WHERE CountryCode = 108 AND DXCCSort = 92;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 4, ITUZone = 12, PrefixList = 'PV8, PU8[T-V], Z[V-Z]8T, Z[V-Z]8U, Z[V-Z]8V', location = 'Roraima <Pri:RR>' WHERE CountryCode = 108 AND DXCCSort = 87;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 4, ITUZone = 12, PrefixList = 'PW8, PU8[D-F], Z[V-Z]8D, Z[V-Z]8E, Z[V-Z]8F', location = 'Rondonia <Pri:RO>' WHERE CountryCode = 108 AND DXCCSort = 88;");
-	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 4, ITUZone = 13, PrefixList = 'PT9, PU9[A-N], Z[V-Z]9', location = 'Mato Grosso do Sul <Pri:MS>' WHERE CountryCode = 108 AND DXCCSort = 92;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 3, ITUZone = 15, PrefixList = 'PY1, PU1[J-Y], Z[V-Z]1', location = 'Rio de Janeiro <Pri:RJ>' WHERE CountryCode = 108 AND DXCCSort = 11;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 3, ITUZone = 15, PrefixList = 'PY2, PU2[K-Y], Z[V-Z]2', location = 'Sao Paulo <Pri:SP>' WHERE CountryCode = 108 AND DXCCSort = 21;");
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 3, ITUZone = 15, PrefixList = 'P[P-Y]3, Z[V-Z]3', location = 'Rio Grande do Sul <Pri:RS>' WHERE CountryCode = 108 AND DXCCSort = 31;");
@@ -34,7 +36,10 @@ class Migration_fix_brazil_dxcc_data extends CI_Migration {
 	  $this->db->query("UPDATE `dxcc_master` SET TimeZone = 4, ITUZone = 13, PrefixList = 'PY9, PU9[O-Y], ZV9[O-Z], ZW9[O-Z], ZX9[O-Z], ZY9[O-Z], ZZ9[O-Z]', location = 'Mato Grosso <Pri:MT>' WHERE CountryCode = 108 AND DXCCSort = 91;");
 	}
 
-	public function down(){
+	public function down()
+	{
+	  // Reverts to the original content
+	  // (from 105_create_dxcc_master_tables.php)
           $this->db->query("DELETE FROM `dxcc_master` WHERE CountryCode = 108;");
 	  $this->db->query("INSERT INTO `dxcc_master` (DXCCPrefix,DXCCSearch,DXCCMap,DXCCSort,CountryCode,PrefixList,DXCCName,Location,Continent,CQZone,ITUZone,IOTA,TimeZone,Latitude,Longitude,StartDate,EndDate) VALUES ('PY','PY','PY',1,108,'P[P-Y], Z[V-Z]','Brazil','Brazil','SA','11',NULL,NULL,4.0,-15.8,-47.9167,NULL,NULL);");
 	  $this->db->query("INSERT INTO `dxcc_master` (DXCCPrefix,DXCCSearch,DXCCMap,DXCCSort,CountryCode,PrefixList,DXCCName,Location,Continent,CQZone,ITUZone,IOTA,TimeZone,Latitude,Longitude,StartDate,EndDate) VALUES ('PY','PY','PY',22,108,'PP2, PU2[F-H], Z[V-Z]2F, Z[V-Z]2G, Z[V-Z]2H','Brazil','Goias <Pri:GO>','SA','11','',NULL,5.0,-15.8,-50.0,NULL,NULL);");
