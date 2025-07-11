@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Fix_brazil_dxcc_data extends CI_Migration {
+class Migration_fix_brazil_dxcc_data extends CI_Migration {
 
 	public function up()
 	{
