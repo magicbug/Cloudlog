@@ -40,7 +40,7 @@ class Migration_fix_brazil_dxcc_data extends CI_Migration {
 	{
 	  // Reverts to the original content
 	  // (from 105_create_dxcc_master_tables.php)
-          $this->db->query("DELETE FROM `dxcc_master` WHERE CountryCode = 108;");
+	  $this->db->query("DELETE FROM `dxcc_master` WHERE CountryCode = 108;");
 	  $this->db->query("INSERT INTO `dxcc_master` (DXCCPrefix,DXCCSearch,DXCCMap,DXCCSort,CountryCode,PrefixList,DXCCName,Location,Continent,CQZone,ITUZone,IOTA,TimeZone,Latitude,Longitude,StartDate,EndDate) VALUES ('PY','PY','PY',1,108,'P[P-Y], Z[V-Z]','Brazil','Brazil','SA','11',NULL,NULL,4.0,-15.8,-47.9167,NULL,NULL);");
 	  $this->db->query("INSERT INTO `dxcc_master` (DXCCPrefix,DXCCSearch,DXCCMap,DXCCSort,CountryCode,PrefixList,DXCCName,Location,Continent,CQZone,ITUZone,IOTA,TimeZone,Latitude,Longitude,StartDate,EndDate) VALUES ('PY','PY','PY',22,108,'PP2, PU2[F-H], Z[V-Z]2F, Z[V-Z]2G, Z[V-Z]2H','Brazil','Goias <Pri:GO>','SA','11','',NULL,5.0,-15.8,-50.0,NULL,NULL);");
 	  $this->db->query("INSERT INTO `dxcc_master` (DXCCPrefix,DXCCSearch,DXCCMap,DXCCSort,CountryCode,PrefixList,DXCCName,Location,Continent,CQZone,ITUZone,IOTA,TimeZone,Latitude,Longitude,StartDate,EndDate) VALUES ('PY','PY','PY',12,108,'PP1, PU1[A-I], ZV1[A-I], ZW1[A-I], ZX1[A-I], ZY1[A-I], ZZ1[A-I]','Brazil','Esprito Santo <Pri:ES>','SA','11','15',NULL,4.0,-20.0,-40.6,NULL,NULL);");
