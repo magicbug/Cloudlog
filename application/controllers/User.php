@@ -739,6 +739,9 @@ class User extends CI_Controller
 
 
 			$post_data = $this->input->post();
+			if (!isset($post_data['user_winkey'])) {
+				$post_data['user_winkey'] = '0';
+			}
 			if (!isset($post_data['user_winkey_websocket'])) {
 				$post_data['user_winkey_websocket'] = '0';
 			}
