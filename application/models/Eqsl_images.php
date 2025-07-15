@@ -30,7 +30,12 @@ class Eqsl_images extends CI_Model {
 		$this->db->select('COL_PRIMARY_KEY, qso_id, COL_CALL, COL_MODE, , COL_SUBMODE, COL_TIME_ON, COL_BAND, COL_SAT_NAME, image_file');
 		$this->db->join($this->config->item('table_name'), 'qso_id = COL_PRIMARY_KEY', 'left outer');
 		$this->db->join('station_profile', $this->config->item('table_name').'.station_id = station_profile.station_id', 'left outer');
-		$this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+		if (!empty($logbooks_locations_array)) {
+			$this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+		} else {
+			// Option 1: Prevent query and return empty result
+			return [];
+		}
 		$this->db->order_by('COL_TIME_ON', 'DESC');
 		return $this->db->get('eQSL_images');
 	}

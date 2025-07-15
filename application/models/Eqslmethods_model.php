@@ -63,7 +63,12 @@ class Eqslmethods_model extends CI_Model {
         $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'Q');
         $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'N');
         $this->db->group_end();
-        $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+        if (!empty($logbooks_locations_array)) {
+            $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+        } else {
+            // Option 1: Skip the query altogether (return no results)
+            return [];
+        }
 
         return $this->db->get();
     }
@@ -91,7 +96,12 @@ class Eqslmethods_model extends CI_Model {
         $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
         $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_RCVD', 'Y');
         $this->db->where('qso_id', NULL);
-        $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+        if (!empty($logbooks_locations_array)) {
+            $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
+        } else {
+            // Option 1: Skip the query altogether (return no results)
+            return [];
+        }
         $this->db->order_by("COL_TIME_ON", "desc");
 
         return $this->db->get();
