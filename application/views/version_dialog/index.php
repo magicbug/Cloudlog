@@ -11,8 +11,17 @@
 
                 <script>
                     function convertMarkdownToHTML() {
+                        // Check if the required elements exist
+                        var markdownDiv = document.getElementById('markdownDiv');
+                        var formattedHTMLDiv = document.getElementById('formattedHTMLDiv');
+                        
+                        if (!markdownDiv || !formattedHTMLDiv) {
+                            console.warn('Required elements for markdown conversion not found');
+                            return;
+                        }
+
                         // Get the Markdown content from the div
-                        var markdownContent = document.getElementById('markdownDiv').innerText;
+                        var markdownContent = markdownDiv.innerText;
 
                         // Create a new Showdown Converter with simplifiedAutoLink option enabled
                         var converter = new showdown.Converter({
@@ -23,10 +32,13 @@
                         var html = converter.makeHtml(markdownContent);
 
                         // Set the HTML content of the div
-                        document.getElementById('formattedHTMLDiv').innerHTML = html;
+                        formattedHTMLDiv.innerHTML = html;
                     }
 
-                    convertMarkdownToHTML();
+                    // Only call the function if the DOM is ready and elements exist
+                    document.addEventListener('DOMContentLoaded', function() {
+                        convertMarkdownToHTML();
+                    });
                 </script>
 
                 <?php
