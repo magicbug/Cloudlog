@@ -266,8 +266,8 @@ class User_Model extends CI_Model {
 					'user_quicklog' => xss_clean($fields['user_quicklog']),
 					'user_quicklog_enter' => xss_clean($fields['user_quicklog_enter']),
 					'language' => xss_clean($fields['language']),
-					'winkey' => xss_clean($fields['user_winkey']),
-					'winkey_websocket' => xss_clean($fields['user_winkey_websocket']),
+					'winkey' => (isset($fields['user_winkey']) && is_numeric($clean = xss_clean($fields['user_winkey'])) && $clean !== '') ? intval($clean) : 0,
+					'winkey_websocket' => isset($fields['user_winkey_websocket']) ? xss_clean($fields['user_winkey_websocket']) : 0,
 				);
 
 				$this->db->query("replace into user_options (user_id, option_type, option_name, option_key, option_value) values (" . $fields['id'] . ", 'hamsat','hamsat_key','api','".xss_clean($fields['user_hamsat_key'])."');");

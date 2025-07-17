@@ -20,6 +20,10 @@ if (!isset($options->operator)) {
 }
 ?>
 </script>
+<script>
+    const CSRF_NAME = '<?= $this->security->get_csrf_token_name(); ?>';
+    const CSRF_HASH = '<?= $this->security->get_csrf_hash(); ?>';
+</script>
 <style>
 /*Legend specific*/
 .legend {

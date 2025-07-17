@@ -2,6 +2,21 @@ var callBookProcessingDialog = null;
 var inCallbookProcessing = false;
 var inCallbookItemProcessing = false;
 
+// Ensure CSRF token is included in all POST requests
+if (typeof CSRF_NAME !== 'undefined' && typeof CSRF_HASH !== 'undefined') {
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (settings.type === 'POST') {
+                if (typeof settings.data === 'string') {
+                    settings.data += '&' + encodeURIComponent(CSRF_NAME) + '=' + encodeURIComponent(CSRF_HASH);
+                } else if (typeof settings.data === 'object') {
+                    settings.data[CSRF_NAME] = CSRF_HASH;
+                }
+            }
+        }
+    });
+}
+
 $('#band').change(function () {
 	var band = $("#band option:selected").text();
 	if (band != "SAT") {

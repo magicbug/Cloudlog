@@ -17,6 +17,7 @@ services:
       - db
     networks:
       - mynet
+    restart: on-failure
 
   db:
     build:
@@ -28,5 +29,12 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - mynet
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      timeout: 30s
+      retries: 20
+      interval: 15s
+      start_period: 60s
+
 volumes:
   db_data: {}
