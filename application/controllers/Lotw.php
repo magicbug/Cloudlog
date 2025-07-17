@@ -320,7 +320,7 @@ class Lotw extends CI_Controller {
 					echo $station_profile->station_callsign." (".$station_profile->station_profile_name.") Upload Failed"."<br>";
 				}
 
-				$pos = strpos($result, "<!-- .UPL.  accepted -->");
+				$pos = strpos($result, "<!-- .UPL. accepted -->");
 
 				if ($pos === false) {
 					// Upload of TQ8 Failed for unknown reason
