@@ -14,10 +14,10 @@ services:
       - ./:/var/www/html:rw
     command: ["./script.sh"]
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     networks:
       - mynet
+    restart: on-failure
 
   db:
     build:
@@ -30,11 +30,11 @@ services:
     networks:
       - mynet
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
-      interval: 10s
-      start_period: 30s
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      timeout: 30s
+      retries: 20
+      interval: 15s
+      start_period: 60s
 
 volumes:
   db_data: {}
