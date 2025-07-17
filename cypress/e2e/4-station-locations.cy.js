@@ -41,7 +41,11 @@ describe("Create station location", () => {
 		cy.get('input[name="station_profile_name"]').type(stationLocationName);
 		cy.get('input[name="station_callsign"]').type(stationCallsign);
 		cy.get('input[name="station_power"]').type(stationPower);
+		
+		// Wait for the DXCC select to be populated with options before trying to select
+		cy.waitForSelectOptions('select[name="dxcc"]');
 		cy.get('select[name="dxcc"]').select(stationDXCC);
+		
 		cy.get('input[name="city"]').type(stationCity);
 		cy.get('select[name="station_state"]').select(stationState);
 		cy.get("#stationCntyInput-selectized")

@@ -6,3 +6,9 @@ Cypress.Commands.add("login", () => {
 	cy.get('input[name="user_password"]').type(password);
 	cy.get('button[type="submit"]').click();
 });
+
+// Custom command to wait for select elements to be populated
+Cypress.Commands.add("waitForSelectOptions", (selector, minOptions = 1) => {
+	cy.get(selector).should('be.visible');
+	cy.get(`${selector} option`).should('have.length.greaterThan', minOptions);
+});
