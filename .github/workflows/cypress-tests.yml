@@ -59,7 +59,16 @@ jobs:
           done
 
       - name: Populate dxcc_entities table
-        run: curl "http://localhost/index.php/update/dxcc"
+        run: |
+          for i in `seq 1 10`; do
+            if curl -f "http://localhost/index.php/update/dxcc"; then
+              echo "DXCC entities populated successfully"
+              break
+            else
+              echo "Failed to populate DXCC entities, retrying in 10 seconds... (attempt $i/10)"
+              sleep 10
+            fi
+          done
 
       - name: Run Cypress tests
         run: npx cypress run

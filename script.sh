@@ -79,6 +79,14 @@ rm -rf /install
 
 echo "Replacement complete."
 
+# Wait for database to be ready
+echo "Waiting for database to be ready..."
+until mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" > /dev/null 2>&1; do
+    echo "Database is not ready yet. Waiting 5 seconds..."
+    sleep 5
+done
+echo "Database is ready!"
+
 # Set Permissions
 chown -R root:www-data /var/www/html/application/config/
 chown -R root:www-data /var/www/html/application/logs/
