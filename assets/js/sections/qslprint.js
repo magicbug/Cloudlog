@@ -77,8 +77,20 @@ $(".station_id").change(function(){
 		type: 'post',
 		data: {'station_id': station_id},
 		success: function(html) {
+			// Destroy existing DataTable if it exists
+			if ($.fn.DataTable.isDataTable('#qslprint_table')) {
+				$('#qslprint_table').DataTable().destroy();
+			}
 			$('.resulttable').empty();
 			$('.resulttable').append(html);
+			// Reinitialize DataTable
+			$('#qslprint_table').DataTable({
+				"stateSave": true,
+				paging: false,
+				"language": {
+					url: getDataTablesLanguageUrl(),
+				}
+			});
 		}
 	});
 });
@@ -135,7 +147,7 @@ function mark_qsl_sent(id, method) {
     });
 }
 
-$('#checkBoxAll').change(function (event) {
+$(document).on('change', '#checkBoxAll', function (event) {
 	if (this.checked) {
 		$('.qslprint tbody tr').each(function (i) {
 			$(this).closest('tr').addClass('activeRow');
@@ -149,7 +161,7 @@ $('#checkBoxAll').change(function (event) {
 	}
 });
 
-$('.qslprint').on('click', 'input[type="checkbox"]', function() {
+$(document).on('click', '.qslprint input[type="checkbox"]', function() {
 	if ($(this).is(":checked")) {
 		$(this).closest('tr').addClass('activeRow');
 	} else {
