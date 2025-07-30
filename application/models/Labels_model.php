@@ -151,7 +151,7 @@ class Labels_model extends CI_Model {
         $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
         $this->db->where_in('COL_QSL_SENT', array('R', 'Q'));
         $this->db->order_by("COL_DXCC", "ASC");
-        $this->db->order_by("COL_CALL", "ASC");
+        $this->db->order_by("CASE WHEN COL_QSL_VIA IS NOT NULL AND COL_QSL_VIA != '' THEN COL_QSL_VIA ELSE COL_CALL END", "ASC");
         $this->db->order_by("COL_SAT_NAME", "ASC");
         $this->db->order_by("COL_SAT_MODE", "ASC");
         $this->db->order_by("COL_BAND_RX", "ASC");
@@ -169,6 +169,7 @@ class Labels_model extends CI_Model {
         $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
         $this->db->where_in('COL_PRIMARY_KEY', $ids);
         $this->db->order_by("COL_DXCC", "ASC");
+        $this->db->order_by("CASE WHEN COL_QSL_VIA IS NOT NULL AND COL_QSL_VIA != '' THEN COL_QSL_VIA ELSE COL_CALL END", "ASC");
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
