@@ -77,13 +77,38 @@ $(".station_id").change(function(){
 		type: 'post',
 		data: {'station_id': station_id},
 		success: function(html) {
-			// Destroy existing DataTable if it exists
-			if ($.fn.DataTable.isDataTable('#qslprint_table')) {
-				$('#qslprint_table').DataTable().destroy();
+			try {
+				// Destroy existing DataTable if it exists
+				if ($.fn.DataTable.isDataTable('#qslprint_table')) {
+					$('#qslprint_table').DataTable().destroy();
+				}
+				$('.resulttable').empty();
+				$('.resulttable').append(html);
+				// Reinitialize DataTable
+				$('#qslprint_table').DataTable({
+					"stateSave": true,
+					paging: false,
+					"language": {
+						url: getDataTablesLanguageUrl(),
+					},
+					"drawCallback": function(settings) {
+						// Re-attach event handlers after DataTable draws/redraws
+						attachCheckboxEvents();
+					}
+				});
+				// Attach checkbox events immediately after initialization
+				attachCheckboxEvents();
+			} catch (error) {
+				console.error('Error reinitializing DataTable:', error);
 			}
-			$('.resulttable').empty();
-			$('.resulttable').append(html);
-			// Reinitialize DataTable
+		}
+	});
+});
+
+// Initialize DataTable only if it exists and isn't already initialized
+$(document).ready(function() {
+	try {
+		if ($('#qslprint_table').length && !$.fn.DataTable.isDataTable('#qslprint_table')) {
 			$('#qslprint_table').DataTable({
 				"stateSave": true,
 				paging: false,
@@ -95,29 +120,14 @@ $(".station_id").change(function(){
 					attachCheckboxEvents();
 				}
 			});
-			// Attach checkbox events immediately after initialization
-			attachCheckboxEvents();
 		}
-	});
-});
-
-// Initialize DataTable only if it exists and isn't already initialized
-$(document).ready(function() {
-	if ($('#qslprint_table').length && !$.fn.DataTable.isDataTable('#qslprint_table')) {
-		$('#qslprint_table').DataTable({
-			"stateSave": true,
-			paging: false,
-			"language": {
-				url: getDataTablesLanguageUrl(),
-			},
-			"drawCallback": function(settings) {
-				// Re-attach event handlers after DataTable draws/redraws
-				attachCheckboxEvents();
-			}
-		});
+		// Initial attachment of events
+		attachCheckboxEvents();
+	} catch (error) {
+		console.error('Error initializing DataTable:', error);
+		// Still try to attach checkbox events even if DataTable fails
+		attachCheckboxEvents();
 	}
-	// Initial attachment of events
-	attachCheckboxEvents();
 });
 
 // Function to attach checkbox events
@@ -226,6 +236,10 @@ function markSelectedQsos() {
 				});
 			}
 			$('.markallprinted').prop("disabled", false);
+		},
+		error: function(xhr, status, error) {
+			console.error('Error marking QSOs as printed:', error);
+			$('.markallprinted').prop("disabled", false);
 		}
 	});
 }
@@ -259,6 +273,10 @@ function removeSelectedQsos() {
 					$("#qslprint_"+this.qsoID).remove();
 				});
 			}
+			$('.removeall').prop("disabled", false);
+		},
+		error: function(xhr, status, error) {
+			console.error('Error removing QSOs from queue:', error);
 			$('.removeall').prop("disabled", false);
 		}
 	});
