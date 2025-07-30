@@ -83,7 +83,7 @@ $db['default'] = array(
 	// The following values can probably stay the same.
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
-	'pconnect' => TRUE,
+	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,
 	'cachedir' => '',

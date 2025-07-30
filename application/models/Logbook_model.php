@@ -4576,61 +4576,136 @@ class Logbook_model extends CI_Model
   }
 
 
+  /**
+   * Get effective callbook configuration, falling back from session to config file
+   * Returns array with 'type', 'username', 'password', 'use_config'
+   */
+  private function getCallbookConfig()
+  {
+    $callbook_type = $this->session->userdata('callbook_type');
+    $callbook_username = $this->session->userdata('callbook_username');
+    $callbook_password = $this->session->userdata('callbook_password');
+    
+    // If session has valid callbook configuration, use it
+    if (!empty($callbook_type) && $callbook_type != "None" && !empty($callbook_username) && !empty($callbook_password)) {
+      // Load the encryption library and decrypt password
+      $this->load->library('encryption');
+      $decrypted_password = $this->encryption->decrypt($callbook_password);
+      
+      return array(
+        'type' => $callbook_type,
+        'username' => $callbook_username,
+        'password' => $decrypted_password,
+        'use_config' => false
+      );
+    }
+    
+    // Fall back to config file settings
+    $config_qrz_username = $this->config->item('qrz_username');
+    $config_qrz_password = $this->config->item('qrz_password');
+    $config_hamqth_username = $this->config->item('hamqth_username');
+    $config_hamqth_password = $this->config->item('hamqth_password');
+    $config_callbook = $this->config->item('callbook');
+    
+    // Check QRZ config first
+    if (!empty($config_qrz_username) && !empty($config_qrz_password)) {
+      return array(
+        'type' => 'QRZ',
+        'username' => $config_qrz_username,
+        'password' => $config_qrz_password,
+        'use_config' => true
+      );
+    }
+    
+    // Check HamQTH config
+    if (!empty($config_hamqth_username) && !empty($config_hamqth_password)) {
+      return array(
+        'type' => 'HamQTH',
+        'username' => $config_hamqth_username,
+        'password' => $config_hamqth_password,
+        'use_config' => true
+      );
+    }
+    
+    // Check legacy callbook config setting
+    if ($config_callbook == 'qrz' && !empty($config_qrz_username) && !empty($config_qrz_password)) {
+      return array(
+        'type' => 'QRZ',
+        'username' => $config_qrz_username,
+        'password' => $config_qrz_password,
+        'use_config' => true
+      );
+    }
+    
+    if ($config_callbook == 'hamqth' && !empty($config_hamqth_username) && !empty($config_hamqth_password)) {
+      return array(
+        'type' => 'HamQTH',
+        'username' => $config_hamqth_username,
+        'password' => $config_hamqth_password,
+        'use_config' => true
+      );
+    }
+    
+    // No valid configuration found
+    return array(
+      'type' => null,
+      'username' => null,
+      'password' => null,
+      'use_config' => false
+    );
+  }
+
   public function loadCallBook($callsign, $use_fullname = false)
   {
     $callbook = null;
     try {
-      if ($this->session->userdata('callbook_type') == "QRZ") {
+      $config = $this->getCallbookConfig();
+      
+      if ($config['type'] == "QRZ" && !empty($config['username']) && !empty($config['password'])) {
         // Lookup using QRZ
         $this->load->library('qrz');
 
-        // Load the encryption library
-        $this->load->library('encryption');
-
-        // Decrypt the password
-        $decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-
-        if(!$this->session->userdata('qrz_session_key')) {
-          $qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+        // Use a different session key name for config-based credentials to avoid conflicts
+        $session_key_name = $config['use_config'] ? 'qrz_config_session_key' : 'qrz_session_key';
+        
+        if(!$this->session->userdata($session_key_name)) {
+          $qrz_session_key = $this->qrz->session($config['username'], $config['password']);
+          $this->session->set_userdata($session_key_name, $qrz_session_key);
         }
 
-        $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+        $callbook = $this->qrz->search($callsign, $this->session->userdata($session_key_name), $use_fullname);
 
         // if we got nothing, it's probably because our session key is invalid, try again
         if (($callbook['callsign'] ?? '') == '') {
-          $qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-          $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+          $qrz_session_key = $this->qrz->session($config['username'], $config['password']);
+          $this->session->set_userdata($session_key_name, $qrz_session_key);
+          $callbook = $this->qrz->search($callsign, $this->session->userdata($session_key_name), $use_fullname);
           // if we still got nothing, and it's a compound callsign, then try a search for the base call
           if (($callbook['callsign'] ?? '') == '' && strpos($callsign, "/") !== false) {
-            $callbook = $this->qrz->search($this->get_plaincall($callsign), $this->session->userdata('qrz_session_key'), $use_fullname);
+            $callbook = $this->qrz->search($this->get_plaincall($callsign), $this->session->userdata($session_key_name), $use_fullname);
           }
         }
       }
 
-      if ($this->session->userdata('callbook_type') == "HamQTH") {
+      if ($config['type'] == "HamQTH" && !empty($config['username']) && !empty($config['password'])) {
         // Load the HamQTH library
         $this->load->library('hamqth');
 
-        // Load the encryption library
-        $this->load->library('encryption');
-
-        // Decrypt the password
-        $decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+        // Use a different session key name for config-based credentials to avoid conflicts
+        $session_key_name = $config['use_config'] ? 'hamqth_config_session_key' : 'hamqth_session_key';
         
-        if(!$this->session->userdata('hamqth_session_key')) {
-          $hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+        if(!$this->session->userdata($session_key_name)) {
+          $hamqth_session_key = $this->hamqth->session($config['username'], $config['password']);
+          $this->session->set_userdata($session_key_name, $hamqth_session_key);
         }
 
-        $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+        $callbook = $this->hamqth->search($callsign, $this->session->userdata($session_key_name));
 
         // If HamQTH session has expired, start a new session and retry the search.
         if ($callbook['error'] == "Session does not exist or expired") {
-          $hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-          $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+          $hamqth_session_key = $this->hamqth->session($config['username'], $config['password']);
+          $this->session->set_userdata($session_key_name, $hamqth_session_key);
+          $callbook = $this->hamqth->search($callsign, $this->session->userdata($session_key_name));
         }
       }
     } finally {

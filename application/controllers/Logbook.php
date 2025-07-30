@@ -826,72 +826,18 @@ class Logbook extends CI_Controller
 			$html .= "</div>";
 			return $html;
 		} else {
-			// if session data callbook_type  is qrz
-			if ($this->session->userdata('callbook_type') == "QRZ") {
-				// Lookup using QRZ
-				$this->load->library('qrz');
-
-				// Load the encryption library
-				$this->load->library('encryption');
-
-				// Decrypt the password
-				$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-
-				if (!$this->session->userdata('qrz_session_key')) {
-					$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-					$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-				}
-				$callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-
-				if (empty($callsign['callsign']['callsign'])) {
-					$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-					$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-					$callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-				}
+			// Use the loadCallBook method from the model which handles fallback logic
+			$this->load->model('logbook_model');
+			$callsign['callsign'] = $this->logbook_model->loadCallBook($id, $this->config->item('use_fullname'));
+			
+			if (!empty($callsign['callsign'])) {
 				if (isset($callsign['callsign']['dxcc'])) {
-					$this->load->model('logbook_model');
 					$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
 					$callsign['callsign']['dxcc_name'] = $entity['name'];
-				}
-			} elseif ($this->session->userdata('callbook_type') == "HamQTH") {
-				// Load the HamQTH library
-				$this->load->library('hamqth');
-
-				// Load the encryption library
-				$this->load->library('encryption');
-
-				// Decrypt the password
-				$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-
-
-				if (!$this->session->userdata('hamqth_session_key')) {
-					$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-					$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-				}
-
-				$callsign['callsign'] = $this->hamqth->search($id, $this->session->userdata('hamqth_session_key'));
-
-				// If HamQTH session has expired, start a new session and retry the search.
-				if ($callsign['callsign']['error'] == "Session does not exist or expired") {
-					$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-					$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-					$callsign['callsign'] = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
-				}
-				if (isset($data['callsign']['gridsquare'])) {
-					$this->load->model('logbook_model');
-					$callsign['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
-				}
-				if (isset($callsign['callsign']['dxcc'])) {
-					$this->load->model('logbook_model');
-					$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
-					$callsign['callsign']['dxcc_name'] = $entity['name'];
-				}
-				if (isset($callsign['callsign']['error'])) {
-					$callsign['error'] = $callsign['callsign']['error'];
 				}
 			} else {
-				// No callbook type set, return error message
-				$callsign['error'] = 'Online callbook not configured. Go to <a href="' . site_url('user/edit/' . $this->session->userdata('user_id')) . '" class="alert-link">Account Settings</a> and select either QRZ or HamQTH in the "Callbook" section.';
+				// No callbook type set, return error message with better guidance
+				$callsign['error'] = 'Online callbook not configured. You can configure QRZ or HamQTH credentials either in <a href="' . site_url('user/edit/' . $this->session->userdata('user_id')) . '" class="alert-link">Account Settings</a> or in the config.php file.';
 			}
 
 			if (isset($callsign['callsign']['gridsquare'])) {
@@ -943,69 +889,17 @@ class Logbook extends CI_Controller
 
 					$this->load->view('view_log/partial/log_ajax.php', $data);
 				} else {
-					// if session data callbook_type  is qrz
-					if ($this->session->userdata('callbook_type') == "QRZ") {
-						// Lookup using QRZ
-						$this->load->library('qrz');
-
-						// Load the encryption library
-						$this->load->library('encryption');
-
-						// Decrypt the password
-						$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-
-						if (!$this->session->userdata('qrz_session_key')) {
-							$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-							$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-						}
-						$data['callsign'] = $this->qrz->search($fixedid, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-
-						if (empty($data['callsign']['callsign'])) {
-							$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-							$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-							$data['callsign'] = $this->qrz->search($fixedid, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-						}
+					// Use the loadCallBook method from the model which handles fallback logic
+					$this->load->model('logbook_model');
+					$data['callsign'] = $this->logbook_model->loadCallBook($fixedid, $this->config->item('use_fullname'));
+					
+					if (!empty($data['callsign'])) {
 						if (isset($data['callsign']['dxcc'])) {
-							$this->load->model('logbook_model');
 							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
 							$data['callsign']['dxcc_name'] = $entity['name'];
 						}
 						if (isset($data['callsign']['gridsquare'])) {
-							$this->load->model('logbook_model');
 							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
-						}
-					} elseif ($this->session->userdata('callbook_type') == "HamQTH") {
-						// Load the HamQTH library
-						$this->load->library('hamqth');
-
-						// Load the encryption library
-						$this->load->library('encryption');
-
-						// Decrypt the password
-						$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-
-
-						if (!$this->session->userdata('hamqth_session_key')) {
-							$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-						}
-
-						$data['callsign'] = $this->hamqth->search($fixedid, $this->session->userdata('hamqth_session_key'));
-
-						// If HamQTH session has expired, start a new session and retry the search.
-						if ($data['callsign']['error'] == "Session does not exist or expired") {
-							$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-							$data['callsign'] = $this->hamqth->search($fixedid, $this->session->userdata('hamqth_session_key'));
-						}
-						if (isset($data['callsign']['gridsquare'])) {
-							$this->load->model('logbook_model');
-							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
-						}
-						if (isset($data['callsign']['dxcc'])) {
-							$this->load->model('logbook_model');
-							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
-							$data['callsign']['dxcc_name'] = $entity['name'];
 						}
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];
