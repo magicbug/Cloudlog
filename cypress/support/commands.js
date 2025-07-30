@@ -15,6 +15,6 @@ Cypress.Commands.add("waitForSelectOptions", (selector, minOptions = 1) => {
 
 // Custom command to simulate tab key press
 Cypress.Commands.add("tab", { prevSubject: 'element' }, (subject) => {
-	cy.wrap(subject).trigger('keydown', { key: 'Tab', code: 'Tab', keyCode: 9 });
+	cy.wrap(subject).trigger('keydown', { key: 'Tab', code: 'Tab' });
 	return cy.focused();
 });
