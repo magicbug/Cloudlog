@@ -149,19 +149,19 @@ function mark_qsl_sent(id, method) {
 
 $(document).on('change', '#checkBoxAll', function (event) {
 	if (this.checked) {
-		$('.qslprint tbody tr').each(function (i) {
-			$(this).closest('tr').addClass('activeRow');
-			$(this).closest('tr').find("input[type=checkbox]").prop("checked", true);
+		$('#qslprint_table tbody tr').each(function (i) {
+			$(this).addClass('activeRow');
+			$(this).find("input[type=checkbox]").prop("checked", true);
 		});
 	} else {
-		$('.qslprint tbody tr').each(function (i) {
-			$(this).closest('tr').removeClass('activeRow');
-			$(this).closest('tr').find("input[type=checkbox]").prop("checked", false);
+		$('#qslprint_table tbody tr').each(function (i) {
+			$(this).removeClass('activeRow');
+			$(this).find("input[type=checkbox]").prop("checked", false);
 		});
 	}
 });
 
-$(document).on('click', '.qslprint input[type="checkbox"]', function() {
+$(document).on('click', '#qslprint_table input[type="checkbox"]', function() {
 	if ($(this).is(":checked")) {
 		$(this).closest('tr').addClass('activeRow');
 	} else {
@@ -170,7 +170,7 @@ $(document).on('click', '.qslprint input[type="checkbox"]', function() {
 });
 
 function markSelectedQsos() {
-	var elements = $('.qslprint tbody input:checked');
+	var elements = $('#qslprint_table tbody input:checked');
 	var nElements = elements.length;
 	if (nElements == 0) {
 		return;
@@ -202,7 +202,7 @@ function markSelectedQsos() {
 }
 
 function removeSelectedQsos() {
-	var elements = $('.qslprint tbody input:checked');
+	var elements = $('#qslprint_table tbody input:checked');
 	var nElements = elements.length;
 	if (nElements == 0) {
 		return;
