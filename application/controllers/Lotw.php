@@ -995,6 +995,7 @@ class Lotw extends CI_Controller {
 			"INSPR7"	=> "INSPIRE-SAT 7",
 			"SONATE"	=> "SONATE-2",
 			'AO-123'	=> "ASRTU-1",
+			'TEV2-3'	=> "TEVEL2-3",
 		);
 
 		return array_search(strtoupper($satname),$arr,true);
