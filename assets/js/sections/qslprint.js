@@ -89,19 +89,70 @@ $(".station_id").change(function(){
 				paging: false,
 				"language": {
 					url: getDataTablesLanguageUrl(),
+				},
+				"drawCallback": function(settings) {
+					// Re-attach event handlers after DataTable draws/redraws
+					attachCheckboxEvents();
 				}
 			});
+			// Attach checkbox events immediately after initialization
+			attachCheckboxEvents();
 		}
 	});
 });
 
-$('#qslprint_table').DataTable({
-	"stateSave": true,
-	paging: false,
-	"language": {
-		url: getDataTablesLanguageUrl(),
+// Initialize DataTable only if it exists and isn't already initialized
+$(document).ready(function() {
+	if ($('#qslprint_table').length && !$.fn.DataTable.isDataTable('#qslprint_table')) {
+		$('#qslprint_table').DataTable({
+			"stateSave": true,
+			paging: false,
+			"language": {
+				url: getDataTablesLanguageUrl(),
+			},
+			"drawCallback": function(settings) {
+				// Re-attach event handlers after DataTable draws/redraws
+				attachCheckboxEvents();
+			}
+		});
 	}
+	// Initial attachment of events
+	attachCheckboxEvents();
 });
+
+// Function to attach checkbox events
+function attachCheckboxEvents() {
+	// Remove any existing handlers to prevent duplicates
+	$('#checkBoxAll').off('change.qslprint');
+	$('.qso-checkbox').off('click.qslprint');
+	
+	// Attach select all functionality
+	$('#checkBoxAll').on('change.qslprint', function (event) {
+		var isChecked = this.checked;
+		$('#qslprint_table tbody tr .qso-checkbox').each(function (i) {
+			$(this).prop("checked", isChecked);
+			if (isChecked) {
+				$(this).closest('tr').addClass('activeRow');
+			} else {
+				$(this).closest('tr').removeClass('activeRow');
+			}
+		});
+	});
+
+	// Attach individual checkbox functionality
+	$(document).on('click.qslprint', '.qso-checkbox', function() {
+		if ($(this).is(":checked")) {
+			$(this).closest('tr').addClass('activeRow');
+		} else {
+			$(this).closest('tr').removeClass('activeRow');
+		}
+		
+		// Update the "select all" checkbox state
+		var totalCheckboxes = $('#qslprint_table tbody tr .qso-checkbox').length;
+		var checkedCheckboxes = $('#qslprint_table tbody tr .qso-checkbox:checked').length;
+		$('#checkBoxAll').prop('checked', totalCheckboxes === checkedCheckboxes);
+	});
+}
 
 function showOqrs(id) {
 	$.ajax({
@@ -147,28 +198,6 @@ function mark_qsl_sent(id, method) {
     });
 }
 
-$(document).on('change', '#checkBoxAll', function (event) {
-	if (this.checked) {
-		$('#qslprint_table tbody tr .qso-checkbox').each(function (i) {
-			$(this).prop("checked", true);
-			$(this).closest('tr').addClass('activeRow');
-		});
-	} else {
-		$('#qslprint_table tbody tr .qso-checkbox').each(function (i) {
-			$(this).prop("checked", false);
-			$(this).closest('tr').removeClass('activeRow');
-		});
-	}
-});
-
-$(document).on('click', '.qso-checkbox', function() {
-	if ($(this).is(":checked")) {
-		$(this).closest('tr').addClass('activeRow');
-	} else {
-		$(this).closest('tr').removeClass('activeRow');
-	}
-});
-
 function markSelectedQsos() {
 	var elements = $('.qso-checkbox:checked');
 	var nElements = elements.length;
@@ -191,7 +220,7 @@ function markSelectedQsos() {
 			'method' : ''
 		},
 		success: function(data) {
-			if (data !== []) {
+			if (data && data.length > 0) {
 				$.each(data, function(k, v) {
 					$("#qslprint_"+this.qsoID).remove();
 				});
@@ -225,7 +254,7 @@ function removeSelectedQsos() {
 			'method' : ''
 		},
 		success: function(data) {
-			if (data !== []) {
+			if (data && data.length > 0) {
 				$.each(data, function(k, v) {
 					$("#qslprint_"+this.qsoID).remove();
 				});
