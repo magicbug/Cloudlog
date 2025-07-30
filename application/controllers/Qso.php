@@ -40,6 +40,13 @@ class QSO extends CI_Controller {
 		$data['bands'] = $this->bands->get_user_bands_for_qso_entry();
 		$data['user_default_band'] = $this->session->userdata('user_default_band');
 		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
+		
+		// Set user's preferred date format
+		if($this->session->userdata('user_date_format')) {
+			$data['user_date_format'] = $this->session->userdata('user_date_format');
+		} else {
+			$data['user_date_format'] = $this->config->item('qso_date_format');
+		}
 
 		$this->load->library('form_validation');
 
