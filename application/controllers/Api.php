@@ -814,4 +814,129 @@ class API extends CI_Controller {
 		$latlng = $this->qra->qra2latlong($qra);
 		return $latlng;
 	}
+
+	/**
+	 * API endpoint to get recent QSOs from a public logbook
+	 * 
+	 * @api GET /api/recent_qsos/{public_slug}/{limit}
+	 * 
+	 * @param string public_slug Required. Public slug identifier for the logbook
+	 * @param int limit Optional. Number of QSOs to return (default: 10, max: 50)
+	 * 
+	 * @return json Returns JSON array with recent QSO data or error message
+	 * 
+	 * @throws 404 Not Found - Logbook not found or empty logbook
+	 * @throws 400 Bad Request - Invalid limit parameter
+	 * 
+	 * @example
+	 * Request: GET /api/recent_qsos/my-public-logbook/5
+	 * 
+	 * Response:
+	 * {
+	 *   "qsos": [
+	 *     {
+	 *       "date": "2024-01-15",
+	 *       "time": "14:30",
+	 *       "callsign": "W1AW",
+	 *       "mode": "SSB",
+	 *       "band": "20M",
+	 *       "rst_sent": "59",
+	 *       "rst_rcvd": "59"
+	 *     }
+	 *   ],
+	 *   "count": 1,
+	 *   "logbook_slug": "my-public-logbook"
+	 * }
+	 */
+	function recent_qsos($public_slug = null, $limit = 10) {
+		header('Content-type: application/json');
+
+		if($public_slug == null) {
+			http_response_code(400);
+			echo json_encode(['status' => 'failed', 'reason' => 'missing public_slug parameter']);
+			return;
+		}
+
+		// Validate and sanitize limit parameter
+		$limit = intval($limit);
+		if ($limit <= 0) {
+			$limit = 10; // default
+		}
+		if ($limit > 50) {
+			$limit = 50; // maximum
+		}
+
+		$this->load->model('logbooks_model');
+		$this->load->model('logbook_model');
+
+		if($this->logbooks_model->public_slug_exists($public_slug)) {
+			$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($public_slug);
+			if($logbook_id != false) {
+				// Get associated station locations for mysql queries
+				$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+
+				if (!$logbooks_locations_array) {
+					http_response_code(404);
+					echo json_encode(['status' => 'failed', 'reason' => 'Empty Logbook']);
+					return;
+				}
+
+				// Get recent QSOs using existing method
+				$recent_qsos_query = $this->logbook_model->get_last_qsos($limit, $logbooks_locations_array);
+				
+				if ($recent_qsos_query == null) {
+					http_response_code(404);
+					echo json_encode(['status' => 'failed', 'reason' => 'No QSOs found']);
+					return;
+				}
+
+				// Format the data for JSON response
+				$qsos = array();
+				foreach ($recent_qsos_query->result() as $row) {
+					$qso = array(
+						'date' => date('Y-m-d', strtotime($row->COL_TIME_ON)),
+						'time' => date('H:i', strtotime($row->COL_TIME_ON)),
+						'callsign' => strtoupper($row->COL_CALL),
+						'mode' => $row->COL_SUBMODE ? $row->COL_SUBMODE : $row->COL_MODE,
+						'band' => $row->COL_SAT_NAME ? $row->COL_SAT_NAME : $row->COL_BAND,
+						'rst_sent' => $row->COL_RST_SENT,
+						'rst_rcvd' => $row->COL_RST_RCVD
+					);
+					
+					// Add optional fields if they exist
+					if ($row->COL_STX_STRING) {
+						$qso['stx_string'] = $row->COL_STX_STRING;
+					}
+					if ($row->COL_SRX_STRING) {
+						$qso['srx_string'] = $row->COL_SRX_STRING;
+					}
+					if ($row->COL_GRIDSQUARE) {
+						$qso['gridsquare'] = $row->COL_GRIDSQUARE;
+					}
+					if ($row->COL_QTH) {
+						$qso['qth'] = $row->COL_QTH;
+					}
+					if ($row->COL_NAME) {
+						$qso['name'] = $row->COL_NAME;
+					}
+					
+					$qsos[] = $qso;
+				}
+
+				http_response_code(200);
+				echo json_encode([
+					'qsos' => $qsos,
+					'count' => count($qsos),
+					'logbook_slug' => $public_slug
+				], JSON_PRETTY_PRINT);
+
+			} else {
+				http_response_code(404);
+				echo json_encode(['status' => 'failed', 'reason' => $public_slug.' has no associated station locations']);
+			}
+		} else {
+			http_response_code(404);
+			echo json_encode(['status' => 'failed', 'reason' => 'logbook not found']);
+		}
+	}
 }
