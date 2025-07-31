@@ -4889,7 +4889,7 @@ class Logbook_model extends CI_Model
     foreach ($batch_data as $record) {
       $this->db->or_group_start(); // Start group for this record's AND conditions
       $this->db->where($this->config->item('table_name').'.COL_CALL', $record['call']);
-      $this->db->where($this->config->item('table_name').'.COL_TIME_ON', $record['time_on']);
+      $this->db->like($this->config->item('table_name').'.COL_TIME_ON', $record['time_on'], 'after');
       $this->db->where($this->config->item('table_name').'.COL_BAND', $record['band']);
       $this->db->group_end(); // End group for this record's AND conditions
     }
@@ -4902,7 +4902,8 @@ class Logbook_model extends CI_Model
     // Index DB results for faster lookup
     $indexed_results = [];
     foreach ($db_results as $row) {
-      $key = $row['COL_CALL'] . '|' . $row['COL_TIME_ON'] . '|' . $row['COL_BAND'];
+	  $time = substr($row['COL_TIME_ON'], 0, 16);
+      $key = $row['COL_CALL'] . '|' . $time . '|' . $row['COL_BAND'];
       $indexed_results[$key] = $row['COL_PRIMARY_KEY'];
     }
 
