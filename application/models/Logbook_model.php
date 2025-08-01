@@ -4921,7 +4921,7 @@ class Logbook_model extends CI_Model
         $update_batch_data[] = [
           'COL_PRIMARY_KEY' => $primary_key,
           'COL_QRZCOM_QSO_DOWNLOAD_DATE' => $record['qsl_date'],
-          'COL_QRZCOM_QSO_UPLOAD_STATUS' => $record['qsl_rcvd'] // Should be 'Y' if confirmed
+          'COL_QRZCOM_QSO_DOWNLOAD_STATUS' => $record['qsl_rcvd'] // Should be 'Y' if confirmed
         ];
       }
 
