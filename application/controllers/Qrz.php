@@ -324,7 +324,7 @@ class Qrz extends CI_Controller {
 			// Return the structured error array here too for consistency
 			return ['status' => 'error', 'message' => $error_message];
 		}
-		$url = 'http://logbook.qrz.com/api'; // Correct URL
+		$url = 'https://logbook.qrz.com/api'; // Correct URL
 
 		$post_data['KEY'] = $qrz_api_key;      // Correct parameter
 		$post_data['ACTION'] = 'FETCH';         // Correct parameter
@@ -338,6 +338,9 @@ class Qrz extends CI_Controller {
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);  // Correct - get response as string
 		curl_setopt( $ch, CURLOPT_TIMEOUT, 300);          // 5 minute timeout
 		curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 30);    // 30 second connection timeout
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+        curl_setopt($ch, CURLOPT_BUFFERSIZE, 128000);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
 
 		$content = curl_exec($ch); // Get raw content
 		$curl_error = curl_error($ch); // Check for cURL errors
