@@ -31,7 +31,11 @@ $cert2 = str_replace("-----END CERTIFICATE-----", "", $cert1);
 
 <?php if($station_profile->state != "" && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_STATE:<?php echo strlen($station_profile->state); ?>><?php echo $station_profile->state; ?><?php } ?>
 
+<?php if($lotw_cert_info->cert_dxcc_id == "110") { ?><US_STATE:2>HI<?php } ?>
+
 <?php if($station_profile->station_cnty != ""  && $station_profile->station_country == "UNITED STATES OF AMERICA") { ?><US_COUNTY:<?php echo strlen($station_profile->station_cnty); ?>><?php echo $station_profile->station_cnty; ?><?php } ?>
+
+<?php if($lotw_cert_info->cert_dxcc_id == "110") { ?><US_COUNTY:6>Hawaii<?php } ?>
 
 <EOR>
 
