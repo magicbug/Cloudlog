@@ -1430,7 +1430,7 @@ class Lotw extends CI_Controller {
 				}
 			case "RTTY":
 				if ($submode == "ASCI") {
-					return "ASCI";
+					return "RTTY";
 					break;
 				} else {
 					return "RTTY";
@@ -1438,7 +1438,7 @@ class Lotw extends CI_Controller {
 				}
 			case "CW":
 				if ($submode == "PCW") {
-					return "PCW";
+					return "CW";
 					break;
 				} else {
 					return "CW";
