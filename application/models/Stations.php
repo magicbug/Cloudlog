@@ -138,6 +138,8 @@ class Stations extends CI_Model {
 			log_message('error', 'State value: ' . $state);
 		}
 
+		log_message('error', 'State value: ' . $this->input->post('station_state', true));
+
 		$data = array(
 			'station_profile_name' => xss_clean($this->input->post('station_profile_name', true)),
 			'station_gridsquare' => xss_clean($this->input->post('gridsquare', true)),
