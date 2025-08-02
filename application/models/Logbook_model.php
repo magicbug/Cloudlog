@@ -2075,24 +2075,60 @@ class Logbook_model extends CI_Model
       $logbooks_locations_array = $StationLocationsArray;
     }
 
+    $grid_4char = substr(strtoupper($grid), 0, 4);
+    
+    // First check COL_GRIDSQUARE for exact match
     $this->db->select('COL_GRIDSQUARE');
     $this->db->where_in('station_id', $logbooks_locations_array);
-    $this->db->group_start();
-    $this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($grid, 0, 4));
-    $this->db->or_like('SUBSTRING(COL_VUCC_GRIDS, 1, 4)', substr($grid, 0, 4));
-    $this->db->group_end();
+    $this->db->where('UPPER(SUBSTRING(COL_GRIDSQUARE, 1, 4))', $grid_4char);
 
     if ($band != null && $band != 'SAT') {
       $this->db->where('COL_BAND', $band);
     } else if ($band == 'SAT') {
-      // Where col_sat_name is not empty
       $this->db->where('COL_SAT_NAME !=', '');
     }
-    $this->db->limit('2');
+    $this->db->limit('1');
 
     $query = $this->db->get($this->config->item('table_name'));
+    
+    if ($query->num_rows() > 0) {
+      return $query->num_rows();
+    }
+    
+    // If not found in COL_GRIDSQUARE, check COL_VUCC_GRIDS
+    $this->db->select('COL_VUCC_GRIDS');
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->where('COL_VUCC_GRIDS IS NOT NULL');
+    $this->db->where('COL_VUCC_GRIDS !=', '');
 
-    return $query->num_rows();
+    if ($band != null && $band != 'SAT') {
+      $this->db->where('COL_BAND', $band);
+    } else if ($band == 'SAT') {
+      $this->db->where('COL_SAT_NAME !=', '');
+    }
+
+    $vucc_query = $this->db->get($this->config->item('table_name'));
+    
+    // Check each VUCC grids field manually
+    foreach ($vucc_query->result_array() as $row) {
+      if (!empty($row['COL_VUCC_GRIDS'])) {
+        $grids = explode(",", $row['COL_VUCC_GRIDS']);
+        foreach ($grids as $vucc_grid) {
+          $vucc_grid = trim($vucc_grid);
+          if (strlen($vucc_grid) >= 4) {
+            $vucc_grid_4char = strtoupper(substr($vucc_grid, 0, 4));
+            // Only match if:
+            // 1. The first 4 characters match, AND
+            // 2. The VUCC grid is either exactly 4 chars OR exactly 6 chars (valid grid formats)
+            if ($vucc_grid_4char === $grid_4char && (strlen($vucc_grid) == 4 || strlen($vucc_grid) == 6)) {
+              return 1;
+            }
+          }
+        }
+      }
+    }
+    
+    return 0;
   }
 
 
