@@ -44,8 +44,29 @@ $(document).ready( function () {
         '6': 'us_state' // Alaska
     };
 
-    // Hide all states initially
-	  $("#canada_state, #aland_state, #asiatic_russia_state, #belarus_state, #mexico_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #us_state, #paraguay_state, #korea_state, #uruguay_state, #venezuela_state, #australia_state, #png_state, #nz_state, #belgium_state, #italy_state, #netherlands_state").hide();
+    /**
+     * Helper function to hide and disable all state inputs
+     */
+    function hideAllStates() {
+        $("#canada_state, #aland_state, #asiatic_russia_state, #belarus_state, #mexico_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #us_state, #paraguay_state, #korea_state, #uruguay_state, #venezuela_state, #australia_state, #png_state, #nz_state, #belgium_state, #italy_state, #netherlands_state")
+            .hide()
+            .find('input, select, textarea')
+            .prop('disabled', true);
+    }
+
+    /**
+     * Helper function to show and enable a specific state input
+     */
+    function showState(stateId) {
+        $("#" + stateId)
+            .show()
+            .find('input, select, textarea')
+            .prop('disabled', false);
+    }
+
+    // Hide all states initially and disable their inputs
+    hideAllStates();
+
     /**
      * Gets the selected DXCC ID and shows the corresponding state.
      */
@@ -53,11 +74,11 @@ $(document).ready( function () {
     var stateToShow = stateMap[selectedDXCCID];
 
     if (stateToShow) {
-        // Show the selected state
-        $("#" + stateToShow).show();
+        // Show the selected state and enable its inputs
+        showState(stateToShow);
     } else {
         // If no state matches the selected value, show 'us_state' by default
-        $("#us_state").show();
+        showState('us_state');
     }
 
     /**
@@ -66,12 +87,12 @@ $(document).ready( function () {
      */
     $('#dxcc_select').change(function(){
         var selectedValue = $(this).val();
-        var stateToShow = stateMap[selectedValue] || stateMap['default'];
+        var stateToShow = stateMap[selectedValue] || 'us_state';
     
-        // Hide all states
-    		$("#mexico_state, #belarus_state, #asiatic_russia_state, #aland_state, #canada_state, #us_state, #eu_russia_state, #argentina_state, #brazil_state, #chile_state, #paraguay_state, #korea_state, #uruguay_state, #venezuela_state, #australia_state, #png_state, #nz_state, #belgium_state, #italy_state, #netherlands_state").hide();
+        // Hide all states and disable their inputs
+        hideAllStates();
     
-        // Show the selected state
-        $("#" + stateToShow).show();
+        // Show the selected state and enable its inputs
+        showState(stateToShow);
     });
 } );
