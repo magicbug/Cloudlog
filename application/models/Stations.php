@@ -134,6 +134,8 @@ class Stations extends CI_Model {
 			$state = xss_clean($this->input->post('station_ca_state', true));
 		} else {
 			$state =  xss_clean($this->input->post('station_state', true));
+			// log as an error the value of state
+			log_message('error', 'State value: ' . $state);
 		}
 
 		$data = array(
