@@ -84,7 +84,6 @@ class Station extends CI_Controller {
 				$this->load->view('interface_assets/footer');
 			} else {
 				// Get all the posted data from the form and save it to log file
-				log_message('error', 'Posted data: ' . json_encode($this->input->post()));
 
 				if ($this->stations->edit() !== false) {
 					// [eQSL default msg] ADD to user options (option_type='eqsl_default_qslmsg'; option_name='key_station_id'; option_key=station_id; option_value=value) //
