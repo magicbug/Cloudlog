@@ -2079,7 +2079,7 @@ class Logbook_model extends CI_Model
     $this->db->where_in('station_id', $logbooks_locations_array);
     $this->db->group_start();
     $this->db->like('SUBSTRING(COL_GRIDSQUARE, 1, 4)', substr($grid, 0, 4));
-    $this->db->or_like('SUBSTRING(COL_VUCC_GRIDS, 1, 4)', substr($grid, 0, 4));
+    $this->db->or_like('COL_VUCC_GRIDS', substr($grid, 0, 4));
     $this->db->group_end();
 
     if ($band != null && $band != 'SAT') {
