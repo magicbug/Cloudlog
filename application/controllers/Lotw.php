@@ -1419,10 +1419,10 @@ class Lotw extends CI_Controller {
 				}
 			case "SSB":
 				if ($submode == "LSB") {
-					return "LSB";
+					return "SSB";
 					break;
 				} elseif ($submode == "USB") {
-					return "USB";
+					return "SSB";
 					break;
 				} else {
 					return "SSB";
