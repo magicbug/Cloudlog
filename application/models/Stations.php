@@ -77,9 +77,9 @@ class Stations extends CI_Model {
 
 		// Check if the state is Canada and get the correct state
 		if ($this->input->post('dxcc') == 1 && $this->input->post('station_ca_state') !="") {
-			$state = $this->input->post('station_ca_state');
+			$state = xss_clean($this->input->post('station_ca_state', true));
 		} else {
-			$state = $this->input->post('station_state');
+			$state = xss_clean($this->input->post('station_state', true));
 		}
 
 		// Create data array with field values
@@ -131,9 +131,9 @@ class Stations extends CI_Model {
 
 		// Check if the state is Canada and get the correct state
 		if ($this->input->post('dxcc') == 1 && $this->input->post('station_ca_state') !="") {
-			$state = $this->input->post('station_ca_state');
+			$state = xss_clean($this->input->post('station_ca_state', true));
 		} else {
-			$state = $this->input->post('station_state');
+			$state =  xss_clean($this->input->post('station_state', true));
 		}
 
 		$data = array(
