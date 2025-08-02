@@ -324,7 +324,7 @@ class Qrz extends CI_Controller {
 			// Return the structured error array here too for consistency
 			return ['status' => 'error', 'message' => $error_message];
 		}
-		$url = 'http://logbook.qrz.com/api'; // Correct URL
+		$url = 'https://logbook.qrz.com/api'; // Correct URL
 
 		$post_data['KEY'] = $qrz_api_key;      // Correct parameter
 		$post_data['ACTION'] = 'FETCH';         // Correct parameter
@@ -336,10 +336,34 @@ class Qrz extends CI_Controller {
 		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);     // Okay
 		curl_setopt( $ch, CURLOPT_HEADER, 0);             // Correct - don't need response headers
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);  // Correct - get response as string
+		curl_setopt( $ch, CURLOPT_TIMEOUT, 300);          // 5 minute timeout
+		curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 30);    // 30 second connection timeout
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+        curl_setopt($ch, CURLOPT_BUFFERSIZE, 128000);
+        curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');
 
 		$content = curl_exec($ch); // Get raw content
 		$curl_error = curl_error($ch); // Check for cURL errors
+		$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE); // Get HTTP response code
 		curl_close($ch);
+
+		if ($curl_error) { // Check for cURL level errors first
+			$error_message = "QRZ download cURL error: " . $curl_error;
+			log_message('error', $error_message . ' API Key used: ' . $qrz_api_key);
+			return ['status' => 'error', 'message' => $error_message];
+		}
+
+		if ($http_code !== 200) {
+			$error_message = "QRZ download HTTP error: HTTP " . $http_code;
+			log_message('error', $error_message . ' API Key used: ' . $qrz_api_key);
+			return ['status' => 'error', 'message' => $error_message];
+		}
+
+		if ($content === false || $content === '') { // Check if curl_exec failed or returned empty
+			$error_message = "QRZ download failed: No content received from QRZ.com.";
+			log_message('error', $error_message . ' API Key used: ' . $qrz_api_key);
+			return ['status' => 'error', 'message' => $error_message];
+		}
 
 		// Find the start of the ADIF data after "ADIF="
 		$adif_start_pos = strpos($content, 'ADIF=');
@@ -388,18 +412,6 @@ class Qrz extends CI_Controller {
 			$content = substr($content, 0, $truncate_pos);
 		}
 
-		if ($curl_error) { // Check for cURL level errors first
-			$error_message = "QRZ download cURL error: " . $curl_error;
-			log_message('error', $error_message . ' API Key used: ' . $qrz_api_key);
-			return ['status' => 'error', 'message' => $error_message];
-		}
-
-		if ($content === false || $content === '') { // Check if curl_exec failed or returned empty
-			$error_message = "QRZ download failed: No content received from QRZ.com.";
-			log_message('error', $error_message . ' API Key used: ' . $qrz_api_key);
-			return ['status' => 'error', 'message' => $error_message];
-		}
-
 		// Check for QRZ API specific error messages
 		if (strpos($content, 'STATUS=FAIL') !== false || strpos($content, 'STATUS=AUTH') !== false) {
 			// Extract reason if possible, otherwise use full content
@@ -446,7 +458,7 @@ class Qrz extends CI_Controller {
 		$config['qrz_rcvd_mark'] = 'Y';
 
 		ini_set('memory_limit', '-1');
-		set_time_limit(0);
+		set_time_limit(1800); // 30 minutes max execution time instead of unlimited
 
 		$this->load->library('adif_parser');
 
@@ -475,8 +487,24 @@ class Qrz extends CI_Controller {
 		$batch_data = [];
 		$batch_size = 500; // Process 500 records at a time
 		$record_count = 0; // Initialize record counter
+		$max_records = 50000; // Safety limit to prevent runaway processing
+		$start_time = time(); // Track processing time
+		$max_processing_time = 1200; // 20 minutes max for processing
+		
 		while ($record = $this->adif_parser->get_record()) {
 			$record_count++; // Increment counter for each record read
+			
+			// Safety checks to prevent runaway processing
+			if ($record_count > $max_records) {
+				log_message('error', 'QRZ download: Exceeded maximum record limit of ' . $max_records . ' records. Processing stopped.');
+				break;
+			}
+			
+			if ((time() - $start_time) > $max_processing_time) {
+				log_message('error', 'QRZ download: Exceeded maximum processing time of ' . $max_processing_time . ' seconds. Processing stopped at record ' . $record_count . '.');
+				break;
+			}
+			
 			if ((!(isset($record['app_qrzlog_qsldate']))) || (!(isset($record['qso_date'])))) {
 				continue;
 			}
@@ -509,6 +537,12 @@ class Qrz extends CI_Controller {
 			if (count($batch_data) >= $batch_size) {
 				$table .= $this->logbook_model->process_qrz_batch($batch_data);
 				$batch_data = []; // Reset batch
+				
+				// Log progress every 1000 records to help monitor long-running processes
+				if ($record_count % 1000 == 0) {
+					$elapsed_time = time() - $start_time;
+					log_message('info', 'QRZ download progress: ' . $record_count . ' records processed in ' . $elapsed_time . ' seconds.');
+				}
 			}
 		}
 
@@ -516,6 +550,10 @@ class Qrz extends CI_Controller {
 		if (!empty($batch_data)) {
 			$table .= $this->logbook_model->process_qrz_batch($batch_data);
 		}
+
+		// Log successful completion with statistics
+		$processing_time = time() - $start_time;
+		log_message('info', 'QRZ download completed successfully. Processed ' . $record_count . ' records in ' . $processing_time . ' seconds.');
 
 		if ($table != "") {
 			$data['tableheaders'] = $tableheaders;

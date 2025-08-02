@@ -102,48 +102,48 @@
                         <div class="row">
                             <div class="mb-3 col-md-3">
                                 <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label>
-                                <input type="text" class="form-control form-control-sm" id="callsign" name="callsign" required pattern="\S+" title="Whitespace is not allowed">
+                                <input type="text" class="form-control form-control-sm" id="callsign" name="callsign" required pattern="\S+" title="Whitespace is not allowed" tabindex="1">
                                 <small id="callsign_info" class="badge text-bg-danger"></small>
                             </div>
 
                             <div class="mb-3 col-md-1">
                                 <label for="rst_sent"><?php echo lang('gen_hamradio_rsts'); ?></label>
-                                <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
+                                <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59" tabindex="2">
                             </div>
 
                             <div style="display:none" class="mb-3 col-md-1 serials">
 								<label for="exch_serial_s"><?php echo lang('contesting_exchange_serial_s'); ?></label>
-								<input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="">
+								<input type="number" class="form-control form-control-sm" name="exch_serial_s" id="exch_serial_s" value="" tabindex="3">
 							</div>
 
                             <div style="display:none" class="mb-3 col-md-1 exchanges">
                                 <label for="exch_sent"><?php echo lang('gen_hamradio_exchange_sent_short'); ?></label>
-                                <input type="text" class="form-control form-control-sm" name="exch_sent" id="exch_sent" value="">
+                                <input type="text" class="form-control form-control-sm" name="exch_sent" id="exch_sent" value="" tabindex="3">
                             </div>
 
 							<div style="display:none" class="mb-3 col-md-2 gridsquares">
 								<label for="exch_gridsquare_s"><?php echo lang('contesting_exchange_gridsquare_s'); ?></label>
-								<input disabled type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="<?php echo $my_gridsquare;?>">
+								<input disabled type="text" class="form-control form-control-sm" name="exch_gridsquare_s" id="exch_gridsquare_s" value="<?php echo $my_gridsquare;?>" tabindex="-1">
 							</div>
 
                             <div class="mb-3 col-md-1">
                                 <label for="rst_rcvd"><?php echo lang('gen_hamradio_rstr'); ?></label>
-                                <input type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59">
+                                <input type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59" tabindex="4">
                             </div>
 
                             <div style="display:none" class="mb-3 col-md-1 serialr">
 								<label for="exch_serial_r"><?php echo lang('contesting_exchange_serial_r'); ?></label>
-								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="">
+								<input type="number" class="form-control form-control-sm" name="exch_serial_r" id="exch_serial_r" value="" tabindex="5">
 							</div>
 
 							<div style="display:none" class="mb-3 col-md-1 exchanger">
 								<label for="exch_rcvd"><?php echo lang('gen_hamradio_exchange_rcvd_short'); ?></label>
-								<input type="text" class="form-control form-control-sm" name="exch_rcvd" id="exch_rcvd" value="">
+								<input type="text" class="form-control form-control-sm" name="exch_rcvd" id="exch_rcvd" value="" tabindex="5">
 							</div>
 
 							<div style="display:none" class="mb-3 col-md-2 gridsquarer">
 								<label for="exch_gridsquare_r"><?php echo lang('contesting_exchange_gridsquare_r'); ?></label>
-								<input type="text" class="form-control form-control-sm" name="locator" id="exch_gridsquare_r" value="">
+								<input type="text" class="form-control form-control-sm" name="locator" id="exch_gridsquare_r" value="" maxlength="8" tabindex="6">
 							</div>
                         </div>
 

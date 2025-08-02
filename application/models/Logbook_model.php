@@ -8,10 +8,11 @@ class Logbook_model extends CI_Model
   {
 
     $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
-    // Join date+time
-    $datetime = date("Y-m-d", strtotime($this->input->post('start_date'))) . " " . $this->input->post('start_time');
+    // Join date+time - Parse date according to user's format preference
+    $parsed_date = $this->parse_user_date($this->input->post('start_date'));
+    $datetime = $parsed_date . " " . $this->input->post('start_time');
     if ($this->input->post('end_time') != null) {
-      $datetime_off = date("Y-m-d", strtotime($this->input->post('start_date'))) . " " . $this->input->post('end_time');
+      $datetime_off = $parsed_date . " " . $this->input->post('end_time');
       // if time off < time on, and time off is on 00:xx >> add 1 day (concidering start and end are between 23:00 and 00:59) //
       $_tmp_datetime_off = strtotime($datetime_off);
       if (($_tmp_datetime_off < strtotime($datetime)) && (substr($this->input->post('end_time'), 0, 2) == "00")) {
@@ -4888,7 +4889,7 @@ class Logbook_model extends CI_Model
     foreach ($batch_data as $record) {
       $this->db->or_group_start(); // Start group for this record's AND conditions
       $this->db->where($this->config->item('table_name').'.COL_CALL', $record['call']);
-      $this->db->where($this->config->item('table_name').'.COL_TIME_ON', $record['time_on']);
+      $this->db->like($this->config->item('table_name').'.COL_TIME_ON', $record['time_on'], 'after');
       $this->db->where($this->config->item('table_name').'.COL_BAND', $record['band']);
       $this->db->group_end(); // End group for this record's AND conditions
     }
@@ -4901,7 +4902,8 @@ class Logbook_model extends CI_Model
     // Index DB results for faster lookup
     $indexed_results = [];
     foreach ($db_results as $row) {
-      $key = $row['COL_CALL'] . '|' . $row['COL_TIME_ON'] . '|' . $row['COL_BAND'];
+	  $time = substr($row['COL_TIME_ON'], 0, 16);
+      $key = $row['COL_CALL'] . '|' . $time . '|' . $row['COL_BAND'];
       $indexed_results[$key] = $row['COL_PRIMARY_KEY'];
     }
 
@@ -4919,7 +4921,7 @@ class Logbook_model extends CI_Model
         $update_batch_data[] = [
           'COL_PRIMARY_KEY' => $primary_key,
           'COL_QRZCOM_QSO_DOWNLOAD_DATE' => $record['qsl_date'],
-          'COL_QRZCOM_QSO_UPLOAD_STATUS' => $record['qsl_rcvd'] // Should be 'Y' if confirmed
+          'COL_QRZCOM_QSO_DOWNLOAD_STATUS' => $record['qsl_rcvd'] // Should be 'Y' if confirmed
         ];
       }
 
@@ -4941,6 +4943,42 @@ class Logbook_model extends CI_Model
 
     // Step 6: Return Table HTML
     return $table;
+  }
+
+  /**
+   * Parse date from user input according to user's preferred date format
+   * @param string $date_input The date string from user input
+   * @param string $user_format The user's preferred date format (e.g., 'd/m/Y', 'Y-m-d')
+   * @return string Returns date in Y-m-d format for database storage, or original input if parsing fails
+   */
+  private function parse_user_date($date_input, $user_format = null) {
+    if (empty($date_input)) {
+      return $date_input;
+    }
+    
+    // If no user format provided, try to get it from session or config
+    if ($user_format === null) {
+      if ($this->session->userdata('user_date_format')) {
+        $user_format = $this->session->userdata('user_date_format');
+      } else {
+        $user_format = $this->config->item('qso_date_format');
+      }
+    }
+    
+    // Try to parse with the user's format first
+    $date = DateTime::createFromFormat($user_format, $date_input);
+    if ($date !== false) {
+      return $date->format('Y-m-d');
+    }
+    
+    // Fallback to strtotime for formats it can handle (mostly Y-m-d, m/d/Y, etc.)
+    $timestamp = strtotime($date_input);
+    if ($timestamp !== false) {
+      return date('Y-m-d', $timestamp);
+    }
+    
+    // If all parsing fails, return the original input and let the database handle it
+    return $date_input;
   }
 }
 
