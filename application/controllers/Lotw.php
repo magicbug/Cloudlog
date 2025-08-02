@@ -1152,19 +1152,19 @@ class Lotw extends CI_Controller {
 				}
 			case "JT65":
 				if ($submode == "JT65A") {
-					return "JT65A";
+					return "JT65";
 					break;
 				} elseif ($submode == "JT65B") {
-					return "JT65B";
+					return "JT65";
 					break;
 				} elseif ($submode == "JT65B2") {
-					return "JT65B2";
+					return "JT65";
 					break;
 				} elseif ($submode == "JT65C") {
-					return "JT65C";
+					return "JT65";
 					break;
 				} elseif ($submode == "JT65C2") {
-					return "JT65C2";
+					return "JT65";
 					break;
 				} else {
 					return "JT65";
@@ -1172,25 +1172,25 @@ class Lotw extends CI_Controller {
 				}
 			case "JT4":
 				if ($submode == "JT4A") {
-					return "JT4A";
+					return "JT4";
 					break;
 				} elseif ($submode == "JT4B") {
-					return "JT4B";
+					return "JT4";
 					break;
 				} elseif ($submode == "JT4C") {
-					return "JT4C";
+					return "JT4";
 					break;
 				} elseif ($submode == "JT4D") {
-					return "JT4D";
+					return "JT4";
 					break;
 				} elseif ($submode == "JT4E") {
-					return "JT4E";
+					return "JT4";
 					break;
 				} elseif ($submode == "JT4F") {
-					return "JT4F";
+					return "JT4";
 					break;
 				} elseif ($submode == "JT4G") {
-					return "JT4G";
+					return "JT4";
 					break;
 				} else {
 					return "JT4";
@@ -1198,55 +1198,55 @@ class Lotw extends CI_Controller {
 				}
 			case "JT9":
 				if ($submode == "JT9-1") {
-					return "JT9-1";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9-10") {
-					return "JT9-10";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9-2") {
-					return "JT9-2";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9-30") {
-					return "JT9-30";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9-5") {
-					return "JT9-5";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9A") {
-					return "JT9A";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9B") {
-					return "JT9B";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9C") {
-					return "JT9C";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9D") {
-					return "JT9D";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9E") {
-					return "JT9E";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9E FAST") {
-					return "JT9E FAST";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9F") {
-					return "JT9F";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9F FAST") {
-					return "JT9F FAST";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9G") {
 					return "JT9G";
 					break;
 				} elseif ($submode == "JT9G FAST") {
-					return "JT9G FAST";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9H") {
-					return "JT9H";
+					return "JT9";
 					break;
 				} elseif ($submode == "JT9H FAST") {
-					return "JT9H FAST";
+					return "JT9";
 					break;
 				} else {
 					return "JT9";
@@ -1254,19 +1254,19 @@ class Lotw extends CI_Controller {
 				}
 			case "QRA64":
 				if ($submode == "QRA64A") {
-					return "QRA64A";
+					return "QRA64";
 					break;
 				} elseif ($submode == "QRA64B") {
-					return "QRA64B";
+					return "QRA64";
 					break;
 				} elseif ($submode == "QRA64C") {
-					return "QRA64C";
+					return "QRA64";
 					break;
 				} elseif ($submode == "QRA64D") {
-					return "QRA64D";
+					return "QRA64";
 					break;
 				} elseif ($submode == "QRA64E") {
-					return "QRA64E";
+					return "QRA64";
 					break;
 				} else {
 					return "QRA64";
@@ -1274,10 +1274,10 @@ class Lotw extends CI_Controller {
 				}
 			case "ISCAT":
 				if ($submode == "ISCAT-A") {
-					return "ISCAT-A";
+					return "ISCAT";
 					break;
 				} elseif ($submode == "ISCAT-B") {
-					return "ISCAT-B";
+					return "ISCAT";
 					break;
 				} else {
 					return "ISCAT";
@@ -1285,25 +1285,25 @@ class Lotw extends CI_Controller {
 				}
 			case "OLIVIA":
 				if ($submode == "OLIVIA 16/1000") {
-					return "OLIVIA 16/1000";
+					return "OLIVIA";
 					break;
 				} elseif ($submode == "OLIVIA 16/500") {
-					return "OLIVIA 16/500";
+					return "OLIVIA";
 					break;
 				} elseif ($submode == "OLIVIA 32/1000") {
-					return "OLIVIA 32/1000";
+					return "OLIVIA";
 					break;
 				} elseif ($submode == "OLIVIA 4/125") {
-					return "OLIVIA 4/125";
+					return "OLIVIA";
 					break;
 				} elseif ($submode == "OLIVIA 4/250") {
-					return "OLIVIA 4/250";
+					return "OLIVIA";
 					break;
 				} elseif ($submode == "OLIVIA 8/250") {
-					return "OLIVIA 8/250";
+					return "OLIVIA";
 					break;
 				} elseif ($submode == "OLIVIA 8/500") {
-					return "OLIVIA 8/500";
+					return "OLIVIA";
 					break;
 				} else {
 					return "OLIVIA";
@@ -1311,10 +1311,10 @@ class Lotw extends CI_Controller {
 				}
 			case "OPERA":
 				if ($submode == "OPERA-BEACON") {
-					return "OPERA-BEACON";
+					return "OPERA";
 					break;
 				} elseif ($submode == "OPERA-QSO") {
-					return "OPERA-QSO";
+					return "OPERA";
 					break;
 				} else {
 					return "OPERA";
@@ -1322,13 +1322,13 @@ class Lotw extends CI_Controller {
 				}
 			case "ROS":
 				if ($submode == "ROS-EME") {
-					return "ROS-EME";
+					return "ROS";
 					break;
 				} elseif ($submode == "ROS-HF") {
-					return "ROS-HF";
+					return "ROS";
 					break;
 				} elseif ($submode == "ROS-MF") {
-					return "ROS-MF";
+					return "ROS";
 					break;
 				} else {
 					return "ROS";
@@ -1336,19 +1336,19 @@ class Lotw extends CI_Controller {
 				}
 			case "HELL":
 				if ($submode == "FMHELL") {
-					return "FMHELL";
+					return "HELL";
 					break;
 				} elseif ($submode == "FSKHELL") {
-					return "FSKHELL";
+					return "HELL";
 					break;
 				} elseif ($submode == "HELL80") {
-					return "HELL80";
+					return "HELL";
 					break;
 				} elseif ($submode == "HFSK") {
 					return "HFSK";
 					break;
 				} elseif ($submode == "PSKHELL") {
-					return "PSKHELL";
+					return "HELL";
 					break;
 				} else {
 					return "HELL";
@@ -1356,10 +1356,10 @@ class Lotw extends CI_Controller {
 				}
 			case "DOMINO":
 				if ($submode == "DOMINOEX") {
-					return "DOMINOEX";
+					return "DOMINO";
 					break;
 				} elseif ($submode == "DOMINOF") {
-					return "DOMINOF";
+					return "DOMINO";
 					break;
 				} else {
 					return "DOMINO";
@@ -1367,10 +1367,10 @@ class Lotw extends CI_Controller {
 				}
 			case "CHIP":
 				if ($submode == "CHIP128") {
-					return "CHIP128";
+					return "CHIP";
 					break;
 				} elseif ($submode == "CHIP64") {
-					return "CHIP64";
+					return "CHIP";
 					break;
 				} else {
 					return "CHIP";
@@ -1392,7 +1392,7 @@ class Lotw extends CI_Controller {
 				}
 			case "PAX":
 				if ($submode == "PAX2") {
-					return "PAX2";
+					return "PAX";
 					break;
 				} else {
 					return "PAX";
