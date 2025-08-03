@@ -114,7 +114,7 @@ if($station_profile->state != "" && $station_profile->station_country == "ALASKA
 }
 
 if($station_profile->state != "" && $station_profile->station_country == "HAWAII") {
-	$sign_string .= strtoupper($station_profile->state);
+	$sign_string .= strtoupper("HI");
 }
 
 if($qso->COL_BAND) {
