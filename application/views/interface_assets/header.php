@@ -201,7 +201,7 @@
 									<a class="dropdown-item" href="<?php echo site_url('bandmap/list'); ?>" title="Bandmap"><i class="fa fa-bezier-curve"></i> <?php echo lang('menu_bandmap'); ?></a>
 								<?php } ?>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title="SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a>
+								<!-- a class="dropdown-item" href="<?php echo site_url('sattimers'); ?>" title="SAT Timers"><i class="fas fa-satellite"></i> SAT Timers</a> -->
 							</div>
 						</li>
 
