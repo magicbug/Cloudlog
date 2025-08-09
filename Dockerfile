@@ -28,5 +28,12 @@ RUN apt-get update && apt-get install -y \
 COPY script.sh /usr/local/bin/startup.sh
 RUN sed -i 's/\r$//' /usr/local/bin/startup.sh && chmod +x /usr/local/bin/startup.sh
 
+# Configure PHP for larger file uploads (30MB)
+RUN echo "upload_max_filesize = 30M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "post_max_size = 35M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "memory_limit = 64M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "max_input_time = 300" >> /usr/local/etc/php/conf.d/uploads.ini
+
 # Expose port 80
 EXPOSE 80

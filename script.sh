@@ -60,22 +60,37 @@ if [ ! -d "$DEST_DIR" ]; then
     mkdir -p $DEST_DIR
 fi
 
+# Check if configuration has already been processed
+if [ -f "$DEST_DIR/database.php" ] && [ -f "$DEST_DIR/config.php" ]; then
+    echo "Configuration files already exist, skipping processing..."
+else
+    echo "Processing configuration files..."
+    
+    # Use sed with a different delimiter (`|`) to avoid conflicts with special characters
+    # Strip any trailing whitespace/newlines from variables before using them
+    CLEAN_DATABASE=$(echo "${MYSQL_DATABASE}" | tr -d '\r\n')
+    CLEAN_USER=$(echo "${MYSQL_USER}" | tr -d '\r\n')
+    CLEAN_PASSWORD=$(echo "${MYSQL_PASSWORD}" | tr -d '\r\n')
+    CLEAN_HOST=$(echo "${MYSQL_HOST}" | tr -d '\r\n')
+    CLEAN_LOCATOR=$(echo "${BASE_LOCATOR}" | tr -d '\r\n')
+    CLEAN_URL=$(echo "${WEBSITE_URL}" | tr -d '\r\n')
+    CLEAN_DIRECTORY=$(echo "${DIRECTORY}" | tr -d '\r\n')
+    
+    sed -i "s|%DATABASE%|${CLEAN_DATABASE}|g" $DATABASE_FILE
+    sed -i "s|%USERNAME%|${CLEAN_USER}|g" $DATABASE_FILE
+    sed -i "s|%PASSWORD%|${CLEAN_PASSWORD}|g" $DATABASE_FILE
+    sed -i "s|%HOSTNAME%|${CLEAN_HOST}|g" $DATABASE_FILE
+    sed -i "s|%baselocator%|${CLEAN_LOCATOR}|g" $CONFIG_FILE
+    sed -i "s|%websiteurl%|${CLEAN_URL}|g" $CONFIG_FILE
+    sed -i "s|%directory%|${CLEAN_DIRECTORY}|g" $CONFIG_FILE
 
-# Use sed with a different delimiter (`|`) to avoid conflicts with special characters
-sed -i "s|%DATABASE%|${MYSQL_DATABASE}|g" $DATABASE_FILE
-sed -i "s|%USERNAME%|${MYSQL_USER}|g" $DATABASE_FILE
-sed -i "s|%PASSWORD%|${MYSQL_PASSWORD}|g" $DATABASE_FILE
-sed -i "s|%HOSTNAME%|${MYSQL_HOST}|g" $DATABASE_FILE
-sed -i "s|%baselocator%|${BASE_LOCATOR}|g" $CONFIG_FILE
-sed -i "s|%websiteurl%|${WEBSITE_URL}|g" $CONFIG_FILE
-sed -i "s|%directory%|${DIRECTORY}|g" $CONFIG_FILE
+    # Move the files to the destination directory
+    mv $CONFIG_FILE $DEST_DIR
+    mv $DATABASE_FILE $DEST_DIR
 
-# Move the files to the destination directory
-mv $CONFIG_FILE $DEST_DIR
-mv $DATABASE_FILE $DEST_DIR
-
-# Delete the /install directory
-rm -rf /install
+    # Delete the /install directory
+    rm -rf /install
+fi
 
 echo "Replacement complete."
 
