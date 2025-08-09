@@ -14,51 +14,132 @@
     }
     ?>
 
+    <style>
+    /* Aggressive tab styling for maximum visibility in dark themes */
+    .custom-tab-nav {
+        display: flex;
+        gap: 3px;
+        margin-bottom: 0;
+        border-bottom: 1px solid var(--bs-border-color);
+        padding: 0;
+        background: none;
+    }
+    .custom-tab-btn {
+        background-color: #495057 !important;
+        color: #ffffff !important;
+        border: 2px solid #6c757d !important;
+        border-bottom: none !important;
+        padding: 0.75rem 1rem;
+        text-decoration: none;
+        border-radius: 0.375rem 0.375rem 0 0;
+        transition: all 0.2s ease;
+        font-size: 0.875rem;
+        position: relative;
+        top: 1px;
+        font-weight: 500;
+        min-width: 120px;
+        text-align: center;
+    }
+    .custom-tab-btn:hover {
+        background-color: #6c757d !important;
+        color: #ffffff !important;
+        text-decoration: none;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .custom-tab-btn.active {
+        background-color: var(--bs-body-bg) !important;
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color) var(--bs-border-color) var(--bs-body-bg) !important;
+        font-weight: 600;
+        box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+    }
+    .custom-tab-btn i {
+        margin-right: 0.5rem;
+        font-size: 0.875rem;
+    }
+    /* Dark theme specific overrides */
+    @media (prefers-color-scheme: dark) {
+        .custom-tab-btn {
+            background-color: #343a40 !important;
+            color: #f8f9fa !important;
+            border-color: #495057 !important;
+        }
+        .custom-tab-btn:hover {
+            background-color: #495057 !important;
+            color: #ffffff !important;
+        }
+    }
+    /* Fix text-muted visibility in dark themes */
+    .text-muted {
+        color: var(--bs-secondary-color) !important;
+        opacity: 0.8;
+    }
+    </style>
+
+    <script>
+    // Custom tab functionality since we replaced Bootstrap nav-tabs
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabButtons = document.querySelectorAll('.custom-tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all buttons
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                // Hide all tab panes
+                tabPanes.forEach(pane => {
+                    pane.classList.remove('active', 'show');
+                    pane.classList.add('fade');
+                });
+                
+                // Show target tab pane
+                const targetId = this.getAttribute('href').substring(1);
+                const targetPane = document.getElementById(targetId);
+                if (targetPane) {
+                    targetPane.classList.remove('fade');
+                    targetPane.classList.add('active', 'show');
+                }
+            });
+        });
+    });
+    </script>
+
     <div class="card shadow-sm">
-        <div class="card-header bg-light">
-            <ul class="nav nav-tabs card-header-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link <?php if ($showtab == '' || $showtab == 'adif') {
-                                            echo 'active';
-                                        } ?>" id="import-tab" data-bs-toggle="tab" href="#import" role="tab" aria-controls="import" aria-selected="<?php if ($showtab == '' || $showtab == 'adif') {
-                                                                                                                                                        echo 'true';
-                                                                                                                                                    } else {
-                                                                                                                                                        echo 'false';
-                                                                                                                                                    } ?>">
-                        <i class="fas fa-upload me-1"></i><?php echo lang('adif_import') ?>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="export-tab" data-bs-toggle="tab" href="#export" role="tab" aria-controls="export" aria-selected="false">
-                        <i class="fas fa-download me-1"></i><?php echo lang('adif_export') ?>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="lotw-tab" data-bs-toggle="tab" href="#lotw" role="tab" aria-controls="lotw" aria-selected="false">
-                        <i class="fas fa-globe me-1"></i><?php echo lang('lotw_title') ?>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php if ($showtab == 'dcl') {
-                                            echo 'active';
-                                        } ?>" id="dcl-tab" data-bs-toggle="tab" href="#dcl" role="tab" aria-controls="dcl" aria-selected="<?php if ($showtab == 'dcl') {
-                                                                                                                                                echo 'true';
-                                                                                                                                            } else {
-                                                                                                                                                echo 'false';
-                                                                                                                                            } ?>">
-                        <i class="fas fa-flag me-1"></i><?php echo lang('darc_dcl') ?>
-                    </a>
-                </li>
-            </ul>
+        <div class="card-header" style="background-color: var(--bs-secondary-bg); border-bottom: 1px solid var(--bs-border-color);">
+            <div class="custom-tab-nav">
+                <a href="#import" class="custom-tab-btn <?php if ($showtab == '' || $showtab == 'adif') echo 'active'; ?>" 
+                   data-bs-toggle="tab" role="tab" aria-controls="import" id="import-tab">
+                    <i class="fas fa-upload"></i><?php echo lang('adif_import') ?>
+                </a>
+                <a href="#export" class="custom-tab-btn" 
+                   data-bs-toggle="tab" role="tab" aria-controls="export" id="export-tab">
+                    <i class="fas fa-download"></i><?php echo lang('adif_export') ?>
+                </a>
+                <a href="#lotw" class="custom-tab-btn" 
+                   data-bs-toggle="tab" role="tab" aria-controls="lotw" id="lotw-tab">
+                    <i class="fas fa-globe"></i><?php echo lang('lotw_title') ?>
+                </a>
+                <a href="#dcl" class="custom-tab-btn <?php if ($showtab == 'dcl') echo 'active'; ?>" 
+                   data-bs-toggle="tab" role="tab" aria-controls="dcl" id="dcl-tab">
+                    <i class="fas fa-flag"></i><?php echo lang('darc_dcl') ?>
+                </a>
+            </div>
         </div>
 
         <div class="card-body">
             <div class="tab-content">
                 <div class="tab-pane <?php if ($showtab == '' || $showtab == 'adif') {
-                                            echo 'active';
+                                            echo 'active show';
                                         } else {
                                             echo 'fade';
-                                        } ?>" id="import" role="tabpanel" aria-labelledby="home-tab">
+                                        } ?>" id="import" role="tabpanel" aria-labelledby="import-tab">
 
                     <?php if (isset($error) && ($showtab == '' || $showtab == 'adif')) { ?>
                         <div class="alert alert-danger" role="alert">
@@ -116,7 +197,7 @@
                                 
                                 <!-- Basic Options -->
                                 <div class="card mb-3">
-                                    <div class="card-header">
+                                    <div class="card-header" style="background-color: var(--bs-secondary-bg); border-bottom: 1px solid var(--bs-border-color);">
                                         <h6 class="mb-0">Basic Settings</h6>
                                     </div>
                                     <div class="card-body">
@@ -158,10 +239,8 @@
 
                                 <!-- Logbook Upload Markers -->
                                 <div class="card">
-                                    <div class="card-header">
-                                        <h6 class="mb-0">Mark as Uploaded to Online Logbooks</h6>
-                                        <small class="text-muted">Select if ADIF being imported does not contain this information</small>
-                                    </div>
+                                    <div class="card-header" style="background-color: var(--bs-secondary-bg); border-bottom: 1px solid var(--bs-border-color);">
+                                        <h6 class="mb-0">Mark as Uploaded to Online Logbooks</h6>                                    </div>
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-6">
@@ -223,7 +302,7 @@
                             
                             <form class="form" action="<?php echo site_url('adif/export_custom'); ?>" method="post" enctype="multipart/form-data">
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div class="card-header" style="background-color: var(--bs-secondary-bg); border-bottom: 1px solid var(--bs-border-color);">
                                         <h6 class="mb-0">Export Settings</h6>
                                     </div>
                                     <div class="card-body">
@@ -282,7 +361,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header">
+                                <div class="card-header" style="background-color: var(--bs-secondary-bg); border-bottom: 1px solid var(--bs-border-color);">
                                     <h6 class="mb-0"><i class="fas fa-satellite me-2"></i><?php echo lang('adif_export_sat_only_qso') ?></h6>
                                 </div>
                                 <div class="card-body">
@@ -320,7 +399,7 @@
                             
                             <form class="form" action="<?php echo site_url('adif/mark_lotw'); ?>" method="post" enctype="multipart/form-data">
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div class="card-header" style="background-color: var(--bs-secondary-bg); border-bottom: 1px solid var(--bs-border-color);">
                                         <h6 class="mb-0">Mark QSOs as Exported to LoTW</h6>
                                     </div>
                                     <div class="card-body">
@@ -363,7 +442,7 @@
                     </div>
                 </div>
                 <div class="tab-pane <?php if ($showtab == 'dcl') {
-                                            echo 'active';
+                                            echo 'active show';
                                         } else {
                                             echo 'fade';
                                         } ?>" id="dcl" role="tabpanel" aria-labelledby="dcl-tab">
@@ -387,7 +466,7 @@
                             
                             <form class="form" action="<?php echo site_url('adif/dcl'); ?>" method="post" enctype="multipart/form-data">
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div class="card-header" style="background-color: var(--bs-secondary-bg); border-bottom: 1px solid var(--bs-border-color);">
                                         <h6 class="mb-0">DCL Import Settings</h6>
                                     </div>
                                     <div class="card-body">
