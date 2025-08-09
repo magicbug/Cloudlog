@@ -26,7 +26,7 @@ $wwff = 0;
 <!-- Info Card -->
 <div class="card mb-3">
 	<div class="card-header">
-		<i class="fas fa-info-circle"></i> <?php echo lang('options_bands'); ?> Information
+		<h5 class="mb-0"><i class="fas fa-info-circle me-2"></i><?php echo lang('options_bands'); ?> Information</h5>
 	</div>
 	<div class="card-body">
 		<div class="alert alert-primary alert-dismissible fade show" role="alert">
@@ -47,13 +47,13 @@ $wwff = 0;
 <!-- Controls Card -->
 <div class="card mb-3">
 	<div class="card-header">
-		<i class="fas fa-sliders-h"></i> Band Management Controls
+		<h5 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Band Management Controls</h5>
 	</div>
 	<div class="card-body">
 		<!-- Statistics -->
 		<div class="row mb-3">
 			<div class="col-md-8">
-				<div class="card border-0 bg-light">
+				<div class="card">
 					<div class="card-body py-2">
 						<div class="row text-center">
 							<div class="col-md-6 col-6">
@@ -111,27 +111,16 @@ $wwff = 0;
 
 <!-- Bands Table Card -->
 <div class="card">
-<div class="card-header d-flex justify-content-between align-items-center">
-	<span><i class="fas fa-table"></i> Bands Configuration</span>
-	<span class="badge badge-secondary" id="visibleRowsCount">Loading...</span>
+<div class="card-header">
+	<div class="d-flex justify-content-between align-items-center">
+		<h5 class="mb-0"><i class="fas fa-table me-2"></i>Bands Configuration</h5>
+		<span class="badge bg-secondary" id="visibleRowsCount">Loading...</span>
+	</div>
 </div>
   <div class="card-body">
 	
     <div class="table-responsive">
 		<style>
-		.card {
-			box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-			border: 1px solid rgba(0,0,0,.125);
-		}
-		.card-header {
-			background-color: #f8f9fa;
-			border-bottom: 1px solid rgba(0,0,0,.125);
-			font-weight: 500;
-		}
-		.card-header i {
-			color: #6c757d;
-			margin-right: 0.5rem;
-		}
 		.bandtable th, .bandtable td {
 			text-align: center;
 			vertical-align: middle;
@@ -139,34 +128,36 @@ $wwff = 0;
 			padding: 8px 4px;
 		}
 		.bandtable th {
-			background-color: #f8f9fa;
 			border-top: 2px solid #dee2e6;
+			background-color: var(--bs-secondary-bg, #f8f9fa);
 		}
 		.bandtable tfoot th {
-			background-color: #e9ecef;
 			border-top: 2px solid #adb5bd;
+			background-color: var(--bs-tertiary-bg, #e9ecef);
 		}
 		.bandtable th:first-child,
 		.bandtable td:first-child {
 			position: sticky;
 			left: 0;
-			background-color: #fff;
 			z-index: 2;
 			box-shadow: 2px 0 2px rgba(0,0,0,0.1);
+			background-color: var(--bs-body-bg, #fff);
 		}
 		.bandtable th:nth-child(2),
 		.bandtable td:nth-child(2) {
 			position: sticky;
 			left: 40px;
-			background-color: #fff;
 			z-index: 2;
 			box-shadow: 2px 0 2px rgba(0,0,0,0.1);
 			font-weight: bold;
+			background-color: var(--bs-body-bg, #fff);
 		}
 		.bandtable thead th:first-child,
 		.bandtable thead th:nth-child(2) {
 			z-index: 3;
-			background-color: #f8f9fa;
+		}
+		.bandtable th:nth-child(3) {
+			border-left: 1px solid var(--bs-border-color, #dee2e6);
 		}
 		.bandtable input[type="checkbox"] {
 			transform: scale(1.2);
