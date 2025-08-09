@@ -1935,12 +1935,16 @@ if ($this->session->userdata('user_id') != null) {
             });
 
             function update_stats() {
-                $('#dxcc_update_status').load('<?php echo base_url() ?>updates/status.html', function(val) {
-                    $('#dxcc_update_staus').html(val);
+                $('#dxcc_update_status').load('<?php echo base_url() ?>index.php/update/get_status', function(val) {
+                    $('#dxcc_update_status').html(val);
 
-                    if ((val === null) || (val.substring(0, 4) != "DONE")) {
+                    if ((val === null) || (val === undefined) || (typeof val !== 'string') || (val.substring(0, 4) !== "DONE")) {
                         setTimeout(update_stats, 5000);
                     }
+                }).fail(function(xhr, status, error) {
+                    console.log('Error loading status: ' + status + ' - ' + error);
+                    $('#dxcc_update_status').html('Error loading status...');
+                    setTimeout(update_stats, 10000); // Retry in 10 seconds on error
                 });
 
             }

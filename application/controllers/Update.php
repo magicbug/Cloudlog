@@ -219,6 +219,16 @@ class Update extends CI_Controller {
 		$this->update_status("DONE");
 	}
 
+	public function get_status() {
+		$status_file = $this->make_update_path("status.html");
+		if (file_exists($status_file)) {
+			$content = file_get_contents($status_file);
+			echo $content;
+		} else {
+			echo "No status available";
+		}
+	}
+
 	public function update_status($done=""){
 
         if ($done != "Downloading file"){
@@ -234,7 +244,16 @@ class Update extends CI_Controller {
             $html = $done."....<br/>";
         }
 
-        file_put_contents($this->make_update_path("status.html"), $html);
+        $status_file = $this->make_update_path("status.html");
+        if (file_put_contents($status_file, $html) === FALSE) {
+            log_message('error', 'Failed to write status file: ' . $status_file);
+            // Try to create the directory if it doesn't exist
+            $dir = dirname($status_file);
+            if (!is_dir($dir)) {
+                mkdir($dir, 0755, true);
+                file_put_contents($status_file, $html);
+            }
+        }
 	}
 
 
