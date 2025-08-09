@@ -15,7 +15,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h2><i class="fas fa-tower-broadcast me-2"></i><?php echo $page_title; ?></h2>
-                <p class="text-muted mb-0">Manage your station locations and profiles</p>
+                <p class="text-muted mb-0">Manage your station locations.</p>
             </div>
             <a href="<?php echo site_url('station/create'); ?>" class="btn btn-primary">
                 <i class="fas fa-plus me-2"></i><?php echo lang('station_location_create'); ?>
@@ -46,7 +46,7 @@
                         <div class="d-flex align-items-start mb-3">
                             <i class="fas fa-radio text-primary me-2 mt-1"></i>
                             <div>
-                                <h6 class="mb-1">Multiple Profiles</h6>
+                                <h6 class="mb-1">Multiple Locations</h6>
                                 <p class="mb-0 text-muted small"><?php echo lang('station_location_header_ln2'); ?></p>
                             </div>
                         </div>
@@ -55,7 +55,7 @@
                         <div class="d-flex align-items-start mb-3">
                             <i class="fas fa-cog text-primary me-2 mt-1"></i>
                             <div>
-                                <h6 class="mb-1">Active Profile</h6>
+                                <h6 class="mb-1">Active Location</h6>
                                 <p class="mb-0 text-muted small"><?php echo lang('station_location_header_ln3'); ?></p>
                             </div>
                         </div>
