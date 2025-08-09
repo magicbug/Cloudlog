@@ -68,9 +68,11 @@ class Dashboard extends CI_Controller
 		$this->load->model('stations');
 		$this->load->model('setup_model');
 
-		$data['countryCount'] = $this->setup_model->getCountryCount();
-		$data['logbookCount'] = $this->setup_model->getLogbookCount();
-		$data['locationCount'] = $this->setup_model->getLocationCount();
+		// Use consolidated setup counts instead of 3 separate queries
+		$setup_counts = $this->setup_model->getAllSetupCounts();
+		$data['countryCount'] = $setup_counts['country_count'];
+		$data['logbookCount'] = $setup_counts['logbook_count'];
+		$data['locationCount'] = $setup_counts['location_count'];
 
 		$data['current_active'] = $this->stations->find_active();
 
@@ -97,13 +99,14 @@ class Dashboard extends CI_Controller
 			$data['month_qsos'] = $qso_stats['month_qsos'];
 			$data['year_qsos'] = $qso_stats['year_qsos'];
 
-			// Load  Countries Breakdown data into array
-			$CountriesBreakdown = $this->logbook_model->total_countries_confirmed($logbooks_locations_array);
-
-			$data['total_countries'] = $CountriesBreakdown['Countries_Worked'];
-			$data['total_countries_confirmed_paper'] = $CountriesBreakdown['Countries_Worked_QSL'];
-			$data['total_countries_confirmed_eqsl'] = $CountriesBreakdown['Countries_Worked_EQSL'];
-			$data['total_countries_confirmed_lotw'] = $CountriesBreakdown['Countries_Worked_LOTW'];
+			// Use consolidated countries statistics instead of separate queries
+			$countries_stats = $this->logbook_model->get_countries_statistics_consolidated($logbooks_locations_array);
+			
+			$data['total_countries'] = $countries_stats['Countries_Worked'];
+			$data['total_countries_confirmed_paper'] = $countries_stats['Countries_Worked_QSL'];
+			$data['total_countries_confirmed_eqsl'] = $countries_stats['Countries_Worked_EQSL'];
+			$data['total_countries_confirmed_lotw'] = $countries_stats['Countries_Worked_LOTW'];
+			$current_countries = $countries_stats['Countries_Current'];
 
 			$data['dashboard_upcoming_dx_card'] = false;
 			$data['dashboard_qslcard_card'] = false;
@@ -163,8 +166,7 @@ class Dashboard extends CI_Controller
 
 			// Optimize DXCC calculation - get count directly instead of loading all records
 			$this->load->model('dxcc');
-			$total_dxcc_count = $this->dxcc->get_total_dxcc_count(); // We'll need to create this method
-			$current_countries = $this->logbook_model->total_countries_current($logbooks_locations_array);
+			$total_dxcc_count = $this->dxcc->get_total_dxcc_count();
 			$data['total_countries_needed'] = $total_dxcc_count - $current_countries;
 
 			$this->load->view('interface_assets/header', $data);
@@ -181,7 +183,9 @@ class Dashboard extends CI_Controller
 
 		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-		$data['todays_qsos'] = $this->logbook_model->todays_qsos($logbooks_locations_array);
+		// Use consolidated query instead of individual todays_qsos call
+		$qso_stats = $this->logbook_model->get_qso_statistics_consolidated($logbooks_locations_array);
+		$data['todays_qsos'] = $qso_stats['todays_qsos'];
 		$this->load->view('components/dashboard_todays_qsos', $data);
 	}
 

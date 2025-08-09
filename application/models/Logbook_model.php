@@ -2990,6 +2990,53 @@ class Logbook_model extends CI_Model
     }
   }
 
+  // Consolidated method to get all country statistics in one query
+  function get_countries_statistics_consolidated($StationLocationsArray = null) {
+    if ($StationLocationsArray == null) {
+      $CI = &get_instance();
+      $CI->load->model('logbooks_model');
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    } else {
+      $logbooks_locations_array = $StationLocationsArray;
+    }
+
+    if (!empty($logbooks_locations_array)) {
+      // Get both confirmed countries and current countries in one query
+      $this->db->select('
+        COUNT(DISTINCT COL_COUNTRY) as Countries_Worked,
+        COUNT(DISTINCT IF(COL_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_QSL,
+        COUNT(DISTINCT IF(COL_EQSL_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_EQSL,
+        COUNT(DISTINCT IF(COL_LOTW_QSL_RCVD = "Y", COL_COUNTRY, NULL)) as Countries_Worked_LOTW,
+        COUNT(DISTINCT IF(dxcc_entities.end IS NULL, COL_COUNTRY, NULL)) as Countries_Current
+      ');
+      $this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $this->config->item('table_name') . '.col_dxcc', 'left');
+      $this->db->where_in('station_id', $logbooks_locations_array);
+      $this->db->where('COL_COUNTRY !=', 'Invalid');
+      $this->db->where('COL_DXCC >', '0');
+
+      if ($query = $this->db->get($this->config->item('table_name'))) {
+        if ($query->num_rows() > 0) {
+          $row = $query->row();
+          return array(
+            'Countries_Worked' => $row->Countries_Worked,
+            'Countries_Worked_QSL' => $row->Countries_Worked_QSL,
+            'Countries_Worked_EQSL' => $row->Countries_Worked_EQSL,
+            'Countries_Worked_LOTW' => $row->Countries_Worked_LOTW,
+            'Countries_Current' => $row->Countries_Current
+          );
+        }
+      }
+    }
+    
+    return array(
+      'Countries_Worked' => 0,
+      'Countries_Worked_QSL' => 0,
+      'Countries_Worked_EQSL' => 0,
+      'Countries_Worked_LOTW' => 0,
+      'Countries_Current' => 0
+    );
+  }
+
   /* Return total number of countries confirmed with paper QSL */
   function total_countries_confirmed_paper()
   {
