@@ -4980,6 +4980,63 @@ class Logbook_model extends CI_Model
     // If all parsing fails, return the original input and let the database handle it
     return $date_input;
   }
+
+  /* Consolidated QSO Statistics - Get all basic counts in a single query */
+  function get_qso_statistics_consolidated($StationLocationsArray = null)
+  {
+    if ($StationLocationsArray == null) {
+      $this->load->model('logbooks_model');
+      $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    } else {
+      $logbooks_locations_array = $StationLocationsArray;
+    }
+
+    if (!$logbooks_locations_array) {
+      return array(
+        'total_qsos' => 0,
+        'todays_qsos' => 0,
+        'month_qsos' => 0,
+        'year_qsos' => 0
+      );
+    }
+
+    // Calculate date ranges
+    $today_morning = date('Y-m-d 00:00:00');
+    $today_night = date('Y-m-d 23:59:59');
+    $month_morning = date('Y-m-01 00:00:00');
+    $date = new DateTime('now');
+    $date->modify('last day of this month');
+    $month_night = $date->format('Y-m-d') . " 23:59:59";
+    $year_morning = date('Y-01-01 00:00:00');
+    $year_night = date('Y-12-31 23:59:59');
+
+    // Build the consolidated query
+    $this->db->select("
+      COUNT(*) as total_qsos,
+      COUNT(CASE WHEN COL_TIME_ON >= '$today_morning' AND COL_TIME_ON <= '$today_night' THEN 1 END) as todays_qsos,
+      COUNT(CASE WHEN COL_TIME_ON >= '$month_morning' AND COL_TIME_ON <= '$month_night' THEN 1 END) as month_qsos,
+      COUNT(CASE WHEN COL_TIME_ON >= '$year_morning' AND COL_TIME_ON <= '$year_night' THEN 1 END) as year_qsos
+    ", FALSE);
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    $query = $this->db->get($this->config->item('table_name'));
+
+    if ($query->num_rows() > 0) {
+      $row = $query->row();
+      return array(
+        'total_qsos' => (int)$row->total_qsos,
+        'todays_qsos' => (int)$row->todays_qsos,
+        'month_qsos' => (int)$row->month_qsos,
+        'year_qsos' => (int)$row->year_qsos
+      );
+    }
+
+    return array(
+      'total_qsos' => 0,
+      'todays_qsos' => 0,
+      'month_qsos' => 0,
+      'year_qsos' => 0
+    );
+  }
 }
 
 // Function to validate ADIF date format

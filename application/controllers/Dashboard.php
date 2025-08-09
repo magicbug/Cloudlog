@@ -85,11 +85,12 @@ class Dashboard extends CI_Controller
 
 			$data['radio_status'] = $this->cat->recent_status();
 
-			// Store info
-			$data['todays_qsos'] = $this->logbook_model->todays_qsos($logbooks_locations_array);
-			$data['total_qsos'] = $this->logbook_model->total_qsos($logbooks_locations_array);
-			$data['month_qsos'] = $this->logbook_model->month_qsos($logbooks_locations_array);
-			$data['year_qsos'] = $this->logbook_model->year_qsos($logbooks_locations_array);
+			// Store info - Use consolidated query for QSO statistics
+			$qso_stats = $this->logbook_model->get_qso_statistics_consolidated($logbooks_locations_array);
+			$data['todays_qsos'] = $qso_stats['todays_qsos'];
+			$data['total_qsos'] = $qso_stats['total_qsos'];
+			$data['month_qsos'] = $qso_stats['month_qsos'];
+			$data['year_qsos'] = $qso_stats['year_qsos'];
 
 			// Load  Countries Breakdown data into array
 			$CountriesBreakdown = $this->logbook_model->total_countries_confirmed($logbooks_locations_array);
