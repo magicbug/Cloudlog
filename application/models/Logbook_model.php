@@ -2621,95 +2621,99 @@ class Logbook_model extends CI_Model
     }
 
     if (!empty($logbooks_locations_array)) {
-      $this->db->select('
-	  COUNT(IF(COL_QSL_SENT="Y",COL_QSL_SENT,null)) as QSL_Sent,
-	  COUNT(IF(COL_QSL_RCVD="Y",COL_QSL_RCVD,null)) as QSL_Received,
-	  COUNT(IF(COL_QSL_SENT IN("Q", "R") ,COL_QSL_SENT,null)) as QSL_Requested,
-	  COUNT(IF(COL_EQSL_QSL_SENT="Y",COL_EQSL_QSL_SENT,null)) as eQSL_Sent,
-	  COUNT(IF(COL_EQSL_QSL_RCVD="Y",COL_EQSL_QSL_RCVD,null)) as eQSL_Received,
-	  COUNT(IF(COL_LOTW_QSL_SENT="Y",COL_LOTW_QSL_SENT,null)) as LoTW_Sent,
-	  COUNT(IF(COL_LOTW_QSL_RCVD="Y",COL_LOTW_QSL_RCVD,null)) as LoTW_Received,
-	  COUNT(IF(COL_QRZCOM_QSO_UPLOAD_STATUS="Y",COL_QRZCOM_QSO_UPLOAD_STATUS,null)) as QRZ_Sent,
-	  COUNT(IF(COL_QRZCOM_QSO_DOWNLOAD_STATUS="Y",COL_QRZCOM_QSO_DOWNLOAD_STATUS,null)) as QRZ_Received,
-	  COUNT(IF(COL_QSL_SENT="Y" and DATE(COL_QSLSDATE)=DATE(SYSDATE()),COL_QSL_SENT,null)) as QSL_Sent_today,
-	  COUNT(IF(COL_QSL_RCVD="Y" and DATE(COL_QSLRDATE)=DATE(SYSDATE()),COL_QSL_RCVD,null)) as QSL_Received_today,
-	  COUNT(IF(COL_QSL_SENT IN("Q", "R") and DATE(COL_QSLSDATE)=DATE(SYSDATE()) ,COL_QSL_SENT,null)) as QSL_Requested_today,
-	  COUNT(IF(COL_EQSL_QSL_SENT="Y" and DATE(COL_EQSL_QSLSDATE)=DATE(SYSDATE()),COL_EQSL_QSL_SENT,null)) as eQSL_Sent_today,
-	  COUNT(IF(COL_EQSL_QSL_RCVD="Y" and DATE(COL_EQSL_QSLRDATE)=DATE(SYSDATE()),COL_EQSL_QSL_RCVD,null)) as eQSL_Received_today,
-	  COUNT(IF(COL_LOTW_QSL_SENT="Y" and DATE(COL_LOTW_QSLSDATE)=DATE(SYSDATE()),COL_LOTW_QSL_SENT,null)) as LoTW_Sent_today,
-	  COUNT(IF(COL_LOTW_QSL_RCVD="Y" and DATE(COL_LOTW_QSLRDATE)=DATE(SYSDATE()),COL_LOTW_QSL_RCVD,null)) as LoTW_Received_today,
-	  COUNT(IF(COL_QRZCOM_QSO_UPLOAD_STATUS="Y" and DATE(COL_QRZCOM_QSO_UPLOAD_DATE)=DATE(SYSDATE()),COL_QRZCOM_QSO_UPLOAD_STATUS,null)) as QRZ_Sent_today,
-	  COUNT(IF(COL_QRZCOM_QSO_DOWNLOAD_STATUS="Y" and DATE(COL_QRZCOM_QSO_DOWNLOAD_DATE)=DATE(SYSDATE()),COL_QRZCOM_QSO_DOWNLOAD_STATUS,null)) as QRZ_Received_today
-	');
+      // Pre-calculate today's date for better performance
+      $today_date = date('Y-m-d');
+      
+      $this->db->select("
+	  COUNT(IF(COL_QSL_SENT='Y',COL_QSL_SENT,null)) as QSL_Sent,
+	  COUNT(IF(COL_QSL_RCVD='Y',COL_QSL_RCVD,null)) as QSL_Received,
+	  COUNT(IF(COL_QSL_SENT IN('Q', 'R') ,COL_QSL_SENT,null)) as QSL_Requested,
+	  COUNT(IF(COL_EQSL_QSL_SENT='Y',COL_EQSL_QSL_SENT,null)) as eQSL_Sent,
+	  COUNT(IF(COL_EQSL_QSL_RCVD='Y',COL_EQSL_QSL_RCVD,null)) as eQSL_Received,
+	  COUNT(IF(COL_LOTW_QSL_SENT='Y',COL_LOTW_QSL_SENT,null)) as LoTW_Sent,
+	  COUNT(IF(COL_LOTW_QSL_RCVD='Y',COL_LOTW_QSL_RCVD,null)) as LoTW_Received,
+	  COUNT(IF(COL_QRZCOM_QSO_UPLOAD_STATUS='Y',COL_QRZCOM_QSO_UPLOAD_STATUS,null)) as QRZ_Sent,
+	  COUNT(IF(COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y',COL_QRZCOM_QSO_DOWNLOAD_STATUS,null)) as QRZ_Received,
+	  COUNT(IF(COL_QSL_SENT='Y' and DATE(COL_QSLSDATE)='$today_date',COL_QSL_SENT,null)) as QSL_Sent_today,
+	  COUNT(IF(COL_QSL_RCVD='Y' and DATE(COL_QSLRDATE)='$today_date',COL_QSL_RCVD,null)) as QSL_Received_today,
+	  COUNT(IF(COL_QSL_SENT IN('Q', 'R') and DATE(COL_QSLSDATE)='$today_date' ,COL_QSL_SENT,null)) as QSL_Requested_today,
+	  COUNT(IF(COL_EQSL_QSL_SENT='Y' and DATE(COL_EQSL_QSLSDATE)='$today_date',COL_EQSL_QSL_SENT,null)) as eQSL_Sent_today,
+	  COUNT(IF(COL_EQSL_QSL_RCVD='Y' and DATE(COL_EQSL_QSLRDATE)='$today_date',COL_EQSL_QSL_RCVD,null)) as eQSL_Received_today,
+	  COUNT(IF(COL_LOTW_QSL_SENT='Y' and DATE(COL_LOTW_QSLSDATE)='$today_date',COL_LOTW_QSL_SENT,null)) as LoTW_Sent_today,
+	  COUNT(IF(COL_LOTW_QSL_RCVD='Y' and DATE(COL_LOTW_QSLRDATE)='$today_date',COL_LOTW_QSL_RCVD,null)) as LoTW_Received_today,
+	  COUNT(IF(COL_QRZCOM_QSO_UPLOAD_STATUS='Y' and DATE(COL_QRZCOM_QSO_UPLOAD_DATE)='$today_date',COL_QRZCOM_QSO_UPLOAD_STATUS,null)) as QRZ_Sent_today,
+	  COUNT(IF(COL_QRZCOM_QSO_DOWNLOAD_STATUS='Y' and DATE(COL_QRZCOM_QSO_DOWNLOAD_DATE)='$today_date',COL_QRZCOM_QSO_DOWNLOAD_STATUS,null)) as QRZ_Received_today
+	", FALSE);
       $this->db->where_in('station_id', $logbooks_locations_array);
 
       if ($query = $this->db->get($this->config->item('table_name'))) {
-        $this->db->last_query();
-        foreach ($query->result() as $row) {
-          $QSLBreakdown['QSL_Sent'] = $row->QSL_Sent;
-          $QSLBreakdown['QSL_Received'] =  $row->QSL_Received;
-          $QSLBreakdown['QSL_Requested'] =  $row->QSL_Requested;
-          $QSLBreakdown['eQSL_Sent'] =  $row->eQSL_Sent;
-          $QSLBreakdown['eQSL_Received'] =  $row->eQSL_Received;
-          $QSLBreakdown['LoTW_Sent'] =  $row->LoTW_Sent;
-          $QSLBreakdown['LoTW_Received'] =  $row->LoTW_Received;
-          $QSLBreakdown['QRZ_Sent'] =  $row->QRZ_Sent;
-          $QSLBreakdown['QRZ_Received'] =  $row->QRZ_Received;
-          $QSLBreakdown['QSL_Sent_today'] = $row->QSL_Sent_today;
-          $QSLBreakdown['QSL_Received_today'] =  $row->QSL_Received_today;
-          $QSLBreakdown['QSL_Requested_today'] =  $row->QSL_Requested_today;
-          $QSLBreakdown['eQSL_Sent_today'] =  $row->eQSL_Sent_today;
-          $QSLBreakdown['eQSL_Received_today'] =  $row->eQSL_Received_today;
-          $QSLBreakdown['LoTW_Sent_today'] =  $row->LoTW_Sent_today;
-          $QSLBreakdown['LoTW_Received_today'] =  $row->LoTW_Received_today;
-          $QSLBreakdown['QRZ_Sent_today'] =  $row->QRZ_Sent_today;
-          $QSLBreakdown['QRZ_Received_today'] =  $row->QRZ_Received_today;
+        if ($query->num_rows() > 0) {
+          $row = $query->row();
+          return array(
+            'QSL_Sent' => (int)$row->QSL_Sent,
+            'QSL_Received' => (int)$row->QSL_Received,
+            'QSL_Requested' => (int)$row->QSL_Requested,
+            'eQSL_Sent' => (int)$row->eQSL_Sent,
+            'eQSL_Received' => (int)$row->eQSL_Received,
+            'LoTW_Sent' => (int)$row->LoTW_Sent,
+            'LoTW_Received' => (int)$row->LoTW_Received,
+            'QRZ_Sent' => (int)$row->QRZ_Sent,
+            'QRZ_Received' => (int)$row->QRZ_Received,
+            'QSL_Sent_today' => (int)$row->QSL_Sent_today,
+            'QSL_Received_today' => (int)$row->QSL_Received_today,
+            'QSL_Requested_today' => (int)$row->QSL_Requested_today,
+            'eQSL_Sent_today' => (int)$row->eQSL_Sent_today,
+            'eQSL_Received_today' => (int)$row->eQSL_Received_today,
+            'LoTW_Sent_today' => (int)$row->LoTW_Sent_today,
+            'LoTW_Received_today' => (int)$row->LoTW_Received_today,
+            'QRZ_Sent_today' => (int)$row->QRZ_Sent_today,
+            'QRZ_Received_today' => (int)$row->QRZ_Received_today
+          );
         }
-
-        return $QSLBreakdown;
-      } else {
-        $QSLBreakdown['QSL_Sent'] = 0;
-        $QSLBreakdown['QSL_Received'] =  0;
-        $QSLBreakdown['QSL_Requested'] =  0;
-        $QSLBreakdown['eQSL_Sent'] =  0;
-        $QSLBreakdown['eQSL_Received'] =  0;
-        $QSLBreakdown['LoTW_Sent'] =  0;
-        $QSLBreakdown['LoTW_Received'] = 0;
-        $QSLBreakdown['QRZ_Sent'] = 0;
-        $QSLBreakdown['QRZ_Received'] = 0;
-        $QSLBreakdown['QSL_Sent_today'] = 0;
-        $QSLBreakdown['QSL_Received_today'] =  0;
-        $QSLBreakdown['QSL_Requested_today'] =  0;
-        $QSLBreakdown['eQSL_Sent_today'] =  0;
-        $QSLBreakdown['eQSL_Received_today'] =  0;
-        $QSLBreakdown['LoTW_Sent_today'] =  0;
-        $QSLBreakdown['LoTW_Received_today'] = 0;
-        $QSLBreakdown['QRZ_Sent_today'] = 0;
-        $QSLBreakdown['QRZ_Received_today'] = 0;
-
-        return $QSLBreakdown;
       }
-    } else {
-      $QSLBreakdown['QSL_Sent'] = 0;
-      $QSLBreakdown['QSL_Received'] =  0;
-      $QSLBreakdown['QSL_Requested'] =  0;
-      $QSLBreakdown['eQSL_Sent'] =  0;
-      $QSLBreakdown['eQSL_Received'] =  0;
-      $QSLBreakdown['LoTW_Sent'] =  0;
-      $QSLBreakdown['LoTW_Received'] = 0;
-      $QSLBreakdown['QRZ_Sent'] = 0;
-      $QSLBreakdown['QRZ_Received'] = 0;
-      $QSLBreakdown['QSL_Sent_today'] = 0;
-      $QSLBreakdown['QSL_Received_today'] =  0;
-      $QSLBreakdown['QSL_Requested_today'] =  0;
-      $QSLBreakdown['eQSL_Sent_today'] =  0;
-      $QSLBreakdown['eQSL_Received_today'] =  0;
-      $QSLBreakdown['LoTW_Sent_today'] =  0;
-      $QSLBreakdown['LoTW_Received_today'] = 0;
-      $QSLBreakdown['QRZ_Sent_today'] = 0;
-      $QSLBreakdown['QRZ_Received_today'] = 0;
 
-      return $QSLBreakdown;
+      // Return default values if no results
+      return array(
+        'QSL_Sent' => 0,
+        'QSL_Received' => 0,
+        'QSL_Requested' => 0,
+        'eQSL_Sent' => 0,
+        'eQSL_Received' => 0,
+        'LoTW_Sent' => 0,
+        'LoTW_Received' => 0,
+        'QRZ_Sent' => 0,
+        'QRZ_Received' => 0,
+        'QSL_Sent_today' => 0,
+        'QSL_Received_today' => 0,
+        'QSL_Requested_today' => 0,
+        'eQSL_Sent_today' => 0,
+        'eQSL_Received_today' => 0,
+        'LoTW_Sent_today' => 0,
+        'LoTW_Received_today' => 0,
+        'QRZ_Sent_today' => 0,
+        'QRZ_Received_today' => 0
+      );
+    } else {
+      return array(
+        'QSL_Sent' => 0,
+        'QSL_Received' => 0,
+        'QSL_Requested' => 0,
+        'eQSL_Sent' => 0,
+        'eQSL_Received' => 0,
+        'LoTW_Sent' => 0,
+        'LoTW_Received' => 0,
+        'QRZ_Sent' => 0,
+        'QRZ_Received' => 0,
+        'QSL_Sent_today' => 0,
+        'QSL_Received_today' => 0,
+        'QSL_Requested_today' => 0,
+        'eQSL_Sent_today' => 0,
+        'eQSL_Received_today' => 0,
+        'LoTW_Sent_today' => 0,
+        'LoTW_Received_today' => 0,
+        'QRZ_Sent_today' => 0,
+        'QRZ_Received_today' => 0
+      );
     }
   }
 
