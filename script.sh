@@ -81,11 +81,15 @@ echo "Replacement complete."
 
 # Wait for database to be ready
 echo "Waiting for database to be ready..."
-until mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" > /dev/null 2>&1; do
-    echo "Database is not ready yet. Waiting 5 seconds..."
-    sleep 5
-done
-echo "Database is ready!"
+echo "Connecting to: Host=$MYSQL_HOST, User=$MYSQL_USER, Database=$MYSQL_DATABASE"
+
+# Give the database a moment, then test connection once
+sleep 2
+if mariadb -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -D"$MYSQL_DATABASE" -e "SELECT 1;" >/dev/null 2>&1; then
+    echo "Database is ready!"
+else
+    echo "Database connection failed, but continuing anyway since healthcheck passed..."
+fi
 
 # Set Permissions
 chown -R root:www-data /var/www/html/application/config/

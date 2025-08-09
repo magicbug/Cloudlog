@@ -24,5 +24,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install xml \
     && a2enmod rewrite
 
+# Copy script.sh and make it executable
+COPY script.sh /usr/local/bin/startup.sh
+RUN sed -i 's/\r$//' /usr/local/bin/startup.sh && chmod +x /usr/local/bin/startup.sh
+
 # Expose port 80
 EXPOSE 80
