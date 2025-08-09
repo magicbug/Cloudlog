@@ -83,6 +83,10 @@ $('.bandtable').DataTable({
 	],
 	"drawCallback": function() {
 		updateStatistics();
+	},
+	"initComplete": function() {
+		// Ensure statistics are updated when table is fully initialized
+		updateStatistics();
 	}
 });
 
@@ -138,6 +142,13 @@ $('#showAll').addClass('active');
 // Update statistics
 function updateStatistics() {
 	var activeBands = $('.band-checkbox-cell input[type="checkbox"]:checked').length;
+	
+	// Fallback: if the class-based selector doesn't work, try alternative selectors
+	if (activeBands === 0) {
+		// Try finding by column position (first column checkboxes)
+		activeBands = $('.bandtable tbody tr td:first-child input[type="checkbox"]:checked').length;
+	}
+	
 	$('#activeBandsCount').text(activeBands);
 	
 	// Update visible rows count
@@ -148,7 +159,10 @@ function updateStatistics() {
 
 // Update statistics on page load
 $(document).ready(function() {
-	updateStatistics();
+	// Wait for table to be fully rendered before calculating stats
+	setTimeout(function() {
+		updateStatistics();
+	}, 500);
 });
 
 // Update statistics when band status changes
