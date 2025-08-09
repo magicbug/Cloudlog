@@ -9,39 +9,7 @@
 
                 <script src="<?php echo base_url('assets/js/showdown.min.js'); ?>"></script>
 
-                <script>
-                    function convertMarkdownToHTML() {
-                        // Check if the required elements exist
-                        var markdownDiv = document.getElementById('markdownDiv');
-                        var formattedHTMLDiv = document.getElementById('formattedHTMLDiv');
-                        
-                        if (!markdownDiv || !formattedHTMLDiv) {
-                            console.warn('Required elements for markdown conversion not found');
-                            return;
-                        }
-
-                        // Get the Markdown content from the div
-                        var markdownContent = markdownDiv.innerText;
-
-                        // Create a new Showdown Converter with simplifiedAutoLink option enabled
-                        var converter = new showdown.Converter({
-                            simplifiedAutoLink: true
-                        });
-
-                        // Convert Markdown to HTML
-                        var html = converter.makeHtml(markdownContent);
-
-                        // Set the HTML content of the div
-                        formattedHTMLDiv.innerHTML = html;
-                    }
-
-                    // Only call the function if the DOM is ready and elements exist
-                    document.addEventListener('DOMContentLoaded', function() {
-                        convertMarkdownToHTML();
-                    });
-                </script>
-
-                <?php
+                                <?php
                 $versionDialogMode = isset($this->optionslib) ? $this->optionslib->get_option('version_dialog') : 'release_notes';
                 if ($versionDialogMode == 'custom_text' || $versionDialogMode == 'both') {
                 ?>
@@ -75,22 +43,72 @@
                             $data = json_decode($response, true);
 
                             $current_version = $this->optionslib->get_option('version');
+                            
                             if ($data !== null && !empty($data)) {
+                                $firstRelease = null;
                                 foreach ($data as $singledata) {
                                     if ($singledata['tag_name'] == $current_version) {
                                         $firstRelease = $singledata;
-                                        continue;
+                                        break;
                                     }
                                 }
 
-                                $releaseBody = isset($firstRelease['body']) ? $firstRelease['body'] : 'No release information available';
-                                $htmlReleaseBody = htmlspecialchars($releaseBody);
-                                $htmlReleaseBodyWithLinks = preg_replace('/(https?:\/\/[^\s<]+)/', '<a href="$1" target="_blank">$1</a>', $htmlReleaseBody);
+                                if ($firstRelease !== null) {
+                                    $releaseBody = isset($firstRelease['body']) ? $firstRelease['body'] : 'No release information available';
 
-                                $releaseName = isset($firstRelease['name']) ? $firstRelease['name'] : 'No version name information available';
-                                echo "<h4>v" . $releaseName . "</h4>";
-                                echo "<div id='markdownDiv' style='display: none;'>" . $releaseBody . "</div>";
-                                echo "<div id='formattedHTMLDiv'></div>";
+                                    $releaseName = isset($firstRelease['name']) ? $firstRelease['name'] : 'No version name information available';
+                                    echo "<h4>v" . $releaseName . "</h4>";
+                                    
+                                    // Convert markdown to HTML using PHP
+                                    $htmlContent = $releaseBody;
+                                    
+                                    // Escape HTML first to prevent issues
+                                    $htmlContent = htmlspecialchars($htmlContent);
+                                    
+                                    // Convert headers
+                                    $htmlContent = preg_replace('/^## (.+)$/m', '<h3>$1</h3>', $htmlContent);
+                                    $htmlContent = preg_replace('/^# (.+)$/m', '<h2>$1</h2>', $htmlContent);
+                                    
+                                    // Convert bullet points to list items
+                                    // First, find all bullet point sections and convert them to proper lists
+                                    $htmlContent = preg_replace_callback(
+                                        '/(?:^[ ]*\* .+(?:\r?\n|$))+/m',
+                                        function($matches) {
+                                            $listContent = $matches[0];
+                                            // Convert each bullet point to <li>, removing any trailing newlines
+                                            $listContent = preg_replace('/^[ ]*\* (.+?)(?:\r?\n|$)/m', '<li>$1</li>', $listContent);
+                                            // Wrap in <ul> tags
+                                            return '<ul>' . trim($listContent) . '</ul>';
+                                        },
+                                        $htmlContent
+                                    );
+                                    
+                                    // Convert links (markdown style)
+                                    $htmlContent = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2" target="_blank">$1</a>', $htmlContent);
+                                    
+                                    // Convert plain URLs to links
+                                    $htmlContent = preg_replace('/(https?:\/\/[^\s<]+)/', '<a href="$1" target="_blank">$1</a>', $htmlContent);
+                                    
+                                    // Convert GitHub usernames (@username) to profile links
+                                    $htmlContent = preg_replace('/@([a-zA-Z0-9_-]+)/', '<a href="https://github.com/$1" target="_blank">@$1</a>', $htmlContent);
+                                    
+                                    // Convert bold text
+                                    $htmlContent = preg_replace('/\*\*([^*]+)\*\*/', '<strong>$1</strong>', $htmlContent);
+                                    
+                                    // Convert line breaks to <br> tags
+                                    $htmlContent = nl2br($htmlContent);
+                                    
+                                    // Clean up: remove <br> tags that appear right before or after list tags
+                                    $htmlContent = preg_replace('/<br\s*\/?>\s*(<\/?ul>)/', '$1', $htmlContent);
+                                    $htmlContent = preg_replace('/(<\/?ul>)\s*<br\s*\/?>/', '$1', $htmlContent);
+                                    $htmlContent = preg_replace('/<br\s*\/?>\s*(<\/?li>)/', '$1', $htmlContent);
+                                    $htmlContent = preg_replace('/(<\/?li>)\s*<br\s*\/?>/', '$1', $htmlContent);
+                                    
+                                    echo "<div class='release-notes mt-3'>" . $htmlContent . "</div>";
+                                } else {
+                                    echo '<h4>v' . $current_version . '</h4>';
+                                    echo '<p>No release information found for this version on GitHub.</p>';
+                                }
                             } else {
                                 echo 'Error decoding JSON data or received empty response.';
                             }
