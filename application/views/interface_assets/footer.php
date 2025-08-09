@@ -1927,25 +1927,59 @@ if ($this->session->userdata('user_id') != null) {
     <script>
         $(document).ready(function() {
             $('#btn_update_dxcc').bind('click', function() {
-                $('#dxcc_update_status').show();
+                // Show spinner and disable button
+                $('#dxcc_spinner').show();
+                $('#btn_text').text('Updating...');
+                $('#btn_update_dxcc').prop('disabled', true);
+                
+                // Show initial status immediately
+                $('#dxcc_update_status').show().html('Starting update...<br/>');
+                
                 $.ajax({
                     url: "update/dxcc"
                 });
-                setTimeout(update_stats, 5000);
+                
+                // Start polling immediately, then every 2 seconds for more responsive updates
+                setTimeout(update_stats, 1000);
             });
 
             function update_stats() {
-                $('#dxcc_update_status').load('<?php echo base_url() ?>index.php/update/get_status', function(val) {
-                    $('#dxcc_update_status').html(val);
-
-                    if ((val === null) || (val === undefined) || (typeof val !== 'string') || (val.substring(0, 4) !== "DONE")) {
-                        setTimeout(update_stats, 5000);
-                    }
-                }).fail(function(xhr, status, error) {
-                    console.log('Error loading status: ' + status + ' - ' + error);
-                    $('#dxcc_update_status').html('Error loading status...');
-                    setTimeout(update_stats, 10000); // Retry in 10 seconds on error
-                });
+                console.log('Polling status at: ' + new Date().toLocaleTimeString());
+                
+                $.get('<?php echo base_url() ?>index.php/update/get_status')
+                    .done(function(response) {
+                        console.log('Status response:', response);
+                        
+                        // Always update the status display with the response
+                        if (response && response.trim() !== '') {
+                            $('#dxcc_update_status').html(response);
+                        }
+                        
+                        // Check if update is complete
+                        if (response && typeof response === 'string' && response.substring(0, 4) === "DONE") {
+                            console.log('Update completed!');
+                            // Update is done - hide spinner and re-enable button
+                            $('#dxcc_spinner').hide();
+                            $('#btn_text').text('Update DXCC Data');
+                            $('#btn_update_dxcc').prop('disabled', false);
+                        } else {
+                            // Continue polling if not done - reduced interval for better responsiveness
+                            setTimeout(update_stats, 2000);
+                        }
+                    })
+                    .fail(function(xhr, status, error) {
+                        console.log('Error loading status: ' + status + ' - ' + error);
+                        $('#dxcc_update_status').html('Error loading status... Retrying...<br/>');
+                        
+                        // Reset button state on persistent error
+                        if (xhr.status === 0 || xhr.status >= 500) {
+                            $('#dxcc_spinner').hide();
+                            $('#btn_text').text('Update DXCC Data');
+                            $('#btn_update_dxcc').prop('disabled', false);
+                        }
+                        
+                        setTimeout(update_stats, 5000); // Retry in 5 seconds on error
+                    });
 
             }
 

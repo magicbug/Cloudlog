@@ -25,9 +25,14 @@
 						</div>
 					<?php } else { ?>
 						<h5>Check for DXCC Data Updates</h5>
-						<input type="submit" class="btn btn-primary" id="btn_update_dxcc" value="Update DXCC Data" />
+						<button type="button" class="btn btn-primary" id="btn_update_dxcc">
+							<span class="spinner-border spinner-border-sm me-2" id="dxcc_spinner" role="status" aria-hidden="true" style="display: none;"></span>
+							<span id="btn_text">Update DXCC Data</span>
+						</button>
 
-						<div id="dxcc_update_status">Status:</br></div>
+						<div id="dxcc_update_status" class="mt-3 p-2 border rounded bg-light" style="min-height: 60px;">
+							<strong>Status:</strong> Ready to update
+						</div>
 
 						<br />
 						<br />
@@ -45,11 +50,6 @@
 							This function can be used to update QSO continent information for all QSOs in Cloudlog missing that information.
 						</p>
 						<p><a class="btn btn-primary" href="<?php echo site_url('update/check_missing_continent'); ?>">Check QSOs missing continent data</a></p>
-						<style>
-							#dxcc_update_status {
-								display: None;
-							}
-						</style>
 					<?php } ?>
 				</div>
 				<div class="tab-pane fade" id="distance" role="tabpanel" aria-labelledby="distance-tab">
