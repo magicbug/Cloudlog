@@ -74,6 +74,91 @@ thead>tr>td {
 	margin-bottom: 0rem;
 }
 
+/* Enhanced ADIF styling */
+.adif .nav-tabs .nav-link {
+	border-radius: 0.5rem 0.5rem 0 0;
+	border: 1px solid transparent;
+	margin-right: 0.25rem;
+}
+
+.adif .nav-tabs .nav-link:hover {
+	border-color: #e9ecef #e9ecef #dee2e6;
+	isolation: isolate;
+}
+
+.adif .nav-tabs .nav-link.active {
+	background-color: #fff;
+	border-color: #dee2e6 #dee2e6 #fff;
+}
+
+.adif .card {
+	border: none;
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.adif .card-header {
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #dee2e6;
+	padding: 1rem 1.25rem;
+}
+
+.adif .card-body {
+	padding: 1.5rem;
+}
+
+.adif .form-check {
+	padding-left: 0;
+}
+
+.adif .form-check-input {
+	margin-right: 0.5rem;
+}
+
+.adif .form-check-label {
+	font-size: 0.9rem;
+	line-height: 1.4;
+}
+
+.adif .badge {
+	font-size: 0.7rem;
+	padding: 0.25rem 0.5rem;
+}
+
+.adif .btn {
+	border-radius: 0.375rem;
+	font-weight: 500;
+	padding: 0.5rem 1rem;
+}
+
+.adif .btn-lg {
+	padding: 0.75rem 1.5rem;
+	font-size: 1.1rem;
+}
+
+.adif .form-control,
+.adif .form-select {
+	border-radius: 0.375rem;
+	border-color: #ced4da;
+}
+
+.adif .form-control:focus,
+.adif .form-select:focus {
+	border-color: #86b7fe;
+	box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.adif .card .card-header h6 {
+	margin-bottom: 0;
+	font-weight: 600;
+	color: #495057;
+}
+
+.adif .alert {
+	border-radius: 0.5rem;
+	border: none;
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
 .api .alert p {
 	margin-bottom: 0rem;
 }
