@@ -53,15 +53,17 @@ $wwff = 0;
 		<!-- Statistics -->
 		<div class="row mb-3">
 			<div class="col-md-8">
-				<div class="alert alert-info py-2 mb-0">
-					<div class="row text-center">
-						<div class="col-md-6 col-6">
-							<strong id="activeBandsCount">0</strong><br>
-							<small>Active for QSO Entry</small>
-						</div>
-						<div class="col-md-6 col-6">
-							<strong><?php echo count($bands); ?></strong><br>
-							<small>Total Bands Configured</small>
+				<div class="card border-0 bg-light">
+					<div class="card-body py-2">
+						<div class="row text-center">
+							<div class="col-md-6 col-6">
+								<strong id="activeBandsCount" class="text-primary">0</strong><br>
+								<small class="text-muted">Active for QSO Entry</small>
+							</div>
+							<div class="col-md-6 col-6">
+								<strong class="text-primary"><?php echo count($bands); ?></strong><br>
+								<small class="text-muted">Total Bands Configured</small>
+							</div>
 						</div>
 					</div>
 				</div>
