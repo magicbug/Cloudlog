@@ -4857,6 +4857,7 @@ class Logbook_model extends CI_Model
       $plot = array('lat' => 0, 'lng' => 0, 'html' => '', 'label' => '', 'flag' => '', 'confirmed' => 'N');
       
       $plot['label'] = $row->COL_CALL;
+      $plot['gridsquare'] = $row->COL_GRIDSQUARE;  // Add gridsquare for potential use in labels
       $flag = strtolower($CI->dxccflag->getISO($row->COL_DXCC));
       $plot['flag'] = '<span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name==null?"- NONE -":$row->name))) . '"><span class="fi fi-' . $flag .'"></span></span> ';
       $plot['html'] = ($row->COL_GRIDSQUARE != null ?  "<b>Grid:</b> " . $row->COL_GRIDSQUARE . "<br />" : "");

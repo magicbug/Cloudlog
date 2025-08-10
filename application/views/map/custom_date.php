@@ -1,5 +1,80 @@
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/map-enhancements.css">
 
+<style>
+/* More aggressive CSS targeting all possible Leaflet tooltip classes */
+.leaflet-tooltip.callsign-label,
+.leaflet-tooltip-top.callsign-label,
+.leaflet-tooltip-pane .callsign-label,
+div.callsign-label,
+.leaflet-container .callsign-label {
+    background: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid #fff !important;
+    border-radius: 2px !important;
+    color: white !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+    font-family: Arial, sans-serif !important;
+    padding: 1px 2px !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    white-space: nowrap !important;
+    min-height: auto !important;
+    height: auto !important;
+    max-width: none !important;
+}
+
+/* Hide tooltip arrows */
+.leaflet-tooltip.callsign-label:before,
+.leaflet-tooltip.callsign-label:after,
+.leaflet-tooltip-top.callsign-label:before,
+.leaflet-tooltip-top.callsign-label:after,
+.callsign-label:before,
+.callsign-label:after {
+    display: none !important;
+    content: none !important;
+    border: none !important;
+}
+
+/* Force small text */
+.callsign-label * {
+    font-size: 15px !important;
+    font-family: Arial, sans-serif !important;
+}
+
+/* New approach using DivIcon */
+.callsign-label-icon {
+    background: none !important;
+    border: none !important;
+    width: auto !important;
+    height: auto !important;
+}
+
+.callsign-label-text {
+    background: rgba(0, 0, 0, 0.8) !important;
+    color: white !important;
+    font-family: Arial, sans-serif !important;
+    font-weight: bold !important;
+    padding: 1px 3px !important;
+    border-radius: 2px !important;
+    border: 1px solid #fff !important;
+    white-space: nowrap !important;
+    text-align: center !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
+    display: inline-block !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    min-width: auto !important;
+    width: auto !important;
+    height: auto !important;
+    transform-origin: center !important;
+}
+
+.callsign-label-text * {
+    font-size: 18px !important;
+}
+</style>
+
 <div class="container custom-map-QSOs">
     <br>
     
@@ -204,7 +279,7 @@
                 <!-- Action Buttons and Status -->
                 <div class="row">
                     <div class="col-md-6">
-                        <button class="btn btn-primary btn-sm btn_submit_map_custom me-3" type="button">
+                        <button class="btn btn-primary btn_submit_map_custom me-3" type="button">
                             <i class="fas fa-map-marker-alt me-2"></i>Load Map
                             <span class="spinner-border spinner-border-sm ms-2 d-none" id="load-spinner" role="status">
                                 <span class="visually-hidden">Loading...</span>
@@ -257,6 +332,9 @@
                             <button type="button" class="btn btn-outline-success" onclick="toggleGridSquares()" title="Toggle grid squares">
                                 <i class="fas fa-th"></i>
                             </button>
+                            <button type="button" class="btn btn-outline-success" onclick="toggleCallsignLabels()" title="Toggle callsign labels" id="callsign-labels-btn">
+                                <i class="fas fa-tags"></i>
+                            </button>
                             <button type="button" class="btn btn-outline-success" onclick="toggleFullscreen()" title="Toggle fullscreen">
                                 <i class="fas fa-expand"></i>
                             </button>
@@ -303,7 +381,8 @@
                     <div class="col-md-6 text-end">
                         <small class="text-muted">
                             <i class="fas fa-info-circle me-1"></i>
-                            Click on markers for QSO details
+                            Click on markers for QSO details • Use 
+                            <i class="fas fa-tags"></i> to toggle callsign labels
                         </small>
                     </div>
                 </div>
@@ -412,6 +491,58 @@ function toggleFullscreen() {
     }
 }
 
+// Global variable to track if callsign labels are shown
+let callsignLabelsVisible = false;
+let callsignLabels = [];
+
+function toggleCallsignLabels() {
+    const button = document.getElementById('callsign-labels-btn');
+    
+    if (!callsignLabelsVisible) {
+        // Show callsign labels
+        if (typeof plotlayers !== 'undefined' && plotlayers.length > 0) {
+            plotlayers.forEach(function(marker) {
+                if (marker.data && (marker.data.callsign || marker.data.label)) {
+                    // Use callsign if available, otherwise fall back to label
+                    const callsign = marker.data.callsign || marker.data.label;
+                    
+                    // Try a different approach - create a DivIcon instead of tooltip
+                    const labelIcon = L.divIcon({
+                        className: 'callsign-label-icon',
+                        html: `<div class="callsign-label-text">${callsign}</div>`,
+                        iconSize: [0, 0], // No fixed size, let CSS handle it
+                        iconAnchor: [0, -5] // Position above the marker with minimal offset
+                    });
+                    
+                    // Create a separate marker for the label
+                    const labelMarker = L.marker(marker.getLatLng(), {
+                        icon: labelIcon,
+                        interactive: false,
+                        zIndexOffset: 1000
+                    });
+                    
+                    map.addLayer(labelMarker);
+                    callsignLabels.push(labelMarker);
+                }
+            });
+            
+            callsignLabelsVisible = true;
+            button.classList.remove('btn-outline-success');
+            button.classList.add('btn-success');
+        }
+    } else {
+        // Hide callsign labels
+        callsignLabels.forEach(function(labelMarker) {
+            map.removeLayer(labelMarker);
+        });
+        
+        callsignLabels = [];
+        callsignLabelsVisible = false;
+        button.classList.remove('btn-success');
+        button.classList.add('btn-outline-success');
+    }
+}
+
 // Update statistics when map loads
 function updateMapStatistics(plotjson) {
     if (plotjson && plotjson.markers) {
@@ -447,6 +578,16 @@ function updateMapStatistics(plotjson) {
             setTimeout(() => {
                 mapStatusElement.classList.add('d-none');
             }, 3000);
+        }
+        
+        // Reapply callsign labels if they were previously enabled
+        if (callsignLabelsVisible) {
+            // Reset state and toggle to reapply labels to new markers
+            callsignLabelsVisible = false;
+            callsignLabels = [];
+            setTimeout(() => {
+                toggleCallsignLabels();
+            }, 100); // Small delay to ensure markers are fully rendered
         }
     }
 }
