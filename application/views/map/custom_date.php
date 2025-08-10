@@ -315,31 +315,9 @@
 <script>
 // Enhanced JavaScript functionality for improved UX
 document.addEventListener('DOMContentLoaded', function() {
-    updateDateRangeDisplay();
-    
-    // Add event listeners for date changes
-    document.getElementById('from').addEventListener('change', updateDateRangeDisplay);
-    document.getElementById('to').addEventListener('change', updateDateRangeDisplay);
+    // Add event listeners for date changes - removed updateDateRangeDisplay calls
+    // since the date-range-display element doesn't exist
 });
-
-function updateDateRangeDisplay() {
-    const fromDate = document.getElementById('from').value;
-    const toDate = document.getElementById('to').value;
-    const display = document.getElementById('date-range-display');
-    
-    // Only update if the display element exists
-    if (display) {
-        if (fromDate && toDate) {
-            if (fromDate === toDate) {
-                display.textContent = new Date(fromDate).toLocaleDateString();
-            } else {
-                display.textContent = new Date(fromDate).toLocaleDateString() + ' - ' + new Date(toDate).toLocaleDateString();
-            }
-        } else {
-            display.textContent = 'Select dates';
-        }
-    }
-}
 
 function setDateRange(period) {
     const today = new Date();
@@ -377,7 +355,6 @@ function setDateRange(period) {
         
         fromInput.value = formatDate(fromDate);
         toInput.value = formatDate(today);
-        updateDateRangeDisplay();
     }
 }
 
@@ -389,7 +366,6 @@ function clearFilters() {
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('from').value = today;
     document.getElementById('to').value = today;
-    updateDateRangeDisplay();
 }
 
 function exportMap() {
