@@ -71,7 +71,7 @@
     }
     ?>
     </div>
-    <div class="tab-pane fade" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
+    <div class="tab-pane fade scrollable-div" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
 	<br/>
     <style>
     body {
@@ -97,6 +97,10 @@
         filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
         -webkit-filter: grayscale(0%);
         opacity: 1;
+    }
+    .scrollable-div {
+        height: 70vh; /* set a fixed height for the div */
+        overflow-y: scroll; /* enable vertical scrollbar */
     }
     @media screen and ( min-width: 768px ) {
         .photo { float: left; width: 50%; }
