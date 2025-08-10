@@ -795,14 +795,14 @@ if ($this->session->userdata('user_id') != null) {
                 $('.warningOnSubmit').hide();
                 $('#map-success-alert').addClass('d-none');
                 
-                // Failsafe timeout to prevent stuck spinner (35 seconds)
+                // Failsafe timeout to prevent stuck spinner (10 seconds)
                 const failsafeTimeout = setTimeout(function() {
                     console.warn('Map loading timed out - forcing spinner hide');
                     $button.prop('disabled', false);
                     $spinner.addClass('d-none');
                     $('.warningOnSubmit .warningOnSubmit_txt').text('Map loading timed out. Please try again.');
                     $('.warningOnSubmit').show();
-                }, 35000);
+                }, 10000);
                 
                 var customdata = {
                     'dataPost': {
@@ -818,17 +818,23 @@ if ($this->session->userdata('user_id') != null) {
                 
                 // Add success and error callbacks to the customdata
                 customdata.onSuccess = function(plotjson) {
+                    console.log('Map loading success callback called with data:', plotjson);
+                    
                     // Clear the failsafe timeout
                     clearTimeout(failsafeTimeout);
                     
                     try {
                         // Update statistics
                         if (typeof updateMapStatistics === 'function') {
+                            console.log('Calling updateMapStatistics function');
                             updateMapStatistics(plotjson);
+                        } else {
+                            console.warn('updateMapStatistics function not found');
                         }
                         
                         // Show success message
                         const qsoCount = plotjson['markers'] ? plotjson['markers'].length : 0;
+                        console.log('QSO count:', qsoCount);
                         $('#qso-count-display').text(`Loaded ${qsoCount} QSOs successfully`);
                         $('#map-success-alert').removeClass('d-none');
                         
@@ -841,12 +847,15 @@ if ($this->session->userdata('user_id') != null) {
                         $('.warningOnSubmit').show();
                     } finally {
                         // Always re-enable button and hide spinner
+                        console.log('Re-enabling button and hiding spinner');
                         $button.prop('disabled', false);
                         $spinner.addClass('d-none');
                     }
                 };
                 
                 customdata.onError = function() {
+                    console.log('Map loading error callback called');
+                    
                     // Clear the failsafe timeout
                     clearTimeout(failsafeTimeout);
                     

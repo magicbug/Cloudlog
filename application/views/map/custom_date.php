@@ -327,14 +327,17 @@ function updateDateRangeDisplay() {
     const toDate = document.getElementById('to').value;
     const display = document.getElementById('date-range-display');
     
-    if (fromDate && toDate) {
-        if (fromDate === toDate) {
-            display.textContent = new Date(fromDate).toLocaleDateString();
+    // Only update if the display element exists
+    if (display) {
+        if (fromDate && toDate) {
+            if (fromDate === toDate) {
+                display.textContent = new Date(fromDate).toLocaleDateString();
+            } else {
+                display.textContent = new Date(fromDate).toLocaleDateString() + ' - ' + new Date(toDate).toLocaleDateString();
+            }
         } else {
-            display.textContent = new Date(fromDate).toLocaleDateString() + ' - ' + new Date(toDate).toLocaleDateString();
+            display.textContent = 'Select dates';
         }
-    } else {
-        display.textContent = 'Select dates';
     }
 }
 
