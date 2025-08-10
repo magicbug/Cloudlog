@@ -121,18 +121,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" />
-    <script> $(document).ready(function() { $('a').magnificPopup( { type:'image' } ); }); </script>
+    <script> $(document).ready(function() { $('a.photo').magnificPopup( { type:'image' } ); }); </script>
 <?php
 	if (function_exists("imagecreatefromstring")) {
 
 		$folder_name = "images/eqsl_card_images";
 		$desired_width=500;
+		$thumb_generations = 100;
 		 if (is_array($qslarray->result())) {
 			 foreach ($qslarray->result() as $qsl) {
+			   if ($thumb_generations >=0) {
 				 $src = $folder_name.'/'.$qsl->image_file;
 				 $dest = $folder_name.'/_'.$qsl->image_file;
-				 if (file_exists($folder_name.'/_'.$qsl->image_file) == false) {
-					     /* read the source image */
+				 if (!file_exists($folder_name.'/_'.$qsl->image_file)) {
+				    $thumb_generations--;
+			    	    /* read the source image */
 				    $data = file_get_contents( $src );
 				    $source_image = imagecreatefromstring( $data );
 				    $width = imagesx( $source_image );
@@ -151,8 +154,11 @@
 				    imagejpeg( $virtual_image, $dest, 60 );
 				 }
 				 echo '<a href="#" onclick="viewEqsl(\''.$qsl->image_file.'\', \''. $qsl->COL_CALL . '\')" class="photo" style="background-image: url(/'.$dest.');"></a>';
+			 }
 		     }
 		 }
+	} else {
+		echo 'Gallery requires GD libraries to be installed <a href="https://www.php.net/manual/en/image.installation.php">https://www.php.net/manual/en/image.installation.php</a>';
 	}
         ?>
     </div>
