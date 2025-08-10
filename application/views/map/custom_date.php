@@ -19,7 +19,7 @@
     width: auto !important;
     height: auto !important;
     transform-origin: center !important;
-    font-size: 15px !important; /* Ensure consistent font size */
+    font-size: 12px !important; /* Ensure consistent font size */
 }
 
 </style>
