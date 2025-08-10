@@ -8,6 +8,21 @@
     <?php echo $this->lang->line('qslcard_string_your_are_using'); ?> <?php echo $storage_used; ?> <?php echo $this->lang->line('qslcard_string_disk_space'); ?>
     </div>
 
+    <br>
+    <div class="tabs">
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<li class="nav-item">
+	<a class="nav-link active" id="list-tab" data-bs-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">List</a>
+        </li>
+	<li class="nav-item">
+	<a class="nav-link" id="gallery-tab" data-bs-toggle="tab" href="#gallery" role="tab" aria-controls="gallery" aria-selected="false">Gallery</a>
+	</li>
+	</ul>
+    </div>
+
+    <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+    <br/>
     <?php
 
 	if($this->session->userdata('user_date_format')) {
@@ -55,5 +70,88 @@
         echo '</tbody></table>';
     }
     ?>
+    </div>
+    <div class="tab-pane fade" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
+	<br/>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .photo {
+        width: 100%;
+        display: block;
+        background-size: cover;
+        background-position: center center;
+        box-sizing: border-box;
+    }
+    .no-touch .photo {
+        filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+        filter: gray; /* IE6-9 */
+        -webkit-filter: grayscale( 100% ); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+        opacity: .7;
+        transition: all 400ms ease-in-out;
+    }
+    .no-touch .photo:hover {
+        filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'1 0 0 0 0, 0 1 0 0 0, 0 0 1 0 0, 0 0 0 1 0\'/></filter></svg>#grayscale");
+        -webkit-filter: grayscale(0%);
+        opacity: 1;
+    }
+    @media screen and ( min-width: 768px ) {
+        .photo { float: left; width: 50%; }
+    }
+    @media screen and ( min-width: 1023px ) {
+        .photo { width: 33.3333%; }
+    }
+    @media screen and ( min-width: 1220px ) {
+        .photo { width: 25%; }
+    }
+    @media screen and ( min-width: 1440px ) {
+        .photo { width: 20%; }
+    }
+
+    .photo:after {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
+    }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" />
+    <script> $(document).ready(function() { $('a').magnificPopup( { type:'image' } ); }); </script>
+         <?php
+	$folder_name = "images/eqsl_card_images";
+	$desired_width=500;
+         if (is_array($qslarray->result())) {
+		 foreach ($qslarray->result() as $qsl) {
+			 $src = $folder_name.'/'.$qsl->image_file;
+			 $dest = $folder_name.'/_'.$qsl->image_file;
+			 if (file_exists($folder_name.'/_'.$qsl->image_file) == false) {
+				     /* read the source image */
+			    $data = file_get_contents( $src );
+			    $source_image = imagecreatefromstring( $data );
+			    $width = imagesx( $source_image );
+			    $height = imagesy( $source_image );
+
+			    /* find the "desired height" of this thumbnail, relative to the desired width  */
+			    $desired_height = floor( $height * ( $desired_width / $width ) );
+
+			    /* create a new, "virtual" image */
+			    $virtual_image = imagecreatetruecolor( $desired_width, $desired_height );
+
+			    /* copy source image at a resized size */
+			    imagecopyresampled( $virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height );
+
+			    /* create the physical thumbnail image to its destination */
+			    imagejpeg( $virtual_image, $dest, 60 );
+			 }
+			 echo '<a href="#" onclick="viewEqsl(\''.$qsl->image_file.'\', \''. $qsl->COL_CALL . '\')" class="photo" style="background-image: url(/'.$dest.');"></a>';
+	     }
+         }
+        ?>
+    </div>
 
 </div>
