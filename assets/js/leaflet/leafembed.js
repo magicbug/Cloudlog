@@ -73,7 +73,7 @@ function askForPlots(_url_qso, options={}) {
         type: 'POST', 
         dataType: 'json', 
         data: _dataPost,
-        timeout: 30000, // 30 second timeout
+        timeout: 50000, // 50 second timeout
         error: function(xhr, status, error) { 
             console.log('[ERROR] ajax askForPlots() function return error:', status, error, xhr);
             // Call custom error callback if provided

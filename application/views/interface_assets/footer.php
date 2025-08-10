@@ -795,14 +795,14 @@ if ($this->session->userdata('user_id') != null) {
                 $('.warningOnSubmit').hide();
                 $('#map-success-alert').addClass('d-none');
                 
-                // Failsafe timeout to prevent stuck spinner (10 seconds)
+                // Failsafe timeout to prevent stuck spinner (60 seconds)
                 const failsafeTimeout = setTimeout(function() {
                     console.warn('Map loading timed out - forcing spinner hide');
                     $button.prop('disabled', false);
                     $spinner.addClass('d-none');
                     $('.warningOnSubmit .warningOnSubmit_txt').text('Map loading timed out. Please try again.');
                     $('.warningOnSubmit').show();
-                }, 10000);
+                }, 60000);
                 
                 var customdata = {
                     'dataPost': {
