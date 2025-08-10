@@ -122,35 +122,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" />
     <script> $(document).ready(function() { $('a').magnificPopup( { type:'image' } ); }); </script>
-         <?php
-	$folder_name = "images/eqsl_card_images";
-	$desired_width=500;
-         if (is_array($qslarray->result())) {
-		 foreach ($qslarray->result() as $qsl) {
-			 $src = $folder_name.'/'.$qsl->image_file;
-			 $dest = $folder_name.'/_'.$qsl->image_file;
-			 if (file_exists($folder_name.'/_'.$qsl->image_file) == false) {
-				     /* read the source image */
-			    $data = file_get_contents( $src );
-			    $source_image = imagecreatefromstring( $data );
-			    $width = imagesx( $source_image );
-			    $height = imagesy( $source_image );
+<?php
+	if (function_exists("imagecreatefromstring")) {
 
-			    /* find the "desired height" of this thumbnail, relative to the desired width  */
-			    $desired_height = floor( $height * ( $desired_width / $width ) );
+		$folder_name = "images/eqsl_card_images";
+		$desired_width=500;
+		 if (is_array($qslarray->result())) {
+			 foreach ($qslarray->result() as $qsl) {
+				 $src = $folder_name.'/'.$qsl->image_file;
+				 $dest = $folder_name.'/_'.$qsl->image_file;
+				 if (file_exists($folder_name.'/_'.$qsl->image_file) == false) {
+					     /* read the source image */
+				    $data = file_get_contents( $src );
+				    $source_image = imagecreatefromstring( $data );
+				    $width = imagesx( $source_image );
+				    $height = imagesy( $source_image );
 
-			    /* create a new, "virtual" image */
-			    $virtual_image = imagecreatetruecolor( $desired_width, $desired_height );
+				    /* find the "desired height" of this thumbnail, relative to the desired width  */
+				    $desired_height = floor( $height * ( $desired_width / $width ) );
 
-			    /* copy source image at a resized size */
-			    imagecopyresampled( $virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height );
+				    /* create a new, "virtual" image */
+				    $virtual_image = imagecreatetruecolor( $desired_width, $desired_height );
 
-			    /* create the physical thumbnail image to its destination */
-			    imagejpeg( $virtual_image, $dest, 60 );
-			 }
-			 echo '<a href="#" onclick="viewEqsl(\''.$qsl->image_file.'\', \''. $qsl->COL_CALL . '\')" class="photo" style="background-image: url(/'.$dest.');"></a>';
-	     }
-         }
+				    /* copy source image at a resized size */
+				    imagecopyresampled( $virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height );
+
+				    /* create the physical thumbnail image to its destination */
+				    imagejpeg( $virtual_image, $dest, 60 );
+				 }
+				 echo '<a href="#" onclick="viewEqsl(\''.$qsl->image_file.'\', \''. $qsl->COL_CALL . '\')" class="photo" style="background-image: url(/'.$dest.');"></a>';
+		     }
+		 }
+	}
         ?>
     </div>
 
