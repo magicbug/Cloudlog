@@ -74,32 +74,9 @@ thead>tr>td {
 	margin-bottom: 0rem;
 }
 
-/* Enhanced ADIF styling */
-.adif .nav-tabs .nav-link {
-	border-radius: 0.5rem 0.5rem 0 0;
-	border: 1px solid transparent;
-	margin-right: 0.25rem;
-}
-
-.adif .nav-tabs .nav-link:hover {
-	border-color: #e9ecef #e9ecef #dee2e6;
-	isolation: isolate;
-}
-
-.adif .nav-tabs .nav-link.active {
-	background-color: #fff;
-	border-color: #dee2e6 #dee2e6 #fff;
-}
-
 .adif .card {
 	border: none;
 	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-}
-
-.adif .card-header {
-	background-color: #f8f9fa;
-	border-bottom: 1px solid #dee2e6;
-	padding: 1rem 1.25rem;
 }
 
 .adif .card-body {

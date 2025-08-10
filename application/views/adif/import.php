@@ -15,61 +15,6 @@
     ?>
 
     <style>
-    /* Aggressive tab styling for maximum visibility in dark themes */
-    .custom-tab-nav {
-        display: flex;
-        gap: 3px;
-        margin-bottom: 0;
-        border-bottom: 1px solid var(--bs-border-color);
-        padding: 0;
-        background: none;
-    }
-    .custom-tab-btn {
-        background-color: #495057 !important;
-        color: #ffffff !important;
-        border: 2px solid #6c757d !important;
-        border-bottom: none !important;
-        padding: 0.75rem 1rem;
-        text-decoration: none;
-        border-radius: 0.375rem 0.375rem 0 0;
-        transition: all 0.2s ease;
-        font-size: 0.875rem;
-        position: relative;
-        top: 1px;
-        font-weight: 500;
-        min-width: 120px;
-        text-align: center;
-    }
-    .custom-tab-btn:hover {
-        background-color: #6c757d !important;
-        color: #ffffff !important;
-        text-decoration: none;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .custom-tab-btn.active {
-        background-color: var(--bs-body-bg) !important;
-        color: var(--bs-body-color) !important;
-        border-color: var(--bs-border-color) var(--bs-border-color) var(--bs-body-bg) !important;
-        font-weight: 600;
-        box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-    }
-    .custom-tab-btn i {
-        margin-right: 0.5rem;
-        font-size: 0.875rem;
-    }
-    /* Dark theme specific overrides */
-    @media (prefers-color-scheme: dark) {
-        .custom-tab-btn {
-            background-color: #343a40 !important;
-            color: #f8f9fa !important;
-            border-color: #495057 !important;
-        }
-        .custom-tab-btn:hover {
-            background-color: #495057 !important;
-            color: #ffffff !important;
-        }
-    }
     /* Fix text-muted visibility in dark themes */
     .text-muted {
         color: var(--bs-secondary-color) !important;
@@ -77,60 +22,30 @@
     }
     </style>
 
-    <script>
-    // Custom tab functionality since we replaced Bootstrap nav-tabs
-    document.addEventListener('DOMContentLoaded', function() {
-        const tabButtons = document.querySelectorAll('.custom-tab-btn');
-        const tabPanes = document.querySelectorAll('.tab-pane');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all buttons
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                
-                // Add active class to clicked button
-                this.classList.add('active');
-                
-                // Hide all tab panes
-                tabPanes.forEach(pane => {
-                    pane.classList.remove('active', 'show');
-                    pane.classList.add('fade');
-                });
-                
-                // Show target tab pane
-                const targetId = this.getAttribute('href').substring(1);
-                const targetPane = document.getElementById(targetId);
-                if (targetPane) {
-                    targetPane.classList.remove('fade');
-                    targetPane.classList.add('active', 'show');
-                }
-            });
-        });
-    });
-    </script>
-
     <div class="card shadow-sm">
-        <div class="card-header" style="background-color: var(--bs-secondary-bg); border-bottom: 1px solid var(--bs-border-color);">
-            <div class="custom-tab-nav">
-                <a href="#import" class="custom-tab-btn <?php if ($showtab == '' || $showtab == 'adif') echo 'active'; ?>" 
-                   data-bs-toggle="tab" role="tab" aria-controls="import" id="import-tab">
-                    <i class="fas fa-upload"></i><?php echo lang('adif_import') ?>
-                </a>
-                <a href="#export" class="custom-tab-btn" 
-                   data-bs-toggle="tab" role="tab" aria-controls="export" id="export-tab">
-                    <i class="fas fa-download"></i><?php echo lang('adif_export') ?>
-                </a>
-                <a href="#lotw" class="custom-tab-btn" 
-                   data-bs-toggle="tab" role="tab" aria-controls="lotw" id="lotw-tab">
-                    <i class="fas fa-globe"></i><?php echo lang('lotw_title') ?>
-                </a>
-                <a href="#dcl" class="custom-tab-btn <?php if ($showtab == 'dcl') echo 'active'; ?>" 
-                   data-bs-toggle="tab" role="tab" aria-controls="dcl" id="dcl-tab">
-                    <i class="fas fa-flag"></i><?php echo lang('darc_dcl') ?>
-                </a>
-            </div>
+        <div class="card-header">
+            <nav class="card-header-tabs">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link <?php if ($showtab == '' || $showtab == 'adif') echo 'active'; ?>" 
+                       id="import-tab" data-bs-toggle="tab" href="#import" role="tab" aria-controls="import" 
+                       aria-selected="<?php echo ($showtab == '' || $showtab == 'adif') ? 'true' : 'false'; ?>">
+                        <i class="fas fa-upload me-1"></i><?php echo lang('adif_import') ?>
+                    </a>
+                    <a class="nav-item nav-link" id="export-tab" data-bs-toggle="tab" href="#export" role="tab" 
+                       aria-controls="export" aria-selected="false">
+                        <i class="fas fa-download me-1"></i><?php echo lang('adif_export') ?>
+                    </a>
+                    <a class="nav-item nav-link" id="lotw-tab" data-bs-toggle="tab" href="#lotw" role="tab" 
+                       aria-controls="lotw" aria-selected="false">
+                        <i class="fas fa-globe me-1"></i><?php echo lang('lotw_title') ?>
+                    </a>
+                    <a class="nav-item nav-link <?php if ($showtab == 'dcl') echo 'active'; ?>" 
+                       id="dcl-tab" data-bs-toggle="tab" href="#dcl" role="tab" aria-controls="dcl" 
+                       aria-selected="<?php echo ($showtab == 'dcl') ? 'true' : 'false'; ?>">
+                        <i class="fas fa-flag me-1"></i><?php echo lang('darc_dcl') ?>
+                    </a>
+                </div>
+            </nav>
         </div>
 
         <div class="card-body">
