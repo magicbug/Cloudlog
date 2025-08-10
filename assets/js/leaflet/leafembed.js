@@ -68,8 +68,18 @@ function askForPlots(_url_qso, options={}) {
 	removeMarkers();
 	if (typeof options.dataPost !== "undefined") { _dataPost = options.dataPost; } else { _dataPost = {}; }
     $.ajax({
-        url: _url_qso, type: 'POST', dataType: 'json', data: _dataPost,
-        error: function() { console.log('[ERROR] ajax askForPlots() function return error.'); },
+        url: _url_qso, 
+        type: 'POST', 
+        dataType: 'json', 
+        data: _dataPost,
+        timeout: 30000, // 30 second timeout
+        error: function(xhr, status, error) { 
+            console.log('[ERROR] ajax askForPlots() function return error:', status, error);
+            // Call custom error callback if provided
+            if (typeof options.onError === 'function') {
+                options.onError();
+            }
+        },
         success: function(plotjson) {
         	if ((typeof plotjson['markers'] !== "undefined")&&(plotjson['markers'].length>0)) {
 				for (i=0;i<plotjson['markers'].length;i++) { createPlots(plotjson['markers'][i]); }
@@ -80,6 +90,11 @@ function askForPlots(_url_qso, options={}) {
         	$.each(iconsList, function(icon, data){
         		$(options.map_id+' .cspot_'+icon).addClass(data.icon).css("color",data.color);
         	});
+        	
+        	// Call custom success callback if provided
+        	if (typeof options.onSuccess === 'function') {
+        	    options.onSuccess(plotjson);
+        	}
         }
     });
 }
