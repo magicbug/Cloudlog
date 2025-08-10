@@ -88,8 +88,18 @@
 			}
 		}
 
+		// Initialize bandcalls array with all bands set to 0
+		foreach ($bands as $band) {
+			$bandcalls[$band] = 0;
+		}
+
 		foreach ($bandunique as $band) {
 			$bandcalls[$band->band] = $band->calls;
+		}
+
+		// Initialize modecalls array with all modes set to 0
+		foreach ($modes as $mode) {
+			$modecalls[$mode] = 0;
 		}
 
 		foreach ($modeunique as $mode) {
