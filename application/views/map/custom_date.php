@@ -1,55 +1,6 @@
 <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/map-enhancements.css">
 
 <style>
-/* More aggressive CSS targeting all possible Leaflet tooltip classes */
-.leaflet-tooltip.callsign-label,
-.leaflet-tooltip-top.callsign-label,
-.leaflet-tooltip-pane .callsign-label,
-div.callsign-label,
-.leaflet-container .callsign-label {
-    background: rgba(0, 0, 0, 0.9) !important;
-    border: 1px solid #fff !important;
-    border-radius: 2px !important;
-    color: white !important;
-    font-weight: bold !important;
-    font-size: 15px !important;
-    font-family: Arial, sans-serif !important;
-    padding: 1px 2px !important;
-    line-height: 1 !important;
-    margin: 0 !important;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.5) !important;
-    white-space: nowrap !important;
-    min-height: auto !important;
-    height: auto !important;
-    max-width: none !important;
-}
-
-/* Hide tooltip arrows */
-.leaflet-tooltip.callsign-label:before,
-.leaflet-tooltip.callsign-label:after,
-.leaflet-tooltip-top.callsign-label:before,
-.leaflet-tooltip-top.callsign-label:after,
-.callsign-label:before,
-.callsign-label:after {
-    display: none !important;
-    content: none !important;
-    border: none !important;
-}
-
-/* Force small text */
-.callsign-label * {
-    font-size: 15px !important;
-    font-family: Arial, sans-serif !important;
-}
-
-/* New approach using DivIcon */
-.callsign-label-icon {
-    background: none !important;
-    border: none !important;
-    width: auto !important;
-    height: auto !important;
-}
-
 .callsign-label-text {
     background: rgba(0, 0, 0, 0.8) !important;
     color: white !important;
@@ -68,11 +19,9 @@ div.callsign-label,
     width: auto !important;
     height: auto !important;
     transform-origin: center !important;
+    font-size: 15px !important; /* Ensure consistent font size */
 }
 
-.callsign-label-text * {
-    font-size: 18px !important;
-}
 </style>
 
 <div class="container custom-map-QSOs">
@@ -502,9 +451,9 @@ function toggleCallsignLabels() {
         // Show callsign labels
         if (typeof plotlayers !== 'undefined' && plotlayers.length > 0) {
             plotlayers.forEach(function(marker) {
-                if (marker.data && (marker.data.callsign || marker.data.label)) {
-                    // Use callsign if available, otherwise fall back to label
-                    const callsign = marker.data.callsign || marker.data.label;
+                if (marker.data && marker.data.callsign) {
+                    // Only create labels when callsign is specifically provided
+                    const callsign = marker.data.callsign;
                     
                     // Try a different approach - create a DivIcon instead of tooltip
                     const labelIcon = L.divIcon({
