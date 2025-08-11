@@ -29,53 +29,47 @@ class Workabledxcc extends CI_Controller
 
 	public function dxcclist()
 	{
-
 		$json = file_get_contents($this->optionslib->get_option('dxped_url'));
-
-		// Decode the JSON data into a PHP array
 		$dataResult = json_decode($json, true);
 
-		// Initialize an empty array to store the required data
-		$requiredData = array();
+		if (empty($dataResult)) {
+			$data['dxcclist'] = array();
+			$this->load->view('/workabledxcc/components/dxcclist', $data);
+			return;
+		}
 
 		// Get Date format
 		if ($this->session->userdata('user_date_format')) {
-			// If Logged in and session exists
 			$custom_date_format = $this->session->userdata('user_date_format');
 		} else {
-			// Get Default date format from /config/cloudlog.php
 			$custom_date_format = $this->config->item('qso_date_format');
 		}
 
-		// Iterate through the decoded JSON data
-		foreach ($dataResult as $item) {
-			// Create a new array with the required fields and add it to the main array
-			$oldStartDate = DateTime::createFromFormat('Y-m-d', $item['0']);
+		// Load models once
+		$this->load->model('logbook_model');
+		$this->load->model('Workabledxcc_model');
 
+		// Get all DXCC entities for all callsigns in one batch
+		$callsigns = array_column($dataResult, 'callsign');
+		$dates = array_column($dataResult, '0');
+		$dxccEntities = $this->Workabledxcc_model->batchDxccLookup($callsigns, $dates);
+
+		// Get worked/confirmed status for all entities in batch
+		$uniqueEntities = array_unique(array_filter($dxccEntities));
+		$dxccStatus = $this->Workabledxcc_model->batchDxccWorkedStatus($uniqueEntities);
+
+		// Process results
+		$requiredData = array();
+		foreach ($dataResult as $index => $item) {
+			$oldStartDate = DateTime::createFromFormat('Y-m-d', $item['0']);
 			$StartDate = $oldStartDate->format($custom_date_format);
 
 			$oldEndDate = DateTime::createFromFormat('Y-m-d', $item['1']);
-
 			$EndDate = $oldEndDate->format($custom_date_format);
 
-			$oldStartDate1 = DateTime::createFromFormat('Y-m-d', $item['0']);
-
-			$StartDate1 = $oldStartDate1->format('Y-m-d');
-
-
-			$this->load->model('logbook_model');
-			$dxccInfo = $this->logbook_model->dxcc_lookup($item['callsign'], $StartDate1);
-
-			// Call DXCC Worked function to check if the DXCC has been worked before
-			if (isset($dxccInfo['entity'])) {
-				$dxccWorked = $this->dxccWorked($dxccInfo['entity']);
-			} else {
-				// Handle the case where 'entity' is not set in $dxccInfo
-				$dxccWorked = array(
-					'workedBefore' => false,
-					'confirmed' => false,
-				);
-			}
+			// Get DXCC status for this callsign
+			$entity = $dxccEntities[$index] ?? null;
+			$worked = $entity && isset($dxccStatus[$entity]) ? $dxccStatus[$entity] : ['workedBefore' => false, 'confirmed' => false];
 
 			$requiredData[] = array(
 				'clean_date' => $item['0'],
@@ -84,15 +78,12 @@ class Workabledxcc extends CI_Controller
 				'country' => $item['2'],
 				'notes' => $item['6'],
 				'callsign' => $item['callsign'],
-				'workedBefore' => $dxccWorked['workedBefore'],
-				'confirmed' => $dxccWorked['confirmed'],
+				'workedBefore' => $worked['workedBefore'],
+				'confirmed' => $worked['confirmed'],
 			);
 		}
 
 		$data['dxcclist'] = $requiredData;
-
-		// Return the array with the required data
-
 		$this->load->view('/workabledxcc/components/dxcclist', $data);
 	}
 
