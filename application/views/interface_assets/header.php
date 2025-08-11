@@ -44,6 +44,7 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/buttons.dataTables.min.css" />
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datatables.min.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gallery.css" />
 
 	<?php if ($this->uri->segment(1) == "sattimers") { ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/sattimers.css" />
