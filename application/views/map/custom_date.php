@@ -255,54 +255,43 @@
 
 </div>
 
-<!-- Map Statistics and Controls -->
-<div class="row mb-2">
-    <div class="col-12">
-        <div class="card border-0">
-            <div class="card-body py-2">
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <div class="d-flex align-items-center">
-                            <div class="me-4">
-                                <small class="text-muted">QSOs Displayed:</small>
-                                <span class="badge bg-primary ms-1" id="qso-count">0</span>
-                            </div>
-
-                            <div class="alert alert-success mb-0 py-1 px-2 d-none" id="map-status">
-                                <small><i class="fas fa-check-circle me-1"></i>Map loaded successfully</small>
-                            </div>
-                        </div>
+<!-- Map Container -->
+<div class="card">
+    <div class="card-header py-3">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <h5 class="mb-0">
+                    <i class="fas fa-globe-americas me-2"></i>World Map View
+                </h5>
+                <small class="text-muted">Showing: <strong id="active-logbook-display"><?php echo $logbook_name ?></strong></small>
+            </div>
+            <div class="col-md-4">
+                <div class="d-flex align-items-center justify-content-center">
+                    <div class="me-4">
+                        <small class="text-muted">QSOs Displayed:</small>
+                        <span class="badge bg-primary ms-1" id="qso-count">0</span>
                     </div>
-                    <div class="col-md-4 text-end">
-                        <div class="btn-group btn-group-sm" role="group">
-                            <button type="button" class="btn btn-outline-success" onclick="fitMapToMarkers()" title="Zoom to fit all QSOs">
-                                <i class="fas fa-expand-arrows-alt"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-success" onclick="toggleGridSquares()" title="Toggle grid squares">
-                                <i class="fas fa-th"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-success" onclick="toggleCallsignLabels()" title="Toggle callsign labels" id="callsign-labels-btn">
-                                <i class="fas fa-tags"></i>
-                            </button>
-                            <button type="button" class="btn btn-outline-success" onclick="toggleFullscreen()" title="Toggle fullscreen">
-                                <i class="fas fa-expand"></i>
-                            </button>
-                        </div>
+                    <div class="alert alert-success mb-0 py-1 px-2 d-none" id="map-status">
+                        <small><i class="fas fa-check-circle me-1"></i>Map loaded successfully</small>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<!-- Map Container -->
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center py-2">
-        <h5 class="mb-0">
-            <i class="fas fa-globe-americas me-2"></i>World Map View
-        </h5>
-        <div class="text-muted">
-            <small>Showing: <strong id="active-logbook-display"><?php echo $logbook_name ?></strong></small>
+            <div class="col-md-4 text-end">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-success" onclick="fitMapToMarkers()" title="Zoom to fit all QSOs">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-success" onclick="toggleGridSquares()" title="Toggle grid squares">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-success" onclick="toggleCallsignLabels()" title="Toggle callsign labels" id="callsign-labels-btn">
+                        <i class="fas fa-tags"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-success" onclick="toggleFullscreen()" title="Toggle fullscreen">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card-body p-0">
