@@ -104,7 +104,8 @@ class Workabledxcc extends CI_Controller
 			$this->db->where('COL_PROP_MODE !=', 'SAT');
 
 			$this->db->where_in('station_id', $logbooks_locations_array);
-			$this->db->where('COL_COUNTRY', urldecode($country));
+			// Fix case sensitivity issue for DXCC country matching
+			$this->db->where('UPPER(COL_COUNTRY) = UPPER(?)', urldecode($country));
 
 			$query = $this->db->get($this->config->item('table_name'), 1, 0);
 			foreach ($query->result() as $workedBeforeRow) {
@@ -146,7 +147,8 @@ class Workabledxcc extends CI_Controller
 
 
 			$this->db->where_in('station_id', $logbooks_locations_array);
-			$this->db->where('COL_COUNTRY', urldecode($country));
+			// Fix case sensitivity issue for DXCC country matching
+			$this->db->where('UPPER(COL_COUNTRY) = UPPER(?)', urldecode($country));
 
 			$query = $this->db->get($this->config->item('table_name'), 1, 0);
 			foreach ($query->result() as $workedBeforeRow) {
