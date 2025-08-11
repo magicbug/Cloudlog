@@ -100,19 +100,36 @@ class Workabledxcc_model extends CI_Model
      */
     private function batchWorkedQuery($entities, $logbooks_locations_array)
     {
-        // Use a single query with GROUP BY to check all entities at once
+        // Create case-insensitive matching for DXCC entities
+        $whereConditions = array();
+        foreach ($entities as $entity) {
+            $whereConditions[] = "UPPER(COL_COUNTRY) = UPPER('" . $this->db->escape_str($entity) . "')";
+        }
+        
+        if (empty($whereConditions)) {
+            return array();
+        }
+        
+        $whereClause = '(' . implode(' OR ', $whereConditions) . ')';
+        
         $this->db->select('COL_COUNTRY')
                  ->distinct()
                  ->from($this->config->item('table_name'))
                  ->where('COL_PROP_MODE !=', 'SAT')
                  ->where_in('station_id', $logbooks_locations_array)
-                 ->where_in('COL_COUNTRY', array_map('urlencode', $entities));
+                 ->where($whereClause);
         
         $query = $this->db->get();
         $results = array();
         
         foreach ($query->result() as $row) {
-            $results[urldecode($row->COL_COUNTRY)] = true;
+            // Store with the original entity case for lookup
+            foreach ($entities as $entity) {
+                if (strtoupper($row->COL_COUNTRY) === strtoupper($entity)) {
+                    $results[$entity] = true;
+                    break;
+                }
+            }
         }
         
         return $results;
@@ -127,19 +144,37 @@ class Workabledxcc_model extends CI_Model
             return array();
         }
         
+        // Create case-insensitive matching for DXCC entities
+        $whereConditions = array();
+        foreach ($entities as $entity) {
+            $whereConditions[] = "UPPER(COL_COUNTRY) = UPPER('" . $this->db->escape_str($entity) . "')";
+        }
+        
+        if (empty($whereConditions)) {
+            return array();
+        }
+        
+        $whereClause = '(' . implode(' OR ', $whereConditions) . ')';
+        
         $this->db->select('COL_COUNTRY')
                  ->distinct()
                  ->from($this->config->item('table_name'))
                  ->where('COL_PROP_MODE !=', 'SAT')
                  ->where($confirmationCriteria)
                  ->where_in('station_id', $logbooks_locations_array)
-                 ->where_in('COL_COUNTRY', array_map('urlencode', $entities));
+                 ->where($whereClause);
         
         $query = $this->db->get();
         $results = array();
         
         foreach ($query->result() as $row) {
-            $results[urldecode($row->COL_COUNTRY)] = true;
+            // Store with the original entity case for lookup
+            foreach ($entities as $entity) {
+                if (strtoupper($row->COL_COUNTRY) === strtoupper($entity)) {
+                    $results[$entity] = true;
+                    break;
+                }
+            }
         }
         
         return $results;
