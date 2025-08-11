@@ -73,10 +73,9 @@
     </div>
     <div class="tab-pane fade scrollable-div" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
 	<br/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" />
+    <script src="<?php echo base_url(); ?>assets/js/modernizr.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/jquery.magnific-popup.min.js"></script>
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/magnific-popup.min.css" />
     <script> $(document).ready(function() { $('a.photo').magnificPopup( { type:'image' } ); }); </script>
 <?php
 	if (function_exists("imagecreatefromstring")) {
