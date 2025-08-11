@@ -49,6 +49,11 @@ foreach ($grouped as $month => $dxccs) {
             echo '<span class="badge bg-primary">Confirmed</span>';
         }
 
+        // Add satellite badge if worked via satellite
+        if (isset($dxcc['workedViaSatellite']) && $dxcc['workedViaSatellite']) {
+            echo '<span class="badge bg-info">Worked via Satellite</span>';
+        }
+
         echo '</td>
             <td>' . $dxcc['notes'] . '</td>
         </tr>';

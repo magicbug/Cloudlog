@@ -69,7 +69,11 @@ class Workabledxcc extends CI_Controller
 
 			// Get DXCC status for this callsign
 			$entity = $dxccEntities[$index] ?? null;
-			$worked = $entity && isset($dxccStatus[$entity]) ? $dxccStatus[$entity] : ['workedBefore' => false, 'confirmed' => false];
+			$worked = $entity && isset($dxccStatus[$entity]) ? $dxccStatus[$entity] : [
+				'workedBefore' => false, 
+				'confirmed' => false,
+				'workedViaSatellite' => false
+			];
 
 			$requiredData[] = array(
 				'clean_date' => $item['0'],
@@ -80,6 +84,7 @@ class Workabledxcc extends CI_Controller
 				'callsign' => $item['callsign'],
 				'workedBefore' => $worked['workedBefore'],
 				'confirmed' => $worked['confirmed'],
+				'workedViaSatellite' => $worked['workedViaSatellite'],
 			);
 		}
 
@@ -93,6 +98,7 @@ class Workabledxcc extends CI_Controller
 		$return = [
 			"workedBefore" => false,
 			"confirmed" => false,
+			"workedViaSatellite" => false,
 		];
 
 		$user_default_confirmation = $this->session->userdata('user_default_confirmation');
@@ -101,6 +107,7 @@ class Workabledxcc extends CI_Controller
 		$this->load->model('logbook_model');
 
 		if (!empty($logbooks_locations_array)) {
+			// Check terrestrial contacts
 			$this->db->where('COL_PROP_MODE !=', 'SAT');
 
 			$this->db->where_in('station_id', $logbooks_locations_array);
@@ -110,6 +117,16 @@ class Workabledxcc extends CI_Controller
 			$query = $this->db->get($this->config->item('table_name'), 1, 0);
 			foreach ($query->result() as $workedBeforeRow) {
 				$return['workedBefore'] = true;
+			}
+
+			// Check satellite contacts
+			$this->db->where('COL_PROP_MODE', 'SAT');
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->where('UPPER(COL_COUNTRY) = UPPER(?)', urldecode($country));
+
+			$query = $this->db->get($this->config->item('table_name'), 1, 0);
+			foreach ($query->result() as $satelliteRow) {
+				$return['workedViaSatellite'] = true;
 			}
 
 			$extrawhere = '';

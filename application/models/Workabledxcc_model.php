@@ -47,7 +47,11 @@ class Workabledxcc_model extends CI_Model
         $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
         
         if (empty($logbooks_locations_array)) {
-            return array_fill_keys($entities, ['workedBefore' => false, 'confirmed' => false]);
+            return array_fill_keys($entities, [
+                'workedBefore' => false, 
+                'confirmed' => false,
+                'workedViaSatellite' => false
+            ]);
         }
 
         $results = array();
@@ -55,18 +59,75 @@ class Workabledxcc_model extends CI_Model
         // Build confirmation criteria once
         $confirmationCriteria = $this->buildConfirmationCriteria($user_default_confirmation);
         
-        // Batch query for worked status
+        // Debug: Log entities being checked
+        log_message('debug', 'Workable DXCC: Checking entities: ' . implode(', ', $entities));
+        
+        // Batch query for worked status (terrestrial)
         $workedResults = $this->batchWorkedQuery($entities, $logbooks_locations_array);
         
-        // Batch query for confirmed status  
+        // Batch query for confirmed status (terrestrial)
         $confirmedResults = $this->batchConfirmedQuery($entities, $logbooks_locations_array, $confirmationCriteria);
+        
+        // Batch query for satellite contacts
+        $satelliteResults = $this->batchSatelliteQuery($entities, $logbooks_locations_array);
+        
+        // Debug: Log results
+        log_message('debug', 'Workable DXCC: Worked results: ' . json_encode($workedResults));
+        log_message('debug', 'Workable DXCC: Confirmed results: ' . json_encode($confirmedResults));
+        log_message('debug', 'Workable DXCC: Satellite results: ' . json_encode($satelliteResults));
         
         // Combine results
         foreach ($entities as $entity) {
             $results[$entity] = [
                 'workedBefore' => isset($workedResults[$entity]),
-                'confirmed' => isset($confirmedResults[$entity])
+                'confirmed' => isset($confirmedResults[$entity]),
+                'workedViaSatellite' => isset($satelliteResults[$entity])
             ];
+        }
+        
+        return $results;
+    }
+
+    /**
+     * Batch query to check which entities have been worked via satellite
+     */
+    private function batchSatelliteQuery($entities, $logbooks_locations_array)
+    {
+        // Create case-insensitive matching for DXCC entities
+        $whereConditions = array();
+        foreach ($entities as $entity) {
+            $whereConditions[] = "UPPER(COL_COUNTRY) = UPPER('" . $this->db->escape_str($entity) . "')";
+        }
+        
+        if (empty($whereConditions)) {
+            return array();
+        }
+        
+        $whereClause = '(' . implode(' OR ', $whereConditions) . ')';
+        
+        $this->db->select('COL_COUNTRY')
+                 ->distinct()
+                 ->from($this->config->item('table_name'))
+                 ->where('COL_PROP_MODE', 'SAT')  // Only satellite contacts
+                 ->where_in('station_id', $logbooks_locations_array)
+                 ->where($whereClause);
+        
+        $query = $this->db->get();
+        
+        // Debug: Log the SQL query
+        log_message('debug', 'Workable DXCC satellite query: ' . $this->db->last_query());
+        
+        $results = array();
+        
+        foreach ($query->result() as $row) {
+            // Store with the original entity case for lookup
+            foreach ($entities as $entity) {
+                if (strtoupper($row->COL_COUNTRY) === strtoupper($entity)) {
+                    $results[$entity] = true;
+                    log_message('debug', 'Workable DXCC: Found satellite match: ' . $entity . ' matches ' . $row->COL_COUNTRY);
+                    break;
+                }
+            }
         }
         
         return $results;
@@ -120,6 +181,10 @@ class Workabledxcc_model extends CI_Model
                  ->where($whereClause);
         
         $query = $this->db->get();
+        
+        // Debug: Log the SQL query
+        log_message('debug', 'Workable DXCC worked query: ' . $this->db->last_query());
+        
         $results = array();
         
         foreach ($query->result() as $row) {
@@ -127,6 +192,7 @@ class Workabledxcc_model extends CI_Model
             foreach ($entities as $entity) {
                 if (strtoupper($row->COL_COUNTRY) === strtoupper($entity)) {
                     $results[$entity] = true;
+                    log_message('debug', 'Workable DXCC: Found worked match: ' . $entity . ' matches ' . $row->COL_COUNTRY);
                     break;
                 }
             }
@@ -243,10 +309,15 @@ class Workabledxcc_model extends CI_Model
 
             // Get DXCC status for this callsign
             $entity = $dxccEntities[$index] ?? null;
-            $worked = $entity && isset($dxccStatus[$entity]) ? $dxccStatus[$entity] : ['workedBefore' => false, 'confirmed' => false];
+            $worked = $entity && isset($dxccStatus[$entity]) ? $dxccStatus[$entity] : [
+                'workedBefore' => false, 
+                'confirmed' => false,
+                'workedViaSatellite' => false
+            ];
 
             $record['workedBefore'] = $worked['workedBefore'];
             $record['confirmed'] = $worked['confirmed'];
+            $record['workedViaSatellite'] = $worked['workedViaSatellite'];
 
             $thisWeekRecords[] = $record;
         }
@@ -260,6 +331,7 @@ class Workabledxcc_model extends CI_Model
         $return = [
             "workedBefore" => false,
             "confirmed" => false,
+            "workedViaSatellite" => false,
         ];
 
         $user_default_confirmation = $this->session->userdata('user_default_confirmation');
@@ -268,6 +340,7 @@ class Workabledxcc_model extends CI_Model
         $this->load->model('logbook_model');
 
         if (!empty($logbooks_locations_array)) {
+            // Check for terrestrial contacts
             $this->db->where('COL_PROP_MODE !=', 'SAT');
 
             $this->db->where_in('station_id', $logbooks_locations_array);
@@ -277,6 +350,16 @@ class Workabledxcc_model extends CI_Model
             $query = $this->db->get($this->config->item('table_name'), 1, 0);
             foreach ($query->result() as $workedBeforeRow) {
                 $return['workedBefore'] = true;
+            }
+
+            // Check for satellite contacts
+            $this->db->where('COL_PROP_MODE', 'SAT');
+            $this->db->where_in('station_id', $logbooks_locations_array);
+            $this->db->where('UPPER(COL_COUNTRY) = UPPER(?)', urldecode($country));
+
+            $query = $this->db->get($this->config->item('table_name'), 1, 0);
+            foreach ($query->result() as $satelliteRow) {
+                $return['workedViaSatellite'] = true;
             }
 
             $extrawhere = '';
