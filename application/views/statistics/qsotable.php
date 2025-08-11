@@ -17,7 +17,7 @@ if ($qsoarray) {
         foreach ($value as $key => $val) {
             echo '<td>' . $val . '</td>';
         }
-        echo '<th>' . $modetotal[$mode] . '</th>';
+        echo '<th>' . (isset($modetotal[$mode]) ? $modetotal[$mode] : 0) . '</th>';
         echo '</tr>';
     }
     echo '</tbody><tfoot><tr><th>'.lang('statistics_total').'</th>';

@@ -784,6 +784,26 @@ if ($this->session->userdata('user_id') != null) {
             });
             // Form "submit" //
             $('.custom-map-QSOs .btn_submit_map_custom').off('click').on('click', function() {
+                // Show loading spinner and disable button
+                const $button = $(this);
+                const $spinner = $('#load-spinner');
+                
+                $button.prop('disabled', true);
+                $spinner.removeClass('d-none');
+                
+                // Hide any previous alerts
+                $('.warningOnSubmit').hide();
+                $('#map-success-alert').addClass('d-none');
+                
+                // Failsafe timeout to prevent stuck spinner (60 seconds)
+                const failsafeTimeout = setTimeout(function() {
+                    console.warn('Map loading timed out - forcing spinner hide');
+                    $button.prop('disabled', false);
+                    $spinner.addClass('d-none');
+                    $('.warningOnSubmit .warningOnSubmit_txt').text('Map loading timed out. Please try again.');
+                    $('.warningOnSubmit').show();
+                }, 60000);
+                
                 var customdata = {
                     'dataPost': {
                         'date_from': $('.custom-map-QSOs input[name="from"]').val(),
@@ -795,6 +815,58 @@ if ($this->session->userdata('user_id') != null) {
                     },
                     'map_id': '#custommap'
                 };
+                
+                // Add success and error callbacks to the customdata
+                customdata.onSuccess = function(plotjson) {
+                    console.log('Map loading success callback called with data:', plotjson);
+                    
+                    // Clear the failsafe timeout
+                    clearTimeout(failsafeTimeout);
+                    
+                    try {
+                        // Update statistics
+                        if (typeof updateMapStatistics === 'function') {
+                            console.log('Calling updateMapStatistics function');
+                            updateMapStatistics(plotjson);
+                        } else {
+                            console.warn('updateMapStatistics function not found');
+                        }
+                        
+                        // Show success message
+                        const qsoCount = plotjson['markers'] ? plotjson['markers'].length : 0;
+                        console.log('QSO count:', qsoCount);
+                        $('#qso-count-display').text(`Loaded ${qsoCount} QSOs successfully`);
+                        $('#map-success-alert').removeClass('d-none');
+                        
+                        setTimeout(() => {
+                            $('#map-success-alert').addClass('d-none');
+                        }, 3000);
+                    } catch (error) {
+                        console.error('Error in success callback:', error);
+                        $('.warningOnSubmit .warningOnSubmit_txt').text('Map loaded but encountered an error displaying statistics.');
+                        $('.warningOnSubmit').show();
+                    } finally {
+                        // Always re-enable button and hide spinner
+                        console.log('Re-enabling button and hiding spinner');
+                        $button.prop('disabled', false);
+                        $spinner.addClass('d-none');
+                    }
+                };
+                
+                customdata.onError = function() {
+                    console.log('Map loading error callback called');
+                    
+                    // Clear the failsafe timeout
+                    clearTimeout(failsafeTimeout);
+                    
+                    $('.warningOnSubmit .warningOnSubmit_txt').text('Failed to load map data. Please try again.');
+                    $('.warningOnSubmit').show();
+                    
+                    // Re-enable button and hide spinner
+                    $button.prop('disabled', false);
+                    $spinner.addClass('d-none');
+                };
+                
                 initplot(qso_loc, customdata);
             })
         });
@@ -806,6 +878,10 @@ if ($this->session->userdata('user_id') != null) {
                 success: function(data) {
                     document.getElementById('from').value = data;
                     document.getElementById('to').value = new Date().toISOString().split('T')[0];
+                    // Update the date range display
+                    if (typeof updateDateRangeDisplay === 'function') {
+                        updateDateRangeDisplay();
+                    }
                 },
                 error: function() {},
             });
