@@ -433,6 +433,28 @@ function toggleFullscreen() {
 let callsignLabelsVisible = false;
 let callsignLabels = [];
 
+function clearCallsignLabels() {
+    // Remove all existing callsign labels from the map
+    callsignLabels.forEach(function(labelMarker) {
+        if (map.hasLayer(labelMarker)) {
+            map.removeLayer(labelMarker);
+        }
+    });
+    
+    // Clear the labels array
+    callsignLabels = [];
+    
+    // Reset the visibility state
+    callsignLabelsVisible = false;
+    
+    // Reset button appearance
+    const button = document.getElementById('callsign-labels-btn');
+    if (button) {
+        button.classList.remove('btn-success');
+        button.classList.add('btn-outline-success');
+    }
+}
+
 function toggleCallsignLabels() {
     const button = document.getElementById('callsign-labels-btn');
     
@@ -518,11 +540,14 @@ function updateMapStatistics(plotjson) {
             }, 3000);
         }
         
+        // Handle callsign labels when new data is loaded
+        const labelsWereVisible = callsignLabelsVisible;
+        
+        // Clear any existing callsign labels before processing new data
+        clearCallsignLabels();
+        
         // Reapply callsign labels if they were previously enabled
-        if (callsignLabelsVisible) {
-            // Reset state and toggle to reapply labels to new markers
-            callsignLabelsVisible = false;
-            callsignLabels = [];
+        if (labelsWereVisible) {
             setTimeout(() => {
                 toggleCallsignLabels();
             }, 100); // Small delay to ensure markers are fully rendered

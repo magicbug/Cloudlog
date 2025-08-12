@@ -124,4 +124,9 @@ function removeMarkers() {
 		map.removeLayer(plotlayers[i]);
 	}
 	plotlayers=[];
+	
+	// Clear callsign labels if the function exists (for custom map page)
+	if (typeof clearCallsignLabels === 'function') {
+		clearCallsignLabels();
+	}
 }
