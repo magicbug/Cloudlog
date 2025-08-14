@@ -58,6 +58,19 @@ class Workabledxcc extends CI_Controller
 		$uniqueEntities = array_unique(array_filter($dxccEntities));
 		$dxccStatus = $this->Workabledxcc_model->batchDxccWorkedStatus($uniqueEntities);
 
+		// If JSON contains iota fields, batch process IOTA status
+		$iotas = [];
+		foreach ($dataResult as $item) {
+			if (!empty($item['iota'])) {
+				$iotas[] = $item['iota'];
+			}
+		}
+		$uniqueIotas = array_unique($iotas);
+		$iotaStatus = [];
+		if (!empty($uniqueIotas)) {
+			$iotaStatus = $this->Workabledxcc_model->batchIotaWorkedStatus($uniqueIotas);
+		}
+
 		// Process results
 		$requiredData = array();
 		foreach ($dataResult as $index => $item) {
@@ -80,6 +93,8 @@ class Workabledxcc extends CI_Controller
 				'start_date' => $StartDate,
 				'end_date' => $EndDate,
 				'country' => $item['2'],
+				'iota' => isset($item['iota']) ? $item['iota'] : null,
+				'iota_status' => (isset($item['iota']) && isset($iotaStatus[$item['iota']])) ? $iotaStatus[$item['iota']] : null,
 				'notes' => $item['6'],
 				'callsign' => $item['callsign'],
 				'workedBefore' => $worked['workedBefore'],

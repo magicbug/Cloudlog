@@ -89,6 +89,100 @@ class Workabledxcc_model extends CI_Model
     }
 
     /**
+     * Batch check IOTA worked/confirmed status
+     * @param array $iotas Array of unique IOTA tags
+     * @return array Array indexed by IOTA tag with ['worked'=>bool,'confirmed'=>bool]
+     */
+    public function batchIotaWorkedStatus($iotas)
+    {
+        if (empty($iotas)) {
+            return array();
+        }
+
+        $user_default_confirmation = $this->session->userdata('user_default_confirmation');
+        $this->load->model('logbooks_model');
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (empty($logbooks_locations_array)) {
+            $out = [];
+            foreach ($iotas as $i) {
+                $out[$i] = ['worked' => false, 'confirmed' => false];
+            }
+            return $out;
+        }
+
+        // Build confirmation criteria once
+        $confirmationCriteria = $this->buildConfirmationCriteria($user_default_confirmation);
+
+        // Build case-insensitive WHERE conditions for COL_IOTA
+        $whereConditions = array();
+        foreach ($iotas as $iota) {
+            $whereConditions[] = "UPPER(COL_IOTA) = UPPER('" . $this->db->escape_str($iota) . "')";
+        }
+
+        if (empty($whereConditions)) {
+            return array();
+        }
+
+        $whereClause = '(' . implode(' OR ', $whereConditions) . ')';
+
+        // Worked query (any mode)
+        $this->db->select('COL_IOTA')
+                 ->distinct()
+                 ->from($this->config->item('table_name'))
+                 ->where_in('station_id', $logbooks_locations_array)
+                 ->where($whereClause);
+
+        $workedQuery = $this->db->get();
+        log_message('debug', 'Workable DXCC IOTA worked query: ' . $this->db->last_query());
+
+        $workedResults = array();
+        foreach ($workedQuery->result() as $row) {
+            foreach ($iotas as $iota) {
+                if (strtoupper($row->COL_IOTA) === strtoupper($iota)) {
+                    $workedResults[$iota] = true;
+                    break;
+                }
+            }
+        }
+
+        // Confirmed query (apply confirmation criteria, exclude satellite confirmations if desired)
+        $confirmedResults = array();
+        if ($confirmationCriteria !== '1=0') {
+            $this->db->select('COL_IOTA')
+                     ->distinct()
+                     ->from($this->config->item('table_name'))
+                     ->where($confirmationCriteria)
+                     ->where_in('station_id', $logbooks_locations_array)
+                     ->where($whereClause);
+
+            $confirmedQuery = $this->db->get();
+            foreach ($confirmedQuery->result() as $row) {
+                foreach ($iotas as $iota) {
+                    if (strtoupper($row->COL_IOTA) === strtoupper($iota)) {
+                        $confirmedResults[$iota] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        $out = array();
+        foreach ($iotas as $iota) {
+            $out[$iota] = [
+                'worked' => isset($workedResults[$iota]),
+                'confirmed' => isset($confirmedResults[$iota])
+            ];
+        }
+
+        // Debug
+        log_message('debug', 'Workable DXCC: IOTA worked results: ' . json_encode($workedResults));
+        log_message('debug', 'Workable DXCC: IOTA confirmed results: ' . json_encode($confirmedResults));
+
+        return $out;
+    }
+
+    /**
      * Batch query to check which entities have been worked via satellite
      */
     private function batchSatelliteQuery($entities, $logbooks_locations_array)
