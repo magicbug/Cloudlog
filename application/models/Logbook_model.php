@@ -1704,9 +1704,6 @@ class Logbook_model extends CI_Model
       $logbooks_locations_array = $StationLocationsArray;
     }
 
-    // Ensure only unique station IDs (no duplicates)
-    //$logbooks_locations_array = array_unique($logbooks_locations_array);
-
     if (empty($logbooks_locations_array)) {
       return array();
     }
