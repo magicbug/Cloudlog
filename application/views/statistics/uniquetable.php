@@ -17,13 +17,13 @@ if ($qsoarray) {
         foreach ($value as $key => $val) {
             echo '<td>' . $val . '</td>';
         }
-        echo '<th>' . $modeunique[$mode] . '</th>';
+        echo '<th>' . (isset($modeunique[$mode]) ? $modeunique[$mode] : 0) . '</th>';
         echo '</tr>';
     }
     echo '</tbody><tfoot><tr><th>'.lang('statistics_total').'</th>';
 
     foreach($bands as $band) {
-        echo '<th>' . $bandunique[$band] . '</th>';
+        echo '<th>' . (isset($bandunique[$band]) ? $bandunique[$band] : 0) . '</th>';
     }
     echo '<th>' . $total->calls . '</th>';
     echo '</tr></tfoot></table>';

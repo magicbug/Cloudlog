@@ -784,6 +784,26 @@ if ($this->session->userdata('user_id') != null) {
             });
             // Form "submit" //
             $('.custom-map-QSOs .btn_submit_map_custom').off('click').on('click', function() {
+                // Show loading spinner and disable button
+                const $button = $(this);
+                const $spinner = $('#load-spinner');
+                
+                $button.prop('disabled', true);
+                $spinner.removeClass('d-none');
+                
+                // Hide any previous alerts
+                $('.warningOnSubmit').hide();
+                $('#map-success-alert').addClass('d-none');
+                
+                // Failsafe timeout to prevent stuck spinner (60 seconds)
+                const failsafeTimeout = setTimeout(function() {
+                    console.warn('Map loading timed out - forcing spinner hide');
+                    $button.prop('disabled', false);
+                    $spinner.addClass('d-none');
+                    $('.warningOnSubmit .warningOnSubmit_txt').text('Map loading timed out. Please try again.');
+                    $('.warningOnSubmit').show();
+                }, 60000);
+                
                 var customdata = {
                     'dataPost': {
                         'date_from': $('.custom-map-QSOs input[name="from"]').val(),
@@ -795,6 +815,58 @@ if ($this->session->userdata('user_id') != null) {
                     },
                     'map_id': '#custommap'
                 };
+                
+                // Add success and error callbacks to the customdata
+                customdata.onSuccess = function(plotjson) {
+                    console.log('Map loading success callback called with data:', plotjson);
+                    
+                    // Clear the failsafe timeout
+                    clearTimeout(failsafeTimeout);
+                    
+                    try {
+                        // Update statistics
+                        if (typeof updateMapStatistics === 'function') {
+                            console.log('Calling updateMapStatistics function');
+                            updateMapStatistics(plotjson);
+                        } else {
+                            console.warn('updateMapStatistics function not found');
+                        }
+                        
+                        // Show success message
+                        const qsoCount = plotjson['markers'] ? plotjson['markers'].length : 0;
+                        console.log('QSO count:', qsoCount);
+                        $('#qso-count-display').text(`Loaded ${qsoCount} QSOs successfully`);
+                        $('#map-success-alert').removeClass('d-none');
+                        
+                        setTimeout(() => {
+                            $('#map-success-alert').addClass('d-none');
+                        }, 3000);
+                    } catch (error) {
+                        console.error('Error in success callback:', error);
+                        $('.warningOnSubmit .warningOnSubmit_txt').text('Map loaded but encountered an error displaying statistics.');
+                        $('.warningOnSubmit').show();
+                    } finally {
+                        // Always re-enable button and hide spinner
+                        console.log('Re-enabling button and hiding spinner');
+                        $button.prop('disabled', false);
+                        $spinner.addClass('d-none');
+                    }
+                };
+                
+                customdata.onError = function() {
+                    console.log('Map loading error callback called');
+                    
+                    // Clear the failsafe timeout
+                    clearTimeout(failsafeTimeout);
+                    
+                    $('.warningOnSubmit .warningOnSubmit_txt').text('Failed to load map data. Please try again.');
+                    $('.warningOnSubmit').show();
+                    
+                    // Re-enable button and hide spinner
+                    $button.prop('disabled', false);
+                    $spinner.addClass('d-none');
+                };
+                
                 initplot(qso_loc, customdata);
             })
         });
@@ -806,6 +878,10 @@ if ($this->session->userdata('user_id') != null) {
                 success: function(data) {
                     document.getElementById('from').value = data;
                     document.getElementById('to').value = new Date().toISOString().split('T')[0];
+                    // Update the date range display
+                    if (typeof updateDateRangeDisplay === 'function') {
+                        updateDateRangeDisplay();
+                    }
                 },
                 error: function() {},
             });
@@ -1927,21 +2003,59 @@ if ($this->session->userdata('user_id') != null) {
     <script>
         $(document).ready(function() {
             $('#btn_update_dxcc').bind('click', function() {
-                $('#dxcc_update_status').show();
+                // Show spinner and disable button
+                $('#dxcc_spinner').show();
+                $('#btn_text').text('Updating...');
+                $('#btn_update_dxcc').prop('disabled', true);
+                
+                // Show initial status immediately
+                $('#dxcc_update_status').show().html('Starting update...<br/>');
+                
                 $.ajax({
                     url: "update/dxcc"
                 });
-                setTimeout(update_stats, 5000);
+                
+                // Start polling immediately, then every 2 seconds for more responsive updates
+                setTimeout(update_stats, 1000);
             });
 
             function update_stats() {
-                $('#dxcc_update_status').load('<?php echo base_url() ?>updates/status.html', function(val) {
-                    $('#dxcc_update_staus').html(val);
-
-                    if ((val === null) || (val.substring(0, 4) != "DONE")) {
-                        setTimeout(update_stats, 5000);
-                    }
-                });
+                console.log('Polling status at: ' + new Date().toLocaleTimeString());
+                
+                $.get('<?php echo base_url() ?>index.php/update/get_status')
+                    .done(function(response) {
+                        console.log('Status response:', response);
+                        
+                        // Always update the status display with the response
+                        if (response && response.trim() !== '') {
+                            $('#dxcc_update_status').html(response);
+                        }
+                        
+                        // Check if update is complete
+                        if (response && typeof response === 'string' && response.substring(0, 4) === "DONE") {
+                            console.log('Update completed!');
+                            // Update is done - hide spinner and re-enable button
+                            $('#dxcc_spinner').hide();
+                            $('#btn_text').text('Update DXCC Data');
+                            $('#btn_update_dxcc').prop('disabled', false);
+                        } else {
+                            // Continue polling if not done - reduced interval for better responsiveness
+                            setTimeout(update_stats, 2000);
+                        }
+                    })
+                    .fail(function(xhr, status, error) {
+                        console.log('Error loading status: ' + status + ' - ' + error);
+                        $('#dxcc_update_status').html('Error loading status... Retrying...<br/>');
+                        
+                        // Reset button state on persistent error
+                        if (xhr.status === 0 || xhr.status >= 500) {
+                            $('#dxcc_spinner').hide();
+                            $('#btn_text').text('Update DXCC Data');
+                            $('#btn_update_dxcc').prop('disabled', false);
+                        }
+                        
+                        setTimeout(update_stats, 5000); // Retry in 5 seconds on error
+                    });
 
             }
 

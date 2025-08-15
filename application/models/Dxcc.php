@@ -58,6 +58,12 @@ class DXCC extends CI_Model {
 		return $this->db->get('dxcc_entities');
 	}
 
+	/* Optimized method to get count of current DXCC entities without loading all records */
+	function get_total_dxcc_count() {
+		$this->db->where('end', null);
+		return $this->db->count_all_results('dxcc_entities');
+	}
+
 	function get_dxcc_array($dxccArray, $bands, $postdata) {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');

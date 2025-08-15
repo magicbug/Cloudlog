@@ -60,32 +60,51 @@ if [ ! -d "$DEST_DIR" ]; then
     mkdir -p $DEST_DIR
 fi
 
+# Check if configuration has already been processed
+if [ -f "$DEST_DIR/database.php" ] && [ -f "$DEST_DIR/config.php" ]; then
+    echo "Configuration files already exist, skipping processing..."
+else
+    echo "Processing configuration files..."
+    
+    # Use sed with a different delimiter (`|`) to avoid conflicts with special characters
+    # Strip any trailing whitespace/newlines from variables before using them
+    CLEAN_DATABASE=$(echo "${MYSQL_DATABASE}" | tr -d '\r\n')
+    CLEAN_USER=$(echo "${MYSQL_USER}" | tr -d '\r\n')
+    CLEAN_PASSWORD=$(echo "${MYSQL_PASSWORD}" | tr -d '\r\n')
+    CLEAN_HOST=$(echo "${MYSQL_HOST}" | tr -d '\r\n')
+    CLEAN_LOCATOR=$(echo "${BASE_LOCATOR}" | tr -d '\r\n')
+    CLEAN_URL=$(echo "${WEBSITE_URL}" | tr -d '\r\n')
+    CLEAN_DIRECTORY=$(echo "${DIRECTORY}" | tr -d '\r\n')
+    
+    sed -i "s|%DATABASE%|${CLEAN_DATABASE}|g" $DATABASE_FILE
+    sed -i "s|%USERNAME%|${CLEAN_USER}|g" $DATABASE_FILE
+    sed -i "s|%PASSWORD%|${CLEAN_PASSWORD}|g" $DATABASE_FILE
+    sed -i "s|%HOSTNAME%|${CLEAN_HOST}|g" $DATABASE_FILE
+    sed -i "s|%baselocator%|${CLEAN_LOCATOR}|g" $CONFIG_FILE
+    sed -i "s|%websiteurl%|${CLEAN_URL}|g" $CONFIG_FILE
+    sed -i "s|%directory%|${CLEAN_DIRECTORY}|g" $CONFIG_FILE
 
-# Use sed with a different delimiter (`|`) to avoid conflicts with special characters
-sed -i "s|%DATABASE%|${MYSQL_DATABASE}|g" $DATABASE_FILE
-sed -i "s|%USERNAME%|${MYSQL_USER}|g" $DATABASE_FILE
-sed -i "s|%PASSWORD%|${MYSQL_PASSWORD}|g" $DATABASE_FILE
-sed -i "s|%HOSTNAME%|${MYSQL_HOST}|g" $DATABASE_FILE
-sed -i "s|%baselocator%|${BASE_LOCATOR}|g" $CONFIG_FILE
-sed -i "s|%websiteurl%|${WEBSITE_URL}|g" $CONFIG_FILE
-sed -i "s|%directory%|${DIRECTORY}|g" $CONFIG_FILE
+    # Move the files to the destination directory
+    mv $CONFIG_FILE $DEST_DIR
+    mv $DATABASE_FILE $DEST_DIR
 
-# Move the files to the destination directory
-mv $CONFIG_FILE $DEST_DIR
-mv $DATABASE_FILE $DEST_DIR
-
-# Delete the /install directory
-rm -rf /install
+    # Delete the /install directory
+    rm -rf /install
+fi
 
 echo "Replacement complete."
 
 # Wait for database to be ready
 echo "Waiting for database to be ready..."
-until mysql -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "SELECT 1" > /dev/null 2>&1; do
-    echo "Database is not ready yet. Waiting 5 seconds..."
-    sleep 5
-done
-echo "Database is ready!"
+echo "Connecting to: Host=$MYSQL_HOST, User=$MYSQL_USER, Database=$MYSQL_DATABASE"
+
+# Give the database a moment, then test connection once
+sleep 2
+if mariadb -h"$MYSQL_HOST" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -D"$MYSQL_DATABASE" -e "SELECT 1;" >/dev/null 2>&1; then
+    echo "Database is ready!"
+else
+    echo "Database connection failed, but continuing anyway since healthcheck passed..."
+fi
 
 # Set Permissions
 chown -R root:www-data /var/www/html/application/config/

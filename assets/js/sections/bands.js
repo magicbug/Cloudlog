@@ -1,16 +1,48 @@
 $('.bandtable').on('click', 'input[type="checkbox"]', function() {
-	var clickedbandid = $(this).closest('td').attr("class");
+	var $checkbox = $(this);
+	var $cell = $checkbox.closest('td');
+	
+	// Add visual feedback
+	$cell.addClass('saving');
+	$checkbox.prop('disabled', true);
+	
+	var clickedbandid = $cell.attr("class");
 	clickedbandid = clickedbandid.match(/\d+/)[0];
-	saveBand(clickedbandid);
+	
+	saveBand(clickedbandid, function() {
+		// Remove visual feedback on success
+		$cell.removeClass('saving');
+		$checkbox.prop('disabled', false);
+		
+		// Add success flash
+		$cell.addClass('saved');
+		setTimeout(function() {
+			$cell.removeClass('saved');
+		}, 1000);
+	});
 });
 
 $('.bandtable tfoot').on('click', 'input[type="checkbox"]', function() {
-	var clickedaward = $(this).closest('th').attr("class");
-	var status = $(this).is(":checked");
+	var $masterCheckbox = $(this);
+	var clickedaward = $masterCheckbox.closest('th').attr("class");
+	var status = $masterCheckbox.is(":checked");
 	clickedaward = clickedaward.replace('master_', '');
-	$('[class^='+clickedaward+'_] input[type="checkbox').each(function() {
-		$(this).prop( "checked", status );
+	
+	// Update all related checkboxes with animation
+	$('[class^='+clickedaward+'_] input[type="checkbox"]').each(function() {
+		var $checkbox = $(this);
+		var $cell = $checkbox.closest('td');
+		
+		$cell.addClass('updating');
+		setTimeout(function() {
+			$checkbox.prop("checked", status);
+			$cell.removeClass('updating').addClass('updated');
+			setTimeout(function() {
+				$cell.removeClass('updated');
+			}, 500);
+		}, Math.random() * 200); // Stagger the updates
 	});
+	
 	saveBandAward(clickedaward, status);
 });
 
@@ -34,8 +66,136 @@ $('.bandtable').DataTable({
 	"scrollCollapse": true,
 	"paging": false,
 	"scrollX": true,
+	"searching": true,
 	"language": {
 		url: getDataTablesLanguageUrl(),
+	},
+	"columnDefs": [
+		{
+			"targets": [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // Checkbox columns
+			"orderable": false,
+			"className": "text-center"
+		},
+		{
+			"targets": [14, 15, 16], // Frequency columns
+			"className": "text-center frequency-cell"
+		}
+	],
+	"drawCallback": function() {
+		updateStatistics();
+	},
+	"initComplete": function() {
+		// Ensure statistics are updated when table is fully initialized
+		updateStatistics();
+	}
+});
+
+// Custom search functionality
+$('#bandSearch').on('keyup', function() {
+	$('.bandtable').DataTable().search(this.value).draw();
+	updateStatistics();
+});
+
+// Clear search button
+$('#clearSearch').on('click', function() {
+	$('#bandSearch').val('');
+	$('.bandtable').DataTable().search('').draw();
+	updateStatistics();
+});
+
+// Keyboard shortcut to focus search (like GitHub)
+$(document).on('keydown', function(e) {
+	if (e.key === '/' && !$(e.target).is('input, textarea')) {
+		e.preventDefault();
+		$('#bandSearch').focus();
+	}
+	if (e.key === 'Escape' && $(e.target).is('#bandSearch')) {
+		$('#bandSearch').blur().val('');
+		$('.bandtable').DataTable().search('').draw();
+	}
+});
+
+// Filter buttons
+$('#showActiveOnly').on('click', function() {
+	$('.bandtable tbody tr').each(function() {
+		var $row = $(this);
+		var isActive = $row.find('.band-checkbox-cell input[type="checkbox"]').is(':checked');
+		if (!isActive) {
+			$row.hide();
+		} else {
+			$row.show();
+		}
+	});
+	$(this).addClass('active').siblings().removeClass('active');
+	updateStatistics();
+});
+
+$('#showAll').on('click', function() {
+	$('.bandtable tbody tr').show();
+	$(this).addClass('active').siblings().removeClass('active');
+	updateStatistics();
+});
+
+// Initialize with "Show All" active
+$('#showAll').addClass('active');
+
+// Update statistics
+function updateStatistics() {
+	var activeBands = $('.band-checkbox-cell input[type="checkbox"]:checked').length;
+	
+	// Fallback: if the class-based selector doesn't work, try alternative selectors
+	if (activeBands === 0) {
+		// Try finding by column position (first column checkboxes)
+		activeBands = $('.bandtable tbody tr td:first-child input[type="checkbox"]:checked').length;
+	}
+	
+	$('#activeBandsCount').text(activeBands);
+	
+	// Update visible rows count
+	var visibleRows = $('.bandtable tbody tr:visible').length;
+	var totalRows = $('.bandtable tbody tr').length;
+	$('#visibleRowsCount').text(visibleRows + ' of ' + totalRows + ' bands');
+}
+
+// Update statistics on page load
+$(document).ready(function() {
+	// Wait for table to be fully rendered before calculating stats
+	setTimeout(function() {
+		updateStatistics();
+	}, 500);
+});
+
+// Update statistics when band status changes
+$('.bandtable').on('change', '.band-checkbox-cell input[type="checkbox"]', function() {
+	updateStatistics();
+});
+
+// Bulk action buttons
+$('#enableAllAwards').on('click', function() {
+	if (confirm('This will enable ALL award tracking (DXCC, IOTA, SOTA, WWFF, POTA, etc.) for ALL bands. Continue?')) {
+		$('.bandtable tbody tr').each(function() {
+			var $row = $(this);
+			// Check all award checkboxes except the first (active) column
+			$row.find('input[type="checkbox"]').not('.band-checkbox-cell input').each(function() {
+				if (!$(this).is(':checked')) {
+					$(this).prop('checked', true).trigger('change');
+				}
+			});
+		});
+	}
+});
+
+$('#resetAllAwards').on('click', function() {
+	if (confirm('This will disable ALL award tracking for ALL bands (bands will remain active for QSO entry). Continue?')) {
+		$('.bandtable tbody tr').each(function() {
+			var $row = $(this);
+			// Uncheck all award checkboxes except the first (active) column
+			$row.find('input[type="checkbox"]').not('.band-checkbox-cell input').each(function() {
+				if ($(this).is(':checked')) {
+					$(this).prop('checked', false).trigger('change');
+				}
+			});
+		});
 	}
 });
 
@@ -201,7 +361,7 @@ function deactivateAllBands() {
 	});
 }
 
-function saveBand(id) {
+function saveBand(id, callback) {
 	$.ajax({
 		url: base_url + 'index.php/band/saveBand',
 		type: 'post',
@@ -220,6 +380,11 @@ function saveBand(id) {
 			'vucc': $(".vucc_"+id+" input[type='checkbox']").is(":checked")
 		},
 		success: function (html) {
+			if (callback) callback();
+		},
+		error: function() {
+			// Show error state
+			if (callback) callback();
 		}
 	});
 }

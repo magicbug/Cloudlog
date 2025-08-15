@@ -122,7 +122,11 @@
 		</div>
 
 		<div class="card-body">
-			<button class="btn btn-outline-success" hx-get="<?php echo site_url('lotw/lotw_upload'); ?>"  hx-target="#lotw_manual_results">
+			<button id="manual-sync-btn" class="btn btn-outline-success" 
+				hx-get="<?php echo site_url('lotw/lotw_upload'); ?>"  
+				hx-target="#lotw_manual_results"
+				hx-indicator="#sync-spinner">
+				<span id="sync-spinner" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display: none;"></span>
 				<?php echo lang('lotw_btn_manual_sync'); ?>
 			</button>
 
@@ -131,3 +135,22 @@
 	</div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const syncBtn = document.getElementById('manual-sync-btn');
+    const spinner = document.getElementById('sync-spinner');
+    
+    // Show spinner when htmx request starts
+    syncBtn.addEventListener('htmx:beforeRequest', function() {
+        spinner.style.display = 'inline-block';
+        syncBtn.disabled = true;
+    });
+    
+    // Hide spinner when htmx request completes (success or error)
+    syncBtn.addEventListener('htmx:afterRequest', function() {
+        spinner.style.display = 'none';
+        syncBtn.disabled = false;
+    });
+});
+</script>

@@ -65,12 +65,25 @@ function initplot(_url_qso, options={}) {
 }
 
 function askForPlots(_url_qso, options={}) {
+	console.log('askForPlots called with URL:', _url_qso, 'options:', options);
 	removeMarkers();
 	if (typeof options.dataPost !== "undefined") { _dataPost = options.dataPost; } else { _dataPost = {}; }
     $.ajax({
-        url: _url_qso, type: 'POST', dataType: 'json', data: _dataPost,
-        error: function() { console.log('[ERROR] ajax askForPlots() function return error.'); },
+        url: _url_qso, 
+        type: 'POST', 
+        dataType: 'json', 
+        data: _dataPost,
+        timeout: 50000, // 50 second timeout
+        error: function(xhr, status, error) { 
+            console.log('[ERROR] ajax askForPlots() function return error:', status, error, xhr);
+            // Call custom error callback if provided
+            if (typeof options.onError === 'function') {
+                console.log('Calling custom error callback');
+                options.onError();
+            }
+        },
         success: function(plotjson) {
+        	console.log('askForPlots AJAX success, plotjson:', plotjson);
         	if ((typeof plotjson['markers'] !== "undefined")&&(plotjson['markers'].length>0)) {
 				for (i=0;i<plotjson['markers'].length;i++) { createPlots(plotjson['markers'][i]); }
         	}
@@ -80,6 +93,14 @@ function askForPlots(_url_qso, options={}) {
         	$.each(iconsList, function(icon, data){
         		$(options.map_id+' .cspot_'+icon).addClass(data.icon).css("color",data.color);
         	});
+        	
+        	// Call custom success callback if provided
+        	if (typeof options.onSuccess === 'function') {
+        	    console.log('Calling custom success callback');
+        	    options.onSuccess(plotjson);
+        	} else {
+        	    console.warn('No custom success callback provided');
+        	}
         }
     });
 }
@@ -103,4 +124,9 @@ function removeMarkers() {
 		map.removeLayer(plotlayers[i]);
 	}
 	plotlayers=[];
+	
+	// Clear callsign labels if the function exists (for custom map page)
+	if (typeof clearCallsignLabels === 'function') {
+		clearCallsignLabels();
+	}
 }

@@ -74,6 +74,200 @@ thead>tr>td {
 	margin-bottom: 0rem;
 }
 
+.adif .card {
+	border: none;
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.adif .card-body {
+	padding: 1.5rem;
+}
+
+.adif .form-check {
+	padding-left: 0;
+}
+
+.adif .form-check-input {
+	margin-right: 0.5rem;
+}
+
+.adif .form-check-label {
+	font-size: 0.9rem;
+	line-height: 1.4;
+}
+
+.adif .badge {
+	font-size: 0.7rem;
+	padding: 0.25rem 0.5rem;
+}
+
+.adif .btn {
+	border-radius: 0.375rem;
+	font-weight: 500;
+	padding: 0.5rem 1rem;
+}
+
+.adif .btn-lg {
+	padding: 0.75rem 1.5rem;
+	font-size: 1.1rem;
+}
+
+.adif .form-control,
+.adif .form-select {
+	border-radius: 0.375rem;
+	border-color: #ced4da;
+}
+
+.adif .form-control:focus,
+.adif .form-select:focus {
+	border-color: #86b7fe;
+	box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.adif .card .card-header h6 {
+	margin-bottom: 0;
+	font-weight: 600;
+	color: #495057;
+}
+
+.adif .alert {
+	border-radius: 0.5rem;
+	border: none;
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Station Management Page Styling */
+.station-management {
+	padding-top: 15px;
+}
+
+.station-management .table-success {
+	background-color: rgba(25, 135, 84, 0.1);
+}
+
+.station-management .card {
+	border: none;
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.station-management .card-header {
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #dee2e6;
+	padding: 1rem 1.25rem;
+}
+
+.station-management .badge {
+	font-size: 0.7rem;
+	padding: 0.25rem 0.5rem;
+}
+
+.station-management .btn-sm {
+	padding: 0.375rem 0.75rem;
+	font-size: 0.875rem;
+	border-radius: 0.375rem;
+}
+
+/* DataTable styling within cards */
+.station-management .dataTables_wrapper {
+	padding: 0;
+}
+
+.station-management .dataTables_length,
+.station-management .dataTables_filter {
+	margin-bottom: 1rem;
+}
+
+.station-management .dataTables_info,
+.station-management .dataTables_paginate {
+	margin-top: 1rem;
+}
+
+.station-management .dataTables_length label,
+.station-management .dataTables_filter label {
+	font-weight: 500;
+	margin-bottom: 0;
+}
+
+.station-management .dataTables_filter input {
+	margin-left: 0.5rem;
+	border-radius: 0.375rem;
+	border: 1px solid #ced4da;
+	padding: 0.375rem 0.75rem;
+}
+
+.station-management .dataTables_length select {
+	margin: 0 0.5rem;
+	border-radius: 0.375rem;
+	border: 1px solid #ced4da;
+	padding: 0.375rem 0.75rem;
+}
+
+/* Logbooks Management Page Styling */
+.logbooks-management {
+	padding-top: 15px;
+}
+
+.logbooks-management .table-success {
+	background-color: rgba(25, 135, 84, 0.1);
+}
+
+.logbooks-management .card {
+	border: none;
+	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.logbooks-management .card-header {
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #dee2e6;
+	padding: 1rem 1.25rem;
+}
+
+.logbooks-management .badge {
+	font-size: 0.7rem;
+	padding: 0.25rem 0.5rem;
+}
+
+.logbooks-management .btn-sm {
+	padding: 0.375rem 0.75rem;
+	font-size: 0.875rem;
+	border-radius: 0.375rem;
+}
+
+/* DataTable styling within cards */
+.logbooks-management .dataTables_wrapper {
+	padding: 0;
+}
+
+.logbooks-management .dataTables_length,
+.logbooks-management .dataTables_filter {
+	margin-bottom: 1rem;
+}
+
+.logbooks-management .dataTables_info,
+.logbooks-management .dataTables_paginate {
+	margin-top: 1rem;
+}
+
+.logbooks-management .dataTables_length label,
+.logbooks-management .dataTables_filter label {
+	font-weight: 500;
+	margin-bottom: 0;
+}
+
+.logbooks-management .dataTables_filter input {
+	margin-left: 0.5rem;
+	border-radius: 0.375rem;
+	border: 1px solid #ced4da;
+	padding: 0.375rem 0.75rem;
+}
+
+.logbooks-management .dataTables_length select {
+	margin: 0 0.5rem;
+	border-radius: 0.375rem;
+	border: 1px solid #ced4da;
+	padding: 0.375rem 0.75rem;
+}
+
 .api .alert p {
 	margin-bottom: 0rem;
 }

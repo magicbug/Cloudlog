@@ -4,5 +4,9 @@ FROM mariadb:latest
 # Add the install.sql file to the docker image
 ADD install/assets/install.sql /docker-entrypoint-initdb.d
 
+# Create a healthcheck script that uses mariadb-admin
+RUN echo '#!/bin/bash\nmariadb-admin ping -h "localhost" --silent' > /usr/local/bin/healthcheck.sh \
+    && chmod +x /usr/local/bin/healthcheck.sh
+
 # Expose port 3306
 EXPOSE 3306

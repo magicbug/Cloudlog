@@ -49,6 +49,36 @@ foreach ($grouped as $month => $dxccs) {
             echo '<span class="badge bg-primary">Confirmed</span>';
         }
 
+        // Add satellite badge if worked via satellite
+        if (isset($dxcc['workedViaSatellite']) && $dxcc['workedViaSatellite']) {
+            echo ' <span class="badge bg-info">Worked via Satellite</span>';
+        }
+
+        // IOTA handling: show badge if JSON contained an iota field
+        if (isset($dxcc['iota']) && !empty($dxcc['iota'])) {
+            $iotaTag = $dxcc['iota'];
+            $mapUrl = 'https://www.iota-world.org/iotamaps/?grpref=' . $iotaTag;
+            // Anchor inside badge should inherit readable text colour
+            $iotaAnchor = '<a href="' . $mapUrl . '" target="_blank" class="text-white text-decoration-none">' . $iotaTag . '</a>';
+
+            if (isset($dxcc['iota_status'])) {
+                $s = $dxcc['iota_status'];
+
+                if (!empty($s) && isset($s['worked']) && $s['worked']) {
+                    echo ' <span class="badge bg-success">IOTA ' . $iotaAnchor . ' Worked</span>';
+                } else {
+                    echo ' <span class="badge bg-danger">IOTA ' . $iotaAnchor . ' Needed</span>';
+                }
+
+                if (!empty($s) && isset($s['confirmed']) && $s['confirmed']) {
+                    echo ' <span class="badge bg-primary">Confirmed</span>';
+                }
+            } else {
+                // No status; render a neutral badge containing the link
+                echo ' <span class="badge bg-secondary">' . $iotaAnchor . '</span>';
+            }
+        }
+
         echo '</td>
             <td>' . $dxcc['notes'] . '</td>
         </tr>';
