@@ -1087,7 +1087,16 @@ class Logbook_model extends CI_Model
 
     $entity = $this->get_entity($this->input->post('dxcc_id'));
     $stationId = $this->input->post('station_profile');
-    $country = ucwords(strtolower($entity['name']), "- (/");
+
+    if (is_array($entity)) {
+      $rawCountry = $entity['name'] ?? '';
+    } elseif (is_object($entity)) {
+      $rawCountry = $entity->name ?? '';
+    } else {
+      $rawCountry = (string)$entity;
+    }
+    $country = ucwords(strtolower($rawCountry), "- (/"
+    );
 
     // be sure that station belongs to user
     $CI = &get_instance();
