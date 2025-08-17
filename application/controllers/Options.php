@@ -92,7 +92,7 @@ class Options extends CI_Controller {
 				$any_update_successful = TRUE;
 			}
 
-			// Update global search within the options system
+			// Update global search choice within the options system
 			$search_update_status = $this->optionslib->update('global_search', $this->input->post('globalSearch'));
 			if($search_update_status == TRUE) {
 				$any_update_successful = TRUE;
