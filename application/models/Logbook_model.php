@@ -1095,8 +1095,7 @@ class Logbook_model extends CI_Model
     } else {
       $rawCountry = (string)$entity;
     }
-    $country = ucwords(strtolower($rawCountry), "- (/"
-    );
+    $country = ucwords(strtolower($rawCountry), "- (/");
 
     // be sure that station belongs to user
     $CI = &get_instance();
