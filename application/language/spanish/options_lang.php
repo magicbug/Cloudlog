@@ -123,4 +123,5 @@ $lang['options_bands_cw_qrg_hint'] = "Frecuencia para el QRG de CW en la banda (
 $lang['options_bands_name_band'] = "Nombre de la Banda (ej. 20m)";
 $lang['options_bands_name_bandgroup'] = "Nombre del grupo de bandas (ej. hf, vhf, uhf, shf)";
 $lang['options_bands_delete_warning'] = "¡Advertencia! ¿Está seguro que desea eliminar la banda a continuación: ";
+$lang['options_appearance_settings_saved'] = 'La configuración de apariencia se ha guardado correctamente.';
 

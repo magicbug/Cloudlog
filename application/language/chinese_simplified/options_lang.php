@@ -123,4 +123,5 @@ $lang['options_bands_cw_qrg_hint'] = "波段中 CW 的频率（以Hz为单位）
 $lang['options_bands_name_band'] = "波段名称（例如：20m）";
 $lang['options_bands_name_bandgroup'] = "频段名称（例如：HF、VHF、UHF、SHF）";
 $lang['options_bands_delete_warning'] = "警告！ 您确定要删除以下波段：";
+$lang['options_appearance_settings_saved'] = '外观设置已成功保存。';
 

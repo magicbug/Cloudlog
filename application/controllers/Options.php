@@ -83,44 +83,42 @@ class Options extends CI_Controller {
 		}
 		else
 		{
+			// Track if any updates were successful
+			$any_update_successful = FALSE;
+
 			// Update theme choice within the options system
 			$theme_update_status = $this->optionslib->update('theme', $this->input->post('theme'), 'yes');
-
-			// If theme update is complete set a flashsession with a success note
 			if($theme_update_status == TRUE) {
-				$this->session->set_flashdata('success', $this->lang->line('options_theme_changed_to').$this->input->post('theme'));
+				$any_update_successful = TRUE;
 			}
 
-			// Update theme choice within the options system
+			// Update global search choice within the options system
 			$search_update_status = $this->optionslib->update('global_search', $this->input->post('globalSearch'));
-
-			// If theme update is complete set a flashsession with a success note
 			if($search_update_status == TRUE) {
-				$this->session->set_flashdata('success', $this->lang->line('options_global_search_changed_to').$this->input->post('globalSearch'));
+				$any_update_successful = TRUE;
 			}
 
 			// Update dashboard banner within the options system
 			$dasboard_banner_update_status = $this->optionslib->update('dashboard_banner', $this->input->post('dashboardBanner'), 'yes');
-
-			// If dashboard banner update is complete set a flashsession with a success note
 			if($dasboard_banner_update_status == TRUE) {
-				$this->session->set_flashdata('success', $this->lang->line('options_dashboard_banner_changed_to').$this->input->post('dashboardBanner'));
+				$any_update_successful = TRUE;
 			}
 
 			// Update dashboard map within the options system
 			$dashboard_map_update_status = $this->optionslib->update('dashboard_map', $this->input->post('dashboardMap'), 'yes');
-
-			// If dashboard map update is complete set a flashsession with a success note
 			if($dashboard_map_update_status == TRUE) {
-				$this->session->set_flashdata('success', $this->lang->line('options_dashboard_map_changed_to').$this->input->post('dashboardMap'));
+				$any_update_successful = TRUE;
 			}
 
 			// Update logbook map within the options system
 			$logbook_map_update_status = $this->optionslib->update('logbook_map', $this->input->post('logbookMap'), 'yes');
-
-			// If logbook map update is complete set a flashsession with a success note
 			if($logbook_map_update_status == TRUE) {
-				$this->session->set_flashdata('success', $this->lang->line('options_logbook_map_changed_to').$this->input->post('logbookMap'));
+				$any_update_successful = TRUE;
+			}
+
+			// If any update was successful, show a single success message
+			if($any_update_successful == TRUE) {
+				$this->session->set_flashdata('success', $this->lang->line('options_appearance_settings_saved'));
 			}
 
 			// Update Lang choice within the options system

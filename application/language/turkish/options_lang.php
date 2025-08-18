@@ -121,3 +121,4 @@ $lang['options_bands_cw_qrg_hint'] = "Banttaki CW QRG frekansı (Hz cinsinden ol
 $lang['options_bands_name_band'] = "Bant Adı (Örn. 20m)";
 $lang['options_bands_name_bandgroup'] = "Bant grubunun adı (Örn. hf, vhf, uhf, shf)";
 $lang['options_bands_delete_warning'] = "Uyarı! Aşağıdaki bandı silmek istediğinizden emin misiniz: ";
+$lang['options_appearance_settings_saved'] = 'Görünüm ayarları başarıyla kaydedildi.';
