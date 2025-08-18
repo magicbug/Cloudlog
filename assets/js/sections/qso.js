@@ -348,13 +348,54 @@ var favs={};
 	});
 
 	// Test Consistency value on submit form //
-	$("#qso_input").off('submit').on('submit', function(){
+	var isSubmitting = false;
+	$("#qso_input").off('submit').on('submit', function(e){
+		// Prevent double submission
+		if (isSubmitting) {
+			e.preventDefault();
+			return false;
+		}
+		
 		var _submit = true;
 		if ((typeof qso_manual !== "undefined")&&(qso_manual == "1")) {
 			if ($('#qso_input input[name="end_time"]').length == 1) { _submit = testTimeOffConsistency(); }
 		}
+		
+		if (_submit) {
+			// Mark as submitting and disable the submit button
+			isSubmitting = true;
+			var submitBtn = $(this).find('button[type="submit"]');
+			var originalText = submitBtn.data('original-text');
+			if (!originalText) {
+				// Store original text first time
+				originalText = submitBtn.html();
+				submitBtn.data('original-text', originalText);
+			}
+			submitBtn.prop('disabled', true);
+			submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Saving...');
+		}
+		
 		return _submit;
 	})
+	
+	// Prevent Enter key from causing double submissions
+	$("#qso_input").on('keydown', function(e) {
+		if (e.key === 'Enter' && e.target.type !== 'textarea') {
+			if (isSubmitting) {
+				e.preventDefault();
+				return false;
+			}
+		}
+	});
+	
+	// Reset submission state when page becomes visible again (handles cases where submission gets stuck)
+	document.addEventListener('visibilitychange', function() {
+		if (!document.hidden && typeof isSubmitting !== 'undefined' && isSubmitting) {
+			setTimeout(function() {
+				resetSubmissionState();
+			}, 1000); // Wait 1 second before resetting to avoid interfering with legitimate submissions
+		}
+	});
 });
 
 var selected_sat;
@@ -477,8 +518,29 @@ function changebadge(entityname) {
 	}
 }
 
+/* Function: resetSubmissionState resets the form submission state */
+function resetSubmissionState() {
+	if (typeof isSubmitting !== 'undefined') {
+		isSubmitting = false;
+	}
+	var submitBtn = $('#qso_input button[type="submit"]');
+	if (submitBtn.length > 0) {
+		submitBtn.prop('disabled', false);
+		// Get the original text from the button or use a fallback
+		var originalText = submitBtn.data('original-text');
+		if (!originalText) {
+			// Store original text first time
+			originalText = submitBtn.html();
+			submitBtn.data('original-text', originalText);
+		}
+		submitBtn.html(originalText);
+	}
+}
+
 /* Function: reset_fields is used to reset the fields on the QSO page */
 function reset_fields() {
+	// Reset submission state
+	resetSubmissionState();
 
 	$('#locator_info').text("");
 	$('#country').val("");
