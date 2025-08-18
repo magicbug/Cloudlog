@@ -99,9 +99,12 @@ class Logbook_model extends CI_Model
     if ($this->input->post('country') == "") {
       $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       $country = ucwords(strtolower($dxcc[1]), "- (/");
+      $dxcc_id = $dxcc[0];
     } else {
       $country = $this->input->post('country');
     }
+
+
 
     if ($this->input->post('cqz') == "") {
       $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
@@ -123,7 +126,13 @@ class Logbook_model extends CI_Model
         $dxcc_id = $dxcc[0];
       }
     } else {
-      $dxcc_id = $this->input->post('dxcc_id');
+       // if $country isn't empty
+      if (!empty($country) && $this->input->post('dxcc_id') == "0") {
+        $dxcc_id = $dxcc_id;
+      } else {
+        $dxcc_id = $this->input->post('dxcc_id');
+      }
+
     }
 
     if ($this->input->post('continent') == "") {
