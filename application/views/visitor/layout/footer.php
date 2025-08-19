@@ -61,7 +61,6 @@
                     var page = Math.floor(offset / per_page) + 1;
                     
                     // Refresh map with new page data
-                    console.log('Pagination clicked, refreshing map for page:', page, 'offset:', offset);
                     if (typeof askForPlots === 'function') {
                         askForPlots(qso_loc, {
                             dataPost: { page: page },
