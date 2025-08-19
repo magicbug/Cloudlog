@@ -180,6 +180,7 @@ class Visitor extends CI_Controller {
 		$this->load->library('qra');
 
         $slug = $this->security->xss_clean($this->uri->segment(3));
+		$offset = $this->security->xss_clean($this->uri->segment(4));
 
         $this->load->model('logbooks_model');
         $logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug);
@@ -196,7 +197,7 @@ class Visitor extends CI_Controller {
             show_404('Unknown Public Page.');
         }
 
-		$qsos = $this->logbook_model->get_qsos('18', null, $logbooks_locations_array);
+		$qsos = $this->logbook_model->get_qsos('18', $offset, $logbooks_locations_array);
 		// [PLOT] ADD plot //
 		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result());
 	

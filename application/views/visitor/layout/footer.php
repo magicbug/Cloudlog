@@ -36,8 +36,12 @@
         var q_lng = -32.695312;
         <?php } ?>
 
-        <?php if(isset($slug)) { ?>
-        var qso_loc = '<?php echo site_url('visitor/map/'.$slug);?>';
+        <?php if(isset($slug)) { 
+          $offset = $this->uri->segment(4);
+        ?>
+
+
+        var qso_loc = '<?php echo site_url('visitor/map/'.$slug.'/'.$offset);?>';
         <?php } ?>
         var q_zoom = 3;
 
