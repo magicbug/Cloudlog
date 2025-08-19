@@ -262,12 +262,25 @@ class Visitor extends CI_Controller {
 		
 		// Get available modes
 		$modes_query = $this->db->query(
-			"SELECT distinct col_mode FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ") and coalesce(col_mode, '') <> '' and col_mode <> 'SSB' ORDER BY col_mode"
+			"SELECT distinct col_mode FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ") and coalesce(col_mode, '') <> '' ORDER BY col_mode"
 		);
 		$modes = array();
 		foreach($modes_query->result() as $row){
-			$modes[] = (object) ['mode' => $row->col_mode, 'submode' => ''];
+			if (!in_array($row->col_mode, $modes)) {
+				array_push($modes, $row->col_mode);
+			}
 		}
+		
+		// Get submodes as well
+		$submodes_query = $this->db->query(
+			"SELECT distinct col_submode FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ") and coalesce(col_submode, '') <> '' ORDER BY col_submode"
+		);
+		foreach($submodes_query->result() as $row){
+			if (!in_array($row->col_submode, $modes)) {
+				array_push($modes, $row->col_submode);
+			}
+		}
+		asort($modes);
 		
 		$data['bands'] = $bands;
 		$data['sats_available'] = $sats_available;

@@ -46,7 +46,6 @@
 
 	<h2><?php echo $page_title; ?></h2>
 
-<?php if ($visitor == false) { ?>
 <form class="d-flex align-items-center">
             <label class="my-1 me-2" for="band"><?php echo lang('gridsquares_band'); ?></label>
             <select class="form-select my-1 me-sm-2 w-auto"  id="band">
@@ -75,12 +74,19 @@
 			<option value="All"><?php echo lang('general_word_all')?></option>
                     <?php
                     foreach($modes as $mode){
-                        if ($mode->submode ?? '' == '') {
+                        if (is_object($mode)) {
+                            // Handle object format (from gridmap_model->get_worked_modes())
+                            if ($mode->submode ?? '' == '') {
+                                echo '<option value="' . $mode->mode . '">' . strtoupper($mode->mode) . '</option>'."\n";
+                            }
+                        } else {
+                            // Handle simple string format (from visitor implementation)
                             echo '<option value="' . $mode . '">' . strtoupper($mode) . '</option>'."\n";
                         }
                     }
                     ?>
             </select>
+			<?php if ($visitor == false) { ?>
 			<label class="my-1 me-2"><?php echo lang('gridsquares_confirmation'); ?></label>
                 <div>
                     <div class="form-check-inline">
@@ -116,11 +122,11 @@
                         <label class="form-check-label" for="qrz">QRZ.com</label>
                     </div>
                 </div>
+			<?php } ?>
 
             <button id="plot" type="button" name="plot" class="btn btn-primary me-1 ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form,<?php echo $visitor == true ? "true" : "false"; ?>)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
 			<button id="clear" type="button" name="clear" class="btn btn-primary me-1 ld-ext-right ld-ext-right-clear" onclick="clearMarkers()"><?php echo lang('gridsquares_button_clear_markers'); ?><div class="ld ld-ring ld-spin"></div></button>
 </form>
-<?php } ?>
 
 		<?php if($this->session->flashdata('message')) { ?>
 			<!-- Display Message -->
