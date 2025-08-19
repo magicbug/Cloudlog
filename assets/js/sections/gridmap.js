@@ -41,6 +41,16 @@ function gridPlot(form, visitor=true) {
         ajax_url = site_url + '/gridmap/getGridsjs';
     }
 
+    // If visitor context, get the slug from the URL and use visitor endpoint
+    if (visitor === true) {
+        var pathParts = window.location.pathname.split('/');
+        var slugIndex = pathParts.indexOf('satellites');
+        if (slugIndex !== -1 && pathParts[slugIndex + 1]) {
+            var slug = pathParts[slugIndex + 1];
+            ajax_url = site_url + '/visitor/getGridsjs';
+        }
+    }
+
     if (visitor != true) {
     $.ajax({
 		url: ajax_url,
@@ -73,7 +83,42 @@ function gridPlot(form, visitor=true) {
 		},
 	});
    } else {
-      plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
+       // Visitor context - use AJAX to get filtered data
+       var pathParts = window.location.pathname.split('/');
+       var slugIndex = pathParts.indexOf('satellites');
+       if (slugIndex !== -1 && pathParts[slugIndex + 1]) {
+           var slug = pathParts[slugIndex + 1];
+           $.ajax({
+               url: ajax_url,
+               type: 'post',
+               data: {
+                   slug: slug,
+                   band: $("#band").val(),
+                   mode: $("#mode").val(),
+                   sat: $("#sats").val(),
+               },
+               success: function (data) {
+                   console.log(data);
+                   $('.cohidden').show();
+                   $(".ld-ext-right-plot").removeClass('running');
+                   $(".ld-ext-right-plot").prop('disabled', false);
+                   $('#plot').prop("disabled", false);
+                   grid_two = data.grid_2char;
+                   grid_four = data.grid_4char;
+                   grid_six = data.grid_6char;
+                   grid_two_confirmed = data.grid_2char_confirmed;
+                   grid_four_confirmed = data.grid_4char_confirmed;
+                   grid_six_confirmed = data.grid_6char_confirmed;
+                   plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
+               },
+               error: function (data) {
+                   console.error('Error loading visitor grid data:', data);
+               },
+           });
+       } else {
+           // Fallback: use predefined grid data if available
+           plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
+       }
    };
 }
 
