@@ -199,12 +199,12 @@ class Visitor extends CI_Controller {
 		$offset = null;
 		
 		if ($page && is_numeric($page) && $page > 0) {
-			$offset = ($page - 1) * $per_page;
+			$offset = ((int)$page - 1) * $per_page;
 		}
 
 		$qsos = $this->logbook_model->get_qsos($per_page, $offset, $logbooks_locations_array);
 		// [PLOT] ADD plot //
-		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result());
+		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result(), true);
 	
 		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode($plot_array);
