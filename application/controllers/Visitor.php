@@ -193,7 +193,16 @@ class Visitor extends CI_Controller {
             show_404('Unknown Public Page.');
         }
 
-		$qsos = $this->logbook_model->get_qsos('18', null, $logbooks_locations_array);
+		// Get pagination parameters - if page is provided, calculate offset
+		$page = $this->input->post('page');
+		$per_page = 25; // Match the per_page from index method
+		$offset = null;
+		
+		if ($page && is_numeric($page) && $page > 0) {
+			$offset = ($page - 1) * $per_page;
+		}
+
+		$qsos = $this->logbook_model->get_qsos($per_page, $offset, $logbooks_locations_array);
 		// [PLOT] ADD plot //
 		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result());
 	

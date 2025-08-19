@@ -49,6 +49,27 @@
             <?php } ?>
             <?php if ($this->uri->segment(2) != "search" && $this->uri->segment(2) != "satellites") { ?>
             initmap(grid);
+            
+            // Add pagination click handler for map updates
+            $(document).on('click', '.pagination a', function(e) {
+                var href = $(this).attr('href');
+                if (href && typeof qso_loc !== 'undefined') {
+                    // Extract offset from URL (last segment after /index/ or default to 0)
+                    var matches = href.match(/\/index(?:\/(\d+))?$/);
+                    var offset = matches && matches[1] ? parseInt(matches[1]) : 0;
+                    var per_page = 25;
+                    var page = Math.floor(offset / per_page) + 1;
+                    
+                    // Refresh map with new page data
+                    console.log('Pagination clicked, refreshing map for page:', page, 'offset:', offset);
+                    if (typeof askForPlots === 'function') {
+                        askForPlots(qso_loc, {
+                            dataPost: { page: page },
+                            map_id: '#map'
+                        });
+                    }
+                }
+            });
             <?php } ?>
 
       });
