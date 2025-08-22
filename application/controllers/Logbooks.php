@@ -131,8 +131,18 @@ class Logbooks extends CI_Controller {
 
 	public function save_publicsearch() {
 		$this->load->model('logbooks_model');
-			$returndata = $this->logbooks_model->save_public_search($this->input->post('public_search'), $this->input->post('logbook_id'));
-			echo "<div class=\"alert alert-success\" role=\"alert\">Public Search Settings Saved</div>";
+		// Handle checkbox - if not checked, it won't be sent, so default to 0
+		$public_search = $this->input->post('public_search') ? 1 : 0;
+		$returndata = $this->logbooks_model->save_public_search($public_search, $this->input->post('logbook_id'));
+		echo "<div class=\"alert alert-success\" role=\"alert\">Public Search Settings Saved</div>";
+	}
+
+	public function save_publicradiostatus() {
+		$this->load->model('logbooks_model');
+		// Handle checkbox - if not checked, it won't be sent, so default to 0
+		$public_radio_status = $this->input->post('public_radio_status') ? 1 : 0;
+		$returndata = $this->logbooks_model->save_public_radio_status($public_radio_status, $this->input->post('logbook_id'));
+		echo "<div class=\"alert alert-success\" role=\"alert\">Public Radio Status Settings Saved</div>";
 	}
 
 	public function save_publicslug() {

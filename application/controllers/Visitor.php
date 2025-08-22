@@ -67,6 +67,10 @@ class Visitor extends CI_Controller {
                 {
                     // Get associated station locations for mysql queries
                     $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+                    
+                    // Get logbook details to check public settings
+                    $logbook_details = $this->logbooks_model->logbook($logbook_id);
+                    $data['logbook_settings'] = $logbook_details->row();
 
 					if (!$logbooks_locations_array) {
 						show_404('Empty Logbook');

@@ -1,6 +1,13 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+
+/*
+___________________________________________________________________________________________
+Station Logbooks
+___________________________________________________________________________________________
+*/
+
 $lang['station_logbooks'] = "Livros de Estação";
 $lang['station_logbooks_description_header'] = "O que são Livros de Estação";
 $lang['station_logbooks_description_text'] = "Livros de Estação permitem agrupar Locais de Estação, possibilitando visualizar todos os locais em uma única sessão, tanto no logbook quanto nas análises. Ideal para operações em múltiplos locais pertencentes ao mesmo DXCC ou círculo VUCC.";
@@ -25,6 +32,8 @@ $lang['station_logbooks_public_slug_input'] = "Digite o slug público desejado";
 $lang['station_logbooks_public_slug_visit'] = "Visitar Página Pública";
 $lang['station_logbooks_public_search_hint'] = "Habilitar a busca pública permite uma caixa de busca na página pública do livro de estação, acessível via slug. A busca cobre apenas este livro.";
 $lang['station_logbooks_public_search_enabled'] = "Busca pública ativada";
+$lang['station_logbooks_public_radio_status_hint'] = "Ativar o status de rádio público exibirá informações atuais do status do rádio na página pública do livro de registro acessada via slug público.";
+$lang['station_logbooks_public_radio_status_enabled'] = "Status de rádio público ativado";
 $lang['station_logbooks_select_avail_loc'] = "Selecionar Locais de Estação Disponíveis";
 $lang['station_logbooks_link_loc'] = "Vincular Local";
 $lang['station_logbooks_linked_loc'] = "Locais Vinculados";

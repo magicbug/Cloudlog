@@ -220,6 +220,16 @@ class Logbooks_model extends CI_Model {
 		$this->db->update('station_logbooks', $data);
 	}
 
+	function save_public_radio_status($public_radio_status, $logbook_id) {
+		$data = array(
+			'public_radio_status' => xss_clean($public_radio_status),
+		);
+
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('logbook_id', xss_clean($logbook_id));
+		$this->db->update('station_logbooks', $data);
+	}
+
 	function save_public_slug($public_slug, $logbook_id) {
 		$data = array(
 			'public_slug' => xss_clean($public_slug),
