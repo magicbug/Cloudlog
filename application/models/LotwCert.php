@@ -12,7 +12,7 @@ class LotwCert extends CI_Model {
 	*/
 	function lotw_certs($user_id) {
 
-		$this->db->select('lotw_certs.lotw_cert_id as lotw_cert_id, lotw_certs.callsign as callsign, dxcc_entities.name as cert_dxcc, dxcc_entities.end as cert_dxcc_end, lotw_certs.qso_start_date as qso_start_date, lotw_certs.qso_end_date as qso_end_date, lotw_certs.date_created as date_created, lotw_certs.date_expires as date_expires, lotw_certs.last_upload as last_upload');
+		$this->db->select('lotw_certs.lotw_cert_id as lotw_cert_id, lotw_certs.callsign as callsign, dxcc_entities.name as cert_dxcc, dxcc_entities.end as cert_dxcc_end, lotw_certs.qso_start_date as qso_start_date, lotw_certs.qso_end_date as qso_end_date, lotw_certs.date_created as date_created, lotw_certs.date_expires as date_expires, lotw_certs.last_upload as last_upload, lotw_certs.archived as archived');
 		$this->db->where('user_id', $user_id);
 		$this->db->join('dxcc_entities','lotw_certs.cert_dxcc_id = dxcc_entities.adif','left');
 		$this->db->order_by('cert_dxcc', 'ASC');
@@ -75,6 +75,29 @@ class LotwCert extends CI_Model {
 		$this->db->where('lotw_cert_id', $lotw_cert_id);
 		$this->db->where('user_id', $user_id);
 		$this->db->delete('lotw_certs');
+	}
+
+	function toggle_archive_certificate($user_id, $lotw_cert_id) {
+		// First get current archive status
+		$this->db->select('archived');
+		$this->db->where('lotw_cert_id', $lotw_cert_id);
+		$this->db->where('user_id', $user_id);
+		$query = $this->db->get('lotw_certs');
+		
+		if($query->num_rows() == 0) {
+			return false;
+		}
+		
+		$current_status = $query->row()->archived;
+		$new_status = $current_status ? 0 : 1;
+		
+		// Update the archive status
+		$data = array('archived' => $new_status);
+		$this->db->where('lotw_cert_id', $lotw_cert_id);
+		$this->db->where('user_id', $user_id);
+		$this->db->update('lotw_certs', $data);
+		
+		return array('archived' => $new_status);
 	}
 
 	function last_upload($certID) {

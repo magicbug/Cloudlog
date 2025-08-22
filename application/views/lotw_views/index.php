@@ -78,12 +78,16 @@
 									<?php $current_date = date('Y-m-d H:i:s'); ?>
 									<?php $warning_date = date('Y-m-d H:i:s', strtotime($row->date_expires.'-30 days')); ?>
 
-									<?php if ($current_date > $row->date_expires) { ?>
-										<span class="badge text-bg-danger"><?php echo lang('lotw_expired'); ?></span>
-									<?php } else if ($current_date <= $row->date_expires && $current_date > $warning_date) { ?>
-										<span class="badge text-bg-warning"><?php echo lang('lotw_expiring'); ?></span>
+									<?php if ($row->archived) { ?>
+										<span class="badge text-bg-secondary"><?php echo 'Archived'; ?></span>
 									<?php } else { ?>
-										<span class="badge text-bg-success"><?php echo lang('lotw_valid'); ?></span>
+										<?php if ($current_date > $row->date_expires) { ?>
+											<span class="badge text-bg-danger"><?php echo lang('lotw_expired'); ?></span>
+										<?php } else if ($current_date <= $row->date_expires && $current_date > $warning_date) { ?>
+											<span class="badge text-bg-warning"><?php echo lang('lotw_expiring'); ?></span>
+										<?php } else { ?>
+											<span class="badge text-bg-success"><?php echo lang('lotw_valid'); ?></span>
+										<?php } ?>
 									<?php } ?>
 
 									<?php if ($row->last_upload) {
@@ -94,6 +98,15 @@
 									<?php } ?>
 								</td>
 								<td>
+									<?php if ($row->archived) { ?>
+										<a class="btn btn-outline-info btn-sm me-1" href="<?php echo site_url('lotw/toggle_archive_cert/'.$row->lotw_cert_id); ?>" role="button">
+											<i class="fas fa-box-open"></i> Unarchive
+										</a>
+									<?php } else { ?>
+										<a class="btn btn-outline-secondary btn-sm me-1" href="<?php echo site_url('lotw/toggle_archive_cert/'.$row->lotw_cert_id); ?>" role="button">
+											<i class="fas fa-archive"></i> Archive
+										</a>
+									<?php } ?>
 									<a class="btn btn-outline-danger btn-sm" href="<?php echo site_url('lotw/delete_cert/'.$row->lotw_cert_id); ?>" role="button"><i class="far fa-trash-alt"></i> <?php echo lang('lotw_btn_delete'); ?></a>
 								</td>
 							</tr>
