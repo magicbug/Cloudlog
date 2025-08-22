@@ -119,7 +119,7 @@ class LotwCert extends CI_Model {
 	}
 
    function lotw_cert_expired($user_id, $date) {
-      $array = array('user_id' => $user_id, 'date_expires <' => $date);
+      $array = array('user_id' => $user_id, 'date_expires <' => $date, 'archived' => 0);
       $this->db->where($array);
       $query = $this->db->get('lotw_certs');
 
@@ -131,7 +131,7 @@ class LotwCert extends CI_Model {
    }
 
    function lotw_cert_expiring($user_id, $date) {
-      $array = array('user_id' => $user_id, 'DATE_SUB(date_expires, INTERVAL 30 DAY) <' => $date, 'date_expires >' => $date);
+      $array = array('user_id' => $user_id, 'DATE_SUB(date_expires, INTERVAL 30 DAY) <' => $date, 'date_expires >' => $date, 'archived' => 0);
       $this->db->where($array);
       $query = $this->db->get('lotw_certs');
 
