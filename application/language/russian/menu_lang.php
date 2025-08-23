@@ -32,6 +32,7 @@ $lang['menu_days_with_qsos'] = 'Дней с QSO';
 $lang['menu_timeline'] = 'Лента событий';
 $lang['menu_accumulated_statistics'] = 'Объединённая статистика';
 $lang['menu_timeplotter'] = 'Графики';
+$lang['menu_most_worked'] = 'Самые Работанные';
 $lang['menu_custom_maps'] = 'Карты';
 $lang['menu_continents'] = 'Континенты';
 

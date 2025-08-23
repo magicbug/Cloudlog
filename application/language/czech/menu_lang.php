@@ -32,6 +32,7 @@ $lang['menu_days_with_qsos'] = 'Dny s QSO';
 $lang['menu_timeline'] = 'Časová osa';
 $lang['menu_accumulated_statistics'] = 'Kumulativní statistiky';
 $lang['menu_timeplotter'] = 'Graf času';
+$lang['menu_most_worked'] = 'Nejvíce Pracované';
 $lang['menu_custom_maps'] = 'Vlastní mapy';
 $lang['menu_continents'] = 'Kontinenty';
 

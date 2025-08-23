@@ -158,6 +158,31 @@ if ($this->session->userdata('user_id') != null) {
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/selectize.js"></script>
 
+<?php if ($this->uri->segment(1) == "mostworked") { ?>
+<script>
+$(document).ready(function() {
+    $('#mostworked_table').DataTable({
+        "pageLength": 25,
+        "responsive": true,
+        "order": [[ 0, "asc" ]],
+        "columnDefs": [
+            { "orderable": false, "targets": 0 },
+            { "type": "num", "targets": 2 }
+        ],
+        "language": {
+            url: getDataTablesLanguageUrl()
+        }
+    });
+    
+    // Clear filters button
+    $('#clear_filters').click(function() {
+        $('#mostworked_filter_form')[0].reset();
+        $('#mostworked_filter_form').submit();
+    });
+});
+</script>
+<?php } ?>
+
 <?php if ($this->uri->segment(1) == "station") { ?>
     <script language="javascript" src="<?php echo base_url(); ?>assets/js/HamGridSquare.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/station_locations.js"></script>
