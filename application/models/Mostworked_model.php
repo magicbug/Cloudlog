@@ -27,7 +27,12 @@ class Mostworked_model extends CI_Model
         $todate = isset($filters['todate']) ? $filters['todate'] : '';
 
         $sql = "SELECT 
-                    col_call as callsign, 
+                    CASE 
+                        WHEN col_call REGEXP '/[PMAQLB]$|/MM$|/AM$|/QRP$|/LH$|/BCN$' THEN 
+                            SUBSTRING(col_call, 1, LOCATE('/', col_call) - 1)
+                        ELSE 
+                            col_call 
+                    END as callsign,
                     COUNT(*) as contact_count,
                     MIN(col_time_on) as first_qso,
                     MAX(col_time_on) as last_qso,
@@ -64,9 +69,14 @@ class Mostworked_model extends CI_Model
             $sql .= " AND DATE(col_time_on) <= '" . $this->db->escape_str($todate) . "'";
         }
 
-        $sql .= " GROUP BY col_call 
+        $sql .= " GROUP BY CASE 
+                        WHEN col_call REGEXP '/[PMAQLB]$|/MM$|/AM$|/QRP$|/LH$|/BCN$' THEN 
+                            SUBSTRING(col_call, 1, LOCATE('/', col_call) - 1)
+                        ELSE 
+                            col_call 
+                    END
                   HAVING contact_count >= " . $min_qsos . "
-                  ORDER BY contact_count DESC, col_call ASC";
+                  ORDER BY contact_count DESC, callsign ASC";
 
         $query = $this->db->query($sql);
 
