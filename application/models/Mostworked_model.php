@@ -28,7 +28,7 @@ class Mostworked_model extends CI_Model
 
         $sql = "SELECT 
                     CASE 
-                        WHEN col_call REGEXP '/[PMAQLB]$|/MM$|/AM$|/QRP$|/LH$|/BCN$' THEN 
+                        WHEN col_call REGEXP '/[PMAQLBR]$|/MM$|/AM$|/QRP$|/LH$|/BCN$' THEN 
                             SUBSTRING(col_call, 1, LOCATE('/', col_call) - 1)
                         ELSE 
                             col_call 
@@ -70,7 +70,7 @@ class Mostworked_model extends CI_Model
         }
 
         $sql .= " GROUP BY CASE 
-                        WHEN col_call REGEXP '/[PMAQLB]$|/MM$|/AM$|/QRP$|/LH$|/BCN$' THEN 
+                        WHEN col_call REGEXP '/[PMAQLBR]$|/MM$|/AM$|/QRP$|/LH$|/BCN$' THEN 
                             SUBSTRING(col_call, 1, LOCATE('/', col_call) - 1)
                         ELSE 
                             col_call 
