@@ -76,13 +76,13 @@
                         </div>
                         <div class="table-responsive">
                             <table id="mostworked_table" class="table table-striped table-hover">
-                                <thead>
+                                <thead class="table-dark">
                                     <tr>
-                                        <th>Rank</th>
-                                        <th>Callsign</th>
-                                        <th>Contacts</th>
-                                        <th>First QSO</th>
-                                        <th>Last QSO</th>
+                                        <th class="text-center" style="width: 80px;">Rank</th>
+                                        <th style="width: 150px;">Callsign</th>
+                                        <th class="text-center" style="width: 100px;">Contacts</th>
+                                        <th class="text-center" style="width: 120px;">First QSO</th>
+                                        <th class="text-center" style="width: 120px;">Last QSO</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -99,24 +99,30 @@
                                     
                                     foreach ($mostworked_callsigns as $row) { ?>
                                         <tr>
-                                            <td><?php echo $rank++; ?></td>
-                                            <td>
-                                                <strong><?php echo str_replace("0","&Oslash;",strtoupper($row->callsign)); ?></strong>
+                                            <td class="text-center align-middle">
+                                                <span class="badge bg-secondary"><?php echo $rank++; ?></span>
                                             </td>
-                                            <td>
-                                                <span class="badge bg-primary"><?php echo $row->contact_count; ?></span>
+                                            <td class="align-middle">
+                                                <strong class="text-primary fs-6"><?php echo str_replace("0","&Oslash;",strtoupper($row->callsign)); ?></strong>
                                             </td>
-                                            <td>
-                                                <?php 
-                                                $timestamp = strtotime($row->first_qso); 
-                                                echo date($custom_date_format, $timestamp); 
-                                                ?>
+                                            <td class="text-center align-middle">
+                                                <span class="badge bg-primary fs-6"><?php echo $row->contact_count; ?></span>
                                             </td>
-                                            <td>
-                                                <?php 
-                                                $timestamp = strtotime($row->last_qso); 
-                                                echo date($custom_date_format, $timestamp); 
-                                                ?>
+                                            <td class="text-center align-middle">
+                                                <small class="text-muted">
+                                                    <?php 
+                                                    $timestamp = strtotime($row->first_qso); 
+                                                    echo date($custom_date_format, $timestamp); 
+                                                    ?>
+                                                </small>
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <small class="text-muted">
+                                                    <?php 
+                                                    $timestamp = strtotime($row->last_qso); 
+                                                    echo date($custom_date_format, $timestamp); 
+                                                    ?>
+                                                </small>
                                             </td>
                                         </tr>
                                     <?php } ?>
