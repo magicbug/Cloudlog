@@ -129,7 +129,9 @@ function echoQrbCalcLink($mygrid, $grid, $vucc) {
   <div class="col-sm-4">
   	<div class="table-responsive">
 
-	  	<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
+	  	<?php if (isset($logbook_settings->public_radio_status) && $logbook_settings->public_radio_status == 1) { ?>
+	  	<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 30s"></div>
+	  	<?php } ?>
 
 
     	<table class="table table-striped">

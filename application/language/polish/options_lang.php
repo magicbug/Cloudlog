@@ -133,4 +133,5 @@ $lang['options_bands_cw_qrg_hint'] = "Częstotliwość dla CW QRG w paśmie (mus
 $lang['options_bands_name_band'] = "Nazwa pasma (np. 20m)";
 $lang['options_bands_name_bandgroup'] = "Nazwa grupy pasm (np. hf, vhf, uhf, shf)";
 $lang['options_bands_delete_warning'] = "Ostrzeżenie! Czy na pewno chcesz usunąć następujące pasmo: ";
+$lang['options_appearance_settings_saved'] = 'Ustawienia wyglądu zostały pomyślnie zapisane.';
 

@@ -99,9 +99,12 @@ class Logbook_model extends CI_Model
     if ($this->input->post('country') == "") {
       $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       $country = ucwords(strtolower($dxcc[1]), "- (/");
+      $dxcc_id = $dxcc[0];
     } else {
       $country = $this->input->post('country');
     }
+
+
 
     if ($this->input->post('cqz') == "") {
       $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
@@ -115,7 +118,6 @@ class Logbook_model extends CI_Model
     }
 
     if ($this->input->post('dxcc_id') == "") {
-
       $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
       if (empty($dxcc[0])) {
         $dxcc_id = null;
@@ -123,7 +125,12 @@ class Logbook_model extends CI_Model
         $dxcc_id = $dxcc[0];
       }
     } else {
-      $dxcc_id = $this->input->post('dxcc_id');
+      // if $country isn't empty and dxcc_id is 0 use the DXCC ID from the callsign lookup
+      if (!empty($country) && $this->input->post('dxcc_id') == "0") {
+        $dxcc_id = $dxcc_id;
+      } else {
+        $dxcc_id = $this->input->post('dxcc_id');
+      }
     }
 
     if ($this->input->post('continent') == "") {
@@ -185,13 +192,13 @@ class Logbook_model extends CI_Model
         case 'power':
           $qso_rx_power = $srx_string;
           break;
-          // Example for more sophisticated exchanges and their split into the db:
-          //case 'name/power':
-          //  if (strlen($srx_string) == 0) break;
-          //  $exch_pt = explode(" ",$srx_string);
-          //  $qso_name = $exch_pt[0];
-          //  if (count($exch_pt)>1) $qso_power = $exch_pt[1];
-          //  break;
+        // Example for more sophisticated exchanges and their split into the db:
+        //case 'name/power':
+        //  if (strlen($srx_string) == 0) break;
+        //  $exch_pt = explode(" ",$srx_string);
+        //  $qso_name = $exch_pt[0];
+        //  if (count($exch_pt)>1) $qso_power = $exch_pt[1];
+        //  break;
         default:
       }
     }
@@ -1087,7 +1094,15 @@ class Logbook_model extends CI_Model
 
     $entity = $this->get_entity($this->input->post('dxcc_id'));
     $stationId = $this->input->post('station_profile');
-    $country = ucwords(strtolower($entity['name']), "- (/");
+
+    if (is_array($entity)) {
+      $rawCountry = $entity['name'] ?? '';
+    } elseif (is_object($entity)) {
+      $rawCountry = $entity->name ?? '';
+    } else {
+      $rawCountry = (string)$entity;
+    }
+    $country = ucwords(strtolower($rawCountry), "- (/");
 
     // be sure that station belongs to user
     $CI = &get_instance();
@@ -2623,7 +2638,7 @@ class Logbook_model extends CI_Model
     if (!empty($logbooks_locations_array)) {
       // Pre-calculate today's date for better performance
       $today_date = date('Y-m-d');
-      
+
       $this->db->select("
 	  COUNT(IF(COL_QSL_SENT='Y',COL_QSL_SENT,null)) as QSL_Sent,
 	  COUNT(IF(COL_QSL_RCVD='Y',COL_QSL_RCVD,null)) as QSL_Received,
@@ -2991,7 +3006,8 @@ class Logbook_model extends CI_Model
   }
 
   // Consolidated method to get all country statistics in one query
-  function get_countries_statistics_consolidated($StationLocationsArray = null) {
+  function get_countries_statistics_consolidated($StationLocationsArray = null)
+  {
     if ($StationLocationsArray == null) {
       $CI = &get_instance();
       $CI->load->model('logbooks_model');
@@ -3027,7 +3043,7 @@ class Logbook_model extends CI_Model
         }
       }
     }
-    
+
     return array(
       'Countries_Worked' => 0,
       'Countries_Worked_QSL' => 0,
@@ -4393,13 +4409,13 @@ class Logbook_model extends CI_Model
 
   public function get_entity($dxcc)
   {
-      $sql = "SELECT name, cqz, lat, `long` FROM dxcc_entities WHERE adif = ?";
-      $query = $this->db->query($sql, array($dxcc));
-  
-      if ($query->num_rows() > 0) {
-          return $query->row_array();
-      }
-      return '';
+    $sql = "SELECT name, cqz, lat, `long` FROM dxcc_entities WHERE adif = ?";
+    $query = $this->db->query($sql, array($dxcc));
+
+    if ($query->num_rows() > 0) {
+      return $query->row_array();
+    }
+    return '';
   }
 
   /*
@@ -4490,37 +4506,37 @@ class Logbook_model extends CI_Model
       foreach ($r->result_array() as $row) {
         $callsign = $row['COL_CALL'];
         if ($this->session->userdata('callbook_type') == "QRZ") {
-					// Lookup using QRZ
-					$this->load->library('qrz');
+          // Lookup using QRZ
+          $this->load->library('qrz');
 
-					// Load the encryption library
-					$this->load->library('encryption');
+          // Load the encryption library
+          $this->load->library('encryption');
 
-					// Decrypt the password
-					$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+          // Decrypt the password
+          $decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
 
-					if(!$this->session->userdata('qrz_session_key')) {
-						$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-					}
+          if (!$this->session->userdata('qrz_session_key')) {
+            $qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
+            $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+          }
 
           $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'));
         }
 
         if ($this->session->userdata('callbook_type') == "HamQTH") {
-					// Load the HamQTH library
-					$this->load->library('hamqth');
+          // Load the HamQTH library
+          $this->load->library('hamqth');
 
-					// Load the encryption library
-					$this->load->library('encryption');
+          // Load the encryption library
+          $this->load->library('encryption');
 
-					// Decrypt the password
-					$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-					
-					if(!$this->session->userdata('hamqth_session_key')) {
-						$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-						$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-					}
+          // Decrypt the password
+          $decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+
+          if (!$this->session->userdata('hamqth_session_key')) {
+            $hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
+            $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+          }
 
           $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
 
@@ -4642,7 +4658,7 @@ class Logbook_model extends CI_Model
         // Decrypt the password
         $decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
 
-        if(!$this->session->userdata('qrz_session_key')) {
+        if (!$this->session->userdata('qrz_session_key')) {
           $qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
           $this->session->set_userdata('qrz_session_key', $qrz_session_key);
         }
@@ -4670,8 +4686,8 @@ class Logbook_model extends CI_Model
 
         // Decrypt the password
         $decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-        
-        if(!$this->session->userdata('hamqth_session_key')) {
+
+        if (!$this->session->userdata('hamqth_session_key')) {
           $hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
           $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
         }
@@ -4846,20 +4862,20 @@ class Logbook_model extends CI_Model
 
   // [JSON PLOT] return array for plot qso for map //
   public function get_plot_array_for_map($qsos_result, $isVisitor = false)
-{
+  {
     $this->load->library('qra');
     $CI = &get_instance();
     $CI->load->library('DxccFlag');
-    
+
     $json["markers"] = array();
-    
+
     foreach ($qsos_result as $row) {
       $plot = array('lat' => 0, 'lng' => 0, 'html' => '', 'label' => '', 'flag' => '', 'confirmed' => 'N');
-      
+
       $plot['label'] = $row->COL_CALL;
       $plot['callsign'] = $row->COL_CALL;
       $flag = strtolower($CI->dxccflag->getISO($row->COL_DXCC));
-      $plot['flag'] = '<span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name==null?"- NONE -":$row->name))) . '"><span class="fi fi-' . $flag .'"></span></span> ';
+      $plot['flag'] = '<span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name == null ? "- NONE -" : $row->name))) . '"><span class="fi fi-' . $flag . '"></span></span> ';
       $plot['html'] = ($row->COL_GRIDSQUARE != null ?  "<b>Grid:</b> " . $row->COL_GRIDSQUARE . "<br />" : "");
       $plot['html'] .= "<b>Date/Time:</b> " . $row->COL_TIME_ON . "<br />";
       $plot['html'] .= ($row->COL_SAT_NAME != null) ? ("<b>SAT:</b> " . $row->COL_SAT_NAME . "<br />") : ("<b>Band:</b> " . $row->COL_BAND . " ");
@@ -4920,12 +4936,13 @@ class Logbook_model extends CI_Model
   }
 
   /**
-  * Processes a batch of QRZ ADIF records for efficient database updates.
-  *
-  * @param array $batch_data Array of records from the ADIF file.
-  * @return string HTML table rows for the processed batch.
-  */
-  public function process_qrz_batch($batch_data) {
+   * Processes a batch of QRZ ADIF records for efficient database updates.
+   *
+   * @param array $batch_data Array of records from the ADIF file.
+   * @return string HTML table rows for the processed batch.
+   */
+  public function process_qrz_batch($batch_data)
+  {
     $table = "";
     $update_batch_data = [];
     $this->load->model('Stations');
@@ -4935,14 +4952,14 @@ class Logbook_model extends CI_Model
     }
 
     // Step 1: Build WHERE clause for fetching potential matches
-    $this->db->select($this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_MODE, ');
+    $this->db->select($this->config->item('table_name') . '.COL_PRIMARY_KEY, ' . $this->config->item('table_name') . '.COL_CALL, ' . $this->config->item('table_name') . '.COL_TIME_ON, ' . $this->config->item('table_name') . '.COL_BAND, ' . $this->config->item('table_name') . '.COL_MODE, ');
     $this->db->from($this->config->item('table_name'));
     $this->db->group_start(); // Start grouping OR conditions
     foreach ($batch_data as $record) {
       $this->db->or_group_start(); // Start group for this record's AND conditions
-      $this->db->where($this->config->item('table_name').'.COL_CALL', $record['call']);
-      $this->db->like($this->config->item('table_name').'.COL_TIME_ON', $record['time_on'], 'after');
-      $this->db->where($this->config->item('table_name').'.COL_BAND', $record['band']);
+      $this->db->where($this->config->item('table_name') . '.COL_CALL', $record['call']);
+      $this->db->like($this->config->item('table_name') . '.COL_TIME_ON', $record['time_on'], 'after');
+      $this->db->where($this->config->item('table_name') . '.COL_BAND', $record['band']);
       $this->db->group_end(); // End group for this record's AND conditions
     }
     $this->db->group_end(); // End grouping OR conditions
@@ -4954,7 +4971,7 @@ class Logbook_model extends CI_Model
     // Index DB results for faster lookup
     $indexed_results = [];
     foreach ($db_results as $row) {
-	  $time = substr($row['COL_TIME_ON'], 0, 16);
+      $time = substr($row['COL_TIME_ON'], 0, 16);
       $key = $row['COL_CALL'] . '|' . $time . '|' . $row['COL_BAND'];
       $indexed_results[$key] = $row['COL_PRIMARY_KEY'];
     }
@@ -5003,11 +5020,12 @@ class Logbook_model extends CI_Model
    * @param string $user_format The user's preferred date format (e.g., 'd/m/Y', 'Y-m-d')
    * @return string Returns date in Y-m-d format for database storage, or original input if parsing fails
    */
-  private function parse_user_date($date_input, $user_format = null) {
+  private function parse_user_date($date_input, $user_format = null)
+  {
     if (empty($date_input)) {
       return $date_input;
     }
-    
+
     // If no user format provided, try to get it from session or config
     if ($user_format === null) {
       if ($this->session->userdata('user_date_format')) {
@@ -5016,19 +5034,19 @@ class Logbook_model extends CI_Model
         $user_format = $this->config->item('qso_date_format');
       }
     }
-    
+
     // Try to parse with the user's format first
     $date = DateTime::createFromFormat($user_format, $date_input);
     if ($date !== false) {
       return $date->format('Y-m-d');
     }
-    
+
     // Fallback to strtotime for formats it can handle (mostly Y-m-d, m/d/Y, etc.)
     $timestamp = strtotime($date_input);
     if ($timestamp !== false) {
       return date('Y-m-d', $timestamp);
     }
-    
+
     // If all parsing fails, return the original input and let the database handle it
     return $date_input;
   }

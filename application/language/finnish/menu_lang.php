@@ -32,6 +32,7 @@ $lang['menu_days_with_qsos'] = 'QSO:llsia päiviä';
 $lang['menu_timeline'] = 'Aikajana';
 $lang['menu_accumulated_statistics'] = 'Kertyneet tilastot';
 $lang['menu_timeplotter'] = 'Aikajana';
+$lang['menu_most_worked'] = 'Eniten Työskennellyt';
 $lang['menu_custom_maps'] = 'Custom Maps';
 $lang['menu_continents'] = 'Mantereet';
 

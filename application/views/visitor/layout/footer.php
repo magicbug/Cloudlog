@@ -36,8 +36,12 @@
         var q_lng = -32.695312;
         <?php } ?>
 
-        <?php if(isset($slug)) { ?>
-        var qso_loc = '<?php echo site_url('visitor/map/'.$slug);?>';
+        <?php if(isset($slug)) { 
+          $offset = $this->uri->segment(4);
+        ?>
+
+
+        var qso_loc = '<?php echo site_url('visitor/map/'.$slug.'/'.$offset);?>';
         <?php } ?>
         var q_zoom = 3;
 
@@ -57,53 +61,37 @@
 
 <?php if ($this->uri->segment(2) == "satellites") { ?>
 
-<script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColoured.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/geocoding.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColouredGridMap.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/sections/gridmap.js?"></script>
 
 <script>
 
-  var layer = L.tileLayer('<?php echo $this->optionslib->get_option('option_map_tile_server');?>', {
-    maxZoom: 18,
-    attribution: '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>',
-    id: 'mapbox.streets'
-  });
-
-  var map = L.map('gridsquare_map', {
-    layers: [layer],
-    center: [19, 0],
-    zoom: 2,
-    fullscreenControl: true,
-        fullscreenControlOptions: {
-          position: 'topleft'
-        },
-  });
-
-  var printer = L.easyPrint({
-        tileLayer: layer,
-        sizeModes: ['Current'],
-        filename: 'myMap',
-        exportOnly: true,
-        hideControlContainer: true
-    }).addTo(map);
-
+  // Set up global variables for gridmap functionality
   var grid_two = <?php echo $grid_2char; ?>;
   var grid_four = <?php echo $grid_4char; ?>;
   var grid_six = <?php echo $grid_6char; ?>;
-
-  var grid_two_count = grid_two.length;
-  var grid_four_count = grid_four.length;
-  var grid_six_count = grid_six.length;
-
 
   var grid_two_confirmed = <?php echo $grid_2char_confirmed; ?>;
   var grid_four_confirmed = <?php echo $grid_4char_confirmed; ?>;
   var grid_six_confirmed = <?php echo $grid_6char_confirmed; ?>;
 
-  var grid_two_confirmed_count = grid_two_confirmed.length;
-  var grid_four_confirmed_count = grid_four_confirmed.length;
-  var grid_six_confirmed_count = grid_six_confirmed.length;
+  // Set up other required global variables
+  var jslayer = '<?php echo $this->optionslib->get_option('option_map_tile_server');?>';
+  var jsattribution = '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>';
+  var gridsquares_gridsquares = "<?php echo lang('gridsquares_gridsquares'); ?>";
+  var gridsquares_gridsquares_confirmed = "<?php echo lang('gridsquares_gridsquares_confirmed'); ?>";
+  var gridsquares_gridsquares_not_confirmed = "<?php echo lang('gridsquares_gridsquares_not_confirmed'); ?>";
+  var gridsquares_gridsquares_total_worked = "<?php echo lang('gridsquares_gridsquares_total_worked'); ?>";
+  
+  var visitor = true;
+  var type = "worked";
 
-  var maidenhead = L.maidenhead().addTo(map);
+  // Initialize the map when document is ready
+  $(document).ready(function() {
+    // Use the plot function from gridmap.js to render the initial map
+    plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
+  });
 
 <?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
 

@@ -12,12 +12,19 @@
         <div class="alert alert-warning" role="warning">
             Private feed key empty. Please set the feed key in your profile.
         </div>
+    <?php } elseif ($error) { ?>
+        <div class="alert alert-danger" role="alert">
+            <strong>Connection Error:</strong> <?php echo htmlspecialchars($error_message); ?>
+        </div>
+    <?php } elseif ($rovedata === null || !isset($rovedata['data'])) { ?>
+        <div class="alert alert-danger" role="alert">
+            <strong>Data Error:</strong> Unable to retrieve satellite data. Please try refreshing the page or check back later.
+        </div>
+    <?php } elseif ($rovedata['data'] == []) { ?>
+        <div class="alert alert-warning" role="warning">
+            <?php echo lang('hams_at_no_activations_found'); ?>
+        </div>
     <?php } else { ?>
-        <?php if ($rovedata['data'] == []) { ?>
-            <div class="alert alert-warning" role="warning">
-                <?php echo lang('hams_at_no_activations_found'); ?>
-            </div>
-        <?php } else { ?>
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -152,6 +159,5 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
-        <?php } ?>
     <?php } ?>
 </div>

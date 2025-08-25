@@ -378,6 +378,31 @@ class Lotw extends CI_Controller {
     	redirect('/lotw/');
     }
 
+	/*
+	|--------------------------------------------------------------------------
+	| Function: toggle_archive_cert
+	|--------------------------------------------------------------------------
+	|
+	| Toggles the archive status of a LoTW certificate
+	|
+	*/
+    public function toggle_archive_cert($cert_id) {
+    	$this->load->model('user_model');
+		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+
+    	$this->load->model('LotwCert');
+
+    	$result = $this->LotwCert->toggle_archive_certificate($this->session->userdata('user_id'), $cert_id);
+
+    	if($result['archived']) {
+    		$this->session->set_flashdata('Success', 'Certificate Archived.');
+    	} else {
+    		$this->session->set_flashdata('Success', 'Certificate Unarchived.');
+    	}
+
+    	redirect('/lotw/');
+    }
+
 
 	/*
 	|--------------------------------------------------------------------------

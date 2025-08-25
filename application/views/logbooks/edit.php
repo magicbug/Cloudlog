@@ -73,14 +73,39 @@
 					<form style="display: inline;">
 					<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
 					<p style="margin-top: 15px;"><?php echo lang('station_logbooks_public_search_hint'); ?></p>
-					<label for="public_search"><?php echo lang('station_logbooks_public_search_enabled'); ?></label>
-					<select class="form-select" id="public_search" name="public_search" hx-post="<?php echo site_url('logbooks/save_publicsearch/'); ?>" hx-target="#publicSearchForm" hx-trigger="change">
-						<option value="1" <?php if ($station_logbook_details->public_search == 1) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_yes'); ?></option>
-						<option value="0" <?php if ($station_logbook_details->public_search == 0) { echo " selected =\"selected\""; } ?>><?php echo lang('general_word_no'); ?></option>
-					</select>
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" id="public_search" name="public_search" value="1" 
+							<?php if ($station_logbook_details->public_search == 1) { echo " checked"; } ?>
+							hx-post="<?php echo site_url('logbooks/save_publicsearch/'); ?>" 
+							hx-target="#publicSearchForm" 
+							hx-trigger="change"
+							hx-vals='{"logbook_id": "<?php echo $station_logbook_details->logbook_id; ?>"}'>
+						<label class="form-check-label" for="public_search">
+							<?php echo lang('station_logbooks_public_search_enabled'); ?>
+						</label>
+					</div>
 					</form>
 					<p>
 					<div id="publicSearchForm">
+					</div>
+
+					<form style="display: inline;">
+					<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
+					<p style="margin-top: 15px;"><?php echo lang('station_logbooks_public_radio_status_hint'); ?></p>
+					<div class="form-check form-switch">
+						<input class="form-check-input" type="checkbox" id="public_radio_status" name="public_radio_status" value="1" 
+							<?php if (isset($station_logbook_details->public_radio_status) && $station_logbook_details->public_radio_status == 1) { echo " checked"; } ?>
+							hx-post="<?php echo site_url('logbooks/save_publicradiostatus/'); ?>" 
+							hx-target="#publicRadioStatusForm" 
+							hx-trigger="change"
+							hx-vals='{"logbook_id": "<?php echo $station_logbook_details->logbook_id; ?>"}'>
+						<label class="form-check-label" for="public_radio_status">
+							<?php echo lang('station_logbooks_public_radio_status_enabled'); ?>
+						</label>
+					</div>
+					</form>
+					<p>
+					<div id="publicRadioStatusForm">
 					</div>
 				</div>
 			</div>

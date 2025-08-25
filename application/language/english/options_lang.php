@@ -101,6 +101,7 @@ $lang['options_version_dialog_show_all_hint'] = "This will show the version dial
 $lang['options_version_dialog_hide_all_hint'] = "This will deactivate the automatic popup of the version dialog for all users.";
 
 $lang['options_save'] = 'Save';
+$lang['options_appearance_settings_saved'] = 'Appearance settings have been saved successfully.';
 
 // Bands
 

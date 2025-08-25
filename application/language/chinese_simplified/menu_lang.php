@@ -32,6 +32,7 @@ $lang['menu_days_with_qsos'] = '天数';
 $lang['menu_timeline'] = '时间线';
 $lang['menu_accumulated_statistics'] = '累积统计';
 $lang['menu_timeplotter'] = '时间图';
+$lang['menu_most_worked'] = '最常工作';
 $lang['menu_custom_maps'] = '自定义地图';
 $lang['menu_continents'] = '大陆';
 
