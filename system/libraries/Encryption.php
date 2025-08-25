@@ -152,7 +152,7 @@ class CI_Encryption {
 	public function __construct(array $params = array())
 	{
 		$this->_drivers = array(
-			'mcrypt'  => defined('MCRYPT_DEV_URANDOM'),
+			'mcrypt'  => defined('MCRYPT_DEV_URANDOM') && function_exists('mcrypt_encrypt'),
 			'openssl' => extension_loaded('openssl')
 		);
 
@@ -203,9 +203,20 @@ class CI_Encryption {
 
 		if (empty($this->_driver))
 		{
-			$this->_driver = ($this->_drivers['openssl'] === TRUE)
-				? 'openssl'
-				: 'mcrypt';
+			// Prefer OpenSSL on modern PHP versions where mcrypt is not available
+			if ($this->_drivers['openssl'] === TRUE)
+			{
+				$this->_driver = 'openssl';
+			}
+			elseif ($this->_drivers['mcrypt'] === TRUE)
+			{
+				$this->_driver = 'mcrypt';
+			}
+			else
+			{
+				// This shouldn't happen as we check both drivers in constructor
+				show_error('Encryption: No available encryption driver found.');
+			}
 
 			log_message('debug', "Encryption: Auto-configured driver '".$this->_driver."'.");
 		}
