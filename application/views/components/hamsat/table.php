@@ -107,8 +107,8 @@
                             ?>
                             <td><span data-bs-toggle="tooltip" title="<?php if ($rove['mhz'] != '') {
                                                                             printf("%.3f", $rove['mhz']);
-                                                                            echo " " . $direction ?? '';
-                                                                        } ?>"><?= $rove['satellite']['name'] ?></span></td>
+                                                                            echo " " . ($direction ?? '');
+                                                                        } ?>"><?php echo $rove['satellite']['name']; ?></span></td>
                             <td><span title="<?php echo $rove['mode']; ?>" class="badge <?php echo $modeclass; ?>"><?php echo $rove['mode']; ?></span></td>
                             <td>
 
