@@ -1932,7 +1932,6 @@ class Logbook_model extends CI_Model
 
   function get_last_qsos($num, $StationLocationsArray = null)
   {
-
     if ($StationLocationsArray == null) {
       $CI = &get_instance();
       $CI->load->model('logbooks_model');
@@ -1945,13 +1944,13 @@ class Logbook_model extends CI_Model
       $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
 
       $sql = "SELECT * FROM ( select * from " . $this->config->item('table_name') . "
-        WHERE station_id IN(" . $location_list . ")
-        order by col_time_on desc, col_primary_key desc
-        limit " . $num .
+            WHERE station_id IN(" . $location_list . ")
+            order by col_time_on desc, col_primary_key desc
+            limit " . $num .
         ") hrd
-        JOIN station_profile ON station_profile.station_id = hrd.station_id
-        LEFT JOIN dxcc_entities ON hrd.col_dxcc = dxcc_entities.adif
-        order by col_time_on desc, col_primary_key desc";
+            LEFT JOIN station_profile ON station_profile.station_id = hrd.station_id
+            LEFT JOIN dxcc_entities ON hrd.col_dxcc = dxcc_entities.adif
+            order by col_time_on desc, col_primary_key desc";
 
       $query = $this->db->query($sql);
 
