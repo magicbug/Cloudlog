@@ -1932,6 +1932,9 @@ class Logbook_model extends CI_Model
 
   function get_last_qsos($num, $StationLocationsArray = null)
   {
+    // Ensure $num is always an integer to prevent SQL injection
+    $num = intval($num);
+    
     if ($StationLocationsArray == null) {
       $CI = &get_instance();
       $CI->load->model('logbooks_model');

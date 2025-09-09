@@ -848,8 +848,20 @@ class API extends CI_Controller {
 	 *   "logbook_slug": "my-public-logbook"
 	 * }
 	 */
-	function recent_qsos($public_slug = null, $limit) {
+	function recent_qsos($public_slug = null, $limit = 10) {
 		header('Content-type: application/json');
+
+		// Validate and sanitize $limit
+		if (!is_numeric($limit)) {
+			$limit = 10; // Default to 10 if not numeric
+		} else {
+			$limit = intval($limit);
+			if ($limit < 1) {
+				$limit = 1; // Minimum limit of 1
+			} elseif ($limit > 50) {
+				$limit = 50; // Maximum limit of 50
+			}
+		}
 
 		if($public_slug == null) {
 			http_response_code(400);
