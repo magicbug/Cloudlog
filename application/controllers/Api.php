@@ -848,7 +848,7 @@ class API extends CI_Controller {
 	 *   "logbook_slug": "my-public-logbook"
 	 * }
 	 */
-	function recent_qsos($public_slug = null, $limit = 10) {
+	function recent_qsos($public_slug = null, $limit) {
 		header('Content-type: application/json');
 
 		if($public_slug == null) {
