@@ -857,15 +857,6 @@ class API extends CI_Controller {
 			return;
 		}
 
-		// Validate and sanitize limit parameter
-		$limit = intval($limit);
-		if ($limit <= 0) {
-			$limit = 10; // default
-		}
-		if ($limit > 50) {
-			$limit = 50; // maximum
-		}
-
 		$this->load->model('logbooks_model');
 		$this->load->model('logbook_model');
 
