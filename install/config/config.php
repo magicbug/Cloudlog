@@ -200,6 +200,9 @@ case 'finnish':
 case 'russian':
 	$config['language'] = $lang;
 	break;
+case 'portuguese':
+	$config['language'] = $lang;
+	break;
 case 'english':
 	$config['language'] = $lang;
 	break;

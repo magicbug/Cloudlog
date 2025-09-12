@@ -1,6 +1,7 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (! defined('BASEPATH')) exit('No direct script access allowed');
 
-class API extends CI_Controller {
+class API extends CI_Controller
+{
 
 	// Do absolutely nothing
 	function index()
@@ -14,7 +15,7 @@ class API extends CI_Controller {
 
 		// Check if users logged in
 
-		if($this->user_model->validate_session() == 0) {
+		if ($this->user_model->validate_session() == 0) {
 			// user is not logged in
 			redirect('user/login');
 		}
@@ -31,12 +32,13 @@ class API extends CI_Controller {
 	}
 
 
-	function edit($key) {
+	function edit($key)
+	{
 		$this->load->model('user_model');
 
 		// Check if users logged in
 
-		if($this->user_model->validate_session() == 0) {
+		if ($this->user_model->validate_session() == 0) {
 			// user is not logged in
 			redirect('user/login');
 		}
@@ -45,40 +47,37 @@ class API extends CI_Controller {
 
 		$this->load->helper(array('form', 'url'));
 
-        $this->load->library('form_validation');
+		$this->load->library('form_validation');
 
-        $this->form_validation->set_rules('api_desc', 'API Description', 'required');
-        $this->form_validation->set_rules('api_key', 'API Key is required do not change this field', 'required');
+		$this->form_validation->set_rules('api_desc', 'API Description', 'required');
+		$this->form_validation->set_rules('api_key', 'API Key is required do not change this field', 'required');
 
-        $data['api_info'] = $this->api_model->key_description($key);
+		$data['api_info'] = $this->api_model->key_description($key);
 
-        if ($this->form_validation->run() == FALSE)
-        {
-  	      	$data['page_title'] = "Edit API Description";
+		if ($this->form_validation->run() == FALSE) {
+			$data['page_title'] = "Edit API Description";
 
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('api/description');
 			$this->load->view('interface_assets/footer');
-		}
-		else
-		{
+		} else {
 			// Success!
 
 			$this->api_model->update_key_description($this->input->post('api_key'), $this->input->post('api_desc'));
 
-			$this->session->set_flashdata('notice', 'API Key <b>'.$this->input->post('api_key')."</b> description has been updated.");
+			$this->session->set_flashdata('notice', 'API Key <b>' . $this->input->post('api_key') . "</b> description has been updated.");
 
 			redirect('api/help');
 		}
-
 	}
 
-	function generate($rights) {
+	function generate($rights)
+	{
 		$this->load->model('user_model');
 
 		// Check if users logged in
 
-		if($this->user_model->validate_session() == 0) {
+		if ($this->user_model->validate_session() == 0) {
 			// user is not logged in
 			redirect('user/login');
 		}
@@ -91,12 +90,13 @@ class API extends CI_Controller {
 		redirect('api/help');
 	}
 
-	function delete($key) {
+	function delete($key)
+	{
 		$this->load->model('user_model');
 
 		// Check if users logged in
 
-		if($this->user_model->validate_session() == 0) {
+		if ($this->user_model->validate_session() == 0) {
 			// user is not logged in
 			redirect('user/login');
 		}
@@ -106,31 +106,33 @@ class API extends CI_Controller {
 
 		$this->api_model->delete_key($key);
 
-		$this->session->set_flashdata('notice', 'API Key <b>'.$key."</b> has been deleted");
+		$this->session->set_flashdata('notice', 'API Key <b>' . $key . "</b> has been deleted");
 
 		redirect('api/help');
 	}
 
 	// Example of authing
-	function auth($key) {
+	function auth($key)
+	{
 		$this->load->model('api_model');
-			header("Content-type: text/xml");
-		if($this->api_model->access($key) == "No Key Found" || $this->api_model->access($key) == "Key Disabled") {
+		header("Content-type: text/xml");
+		if ($this->api_model->access($key) == "No Key Found" || $this->api_model->access($key) == "Key Disabled") {
 			echo "<auth>";
 			echo "<message>Key Invalid - either not found or disabled</message>";
 			echo "</auth>";
 		} else {
 			echo "<auth>";
 			echo "<status>Valid</status>";
-			echo "<rights>".$this->api_model->access($key)."</rights>";
+			echo "<rights>" . $this->api_model->access($key) . "</rights>";
 			echo "</auth>";
 		}
 	}
 
-	function check_auth($key) {
+	function check_auth($key)
+	{
 		$this->load->model('api_model');
-			header("Content-type: text/xml");
-		if($this->api_model->access($key) == "No Key Found" || $this->api_model->access($key) == "Key Disabled") {
+		header("Content-type: text/xml");
+		if ($this->api_model->access($key) == "No Key Found" || $this->api_model->access($key) == "Key Disabled") {
 			// set the content type as json
 			header("Content-type: application/json");
 
@@ -150,23 +152,24 @@ class API extends CI_Controller {
 		}
 	}
 
-	function station_info($key) {
+	function station_info($key)
+	{
 		$this->load->model('api_model');
 		$this->load->model('stations');
 		header("Content-type: application/json");
-		if(substr($this->api_model->access($key),0,1) == 'r') { /* Checkpermission for  _r_eading */
+		if (substr($this->api_model->access($key), 0, 1) == 'r') { /* Checkpermission for  _r_eading */
 			$this->api_model->update_last_used($key);
 			$userid = $this->api_model->key_userid($key);
- 			$station_ids = array();
-			$stations=$this->stations->all_of_user($userid);
- 			foreach ($stations->result() as $row) {
-				$result['station_id']=$row->station_id;
-				$result['station_profile_name']=$row->station_profile_name;
-				$result['station_gridsquare']=$row->station_gridsquare;
-				$result['station_callsign']=$row->station_callsign;;
-				$result['station_active']=$row->station_active;
- 				array_push($station_ids, $result);
- 			}
+			$station_ids = array();
+			$stations = $this->stations->all_of_user($userid);
+			foreach ($stations->result() as $row) {
+				$result['station_id'] = $row->station_id;
+				$result['station_profile_name'] = $row->station_profile_name;
+				$result['station_gridsquare'] = $row->station_gridsquare;
+				$result['station_callsign'] = $row->station_callsign;;
+				$result['station_active'] = $row->station_active;
+				array_push($station_ids, $result);
+			}
 			echo json_encode($station_ids);
 		} else {
 			http_response_code(401);
@@ -175,12 +178,13 @@ class API extends CI_Controller {
 	}
 
 
-  	/*
+	/*
 	*
 	*	Function: QSO
 	*	Task: allows passing of ADIF data to Cloudlog
 	*/
-	function qso() {
+	function qso()
+	{
 		header('Content-type: application/json');
 
 		$this->load->model('api_model');
@@ -194,29 +198,29 @@ class API extends CI_Controller {
 		$obj = json_decode(file_get_contents("php://input"), true);
 		if ($obj === NULL) {
 			// Decoding not valid try simple www-x-form-urlencoded
-		    $objTmp = file_get_contents("php://input");
-		    parse_str($objTmp, $obj);
-		    if ($obj === NULL) {
-		        echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
-		        die();
-		    }
+			$objTmp = file_get_contents("php://input");
+			parse_str($objTmp, $obj);
+			if ($obj === NULL) {
+				echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
+				die();
+			}
 		}
 
-		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
-		   http_response_code(401);
-		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
-		   die();
+		if (!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+			die();
 		}
 
 		$userid = $this->api_model->key_userid($obj['key']);
 
-		if(!isset($obj['station_profile_id']) || $this->stations->check_station_against_user($obj['station_profile_id'], $userid) == false) {
+		if (!isset($obj['station_profile_id']) || $this->stations->check_station_against_user($obj['station_profile_id'], $userid) == false) {
 			http_response_code(401);
 			echo json_encode(['status' => 'failed', 'reason' => "station id does not belong to the API key owner."]);
 			die();
 		}
 
-		if($obj['type'] == "adif" && $obj['string'] != "") {
+		if ($obj['type'] == "adif" && $obj['string'] != "") {
 			// Load the logbook model for adding QSO records
 			$this->load->model('logbook_model');
 
@@ -227,22 +231,20 @@ class API extends CI_Controller {
 			$this->adif_parser->feed($obj['string']);
 
 			// Create QSO Record
-			while($record = $this->adif_parser->get_record())
-			{
-				if(count($record) == 0)
-				{
+			while ($record = $this->adif_parser->get_record()) {
+				if (count($record) == 0) {
 					break;
 				};
 
 
-				if(isset($obj['station_profile_id'])) {
-					if(isset($record['station_callsign']) && $this->stations->check_station_against_callsign($obj['station_profile_id'], $record['station_callsign']) == false) {
+				if (isset($obj['station_profile_id'])) {
+					if (isset($record['station_callsign']) && $this->stations->check_station_against_callsign($obj['station_profile_id'], $record['station_callsign']) == false) {
 						http_response_code(401);
 						echo json_encode(['status' => 'failed', 'reason' => "station callsign does not match station callsign in station profile."]);
 						die();
 					}
 
-					if(!(isset($record['call'])) || (trim($record['call']) == '')) {
+					if (!(isset($record['call'])) || (trim($record['call']) == '')) {
 						http_response_code(401);
 						echo json_encode(['status' => 'failed', 'reason' => "QSO Call is empty."]);
 						die();
@@ -252,23 +254,21 @@ class API extends CI_Controller {
 
 					$msg = $this->logbook_model->import($record, $obj['station_profile_id'], NULL, NULL, NULL, NULL, NULL, NULL, false, false, true);
 
-					if ( $msg == "" ) {
+					if ($msg == "") {
 						$return_count++;
 					} else {
 						$return_msg[] = $msg;
 					}
 				}
-
 			};
 			http_response_code(201);
-			echo json_encode(['status' => 'created', 'type' => $obj['type'], 'string' => $obj['string'], 'imported_count' => $return_count, 'messages' => $return_msg ]);
-
+			echo json_encode(['status' => 'created', 'type' => $obj['type'], 'string' => $obj['string'], 'imported_count' => $return_count, 'messages' => $return_msg]);
 		}
-
 	}
 
 	// API function to check if a callsign is in the logbook already
-	function logbook_check_callsign() {
+	function logbook_check_callsign()
+	{
 		header('Content-type: application/json');
 
 		$this->load->model('api_model');
@@ -276,29 +276,29 @@ class API extends CI_Controller {
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 		if ($obj === NULL) {
-		    echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
+			echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
 			return;
 		}
 
-		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
-		   http_response_code(401);
-		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+		if (!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
 			return;
 		}
 
-		if(!isset($obj['logbook_public_slug']) || !isset($obj['callsign'])) {
-		   http_response_code(401);
-		   echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
+		if (!isset($obj['logbook_public_slug']) || !isset($obj['callsign'])) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
 			return;
 		}
 
-		if($obj['logbook_public_slug'] != "" && $obj['callsign'] != "") {
+		if ($obj['logbook_public_slug'] != "" && $obj['callsign'] != "") {
 
 			$logbook_slug = $obj['logbook_public_slug'];
 			$callsign = $obj['callsign'];
 
 			// If $obj['band'] exists
-			if(isset($obj['band'])) {
+			if (isset($obj['band'])) {
 				$band = $obj['band'];
 			} else {
 				$band = null;
@@ -306,13 +306,12 @@ class API extends CI_Controller {
 
 			$this->load->model('logbooks_model');
 
-			if($this->logbooks_model->public_slug_exists($logbook_slug)) {
+			if ($this->logbooks_model->public_slug_exists($logbook_slug)) {
 				$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($logbook_slug);
-				if($logbook_id != false)
-				{
+				if ($logbook_id != false) {
 					// Get associated station locations for mysql queries
 					$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
-	
+
 					if (!$logbooks_locations_array) {
 						// Logbook not found
 						http_response_code(404);
@@ -322,7 +321,7 @@ class API extends CI_Controller {
 				} else {
 					// Logbook not found
 					http_response_code(404);
-					echo json_encode(['status' => 'failed', 'reason' => $logbook_slug." has no associated station locations"]);
+					echo json_encode(['status' => 'failed', 'reason' => $logbook_slug . " has no associated station locations"]);
 					die();
 				}
 				// Search Logbook for callsign
@@ -331,8 +330,7 @@ class API extends CI_Controller {
 				$result = $this->logbook_model->check_if_callsign_worked_in_logbook($callsign, $logbooks_locations_array, $band);
 
 				http_response_code(201);
-				if($result > 0)
-				{
+				if ($result > 0) {
 					echo json_encode(['callsign' => $callsign, 'result' => 'Found']);
 				} else {
 					echo json_encode(['callsign' => $callsign, 'result' => 'Not Found']);
@@ -343,13 +341,12 @@ class API extends CI_Controller {
 				echo json_encode(['status' => 'failed', 'reason' => "logbook not found"]);
 				die();
 			}
-
 		}
-
 	}
 
 	// API function to check if a grid is in the logbook already
-	function logbook_check_grid() {
+	function logbook_check_grid()
+	{
 		header('Content-type: application/json');
 
 		$this->load->model('api_model');
@@ -357,27 +354,27 @@ class API extends CI_Controller {
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 		if ($obj === NULL) {
-		    echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
+			echo json_encode(['status' => 'failed', 'reason' => "wrong JSON"]);
 		}
 
-		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
-		   http_response_code(401);
-		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+		if (!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
 		}
 
-		if(!isset($obj['logbook_public_slug']) || !isset($obj['grid'])) {
-		   http_response_code(401);
-		   echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
+		if (!isset($obj['logbook_public_slug']) || !isset($obj['grid'])) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
 			return;
 		}
 
-		if($obj['logbook_public_slug'] != "" && $obj['grid'] != "") {
+		if ($obj['logbook_public_slug'] != "" && $obj['grid'] != "") {
 
 			$logbook_slug = $obj['logbook_public_slug'];
 			$grid = $obj['grid'];
 
 			// If $obj['band'] exists
-			if(isset($obj['band'])) {
+			if (isset($obj['band'])) {
 				$band = $obj['band'];
 			} else {
 				$band = null;
@@ -385,13 +382,12 @@ class API extends CI_Controller {
 
 			$this->load->model('logbooks_model');
 
-			if($this->logbooks_model->public_slug_exists($logbook_slug)) {
+			if ($this->logbooks_model->public_slug_exists($logbook_slug)) {
 				$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($logbook_slug);
-				if($logbook_id != false)
-				{
+				if ($logbook_id != false) {
 					// Get associated station locations for mysql queries
 					$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
-	
+
 					if (!$logbooks_locations_array) {
 						// Logbook not found
 						http_response_code(404);
@@ -401,7 +397,7 @@ class API extends CI_Controller {
 				} else {
 					// Logbook not found
 					http_response_code(404);
-					echo json_encode(['status' => 'failed', 'reason' => $logbook_slug." has no associated station locations"]);
+					echo json_encode(['status' => 'failed', 'reason' => $logbook_slug . " has no associated station locations"]);
 					die();
 				}
 				// Search Logbook for callsign
@@ -410,8 +406,7 @@ class API extends CI_Controller {
 				$result = $this->logbook_model->check_if_grid_worked_in_logbook($grid, $logbooks_locations_array, $band);
 
 				http_response_code(201);
-				if($result > 0)
-				{
+				if ($result > 0) {
 					echo json_encode(['gridsquare' => strtoupper($grid), 'result' => 'Found']);
 				} else {
 					echo json_encode(['gridsquare' => strtoupper($grid), 'result' => 'Not Found']);
@@ -422,9 +417,7 @@ class API extends CI_Controller {
 				echo json_encode(['status' => 'failed', 'reason' => "logbook not found"]);
 				die();
 			}
-
 		}
-
 	}
 
 
@@ -487,16 +480,16 @@ class API extends CI_Controller {
 			return;
 		}
 
-		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
-		   http_response_code(401);
-		   echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
-		   return;
+		if (!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
+			return;
 		}
 
-		if(!isset($obj['logbook_public_slug']) || !isset($obj['callsign'])) {
-		   http_response_code(401);
-		   echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
-		   return;
+		if (!isset($obj['logbook_public_slug']) || !isset($obj['callsign'])) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => "missing fields"]);
+			return;
 		}
 
 		// Load models
@@ -523,10 +516,9 @@ class API extends CI_Controller {
 			]
 		];
 
-		if($this->logbooks_model->public_slug_exists($logbook_slug)) {
+		if ($this->logbooks_model->public_slug_exists($logbook_slug)) {
 			$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($logbook_slug);
-			if($logbook_id != false)
-			{
+			if ($logbook_id != false) {
 				// Get associated station locations for mysql queries
 				$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
 
@@ -539,7 +531,7 @@ class API extends CI_Controller {
 			} else {
 				// Logbook not found
 				http_response_code(404);
-				echo json_encode(['status' => 'failed', 'reason' => $logbook_slug." has no associated station locations"]);
+				echo json_encode(['status' => 'failed', 'reason' => $logbook_slug . " has no associated station locations"]);
 				die();
 			}
 
@@ -604,7 +596,8 @@ class API extends CI_Controller {
 
 	/* ENDPOINT for Rig Control */
 
-	function radio() {
+	function radio()
+	{
 		header('Content-type: application/json');
 
 		$this->load->model('api_model');
@@ -618,7 +611,7 @@ class API extends CI_Controller {
 		// Decode JSON and store
 		$obj = json_decode(file_get_contents("php://input"), true);
 
-		if(!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
+		if (!isset($obj['key']) || $this->api_model->authorize($obj['key']) == 0) {
 			http_response_code(401);
 			echo json_encode(['status' => 'failed', 'reason' => "missing api key"]);
 			die();
@@ -636,7 +629,6 @@ class API extends CI_Controller {
 		$arr = array('status' => 'success');
 
 		echo json_encode($arr);
-
 	}
 
 	/*
@@ -645,7 +637,8 @@ class API extends CI_Controller {
 	*
 	*/
 
-	function statistics($key = null) {
+	function statistics($key = null)
+	{
 		header('Content-type: application/json');
 		$this->load->model('logbook_model');
 
@@ -656,10 +649,10 @@ class API extends CI_Controller {
 
 		http_response_code(201);
 		echo json_encode(['Today' => $data['todays_qsos'], 'total_qsos' => $data['total_qsos'], 'month_qsos' => $data['month_qsos'], 'year_qsos' => $data['year_qsos']]);
-
 	}
 
-	function lookup() {
+	function lookup()
+	{
 		// start benchmarking
 		$this->output->enable_profiler(TRUE);
 		/*
@@ -679,7 +672,9 @@ class API extends CI_Controller {
 
 		// Make sure users logged in
 		$this->load->model('user_model');
-		if(!$this->user_model->authorize($this->config->item('auth_mode'))) { return; }
+		if (!$this->user_model->authorize($this->config->item('auth_mode'))) {
+			return;
+		}
 
 
 		$this->load->model("logbook_model");
@@ -711,9 +706,9 @@ class API extends CI_Controller {
 		*	Handle POST data being sent to check lookups
 		*
 		*/
-			$raw_input = json_decode(file_get_contents("php://input"), true);
+		$raw_input = json_decode(file_get_contents("php://input"), true);
 
-			$lookup_callsign = strtoupper($raw_input['callsign']);
+		$lookup_callsign = strtoupper($raw_input['callsign']);
 
 
 		/*
@@ -721,7 +716,7 @@ class API extends CI_Controller {
 		*	Handle Callsign field
 		*
 		*/
-			$return['callsign'] = $lookup_callsign;
+		$return['callsign'] = $lookup_callsign;
 
 		/*
 		*
@@ -729,65 +724,63 @@ class API extends CI_Controller {
 		*
 		*/
 
-			$callsign_dxcc_lookup = $this->logbook_model->dxcc_lookup($lookup_callsign, $date);
+		$callsign_dxcc_lookup = $this->logbook_model->dxcc_lookup($lookup_callsign, $date);
 
-			$last_slash_pos = strrpos($lookup_callsign, '/');
+		$last_slash_pos = strrpos($lookup_callsign, '/');
 
-			if(isset($last_slash_pos) && $last_slash_pos > 4) {
-				$suffix_slash = $last_slash_pos === false ? $lookup_callsign : substr($lookup_callsign, $last_slash_pos + 1);
-				switch ($suffix_slash) {
-				    case "P":
-				        $suffix_slash_item = "Portable";
-				        break;
-				    case "M":
-				        $suffix_slash_item = "Mobile";
-				    case "MM":
-				        $suffix_slash_item =  "Maritime Mobile";
-				        break;
-				    default:
-				    	// If its not one of the above suffix slashes its likely dxcc
-				    	$ans2 = $this->logbook_model->dxcc_lookup($suffix_slash, $date);
-				    	$suffix_slash_item = null;
-				}
-
-				$return['suffix_slash'] = $suffix_slash_item;
+		if (isset($last_slash_pos) && $last_slash_pos > 4) {
+			$suffix_slash = $last_slash_pos === false ? $lookup_callsign : substr($lookup_callsign, $last_slash_pos + 1);
+			switch ($suffix_slash) {
+				case "P":
+					$suffix_slash_item = "Portable";
+					break;
+				case "M":
+					$suffix_slash_item = "Mobile";
+				case "MM":
+					$suffix_slash_item =  "Maritime Mobile";
+					break;
+				default:
+					// If its not one of the above suffix slashes its likely dxcc
+					$ans2 = $this->logbook_model->dxcc_lookup($suffix_slash, $date);
+					$suffix_slash_item = null;
 			}
 
-			// If the final slash is a DXCC then find it!
-			if (isset($ans2['call'])) {
-				$return['dxcc'] = $ans2['entity'];
-				$return['dxcc_lat'] = $ans2['lat'];
-				$return['dxcc_long'] = $ans2['long'];
-				$return['dxcc_cqz'] = $ans2['cqz'];
-			} else {
-				$return['dxcc'] = $callsign_dxcc_lookup['entity'];
-				$return['dxcc_lat'] = $callsign_dxcc_lookup['lat'];
-				$return['dxcc_long'] = $callsign_dxcc_lookup['long'];
-				$return['dxcc_cqz'] = $callsign_dxcc_lookup['cqz'];
-			}
+			$return['suffix_slash'] = $suffix_slash_item;
+		}
+
+		// If the final slash is a DXCC then find it!
+		if (isset($ans2['call'])) {
+			$return['dxcc'] = $ans2['entity'];
+			$return['dxcc_lat'] = $ans2['lat'];
+			$return['dxcc_long'] = $ans2['long'];
+			$return['dxcc_cqz'] = $ans2['cqz'];
+		} else {
+			$return['dxcc'] = $callsign_dxcc_lookup['entity'];
+			$return['dxcc_lat'] = $callsign_dxcc_lookup['lat'];
+			$return['dxcc_long'] = $callsign_dxcc_lookup['long'];
+			$return['dxcc_cqz'] = $callsign_dxcc_lookup['cqz'];
+		}
 
 		/*
 		*
 		*	Pool any local data we have for a callsign
 		*
 		*/
-			$call_lookup_results = $this->logbook_model->call_lookup_result($lookup_callsign);
+		$call_lookup_results = $this->logbook_model->call_lookup_result($lookup_callsign);
 
-			if($call_lookup_results != null)
-			{
-				$return['name'] = $call_lookup_results->COL_NAME;
-				$return['gridsquare'] = $call_lookup_results->COL_GRIDSQUARE;
-				$return['location'] = $call_lookup_results->COL_QTH;
-				$return['iota_ref'] = $call_lookup_results->COL_IOTA;
-				$return['qsl_manager'] = $call_lookup_results->COL_QSL_VIA;
-				$return['state'] = $call_lookup_results->COL_STATE;
-				$return['us_county'] = $call_lookup_results->COL_CNTY;
+		if ($call_lookup_results != null) {
+			$return['name'] = $call_lookup_results->COL_NAME;
+			$return['gridsquare'] = $call_lookup_results->COL_GRIDSQUARE;
+			$return['location'] = $call_lookup_results->COL_QTH;
+			$return['iota_ref'] = $call_lookup_results->COL_IOTA;
+			$return['qsl_manager'] = $call_lookup_results->COL_QSL_VIA;
+			$return['state'] = $call_lookup_results->COL_STATE;
+			$return['us_county'] = $call_lookup_results->COL_CNTY;
 
-				if ($return['gridsquare'] != "") {
-					$return['latlng'] = $this->qralatlng($return['gridsquare']);
-				}
-
+			if ($return['gridsquare'] != "") {
+				$return['latlng'] = $this->qralatlng($return['gridsquare']);
 			}
+		}
 
 
 		/*
@@ -809,7 +802,8 @@ class API extends CI_Controller {
 		$this->output->enable_profiler(FALSE);
 	}
 
-	function qralatlng($qra) {
+	function qralatlng($qra)
+	{
 		$this->load->library('Qra');
 		$latlng = $this->qra->qra2latlong($qra);
 		return $latlng;
@@ -848,30 +842,34 @@ class API extends CI_Controller {
 	 *   "logbook_slug": "my-public-logbook"
 	 * }
 	 */
-	function recent_qsos($public_slug = null, $limit = 10) {
+	function recent_qsos($public_slug = null, $limit = 10)
+	{
 		header('Content-type: application/json');
 
-		if($public_slug == null) {
+		// Validate and sanitize $limit
+		if (!is_numeric($limit)) {
+			$limit = 10; // Default to 10 if not numeric
+		} else {
+			$limit = intval($limit);
+			if ($limit < 1) {
+				$limit = 1; // Minimum limit of 1
+			} elseif ($limit > 50) {
+				$limit = 50; // Maximum limit of 50
+			}
+		}
+
+		if ($public_slug == null) {
 			http_response_code(400);
 			echo json_encode(['status' => 'failed', 'reason' => 'missing public_slug parameter']);
 			return;
 		}
 
-		// Validate and sanitize limit parameter
-		$limit = intval($limit);
-		if ($limit <= 0) {
-			$limit = 10; // default
-		}
-		if ($limit > 50) {
-			$limit = 50; // maximum
-		}
-
 		$this->load->model('logbooks_model');
 		$this->load->model('logbook_model');
 
-		if($this->logbooks_model->public_slug_exists($public_slug)) {
+		if ($this->logbooks_model->public_slug_exists($public_slug)) {
 			$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($public_slug);
-			if($logbook_id != false) {
+			if ($logbook_id != false) {
 				// Get associated station locations for mysql queries
 				$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
 
@@ -883,7 +881,7 @@ class API extends CI_Controller {
 
 				// Get recent QSOs using existing method
 				$recent_qsos_query = $this->logbook_model->get_last_qsos($limit, $logbooks_locations_array);
-				
+
 				if ($recent_qsos_query == null) {
 					http_response_code(404);
 					echo json_encode(['status' => 'failed', 'reason' => 'No QSOs found']);
@@ -902,7 +900,7 @@ class API extends CI_Controller {
 						'rst_sent' => $row->COL_RST_SENT,
 						'rst_rcvd' => $row->COL_RST_RCVD
 					);
-					
+
 					// Add optional fields if they exist
 					if ($row->COL_STX_STRING) {
 						$qso['stx_string'] = $row->COL_STX_STRING;
@@ -919,7 +917,16 @@ class API extends CI_Controller {
 					if ($row->COL_NAME) {
 						$qso['name'] = $row->COL_NAME;
 					}
-					
+
+					$dxcc = $this->logbook_model->check_dxcc_table(strtoupper(trim(strtoupper($row->COL_CALL))), $row->COL_TIME_ON);
+					if (empty($dxcc[0])) {
+						$dxcc_id = null;
+					} else {
+						$qso['country'] = $dxcc[1];
+						$qso['lat'] = $dxcc[4];
+						$qso['long'] = $dxcc[5];
+					}
+
 					$qsos[] = $qso;
 				}
 
@@ -929,10 +936,9 @@ class API extends CI_Controller {
 					'count' => count($qsos),
 					'logbook_slug' => $public_slug
 				], JSON_PRETTY_PRINT);
-
 			} else {
 				http_response_code(404);
-				echo json_encode(['status' => 'failed', 'reason' => $public_slug.' has no associated station locations']);
+				echo json_encode(['status' => 'failed', 'reason' => $public_slug . ' has no associated station locations']);
 			}
 		} else {
 			http_response_code(404);

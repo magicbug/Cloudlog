@@ -1932,7 +1932,9 @@ class Logbook_model extends CI_Model
 
   function get_last_qsos($num, $StationLocationsArray = null)
   {
-
+    // Ensure $num is always an integer to prevent SQL injection
+    $num = intval($num);
+    
     if ($StationLocationsArray == null) {
       $CI = &get_instance();
       $CI->load->model('logbooks_model');
@@ -1945,13 +1947,13 @@ class Logbook_model extends CI_Model
       $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
 
       $sql = "SELECT * FROM ( select * from " . $this->config->item('table_name') . "
-        WHERE station_id IN(" . $location_list . ")
-        order by col_time_on desc, col_primary_key desc
-        limit " . $num .
+            WHERE station_id IN(" . $location_list . ")
+            order by col_time_on desc, col_primary_key desc
+            limit " . $num .
         ") hrd
-        JOIN station_profile ON station_profile.station_id = hrd.station_id
-        LEFT JOIN dxcc_entities ON hrd.col_dxcc = dxcc_entities.adif
-        order by col_time_on desc, col_primary_key desc";
+            LEFT JOIN station_profile ON station_profile.station_id = hrd.station_id
+            LEFT JOIN dxcc_entities ON hrd.col_dxcc = dxcc_entities.adif
+            order by col_time_on desc, col_primary_key desc";
 
       $query = $this->db->query($sql);
 
@@ -4082,7 +4084,7 @@ class Logbook_model extends CI_Model
       return null;
     }
   }
-
+ 
   /*
      * Check the dxxc_prefixes table and return (dxcc, country)
      */
@@ -4091,7 +4093,7 @@ class Logbook_model extends CI_Model
 
     $csadditions = '/^P$|^R$|^A$|^M$/';
 
-    $dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`, `cont`')
+    $dxcc_exceptions = $this->db->select('`entity`, `adif`, `cqz`, `cont`,`lat`,`long`')
       ->where('call', $call)
       ->where('(start <= ', $date)
       ->or_where('start is null)', NULL, false)
@@ -4101,7 +4103,7 @@ class Logbook_model extends CI_Model
 
     if ($dxcc_exceptions->num_rows() > 0) {
       $row = $dxcc_exceptions->row_array();
-      return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
+      return array($row['adif'], $row['entity'], $row['cqz'], $row['cont'], $row['lat'], $row['long']);
     }
     if (preg_match('/(^KG4)[A-Z09]{3}/', $call)) {      // KG4/ and KG4 5 char calls are Guantanamo Bay. If 4 or 6 char, it is USA
       $call = "K";
@@ -4156,7 +4158,7 @@ class Logbook_model extends CI_Model
     // query the table, removing a character from the right until a match
     for ($i = $len; $i > 0; $i--) {
       //printf("searching for %s\n", substr($call, 0, $i));
-      $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`, `cont`')
+      $dxcc_result = $this->db->select('`call`, `entity`, `adif`, `cqz`, `cont`,`lat`,`long`')
         ->where('call', substr($call, 0, $i))
         ->where('(start <= ', $date)
         ->or_where("start is null)", NULL, false)
@@ -4169,7 +4171,7 @@ class Logbook_model extends CI_Model
 
       if ($dxcc_result->num_rows() > 0) {
         $row = $dxcc_result->row_array();
-        return array($row['adif'], $row['entity'], $row['cqz'], $row['cont']);
+        return array($row['adif'], $row['entity'], $row['cqz'], $row['cont'], $row['lat'], $row['long']);
       }
     }
 
