@@ -35,6 +35,7 @@ class Logbook extends CI_Controller
 		}
 
 		$this->load->model('logbook_model');
+		$this->load->model('logbooks_model');
 
 		$this->load->library('pagination');
 		$config['base_url'] = base_url() . 'index.php/logbook/index/';
@@ -71,6 +72,10 @@ class Logbook extends CI_Controller
 		}
 
 
+
+		// Get available logbooks and stations for the switcher
+		$data['available_logbooks'] = $this->logbooks_model->show_all();
+		$data['available_stations'] = $this->stations->all_of_user();
 
 		// load the view
 		$data['page_title'] = "Logbook";
