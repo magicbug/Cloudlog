@@ -98,5 +98,5 @@ function write_initials_data($timeline_array, $custom_date_format, $bandselect, 
                 <td>' . $line->count . '</td>
                </tr>';
     }
-    echo '</tfoot></table></div>';
+    echo '</tbody></table></div>';
 }
