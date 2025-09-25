@@ -35,6 +35,7 @@ $lang['menu_timeplotter'] = 'Zaman Çizici';
 $lang['menu_most_worked'] = 'En Çok Çalışılan';
 $lang['menu_custom_maps'] = 'Özel Haritalar';
 $lang['menu_continents'] = 'Kıtalar';
+$lang['menu_eme_initials'] = 'EME Initials';
 
 $lang['menu_awards'] = 'Ödüller';
 $lang['menu_cq'] = 'CQ';
