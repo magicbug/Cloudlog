@@ -4,6 +4,12 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Emeinitials_model extends CI_Model
 {
     function get_initials($band, $mode) {
+        // Input validation
+        if (!is_string($band) || !is_string($mode)) {
+            log_message('error', 'Invalid input types for band or mode parameters in get_initials');
+            return null;
+        }
+
         $CI =& get_instance();
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -12,7 +18,12 @@ class Emeinitials_model extends CI_Model
             return null;
         }
 
-        $location_list = "'".implode("', '", $logbooks_locations_array)."'";
+        // Ensure location_list is properly escaped for IN clause
+        $escaped_locations = array();
+        foreach ($logbooks_locations_array as $location) {
+            $escaped_locations[] = $this->db->escape($location);
+        }
+        $location_list = implode(', ', $escaped_locations);
 
         $result = $this->get_initials_data($band, $mode, $location_list);
 
@@ -20,21 +31,41 @@ class Emeinitials_model extends CI_Model
     }
 
     public function get_initials_data($band, $mode, $location_list) {
-        $sql = "select COL_CALL callsign, date(COL_TIME_ON) date, upper(COL_GRIDSQUARE) gridsquare, COL_STATE state from "
-            .$this->config->item('table_name'). " thcv
-            where station_id in (" . $location_list . ") and col_prop_mode = 'EME'";
+        // Input validation and sanitization
+        if (!is_string($band) || !is_string($mode)) {
+            log_message('error', 'Invalid input types for band or mode parameters in get_initials_data');
+            return [];
+        }
+        
+        // Sanitize inputs - allow only alphanumeric characters, spaces, and common ham radio characters
+        $band = preg_replace('/[^a-zA-Z0-9\s\-]/', '', trim($band));
+        $mode = preg_replace('/[^a-zA-Z0-9\s\-]/', '', trim($mode));
+        
+        // Validate that band and mode are not empty after sanitization (unless they were 'All')
+        if (($band !== 'All' && empty($band)) || ($mode !== 'All' && empty($mode))) {
+            log_message('error', 'Invalid band or mode parameter after sanitization in get_initials_data');
+            return [];
+        }
+
+        // Use CodeIgniter's Query Builder for safe parameterized queries
+        $this->db->select('COL_CALL as callsign, date(COL_TIME_ON) as date, upper(COL_GRIDSQUARE) as gridsquare, COL_STATE as state');
+        $this->db->from($this->config->item('table_name') . ' thcv');
+        $this->db->where('station_id in (' . $location_list . ')', null, false);
+        $this->db->where('col_prop_mode', 'EME');
 
         if ($band != 'All') {
-            $sql .= " and col_band ='" . $band . "'";
+            $this->db->where('col_band', $band);
         }
 
         if ($mode != 'All') {
-            $sql .= " and (col_mode ='" . $mode . "' or col_submode = '" . $mode ."')";
+            $this->db->group_start();
+            $this->db->where('col_mode', $mode);
+            $this->db->or_where('col_submode', $mode);
+            $this->db->group_end();
         }
 
-        $sql .= " order by COL_TIME_ON";
-
-        $query = $this->db->query($sql);
+        $this->db->order_by('COL_TIME_ON');
+        $query = $this->db->get();
 
         // Create a new array after applying rules for initials
         $inits_array = [];
