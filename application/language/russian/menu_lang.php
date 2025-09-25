@@ -35,6 +35,7 @@ $lang['menu_timeplotter'] = 'Графики';
 $lang['menu_most_worked'] = 'Самые Работанные';
 $lang['menu_custom_maps'] = 'Карты';
 $lang['menu_continents'] = 'Континенты';
+$lang['menu_eme_initials'] = 'EME Initials';
 
 $lang['menu_awards'] = 'Дипломы';
 $lang['menu_cq'] = 'CQ';
