@@ -130,7 +130,7 @@ class Emeinitials_model extends CI_Model
                 // Impossible to do any sort of grid matching, so we mark them as matched
                 $found = true;
             }
-            else if (strlen($data->gridsquare) == 6 and strlen($initial->gridsquare) == 6) {
+            else if (strlen($data->gridsquare) == 6 && strlen($initial->gridsquare) == 6) {
                 // Are the grids an exact match?
                 if (strncmp($data->gridsquare, $initial->gridsquare, 6) == 0) {
                     $found = true;
