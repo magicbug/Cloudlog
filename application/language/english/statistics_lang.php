@@ -72,3 +72,13 @@ $lang['statistics_dwq_current_streak_in_log'] = "Current streak with QSOs in the
 $lang['statistics_dwq_current_streak_continuous_days'] = "Current streak (continuous days with QSOs)";
 $lang['statistics_dwq_make_qso_to_extend_streak'] = "If you make a QSO today, you can continue to extend your streak... or else your current streak will be broken!";
 $lang['statistics_dwq_no_current_streak'] = "No current streak found!";
+
+/*
+*
+* EME Initials
+*
+*/
+
+$lang['statistics_emeinitials'] = "EME Initials";
+$lang['statistics_first_qso'] = "First QSO";
+$lang['statistics_times_worked'] = "Times worked";

@@ -35,6 +35,7 @@ $lang['menu_timeplotter'] = '时间图';
 $lang['menu_most_worked'] = '最常工作';
 $lang['menu_custom_maps'] = '自定义地图';
 $lang['menu_continents'] = '大陆';
+$lang['menu_eme_initials'] = 'EME Initials';
 
 $lang['menu_awards'] = '奖项';
 $lang['menu_cq'] = 'CQ';

@@ -35,6 +35,7 @@ $lang['menu_timeplotter'] = 'Ploter czasu';
 $lang['menu_most_worked'] = 'Najczęściej Pracowane';
 $lang['menu_custom_maps'] = 'Niestandardowe mapy';
 $lang['menu_continents'] = 'Kontynenty';
+$lang['menu_eme_initials'] = 'EME Initials';
 
 $lang['menu_awards'] = 'Nagrody';
 $lang['menu_cq'] = 'CQ';

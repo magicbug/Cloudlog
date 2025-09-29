@@ -121,7 +121,7 @@
    },
    "AO-123":{
       "Modes":{
-         "U/V":[
+         "V/U":[
             {
                "Uplink_Mode":"FM",
                "Uplink_Freq":"145850000",

@@ -138,6 +138,8 @@
 								<a class="dropdown-item" href="<?php echo site_url('map/custom'); ?>" title="Custom Maps of QSOs"><i class="fas fa-map"></i> <?php echo lang('menu_custom_maps'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('continents'); ?>" title="Continents"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_continents'); ?></a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo site_url('emeinitials'); ?>" title="EME Initials"><i class="fas fa-chart-area"></i> <?php echo lang('menu_eme_initials'); ?></a>
 							</div>
 						</li>
 
