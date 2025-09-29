@@ -143,7 +143,7 @@ class Emeinitials_model extends CI_Model
                 }
             }
 
-            if (!empty($data->state) and !empty($initial->state)) {
+            if (!empty($data->state) && !empty($initial->state)) {
                 // Are the states an exact match?
                 if ($data->state === $initial->state) {
                     $found = true;
