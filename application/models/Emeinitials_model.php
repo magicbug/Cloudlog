@@ -87,7 +87,7 @@ class Emeinitials_model extends CI_Model
                 // The callsign isn't unique, now check the location of the entries with the same callsign
                 $dup_init = $this->find_duplicate($calls_array, $init);
 
-                // Dissimilae locations, we can add this initial to our list, it's new
+                // Dissimilar locations, we can add this initial to our list, it's new
                 if (empty($dup_init)) {
                     $new_init = new stdClass();
                     $new_init->callsign   = $init->callsign;
