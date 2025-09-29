@@ -126,7 +126,7 @@ class Emeinitials_model extends CI_Model
         foreach ($array as $data) {
             $found = false;
 
-            if (empty($data->gridsquare) or empty($initial->gridsquare)) {
+            if (empty($data->gridsquare) || empty($initial->gridsquare)) {
                 // Impossible to do any sort of grid matching, so we mark them as matched
                 $found = true;
             }
