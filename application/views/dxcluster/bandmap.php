@@ -271,6 +271,53 @@
             background: #f39c12;
             height: 2px;
         }
+
+        /* Toggle switch styles */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #34495e;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: 1px solid #555;
+        }
+
+        .toggle-switch.active {
+            background: #27ae60;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(26px);
+        }
+
+        .auto-track-status {
+            font-size: 0.8em;
+            color: #bdc3c7;
+        }
+
+        .auto-track-status.active {
+            color: #27ae60;
+        }
     </style>
 </head>
 <body>
@@ -313,6 +360,16 @@
                 <button class="toolbar-btn zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
             </div>
             
+            <div class="toolbar-group">
+                <span class="toolbar-label">Auto Track:</span>
+                <div class="toggle-container">
+                    <div class="toggle-switch active" id="autoTrackToggle" onclick="toggleAutoTrack()" title="Toggle Radio Auto-Tracking">
+                        <div class="toggle-slider"></div>
+                    </div>
+                    <span class="auto-track-status active" id="autoTrackStatus">ON</span>
+                </div>
+            </div>
+            
             <div class="stats-display">
                 <div class="stat-item">Band: <span class="stat-value" id="currentBand">20m</span></div>
                 <div class="stat-item">Range: <span class="stat-value" id="freqRange">14.000-14.350</span></div>
@@ -340,6 +397,8 @@
         let viewEnd = 14350;
         let tuneFrequency = null;
         let zoomLevel = 4; // Start zoomed in for better detail
+        let lastSelectedRadio = null; // Track the last known value
+        let autoTrackEnabled = true; // Control auto-tracking feature
 
         const bandmapDisplay = document.getElementById('bandmapDisplay');
         const frequencyScale = document.getElementById('frequencyScale');
@@ -692,8 +751,162 @@
             setTimeout(updateDisplay, 100);
         });
 
+        // Monitor localStorage for selectedRadio changes
+        function monitorSelectedRadio() {
+            const currentValue = localStorage.getItem('selectedRadio');
+            
+            // Check if value has changed
+            if (currentValue !== lastSelectedRadio) {
+                if (currentValue === null && lastSelectedRadio !== null) {
+                    console.log('selectedRadio removed from localStorage (was:', lastSelectedRadio + ')');
+                } else if (lastSelectedRadio === null && currentValue !== null) {
+                    console.log('selectedRadio added to localStorage:', currentValue);
+                } else if (currentValue !== null && lastSelectedRadio !== null) {
+                    console.log('selectedRadio changed in localStorage:', lastSelectedRadio, '->', currentValue);
+                }
+                
+                lastSelectedRadio = currentValue;
+            }
+        }
+
+        // Toggle auto-tracking function
+        function toggleAutoTrack() {
+            autoTrackEnabled = !autoTrackEnabled;
+            
+            const toggle = document.getElementById('autoTrackToggle');
+            const status = document.getElementById('autoTrackStatus');
+            
+            if (autoTrackEnabled) {
+                toggle.classList.add('active');
+                status.classList.add('active');
+                status.textContent = 'ON';
+                console.log('Radio auto-tracking enabled');
+            } else {
+                toggle.classList.remove('active');
+                status.classList.remove('active');
+                status.textContent = 'OFF';
+                console.log('Radio auto-tracking disabled');
+            }
+        }
+
+        // Poll the radio endpoint for CAT data
+        function pollRadioEndpoint() {
+            const radioID = localStorage.getItem('selectedRadio');
+            
+            // Only poll if we have a valid radio ID and it's not '0'
+            if (!radioID || radioID === '0') {
+                return;
+            }
+
+            // Fetch CAT data from the radio endpoint
+            fetch(`<?php echo site_url(); ?>/radio/json/${radioID}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Radio CAT data for radio', radioID + ':', data);
+                    
+                    if (data.error) {
+                        console.log('Error from radio endpoint:', data.error);
+                        return;
+                    }
+
+                    // Process frequency data if available and auto-tracking is enabled
+                    if (data.frequency && autoTrackEnabled) {
+                        const freqHz = parseInt(data.frequency);
+                        const freqKHz = freqHz / 1000; // Convert Hz to kHz
+                        
+                        console.log('Radio frequency:', freqKHz, 'kHz');
+                        
+                        // Find which band this frequency belongs to
+                        const band = findBandForFrequency(freqKHz);
+                        
+                        if (band) {
+                            // Check if we need to change bands
+                            if (currentBandMeters !== band.meters || 
+                                bandStart !== band.start || 
+                                bandEnd !== band.end) {
+                                console.log('Switching to band:', band.meters + 'm');
+                                
+                                // Update the band select dropdown
+                                const bandSelect = document.getElementById('bandSelect');
+                                bandSelect.value = `${band.meters},${band.start},${band.end}`;
+                                
+                                // Select the band (but don't center yet, we'll do that below)
+                                currentBandMeters = band.meters;
+                                bandStart = band.start;
+                                bandEnd = band.end;
+                                
+                                document.getElementById('currentBand').textContent = `${band.meters}m`;
+                            }
+                            
+                            // Set tune frequency to current radio frequency
+                            tuneFrequency = freqKHz;
+                            
+                            // Always center the view on the radio frequency when auto-tracking
+                            const currentRange = viewEnd - viewStart;
+                            viewStart = Math.max(bandStart, freqKHz - currentRange / 2);
+                            viewEnd = Math.min(bandEnd, freqKHz + currentRange / 2);
+                            
+                            // Adjust if we hit band boundaries
+                            if (viewStart < bandStart) {
+                                viewEnd += bandStart - viewStart;
+                                viewStart = bandStart;
+                            }
+                            if (viewEnd > bandEnd) {
+                                viewStart -= viewEnd - bandEnd;
+                                viewEnd = bandEnd;
+                            }
+                            
+                            // Update the frequency range display
+                            document.getElementById('freqRange').textContent = `${(viewStart/1000).toFixed(3)}-${(viewEnd/1000).toFixed(3)}`;
+                            
+                            // Update display to show tune indicator (will be centered)
+                            updateDisplay();
+                            updateStats();
+                        } else {
+                            console.log('Frequency', freqKHz, 'kHz not in any configured band');
+                        }
+                    } else if (data.frequency && !autoTrackEnabled) {
+                        console.log('Radio frequency received but auto-tracking is disabled');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching radio data:', error);
+                });
+        }
+
+        // Find which band a frequency belongs to
+        function findBandForFrequency(freqKHz) {
+            const bandSelect = document.getElementById('bandSelect');
+            const options = bandSelect.options;
+            
+            for (let i = 0; i < options.length; i++) {
+                const [meters, start, end] = options[i].value.split(',').map(Number);
+                if (freqKHz >= start && freqKHz <= end) {
+                    return { meters, start, end };
+                }
+            }
+            
+            return null;
+        }
+
         // Initialize with proper zoom
         function initializeBandmap() {
+            // Check if selectedRadio is in localStorage
+            const selectedRadio = localStorage.getItem('selectedRadio');
+            if (selectedRadio) {
+                console.log('selectedRadio found in localStorage:', selectedRadio);
+                lastSelectedRadio = selectedRadio;
+            } else {
+                console.log('selectedRadio not found in localStorage');
+                lastSelectedRadio = null;
+            }
+            
+            // Start monitoring for changes (poll every 500ms)
+            setInterval(monitorSelectedRadio, 500);
+            
+            // Start polling the radio endpoint (poll every 1 second)
+            setInterval(pollRadioEndpoint, 1000);
+            
             // Set initial 20m band with 4x zoom
             const center = (bandStart + bandEnd) / 2;
             const newRange = (bandEnd - bandStart) / zoomLevel;
