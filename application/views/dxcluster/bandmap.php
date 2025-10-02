@@ -811,10 +811,18 @@
 
                     // Process frequency data if available and auto-tracking is enabled
                     if (data.frequency && autoTrackEnabled) {
-                        const freqHz = parseInt(data.frequency);
+                        // Check if this is satellite mode - use RX frequency if satellite is active
+                        let freqHz;
+                        if (data.satname && data.frequency_rx) {
+                            freqHz = parseInt(data.frequency_rx);
+                            console.log('Satellite mode detected (' + data.satname + '), using RX frequency');
+                        } else {
+                            freqHz = parseInt(data.frequency);
+                        }
+                        
                         const freqKHz = freqHz / 1000; // Convert Hz to kHz
                         
-                        console.log('Radio frequency:', freqKHz, 'kHz');
+                        console.log('Radio frequency:', freqKHz, 'kHz' + (data.satname ? ' (RX for ' + data.satname + ')' : ''));
                         
                         // Find which band this frequency belongs to
                         const band = findBandForFrequency(freqKHz);
