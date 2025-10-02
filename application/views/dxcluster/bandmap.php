@@ -364,6 +364,12 @@
             </div>
             
             <div class="toolbar-group">
+                <span class="toolbar-label">Tune:</span>
+                <input type="number" class="frequency-input" id="tuneFreq" placeholder="kHz" title="Tune Frequency">
+                <button class="toolbar-btn" onclick="centerOnFrequency()" title="Center on Frequency">Center</button>
+            </div>
+            
+            <div class="toolbar-group">
                 <span class="toolbar-label">Auto Track:</span>
                 <div class="toggle-container">
                     <div class="toggle-switch active" id="autoTrackToggle" onclick="toggleAutoTrack()" title="Toggle Radio Auto-Tracking">
