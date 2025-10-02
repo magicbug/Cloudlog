@@ -349,6 +349,9 @@
                         echo '<option value="12,24890,24990">12m</option>';
                         echo '<option value="10,28000,29700">10m</option>';
                         echo '<option value="6,50000,54000">6m</option>';
+                        echo '<option value="2,144000,148000">2m</option>';
+                        echo '<option value="70,430000,440000">70cm</option>';
+                        echo '<option value="23,1240000,1300000">23cm</option>';
                     }
                     ?>
                 </select>
