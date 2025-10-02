@@ -852,7 +852,18 @@
                                 
                                 // Update the band select dropdown
                                 const bandSelect = document.getElementById('bandSelect');
-                                bandSelect.value = `${band.meters},${band.start},${band.end}`;
+                                console.log('Trying to set dropdown to:', `${band.meters},${band.start},${band.end}`);
+                                
+                                // Find the exact matching option by comparing ranges
+                                for (let i = 0; i < bandSelect.options.length; i++) {
+                                    const option = bandSelect.options[i];
+                                    const [optMeters, optStart, optEnd] = option.value.split(',').map(Number);
+                                    if (optStart === band.start && optEnd === band.end) {
+                                        bandSelect.selectedIndex = i;
+                                        console.log('Set dropdown to option:', option.text, 'value:', option.value);
+                                        break;
+                                    }
+                                }
                                 
                                 // Select the band (but don't center yet, we'll do that below)
                                 currentBandMeters = band.meters;
