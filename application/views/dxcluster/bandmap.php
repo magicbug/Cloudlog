@@ -488,7 +488,14 @@
             viewStart = Math.max(start, center - newRange / 2);
             viewEnd = Math.min(end, center + newRange / 2);
 
-            document.getElementById('currentBand').textContent = `${meters}m`;
+            // Handle band display properly for cm bands
+            if (meters === 70) {
+                document.getElementById('currentBand').textContent = '70cm';
+            } else if (meters === 23) {
+                document.getElementById('currentBand').textContent = '23cm';
+            } else {
+                document.getElementById('currentBand').textContent = `${meters}m`;
+            }
             document.getElementById('freqRange').textContent = `${(viewStart/1000).toFixed(3)}-${(viewEnd/1000).toFixed(3)}`;
 
             updateDisplay();
@@ -852,7 +859,14 @@
                                 bandStart = band.start;
                                 bandEnd = band.end;
                                 
-                                document.getElementById('currentBand').textContent = `${band.meters}m`;
+                                // Handle band display properly for cm bands
+                                if (band.meters === 70) {
+                                    document.getElementById('currentBand').textContent = '70cm';
+                                } else if (band.meters === 23) {
+                                    document.getElementById('currentBand').textContent = '23cm';
+                                } else {
+                                    document.getElementById('currentBand').textContent = `${band.meters}m`;
+                                }
                             }
                             
                             // Set tune frequency to current radio frequency
@@ -896,13 +910,19 @@
             const bandSelect = document.getElementById('bandSelect');
             const options = bandSelect.options;
             
+            console.log('Looking for band for frequency:', freqKHz, 'kHz');
+            console.log('Available band options:', options.length);
+            
             for (let i = 0; i < options.length; i++) {
                 const [meters, start, end] = options[i].value.split(',').map(Number);
+                console.log(`Checking band ${meters}m: ${start}-${end} kHz`);
                 if (freqKHz >= start && freqKHz <= end) {
+                    console.log(`Found matching band: ${meters}m (${start}-${end})`);
                     return { meters, start, end };
                 }
             }
             
+            console.log('No matching band found for', freqKHz, 'kHz');
             return null;
         }
 
