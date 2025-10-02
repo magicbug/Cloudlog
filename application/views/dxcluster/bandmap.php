@@ -859,8 +859,10 @@
                                 bandStart = band.start;
                                 bandEnd = band.end;
                                 
-                                // Handle band display properly for cm bands
-                                if (band.meters === 70) {
+                                // Use the band name from the dropdown if available
+                                if (band.name) {
+                                    document.getElementById('currentBand').textContent = band.name;
+                                } else if (band.meters === 70) {
                                     document.getElementById('currentBand').textContent = '70cm';
                                 } else if (band.meters === 23) {
                                     document.getElementById('currentBand').textContent = '23cm';
@@ -914,11 +916,17 @@
             console.log('Available band options:', options.length);
             
             for (let i = 0; i < options.length; i++) {
-                const [meters, start, end] = options[i].value.split(',').map(Number);
+                console.log('Raw option value:', options[i].value);
+                console.log('Option text:', options[i].text);
+                const parts = options[i].value.split(',');
+                console.log('Split parts:', parts);
+                const [meters, start, end] = parts.map(Number);
+                console.log(`Parsed: meters=${meters}, start=${start}, end=${end}`);
                 console.log(`Checking band ${meters}m: ${start}-${end} kHz`);
                 if (freqKHz >= start && freqKHz <= end) {
                     console.log(`Found matching band: ${meters}m (${start}-${end})`);
-                    return { meters, start, end };
+                    // Use the option text instead of trying to reconstruct the band name
+                    return { meters, start, end, name: options[i].text };
                 }
             }
             
