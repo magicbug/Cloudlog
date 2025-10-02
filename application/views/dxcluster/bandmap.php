@@ -279,22 +279,32 @@
             <div class="toolbar-group">
                 <span class="toolbar-label">Band:</span>
                 <select class="band-select" id="bandSelect" onchange="handleBandChange()">
-                    <option value="160,1800,2000">160m</option>
-                    <option value="80,3500,4000">80m</option>
-                    <option value="40,7000,7300">40m</option>
-                    <option value="20,14000,14350" selected>20m</option>
-                    <option value="17,18068,18168">17m</option>
-                    <option value="15,21000,21450">15m</option>
-                    <option value="12,24890,24990">12m</option>
-                    <option value="10,28000,29700">10m</option>
-                    <option value="6,50000,54000">6m</option>
+                    <?php 
+                    if (isset($bands) && is_array($bands) && count($bands) > 0) {
+                        $defaultSelected = false;
+                        foreach ($bands as $band) {
+                            // Extract the numeric part from band (e.g., "20" from "20m")
+                            $bandMeters = str_replace('m', '', $band['band']);
+                            $selected = (!$defaultSelected && $band['band'] == '20m') ? ' selected' : '';
+                            if ($selected) {
+                                $defaultSelected = true;
+                            }
+                            echo '<option value="' . $bandMeters . ',' . $band['start'] . ',' . $band['end'] . '"' . $selected . '>' . $band['band'] . '</option>' . "\n";
+                        }
+                    } else {
+                        // Fallback to default bands if no user bands configured
+                        echo '<option value="160,1800,2000">160m</option>';
+                        echo '<option value="80,3500,4000">80m</option>';
+                        echo '<option value="40,7000,7300">40m</option>';
+                        echo '<option value="20,14000,14350" selected>20m</option>';
+                        echo '<option value="17,18068,18168">17m</option>';
+                        echo '<option value="15,21000,21450">15m</option>';
+                        echo '<option value="12,24890,24990">12m</option>';
+                        echo '<option value="10,28000,29700">10m</option>';
+                        echo '<option value="6,50000,54000">6m</option>';
+                    }
+                    ?>
                 </select>
-            </div>
-            
-            <div class="toolbar-group">
-                <span class="toolbar-label">Tune:</span>
-                <input type="number" id="tuneFreq" class="frequency-input" placeholder="14200.0" step="0.1">
-                <button class="toolbar-btn" onclick="centerOnFrequency()">Center</button>
             </div>
             
             <div class="toolbar-group">

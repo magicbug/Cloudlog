@@ -1978,10 +1978,17 @@ $(document).ready(function() {
 
     <script>
         $(document).ready(function() {
-            // Synchronize the two selects
+            // Load saved radio selection from localStorage
+            var savedRadio = localStorage.getItem("selectedRadio");
+            if (savedRadio !== null && savedRadio !== undefined) {
+                $('.radios').val(savedRadio);
+            }
+
+            // Synchronize the two selects and save to localStorage
             $('.radios').on('change', function() {
                 const selectedValue = $(this).val(); // Get the selected value
                 $('.radios').not(this).val(selectedValue); // Update other selects to match
+                localStorage.setItem("selectedRadio", selectedValue); // Save to localStorage
             });
         });
     </script>

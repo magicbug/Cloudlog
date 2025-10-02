@@ -49,7 +49,7 @@
     <script>
         function openBandmap() {
             // Open bandmap in a new window without URL bar, toolbars, etc.
-            const width = 550;
+            const width = 450;
             const height = 800;
             const left = (screen.width - width) / 2;
             const top = (screen.height - height) / 2;

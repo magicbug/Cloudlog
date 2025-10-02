@@ -91,6 +91,58 @@ class Bands extends CI_Model {
 		return $this->db->get()->result();
 	}
 
+	function get_user_bands_for_bandmap($includeall = false) {
+		$this->db->from('bands');
+		$this->db->join('bandxuser', 'bandxuser.bandid = bands.id');
+		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
+		if (!$includeall) {
+			$this->db->where('bandxuser.active', 1);
+		}
+		$this->db->where('bands.bandgroup != "sat"');
+
+		$result = $this->db->get()->result();
+
+		// Define typical band ranges (in kHz for bandmap display) in frequency order
+		$band_ranges = array(
+			'160m' => array('start' => 1800, 'end' => 2000, 'order' => 1),
+			'80m' => array('start' => 3500, 'end' => 4000, 'order' => 2),
+			'60m' => array('start' => 5250, 'end' => 5450, 'order' => 3),
+			'40m' => array('start' => 7000, 'end' => 7300, 'order' => 4),
+			'30m' => array('start' => 10100, 'end' => 10150, 'order' => 5),
+			'20m' => array('start' => 14000, 'end' => 14350, 'order' => 6),
+			'17m' => array('start' => 18068, 'end' => 18168, 'order' => 7),
+			'15m' => array('start' => 21000, 'end' => 21450, 'order' => 8),
+			'12m' => array('start' => 24890, 'end' => 24990, 'order' => 9),
+			'10m' => array('start' => 28000, 'end' => 29700, 'order' => 10),
+			'6m' => array('start' => 50000, 'end' => 54000, 'order' => 11),
+			'4m' => array('start' => 70000, 'end' => 71000, 'order' => 12),
+			'2m' => array('start' => 144000, 'end' => 148000, 'order' => 13),
+			'1.25m' => array('start' => 222000, 'end' => 225000, 'order' => 14),
+			'70cm' => array('start' => 430000, 'end' => 440000, 'order' => 15),
+		);
+
+		$results = array();
+
+		foreach($result as $band) {
+			if (isset($band_ranges[$band->band])) {
+				$results[] = array(
+					'band' => $band->band,
+					'bandgroup' => $band->bandgroup,
+					'start' => $band_ranges[$band->band]['start'],
+					'end' => $band_ranges[$band->band]['end'],
+					'order' => $band_ranges[$band->band]['order']
+				);
+			}
+		}
+
+		// Sort by frequency order
+		usort($results, function($a, $b) {
+			return $a['order'] - $b['order'];
+		});
+
+		return $results;
+	}
+
 	function all() {
 		return $this->bandslots;
 	}
