@@ -87,7 +87,7 @@ class Emeinitials_model extends CI_Model
                 // The callsign isn't unique, now check the location of the entries with the same callsign
                 $dup_init = $this->find_duplicate($calls_array, $init);
 
-                // Dissimilae locations, we can add this initial to our list, it's new
+                // Dissimilar locations, we can add this initial to our list, it's new
                 if (empty($dup_init)) {
                     $new_init = new stdClass();
                     $new_init->callsign   = $init->callsign;
@@ -126,11 +126,11 @@ class Emeinitials_model extends CI_Model
         foreach ($array as $data) {
             $found = false;
 
-            if (empty($data->gridsquare) or empty($initial->gridsquare)) {
+            if (empty($data->gridsquare) || empty($initial->gridsquare)) {
                 // Impossible to do any sort of grid matching, so we mark them as matched
                 $found = true;
             }
-            else if (strlen($data->gridsquare) == 6 and strlen($initial->gridsquare) == 6) {
+            else if (strlen($data->gridsquare) == 6 && strlen($initial->gridsquare) == 6) {
                 // Are the grids an exact match?
                 if (strncmp($data->gridsquare, $initial->gridsquare, 6) == 0) {
                     $found = true;
@@ -143,7 +143,7 @@ class Emeinitials_model extends CI_Model
                 }
             }
 
-            if (!empty($data->state) and !empty($initial->state)) {
+            if (!empty($data->state) && !empty($initial->state)) {
                 // Are the states an exact match?
                 if ($data->state === $initial->state) {
                     $found = true;
