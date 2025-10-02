@@ -183,4 +183,40 @@ class Logbooks extends CI_Controller {
 		}
 	}
 
+	public function switch_logbook_location() {
+		$this->load->model('logbooks_model');
+		$this->load->model('stations');
+
+		$logbook_id = $this->input->post('logbook_id');
+		$station_id = $this->input->post('station_id');
+		
+		$success = true;
+		$messages = array();
+
+		// Switch logbook if provided and different from current
+		if ($logbook_id && $logbook_id != $this->session->userdata('active_station_logbook')) {
+			$this->logbooks_model->set_logbook_active($logbook_id);
+			$messages[] = 'Logbook switched to: ' . $this->logbooks_model->find_name($logbook_id);
+		}
+
+		// Switch station location if provided and different from current
+		if ($station_id && $station_id != $this->stations->find_active()) {
+			$current_station = $this->stations->find_active();
+			$this->stations->set_active($current_station, $station_id);
+			$station_name = $this->stations->profile_clean($station_id);
+			$messages[] = 'Location switched to: ' . $station_name->station_profile_name;
+		}
+
+		// Update session data
+		$this->user_model->update_session($this->session->userdata('user_id'));
+
+		// Set flash message
+		if (!empty($messages)) {
+			$this->session->set_flashdata('notice', implode('. ', $messages));
+		}
+
+		// Redirect back to logbook view
+		redirect('logbook');
+	}
+
 }
