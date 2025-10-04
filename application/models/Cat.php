@@ -285,14 +285,40 @@
 
 	/**
 	 * Clean up expired commands
+	 * @param int $user_id User ID (optional, cleans all users if not provided)
 	 * @return int Number of deleted commands
 	 */
-	function cleanup_expired_commands() {
+	function cleanup_expired_commands($user_id = null) {
+		// First, count how many expired commands we have
 		$this->db->where('expires_at <', date('Y-m-d H:i:s'));
 		$this->db->where('status', 'PENDING');
-		$this->db->delete('radio_commands');
 		
-		return $this->db->affected_rows();
+		if ($user_id !== null) {
+			$this->db->where('user_id', $user_id);
+		}
+		
+		$count = $this->db->count_all_results('radio_commands');
+		
+		// If we have expired commands, delete them
+		if ($count > 0) {
+			log_message('info', "Cleaning up {$count} expired radio commands" . ($user_id ? " for user {$user_id}" : ""));
+			
+			// Reset query builder and build delete query
+			$this->db->where('expires_at <', date('Y-m-d H:i:s'));
+			$this->db->where('status', 'PENDING');
+			
+			if ($user_id !== null) {
+				$this->db->where('user_id', $user_id);
+			}
+			
+			$this->db->delete('radio_commands');
+			$deleted = $this->db->affected_rows();
+			
+			log_message('info', "Successfully deleted {$deleted} expired radio commands");
+			return $deleted;
+		}
+		
+		return 0;
 	}
 
 	/**
@@ -340,6 +366,39 @@
 		));
 		
 		return $this->db->affected_rows() > 0;
+	}
+
+	/**
+	 * Clean up old completed/failed commands (older than specified days)
+	 * @param int $days_old Commands older than this many days will be deleted
+	 * @param int $user_id User ID (optional, cleans all users if not provided)
+	 * @return int Number of old commands deleted
+	 */
+	function cleanup_old_commands($days_old = 7, $user_id = null) {
+		$cutoff_date = date('Y-m-d H:i:s', strtotime("-{$days_old} days"));
+		
+		$this->db->where('created_at <', $cutoff_date);
+		$this->db->where_in('status', array('COMPLETED', 'FAILED'));
+		
+		if ($user_id !== null) {
+			$this->db->where('user_id', $user_id);
+		}
+		
+		// Get count before deleting for logging
+		$count_query = clone $this->db;
+		$count = $count_query->count_all_results('radio_commands');
+		
+		if ($count > 0) {
+			log_message('info', "Cleaning up {$count} old radio commands older than {$days_old} days" . ($user_id ? " for user {$user_id}" : ""));
+			
+			$this->db->delete('radio_commands');
+			$deleted = $this->db->affected_rows();
+			
+			log_message('info', "Successfully deleted {$deleted} old radio commands");
+			return $deleted;
+		}
+		
+		return 0;
 	}
 }
 ?>

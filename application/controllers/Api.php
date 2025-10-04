@@ -703,6 +703,9 @@ class API extends CI_Controller
 		$this->api_model->update_last_used($key);
 		$user_id = $this->api_model->key_userid($key);
 
+		// Clean up expired commands for this user
+		$cleaned = $this->cat->cleanup_expired_commands($user_id);
+
 		if ($radio_name) {
 			// URL decode the radio name in case it has spaces/special chars
 			$decoded_radio_name = urldecode($radio_name);
@@ -750,7 +753,8 @@ class API extends CI_Controller
 			'commands' => $commands,
 			'count' => count($commands),
 			'radio_name' => $decoded_radio_name,
-			'original_param' => $radio_name
+			'original_param' => $radio_name,
+			'expired_cleaned' => $cleaned
 		]);
 	}
 
@@ -935,6 +939,103 @@ class API extends CI_Controller
 			http_response_code(500);
 			echo json_encode(['status' => 'failed', 'reason' => 'failed to queue command']);
 		}
+	}
+
+	/**
+	 * Get all pending radio commands for all user's radios (optimized for Aurora)
+	 * GET /api/radio_commands_all_pending/{key}
+	 */
+	function radio_commands_all_pending($key)
+	{
+		header('Content-type: application/json');
+		
+		$this->load->model('api_model');
+		$this->load->model('cat');
+
+		// Check API key
+		if (!$key || $this->api_model->authorize($key) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => 'unauthorized']);
+			return;
+		}
+
+		$this->api_model->update_last_used($key);
+		$user_id = $this->api_model->key_userid($key);
+
+		// Clean up expired commands for this user
+		$cleaned = $this->cat->cleanup_expired_commands($user_id);
+
+		// Get all pending commands for all user's radios
+		$commands = $this->cat->get_all_pending_commands($user_id);
+
+		// Group commands by radio for easier processing
+		$commands_by_radio = array();
+		$radio_names = array();
+
+		foreach ($commands as $command) {
+			$radio_name = $command['radio_name'];
+			if (!isset($commands_by_radio[$radio_name])) {
+				$commands_by_radio[$radio_name] = array();
+				$radio_names[] = $radio_name;
+			}
+			$commands_by_radio[$radio_name][] = $command;
+		}
+
+		echo json_encode([
+			'status' => 'success',
+			'commands' => $commands,
+			'commands_by_radio' => $commands_by_radio,
+			'radio_names' => $radio_names,
+			'total_commands' => count($commands),
+			'radios_with_commands' => count($commands_by_radio),
+			'expired_cleaned' => $cleaned,
+			'timestamp' => date('Y-m-d H:i:s')
+		]);
+	}
+
+	/**
+	 * Cleanup expired radio commands (maintenance endpoint)
+	 * POST /api/radio_commands_cleanup/{key}
+	 * Body: {"cleanup_old": true, "days_old": 7} (optional parameters)
+	 */
+	function radio_commands_cleanup($key)
+	{
+		header('Content-type: application/json');
+		
+		$this->load->model('api_model');
+		$this->load->model('cat');
+
+		// Check API key
+		if (!$key || $this->api_model->authorize($key) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => 'unauthorized']);
+			return;
+		}
+
+		$this->api_model->update_last_used($key);
+		$user_id = $this->api_model->key_userid($key);
+
+		// Get optional JSON input
+		$input = json_decode(file_get_contents("php://input"), true);
+		$cleanup_old = isset($input['cleanup_old']) ? $input['cleanup_old'] : false;
+		$days_old = isset($input['days_old']) ? intval($input['days_old']) : 7;
+
+		// Clean up expired commands
+		$expired_cleaned = $this->cat->cleanup_expired_commands($user_id);
+		
+		$old_cleaned = 0;
+		if ($cleanup_old) {
+			$old_cleaned = $this->cat->cleanup_old_commands($days_old, $user_id);
+		}
+
+		echo json_encode([
+			'status' => 'success',
+			'expired_commands_cleaned' => $expired_cleaned,
+			'old_commands_cleaned' => $old_cleaned,
+			'cleanup_old_enabled' => $cleanup_old,
+			'days_old_threshold' => $days_old,
+			'timestamp' => date('Y-m-d H:i:s')
+		]);
 	}
 
 	/*

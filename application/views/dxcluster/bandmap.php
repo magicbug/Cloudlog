@@ -695,6 +695,12 @@
             tuneFrequency = frequency;
             document.getElementById('tuneFreq').value = frequency.toFixed(1);
             updateDisplay();
+            
+            // Check if a radio is selected and send QSY command
+            const selectedRadio = localStorage.getItem('selectedRadio');
+            if (selectedRadio && selectedRadio !== 'none') {
+                sendQSYCommand(selectedRadio, frequency);
+            }
         }
 
         function centerOnFrequency() {
@@ -943,6 +949,73 @@
             
             console.log('No matching band found for', freqKHz, 'kHz');
             return null;
+        }
+
+        // Send QSY command to radio
+        function sendQSYCommand(radioId, frequency) {
+            // Convert kHz to MHz for the API
+            const frequencyMHz = frequency / 1000;
+            
+            console.log(`Sending QSY command: Radio ${radioId}, Frequency ${frequencyMHz} MHz`);
+            
+            fetch('<?php echo site_url('dxcluster/qsy'); ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    radio_id: radioId,
+                    frequency: frequencyMHz
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('QSY command sent successfully:', data);
+                    // Optionally show a brief success indicator
+                    showQSYFeedback('success', `QSY to ${frequencyMHz.toFixed(3)} MHz sent to radio`);
+                } else {
+                    console.error('QSY command failed:', data.message);
+                    showQSYFeedback('error', `QSY failed: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending QSY command:', error);
+                showQSYFeedback('error', 'Failed to send QSY command');
+            });
+        }
+
+        // Show brief feedback for QSY commands
+        function showQSYFeedback(type, message) {
+            // Remove any existing feedback
+            const existingFeedback = document.getElementById('qsyFeedback');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+            
+            // Create feedback element
+            const feedback = document.createElement('div');
+            feedback.id = 'qsyFeedback';
+            feedback.textContent = message;
+            feedback.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 10px 15px;
+                border-radius: 4px;
+                color: white;
+                font-weight: bold;
+                z-index: 1000;
+                opacity: 0.9;
+                ${type === 'success' ? 'background-color: #28a745;' : 'background-color: #dc3545;'}
+            `;
+            
+            document.body.appendChild(feedback);
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                feedback.remove();
+            }, 3000);
         }
 
         // Initialize with proper zoom

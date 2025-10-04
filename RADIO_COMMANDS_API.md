@@ -21,7 +21,97 @@ All API endpoints require a valid Cloudlog API key. You can generate an API key 
 
 ## API Endpoints
 
-### 1. Submit Radio Data (CAT Updates)
+### 1. Get All Pending Radio Commands (Optimized) ⭐ **RECOMMENDED**
+
+**Endpoint:** `GET /api/radio_commands_all_pending/{key}`
+
+**Description:** Get all pending radio commands for ALL of the user's radios in a single API call. This is the most efficient way to check for commands instead of making separate calls for each radio.
+
+**URL Example:**
+```
+http://your-cloudlog-url/index.php/api/radio_commands_all_pending/cl6897ba3088c7b
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "commands": [
+    {
+      "id": 123,
+      "radio_id": 1,
+      "radio_name": "FT-991A",
+      "command_type": "SET_FREQ",
+      "frequency": "14074000",
+      "mode": null,
+      "vfo": null,
+      "power": null,
+      "status": "PENDING",
+      "created_at": "2025-10-04 16:47:23",
+      "expires_at": "2025-10-04 17:17:23"
+    },
+    {
+      "id": 124,
+      "radio_id": 2,
+      "radio_name": "IC-7300",
+      "command_type": "SET_MODE",
+      "frequency": null,
+      "mode": "FT8",
+      "vfo": null,
+      "power": null,
+      "status": "PENDING",
+      "created_at": "2025-10-04 16:48:15",
+      "expires_at": "2025-10-04 17:18:15"
+    }
+  ],
+  "commands_by_radio": {
+    "FT-991A": [
+      {
+        "id": 123,
+        "radio_id": 1,
+        "radio_name": "FT-991A",
+        "command_type": "SET_FREQ",
+        "frequency": "14074000",
+        "mode": null,
+        "vfo": null,
+        "power": null,
+        "status": "PENDING",
+        "created_at": "2025-10-04 16:47:23",
+        "expires_at": "2025-10-04 17:17:23"
+      }
+    ],
+    "IC-7300": [
+      {
+        "id": 124,
+        "radio_id": 2,
+        "radio_name": "IC-7300",
+        "command_type": "SET_MODE",
+        "frequency": null,
+        "mode": "FT8",
+        "vfo": null,
+        "power": null,
+        "status": "PENDING",
+        "created_at": "2025-10-04 16:48:15",
+        "expires_at": "2025-10-04 17:18:15"
+      }
+    ]
+  },
+  "radio_names": ["FT-991A", "IC-7300"],
+  "total_commands": 2,
+  "radios_with_commands": 2,
+  "expired_cleaned": 3,
+  "timestamp": "2025-10-04 16:48:30"
+}
+```
+
+**Benefits:**
+- **Significantly reduces API calls** - One call instead of N calls (where N = number of radios)
+- **Better performance** - Reduced server load and network overhead
+- **Organized data** - Commands grouped by radio name for easy processing
+- **Complete overview** - See all pending commands across all radios at once
+- **Automatic cleanup** - Expired commands are automatically deleted when this endpoint is called
+
+### 2. Submit Radio Data (CAT Updates)
 
 **Endpoint:** `POST /api/radio`
 
@@ -78,7 +168,7 @@ Content-Type: application/json
 }
 ```
 
-### 2. Get Pending Commands by Radio Name
+### 3. Get Pending Commands by Radio Name
 
 **Endpoint:** `GET /api/radio_commands_pending_by_name/{api_key}/{radio_name}`
 
@@ -118,11 +208,12 @@ http://your-cloudlog-url/index.php/api/radio_commands_pending_by_name/cl6897ba30
   ],
   "count": 1,
   "radio_name": "Dummy Rig",
-  "original_param": "Dummy%20Rig"
+  "original_param": "Dummy%20Rig",
+  "expired_cleaned": 2
 }
 ```
 
-### 3. Get All Pending Commands
+### 4. Get All Pending Commands (Legacy)
 
 **Endpoint:** `GET /api/radio_commands_pending/{api_key}`
 
@@ -133,7 +224,7 @@ http://your-cloudlog-url/index.php/api/radio_commands_pending_by_name/cl6897ba30
 http://your-cloudlog-url/index.php/api/radio_commands_pending/cl6897ba3088c7b
 ```
 
-### 4. Update Command Status
+### 5. Update Command Status
 
 **Endpoint:** `POST /api/radio_commands_update_status/{api_key}`
 
@@ -174,7 +265,7 @@ Content-Type: application/json
 }
 ```
 
-### 5. Get Command by ID
+### 6. Get Command by ID
 
 **Endpoint:** `GET /api/radio_commands_get/{api_key}/{command_id}`
 
@@ -185,7 +276,7 @@ Content-Type: application/json
 http://your-cloudlog-url/index.php/api/radio_commands_get/cl6897ba3088c7b/1
 ```
 
-### 6. Queue New Command
+### 7. Queue New Command
 
 **Endpoint:** `POST /api/radio_commands_queue/{api_key}`
 
@@ -213,6 +304,41 @@ http://your-cloudlog-url/index.php/api/radio_commands_queue/cl6897ba3088c7b
   "command_type": "SET_FREQ", 
   "frequency": 14074000,
   "mode": "USB"
+}
+```
+
+### 8. Cleanup Expired Commands (Maintenance)
+
+**Endpoint:** `POST /api/radio_commands_cleanup/{key}`
+
+**Description:** Manually trigger cleanup of expired and optionally old completed/failed commands. This is useful for maintenance or if you want to force cleanup outside of normal API polling.
+
+**URL Example:**
+```
+http://your-cloudlog-url/index.php/api/radio_commands_cleanup/cl6897ba3088c7b
+```
+
+**Request Body (Optional):**
+```json
+{
+  "cleanup_old": true,
+  "days_old": 7
+}
+```
+
+**Parameters:**
+- `cleanup_old` (boolean, optional): Whether to also clean up old completed/failed commands (default: false)
+- `days_old` (integer, optional): Commands older than this many days will be deleted (default: 7)
+
+**Response:**
+```json
+{
+  "status": "success",
+  "expired_commands_cleaned": 5,
+  "old_commands_cleaned": 12,
+  "cleanup_old_enabled": true,
+  "days_old_threshold": 7,
+  "timestamp": "2025-10-04 16:48:30"
 }
 ```
 
@@ -312,8 +438,16 @@ class CloudlogRadioAPI:
         self.base_url = base_url.rstrip('/')
         self.api_key = api_key
     
+    def get_all_pending_commands(self):
+        """Get ALL pending commands for ALL radios (RECOMMENDED - Single API call)"""
+        url = f"{self.base_url}/api/radio_commands_all_pending/{self.api_key}"
+        
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    
     def get_pending_commands(self, radio_name):
-        """Get pending commands for a radio"""
+        """Get pending commands for a specific radio (Legacy method)"""
         encoded_name = urllib.parse.quote(radio_name)
         url = f"{self.base_url}/api/radio_commands_pending_by_name/{self.api_key}/{encoded_name}"
         
@@ -405,18 +539,26 @@ def get_current_radio_status():
         "power": 100
     }
 
-# Main integration loop
+# Main integration loop - OPTIMIZED APPROACH (RECOMMENDED)
 last_status_update = 0
 while True:
     try:
-        # 1. Poll for pending commands from Cloudlog
-        result = api.get_pending_commands(radio_name)
+        # 1. Poll for ALL pending commands from Cloudlog (single API call!)
+        result = api.get_all_pending_commands()
         
-        if result['status'] == 'success' and result['count'] > 0:
-            print(f"Found {result['count']} pending commands")
+        if result['status'] == 'success' and result['total_commands'] > 0:
+            print(f"Found {result['total_commands']} pending commands for {result['radios_with_commands']} radios")
             
+            # Process all commands for all radios
             for command in result['commands']:
+                print(f"Processing {command['command_type']} for {command['radio_name']}")
                 api.execute_command(command)
+                
+            # Or process by radio if preferred:
+            # for radio_name, commands in result['commands_by_radio'].items():
+            #     print(f"Processing {len(commands)} commands for {radio_name}")
+            #     for command in commands:
+            #         api.execute_command(command)
         
         # 2. Periodically submit radio status to Cloudlog (every 30 seconds)
         current_time = time.time()
@@ -436,6 +578,18 @@ while True:
     except Exception as e:
         print(f"Error: {e}")
         time.sleep(10)  # Wait longer on error
+
+# Alternative: Legacy approach for single radio (NOT recommended for multiple radios)
+# while True:
+#     try:
+#         result = api.get_pending_commands(radio_name)  # One call per radio
+#         if result['status'] == 'success' and result['count'] > 0:
+#             for command in result['commands']:
+#                 api.execute_command(command)
+#         time.sleep(2)
+#     except Exception as e:
+#         print(f"Error: {e}")
+#         time.sleep(10)
 ```
 
 ### JavaScript/Node.js Example
@@ -656,10 +810,12 @@ Cloudlog provides two main categories of radio-related APIs:
 - Provide detailed error messages
 - Log errors for debugging
 
-### 3. Command Expiration
+### 3. Command Expiration & Cleanup
 - Commands expire after **30 minutes** by default
-- Handle expired commands gracefully
+- **Automatic cleanup**: Expired commands are automatically deleted when polling APIs are called
+- Handle expired commands gracefully in your application
 - Don't execute expired commands
+- Use cleanup endpoint for maintenance if needed
 
 ### 4. Status Updates
 - Update to `PROCESSING` when starting execution
