@@ -27,7 +27,7 @@ class Dxcluster extends CI_Controller {
         $this->load->model('bands');
         
         $data['page_title'] = "DX Cluster Bandmap";
-        $data['bands'] = $this->bands->get_user_bands_for_bandmap();
+        $data['bands'] = $this->bands->get_user_bands_for_bandmap($includeall = true);
 
         $this->load->view('dxcluster/bandmap', $data);
 

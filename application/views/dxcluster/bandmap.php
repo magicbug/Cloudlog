@@ -340,18 +340,41 @@
                         }
                     } else {
                         // Fallback to default bands if no user bands configured
+                        // HF Bands
+                        echo '<option value="2190,135700,137800">2190m</option>';
+                        echo '<option value="630,472000,479000">630m</option>';
+                        echo '<option value="560,501000,504000">560m</option>';
                         echo '<option value="160,1800,2000">160m</option>';
                         echo '<option value="80,3500,4000">80m</option>';
+                        echo '<option value="60,5351500,5366500">60m</option>';
                         echo '<option value="40,7000,7300">40m</option>';
+                        echo '<option value="30,10100,10150">30m</option>';
                         echo '<option value="20,14000,14350" selected>20m</option>';
                         echo '<option value="17,18068,18168">17m</option>';
                         echo '<option value="15,21000,21450">15m</option>';
                         echo '<option value="12,24890,24990">12m</option>';
                         echo '<option value="10,28000,29700">10m</option>';
+                        // VHF Bands
                         echo '<option value="6,50000,54000">6m</option>';
+                        echo '<option value="4,70000,70500">4m</option>';
                         echo '<option value="2,144000,148000">2m</option>';
-                        echo '<option value="70,430000,440000">70cm</option>';
+                        echo '<option value="1.25,222000,225000">1.25m</option>';
+                        // UHF Bands
+                        echo '<option value="70,420000,450000">70cm</option>';
+                        echo '<option value="33,902000,928000">33cm</option>';
+                        // SHF Bands (Microwave)
                         echo '<option value="23,1240000,1300000">23cm</option>';
+                        echo '<option value="13,2300000,2450000">13cm</option>';
+                        echo '<option value="9,3300000,3500000">9cm</option>';
+                        echo '<option value="6,5650000,5925000">6cm</option>';
+                        echo '<option value="3,10000000,10500000">3cm</option>';
+                        echo '<option value="1.2,24000000,24250000">1.2cm</option>';
+                        // EHF Bands (Millimeter wave)
+                        echo '<option value="6mm,47000000,47200000">6mm</option>';
+                        echo '<option value="4mm,75500000,81000000">4mm</option>';
+                        echo '<option value="2.5mm,119980000,120020000">2.5mm</option>';
+                        echo '<option value="2mm,142000000,149000000">2mm</option>';
+                        echo '<option value="1mm,241000000,250000000">1mm</option>';
                     }
                     ?>
                 </select>
@@ -477,6 +500,32 @@
             selectBand(meters, start, end);
         }
         
+        // Helper function to format band names properly
+        function formatBandName(meters) {
+            // Handle all centimeter bands
+            if (meters === 70) return '70cm';
+            if (meters === 33) return '33cm';
+            if (meters === 23) return '23cm';
+            if (meters === 13) return '13cm';
+            if (meters === 9) return '9cm';
+            if (meters === 6) return '6cm';
+            if (meters === 3) return '3cm';
+            if (meters === 1.2) return '1.2cm';
+            
+            // Handle millimeter bands
+            if (meters === '6mm') return '6mm';
+            if (meters === '4mm') return '4mm';
+            if (meters === '2.5mm') return '2.5mm';
+            if (meters === '2mm') return '2mm';
+            if (meters === '1mm') return '1mm';
+            
+            // Handle decimal meter bands
+            if (meters === 1.25) return '1.25m';
+            
+            // Default meter bands
+            return `${meters}m`;
+        }
+        
         function selectBand(meters, start, end) {
             currentBandMeters = meters;
             bandStart = start;
@@ -488,14 +537,8 @@
             viewStart = Math.max(start, center - newRange / 2);
             viewEnd = Math.min(end, center + newRange / 2);
 
-            // Handle band display properly for cm bands
-            if (meters === 70) {
-                document.getElementById('currentBand').textContent = '70cm';
-            } else if (meters === 23) {
-                document.getElementById('currentBand').textContent = '23cm';
-            } else {
-                document.getElementById('currentBand').textContent = `${meters}m`;
-            }
+            // Handle band display properly for all bands
+            document.getElementById('currentBand').textContent = formatBandName(meters);
             document.getElementById('freqRange').textContent = `${(viewStart/1000).toFixed(3)}-${(viewEnd/1000).toFixed(3)}`;
 
             updateDisplay();
@@ -888,15 +931,11 @@
                                 bandStart = band.start;
                                 bandEnd = band.end;
                                 
-                                // Use the band name from the dropdown if available
+                                // Use the band name from the dropdown if available, otherwise format properly
                                 if (band.name) {
                                     document.getElementById('currentBand').textContent = band.name;
-                                } else if (band.meters === 70) {
-                                    document.getElementById('currentBand').textContent = '70cm';
-                                } else if (band.meters === 23) {
-                                    document.getElementById('currentBand').textContent = '23cm';
                                 } else {
-                                    document.getElementById('currentBand').textContent = `${band.meters}m`;
+                                    document.getElementById('currentBand').textContent = formatBandName(band.meters);
                                 }
                             }
                             
