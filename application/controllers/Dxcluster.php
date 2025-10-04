@@ -88,6 +88,10 @@ class Dxcluster extends CI_Controller {
         $freq_command_id = $this->cat->queue_command($command_data);
         $mode_command_id = null;
         
+        // Debug logging
+        log_message('debug', "QSY: Mode parameter received: '" . var_export($mode, true) . "'");
+        log_message('debug', "QSY: Mode empty check: " . (empty($mode) ? 'true' : 'false'));
+        
         if (!empty($mode)) {
             $mode_command = array(
                 'radio_id' => $radio_id,
@@ -98,7 +102,11 @@ class Dxcluster extends CI_Controller {
                 'expires_at' => date('Y-m-d H:i:s', strtotime('+30 minutes'))
             );
             
+            log_message('debug', "QSY: Creating SET_MODE command: " . json_encode($mode_command));
             $mode_command_id = $this->cat->queue_command($mode_command);
+            log_message('debug', "QSY: SET_MODE command ID: " . var_export($mode_command_id, true));
+        } else {
+            log_message('debug', "QSY: No mode provided or mode is empty");
         }
         
         if ($freq_command_id) {

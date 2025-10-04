@@ -644,7 +644,7 @@
                     hideTooltip();
                     frequencyLine.classList.remove('active');
                 });
-                spotElement.addEventListener('click', () => tuneToSpot(freq));
+                spotElement.addEventListener('click', () => tuneToSpot(freq, spot));
 
                 spotsCanvas.appendChild(spotElement);
             });
@@ -691,7 +691,7 @@
             spotTooltip.style.display = 'none';
         }
 
-        function tuneToSpot(frequency) {
+        function tuneToSpot(frequency, spot = null) {
             tuneFrequency = frequency;
             document.getElementById('tuneFreq').value = frequency.toFixed(1);
             updateDisplay();
@@ -699,7 +699,19 @@
             // Check if a radio is selected and send QSY command
             const selectedRadio = localStorage.getItem('selectedRadio');
             if (selectedRadio && selectedRadio !== 'none') {
-                sendQSYCommand(selectedRadio, frequency);
+                // Check if this is an RBN spot (spotter callsign ends with -#)
+                let mode = null;
+                if (spot && spot.spotter) {
+                    console.log(`Checking spotter callsign: ${spot.spotter}`);
+                    if (spot.spotter.endsWith('-#')) {
+                        mode = 'CW'; // RBN spots are CW
+                        console.log(`RBN spot detected from ${spot.spotter}, setting mode to CW`);
+                    } else {
+                        console.log(`Regular spot from ${spot.spotter}, no mode override`);
+                    }
+                }
+                
+                sendQSYCommand(selectedRadio, frequency, mode);
             }
         }
 
@@ -952,28 +964,35 @@
         }
 
         // Send QSY command to radio
-        function sendQSYCommand(radioId, frequency) {
+        function sendQSYCommand(radioId, frequency, mode = null) {
             // Convert kHz to MHz for the API
             const frequencyMHz = frequency / 1000;
             
-            console.log(`Sending QSY command: Radio ${radioId}, Frequency ${frequencyMHz} MHz`);
+            console.log(`Sending QSY command: Radio ${radioId}, Frequency ${frequencyMHz} MHz${mode ? ', Mode ' + mode : ''}`);
+            
+            const payload = {
+                radio_id: radioId,
+                frequency: frequencyMHz
+            };
+            
+            if (mode) {
+                payload.mode = mode;
+            }
             
             fetch('<?php echo site_url('dxcluster/qsy'); ?>', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    radio_id: radioId,
-                    frequency: frequencyMHz
-                })
+                body: JSON.stringify(payload)
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     console.log('QSY command sent successfully:', data);
                     // Optionally show a brief success indicator
-                    showQSYFeedback('success', `QSY to ${frequencyMHz.toFixed(3)} MHz sent to radio`);
+                    const modeText = data.mode ? ` ${data.mode}` : '';
+                    showQSYFeedback('success', `QSY to ${frequencyMHz.toFixed(3)} MHz${modeText} sent to radio`);
                 } else {
                     console.error('QSY command failed:', data.message);
                     showQSYFeedback('error', `QSY failed: ${data.message}`);
