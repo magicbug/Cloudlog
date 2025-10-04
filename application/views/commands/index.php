@@ -55,8 +55,6 @@
                                                 <option value="FM">FM</option>
                                                 <option value="RTTY">RTTY</option>
                                                 <option value="PSK31">PSK31</option>
-                                                <option value="FT8">FT8</option>
-                                                <option value="FT4">FT4</option>
                                             </select>
                                         </div>
                                         
@@ -67,7 +65,6 @@
                                                 <option value="">-- Select VFO --</option>
                                                 <option value="A">VFO A</option>
                                                 <option value="B">VFO B</option>
-                                                <option value="C">VFO C</option>
                                             </select>
                                         </div>
                                         
@@ -123,8 +120,6 @@
                                                         <option value="FM">FM</option>
                                                         <option value="RTTY">RTTY</option>
                                                         <option value="PSK31">PSK31</option>
-                                                        <option value="FT8">FT8</option>
-                                                        <option value="FT4">FT4</option>
                                                     </select>
                                                 </div>
                                             </div>
