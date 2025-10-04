@@ -632,6 +632,312 @@ class API extends CI_Controller
 	}
 
 	/*
+	 * Radio Commands API Functions for Aurora Desktop App
+	 */
+
+	/**
+	 * Get pending radio commands
+	 * GET /api/radio_commands_pending/{key}
+	 * GET /api/radio_commands_pending_by_name/{key}/{radio_name}
+	 */
+	function radio_commands_pending($key, $radio_id = null)
+	{
+		header('Content-type: application/json');
+		
+		$this->load->model('api_model');
+		$this->load->model('cat');
+
+		// Check API key
+		if (!$key || $this->api_model->authorize($key) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => 'unauthorized']);
+			return;
+		}
+
+		$this->api_model->update_last_used($key);
+		$user_id = $this->api_model->key_userid($key);
+
+		if ($radio_id) {
+			// Get commands for specific radio by ID
+			$commands = $this->cat->get_pending_commands($radio_id, $user_id);
+		} else {
+			// Get all pending commands for user
+			$commands = $this->cat->get_all_pending_commands($user_id);
+		}
+
+		// Debug information
+		$debug_info = array(
+			'user_id' => $user_id,
+			'radio_id' => $radio_id,
+			'current_time' => date('Y-m-d H:i:s'),
+			'total_commands_in_db' => $this->db->where('user_id', $user_id)->count_all_results('radio_commands'),
+			'pending_commands_in_db' => $this->db->where('user_id', $user_id)->where('status', 'PENDING')->count_all_results('radio_commands')
+		);
+
+		echo json_encode([
+			'status' => 'success',
+			'commands' => $commands,
+			'count' => count($commands),
+			'debug' => $debug_info
+		]);
+	}
+
+	/**
+	 * Get pending radio commands by radio name (for Aurora)
+	 * GET /api/radio_commands_pending_by_name/{key}/{radio_name}
+	 */
+	function radio_commands_pending_by_name($key, $radio_name = null)
+	{
+		header('Content-type: application/json');
+		
+		$this->load->model('api_model');
+		$this->load->model('cat');
+
+		// Check API key
+		if (!$key || $this->api_model->authorize($key) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => 'unauthorized']);
+			return;
+		}
+
+		$this->api_model->update_last_used($key);
+		$user_id = $this->api_model->key_userid($key);
+
+		if ($radio_name) {
+			// URL decode the radio name in case it has spaces/special chars
+			$decoded_radio_name = urldecode($radio_name);
+			
+			// Additional cleanup - remove any extra whitespace
+			$decoded_radio_name = trim($decoded_radio_name);
+			
+			// Debug: Check if radio exists in cat table for this user
+			$radio_check = $this->db->select('id, radio, user_id')
+				->where('radio', $decoded_radio_name)
+				->where('user_id', $user_id)
+				->get('cat');
+			
+			// Debug: Check all radios for this user
+			$all_user_radios = $this->db->select('id, radio')
+				->where('user_id', $user_id)
+				->get('cat');
+			
+			// Debug: Check if any commands exist for this user
+			$all_commands = $this->db->select('id, radio_id, radio_name, command_type, status, created_at, expires_at')
+				->where('user_id', $user_id)
+				->get('radio_commands');
+			
+			// Get commands for specific radio by name
+			$commands = $this->cat->get_pending_commands_by_name($decoded_radio_name, $user_id);
+			
+			$debug_info = array(
+				'user_id' => $user_id,
+				'decoded_radio_name' => $decoded_radio_name,
+				'radio_found_in_cat' => $radio_check->num_rows() > 0,
+				'radio_details' => $radio_check->num_rows() > 0 ? $radio_check->row_array() : null,
+				'all_user_radios' => $all_user_radios->result_array(),
+				'all_user_commands' => $all_commands->result_array(),
+				'current_time' => date('Y-m-d H:i:s')
+			);
+		} else {
+			// Get all pending commands for user
+			$commands = $this->cat->get_all_pending_commands($user_id);
+			$decoded_radio_name = null;
+			$debug_info = array('user_id' => $user_id);
+		}
+
+		echo json_encode([
+			'status' => 'success',
+			'commands' => $commands,
+			'count' => count($commands),
+			'radio_name' => $decoded_radio_name,
+			'original_param' => $radio_name
+		]);
+	}
+
+	/**
+	 * Update radio command status
+	 * POST /api/radio_commands/update_status/{key}
+	 * Body: {"command_id": 123, "status": "COMPLETED", "error_message": "optional"}
+	 */
+	function radio_commands_update_status($key)
+	{
+		header('Content-type: application/json');
+		
+		$this->load->model('api_model');
+		$this->load->model('cat');
+
+		// Check API key
+		if (!$key || $this->api_model->authorize($key) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => 'unauthorized']);
+			return;
+		}
+
+		$this->api_model->update_last_used($key);
+		$user_id = $this->api_model->key_userid($key);
+
+		// Get JSON input
+		$input = json_decode(file_get_contents("php://input"), true);
+
+		if (!isset($input['command_id']) || !isset($input['status'])) {
+			http_response_code(400);
+			echo json_encode(['status' => 'failed', 'reason' => 'missing command_id or status']);
+			return;
+		}
+
+		$command_id = $input['command_id'];
+		$status = $input['status'];
+		$error_message = isset($input['error_message']) ? $input['error_message'] : null;
+
+		// Validate status
+		$valid_statuses = ['PROCESSING', 'COMPLETED', 'FAILED'];
+		if (!in_array($status, $valid_statuses)) {
+			http_response_code(400);
+			echo json_encode(['status' => 'failed', 'reason' => 'invalid status']);
+			return;
+		}
+
+		// Verify command belongs to user
+		$command = $this->cat->get_command($command_id, $user_id);
+		if (!$command) {
+			http_response_code(404);
+			echo json_encode(['status' => 'failed', 'reason' => 'command not found']);
+			return;
+		}
+
+		// Update command status
+		$result = $this->cat->update_command_status($command_id, $status, $error_message);
+
+		if ($result) {
+			echo json_encode(['status' => 'success', 'updated' => true]);
+		} else {
+			http_response_code(500);
+			echo json_encode(['status' => 'failed', 'reason' => 'update failed']);
+		}
+	}
+
+	/**
+	 * Get radio command by ID
+	 * GET /api/radio_commands/get/{key}/{command_id}
+	 */
+	function radio_commands_get($key, $command_id)
+	{
+		header('Content-type: application/json');
+		
+		$this->load->model('api_model');
+		$this->load->model('cat');
+
+		// Check API key
+		if (!$key || $this->api_model->authorize($key) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => 'unauthorized']);
+			return;
+		}
+
+		$this->api_model->update_last_used($key);
+		$user_id = $this->api_model->key_userid($key);
+
+		$command = $this->cat->get_command($command_id, $user_id);
+
+		if ($command) {
+			echo json_encode([
+				'status' => 'success',
+				'command' => $command
+			]);
+		} else {
+			http_response_code(404);
+			echo json_encode(['status' => 'failed', 'reason' => 'command not found']);
+		}
+	}
+
+	/**
+	 * Queue a new radio command (for testing or external apps)
+	 * POST /api/radio_commands_queue/{key}
+	 * Body: {"radio_id": 1, "command_type": "SET_FREQ", "frequency": 14074000, "mode": "USB"}
+	 * OR: {"radio_name": "FT-991A", "command_type": "SET_FREQ", "frequency": 14074000, "mode": "USB"}
+	 */
+	function radio_commands_queue($key)
+	{
+		header('Content-type: application/json');
+		
+		$this->load->model('api_model');
+		$this->load->model('cat');
+
+		// Check API key
+		if (!$key || $this->api_model->authorize($key) == 0) {
+			http_response_code(401);
+			echo json_encode(['status' => 'failed', 'reason' => 'unauthorized']);
+			return;
+		}
+
+		$this->api_model->update_last_used($key);
+		$user_id = $this->api_model->key_userid($key);
+
+		// Get JSON input
+		$input = json_decode(file_get_contents("php://input"), true);
+
+		if (!isset($input['command_type'])) {
+			http_response_code(400);
+			echo json_encode(['status' => 'failed', 'reason' => 'missing command_type']);
+			return;
+		}
+
+		$radio_id = null;
+
+		// Check if radio_name is provided instead of radio_id
+		if (isset($input['radio_name'])) {
+			// Get radio ID from radio name
+			$radio_query = $this->db->select('id')
+				->where('radio', $input['radio_name'])
+				->where('user_id', $user_id)
+				->get('cat');
+
+			if ($radio_query->num_rows() == 0) {
+				http_response_code(404);
+				echo json_encode(['status' => 'failed', 'reason' => 'radio not found']);
+				return;
+			}
+
+			$radio_id = $radio_query->row()->id;
+
+		} elseif (isset($input['radio_id'])) {
+			$radio_id = $input['radio_id'];
+		} else {
+			http_response_code(400);
+			echo json_encode(['status' => 'failed', 'reason' => 'missing radio_id or radio_name']);
+			return;
+		}
+
+		// Prepare command data
+		$command_data = array(
+			'radio_id' => $radio_id,
+			'user_id' => $user_id,
+			'command_type' => $input['command_type'],
+			'expires_at' => date('Y-m-d H:i:s', strtotime('+30 minutes'))
+		);
+
+		// Add optional parameters
+		if (isset($input['frequency'])) $command_data['frequency'] = $input['frequency'];
+		if (isset($input['mode'])) $command_data['mode'] = $input['mode'];
+		if (isset($input['vfo'])) $command_data['vfo'] = $input['vfo'];
+		if (isset($input['power'])) $command_data['power'] = $input['power'];
+		if (isset($input['station_id'])) $command_data['station_id'] = $input['station_id'];
+
+		$command_id = $this->cat->queue_command($command_data);
+
+		if ($command_id) {
+			echo json_encode([
+				'status' => 'success',
+				'command_id' => $command_id,
+				'message' => 'Command queued successfully'
+			]);
+		} else {
+			http_response_code(500);
+			echo json_encode(['status' => 'failed', 'reason' => 'failed to queue command']);
+		}
+	}
+
+	/*
 	*
 	*	Stats API function calls
 	*
