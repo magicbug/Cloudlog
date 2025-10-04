@@ -1441,29 +1441,8 @@ $(document).ready(function() {
             }
         </script>
     <?php } ?>
-    <?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
-        <script type="text/javascript">
-            var dxcluster_provider = '<?php echo base_url(); ?>index.php/dxcluster';
-            $(document).ready(function() {
-                $("#check_cluster").on("click", function() {
-                    $.ajax({
-                        url: dxcluster_provider + "/qrg_lookup/" + $("#frequency").val() / 1000,
-                        cache: false,
-                        dataType: "json"
-                    }).done(
-                        function(dxspot) {
-                            reset_fields();
-                            $("#callsign").val(dxspot.spotted);
-                            $("#callsign").trigger("blur");
-                        }
-                    );
-                });
-            });
-        </script>
-
+    
     <?php
-    }
-
 
     $this->load->model('stations');
     $active_station_id = $this->stations->find_active();
