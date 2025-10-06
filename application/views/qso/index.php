@@ -684,11 +684,14 @@
                 Status: Disconnected
                 </div>
 
-              <button type="button" class="btn btn-secondary"
+              <button id="toggleLogButton" onclick="toggleMessageLog()" class="btn btn-sm btn-outline-secondary" title="Toggle Message Log">
+                <i class="fas fa-list"></i>
+              </button>
+
+              <button type="button" class="btn btn-sm btn-secondary"
                 hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
                 hx-target="#modals-here"
                 hx-trigger="click"
-                class="btn btn-primary"
                 _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
             </h4>
           </div>
@@ -702,9 +705,18 @@
             <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
             <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
             <br><br>
+            
+            <!-- CW Speed Control -->
+            <div class="d-flex align-items-center mb-3">
+              <label class="me-2" style="font-weight: bold;">CW Speed:</label>
+              <button id="cwSpeedDown" onclick="adjustCwSpeed(-1)" class="btn btn-sm btn-secondary me-2">-</button>
+              <span id="cwSpeedDisplay" class="badge text-bg-info me-2" style="min-width: 60px;">-- WPM</span>
+              <button id="cwSpeedUp" onclick="adjustCwSpeed(1)" class="btn btn-sm btn-secondary">+</button>
+            </div>
+            
             <input id="sendText" type="text"><input onclick="sendMyMessage()" id="sendButton" type="button" value="Send" class="btn btn-success">
 
-            <div>
+            <div id="messageLogContainer" style="display: none;">
               <strong>Message Log:</strong>
               <textarea id="messageLog" class="form-control mt-2" rows="4" readonly></textarea>
             </div>
@@ -725,11 +737,10 @@
 
               <button id="connectButton" class="btn btn-primary">Connect</button>
 
-              <button type="button" class="btn btn-secondary"
+              <button type="button" class="btn btn-sm btn-secondary"
                 hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
                 hx-target="#modals-here"
                 hx-trigger="click"
-                class="btn btn-primary"
                 _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
             </h4>
           </div>

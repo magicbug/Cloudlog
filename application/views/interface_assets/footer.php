@@ -1250,12 +1250,14 @@ $(document).ready(function() {
                     document.getElementById('cw_socket_status').className = 'badge bg-success';
                     document.getElementById('cw_socket_status').innerHTML = `Status: Connected`;
                     logMessage(`Connected to WebSocket server in room: ${chatRoom}`);
+                    startSpeedPolling();
                 };
 
                 ws.onclose = function() {
                     document.getElementById('cw_socket_status').className = 'badge bg-secondary';
                     document.getElementById('cw_socket_status').innerHTML = 'Status: Disconnected';
                     logMessage('Disconnected from WebSocket server');
+                    stopSpeedPolling();
                     ws = null;
                 };
 
@@ -1265,6 +1267,20 @@ $(document).ready(function() {
 
                 ws.onmessage = function(event) {
                     logMessage('Received: ' + event.data);
+                    
+                    // Handle CW speed responses
+                    const message = event.data;
+                    if (message.startsWith('CWSPEED SET:')) {
+                        const match = message.match(/CWSPEED SET: (\d+) WPM/);
+                        if (match) {
+                            updateSpeedDisplay(parseInt(match[1]));
+                        }
+                    } else if (message.startsWith('CWSPEED:')) {
+                        const match = message.match(/CWSPEED: (\d+) WPM/);
+                        if (match) {
+                            updateSpeedDisplay(parseInt(match[1]));
+                        }
+                    }
                 };
             }
 
@@ -1438,6 +1454,72 @@ $(document).ready(function() {
 
                 // Clear the input field
                 document.getElementById('sendText').value = '';
+            }
+
+            // CW Speed Control Functions
+            let currentCwSpeed = 20; // Default speed
+            let speedPollInterval = null;
+
+            function adjustCwSpeed(change) {
+                if (ws === null) {
+                    alert('Please connect to WebSocket first');
+                    return;
+                }
+
+                const newSpeed = Math.max(5, Math.min(99, currentCwSpeed + change));
+                
+                if (newSpeed !== currentCwSpeed) {
+                    const speedMessage = 'CWSPEED:' + newSpeed;
+                    ws.send(speedMessage);
+                    logMessage('Sent: ' + speedMessage);
+                }
+            }
+
+            function getCwSpeed() {
+                if (ws === null) {
+                    return;
+                }
+
+                ws.send('GETCWSPEED');
+            }
+
+            function updateSpeedDisplay(speed) {
+                currentCwSpeed = speed;
+                const speedDisplay = document.getElementById('cwSpeedDisplay');
+                if (speedDisplay) {
+                    speedDisplay.textContent = speed + ' WPM';
+                }
+            }
+
+            function startSpeedPolling() {
+                // Poll for speed every 10 seconds to keep display synchronized
+                speedPollInterval = setInterval(getCwSpeed, 10000);
+                
+                // Get initial speed
+                setTimeout(getCwSpeed, 1000); // Wait 1 second after connection
+            }
+
+            function stopSpeedPolling() {
+                if (speedPollInterval) {
+                    clearInterval(speedPollInterval);
+                    speedPollInterval = null;
+                }
+            }
+
+            // Message log toggle function
+            function toggleMessageLog() {
+                const logContainer = document.getElementById('messageLogContainer');
+                const toggleButton = document.getElementById('toggleLogButton');
+                
+                if (logContainer.style.display === 'none') {
+                    logContainer.style.display = 'block';
+                    toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                    toggleButton.title = 'Hide Message Log';
+                } else {
+                    logContainer.style.display = 'none';
+                    toggleButton.innerHTML = '<i class="fas fa-list"></i>';
+                    toggleButton.title = 'Show Message Log';
+                }
             }
         </script>
     <?php } ?>
