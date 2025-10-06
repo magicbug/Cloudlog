@@ -1231,6 +1231,30 @@ $(document).ready(function() {
     <?php } elseif ($this->session->userdata('isWinkeyEnabled') && $this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
         <script>
             console.log('Winkey Websocket enabled');
+            
+            // Mode detection for WebSocket Winkey
+            document.addEventListener('DOMContentLoaded', function() {
+                const ModeSelected = document.getElementById('mode');
+                
+                function toggleWinkeyVisibility() {
+                    const winkeyElement = document.getElementById('winkey');
+                    if (ModeSelected && winkeyElement) {
+                        if (ModeSelected.value === 'CW') {
+                            winkeyElement.style.display = 'block';
+                        } else {
+                            winkeyElement.style.display = 'none';
+                        }
+                    }
+                }
+                
+                // Check initial mode
+                toggleWinkeyVisibility();
+                
+                // Listen for mode changes
+                if (ModeSelected) {
+                    ModeSelected.addEventListener('change', toggleWinkeyVisibility);
+                }
+            });
         </script>
 
         <script>

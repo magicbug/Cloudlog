@@ -676,7 +676,7 @@
       <!-- Winkey Starts -->
 
       <?php if ($this->session->userdata('isWinkeyEnabled') && $this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
-        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
+        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px; display: none;">
           <div class="card-header">
             <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey Web Sockets
 
@@ -699,26 +699,51 @@
           <div id="modals-here"></div>
 
           <div id="winkey_buttons" class="card-body">
-            <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
-            <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
-            <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
-            <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
-            <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
-            <br><br>
-            
-            <!-- CW Speed Control -->
-            <div class="d-flex align-items-center mb-3">
-              <label class="me-2" style="font-weight: bold;">CW Speed:</label>
-              <button id="cwSpeedDown" onclick="adjustCwSpeed(-1)" class="btn btn-sm btn-secondary me-2">-</button>
-              <span id="cwSpeedDisplay" class="badge text-bg-info me-2" style="min-width: 60px;">-- WPM</span>
-              <button id="cwSpeedUp" onclick="adjustCwSpeed(1)" class="btn btn-sm btn-secondary">+</button>
+            <!-- Function Keys Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="btn-group" role="group" aria-label="CW Function Keys">
+                  <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+                  <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+                  <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+                  <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+                  <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+                </div>
+              </div>
             </div>
             
-            <input id="sendText" type="text"><input onclick="sendMyMessage()" id="sendButton" type="button" value="Send" class="btn btn-success">
+            <!-- CW Speed Control Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="d-flex align-items-center justify-content-center">
+                  <span class="me-3 fw-bold">CW Speed:</span>
+                  <div class="btn-group me-2" role="group" aria-label="Speed Control">
+                    <button id="cwSpeedDown" onclick="adjustCwSpeed(-1)" class="btn btn-outline-secondary btn-sm" type="button">-</button>
+                    <button id="cwSpeedUp" onclick="adjustCwSpeed(1)" class="btn btn-outline-secondary btn-sm" type="button">+</button>
+                  </div>
+                  <span id="cwSpeedDisplay" class="badge bg-info fs-6 px-3 py-2">-- WPM</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Send Message Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="input-group">
+                  <input id="sendText" type="text" class="form-control" placeholder="Enter CW message..." aria-label="CW Message">
+                  <button onclick="sendMyMessage()" id="sendButton" type="button" class="btn btn-success">Send</button>
+                </div>
+              </div>
+            </div>
 
+            <!-- Message Log Container -->
             <div id="messageLogContainer" style="display: none;">
-              <strong>Message Log:</strong>
-              <textarea id="messageLog" class="form-control mt-2" rows="4" readonly></textarea>
+              <div class="row">
+                <div class="col-12">
+                  <label class="form-label fw-bold">Message Log:</label>
+                  <textarea id="messageLog" class="form-control" rows="4" readonly placeholder="WebSocket messages will appear here..."></textarea>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -731,7 +756,7 @@
 
       if ($this->session->userdata('isWinkeyEnabled') && !$this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
 
-        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
+        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px; display: none;">
           <div class="card-header">
             <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey
 
@@ -748,15 +773,37 @@
           <div id="modals-here"></div>
 
           <div id="winkey_buttons" class="card-body">
-            <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
-            <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
-            <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
-            <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
-            <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
-            <br><br>
-            <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
+            <!-- Function Keys Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="btn-group" role="group" aria-label="CW Function Keys">
+                  <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+                  <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+                  <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+                  <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+                  <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Send Message Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="input-group">
+                  <input id="sendText" type="text" class="form-control" placeholder="Enter CW message..." aria-label="CW Message">
+                  <button id="sendButton" type="button" class="btn btn-success">Send</button>
+                </div>
+              </div>
+            </div>
 
-            <span id="statusBar"></span><br>
+            <!-- Status Bar Row -->
+            <div class="row">
+              <div class="col-12">
+                <div class="alert alert-secondary py-2 mb-0" role="status">
+                  <span id="statusBar" class="mb-0">Ready</span>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
