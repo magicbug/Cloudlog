@@ -3,6 +3,11 @@
 class Bands extends CI_Model {
 
 	public $bandslots = array(
+		// LF/MF Bands
+		"2190m"=>0,
+		"630m"=>0,
+		"560m"=>0,
+		// HF Bands
 		"160m"=>0,
 		"80m"=>0,
 		"60m"=>0,
@@ -13,18 +18,28 @@ class Bands extends CI_Model {
 		"15m"=>0,
 		"12m"=>0,
 		"10m"=>0,
+		// VHF Bands
 		"6m"=>0,
 		"4m"=>0,
 		"2m"=>0,
 		"1.25m"=>0,
+		// UHF Bands
 		"70cm"=>0,
 		"33cm"=>0,
+		// SHF Bands (Microwave)
 		"23cm"=>0,
 		"13cm"=>0,
 		"9cm"=>0,
 		"6cm"=>0,
 		"3cm"=>0,
-		"1.25cm"=>0,
+		"1.2cm"=>0,
+		// EHF Bands (Millimeter wave)
+		"6mm"=>0,
+		"4mm"=>0,
+		"2.5mm"=>0,
+		"2mm"=>0,
+		"1mm"=>0,
+		// Special
 		"SAT"=>0,
 	);
 
@@ -89,6 +104,79 @@ class Bands extends CI_Model {
 		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
 
 		return $this->db->get()->result();
+	}
+
+	function get_user_bands_for_bandmap($includeall = false) {
+		$this->db->from('bands');
+		$this->db->join('bandxuser', 'bandxuser.bandid = bands.id');
+		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
+		if (!$includeall) {
+			$this->db->where('bandxuser.active', 1);
+		}
+		$this->db->where('bands.bandgroup != "sat"');
+
+		$result = $this->db->get()->result();
+
+		// Define typical band ranges (in kHz for bandmap display) in frequency order
+		$band_ranges = array(
+			// LF/MF Bands
+			'2190m' => array('start' => 135700, 'end' => 137800, 'order' => 1),
+			'630m' => array('start' => 472000, 'end' => 479000, 'order' => 2),
+			'560m' => array('start' => 501000, 'end' => 504000, 'order' => 3),
+			// HF Bands
+			'160m' => array('start' => 1800, 'end' => 2000, 'order' => 4),
+			'80m' => array('start' => 3500, 'end' => 4000, 'order' => 5),
+			'60m' => array('start' => 5351500, 'end' => 5366500, 'order' => 6),
+			'40m' => array('start' => 7000, 'end' => 7300, 'order' => 7),
+			'30m' => array('start' => 10100, 'end' => 10150, 'order' => 8),
+			'20m' => array('start' => 14000, 'end' => 14350, 'order' => 9),
+			'17m' => array('start' => 18068, 'end' => 18168, 'order' => 10),
+			'15m' => array('start' => 21000, 'end' => 21450, 'order' => 11),
+			'12m' => array('start' => 24890, 'end' => 24990, 'order' => 12),
+			'10m' => array('start' => 28000, 'end' => 29700, 'order' => 13),
+			// VHF Bands
+			'6m' => array('start' => 50000, 'end' => 54000, 'order' => 14),
+			'4m' => array('start' => 70000, 'end' => 70500, 'order' => 15),
+			'2m' => array('start' => 144000, 'end' => 148000, 'order' => 16),
+			'1.25m' => array('start' => 222000, 'end' => 225000, 'order' => 17),
+			// UHF Bands
+			'70cm' => array('start' => 420000, 'end' => 450000, 'order' => 18),
+			'33cm' => array('start' => 902000, 'end' => 928000, 'order' => 19),
+			// SHF Bands (Microwave)
+			'23cm' => array('start' => 1240000, 'end' => 1300000, 'order' => 20),
+			'13cm' => array('start' => 2300000, 'end' => 2450000, 'order' => 21),
+			'9cm' => array('start' => 3300000, 'end' => 3500000, 'order' => 22),
+			'6cm' => array('start' => 5650000, 'end' => 5925000, 'order' => 23),
+			'3cm' => array('start' => 10000000, 'end' => 10500000, 'order' => 24),
+			'1.2cm' => array('start' => 24000000, 'end' => 24250000, 'order' => 25),
+			// EHF Bands (Millimeter wave)
+			'6mm' => array('start' => 47000000, 'end' => 47200000, 'order' => 26),
+			'4mm' => array('start' => 75500000, 'end' => 81000000, 'order' => 27),
+			'2.5mm' => array('start' => 119980000, 'end' => 120020000, 'order' => 28),
+			'2mm' => array('start' => 142000000, 'end' => 149000000, 'order' => 29),
+			'1mm' => array('start' => 241000000, 'end' => 250000000, 'order' => 30),
+		);
+
+		$results = array();
+
+		foreach($result as $band) {
+			if (isset($band_ranges[$band->band])) {
+				$results[] = array(
+					'band' => $band->band,
+					'bandgroup' => $band->bandgroup,
+					'start' => $band_ranges[$band->band]['start'],
+					'end' => $band_ranges[$band->band]['end'],
+					'order' => $band_ranges[$band->band]['order']
+				);
+			}
+		}
+
+		// Sort by frequency order
+		usort($results, function($a, $b) {
+			return $a['order'] - $b['order'];
+		});
+
+		return $results;
 	}
 
 	function all() {

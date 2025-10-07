@@ -3,30 +3,29 @@ const ModeSelected = document.getElementById('mode');
 
 $('#winkey_buttons').hide();
 
-if (location.protocol == 'http:') {
-    // Do something if the page is being served over SSL
+if (location.protocol !== 'https:') {
+    // Do something if the page is being served over HTTP
     $('#winkey').hide(); // Hide the CW buttons
 }
 
-if (ModeSelected.value == 'CW') {
-    // Show the CW buttons
-    $('#winkey').show();
-} else {
-    // Hide the CW buttons
-    $('#winkey').hide();
+function toggleWinkeyVisibility() {
+    const winkeyElement = document.getElementById('winkey');
+    if (ModeSelected && winkeyElement) {
+        if (ModeSelected.value === 'CW') {
+            $('#winkey').show();
+        } else {
+            $('#winkey').hide();
+        }
+    }
 }
 
-ModeSelected.addEventListener('change', (event) => {
+// Check initial mode
+toggleWinkeyVisibility();
 
-    if (event.target.value == 'CW') {
-        // Show the CW buttons
-        $('#winkey').show();
-
-    } else {
-        // Hide the CW buttons
-        $('#winkey').hide();
-    }
-});
+// Listen for mode changes
+if (ModeSelected) {
+    ModeSelected.addEventListener('change', toggleWinkeyVisibility);
+}
 
 
 

@@ -12,12 +12,16 @@
 	<h2><?php echo $page_title; ?></h2>
 
 	<div class="card">
-	  <div class="card-header">
-	    Active Radios
+	  <div class="card-header d-flex justify-content-between align-items-center">
+	    <span>Active Radios</span>
+	    <a href="<?php echo site_url('commands'); ?>" class="btn btn-primary btn-sm">
+	    	<i class="fas fa-terminal"></i> Radio Commands
+	    </a>
 	  </div>
 	  <div class="card-body">
 	    <p class="card-text">Below is a list of active radios that are connected to Cloudlog.</p>
 	    <p class="card-text">If you haven't connected any radios yet, see the API page to generate API keys.</p>
+	    
 	    <div class="table-responsive">
 		    <!-- Display Radio Statuses -->	  
 			<table class="table table-striped status"></table>

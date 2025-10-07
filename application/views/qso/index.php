@@ -668,13 +668,15 @@
                                                     } ?>><?php echo $row->radio; ?></option>
           <?php } ?>
         </select>
+
+        <button class="btn btn-primary" onclick="openBandmap()">Open Bandmap</button>
       </div>
 
 
       <!-- Winkey Starts -->
 
       <?php if ($this->session->userdata('isWinkeyEnabled') && $this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
-        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
+        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px; display: none;">
           <div class="card-header">
             <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey Web Sockets
 
@@ -682,11 +684,14 @@
                 Status: Disconnected
                 </div>
 
-              <button type="button" class="btn btn-secondary"
+              <button id="toggleLogButton" onclick="toggleMessageLog()" class="btn btn-sm btn-outline-secondary" title="Toggle Message Log">
+                <i class="fas fa-list"></i>
+              </button>
+
+              <button type="button" class="btn btn-sm btn-secondary"
                 hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
                 hx-target="#modals-here"
                 hx-trigger="click"
-                class="btn btn-primary"
                 _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
             </h4>
           </div>
@@ -694,17 +699,51 @@
           <div id="modals-here"></div>
 
           <div id="winkey_buttons" class="card-body">
-            <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
-            <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
-            <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
-            <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
-            <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
-            <br><br>
-            <input id="sendText" type="text"><input onclick="sendMyMessage()" id="sendButton" type="button" value="Send" class="btn btn-success">
+            <!-- Function Keys Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="btn-group" role="group" aria-label="CW Function Keys">
+                  <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+                  <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+                  <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+                  <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+                  <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- CW Speed Control Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="d-flex align-items-center justify-content-center">
+                  <span class="me-3 fw-bold">CW Speed:</span>
+                  <div class="btn-group me-2" role="group" aria-label="Speed Control">
+                    <button id="cwSpeedDown" onclick="adjustCwSpeed(-1)" class="btn btn-outline-secondary btn-sm" type="button">-</button>
+                    <button id="cwSpeedUp" onclick="adjustCwSpeed(1)" class="btn btn-outline-secondary btn-sm" type="button">+</button>
+                  </div>
+                  <span id="cwSpeedDisplay" class="badge bg-info fs-6 px-3 py-2">-- WPM</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Send Message Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="input-group">
+                  <input id="sendText" type="text" class="form-control" placeholder="Enter CW message..." aria-label="CW Message">
+                  <button onclick="sendMyMessage()" id="sendButton" type="button" class="btn btn-success">Send</button>
+                </div>
+              </div>
+            </div>
 
-            <div>
-              <strong>Message Log:</strong>
-              <textarea id="messageLog" class="form-control mt-2" rows="4" readonly></textarea>
+            <!-- Message Log Container -->
+            <div id="messageLogContainer" style="display: none;">
+              <div class="row">
+                <div class="col-12">
+                  <label class="form-label fw-bold">Message Log:</label>
+                  <textarea id="messageLog" class="form-control" rows="4" readonly placeholder="WebSocket messages will appear here..."></textarea>
+                </div>
+              </div>
             </div>
 
           </div>
@@ -717,17 +756,16 @@
 
       if ($this->session->userdata('isWinkeyEnabled') && !$this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
 
-        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px;">
+        <div id="winkey" class="card winkey-settings" style="margin-bottom: 10px; display: none;">
           <div class="card-header">
             <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey
 
               <button id="connectButton" class="btn btn-primary">Connect</button>
 
-              <button type="button" class="btn btn-secondary"
+              <button type="button" class="btn btn-sm btn-secondary"
                 hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
                 hx-target="#modals-here"
                 hx-trigger="click"
-                class="btn btn-primary"
                 _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
             </h4>
           </div>
@@ -735,15 +773,37 @@
           <div id="modals-here"></div>
 
           <div id="winkey_buttons" class="card-body">
-            <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
-            <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
-            <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
-            <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
-            <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
-            <br><br>
-            <input id="sendText" type="text"><input id="sendButton" type="button" value="Send" class="btn btn-success">
+            <!-- Function Keys Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="btn-group" role="group" aria-label="CW Function Keys">
+                  <button id="morsekey_func1" onclick="morsekey_func1()" class="btn btn-warning">F1</button>
+                  <button id="morsekey_func2" onclick="morsekey_func2()" class="btn btn-warning">F2</button>
+                  <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
+                  <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
+                  <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Send Message Row -->
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="input-group">
+                  <input id="sendText" type="text" class="form-control" placeholder="Enter CW message..." aria-label="CW Message">
+                  <button id="sendButton" type="button" class="btn btn-success">Send</button>
+                </div>
+              </div>
+            </div>
 
-            <span id="statusBar"></span><br>
+            <!-- Status Bar Row -->
+            <div class="row">
+              <div class="col-12">
+                <div class="alert alert-secondary py-2 mb-0" role="status">
+                  <span id="statusBar" class="mb-0">Ready</span>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -790,3 +850,31 @@
 </div>
 
 </div>
+
+<script>
+        function openBandmap() {
+            // Open bandmap in a new window without URL bar, toolbars, etc.
+            const width = 500; 
+            const height = 800;
+            const left = (screen.width - width) / 2;
+            const top = (screen.height - height) / 2;
+            
+            // Note: Modern browsers may still show address bar due to security restrictions
+            // For Chrome, you can use: chrome.exe --app=http://localhost/index.php/dxcluster/bandmap
+            const features = `width=${width},height=${height},left=${left},top=${top},` +
+                           `toolbar=no,location=no,directories=no,status=no,menubar=no,` +
+                           `scrollbars=yes,resizable=yes,copyhistory=no`;
+            
+            const popup = window.open('<?php echo site_url('dxcluster/bandmap'); ?>', 'bandmap', features);
+            
+            // Try to make it fullscreen (user will need to allow this)
+            if (popup) {
+                popup.focus();
+            }
+        }
+
+        function openBandmapFullscreen() {
+            // Alternative: Open in current window and go fullscreen
+            window.location.href = '<?php echo site_url('dxcluster/bandmap'); ?>';
+        }
+    </script>
