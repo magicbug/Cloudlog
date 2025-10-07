@@ -1956,6 +1956,12 @@ $(document).ready(function() {
             });
             cat2UI($('.mode'), data.mode, false, false, () => {
                 setRst($(".mode").val());
+                // If the data.mode is winkey show the div with id winkey if not hide it
+                if (data.mode === 'CW') {
+                    $('#winkey').show();
+                } else {
+                    $('#winkey').hide();
+                }
             });
             cat2UI($('#sat_name'), data.satname, false, false);
             cat2UI($('#sat_mode'), data.satmode, false, false);
