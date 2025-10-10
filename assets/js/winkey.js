@@ -322,7 +322,12 @@ function UpdateMacros(macrotext) {
 // Call url and store the returned json data as variables
 function getMacros() {
     fetch(base_url + 'index.php/qso/cwmacros_json')
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+        }
+        return response.json();
+    })
     .then(data => {
         // Handle case where no macros are saved yet
         if (data.status === 'not found') {

@@ -1343,11 +1343,14 @@ $(document).ready(function() {
             }
 
             // Support for Enter key in the input field
-            document.getElementById('message').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
+            const messageElement = document.getElementById('message');
+            if (messageElement) {
+                messageElement.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
         </script>
 
         <script>
