@@ -470,9 +470,7 @@ class QSO extends CI_Controller {
         	header('Content-Type: application/json');
         	echo json_encode(array('message' => 'not allowed'));
 	}
-        return;
     }
-
 
 	function band_to_freq($band, $mode) {
 
