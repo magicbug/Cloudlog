@@ -183,7 +183,7 @@ class QSO extends CI_Controller {
         }
     }
 
-    function cwmacrosave(){
+    public function cwmacrosave(){
         try {
             // Get the data from the form with proper sanitization
             $function1_name = $this->input->post('function1_name', TRUE);
@@ -222,7 +222,7 @@ class QSO extends CI_Controller {
                 throw new Exception('No station profile selected');
             }
 
-        $data = [
+            $data = [
             'user_id' => $this->session->userdata('user_id'),
             'station_location_id' => $this->session->userdata('station_profile_id'),
 			'function1_name'  => $function1_name,
@@ -240,11 +240,10 @@ class QSO extends CI_Controller {
 		// Debug: Log the data being saved
 		log_message('debug', 'CW Macros Save Data: ' . print_r($data, true));
 
-        // Load model Winkey
-        $this->load->model('winkey');
+            // Load model Winkey
+            $this->load->model('winkey');
 
-        // save the data
-        try {
+            // save the data
             $this->winkey->save($data);
             
             // Return a proper success message with proper HTML
@@ -268,7 +267,7 @@ class QSO extends CI_Controller {
         }
     }
 
-    function cwmacros_test() {
+    public function cwmacros_test() {
         try {
             echo "Test successful - User ID: " . $this->session->userdata('user_id') . " Station ID: " . $this->session->userdata('station_profile_id');
         } catch (Exception $e) {
@@ -276,7 +275,7 @@ class QSO extends CI_Controller {
         }
     }
 
-    function cwmacros_json() {
+    public function cwmacros_json() {
         try {
             // Load model Winkey
             $this->load->model('winkey');
@@ -304,7 +303,7 @@ class QSO extends CI_Controller {
         }
     }
 
-    function edit_ajax() {
+    public function edit_ajax() {
 
         $this->load->model('logbook_model');
         $this->load->model('user_model');
@@ -418,7 +417,7 @@ class QSO extends CI_Controller {
         }
     }
 
-	function qsl_ignore_ajax() {
+	public function qsl_ignore_ajax() {
         $id = str_replace('"', "", $this->input->post("id"));
         $method = str_replace('"', "", $this->input->post("method"));
 
@@ -440,7 +439,7 @@ class QSO extends CI_Controller {
     }
 
 	/* Delete QSO */
-	function delete($id) {
+	public function delete($id) {
 		$this->load->model('logbook_model');
 
 		if ($this->logbook_model->check_qso_is_accessible($id)) {
@@ -458,7 +457,7 @@ class QSO extends CI_Controller {
 	}
 
     /* Delete QSO */
-    function delete_ajax() {
+    public function delete_ajax() {
         $id = str_replace('"', "", $this->input->post("id"));
 
         $this->load->model('logbook_model');
@@ -472,7 +471,7 @@ class QSO extends CI_Controller {
 	}
     }
 
-	function band_to_freq($band, $mode) {
+	public function band_to_freq($band, $mode) {
 
 		$this->load->library('frequency');
 
