@@ -213,21 +213,28 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
 		$sql = "
-			SELECT *
-			FROM " . $this->config->item('table_name') . " qsos
-			INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
-			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc=dxcc_entities.adif
-			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
+			SELECT qsos.*, station_profile.*, dxcc_entities.*, lotw_users.callsign, lotw_users.lastupload, x.qslcount
+			FROM (
+				SELECT qsos_inner.COL_PRIMARY_KEY
+				FROM " . $this->config->item('table_name') . " qsos_inner
+				INNER JOIN station_profile sp_inner ON qsos_inner.station_id = sp_inner.station_id
+				WHERE sp_inner.user_id = ?
+				$where
+				ORDER BY qsos_inner.COL_TIME_ON desc, qsos_inner.COL_PRIMARY_KEY desc
+				LIMIT $limit
+			) AS FilteredIDs
+			INNER JOIN " . $this->config->item('table_name') . " qsos ON qsos.COL_PRIMARY_KEY = FilteredIDs.COL_PRIMARY_KEY
+			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
+			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc = dxcc_entities.adif
+			LEFT OUTER JOIN lotw_users ON qsos.col_call = lotw_users.callsign
 			LEFT OUTER JOIN (
 				select count(*) as qslcount, qsoid
 				from qsl_images
 				group by qsoid
 			) x on qsos.COL_PRIMARY_KEY = x.qsoid
-			WHERE station_profile.user_id =  ?
-			$where
+			WHERE 1=1
 			$where2
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
-			LIMIT $limit
 		";
 		$data = $this->db->query($sql, $binding);
 

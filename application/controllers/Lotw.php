@@ -192,58 +192,23 @@ class Lotw extends CI_Controller {
 	*/
 	public function lotw_upload() {
 
-		// Enable error reporting for debugging
-		ini_set('display_errors', 1);
-		ini_set('display_startup_errors', 1);
-		error_reporting(E_ALL);
-		
-		echo "Starting LoTW Upload Process...<br>";
-		
-		try {
-			$this->load->model('user_model');
-			echo "User model loaded successfully.<br>";
-			
-			if(!$this->user_model->authorize(2)) { 
-				echo "Authorization failed - redirecting to dashboard<br>";
-				$this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); 
-				redirect('dashboard'); 
-			}
-			echo "User authorized successfully.<br>";
+		$this->load->model('user_model');
+		$this->user_model->authorize(2);
 
-			// Fire OpenSSL missing error if not found
-			if (!extension_loaded('openssl')) {
-				echo "ERROR: You must install php OpenSSL for LoTW functions to work<br>";
-				return;
-			}
-			echo "OpenSSL extension is loaded.<br>";
-		} catch (Exception $e) {
-			echo "ERROR in initial setup: " . $e->getMessage() . "<br>";
-			return;
+		// Fire OpenSSL missing error if not found
+		if (!extension_loaded('openssl')) {
+			echo "You must install php OpenSSL for LoTW functions to work";
 		}
 
-		try {
-			// Get Station Profile Data
-			$this->load->model('Stations');
-			echo "Stations model loaded successfully.<br>";
+		// Get Station Profile Data
+		$this->load->model('Stations');
 
-			if ($this->user_model->authorize(2)) {
-				$station_profiles = $this->Stations->all_of_user($this->session->userdata('user_id'));
-				$sync_user_id=$this->session->userdata('user_id');
-				echo "Retrieved station profiles for user ID: " . $sync_user_id . "<br>";
-			} else {
-				$station_profiles = $this->Stations->all();
-				$sync_user_id=null;
-				echo "Retrieved all station profiles (no user session).<br>";
-			}
-			
-			if ($station_profiles && $station_profiles->num_rows() > 0) {
-				echo "Found " . $station_profiles->num_rows() . " station profile(s).<br>";
-			} else {
-				echo "No station profiles found.<br>";
-			}
-		} catch (Exception $e) {
-			echo "ERROR loading station profiles: " . $e->getMessage() . "<br>";
-			return;
+		if ($this->user_model->authorize(2)) {
+			$station_profiles = $this->Stations->all_of_user($this->session->userdata('user_id'));
+			$sync_user_id=$this->session->userdata('user_id');
+		} else {
+			$station_profiles = $this->Stations->all();
+			$sync_user_id=null;
 		}
 
 		// Array of QSO IDs being Uploaded
@@ -296,51 +261,20 @@ class Lotw extends CI_Controller {
 				}
 
 				// Build File to save
-				try {
-					$adif_to_save = $this->load->view('lotw_views/adif_views/adif_export', $data, TRUE);
-					if (empty($adif_to_save)) {
-						echo "WARNING: ADIF export view returned empty content<br>";
-						continue;
-					}
-					echo "ADIF export view loaded successfully.<br>";
-				} catch (Exception $e) {
-					echo "ERROR loading ADIF export view: " . $e->getMessage() . "<br>";
-					continue;
-				}
+				$adif_to_save = $this->load->view('lotw_views/adif_views/adif_export', $data, TRUE);
 
 				// create folder to store upload file
 				if (!file_exists('./uploads/lotw')) {
-					if (!mkdir('./uploads/lotw', 0775, true)) {
-						echo "ERROR: Failed to create uploads/lotw directory<br>";
-						continue;
-					}
-					echo "Created uploads/lotw directory.<br>";
-				} else {
-					echo "uploads/lotw directory already exists.<br>";
+					mkdir('./uploads/lotw', 0775, true);
 				}
 
 				// Build Filename
 				$filename_for_saving = './uploads/lotw/'.preg_replace('/[^a-z0-9]+/', '-', strtolower($data['lotw_cert_info']->callsign))."-".date("Y-m-d-H-i-s")."-cloudlog.tq8";
 
 				$gzdata = gzencode($adif_to_save, 9);
-				if ($gzdata === false) {
-					echo "ERROR: Failed to compress ADIF data<br>";
-					continue;
-				}
-				
 				$fp = fopen($filename_for_saving, "w");
-				if ($fp === false) {
-					echo "ERROR: Failed to open file for writing: " . $filename_for_saving . "<br>";
-					continue;
-				}
-				
-				if (fwrite($fp, $gzdata) === false) {
-					echo "ERROR: Failed to write data to file: " . $filename_for_saving . "<br>";
-					fclose($fp);
-					continue;
-				}
+				fwrite($fp, $gzdata);
 				fclose($fp);
-				echo "Created TQ8 file: " . $filename_for_saving . "<br>";
 
 				//The URL that accepts the file upload.
 				$url = 'https://lotw.arrl.org/lotw/upload';
@@ -708,70 +642,35 @@ class Lotw extends CI_Controller {
 	|
 	*/
 	function lotw_download($sync_user_id = null) {
-		echo "Starting LoTW Download Process...<br>";
-		
-		try {
-			$this->load->model('user_model');
-			$this->load->model('logbook_model');
-			echo "Models loaded successfully for download.<br>";
+		$this->load->model('user_model');
+		$this->load->model('logbook_model');
 
-			$query = $this->user_model->get_all_lotw_users();
-			echo "Queried LoTW users from database.<br>";
-		} catch (Exception $e) {
-			echo "ERROR loading models or querying users: " . $e->getMessage() . "<br>";
-			return "Error in LoTW download setup: " . $e->getMessage();
-		}
+		$query = $this->user_model->get_all_lotw_users();
 
 		if ($query->num_rows() >= 1) {
-			echo "Found " . $query->num_rows() . " LoTW user(s).<br>";
 			$result = '';
 
-			try {
-				// Get URL for downloading LoTW
-				$url_query = $this->db->query('SELECT lotw_download_url FROM config');
-				if (!$url_query) {
-					echo "ERROR: Failed to query LoTW download URL from config<br>";
-					return "Database error: Could not retrieve LoTW download URL";
-				}
-				$q = $url_query->row();
-				$lotw_base_url = $q->lotw_download_url;
-				echo "LoTW base URL retrieved: " . $lotw_base_url . "<br>";
-			} catch (Exception $e) {
-				echo "ERROR retrieving LoTW download URL: " . $e->getMessage() . "<br>";
-				return "Configuration error: " . $e->getMessage();
-			}
+			// Get URL for downloading LoTW
+			$url_query = $this->db->query('SELECT lotw_download_url FROM config');
+			$q = $url_query->row();
+			$lotw_base_url = $q->lotw_download_url;
 
 			foreach ($query->result() as $user) {
-				echo "Processing user: " . $user->user_lotw_name . " (ID: " . $user->user_id . ")<br>";
-				
-				if ( ($sync_user_id != null) && ($sync_user_id != $user->user_id) ) { 
-					echo "Skipping user " . $user->user_id . " (not target sync user)<br>";
-					continue; 
-				}
+				if ( ($sync_user_id != null) && ($sync_user_id != $user->user_id) ) { continue; }
 
 				// Validate that LoTW credentials are not empty
+				// TODO: We don't actually see the error message
 				if ($user->user_lotw_password == '') {
-					$result = "You have not defined your ARRL LoTW credentials for user " . $user->user_lotw_name . "!";
-					echo "ERROR: " . $result . "<br>";
+					$result = "You have not defined your ARRL LoTW credentials!";
 					continue;
 				}
-				echo "LoTW credentials validated for user " . $user->user_lotw_name . "<br>";
 
 				$config['upload_path'] = './uploads/';
 				$file = $config['upload_path'] . 'lotwreport_download.adi';
-				
 				if (file_exists($file) && ! is_writable($file)) {
 					$result = "Temporary download file ".$file." is not writable. Aborting!";
-					echo "ERROR: " . $result . "<br>";
 					continue;
 				}
-				
-				if (!is_writable(dirname($file))) {
-					$result = "Upload directory " . dirname($file) . " is not writable. Aborting!";
-					echo "ERROR: " . $result . "<br>";
-					continue;
-				}
-				echo "File permissions validated for: " . $file . "<br>";
 
 				// Get credentials for LoTW
 		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
