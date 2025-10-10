@@ -254,14 +254,22 @@ class Lotw extends CI_Controller {
 		if ($station_profiles->num_rows() >= 1) {
 
 			foreach ($station_profiles->result() as $station_profile) {
+				echo "Processing station profile: " . $station_profile->station_callsign . " (" . $station_profile->station_profile_name . ")<br>";
 
-				// Get Certificate Data
-				$this->load->model('LotwCert');
-				$data['station_profile'] = $station_profile;
-				$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_dxcc);
+				try {
+					// Get Certificate Data
+					$this->load->model('LotwCert');
+					$data['station_profile'] = $station_profile;
+					$data['lotw_cert_info'] = $this->LotwCert->lotw_cert_details($station_profile->station_callsign, $station_profile->station_dxcc);
 
-				// If Station Profile has no LoTW Cert continue on.
-				if(!isset($data['lotw_cert_info']->cert_dxcc_id)) {
+					// If Station Profile has no LoTW Cert continue on.
+					if(!isset($data['lotw_cert_info']->cert_dxcc_id)) {
+						echo "No LoTW certificate found for " . $station_profile->station_callsign . "<br>";
+						continue;
+					}
+					echo "LoTW certificate found for " . $station_profile->station_callsign . "<br>";
+				} catch (Exception $e) {
+					echo "ERROR loading LoTW certificate for " . $station_profile->station_callsign . ": " . $e->getMessage() . "<br>";
 					continue;
 				}
 
@@ -277,17 +285,24 @@ class Lotw extends CI_Controller {
 					continue;
 				}
 
-				// Get QSOs
+				try {
+					// Get QSOs
+					$this->load->model('Logbook_model');
 
-				$this->load->model('Logbook_model');
+					$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->qso_start_date, $data['lotw_cert_info']->qso_end_date);
 
-				$data['qsos'] = $this->Logbook_model->get_lotw_qsos_to_upload($data['station_profile']->station_id, $data['lotw_cert_info']->qso_start_date, $data['lotw_cert_info']->qso_end_date);
-
-				// Nothing to upload
-				if(empty($data['qsos']->result())){
-					if ($this->user_model->authorize(2)) {	// Only be verbose if we have a session
-						echo $station_profile->station_callsign." (".$station_profile->station_profile_name.") No QSOs to Upload <br>";
+					// Nothing to upload
+					if(empty($data['qsos']->result())){
+						if ($this->user_model->authorize(2)) {	// Only be verbose if we have a session
+							echo $station_profile->station_callsign." (".$station_profile->station_profile_name.") No QSOs to Upload <br>";
+						}
+						continue;
 					}
+					
+					$qso_count = count($data['qsos']->result());
+					echo "Found " . $qso_count . " QSO(s) to upload for " . $station_profile->station_callsign . "<br>";
+				} catch (Exception $e) {
+					echo "ERROR loading QSOs for " . $station_profile->station_callsign . ": " . $e->getMessage() . "<br>";
 					continue;
 				}
 
@@ -773,36 +788,76 @@ class Lotw extends CI_Controller {
 				}
 				echo "File permissions validated for: " . $file . "<br>";
 
-				// Get credentials for LoTW
-		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
-				$data['user_lotw_password'] = urlencode($user->user_lotw_password);
+				try {
+					// Get credentials for LoTW
+			    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
+					$data['user_lotw_password'] = urlencode($user->user_lotw_password);
 
-				$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
+					$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
+					echo "Last QSL date for user " . $user->user_lotw_name . ": " . $lotw_last_qsl_date . "<br>";
+				} catch (Exception $e) {
+					echo "ERROR getting last QSL date for user " . $user->user_lotw_name . ": " . $e->getMessage() . "<br>";
+					continue;
+				}
 
 				// Build URL for LoTW report file
 				$lotw_url = $lotw_base_url."?";
 				$lotw_url .= "login=" . $data['user_lotw_name'];
 				$lotw_url .= "&password=" . $data['user_lotw_password'];
 				$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
-
 				$lotw_url .= "&qso_qslsince=";
 				$lotw_url .= "$lotw_last_qsl_date";
 
-				if (! is_writable(dirname($file))) {
-					$result = "Temporary download directory ".dirname($file)." is not writable. Aborting!";
-					continue;
-				}
-				file_put_contents($file, file_get_contents($lotw_url));
-				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
-					$result = "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
-					continue;
-				}
+				echo "Built LoTW URL (credentials hidden)<br>";
 
-				ini_set('memory_limit', '-1');
-				$result = $this->loadFromFile($file, false);
+				try {
+					echo "Downloading LoTW report from ARRL...<br>";
+					$lotw_content = file_get_contents($lotw_url);
+					
+					if ($lotw_content === false) {
+						$result = "Failed to download LoTW report for user " . $data['user_lotw_name'];
+						echo "ERROR: " . $result . "<br>";
+						continue;
+					}
+					
+					if (file_put_contents($file, $lotw_content) === false) {
+						$result = "Failed to save LoTW report to file " . $file;
+						echo "ERROR: " . $result . "<br>";
+						continue;
+					}
+					
+					echo "LoTW report downloaded and saved successfully.<br>";
+				} catch (Exception $e) {
+					$result = "Exception during LoTW download: " . $e->getMessage();
+					echo "ERROR: " . $result . "<br>";
+					continue;
+				}
+				// Validate the downloaded file content
+				$file_header = file_get_contents($file, false, null, 0, 39);
+				if ($file_header != "ARRL Logbook of the World Status Report") {
+					$result = "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
+					echo "ERROR: " . $result . "<br>";
+					echo "File header received: " . substr($file_header, 0, 50) . "...<br>";
+					continue;
+				}
+				
+				echo "LoTW report file validated successfully.<br>";
+
+				try {
+					ini_set('memory_limit', '-1');
+					echo "Processing LoTW report file...<br>";
+					$result = $this->loadFromFile($file, false);
+					echo "LoTW report processed successfully.<br>";
+				} catch (Exception $e) {
+					$result = "Error processing LoTW file: " . $e->getMessage();
+					echo "ERROR: " . $result . "<br>";
+					continue;
+				}
 			}
+			echo "LoTW download process completed.<br>";
 			return $result;
 		} else {
+			echo "No LoTW users found in database.<br>";
 			return "No LoTW User details found to carry out matches.";
 		}
 	}
