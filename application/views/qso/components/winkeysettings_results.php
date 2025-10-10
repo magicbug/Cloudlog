@@ -1,6 +1,6 @@
 <div id="modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
 <div id="modal" class="modal fade show" tabindex="-1" style="display:block;">
-<form hx-post="<?php echo base_url();?>index.php/qso/cwmacrosave" hx-target=".modal-body">
+<form hx-post="<?php echo base_url();?>index.php/qso/cwmacrosave" hx-target="#save-response" hx-swap="innerHTML">
 	<div class="modal-dialog modal-dialog-centered">
 	  <div class="modal-content">
 		<div class="modal-header">
@@ -8,6 +8,7 @@
 		</div>
 
 		<div class="modal-body">
+				<div id="save-response"></div>
 				<div class="mb-3 row">
     				<label for="function1_name" class="col-sm-5 col-form-label">Function 1 - Name</label>
     				<div class="col-sm-7">

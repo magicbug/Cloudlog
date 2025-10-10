@@ -184,21 +184,21 @@ class QSO extends CI_Controller {
     }
 
     function cwmacrosave(){
-        // Get the data from the form
-        $function1_name = xss_clean($this->input->post('function1_name'));
-        $function1_macro = xss_clean($this->input->post('function1_macro'));
+        // Get the data from the form with proper sanitization
+        $function1_name = $this->input->post('function1_name', TRUE);
+        $function1_macro = $this->input->post('function1_macro', TRUE);
 
-        $function2_name = xss_clean($this->input->post('function2_name'));
-        $function2_macro = xss_clean($this->input->post('function2_macro'));
+        $function2_name = $this->input->post('function2_name', TRUE);
+        $function2_macro = $this->input->post('function2_macro', TRUE);
 
-        $function3_name = xss_clean($this->input->post('function3_name'));
-        $function3_macro = xss_clean($this->input->post('function3_macro'));
+        $function3_name = $this->input->post('function3_name', TRUE);
+        $function3_macro = $this->input->post('function3_macro', TRUE);
 
-        $function4_name = xss_clean($this->input->post('function4_name'));
-        $function4_macro = xss_clean($this->input->post('function4_macro'));
+        $function4_name = $this->input->post('function4_name', TRUE);
+        $function4_macro = $this->input->post('function4_macro', TRUE);
 
-        $function5_name = xss_clean($this->input->post('function5_name'));
-        $function5_macro = xss_clean($this->input->post('function5_macro'));
+        $function5_name = $this->input->post('function5_name', TRUE);
+        $function5_macro = $this->input->post('function5_macro', TRUE);
 
         $data = [
             'user_id' => $this->session->userdata('user_id'),
@@ -214,14 +214,29 @@ class QSO extends CI_Controller {
             'function5_name'  => $function5_name,
             'function5_macro' => $function5_macro,
 		];
+		
+		// Debug: Log the data being saved
+		log_message('debug', 'CW Macros Save Data: ' . print_r($data, true));
 
         // Load model Winkey
         $this->load->model('winkey');
 
         // save the data
-        $this->winkey->save($data);
-
-        echo "Macros Saved, Press Close and lets get sending!";
+        try {
+            $this->winkey->save($data);
+            
+            // Return a proper success message with proper HTML
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle"></i> <strong>Success!</strong> CW Macros saved successfully! The button labels will update when you close this dialog.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>';
+        } catch (Exception $e) {
+            // Return error message if save fails
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>Error!</strong> Failed to save macros: ' . $e->getMessage() . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>';
+        }
     }
 
     function cwmacros_json() {
