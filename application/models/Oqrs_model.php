@@ -58,13 +58,15 @@ class Oqrs_model extends CI_Model {
 	 * Builds query depending on what we are searching for
 	 */
 	function getQueryData($station_id, $callsign) {
-        $station_id = $this->security->xss_clean($station_id);
-        $callsign = $this->security->xss_clean($callsign);
-        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id . ' and col_call ="' . $callsign . '" and col_prop_mode != "SAT"';
+        // Properly sanitize and validate inputs
+        $station_id = (int) $station_id; // Cast to integer to prevent SQL injection
+        $callsign = $this->db->escape_str($callsign); // Properly escape the callsign
+        
+        // Use parameterized query to prevent SQL injection
+        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band from ' . $this->config->item('table_name') . ' where station_id = ? and col_call = ? and col_prop_mode != "SAT"';
+        $sql .= ' union all select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, "SAT" col_band from ' . $this->config->item('table_name') . ' where station_id = ? and col_call = ? and col_prop_mode = "SAT"';
 
-		$sql .= ' union all select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, "SAT" col_band from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id . ' and col_call ="' . $callsign . '" and col_prop_mode = "SAT"';
-
-        $query = $this->db->query($sql);
+        $query = $this->db->query($sql, [$station_id, $callsign, $station_id, $callsign]);
 
         return $query->result();
 	}
@@ -73,14 +75,17 @@ class Oqrs_model extends CI_Model {
 	 * Builds query depending on what we are searching for
 	 */
 	function getQueryDataGrouped($callsign) {
-        $callsign = $this->security->xss_clean($callsign);
-        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band, station_callsign, station_profile_name, l.station_id from ' . $this->config->item('table_name') . ' as l join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and l.col_call ="' . $callsign . '" and l.col_prop_mode != "SAT"';
+        // Properly escape the callsign to prevent SQL injection
+        $callsign = $this->db->escape_str($callsign);
+        
+        // Use parameterized query to prevent SQL injection
+        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band, station_callsign, station_profile_name, l.station_id from ' . $this->config->item('table_name') . ' as l join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and l.col_call = ? and l.col_prop_mode != "SAT"';
 
 		$sql .= ' union all select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, "SAT" col_band, station_callsign, station_profile_name, l.station_id from ' . 
 			$this->config->item('table_name') . ' l' . 
-			' join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and col_call ="' . $callsign . '" and col_prop_mode = "SAT"';
+			' join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and col_call = ? and col_prop_mode = "SAT"';
 
-        $query = $this->db->query($sql);
+        $query = $this->db->query($sql, [$callsign, $callsign]);
 
 		if ($query) {
 			return $query->result();
