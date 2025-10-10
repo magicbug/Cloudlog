@@ -1734,9 +1734,9 @@ class Logbook_model extends CI_Model
     $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
     
     // Use optimized subquery approach for better performance
-    $sql = "SELECT DISTINCT qsos.*, station_profile.*, dxcc_entities.*, lotw_users.callsign, lotw_users.lastupload
+    $sql = "SELECT qsos.*, station_profile.*, dxcc_entities.*, lotw_users.callsign, lotw_users.lastupload
             FROM (
-                SELECT DISTINCT COL_PRIMARY_KEY
+                SELECT DISTINCT COL_PRIMARY_KEY, COL_TIME_ON
                 FROM " . $this->config->item('table_name') . " qsos_inner
                 INNER JOIN station_profile sp_inner ON qsos_inner.station_id = sp_inner.station_id
                 WHERE sp_inner.station_id IN (" . $location_list . ")
