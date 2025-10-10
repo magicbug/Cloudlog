@@ -172,9 +172,13 @@ class QSO extends CI_Controller {
 
         // Load model Winkey
         $this->load->model('winkey');
+        $this->load->model('stations');
+        
+        // Get active station profile
+        $active_station_id = $this->stations->find_active();
 
         // call settings from model winkey
-        $data['result'] = $this->winkey->settings($this->session->userdata('user_id'), $this->session->userdata('station_profile_id'));
+        $data['result'] = $this->winkey->settings($this->session->userdata('user_id'), $active_station_id);
 
         if ($data['result'] == false) {
             $this->load->view('qso/components/winkeysettings', $data);
@@ -218,13 +222,17 @@ class QSO extends CI_Controller {
                 throw new Exception('User not logged in');
             }
             
-            if (!$this->session->userdata('station_profile_id')) {
-                throw new Exception('No station profile selected');
+            // Load stations model to get active station profile
+            $this->load->model('stations');
+            $active_station_id = $this->stations->find_active();
+            
+            if (!$active_station_id || $active_station_id === '0') {
+                throw new Exception('No active station profile found. Please set an active station profile.');
             }
 
             $data = [
             'user_id' => $this->session->userdata('user_id'),
-            'station_location_id' => $this->session->userdata('station_profile_id'),
+            'station_location_id' => $active_station_id,
 			'function1_name'  => $function1_name,
             'function1_macro' => $function1_macro,
             'function2_name'  => $function2_name,
@@ -269,7 +277,9 @@ class QSO extends CI_Controller {
 
     public function cwmacros_test() {
         try {
-            echo "Test successful - User ID: " . $this->session->userdata('user_id') . " Station ID: " . $this->session->userdata('station_profile_id');
+            $this->load->model('stations');
+            $active_station_id = $this->stations->find_active();
+            echo "Test successful - User ID: " . $this->session->userdata('user_id') . " Active Station ID: " . $active_station_id;
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
@@ -283,15 +293,18 @@ class QSO extends CI_Controller {
             header('Content-Type: application/json; charset=utf-8');
 
             $user_id = $this->session->userdata('user_id');
-            $station_id = $this->session->userdata('station_profile_id');
             
             if (!$user_id) {
                 echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
                 return;
             }
             
-            if (!$station_id) {
-                echo json_encode(['status' => 'error', 'message' => 'No station profile']);
+            // Load stations model to get active station profile
+            $this->load->model('stations');
+            $station_id = $this->stations->find_active();
+            
+            if (!$station_id || $station_id === '0') {
+                echo json_encode(['status' => 'error', 'message' => 'No active station profile']);
                 return;
             }
 
