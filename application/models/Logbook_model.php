@@ -4815,6 +4815,13 @@ class Logbook_model extends CI_Model
     return $query;
   }
 
+  /*
+   * Mark a single QSO as sent to LoTW
+   * @deprecated Use mark_lotw_sent_batch() for better performance when updating multiple QSOs
+   * 
+   * @param int $qso_id QSO primary key
+   * @return string Status message
+   */
   function mark_lotw_sent($qso_id)
   {
 
@@ -4829,6 +4836,52 @@ class Logbook_model extends CI_Model
     $this->db->update($this->config->item('table_name'), $data);
 
     return "Updated";
+  }
+
+  /*
+   * Batch update multiple QSOs to mark as sent to LoTW
+   * This replaces multiple individual UPDATE queries with a single batch operation
+   * Provides significant performance improvement for large QSO uploads
+   * 
+   * @param array $qso_ids Array of QSO primary keys to mark as sent
+   * @return int Number of rows affected
+   */
+  function mark_lotw_sent_batch($qso_ids)
+  {
+    // Return early if no QSOs to update
+    if (empty($qso_ids) || !is_array($qso_ids)) {
+      log_message('debug', 'LoTW batch update: No QSO IDs provided');
+      return 0;
+    }
+
+    // Sanitize the QSO IDs to prevent SQL injection
+    $qso_ids = array_map('intval', $qso_ids);
+    $qso_ids = array_filter($qso_ids, function($id) { return $id > 0; });
+
+    if (empty($qso_ids)) {
+      log_message('warning', 'LoTW batch update: All QSO IDs were invalid');
+      return 0;
+    }
+
+    $qso_count = count($qso_ids);
+    log_message('info', "LoTW batch update: Processing {$qso_count} QSOs");
+
+    // Use CodeIgniter's query builder for safe batch update
+    $this->db->set('COL_LOTW_QSLSDATE', date("Y-m-d H:i:s"));
+    $this->db->set('COL_LOTW_QSL_SENT', 'Y');
+    $this->db->where_in('COL_PRIMARY_KEY', $qso_ids);
+    
+    $this->db->update($this->config->item('table_name'));
+
+    $affected_rows = $this->db->affected_rows();
+    
+    if ($affected_rows != $qso_count) {
+      log_message('warning', "LoTW batch update: Expected to update {$qso_count} QSOs but affected {$affected_rows}");
+    } else {
+      log_message('info', "LoTW batch update: Successfully marked {$affected_rows} QSOs as sent");
+    }
+
+    return $affected_rows;
   }
 
   function county_qso_details($state, $county)
