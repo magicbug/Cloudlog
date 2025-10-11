@@ -353,7 +353,13 @@ class Oqrs_model extends CI_Model {
 		}
 
 		$limit = $searchCriteria['oqrsResults'];
+		// Ensure limit has a valid value, default to 50 if empty or invalid
+		if (empty($limit) || (!is_numeric($limit) && $limit !== 'All') || (is_numeric($limit) && $limit <= 0)) {
+			$limit = 50;
+		}
 
+		$limitClause = ($limit === 'All') ? '' : "LIMIT $limit";
+		
 		$sql = "
 			SELECT *, DATE_FORMAT(requesttime, \"%Y-%m-%d %H:%i\") as requesttime, DATE_FORMAT(time, \"%H:%i\") as time
 			FROM oqrs
@@ -361,7 +367,7 @@ class Oqrs_model extends CI_Model {
 			WHERE station_profile.user_id =  ?
 			$where
 			ORDER BY oqrs.id
-			LIMIT $limit
+			$limitClause
 		";
 
 		$data = $this->db->query($sql, $binding);
