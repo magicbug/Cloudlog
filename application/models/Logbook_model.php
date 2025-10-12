@@ -651,16 +651,27 @@ class Logbook_model extends CI_Model
     if (!$skipexport) {
 
 
-      $result = $this->exists_clublog_credentials($data['station_id']);
-      if (isset($result->ucp) && isset($result->ucn) && (($result->ucp ?? '') != '') && (($result->ucn ?? '') != '') && ($result->clublogrealtime == 1)) {
+      $clublog_creds = $this->exists_clublog_credentials($data['station_id']);
+      if (isset($clublog_creds->ucp) && isset($clublog_creds->ucn) && (($clublog_creds->ucp ?? '') != '') && (($clublog_creds->ucn ?? '') != '') && ($clublog_creds->clublogrealtime == 1)) {
         $CI = &get_instance();
         $CI->load->library('AdifHelper');
         $qso = $this->get_qso($last_id, true)->result();
 
         $adif = $CI->adifhelper->getAdifLine($qso[0]);
-        $result = $this->push_qso_to_clublog($result->ucn, $result->ucp, $data['COL_STATION_CALLSIGN'], $adif);
-        if (($result['status'] == 'OK') || (($result['status'] == 'error') || ($result['status'] == 'duplicate') || ($result['status'] == 'auth_error'))) {
+        $clublog_result = $this->push_qso_to_clublog($clublog_creds->ucn, $clublog_creds->ucp, $data['COL_STATION_CALLSIGN'], $adif);
+        
+        if ($clublog_result['status'] == 'OK') {
           $this->mark_clublog_qsos_sent($last_id);
+          log_message('info', 'Clublog realtime upload successful for QSO ID: ' . $last_id);
+        } else {
+          log_message('error', 'Clublog realtime upload failed for QSO ID: ' . $last_id . ' - ' . $clublog_result['status']);
+          
+          // If Clublog responds with a 403, reset the user's credentials
+          if (isset($clublog_result['http_code']) && $clublog_result['http_code'] == 403) {
+            $CI->load->model('clublog_model');
+            $CI->clublog_model->reset_clublog_user_fields($clublog_creds->user_id);
+            log_message('error', 'Clublog API access denied - credentials reset for user ID: ' . $clublog_creds->user_id);
+          }
         }
       }
 
@@ -738,7 +749,7 @@ class Logbook_model extends CI_Model
   */
   function exists_clublog_credentials($station_id)
   {
-    $sql = 'select auth.user_clublog_name ucn, auth.user_clublog_password ucp, prof.clublogrealtime from ' . $this->config->item('auth_table') . ' auth inner join station_profile prof on (auth.user_id=prof.user_id) where prof.station_id = ? and prof.clublogrealtime=1';
+    $sql = 'select auth.user_clublog_name ucn, auth.user_clublog_password ucp, auth.user_id, prof.clublogrealtime from ' . $this->config->item('auth_table') . ' auth inner join station_profile prof on (auth.user_id=prof.user_id) where prof.station_id = ? and prof.clublogrealtime=1';
 
     $query = $this->db->query($sql, $station_id);
 
@@ -821,6 +832,10 @@ class Logbook_model extends CI_Model
     } else {
       $returner['status'] = $response;
     }
+    
+    // Include HTTP status code for error handling
+    $returner['http_code'] = $info['http_code'];
+    
     curl_close($request);
     return ($returner);
   }
