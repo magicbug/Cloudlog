@@ -51,9 +51,18 @@ class Oqrs extends CI_Controller {
 	}
 
 	public function get_qsos_grouped() {
+		// Validate callsign input
+		$callsign = $this->input->post('callsign');
+		
+		// Validate callsign format (basic ham radio callsign validation)
+		if (empty($callsign) || !preg_match('/^[A-Z0-9\/]+$/i', $callsign)) {
+			show_error('Invalid callsign format provided.', 400);
+			return;
+		}
+		
 		$this->load->model('oqrs_model');
-		$data['result'] = $this->oqrs_model->getQueryDataGrouped($this->input->post('callsign'));
-		$data['callsign'] = $this->security->xss_clean($this->input->post('callsign'));
+		$data['result'] = $this->oqrs_model->getQueryDataGrouped(strtoupper($callsign));
+		$data['callsign'] = strtoupper($callsign);
 
 		$this->load->view('oqrs/request_grouped', $data);
 	}
@@ -81,10 +90,26 @@ class Oqrs extends CI_Controller {
 	* Fetches data when the user wants to make a request form, and loads info via the view
 	*/
 	public function request_form() {
+		// Validate inputs
+		$station_id = $this->input->post('station_id');
+		$callsign = $this->input->post('callsign');
+		
+		// Ensure station_id is a valid integer
+		if (!is_numeric($station_id) || intval($station_id) <= 0) {
+			show_error('Invalid station ID provided.', 400);
+			return;
+		}
+		
+		// Validate callsign format (basic ham radio callsign validation)
+		if (empty($callsign) || !preg_match('/^[A-Z0-9\/]+$/i', $callsign)) {
+			show_error('Invalid callsign format provided.', 400);
+			return;
+		}
+		
 		$this->load->model('oqrs_model');
-		$data['result'] = $this->oqrs_model->getQueryData($this->input->post('station_id'), $this->input->post('callsign'));
-		$data['callsign'] = $this->security->xss_clean($this->input->post('callsign'));
-		$data['qslinfo'] =  $this->oqrs_model->getQslInfo($this->input->post('station_id'));
+		$data['result'] = $this->oqrs_model->getQueryData(intval($station_id), strtoupper($callsign));
+		$data['callsign'] = strtoupper($callsign);
+		$data['qslinfo'] =  $this->oqrs_model->getQslInfo(intval($station_id));
 
 		$this->load->view('oqrs/request', $data);
 	}

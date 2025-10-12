@@ -322,32 +322,67 @@ function UpdateMacros(macrotext) {
 // Call url and store the returned json data as variables
 function getMacros() {
     fetch(base_url + 'index.php/qso/cwmacros_json')
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('HTTP ' + response.status + ': ' + response.statusText);
+        }
+        return response.json();
+    })
     .then(data => {
-        function1Name = data.function1_name;
-        function1Macro = data.function1_macro;
-        function2Name = data.function2_name;
-        function2Macro = data.function2_macro;
-        function3Name = data.function3_name;
-        function3Macro = data.function3_macro;
-        function4Name = data.function4_name;
-        function4Macro = data.function4_macro;
-        function5Name = data.function5_name;
-        function5Macro = data.function5_macro;
+        // Handle case where no macros are saved yet
+        if (data.status === 'not found') {
+            // Set default values
+            function1Name = 'CQ';
+            function1Macro = 'CQ CQ CQ DE [MYCALL] [MYCALL] K';
+            function2Name = 'REPT';
+            function2Macro = '[CALL] DE [MYCALL] [RSTS] [RSTS] K';
+            function3Name = 'TU';
+            function3Macro = '[CALL] TU 73 DE [MYCALL] K';
+            function4Name = 'QRZ';
+            function4Macro = 'QRZ DE [MYCALL] K';
+            function5Name = 'TEST';
+            function5Macro = 'TEST DE [MYCALL] K';
+        } else {
+            // Use saved values or defaults if empty
+            function1Name = data.function1_name || 'F1';
+            function1Macro = data.function1_macro || '';
+            function2Name = data.function2_name || 'F2';
+            function2Macro = data.function2_macro || '';
+            function3Name = data.function3_name || 'F3';
+            function3Macro = data.function3_macro || '';
+            function4Name = data.function4_name || 'F4';
+            function4Macro = data.function4_macro || '';
+            function5Name = data.function5_name || 'F5';
+            function5Macro = data.function5_macro || '';
+        }
 
+        // Update button labels
         const morsekey_func1_Button = document.getElementById('morsekey_func1');
-        morsekey_func1_Button.textContent = 'F1 (' + function1Name + ')';
+        if (morsekey_func1_Button) {
+            morsekey_func1_Button.textContent = 'F1 (' + function1Name + ')';
+        }
 
         const morsekey_func2_Button = document.getElementById('morsekey_func2');
-        morsekey_func2_Button.textContent = 'F2 (' + function2Name + ')';
+        if (morsekey_func2_Button) {
+            morsekey_func2_Button.textContent = 'F2 (' + function2Name + ')';
+        }
 
         const morsekey_func3_Button = document.getElementById('morsekey_func3');
-        morsekey_func3_Button.textContent = 'F3 (' + function3Name + ')';
+        if (morsekey_func3_Button) {
+            morsekey_func3_Button.textContent = 'F3 (' + function3Name + ')';
+        }
         
         const morsekey_func4_Button = document.getElementById('morsekey_func4');
-        morsekey_func4_Button.textContent = 'F4 (' + function4Name + ')';
+        if (morsekey_func4_Button) {
+            morsekey_func4_Button.textContent = 'F4 (' + function4Name + ')';
+        }
 
         const morsekey_func5_Button = document.getElementById('morsekey_func5');
-        morsekey_func5_Button.textContent = 'F5 (' + function5Name + ')';
+        if (morsekey_func5_Button) {
+            morsekey_func5_Button.textContent = 'F5 (' + function5Name + ')';
+        }
+    })
+    .catch(error => {
+        console.error('Error loading CW macros:', error);
     });
 }

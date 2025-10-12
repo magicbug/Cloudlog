@@ -172,9 +172,13 @@ class QSO extends CI_Controller {
 
         // Load model Winkey
         $this->load->model('winkey');
+        $this->load->model('stations');
+        
+        // Get active station profile
+        $active_station_id = $this->stations->find_active();
 
         // call settings from model winkey
-        $data['result'] = $this->winkey->settings($this->session->userdata('user_id'), $this->session->userdata('station_profile_id'));
+        $data['result'] = $this->winkey->settings($this->session->userdata('user_id'), $active_station_id);
 
         if ($data['result'] == false) {
             $this->load->view('qso/components/winkeysettings', $data);
@@ -183,26 +187,52 @@ class QSO extends CI_Controller {
         }
     }
 
-    function cwmacrosave(){
-        // Get the data from the form
-        $function1_name = xss_clean($this->input->post('function1_name'));
-        $function1_macro = xss_clean($this->input->post('function1_macro'));
+    public function cwmacrosave(){
+        try {
+            // Get the data from the form with proper sanitization
+            $function1_name = $this->input->post('function1_name', TRUE);
+            $function1_macro = $this->input->post('function1_macro', TRUE);
 
-        $function2_name = xss_clean($this->input->post('function2_name'));
-        $function2_macro = xss_clean($this->input->post('function2_macro'));
+            $function2_name = $this->input->post('function2_name', TRUE);
+            $function2_macro = $this->input->post('function2_macro', TRUE);
 
-        $function3_name = xss_clean($this->input->post('function3_name'));
-        $function3_macro = xss_clean($this->input->post('function3_macro'));
+            $function3_name = $this->input->post('function3_name', TRUE);
+            $function3_macro = $this->input->post('function3_macro', TRUE);
 
-        $function4_name = xss_clean($this->input->post('function4_name'));
-        $function4_macro = xss_clean($this->input->post('function4_macro'));
+            $function4_name = $this->input->post('function4_name', TRUE);
+            $function4_macro = $this->input->post('function4_macro', TRUE);
 
-        $function5_name = xss_clean($this->input->post('function5_name'));
-        $function5_macro = xss_clean($this->input->post('function5_macro'));
+            $function5_name = $this->input->post('function5_name', TRUE);
+            $function5_macro = $this->input->post('function5_macro', TRUE);
+            
+            // Set empty strings for null values
+            $function1_name = $function1_name ? $function1_name : '';
+            $function1_macro = $function1_macro ? $function1_macro : '';
+            $function2_name = $function2_name ? $function2_name : '';
+            $function2_macro = $function2_macro ? $function2_macro : '';
+            $function3_name = $function3_name ? $function3_name : '';
+            $function3_macro = $function3_macro ? $function3_macro : '';
+            $function4_name = $function4_name ? $function4_name : '';
+            $function4_macro = $function4_macro ? $function4_macro : '';
+            $function5_name = $function5_name ? $function5_name : '';
+            $function5_macro = $function5_macro ? $function5_macro : '';
+            
+            // Basic validation
+            if (!$this->session->userdata('user_id')) {
+                throw new Exception('User not logged in');
+            }
+            
+            // Load stations model to get active station profile
+            $this->load->model('stations');
+            $active_station_id = $this->stations->find_active();
+            
+            if (!$active_station_id || $active_station_id === '0') {
+                throw new Exception('No active station profile found. Please set an active station profile.');
+            }
 
-        $data = [
+            $data = [
             'user_id' => $this->session->userdata('user_id'),
-            'station_location_id' => $this->session->userdata('station_profile_id'),
+            'station_location_id' => $active_station_id,
 			'function1_name'  => $function1_name,
             'function1_macro' => $function1_macro,
             'function2_name'  => $function2_name,
@@ -214,27 +244,79 @@ class QSO extends CI_Controller {
             'function5_name'  => $function5_name,
             'function5_macro' => $function5_macro,
 		];
+		
+		// Debug: Log the data being saved
+		log_message('debug', 'CW Macros Save Data: ' . print_r($data, true));
 
-        // Load model Winkey
-        $this->load->model('winkey');
+            // Load model Winkey
+            $this->load->model('winkey');
 
-        // save the data
-        $this->winkey->save($data);
-
-        echo "Macros Saved, Press Close and lets get sending!";
+            // save the data
+            $this->winkey->save($data);
+            
+            // Return a proper success message with proper HTML
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle"></i> <strong>Success!</strong> CW Macros saved successfully! The button labels will update when you close this dialog.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>';
+        } catch (Exception $e) {
+            // Return error message if save fails
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>Error!</strong> Failed to save macros: ' . htmlspecialchars($e->getMessage()) . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>';
+        } catch (Throwable $t) {
+            // Catch any other errors
+            log_message('error', 'CW Macros Save Error: ' . $t->getMessage() . ' - File: ' . $t->getFile() . ' - Line: ' . $t->getLine());
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i> <strong>Error!</strong> An unexpected error occurred while saving macros.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>';
+        }
     }
 
-    function cwmacros_json() {
-        // Load model Winkey
-        $this->load->model('winkey');
-
-        header('Content-Type: application/json; charset=utf-8');
-
-        // Call settings_json from model winkey
-        echo $this->winkey->settings_json($this->session->userdata('user_id'), $this->session->userdata('station_profile_id'));
+    public function cwmacros_test() {
+        try {
+            $this->load->model('stations');
+            $active_station_id = $this->stations->find_active();
+            echo "Test successful - User ID: " . $this->session->userdata('user_id') . " Active Station ID: " . $active_station_id;
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
     }
 
-    function edit_ajax() {
+    public function cwmacros_json() {
+        try {
+            // Load model Winkey
+            $this->load->model('winkey');
+
+            header('Content-Type: application/json; charset=utf-8');
+
+            $user_id = $this->session->userdata('user_id');
+            
+            if (!$user_id) {
+                echo json_encode(['status' => 'error', 'message' => 'User not logged in']);
+                return;
+            }
+            
+            // Load stations model to get active station profile
+            $this->load->model('stations');
+            $station_id = $this->stations->find_active();
+            
+            if (!$station_id || $station_id === '0') {
+                echo json_encode(['status' => 'error', 'message' => 'No active station profile']);
+                return;
+            }
+
+            // Call settings_json from model winkey
+            echo $this->winkey->settings_json($user_id, $station_id);
+        } catch (Exception $e) {
+            header('Content-Type: application/json; charset=utf-8');
+            echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function edit_ajax() {
 
         $this->load->model('logbook_model');
         $this->load->model('user_model');
@@ -348,7 +430,7 @@ class QSO extends CI_Controller {
         }
     }
 
-	function qsl_ignore_ajax() {
+	public function qsl_ignore_ajax() {
         $id = str_replace('"', "", $this->input->post("id"));
         $method = str_replace('"', "", $this->input->post("method"));
 
@@ -370,7 +452,7 @@ class QSO extends CI_Controller {
     }
 
 	/* Delete QSO */
-	function delete($id) {
+	public function delete($id) {
 		$this->load->model('logbook_model');
 
 		if ($this->logbook_model->check_qso_is_accessible($id)) {
@@ -388,7 +470,7 @@ class QSO extends CI_Controller {
 	}
 
     /* Delete QSO */
-    function delete_ajax() {
+    public function delete_ajax() {
         $id = str_replace('"', "", $this->input->post("id"));
 
         $this->load->model('logbook_model');
@@ -400,11 +482,9 @@ class QSO extends CI_Controller {
         	header('Content-Type: application/json');
         	echo json_encode(array('message' => 'not allowed'));
 	}
-        return;
     }
 
-
-	function band_to_freq($band, $mode) {
+	public function band_to_freq($band, $mode) {
 
 		$this->load->library('frequency');
 

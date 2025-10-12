@@ -189,6 +189,10 @@ class Lotw extends CI_Controller {
 	|
 	| This function Uploads to LoTW
 	|
+	| Performance Optimization: Uses batch QSO updates instead of individual
+	| UPDATE queries to reduce database load during hourly uploads.
+	| Individual updates replaced with mark_lotw_sent_batch() for better performance.
+	|
 	*/
 	public function lotw_upload() {
 
@@ -211,14 +215,13 @@ class Lotw extends CI_Controller {
 			$sync_user_id=null;
 		}
 
-		// Array of QSO IDs being Uploaded
-
-		$qso_id_array = array();
-
 		// Build TQ8 Outputs
 		if ($station_profiles->num_rows() >= 1) {
 
 			foreach ($station_profiles->result() as $station_profile) {
+				
+				// Array of QSO IDs being Uploaded for this station profile
+				$qso_id_array = array();
 
 				// Get Certificate Data
 				$this->load->model('LotwCert');
@@ -330,11 +333,24 @@ class Lotw extends CI_Controller {
 
 					echo "Upload Successful - ".$filename_for_saving."<br>";
 
-					$this->LotwCert->last_upload($data['lotw_cert_info']->lotw_cert_id);
+					// Use transaction for data consistency
+					$this->db->trans_begin();
 
-					// Mark QSOs as Sent
-					foreach ($qso_id_array as $qso_number) {
-						$this->Logbook_model->mark_lotw_sent($qso_number);
+					try {
+						$this->LotwCert->last_upload($data['lotw_cert_info']->lotw_cert_id);
+
+						// Mark QSOs as Sent (batch update for performance)
+						if (!empty($qso_id_array)) {
+							$affected_rows = $this->Logbook_model->mark_lotw_sent_batch($qso_id_array);
+							if ($this->user_model->authorize(2)) {
+								echo "Marked ".$affected_rows." QSOs as sent to LoTW<br>";
+							}
+						}
+
+						$this->db->trans_commit();
+					} catch (Exception $e) {
+						$this->db->trans_rollback();
+						echo "Database update failed for ".$station_profile->station_callsign.": ".$e->getMessage()."<br>";
 					}
 				}
 

@@ -55,7 +55,7 @@ function echo_qsl_method($method) {
 			<div class="forn-group col-lg-2 col-md-2 col-sm-3 col-xl">
 				<label for="oqrsResults"># Results</label>
 				<select id="oqrsResults" name="oqrsResults" class="form-select form-select-sm">
-					<option value="50">50</option>
+					<option value="50" selected="selected">50</option>
 					<option value="200">200</option>
 					<option value="500">500</option>
 					<option value="1000">1000</option>

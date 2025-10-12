@@ -1274,14 +1274,14 @@ $(document).ready(function() {
                     document.getElementById('cw_socket_status').className = 'badge bg-success';
                     document.getElementById('cw_socket_status').innerHTML = `Status: Connected`;
                     logMessage(`Connected to WebSocket server in room: ${chatRoom}`);
-                    startSpeedPolling();
+                    // Get initial speed once when connected, no polling
+                    setTimeout(getCwSpeed, 1000);
                 };
 
                 ws.onclose = function() {
                     document.getElementById('cw_socket_status').className = 'badge bg-secondary';
                     document.getElementById('cw_socket_status').innerHTML = 'Status: Disconnected';
                     logMessage('Disconnected from WebSocket server');
-                    stopSpeedPolling();
                     ws = null;
                 };
 
@@ -1343,11 +1343,14 @@ $(document).ready(function() {
             }
 
             // Support for Enter key in the input field
-            document.getElementById('message').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
+            const messageElement = document.getElementById('message');
+            if (messageElement) {
+                messageElement.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        sendMessage();
+                    }
+                });
+            }
         </script>
 
         <script>
@@ -1482,7 +1485,6 @@ $(document).ready(function() {
 
             // CW Speed Control Functions
             let currentCwSpeed = 20; // Default speed
-            let speedPollInterval = null;
 
             function adjustCwSpeed(change) {
                 if (ws === null) {
@@ -1496,6 +1498,8 @@ $(document).ready(function() {
                     const speedMessage = 'CWSPEED:' + newSpeed;
                     ws.send(speedMessage);
                     logMessage('Sent: ' + speedMessage);
+                    // Get updated speed after changing it
+                    setTimeout(getCwSpeed, 500);
                 }
             }
 
@@ -1515,20 +1519,8 @@ $(document).ready(function() {
                 }
             }
 
-            function startSpeedPolling() {
-                // Poll for speed every 10 seconds to keep display synchronized
-                speedPollInterval = setInterval(getCwSpeed, 10000);
-                
-                // Get initial speed
-                setTimeout(getCwSpeed, 1000); // Wait 1 second after connection
-            }
-
-            function stopSpeedPolling() {
-                if (speedPollInterval) {
-                    clearInterval(speedPollInterval);
-                    speedPollInterval = null;
-                }
-            }
+            // Removed constant polling functions to prevent WebSocket disruption
+            // Speed is now only read on initial connection and after speed changes
 
             // Message log toggle function
             function toggleMessageLog() {

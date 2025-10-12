@@ -200,6 +200,13 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
 		$limit = $searchCriteria['qsoresults'];
+		// Ensure limit has a valid value, default to 250 if empty or invalid
+		if (empty($limit) || !is_numeric($limit) || $limit <= 0) {
+			$limit = 250;
+		}
+
+		// Create a version of $where for the inner subquery with proper table alias
+		$whereInner = str_replace('qsos.', 'qsos_inner.', $where);
 
 		$where2 = '';
 
@@ -213,21 +220,28 @@ class Logbookadvanced_model extends CI_Model {
 		}
 
 		$sql = "
-			SELECT *
-			FROM " . $this->config->item('table_name') . " qsos
-			INNER JOIN station_profile ON qsos.station_id=station_profile.station_id
-			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc=dxcc_entities.adif
-			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
+			SELECT qsos.*, station_profile.*, dxcc_entities.*, lotw_users.callsign, lotw_users.lastupload, x.qslcount
+			FROM (
+				SELECT qsos_inner.COL_PRIMARY_KEY
+				FROM " . $this->config->item('table_name') . " qsos_inner
+				INNER JOIN station_profile sp_inner ON qsos_inner.station_id = sp_inner.station_id
+				WHERE sp_inner.user_id = ?
+				$whereInner
+				ORDER BY qsos_inner.COL_TIME_ON desc, qsos_inner.COL_PRIMARY_KEY desc
+				LIMIT $limit
+			) AS FilteredIDs
+			INNER JOIN " . $this->config->item('table_name') . " qsos ON qsos.COL_PRIMARY_KEY = FilteredIDs.COL_PRIMARY_KEY
+			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
+			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc = dxcc_entities.adif
+			LEFT OUTER JOIN lotw_users ON qsos.col_call = lotw_users.callsign
 			LEFT OUTER JOIN (
 				select count(*) as qslcount, qsoid
 				from qsl_images
 				group by qsoid
 			) x on qsos.COL_PRIMARY_KEY = x.qsoid
-			WHERE station_profile.user_id =  ?
-			$where
+			WHERE 1=1
 			$where2
 			ORDER BY qsos.COL_TIME_ON desc, qsos.COL_PRIMARY_KEY desc
-			LIMIT $limit
 		";
 		$data = $this->db->query($sql, $binding);
 
@@ -296,7 +310,7 @@ class Logbookadvanced_model extends CI_Model {
 					case 4: return 'ORDER BY qsos.COL_MODE' .  $sortorder[1] . ', qsos.COL_SUBMODE ' . $sortorder[1];
 					case 7: return 'ORDER BY qsos.COL_BAND ' . $sortorder[1] . ', qsos.COL_SAT_NAME ' . $sortorder[1];
 					case 16: return 'ORDER BY qsos.COL_COUNTRY ' . $sortorder[1];
-					case 17: return 'ORDER BY qso.COL_STATE ' . $sortorder[1];
+					case 17: return 'ORDER BY qsos.COL_STATE ' . $sortorder[1];
 					case 18: return 'ORDER BY qsos.COL_CQZ ' . $sortorder[1];
 					case 19: return 'ORDER BY qsos.COL_IOTA ' . $sortorder[1];
 					default: return 'ORDER BY qsos.COL_TIME_ON desc';
@@ -311,7 +325,7 @@ class Logbookadvanced_model extends CI_Model {
 					case 4: return 'ORDER BY qsos.COL_MODE' .  $sortorder[1] . ', qsos.COL_SUBMODE ' . $sortorder[1];
 					case 7: return 'ORDER BY qsos.COL_BAND ' . $sortorder[1] . ', qsos.COL_SAT_NAME ' . $sortorder[1];
 					case 15: return 'ORDER BY qsos.COL_COUNTRY ' . $sortorder[1];
-					case 16: return 'ORDER BY qso.COL_STATE ' . $sortorder[1];
+					case 16: return 'ORDER BY qsos.COL_STATE ' . $sortorder[1];
 					case 17: return 'ORDER BY qsos.COL_CQZ ' . $sortorder[1];
 					case 18: return 'ORDER BY qsos.COL_IOTA ' . $sortorder[1];
 					default: return 'ORDER BY qsos.COL_TIME_ON desc';
@@ -326,7 +340,7 @@ class Logbookadvanced_model extends CI_Model {
 					case 4: return 'ORDER BY qsos.COL_MODE' .  $sortorder[1] . ', qsos.COL_SUBMODE ' . $sortorder[1];
 					case 7: return 'ORDER BY qsos.COL_BAND ' . $sortorder[1] . ', qsos.COL_SAT_NAME ' . $sortorder[1];
 					case 14: return 'ORDER BY qsos.COL_COUNTRY ' . $sortorder[1];
-					case 15: return 'ORDER BY qso.COL_STATE ' . $sortorder[1];
+					case 15: return 'ORDER BY qsos.COL_STATE ' . $sortorder[1];
 					case 16: return 'ORDER BY qsos.COL_CQZ ' . $sortorder[1];
 					case 17: return 'ORDER BY qsos.COL_IOTA ' . $sortorder[1];
 					default: return 'ORDER BY qsos.COL_TIME_ON desc';

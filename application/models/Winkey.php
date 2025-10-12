@@ -32,17 +32,32 @@ class Winkey extends CI_Model
 
     public function save($data)
     {
+        // Check if record exists
         $this->db->where('user_id', $data['user_id']);
         $this->db->where('station_location_id', $data['station_location_id']);
         $query = $this->db->get('cwmacros');
 
         if ($query->num_rows() > 0) {
+            // Update existing record
             $this->db->where('user_id', $data['user_id']);
             $this->db->where('station_location_id', $data['station_location_id']);
-            $this->db->update('cwmacros', $data);
+            $result = $this->db->update('cwmacros', $data);
+            
+            if (!$result) {
+                log_message('error', 'Winkey model: Failed to update cwmacros - ' . $this->db->last_query());
+                throw new Exception('Failed to update macro settings');
+            }
         } else {
-            $this->db->insert('cwmacros', $data);
+            // Insert new record
+            $result = $this->db->insert('cwmacros', $data);
+            
+            if (!$result) {
+                log_message('error', 'Winkey model: Failed to insert cwmacros - ' . $this->db->last_query());
+                throw new Exception('Failed to save macro settings');
+            }
         }
+        
+        return $result;
     }
 }
 
