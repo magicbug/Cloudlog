@@ -1041,6 +1041,32 @@ class Logbook_model extends CI_Model
   }
 
   /*
+   * Function marks multiple QSOs as uploaded to QRZ in a single batch operation.
+   * $primarykeys is an array of unique ids for the QSOs in the logbook
+   * This provides much better performance than individual updates
+   */
+  function mark_qrz_qsos_sent_batch($primarykeys)
+  {
+    if (empty($primarykeys) || !is_array($primarykeys)) {
+      return false;
+    }
+
+    $upload_date = date("Y-m-d H:i:s", strtotime("now"));
+    
+    // Use a single UPDATE query with IN clause for maximum performance
+    $primarykeys_str = implode(',', array_map('intval', $primarykeys));
+    
+    $sql = "UPDATE " . $this->config->item('table_name') . " 
+            SET COL_QRZCOM_QSO_UPLOAD_DATE = ?, 
+                COL_QRZCOM_QSO_UPLOAD_STATUS = 'Y' 
+            WHERE COL_PRIMARY_KEY IN (" . $primarykeys_str . ")";
+            
+    $this->db->query($sql, array($upload_date));
+
+    return true;
+  }
+
+  /*
 	* Function marks QSOs as uploaded to WebADIF.
 	* $qsoIDs is an arroy of unique id for the QSOs in the logbook
 	*/
@@ -5035,6 +5061,7 @@ class Logbook_model extends CI_Model
 
   /**
    * Processes a batch of QRZ ADIF records for efficient database updates.
+   * Uses temporary table approach for optimal performance with large batches.
    *
    * @param array $batch_data Array of records from the ADIF file.
    * @return string HTML table rows for the processed batch.
@@ -5043,73 +5070,161 @@ class Logbook_model extends CI_Model
   {
     $table = "";
     $update_batch_data = [];
-    $this->load->model('Stations');
-
+    $temp_table_created = false;
+    
     if (empty($batch_data)) {
       return '';
     }
 
-    // Step 1: Build WHERE clause for fetching potential matches
-    $this->db->select($this->config->item('table_name') . '.COL_PRIMARY_KEY, ' . $this->config->item('table_name') . '.COL_CALL, ' . $this->config->item('table_name') . '.COL_TIME_ON, ' . $this->config->item('table_name') . '.COL_BAND, ' . $this->config->item('table_name') . '.COL_MODE, ');
-    $this->db->from($this->config->item('table_name'));
-    $this->db->group_start(); // Start grouping OR conditions
-    foreach ($batch_data as $record) {
-      $this->db->or_group_start(); // Start group for this record's AND conditions
-      $this->db->where($this->config->item('table_name') . '.COL_CALL', $record['call']);
-      $this->db->like($this->config->item('table_name') . '.COL_TIME_ON', $record['time_on'], 'after');
-      $this->db->where($this->config->item('table_name') . '.COL_BAND', $record['band']);
-      $this->db->group_end(); // End group for this record's AND conditions
+    try {
+      // Step 1: Create temporary table for batch processing
+      $temp_table_name = 'temp_qrz_batch_' . uniqid();
+      $this->create_qrz_temp_table($temp_table_name);
+      $temp_table_created = true;
+
+      // Step 2: Insert batch data into temporary table
+      $this->insert_qrz_batch_data($temp_table_name, $batch_data);
+
+      // Step 3: Find matches using efficient JOIN operation
+      $matches = $this->find_qrz_matches_via_join($temp_table_name);
+
+      // Step 4: Process results and build table HTML + update data
+      foreach ($batch_data as $record) {
+        $match_key = $record['call'] . '|' . $record['time_on'] . '|' . $record['band'];
+        $log_status = '<span class="badge text-bg-danger">Not Found</span>';
+        
+        if (isset($matches[$match_key])) {
+          $primary_key = $matches[$match_key];
+          $log_status = '<span class="badge text-bg-success">Confirmed</span>';
+
+          // Prepare data for batch update
+          $update_batch_data[] = [
+            'COL_PRIMARY_KEY' => $primary_key,
+            'COL_QRZCOM_QSO_DOWNLOAD_DATE' => $record['qsl_date'],
+            'COL_QRZCOM_QSO_DOWNLOAD_STATUS' => $record['qsl_rcvd']
+          ];
+        }
+
+        // Build table row
+        $table .= "<tr>";
+        $table .= "<td>" . htmlspecialchars($record['station_callsign']) . "</td>";
+        $table .= "<td>" . htmlspecialchars($record['time_on']) . "</td>";
+        $table .= "<td>" . htmlspecialchars($record['call']) . "</td>";
+        $table .= "<td>" . htmlspecialchars($record['mode']) . "</td>";
+        $table .= "<td>" . htmlspecialchars($record['qsl_date']) . "</td>";
+        $table .= "<td>" . ($record['qsl_rcvd'] == 'Y' ? '<span class="badge text-bg-success">Yes</span>' : '<span class="badge text-bg-danger">No</span>') . "</td>";
+        $table .= "</tr>";
+      }
+
+      // Step 5: Execute batch update if we have matches
+      if (!empty($update_batch_data)) {
+        $this->db->update_batch($this->config->item('table_name'), $update_batch_data, 'COL_PRIMARY_KEY');
+        log_message('info', 'QRZ download: Updated ' . count($update_batch_data) . ' QSO confirmations via batch processing');
+      }
+
+    } catch (Exception $e) {
+      log_message('error', 'QRZ batch processing error: ' . $e->getMessage());
+      // Continue with empty table on error
+    } finally {
+      // Step 6: Always clean up temporary table
+      if ($temp_table_created) {
+        $this->drop_qrz_temp_table($temp_table_name);
+      }
     }
-    $this->db->group_end(); // End grouping OR conditions
 
-    // Step 2: Fetch Matches
-    $query = $this->db->get();
-    $db_results = $query->result_array();
+    return $table;
+  }
 
-    // Index DB results for faster lookup
+  /**
+   * Creates temporary table for QRZ batch processing
+   * @param string $temp_table_name Name of the temporary table to create
+   */
+  private function create_qrz_temp_table($temp_table_name)
+  {
+    $sql = "CREATE TEMPORARY TABLE `{$temp_table_name}` (
+      `callsign` VARCHAR(20) NOT NULL,
+      `time_on` VARCHAR(19) NOT NULL,
+      `band` VARCHAR(10) NOT NULL,
+      `qsl_date` DATE NOT NULL,
+      `qsl_rcvd` CHAR(1) DEFAULT NULL,
+      INDEX `idx_lookup` (`callsign`, `time_on`, `band`)
+    ) ENGINE=MEMORY DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    
+    $this->db->query($sql);
+  }
+
+  /**
+   * Inserts batch data into temporary table efficiently
+   * @param string $temp_table_name Name of the temporary table
+   * @param array $batch_data Array of QRZ records to insert
+   */
+  private function insert_qrz_batch_data($temp_table_name, $batch_data)
+  {
+    // Prepare data for batch insert
+    $insert_data = [];
+    foreach ($batch_data as $record) {
+      $insert_data[] = [
+        'callsign' => $record['call'],
+        'time_on' => $record['time_on'],
+        'band' => $record['band'],
+        'qsl_date' => $record['qsl_date'],
+        'qsl_rcvd' => $record['qsl_rcvd']
+      ];
+    }
+
+    // Use batch insert for efficiency
+    if (!empty($insert_data)) {
+      $this->db->insert_batch($temp_table_name, $insert_data);
+    }
+  }
+
+  /**
+   * Find QSO matches using efficient JOIN operation instead of complex OR queries
+   * @param string $temp_table_name Name of the temporary table containing batch data
+   * @return array Associative array of matches keyed by call|time|band
+   */
+  private function find_qrz_matches_via_join($temp_table_name)
+  {
+    $table_name = $this->config->item('table_name');
+    
+    $sql = "SELECT 
+              qso.COL_PRIMARY_KEY,
+              qso.COL_CALL,
+              qso.COL_TIME_ON,
+              qso.COL_BAND
+            FROM `{$table_name}` qso
+            INNER JOIN `{$temp_table_name}` temp ON (
+              qso.COL_CALL = temp.callsign 
+              AND qso.COL_TIME_ON LIKE CONCAT(temp.time_on, '%')
+              AND qso.COL_BAND = temp.band
+            )";
+    
+    $query = $this->db->query($sql);
+    $results = $query->result_array();
+    
+    // Index results by call|time|band for fast lookup
     $indexed_results = [];
-    foreach ($db_results as $row) {
-      $time = substr($row['COL_TIME_ON'], 0, 16);
+    foreach ($results as $row) {
+      $time = substr($row['COL_TIME_ON'], 0, 16); // Match the format used in batch_data
       $key = $row['COL_CALL'] . '|' . $time . '|' . $row['COL_BAND'];
       $indexed_results[$key] = $row['COL_PRIMARY_KEY'];
     }
+    
+    return $indexed_results;
+  }
 
-    // Step 3 & 4: Prepare Batch Update and Build Table Rows
-    foreach ($batch_data as $record) {
-      $match_key = $record['call'] . '|' . $record['time_on'] . '|' . $record['band'];
-      $log_status = '<span class="badge text-bg-danger">Not Found</span>';
-      $primary_key = null;
-
-      if (isset($indexed_results[$match_key])) {
-        $primary_key = $indexed_results[$match_key];
-        $log_status = '<span class="badge text-bg-success">Confirmed</span>';
-
-        // Prepare data for batch update
-        $update_batch_data[] = [
-          'COL_PRIMARY_KEY' => $primary_key,
-          'COL_QRZCOM_QSO_DOWNLOAD_DATE' => $record['qsl_date'],
-          'COL_QRZCOM_QSO_DOWNLOAD_STATUS' => $record['qsl_rcvd'] // Should be 'Y' if confirmed
-        ];
-      }
-
-      // Build table row
-      $table .= "<tr>";
-      $table .= "<td>" . $record['station_callsign'] . "</td>";
-      $table .= "<td>" . $record['time_on'] . "</td>";
-      $table .= "<td>" . $record['call'] . "</td>";
-      $table .= "<td>" . $record['mode'] . "</td>";
-      $table .= "<td>" . $record['qsl_date'] . "</td>";
-      $table .= "<td>" . ($record['qsl_rcvd'] == 'Y' ? '<span class="badge text-bg-success">Yes</span>' : '<span class="badge text-bg-danger">No</span>') . "</td>";
-      $table .= "</tr>";
+  /**
+   * Safely drops the temporary table
+   * @param string $temp_table_name Name of the temporary table to drop
+   */
+  private function drop_qrz_temp_table($temp_table_name)
+  {
+    try {
+      $this->db->query("DROP TEMPORARY TABLE IF EXISTS `{$temp_table_name}`");
+    } catch (Exception $e) {
+      // Log but don't throw - temporary tables are automatically cleaned up on connection close
+      log_message('warning', 'Could not drop temporary table ' . $temp_table_name . ': ' . $e->getMessage());
     }
-
-    // Step 5: Execute Batch Update
-    if (!empty($update_batch_data)) {
-      $this->db->update_batch($this->config->item('table_name'), $update_batch_data, 'COL_PRIMARY_KEY');
-    }
-
-    // Step 6: Return Table HTML
-    return $table;
   }
 
   /**

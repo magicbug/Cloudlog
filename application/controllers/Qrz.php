@@ -52,11 +52,14 @@ class Qrz extends CI_Controller {
 	/*
 	 * Function gets all QSOs from given station_id, that are not previously uploaded to qrz.
 	 * Adif is build for each qso, and then uploaded, one at a time
+	 * Database updates are batched for better performance
 	 */
 	function mass_upload_qsos($station_id, $qrz_api_key, $trusted = false) {
 		$i = 0;
 		$data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id, $trusted);
-		$errormessages=array();
+		$errormessages = array();
+		$successful_uploads = array(); // Collect successful QSO primary keys for batch update
+		$batch_size = 100; // Process database updates in batches of 100 for memory efficiency
 
 		$this->load->library('AdifHelper');
 
@@ -71,9 +74,17 @@ class Qrz extends CI_Controller {
 				}
 
 				if ( ($result['status'] == 'OK') || ( ($result['status'] == 'error') && ($result['message'] == 'STATUS=FAIL&REASON=Unable to add QSO to database: duplicate&EXTENDED=')) ){
-					$this->markqso($qso->COL_PRIMARY_KEY);
+					// Collect successful uploads for batch processing instead of individual updates
+					$successful_uploads[] = $qso->COL_PRIMARY_KEY;
 					$i++;
 					$result['status'] = 'OK';
+					
+					// Process batch updates in chunks for memory efficiency
+					if (count($successful_uploads) >= $batch_size) {
+						$this->logbook_model->mark_qrz_qsos_sent_batch($successful_uploads);
+						log_message('info', 'QRZ batch upload: Successfully marked ' . count($successful_uploads) . ' QSOs as uploaded for station_id: ' . $station_id . ' (batch ' . ceil($i / $batch_size) . ')');
+						$successful_uploads = array(); // Reset for next batch
+					}
 				} elseif ( ($result['status']=='error') && (substr($result['message'],0,11)  == 'STATUS=AUTH')) {
 					log_message('error', 'QRZ upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
 					log_message('error', 'QRZ upload failed with the following message: ' .$result['message']);
@@ -87,6 +98,17 @@ class Qrz extends CI_Controller {
 					$errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
 					$result['status'] = 'Error';
 				}
+			}
+			
+			// Process any remaining QSOs in the final batch
+			if (!empty($successful_uploads)) {
+				$this->logbook_model->mark_qrz_qsos_sent_batch($successful_uploads);
+				log_message('info', 'QRZ batch upload: Successfully marked final batch of ' . count($successful_uploads) . ' QSOs as uploaded for station_id: ' . $station_id);
+			}
+			
+			// Log summary of the entire upload operation
+			if ($i > 0) {
+				log_message('info', 'QRZ upload completed: Total of ' . $i . ' QSOs successfully uploaded for station_id: ' . $station_id);
 			}
 			if ($i == 0) {
 			    $result['status']='OK';
@@ -104,6 +126,8 @@ class Qrz extends CI_Controller {
 
 	/*
 	 * Function marks QSO with given primarykey as uploaded to qrz
+	 * This is used for individual QSO marking (legacy/compatibility)
+	 * For better performance, use batch operations when possible
 	 */
 	function markqso($primarykey) {
 		$this->logbook_model->mark_qrz_qsos_sent($primarykey);
