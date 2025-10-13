@@ -688,9 +688,9 @@ class Lotw extends CI_Controller {
 					continue;
 				}
 
-				// Get credentials for LoTW
-		    	$data['user_lotw_name'] = urlencode($user->user_lotw_name);
-				$data['user_lotw_password'] = urlencode($user->user_lotw_password);
+				// Get credentials for LoTW - use rawurlencode to prevent &amp; issues
+		    	$data['user_lotw_name'] = rawurlencode($user->user_lotw_name);
+				$data['user_lotw_password'] = rawurlencode($user->user_lotw_password);
 
 				$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
 
@@ -699,15 +699,55 @@ class Lotw extends CI_Controller {
 				$lotw_url .= "login=" . $data['user_lotw_name'];
 				$lotw_url .= "&password=" . $data['user_lotw_password'];
 				$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
+				$lotw_url .= "&qso_qslsince=" . $lotw_last_qsl_date;
 
-				$lotw_url .= "&qso_qslsince=";
-				$lotw_url .= "$lotw_last_qsl_date";
+				// Debug logging
+				log_message('debug', 'LoTW URL being requested: ' . $lotw_url);
 
 				if (! is_writable(dirname($file))) {
 					$result = "Temporary download directory ".dirname($file)." is not writable. Aborting!";
 					continue;
 				}
-				file_put_contents($file, file_get_contents($lotw_url));
+
+				// Replace file_get_contents with cURL for better error handling
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $lotw_url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+				curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog LoTW Client/1.0');
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+					'Accept: text/plain,*/*',
+					'Accept-Language: en-US,en;q=0.9'
+				));
+
+				$response = curl_exec($ch);
+				$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				$curl_error = curl_error($ch);
+				curl_close($ch);
+
+				// Check for cURL errors
+				if ($response === false || !empty($curl_error)) {
+					$result = "LoTW download failed for user ".$data['user_lotw_name'].": " . $curl_error;
+					log_message('error', 'LoTW cURL error: ' . $curl_error);
+					continue;
+				}
+
+				// Check HTTP response code
+				if ($http_code !== 200) {
+					$result = "LoTW download failed for user ".$data['user_lotw_name'].": HTTP " . $http_code;
+					log_message('error', 'LoTW HTTP error: ' . $http_code);
+					continue;
+				}
+
+				// Save the response to file
+				if (file_put_contents($file, $response) === false) {
+					$result = "Failed to write LoTW response to file for user ".$data['user_lotw_name'];
+					continue;
+				}
 				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
 					$result = "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
 					continue;
