@@ -345,30 +345,106 @@ class Update extends CI_Controller {
 
         $file = 'https://lotw.arrl.org/lotw-user-activity.csv';
 
-        $handle = fopen($file, "r");
+        // First, try to download and validate the file
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 60, // 60 second timeout
+                'user_agent' => 'Cloudlog LoTW User Updater'
+            ]
+        ]);
+
+        $handle = fopen($file, "r", false, $context);
         if ($handle === FALSE) {
-            echo "Something went wrong with fetching the LoTW uses file";
+            echo "FAILED: Could not connect to LoTW server";
+            log_message('error', 'Failed to connect to LoTW user activity CSV');
             return;
         }
-        // Use TRUNCATE instead of DELETE FROM lotw_users WHERE 1=1 for much better performance
-        $this->db->query("TRUNCATE TABLE lotw_users"); 
-        $i = 0;
-        $data = fgetcsv($handle,1000,",");
-        do {
-            if ($data[0]) {
-                $lotwdata[$i]['callsign'] = $data[0];
-                $lotwdata[$i]['lastupload'] = $data[1] . ' ' . $data[2];
-                if (($i % 2000) == 0) {
-                    $this->db->insert_batch('lotw_users', $lotwdata); 
-                    unset($lotwdata);
-                    // echo 'Record ' . $i . '<br />';
-                }
-                $i++;
-            }
-        } while ($data = fgetcsv($handle,1000,","));
-        fclose($handle);
 
-        $this->db->insert_batch('lotw_users', $lotwdata); 
+        // Read and validate the first few lines to ensure we have valid data
+        $line_count = 0;
+        $sample_data = array();
+        while ($line_count < 5 && ($line = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if ($line[0]) { // Skip empty lines
+                $sample_data[] = $line;
+                $line_count++;
+            }
+        }
+
+        // Validate we have enough sample data
+        if ($line_count < 2) {
+            fclose($handle);
+            echo "FAILED: LoTW file appears to be empty or invalid";
+            log_message('error', 'LoTW user activity CSV appears empty or invalid');
+            return;
+        }
+
+        // Reset file pointer to beginning
+        fclose($handle);
+        $handle = fopen($file, "r", false, $context);
+        if ($handle === FALSE) {
+            echo "FAILED: Could not reopen LoTW file";
+            return;
+        }
+
+        // Only truncate table AFTER we've validated the remote file
+        $this->db->query("TRUNCATE TABLE lotw_users"); 
+        
+        $i = 0;
+        $batch_count = 0;
+        $lotwdata = array();
+        $batch_size = 500; // Smaller batch size for better performance and memory usage
+        
+        // Skip CSV header row
+        $data = fgetcsv($handle,1000,",");
+        
+        while (($data = fgetcsv($handle,1000,",")) !== FALSE) {
+            if ($data[0] && isset($data[1]) && isset($data[2])) {
+                // Validate callsign format (basic check)
+                if (preg_match('/^[A-Z0-9\/]+$/', $data[0])) {
+                    $lotwdata[] = array(
+                        'callsign' => $data[0],
+                        'lastupload' => $data[1] . ' ' . $data[2]
+                    );
+                    $i++;
+                    
+                    // Insert batch when we reach batch_size
+                    if (count($lotwdata) >= $batch_size) {
+                        if (!$this->db->insert_batch('lotw_users', $lotwdata)) {
+                            echo "FAILED: Database error during batch insert";
+                            log_message('error', 'Database error during LoTW batch insert');
+                            fclose($handle);
+                            return;
+                        }
+                        $batch_count++;
+                        $lotwdata = array(); // Reset array
+                    }
+                }
+            }
+        }
+        fclose($handle);
+        
+        // Insert any remaining records in final batch
+        if (!empty($lotwdata)) {
+            if (!$this->db->insert_batch('lotw_users', $lotwdata)) {
+                echo "FAILED: Database error during final batch insert";
+                log_message('error', 'Database error during LoTW final batch insert');
+                return;
+            }
+            $batch_count++;
+        }
+
+        // Verify we actually imported data
+        $final_count = $this->db->count_all('lotw_users');
+        if ($final_count == 0) {
+            echo "FAILED: No records were imported - possible data corruption";
+            log_message('error', 'LoTW import completed but no records in database');
+            return;
+        }
+
+        if ($i < 50000) { // Sanity check - LoTW should have at least 50k users
+            echo "WARNING: Only imported " . $i . " records - this seems unusually low";
+            log_message('warning', 'LoTW import record count unusually low: ' . $i);
+        } 
 
         $mtime = microtime(); 
         $mtime = explode(" ",$mtime); 
