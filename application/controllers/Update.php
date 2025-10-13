@@ -399,10 +399,12 @@ class Update extends CI_Controller {
         
         while (($data = fgetcsv($handle,1000,",")) !== FALSE) {
             if ($data[0] && isset($data[1]) && isset($data[2])) {
+                // Normalize callsign to uppercase before validation
+                $callsign = strtoupper($data[0]);
                 // Validate callsign format (basic check)
-                if (preg_match('/^[A-Z0-9\/]+$/', $data[0])) {
+                if (preg_match('/^[A-Z0-9\/]+$/', $callsign)) {
                     $lotwdata[] = array(
-                        'callsign' => $data[0],
+                        'callsign' => $callsign,
                         'lastupload' => $data[1] . ' ' . $data[2]
                     );
                     $i++;
