@@ -79,9 +79,9 @@ $lang['account_logbook_of_the_world_lotw_password'] = 'Logbook of The World (LoT
 $lang['account_leave_blank_to_keep_existing_password'] = 'Lascia vuoto per mantenere la password esistente';
 
 $lang['account_clublog'] = 'Club Log';
-$lang['account_clublog_email_callsign'] = 'Club Log E-mail/Nominativo';
+$lang['account_clublog_email_callsign'] = 'Club Log E-mail';
 $lang['account_clublog_password'] = 'Club Log Password';
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'L\'E-mail o il nominativo che utilizzi per accedere a ClubLog';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'L\'indirizzo e-mail che utilizzi per accedere a ClubLog (Clublog non accetta più nominativi come nomi utente)';
 
 $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'eQSL.cc Utente';

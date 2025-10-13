@@ -78,9 +78,9 @@ $lang['account_logbook_of_the_world_lotw_password'] = 'Heslo Logbook of The Worl
 $lang['account_leave_blank_to_keep_existing_password'] = 'Ponechte prázdné, pokud chcete zachovat stávající heslo';
 
 $lang['account_clublog'] = 'Club Log';
-$lang['account_clublog_email_callsign'] = 'Email nebo značka volacího znaku Club Logu';
+$lang['account_clublog_email_callsign'] = 'Email Club Logu';
 $lang['account_clublog_password'] = 'Heslo Club Logu';
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'E-mail nebo značka volacího znaku, kterou používáte pro přihlášení do Club Logu';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'E-mailová adresa, kterou používáte pro přihlášení do Club Logu (Clublog již nepřijímá volací značky jako uživatelská jména)';
 
 $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'Uživatelské jméno eQSL.cc';

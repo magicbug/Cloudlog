@@ -27,6 +27,13 @@ class Clublog extends CI_Controller {
 		$clean_passord = $this->security->xss_clean($password);
 		$clean_userid = $this->security->xss_clean($userid);
 
+		// Validate that username is an email address for Clublog
+		if (!empty($clean_username) && !filter_var($clean_username, FILTER_VALIDATE_EMAIL)) {
+			echo "Error: Clublog username must be a valid email address. Clublog no longer accepts callsigns as usernames for " . $clean_username . "<br>";
+			log_message('error', 'Clublog upload failed for user ID ' . $clean_userid . ': invalid email format for username ' . $clean_username);
+			return;
+		}
+
 		$this->config->load('config');
 		ini_set('memory_limit', '-1');
 		ini_set('display_errors', 1);

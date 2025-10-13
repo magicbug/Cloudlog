@@ -81,11 +81,11 @@ $lang['account_logbook_of_the_world_lotw_password'] = 'Hasło w Logbook of The W
 $lang['account_leave_blank_to_keep_existing_password'] = 'Pozostaw puste, aby zachować istniejące hasło';
 
 $lang['account_clublog'] = 'Dziennik klubu';
-$lang['account_clublog_email_callsign'] = 'Adres e-mail/znak wywoławczy do Club Log';
+$lang['account_clublog_email_callsign'] = 'Adres e-mail Club Log';
 
 $lang['account_clublog_password'] = 'Hasło do Club Log';
 
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Adres e-mail lub znak wywoławczy, którego używasz do logowania się do Club Log';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Adres e-mail, którego używasz do logowania się do Club Log (Clublog nie akceptuje już znaków wywoławczych jako nazw użytkowników)';
 
 $lang['account_eqsl'] = 'eQSL';
 

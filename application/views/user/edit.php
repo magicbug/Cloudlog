@@ -1109,7 +1109,7 @@
 										<div class="card-body">
 											<div class="mb-3">
 												<label><?php echo lang('account_clublog_email_callsign'); ?></label>
-												<input class="form-control" type="text" name="user_clublog_name" value="<?php if (isset($user_clublog_name)) {
+												<input class="form-control" type="email" name="user_clublog_name" placeholder="your@email.com" value="<?php if (isset($user_clublog_name)) {
 																															echo $user_clublog_name;
 																														} ?>" />
 												<small class="form-text text-muted"><?php echo lang('account_the_email_or_callsign_you_use_to_login_to_club_log'); ?></small>

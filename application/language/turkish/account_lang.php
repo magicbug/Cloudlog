@@ -79,9 +79,9 @@ $lang['account_logbook_of_the_world_lotw_password'] = 'Dünyanın Kayıt Defteri
 $lang['account_leave_blank_to_keep_existing_password'] = 'Mevcut şifreyi korumak için boş bırakın';
 
 $lang['account_clublog'] = 'Kulüp Günlüğü';
-$lang['account_clublog_email_callsign'] = 'Kulüp Günlüğü E-postası/Çağrı İmzası';
+$lang['account_clublog_email_callsign'] = 'Kulüp Günlüğü E-postası';
 $lang['account_clublog_password'] = 'Kulüp Günlüğü Şifresi';
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = "Club Log'a giriş yapmak için kullandığınız E-posta veya Çağrı İşareti";
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = "Club Log'a giriş yapmak için kullandığınız E-posta adresi (Clublog artık çağrı işaretlerini kullanıcı adı olarak kabul etmiyor)";
 
 $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'eQSL.cc Kullanıcı Adı';

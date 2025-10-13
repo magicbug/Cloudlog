@@ -653,24 +653,30 @@ class Logbook_model extends CI_Model
 
       $clublog_creds = $this->exists_clublog_credentials($data['station_id']);
       if (isset($clublog_creds->ucp) && isset($clublog_creds->ucn) && (($clublog_creds->ucp ?? '') != '') && (($clublog_creds->ucn ?? '') != '') && ($clublog_creds->clublogrealtime == 1)) {
-        $CI = &get_instance();
-        $CI->load->library('AdifHelper');
-        $qso = $this->get_qso($last_id, true)->result();
-
-        $adif = $CI->adifhelper->getAdifLine($qso[0]);
-        $clublog_result = $this->push_qso_to_clublog($clublog_creds->ucn, $clublog_creds->ucp, $data['COL_STATION_CALLSIGN'], $adif);
         
-        if ($clublog_result['status'] == 'OK') {
-          $this->mark_clublog_qsos_sent($last_id);
-          log_message('info', 'Clublog realtime upload successful for QSO ID: ' . $last_id);
+        // Validate that Clublog username is an email address
+        if (!filter_var($clublog_creds->ucn, FILTER_VALIDATE_EMAIL)) {
+          log_message('error', 'Clublog realtime upload failed for QSO ID: ' . $last_id . ' - Username must be a valid email address. Clublog no longer accepts callsigns as usernames.');
         } else {
-          log_message('error', 'Clublog realtime upload failed for QSO ID: ' . $last_id . ' - ' . $clublog_result['status']);
-          
-          // If Clublog responds with a 403, reset the user's credentials
-          if (isset($clublog_result['http_code']) && $clublog_result['http_code'] == 403) {
-            $CI->load->model('clublog_model');
-            $CI->clublog_model->reset_clublog_user_fields($clublog_creds->user_id);
-            log_message('error', 'Clublog API access denied - credentials reset for user ID: ' . $clublog_creds->user_id);
+          $CI = &get_instance();
+          $CI->load->library('AdifHelper');
+          $qso = $this->get_qso($last_id, true)->result();
+
+          $adif = $CI->adifhelper->getAdifLine($qso[0]);
+          $clublog_result = $this->push_qso_to_clublog($clublog_creds->ucn, $clublog_creds->ucp, $data['COL_STATION_CALLSIGN'], $adif);
+        
+          if ($clublog_result['status'] == 'OK') {
+            $this->mark_clublog_qsos_sent($last_id);
+            log_message('info', 'Clublog realtime upload successful for QSO ID: ' . $last_id);
+          } else {
+            log_message('error', 'Clublog realtime upload failed for QSO ID: ' . $last_id . ' - ' . $clublog_result['status']);
+            
+            // If Clublog responds with a 403, reset the user's credentials
+            if (isset($clublog_result['http_code']) && $clublog_result['http_code'] == 403) {
+              $CI->load->model('clublog_model');
+              $CI->clublog_model->reset_clublog_user_fields($clublog_creds->user_id);
+              log_message('error', 'Clublog API access denied - credentials reset for user ID: ' . $clublog_creds->user_id);
+            }
           }
         }
       }
@@ -803,6 +809,14 @@ class Logbook_model extends CI_Model
 
   function push_qso_to_clublog($cl_username, $cl_password, $station_callsign, $adif)
   {
+
+    // Validate that username is an email address
+    if (!filter_var($cl_username, FILTER_VALIDATE_EMAIL)) {
+      return [
+        'status' => 'ERROR',
+        'message' => 'Username must be a valid email address. Clublog no longer accepts callsigns as usernames.'
+      ];
+    }
 
     // initialise the curl request
     $returner = [];

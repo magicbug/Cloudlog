@@ -79,9 +79,9 @@ $lang['account_logbook_of_the_world_lotw_password'] = 'Пароль';
 $lang['account_leave_blank_to_keep_existing_password'] = 'Оставьте пустым для сохранения текущего пароля';
 
 $lang['account_clublog'] = 'Clublog';
-$lang['account_clublog_email_callsign'] = 'Емэйл/позывной';
+$lang['account_clublog_email_callsign'] = 'Адрес электронной почты';
 $lang['account_clublog_password'] = 'Пароль';
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Емэйл или позывной, которые вы используете для логина в Clublog';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Адрес электронной почты, который вы используете для входа в Clublog (Clublog больше не принимает позывные в качестве имен пользователей)';
 
 $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'Логин';
