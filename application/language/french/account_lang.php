@@ -77,9 +77,9 @@ $lang['account_logbook_of_the_world_lotw_password'] = "Mot de passe";
 $lang['account_leave_blank_to_keep_existing_password'] = "(Laisser vide pour conserver le mot de passe existant)";
 
 $lang['account_clublog'] = "Club Log";
-$lang['account_clublog_email_callsign'] = "Email/Callsign";
+$lang['account_clublog_email_callsign'] = "E-mail";
 $lang['account_clublog_password'] = "Mot de passe";
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = "(Renseigner l'email ou l'indicatif pour se connecter à Club Log)";
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = "(Renseigner l'adresse e-mail pour se connecter à Club Log - Clublog n'accepte plus les indicatifs comme noms d'utilisateur)";
 
 $lang['account_eqsl'] = "eQSL";
 $lang['account_eqslcc_username'] = "Utilisateur";

@@ -310,6 +310,7 @@ class User extends CI_Controller
 		$this->form_validation->set_rules('user_firstname', 'First name', 'required|xss_clean');
 		$this->form_validation->set_rules('user_lastname', 'Last name', 'required|xss_clean');
 		$this->form_validation->set_rules('user_callsign', 'Callsign', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('user_clublog_name', 'Clublog Email', 'callback_check_clublog_email');
 		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
 
@@ -1280,6 +1281,21 @@ class User extends CI_Controller
 			}
 		} else {
 			redirect('user/login');
+		}
+	}
+
+	function check_clublog_email($email)
+	{
+		$email = $this->input->post('user_clublog_name');
+		// Allow empty email (user may not use Clublog)
+		if (empty($email)) return true;
+		
+		// Validate email format
+		if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			return true;
+		} else {
+			$this->form_validation->set_message('check_clublog_email', 'Clublog username must be a valid email address as Clublog no longer accepts callsigns as usernames.');
+			return false;
 		}
 	}
 

@@ -79,9 +79,9 @@ $lang['account_logbook_of_the_world_lotw_password'] = 'Logbook of The World (LoT
 $lang['account_leave_blank_to_keep_existing_password'] = 'Jätä tyhjäksi säilyttääksesi tietokannan nykyisen salasanan';
 
 $lang['account_clublog'] = 'Club Log';
-$lang['account_clublog_email_callsign'] = 'Club Log Sähköposti/Kutsu';
+$lang['account_clublog_email_callsign'] = 'Club Log Sähköposti';
 $lang['account_clublog_password'] = 'Club Log Salasana';
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Sähköposti tai kutsu, jota käytät kirjautuessasi Club Log:iin';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = 'Sähköpostiosoite, jota käytät kirjautuessasi Club Log:iin (Clublog ei enää hyväksy kutsumerkkejä käyttäjäniminä)';
 
 $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'eQSL.cc Käyttäjänimi';

@@ -93,7 +93,7 @@ class Clublog_model extends CI_Model {
 	  }
 
 	  function all_with_count($userid) {
-		$this->db->select('station_profile.station_id, station_profile.station_callsign, count('.$this->config->item('table_name').'.station_id) as qso_total');
+		$this->db->select('station_profile.station_id, station_profile.station_callsign, station_profile.user_id, count('.$this->config->item('table_name').'.station_id) as qso_total');
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
        	$this->db->group_by('station_profile.station_id');

@@ -242,7 +242,7 @@ class User_Model extends CI_Model {
 					'user_timezone' => xss_clean($fields['user_timezone']),
 					'user_lotw_name' => xss_clean($fields['user_lotw_name']),
 					'user_eqsl_name' => xss_clean($fields['user_eqsl_name']),
-					'user_clublog_name' => xss_clean($fields['user_clublog_name']),
+					'user_clublog_name' => xss_clean($fields['user_clublog_name']), // Must be a valid email address - Clublog no longer accepts callsigns
 					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
 					'user_date_format' => xss_clean($fields['user_date_format']),
 					'user_stylesheet' => xss_clean($fields['user_stylesheet']),

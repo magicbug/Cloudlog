@@ -79,9 +79,9 @@ $lang['account_logbook_of_the_world_lotw_password'] = 'Logbook of The World (LoT
 $lang['account_leave_blank_to_keep_existing_password'] = '留空以保留现有密码';
 
 $lang['account_clublog'] = 'Clublog';
-$lang['account_clublog_email_callsign'] = 'Clublog 邮件地址/呼号';
+$lang['account_clublog_email_callsign'] = 'Clublog 邮件地址';
 $lang['account_clublog_password'] = 'Clublog 密码';
-$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = '登录Clublog的电子邮件或呼号';
+$lang['account_the_email_or_callsign_you_use_to_login_to_club_log'] = '用于登录Clublog的电子邮件地址（Clublog不再接受呼号作为用户名）';
 
 $lang['account_eqsl'] = 'eQSL';
 $lang['account_eqslcc_username'] = 'eQSL.cc 用户名';

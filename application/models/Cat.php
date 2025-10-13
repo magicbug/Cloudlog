@@ -26,31 +26,87 @@
 				'sat_name' => $result['sat_name'] ?? NULL,
 				'timestamp' => $timestamp,
 			);
+			
+			// Validate frequency data - only set if it's numeric to avoid inserting error messages
 			if (isset($result['frequency']) && $result['frequency'] != "NULL") {
-				$data['frequency'] = $result['frequency'];
-			} else {
+				if (is_numeric($result['frequency'])) {
+					$data['frequency'] = $result['frequency'];
+				} else {
+					// Log the error message for debugging but don't store it in frequency field
+					log_message('debug', 'CAT: Non-numeric frequency data received: ' . $result['frequency']);
+					$data['frequency'] = NULL;
+				}
+			} else if (isset($result['uplink_freq']) && is_numeric($result['uplink_freq'])) {
 				$data['frequency'] = $result['uplink_freq'];
+			} else {
+				$data['frequency'] = NULL;
 			}
+			
+			// Validate mode data - filter out obvious error messages
 			if (isset($result['mode']) && $result['mode'] != "NULL") {
-				$data['mode'] = $result['mode'];
+				// Check if mode contains error indicators
+				if (strpos(strtolower($result['mode']), 'error') !== false || 
+					strpos($result['mode'], '.c(') !== false ||
+					strlen($result['mode']) > 20) {
+					log_message('debug', 'CAT: Invalid mode data received: ' . $result['mode']);
+					$data['mode'] = NULL;
+				} else {
+					$data['mode'] = $result['mode'];
+				}
 			} else {
 				if (isset($result['uplink_mode']) && $result['uplink_mode'] != "NULL") {
-					$data['mode'] = $result['uplink_mode'];
+					// Apply same validation to uplink_mode
+					if (strpos(strtolower($result['uplink_mode']), 'error') !== false || 
+						strpos($result['uplink_mode'], '.c(') !== false ||
+						strlen($result['uplink_mode']) > 20) {
+						log_message('debug', 'CAT: Invalid uplink_mode data received: ' . $result['uplink_mode']);
+						$data['mode'] = NULL;
+					} else {
+						$data['mode'] = $result['uplink_mode'];
+					}
 				} else {
 					$data['mode'] = NULL;
 				}
 			}
+			
+			// Validate frequency_rx data
 			if (isset($result['frequency_rx'])) {
-				$data['frequency_rx'] = $result['frequency_rx'];
+				if (is_numeric($result['frequency_rx'])) {
+					$data['frequency_rx'] = $result['frequency_rx'];
+				} else {
+					log_message('debug', 'CAT: Non-numeric frequency_rx data received: ' . $result['frequency_rx']);
+					$data['frequency_rx'] = NULL;
+				}
 			} else if (isset($result['downlink_freq']) && $result['downlink_freq'] != "NULL") {
-				$data['frequency_rx'] = $result['downlink_freq'];
+				if (is_numeric($result['downlink_freq'])) {
+					$data['frequency_rx'] = $result['downlink_freq'];
+				} else {
+					log_message('debug', 'CAT: Non-numeric downlink_freq data received: ' . $result['downlink_freq']);
+					$data['frequency_rx'] = NULL;
+				}
 			} else {
 				$data['frequency_rx'] = NULL;
 			}
+			
+			// Validate mode_rx data
 			if (isset($result['mode_rx'])) {
-				$data['mode_rx'] = $result['mode_rx'];
+				if (strpos(strtolower($result['mode_rx']), 'error') !== false || 
+					strpos($result['mode_rx'], '.c(') !== false ||
+					strlen($result['mode_rx']) > 20) {
+					log_message('debug', 'CAT: Invalid mode_rx data received: ' . $result['mode_rx']);
+					$data['mode_rx'] = NULL;
+				} else {
+					$data['mode_rx'] = $result['mode_rx'];
+				}
 			} else if (isset($result['downlink_mode']) && $result['downlink_mode'] != "NULL") {
-				$data['mode_rx'] = $result['downlink_mode'];
+				if (strpos(strtolower($result['downlink_mode']), 'error') !== false || 
+					strpos($result['downlink_mode'], '.c(') !== false ||
+					strlen($result['downlink_mode']) > 20) {
+					log_message('debug', 'CAT: Invalid downlink_mode data received: ' . $result['downlink_mode']);
+					$data['mode_rx'] = NULL;
+				} else {
+					$data['mode_rx'] = $result['downlink_mode'];
+				}
 			} else {
 				$data['mode_rx'] = NULL;
 			}
