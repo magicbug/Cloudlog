@@ -350,7 +350,8 @@ class Update extends CI_Controller {
             echo "Something went wrong with fetching the LoTW uses file";
             return;
         }
-        $this->db->empty_table("lotw_users"); 
+        // Use TRUNCATE instead of DELETE FROM lotw_users WHERE 1=1 for much better performance
+        $this->db->query("TRUNCATE TABLE lotw_users"); 
         $i = 0;
         $data = fgetcsv($handle,1000,",");
         do {
