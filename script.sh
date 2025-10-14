@@ -107,23 +107,23 @@ else
 fi
 
 # Set Permissions
-chown -R root:www-data /var/www/html/application/config/
-chown -R root:www-data /var/www/html/application/logs/
-chown -R root:www-data /var/www/html/assets/qslcard/
-chown -R root:www-data /var/www/html/backup/
-chown -R root:www-data /var/www/html/updates/
-chown -R root:www-data /var/www/html/uploads/
-chown -R root:www-data /var/www/html/images/eqsl_card_images/
-chown -R root:www-data /var/www/html/assets/json
+chown -R root:www-data /${DIRECTORY}/application/config/
+chown -R root:www-data /${DIRECTORY}/application/logs/
+chown -R root:www-data /${DIRECTORY}/assets/qslcard/
+chown -R root:www-data /${DIRECTORY}/backup/
+chown -R root:www-data /${DIRECTORY}/updates/
+chown -R root:www-data /${DIRECTORY}/uploads/
+chown -R root:www-data /${DIRECTORY}/images/eqsl_card_images/
+chown -R root:www-data /${DIRECTORY}/assets/json
 
-chmod -R g+rw /var/www/html/application/config/
-chmod -R g+rw /var/www/html/application/logs/
-chmod -R g+rw /var/www/html/assets/qslcard/
-chmod -R g+rw /var/www/html/backup/
-chmod -R g+rw /var/www/html/updates/
-chmod -R g+rw /var/www/html/uploads/
-chmod -R g+rw /var/www/html/images/eqsl_card_images/
-chmod -R g+rw /var/www/html/assets/json
+chmod -R g+rw /${DIRECTORY}/application/config/
+chmod -R g+rw /${DIRECTORY}/application/logs/
+chmod -R g+rw /${DIRECTORY}/assets/qslcard/
+chmod -R g+rw /${DIRECTORY}/backup/
+chmod -R g+rw /${DIRECTORY}/updates/
+chmod -R g+rw /${DIRECTORY}/uploads/
+chmod -R g+rw /${DIRECTORY}/images/eqsl_card_images/
+chmod -R g+rw /${DIRECTORY}/assets/json
 
 # Start Apache in the foreground
 exec apache2-foreground
