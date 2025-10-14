@@ -49,6 +49,7 @@
                             <div class="col-md-2">
                                 <label for="min_qsos" class="form-label">Min QSOs:</label>
                                 <select class="form-select form-select-sm" name="min_qsos" id="min_qsos">
+                                    <option value="1" <?php echo ($filters['min_qsos'] == 1) ? 'selected' : ''; ?>>1+</option>
                                     <option value="2" <?php echo ($filters['min_qsos'] == 2) ? 'selected' : ''; ?>>2+</option>
                                     <option value="3" <?php echo ($filters['min_qsos'] == 3) ? 'selected' : ''; ?>>3+</option>
                                     <option value="5" <?php echo ($filters['min_qsos'] == 5) ? 'selected' : ''; ?>>5+</option>
