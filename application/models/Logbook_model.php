@@ -556,23 +556,34 @@ class Logbook_model extends CI_Model
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-    $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+    if (empty($logbooks_locations_array)) {
+      return $this->db->query("SELECT * FROM " . $this->config->item('table_name') . " WHERE 1=0"); // Return empty result
+    }
 
-    $sql = "select * from " . $this->config->item('table_name') .
-      " where station_id in (" . $location_list . ")" .
-      " and (col_gridsquare like '" . $gridsquare . "%'
-                    or col_vucc_grids like '%" . $gridsquare . "%')";
+    // Use parameterized query to prevent SQL injection
+    $this->db->select('*');
+    $this->db->from($this->config->item('table_name'));
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    
+    // Use parameterized LIKE queries for gridsquare matching
+    $gridsquare_like = $gridsquare . '%';
+    $gridsquare_contains = '%' . $gridsquare . '%';
+    
+    $this->db->group_start();
+    $this->db->like('col_gridsquare', $gridsquare_like, 'after');
+    $this->db->or_like('col_vucc_grids', $gridsquare_contains);
+    $this->db->group_end();
 
     if ($band != 'All') {
       if ($band == 'SAT') {
-        $sql .= " and col_prop_mode ='" . $band . "'";
+        $this->db->where('col_prop_mode', $band);
       } else {
-        $sql .= " and col_prop_mode !='SAT'";
-        $sql .= " and col_band ='" . $band . "'";
+        $this->db->where('col_prop_mode !=', 'SAT');
+        $this->db->where('col_band', $band);
       }
     }
 
-    return $this->db->query($sql);
+    return $this->db->get();
   }
 
   public function activator_details($call, $band, $leogeo)
