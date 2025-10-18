@@ -62,6 +62,15 @@
                     </div>
                     <button class="w-100 btn btn-info" type="submit"><?php echo lang('account_login'); ?> →</button>
             </form>
+
+            <?php if ($this->config->item('oauth_enabled')): ?>
+            <hr>
+            <div class="d-grid gap-2">
+                <a href="<?php echo site_url('oauth/login'); ?>" class="btn btn-outline-primary w-100">
+                    Sign in with SSO
+                </a>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
 </main>
