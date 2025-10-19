@@ -1388,6 +1388,22 @@ class Logbook_model extends CI_Model
       $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
     }
 
+    if ($this->exists_clublog_credentials($data['station_id'])) {
+      $data['COL_CLUBLOG_QSO_UPLOAD_STATUS'] = 'M';
+    }
+
+    // Reset LoTW and eQSL sent status to 'N' if they were previously sent
+    // This ensures edited QSOs get re-uploaded to these services
+    if ($qso->COL_LOTW_QSL_SENT == 'Y' && $data['COL_LOTW_QSL_SENT'] == 'Y') {
+      $data['COL_LOTW_QSL_SENT'] = 'N';
+      $data['COL_LOTW_QSLSDATE'] = null;
+    }
+
+    if ($qso->COL_EQSL_QSL_SENT == 'Y' && $data['COL_EQSL_QSL_SENT'] == 'Y') {
+      $data['COL_EQSL_QSL_SENT'] = 'N';
+      $data['COL_EQSL_QSLSDATE'] = null;
+    }
+
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
     $this->db->update($this->config->item('table_name'), $data);
   }
