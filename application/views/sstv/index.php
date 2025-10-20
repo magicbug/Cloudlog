@@ -9,6 +9,22 @@
         <?php echo lang('sstv_string_disk_space'); ?>
     </div>
 
+    <br>
+    <div class="tabs">
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	<li class="nav-item">
+	<a class="nav-link active" id="list-tab" data-bs-toggle="tab" href="#list" role="tab" aria-controls="list" aria-selected="true">List</a>
+        </li>
+	<li class="nav-item">
+	<a class="nav-link" id="gallery-tab" data-bs-toggle="tab" href="#gallery" role="tab" aria-controls="gallery" aria-selected="false">Gallery</a>
+	</li>
+	</ul>
+    </div>
+
+    <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+    <br/>
+
     <?php
 
     if ($this->session->userdata('user_date_format')) {
@@ -68,4 +84,51 @@
     }
     ?>
 
+    </div>
+    <div class="tab-pane fade scrollable-div" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
+	<br/>
+    <script src="<?php echo base_url(); ?>assets/js/modernizr.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/jquery.magnific-popup.min.js"></script>
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/magnific-popup.min.css" />
+    <script> $(document).ready(function() { $('a.photo').magnificPopup( { type:'image' } ); }); </script>
+<?php
+	if (function_exists("imagecreatefromstring")) {
+
+		$folder_name = "assets/sstvimages";
+		$desired_width=500;
+		$thumb_generations = 100;
+		 if (is_array($sstvArray->result())) {
+			 foreach ($sstvArray->result() as $sstvImage) {
+			   if ($thumb_generations >=0) {
+				 $src = $folder_name.'/'.$sstvImage->filename;
+				 $dest = $folder_name.'/_'.$sstvImage->filename;
+				 if (!file_exists($folder_name.'/_'.$sstvImage->filename)) {
+				    $thumb_generations--;
+			    	    /* read the source image */
+				    $data = file_get_contents( $src );
+				    $source_image = imagecreatefromstring( $data );
+				    $width = imagesx( $source_image );
+				    $height = imagesy( $source_image );
+
+				    /* find the "desired height" of this thumbnail, relative to the desired width  */
+				    $desired_height = floor( $height * ( $desired_width / $width ) );
+
+				    /* create a new, "virtual" image */
+				    $virtual_image = imagecreatetruecolor( $desired_width, $desired_height );
+
+				    /* copy source image at a resized size */
+				    imagecopyresampled( $virtual_image, $source_image, 0, 0, 0, 0, $desired_width, $desired_height, $width, $height );
+
+				    /* create the physical thumbnail image to its destination */
+				    imagejpeg( $virtual_image, $dest, 60 );
+				 }
+				 echo '<a href="#" onclick="viewSstv(\''.$sstvImage->filename.'\', \''. $sstvImage->COL_CALL . '\')" class="photo" style="background-image: url(/'.$dest.');"></a>';
+			 }
+		     }
+		 }
+	} else {
+		echo 'Gallery requires GD libraries to be installed <a href="https://www.php.net/manual/en/image.installation.php">https://www.php.net/manual/en/image.installation.php</a>';
+	}
+        ?>
+    </div>
 </div>
