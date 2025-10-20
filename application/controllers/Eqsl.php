@@ -168,10 +168,8 @@ class eqsl extends CI_Controller
 
 			foreach ($qslsnotsent->result_array() as $qsl) {
 				$rows .= "<tr>";
-				// eQSL username changes for linked account.
-				// i.e. when operating /P it must be callsign/p
-				// the password, however, is always the same as the main account
-				$data['user_eqsl_name'] = $qsl['station_callsign'];
+				// Note: eQSL authentication uses the user's actual eQSL credentials
+				// The station callsign is handled in the ADIF data via eqslqthnickname
 				$adif = $this->generateAdif($qsl, $data);
 
 				$status = $this->uploadQso($adif, $qsl);

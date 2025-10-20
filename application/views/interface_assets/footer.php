@@ -1885,7 +1885,59 @@ $(document).ready(function() {
             var now = new Date();
             var localTime = now.getTime();
             var utc = localTime + (now.getTimezoneOffset() * 60000);
-            $(el).attr('value', ("0" + now.getUTCDate()).slice(-2) + '-' + ("0" + (now.getUTCMonth() + 1)).slice(-2) + '-' + now.getUTCFullYear());
+            
+            // Get user's date format preference
+            var userDateFormat = '<?php 
+                if ($this->session->userdata('user_date_format')) {
+                    echo $this->session->userdata('user_date_format');
+                } else {
+                    echo $this->config->item('qso_date_format');
+                }
+            ?>';
+            
+            // Format date according to user preference
+            var day = ("0" + now.getUTCDate()).slice(-2);
+            var month = ("0" + (now.getUTCMonth() + 1)).slice(-2);
+            var year2 = now.getUTCFullYear().toString().slice(-2);
+            var year4 = now.getUTCFullYear();
+            
+            var formattedDate;
+            switch(userDateFormat) {
+                case 'd/m/y':
+                    formattedDate = day + '/' + month + '/' + year2;
+                    break;
+                case 'd/m/Y':
+                    formattedDate = day + '/' + month + '/' + year4;
+                    break;
+                case 'm/d/y':
+                    formattedDate = month + '/' + day + '/' + year2;
+                    break;
+                case 'm/d/Y':
+                    formattedDate = month + '/' + day + '/' + year4;
+                    break;
+                case 'd.m.Y':
+                    formattedDate = day + '.' + month + '.' + year4;
+                    break;
+                case 'y/m/d':
+                    formattedDate = year2 + '/' + month + '/' + day;
+                    break;
+                case 'Y-m-d':
+                    formattedDate = year4 + '-' + month + '-' + day;
+                    break;
+                case 'M d, Y':
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    formattedDate = months[now.getUTCMonth()] + ' ' + now.getUTCDate() + ', ' + year4;
+                    break;
+                case 'M d, y':
+                    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    formattedDate = months[now.getUTCMonth()] + ' ' + now.getUTCDate() + ', ' + year2;
+                    break;
+                default:
+                    // Fallback to original format if no match
+                    formattedDate = day + '-' + month + '-' + year4;
+            }
+            
+            $(el).attr('value', formattedDate);
         }
     </script>
 

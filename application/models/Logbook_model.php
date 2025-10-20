@@ -417,9 +417,12 @@ class Logbook_model extends CI_Model
         break;
       case 'VUCC':
         if ($searchmode == 'activated') {
-          $this->db->where("station_gridsquare like '%" . $searchphrase . "%'");
+          $this->db->like('station_gridsquare', $searchphrase);
         } else {
-          $this->db->where("(COL_GRIDSQUARE like '" . $searchphrase . "%' OR COL_VUCC_GRIDS like '%" . $searchphrase . "%')");
+          $this->db->group_start();
+          $this->db->like('COL_GRIDSQUARE', $searchphrase, 'after');
+          $this->db->or_like('COL_VUCC_GRIDS', $searchphrase);
+          $this->db->group_end();
         }
         break;
       case 'CQZone':
@@ -556,23 +559,34 @@ class Logbook_model extends CI_Model
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-    $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+    if (empty($logbooks_locations_array)) {
+      return $this->db->query("SELECT * FROM " . $this->config->item('table_name') . " WHERE 1=0"); // Return empty result
+    }
 
-    $sql = "select * from " . $this->config->item('table_name') .
-      " where station_id in (" . $location_list . ")" .
-      " and (col_gridsquare like '" . $gridsquare . "%'
-                    or col_vucc_grids like '%" . $gridsquare . "%')";
+    // Use parameterized query to prevent SQL injection
+    $this->db->select('*');
+    $this->db->from($this->config->item('table_name'));
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    
+    // Use parameterized LIKE queries for gridsquare matching
+    $gridsquare_like = $gridsquare . '%';
+    $gridsquare_contains = '%' . $gridsquare . '%';
+    
+    $this->db->group_start();
+    $this->db->like('col_gridsquare', $gridsquare_like, 'after');
+    $this->db->or_like('col_vucc_grids', $gridsquare_contains);
+    $this->db->group_end();
 
     if ($band != 'All') {
       if ($band == 'SAT') {
-        $sql .= " and col_prop_mode ='" . $band . "'";
+        $this->db->where('col_prop_mode', $band);
       } else {
-        $sql .= " and col_prop_mode !='SAT'";
-        $sql .= " and col_band ='" . $band . "'";
+        $this->db->where('col_prop_mode !=', 'SAT');
+        $this->db->where('col_band', $band);
       }
     }
 
-    return $this->db->query($sql);
+    return $this->db->get();
   }
 
   public function activator_details($call, $band, $leogeo)
@@ -1372,6 +1386,22 @@ class Logbook_model extends CI_Model
 
     if ($this->exists_qrz_api_key($data['station_id'])) {
       $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+    }
+
+    if ($this->exists_clublog_credentials($data['station_id'])) {
+      $data['COL_CLUBLOG_QSO_UPLOAD_STATUS'] = 'M';
+    }
+
+    // Reset LoTW and eQSL sent status to 'N' if they were previously sent
+    // This ensures edited QSOs get re-uploaded to these services
+    if ($qso->COL_LOTW_QSL_SENT == 'Y' && $data['COL_LOTW_QSL_SENT'] == 'Y') {
+      $data['COL_LOTW_QSL_SENT'] = 'N';
+      $data['COL_LOTW_QSLSDATE'] = null;
+    }
+
+    if ($qso->COL_EQSL_QSL_SENT == 'Y' && $data['COL_EQSL_QSL_SENT'] == 'Y') {
+      $data['COL_EQSL_QSL_SENT'] = 'N';
+      $data['COL_EQSL_QSLSDATE'] = null;
     }
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));

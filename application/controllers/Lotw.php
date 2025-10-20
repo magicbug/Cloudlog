@@ -724,15 +724,37 @@ class Lotw extends CI_Controller {
 					'Accept-Language: en-US,en;q=0.9'
 				));
 
-				$response = curl_exec($ch);
-				$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				$curl_error = curl_error($ch);
+				$max_retries = 3;
+				$retry_delay = 2; // seconds
+				$response = false;
+				$curl_error = '';
+				$http_code = 0;
+
+				for ($attempt = 1; $attempt <= $max_retries; $attempt++) {
+					$response = curl_exec($ch);
+					$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+					$curl_error = curl_error($ch);
+
+					// If successful or non-network error, break out of retry loop
+					if ($response !== false && empty($curl_error)) {
+						break;
+					}
+
+					// Log retry attempt
+					if ($attempt < $max_retries) {
+						log_message('debug', "LoTW download attempt {$attempt} failed for user ".$data['user_lotw_name'].": " . $curl_error . " - retrying in {$retry_delay} seconds");
+						sleep($retry_delay);
+						// Exponential backoff - increase delay for next retry
+						$retry_delay *= 2;
+					}
+				}
+
 				curl_close($ch);
 
-				// Check for cURL errors
+				// Check for cURL errors after all retries
 				if ($response === false || !empty($curl_error)) {
-					$result = "LoTW download failed for user ".$data['user_lotw_name'].": " . $curl_error;
-					log_message('error', 'LoTW cURL error: ' . $curl_error);
+					$result = "LoTW download failed for user ".$data['user_lotw_name']." after {$max_retries} attempts: " . $curl_error;
+					log_message('error', 'LoTW cURL error after retries: ' . $curl_error);
 					continue;
 				}
 

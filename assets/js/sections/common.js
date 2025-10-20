@@ -153,6 +153,48 @@ function qso_edit(id) {
                         }
                     });
 
+                    // Add callsign change handler to update DXCC/location info
+                    $('.modal-content #callsign').on('change blur', function() {
+                        var callsignValue = $(this).val();
+                        if (callsignValue.length >= 3) {
+                            var find_callsign = callsignValue.toUpperCase();
+                            find_callsign = find_callsign.replace(/\//g, "-");
+                            find_callsign = find_callsign.replace('Ø', '0');
+
+                            $.getJSON(base_url + 'index.php/logbook/json/' + find_callsign + '/0/0/0/' + $('.modal-content #stationProfile').val(), function(result) {
+                                if (result.dxcc && result.dxcc.entity !== undefined && result.dxcc.entity !== 'Not Found') {
+                                    // Update country field
+                                    $('.modal-content #country').val(result.dxcc.entity);
+                                    
+                                    // Update DXCC ID
+                                    if (result.dxcc.adif !== undefined) {
+                                        $('.modal-content #dxcc_id').val(result.dxcc.adif);
+                                    }
+                                    
+                                    // Update CQ Zone
+                                    if (result.dxcc.cqz !== undefined) {
+                                        $('.modal-content #cqz').val(result.dxcc.cqz);
+                                    }
+                                    
+                                    // Update ITU Zone
+                                    if (result.dxcc.ituz !== undefined) {
+                                        $('.modal-content #ituz').val(result.dxcc.ituz);
+                                    }
+                                    
+                                    // Update continent
+                                    if (result.dxcc.cont !== undefined) {
+                                        $('.modal-content #continent').val(result.dxcc.cont);
+                                    }
+                                    
+                                    // Update state if available
+                                    if (result.callsign_state && $('.modal-content #input_usa_state_edit').val() == "") {
+                                        $('.modal-content #input_usa_state_edit').val(result.callsign_state).trigger('change');
+                                    }
+                                }
+                            });
+                        }
+                    });
+
                     $('#locator').change(function(){
                         if ($(this).val().length >= 4) {
                             $.ajax({

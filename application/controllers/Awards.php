@@ -276,8 +276,39 @@ class Awards extends CI_Controller
     {
         $this->load->model('logbook_model');
 
-        $gridsquare = str_replace('"', "", $this->security->xss_clean($this->input->post("Gridsquare")));
-        $band = str_replace('"', "", $this->security->xss_clean($this->input->post("Band")));
+        // Validate and sanitize gridsquare input - should be alphanumeric only, max 6 characters
+        $gridsquare_raw = $this->input->post("Gridsquare");
+        $band_raw = $this->input->post("Band");
+        
+        // Validate gridsquare format - VUCC allows multiple gridsquares separated by commas
+        if (!$gridsquare_raw) {
+            show_error('Gridsquare parameter is required', 400);
+            return;
+        }
+        
+        // Split by comma and validate each gridsquare
+        $gridsquares = explode(',', $gridsquare_raw);
+        foreach ($gridsquares as $grid) {
+            $grid = trim($grid);
+            // Each grid should be 4 or 6 characters: AA00 or AA00aa format
+            if (!preg_match('/^[A-Ra-r]{2}[0-9]{2}[A-Xa-x]{0,2}$/', $grid)) {
+                show_error('Invalid gridsquare format: ' . htmlspecialchars($grid), 400);
+                return;
+            }
+        }
+        
+        // Validate band - use Cloudlog's band system for validation
+        $this->load->model('bands');
+        $valid_bands = array_keys($this->bands->bandslots);
+        $valid_bands[] = 'All'; // Add 'All' as a valid option
+        
+        if (!$band_raw || !in_array($band_raw, $valid_bands)) {
+            show_error('Invalid band specified', 400);
+            return;
+        }
+        
+        $gridsquare = strtoupper($gridsquare_raw);
+        $band = $band_raw;
         $data['results'] = $this->logbook_model->vucc_qso_details($gridsquare, $band);
 
         // Render Page
