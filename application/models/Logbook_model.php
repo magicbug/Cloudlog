@@ -5148,7 +5148,7 @@ class Logbook_model extends CI_Model
       `qsl_date` DATE NOT NULL,
       `qsl_rcvd` CHAR(1) DEFAULT NULL,
       INDEX `idx_lookup` (`callsign`, `time_on`, `band`)
-    ) ENGINE=MEMORY DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+    ) ENGINE=MEMORY DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci";
     
     $this->db->query($sql);
   }
