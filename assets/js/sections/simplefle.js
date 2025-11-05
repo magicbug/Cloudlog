@@ -9,6 +9,58 @@ var errors = [];
 var qsoList = [];
 var satelliteData = {}; // Will hold satellite frequency/mode data
 
+// Function to update satellite feedback display
+function updateSatelliteFeedback(satName, satMode) {
+	if (satName && satelliteData[satName]) {
+		// Show satellite feedback - satellite found
+		$("#sat-name-display").text(satName);
+		
+		// Get available modes
+		var modes = Object.keys(satelliteData[satName].Modes);
+		var modesHtml = '<small>Available modes: ';
+		
+		modes.forEach(function(mode, index) {
+			if (mode === satMode) {
+				// Highlight the selected mode with checkmark
+				modesHtml += '<span class="badge bg-success me-1"><i class="fas fa-check"></i> ' + mode + '</span> ';
+			} else {
+				// Show other available modes as clickable suggestions
+				modesHtml += '<span class="badge bg-secondary me-1" style="opacity: 0.7;">' + mode + '</span> ';
+			}
+		});
+		modesHtml += '</small>';
+		
+		$("#sat-modes-display").html(modesHtml);
+		
+		// Make sure it's styled as success
+		$("#satellite-feedback .alert").removeClass("alert-warning").addClass("alert-success");
+		$("#satellite-feedback .alert").css("border-left-color", "#28a745");
+		
+		$("#satellite-feedback").slideDown(300);
+	} else if (satName && !satelliteData[satName]) {
+		// Satellite name entered but not found in database
+		$("#sat-name-display").text(satName);
+		$("#sat-modes-display").html('<small><i class="fas fa-exclamation-triangle"></i> Satellite not found in database. Frequencies will not be auto-populated.</small>');
+		
+		// Style as warning
+		$("#satellite-feedback .alert").removeClass("alert-success").addClass("alert-warning");
+		$("#satellite-feedback .alert").css("border-left-color", "#ffc107");
+		
+		$("#satellite-feedback").slideDown(300);
+	} else {
+		// No satellite mode, hide feedback
+		$("#satellite-feedback").slideUp(300);
+	}
+}
+
+// Function to clear satellite feedback
+function clearSatelliteFeedback() {
+	$("#satellite-feedback").slideUp(300);
+	// Reset to success styling
+	$("#satellite-feedback .alert").removeClass("alert-warning").addClass("alert-success");
+	$("#satellite-feedback .alert").css("border-left-color", "#28a745");
+}
+
 $("#simpleFleInfoButton").click(function (event) {
 	var awardInfoLines = [
 		lang_qso_simplefle_info_ln2,
@@ -165,6 +217,8 @@ function handleInput() {
 			) {
 				band = item;
 				freq = 0;
+				// Clear satellite feedback when switching to regular band
+				clearSatelliteFeedback();
 			} else if (
 				item.match(/^satellite$/i) ||
 				item.match(/^sat$/i)
@@ -202,6 +256,8 @@ function handleInput() {
 				// Satellite name (e.g., AO-7, ISS, FO-29)
 				sat_name = item.toUpperCase();
 				console.log("Satellite name detected:", sat_name, "band is:", band);
+				// Update visual feedback
+				updateSatelliteFeedback(sat_name, null);
 				// Try to auto-populate frequency and mode if we have satellite data
 				if (satelliteData[sat_name]) {
 					// We'll need the sat_mode first, so just store the name for now
@@ -216,6 +272,8 @@ function handleInput() {
 				// Handle satellites without numbers (ISS, ARISS)
 				sat_name = item.toUpperCase();
 				console.log("Special satellite name detected:", sat_name);
+				// Update visual feedback
+				updateSatelliteFeedback(sat_name, null);
 			} else if (
 				band === "SAT" &&
 				sat_name &&
@@ -223,8 +281,10 @@ function handleInput() {
 			) {
 				// Satellite mode (e.g., V/U, U/V, L/S)
 				sat_mode = item.toUpperCase();
+				// Update visual feedback with selected mode
+				updateSatelliteFeedback(sat_name, sat_mode);
 				// Now populate frequencies from satellite_data.json
-				console.log("Looking up satellite:", sat_name, "mode:", sat_mode);
+				console.log("Looking up satellite:", sat_name, "mode:", sat_mode, "band:", band);
 				if (satelliteData[sat_name] && satelliteData[sat_name].Modes && satelliteData[sat_name].Modes[sat_mode]) {
 					var modeData = satelliteData[sat_name].Modes[sat_mode][0];
 					freq = modeData.Uplink_Freq / 1000000;
@@ -464,6 +524,25 @@ $textarea.keydown(function (event) {
 	}
 });
 
+// Also trigger handleInput on space or when typing satellite-related keywords
+// This provides real-time feedback for satellite detection
+$textarea.on('input', function() {
+	var text = $(this).val().trim();
+	var lines = text.split("\n");
+	var lastLine = lines[lines.length - 1];
+	
+	// Check if the last line or recent lines contain satellite keywords
+	// Trigger feedback update if we detect satellite patterns
+	if (text.match(/\bsat\b/i) || text.match(/\bsatellite\b/i) || 
+	    text.match(/[A-Z0-9]+-\d+/i) || text.match(/\b(ISS|ARISS)\b/i)) {
+		// Debounce the update to avoid too many calls while typing
+		clearTimeout(this.updateTimeout);
+		this.updateTimeout = setTimeout(function() {
+			handleInput();
+		}, 300); // Wait 300ms after typing stops
+	}
+});
+
 $textarea.focus(function () {
 	errors = [];
 	checkMainFieldsErrors();
@@ -518,6 +597,7 @@ function clearSession() {
 	$("#my-grid").val("");
 	qsoList = [];
 	$(".js-qso-count").html("");
+	clearSatelliteFeedback();
 }
 
 function showErrors() {

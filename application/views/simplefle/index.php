@@ -109,6 +109,13 @@
 					<div class="col">
 						<p><?php echo lang('qso_simplefle_enter_the_data'); ?></p>
 						<textarea name="qso" class="form-control qso-area" cols="auto" rows="11" id="textarea"></textarea>
+						<!-- Satellite feedback area -->
+						<div id="satellite-feedback" class="mt-2" style="display: none;">
+							<div class="alert alert-success mb-0" role="alert" style="border-left: 4px solid #28a745;">
+								<strong><i class="fas fa-satellite"></i> <span id="sat-name-display"></span></strong>
+								<div id="sat-modes-display" class="mt-1"></div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
