@@ -5,8 +5,7 @@
 
 <div class="container">
 
-	<br>
-	<div id="simpleFleInfo">
+	<div id="simpleFleInfo" class="mt-3 mb-2">
 		<script>
 			var lang_qso_simplefle_info_ln1 = "<?php echo lang('qso_simplefle_info_ln1'); ?>";
 			var lang_qso_simplefle_info_ln2 = "<?php echo lang('qso_simplefle_info_ln2'); ?>";
@@ -32,7 +31,7 @@
 			var lang_qso_simplefle_success_save_to_log_header = "<?php echo lang('qso_simplefle_success_save_to_log_header'); ?>";
 			var lang_qso_simplefle_success_save_to_log = "<?php echo lang('qso_simplefle_success_save_to_log'); ?>";
 		</script>
-		<h2><?php echo $page_title; ?></h2>
+		<h2 class="mb-2"><?php echo $page_title; ?></h2>
 		<button type="button" class="btn btn-sm btn-primary me-1" id="simpleFleInfoButton"><?php echo lang('qso_simplefle_info'); ?></button>
 	</div>
 
@@ -44,7 +43,7 @@
 	<?php } ?>
 </div>
 <div class="container-fluid">
-	<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+	<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 mb-2 border-bottom">
 		<div class="col-md-3 mb-2 mb-md-0">
 
 		</div>
@@ -56,30 +55,30 @@
 		<!-- START BASIC QSO DATA -->
 		<div class="card col-xs-12 col-md-4 simplefle" style="border: none">
 			
-			<div class="card-header">
+			<div class="card-header py-2">
 				<?php echo lang('qso_simplefle_qso_data'); ?>
 			</div>
-			<div class="card-body">
+			<div class="card-body py-2">
 				<div class="row">
-					<div class="col-xs-12 col-lg-12 col-xl-6">
-						<div class="mb-3">
-							<label for="qsodate"><?php echo lang('qso_simplefle_qso_date'); ?></label>
-							<input type="date" class="form-control" id="qsodate">
+					<div class="col-xs-12 col-lg-6 col-xl-6">
+						<div class="mb-2">
+							<label for="qsodate" class="form-label mb-1"><?php echo lang('qso_simplefle_qso_date'); ?></label>
+							<input type="date" class="form-control form-control-sm" id="qsodate">
 							<small class="form-text text-muted"><?php echo lang('qso_simplefle_qso_date_hint'); ?></small>
 						</div>
 					</div>
-					<div class="col-xs-12 col-lg-12 col-xl-6">
-						<p><?php echo lang('qso_simplefle_utc_time'); ?></p>
-						<h4 class="fw-bold" id="utc-time"></h4>
+					<div class="col-xs-12 col-lg-6 col-xl-6">
+						<label class="form-label mb-1"><?php echo lang('qso_simplefle_utc_time'); ?></label>
+						<div class="badge bg-primary fs-5" id="utc-time"></div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-lg-6">
-						<div class="mb-3">
-							<label for="station-call">
+						<div class="mb-2">
+							<label for="station-call" class="form-label mb-1">
 								<?php echo lang('qso_simplefle_station_call_location'); ?>
 							</label>
-							<select name="station_profile" class="station_id form-select" id="station-call">
+							<select name="station_profile" class="station_id form-select form-select-sm" id="station-call">
 								<option value="-">-</option>
 								<?php foreach ($station_profile->result() as $station) { ?>
 									<option value="<?php echo $station->station_id; ?>" <?php if ($station->station_id == $this->stations->find_active()) {
@@ -94,9 +93,9 @@
 						</div>
 					</div>
 					<div class="col-xs-12 col-lg-6">
-						<div class="mb-3">
-							<label for="operator"><?php echo lang('qso_simplefle_operator'); ?> <span class="text-muted input-example"><?php echo lang('qso_simplefle_operator_hint'); ?></span></label>
-							<input type="text" class="form-control text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
+						<div class="mb-2">
+							<label for="operator" class="form-label mb-1"><?php echo lang('qso_simplefle_operator'); ?> <span class="text-muted input-example"><?php echo lang('qso_simplefle_operator_hint'); ?></span></label>
+							<input type="text" class="form-control form-control-sm text-uppercase" id="operator" value="<?php echo $this->session->userdata('operator_callsign'); ?>">
 							<div class="alert alert-danger" role="alert" id="warningOperatorField" style="display: none"> </div>
 						</div>
 					</div>
@@ -104,27 +103,31 @@
 			</div>
 
 			<!-- END BASIC QSO DATA -->
-			<div class="card-body">
+			<div class="card-body py-2">
+				<!-- Satellite feedback area - moved above textarea for better visibility -->
+				<div id="satellite-feedback" class="mb-2" style="display: none;">
+					<div class="alert alert-success mb-0 py-2" role="alert" style="border-left: 4px solid #28a745;">
+						<div class="d-flex align-items-center">
+							<i class="fas fa-satellite me-2"></i>
+							<strong id="sat-name-display"></strong>
+						</div>
+						<div id="sat-modes-display" class="mt-1 ms-4"></div>
+					</div>
+				</div>
+				
 				<div class="row">
 					<div class="col">
-						<p><?php echo lang('qso_simplefle_enter_the_data'); ?></p>
-						<textarea name="qso" class="form-control qso-area" cols="auto" rows="11" id="textarea"></textarea>
-						<!-- Satellite feedback area -->
-						<div id="satellite-feedback" class="mt-2" style="display: none;">
-							<div class="alert alert-success mb-0" role="alert" style="border-left: 4px solid #28a745;">
-								<strong><i class="fas fa-satellite"></i> <span id="sat-name-display"></span></strong>
-								<div id="sat-modes-display" class="mt-1"></div>
-							</div>
-						</div>
+						<label for="textarea" class="form-label"><?php echo lang('qso_simplefle_enter_the_data'); ?></label>
+						<textarea name="qso" class="form-control form-control-sm qso-area" cols="auto" rows="12" id="textarea"></textarea>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="card col-xs-12 col-md-8 simplefle" style="border: none">
-			<div class="card-header">
+			<div class="card-header py-2">
 				<?php echo lang('qso_simplefle_qso_list'); ?>
 			</div>
-			<div class="card-body">
+			<div class="card-body py-2">
 				<div class="qsoList">
 					<table class="table contacttable table-striped table-hover sfletable" id="qsoTable">
 						<thead>
@@ -144,27 +147,37 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="row mt-2">
-					<div class="col-6 col-sm-6">
-						<span class="js-qso-count"></span>
+				<div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+					<div>
+						<span class="badge bg-secondary js-qso-count">0 QSOs</span>
 					</div>
-					<div class="col-6 col-sm-6 text-end">
+					<div class="text-muted small">
 						<?php echo lang('qso_simplefle_refs_hint'); ?>
 					</div>
 				</div>
 			</div>
-			<div class="row mt-2">
-				<div class="col-3 col-sm-3">
-					<button class="btn btn-primary js-reload-qso"><?php echo lang('qso_simplefle_reload'); ?></button>
-				</div>
-				<div class="col-3 col-sm-3">
-					<button class="btn btn-warning js-save-to-log"><?php echo lang('qso_simplefle_save'); ?></button>
-				</div>
-				<div class="col-3 col-sm-3">
-					<button class="btn btn-danger js-empty-qso"><?php echo lang('qso_simplefle_clear'); ?></button>
-				</div>
-				<div class="col-3 col-sm-3">
-					<button class="btn btn-success" id="js-syntax"><?php echo lang('qso_simplefle_syntax_help_button'); ?></button>
+			<div class="card-footer bg-white">
+				<div class="row g-2">
+					<div class="col-12 col-sm-6 col-md-3">
+						<button class="btn btn-primary w-100 js-reload-qso">
+							<i class="fas fa-sync-alt me-1"></i><?php echo lang('qso_simplefle_reload'); ?>
+						</button>
+					</div>
+					<div class="col-12 col-sm-6 col-md-3">
+						<button class="btn btn-warning w-100 js-save-to-log">
+							<i class="fas fa-save me-1"></i><?php echo lang('qso_simplefle_save'); ?>
+						</button>
+					</div>
+					<div class="col-12 col-sm-6 col-md-3">
+						<button class="btn btn-danger w-100 js-empty-qso">
+							<i class="fas fa-trash me-1"></i><?php echo lang('qso_simplefle_clear'); ?>
+						</button>
+					</div>
+					<div class="col-12 col-sm-6 col-md-3">
+						<button class="btn btn-success w-100" id="js-syntax">
+							<i class="fas fa-question-circle me-1"></i><?php echo lang('qso_simplefle_syntax_help_button'); ?>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>

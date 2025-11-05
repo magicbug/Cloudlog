@@ -817,48 +817,54 @@ $(document).ready(function () {
 	// Load satellite data for frequency/mode lookups
 	$.getJSON(base_url + "assets/json/satellite_data.json", function(data) {
 		satelliteData = data;
+		console.log("Satellite data loaded:", Object.keys(satelliteData).length, "satellites");
+		
+		// Now that satellite data is loaded, restore session data
+		restoreSessionData();
 	});
 	
-	var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);
-	var mycall = localStorage.getItem(`user_${user_id}_my-call`);
-	var operator = localStorage.getItem(`user_${user_id}_operator`);
-	var mysotawwff = localStorage.getItem(`user_${user_id}_my-sota-wwff`);
-	var qsoarea = localStorage.getItem(`user_${user_id}_qso-area`);
-	var qsodate = localStorage.getItem(`user_${user_id}_qsodate`);
-	var myPower = localStorage.getItem(`user_${user_id}_my-power`);
-	var myGrid = localStorage.getItem(`user_${user_id}_my-grid`);
+	function restoreSessionData() {
+		var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);
+		var mycall = localStorage.getItem(`user_${user_id}_my-call`);
+		var operator = localStorage.getItem(`user_${user_id}_operator`);
+		var mysotawwff = localStorage.getItem(`user_${user_id}_my-sota-wwff`);
+		var qsoarea = localStorage.getItem(`user_${user_id}_qso-area`);
+		var qsodate = localStorage.getItem(`user_${user_id}_qsodate`);
+		var myPower = localStorage.getItem(`user_${user_id}_my-power`);
+		var myGrid = localStorage.getItem(`user_${user_id}_my-grid`);
 
-	if (mycall != null) {
-		$("#station-call").val(mycall);
-	}
+		if (mycall != null) {
+			$("#station-call").val(mycall);
+		}
 
-	if (operator != null) {
-		$("#operator").val(operator);
-	}
+		if (operator != null) {
+			$("#operator").val(operator);
+		}
 
-	if (mysotawwff != null) {
-		$("#my-sota-wwff").val(mysotawwff);
-	}
+		if (mysotawwff != null) {
+			$("#my-sota-wwff").val(mysotawwff);
+		}
 
-	if (qsoarea != null) {
-		$(".qso-area").val(qsoarea);
-	}
+		if (qsoarea != null) {
+			$(".qso-area").val(qsoarea);
+		}
 
-	if (qsodate != null) {
-		$("#qsodate").val(qsodate);
-	}
+		if (qsodate != null) {
+			$("#qsodate").val(qsodate);
+		}
 
-	if (myPower != null) {
-		$("#my-power").val(myPower);
-	}
+		if (myPower != null) {
+			$("#my-power").val(myPower);
+		}
 
-	if (myGrid != null) {
-		$("#my-grid").val(myGrid);
-	}
+		if (myGrid != null) {
+			$("#my-grid").val(myGrid);
+		}
 
-	if (tabledata != null) {
-		$("#qsoTable").html(tabledata);
-		handleInput();
+		if (tabledata != null) {
+			$("#qsoTable").html(tabledata);
+			handleInput();
+		}
 	}
 });
 
