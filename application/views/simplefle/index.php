@@ -43,18 +43,11 @@
 	<?php } ?>
 </div>
 <div class="container-fluid">
-	<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-2 mb-2 border-bottom">
-		<div class="col-md-3 mb-2 mb-md-0">
 
-		</div>
-
-		<div class="col-md-3 justify-content-end d-flex">
-		</div>
-	</header>
 	<div class="row mt-4">
 		<!-- START BASIC QSO DATA -->
 		<div class="card col-xs-12 col-md-4 simplefle" style="border: none">
-			
+
 			<div class="card-header py-2">
 				<?php echo lang('qso_simplefle_qso_data'); ?>
 			</div>
@@ -114,7 +107,7 @@
 						<div id="sat-modes-display" class="mt-1 ms-4"></div>
 					</div>
 				</div>
-				
+
 				<div class="row">
 					<div class="col">
 						<label for="textarea" class="form-label"><?php echo lang('qso_simplefle_enter_the_data'); ?></label>
@@ -135,10 +128,12 @@
 						display: table-row-group !important;
 						width: auto !important;
 					}
+
 					#qsoTable.sfletable.table thead tr,
 					#qsoTable.sfletable.table tbody tr {
 						display: table-row !important;
 					}
+
 					#qsoTable.sfletable.table tbody {
 						display: table-row-group !important;
 						position: static !important;
@@ -146,6 +141,7 @@
 						overflow-y: visible !important;
 						max-height: none !important;
 					}
+
 					#qsoTable.sfletable {
 						height: auto !important;
 					}
