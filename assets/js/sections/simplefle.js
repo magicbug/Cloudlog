@@ -7,6 +7,7 @@ var freq = "";
 var callsign = "";
 var errors = [];
 var qsoList = [];
+var satelliteData = {}; // Will hold satellite frequency/mode data
 
 $("#simpleFleInfoButton").click(function (event) {
 	var awardInfoLines = [
@@ -64,6 +65,10 @@ day ++
 ssb
 32 ok7wa ol/zl-071 5 8
 33 ok1xxx  4 3
+sat
+ao-7 V/U
+1400 dl1sat 59 59
+1405 g3xyz 57 58
 									`;
 
 										$textarea.val(logData.trim());
@@ -95,6 +100,7 @@ function updateUTCTime() {
 }
 
 function handleInput() {
+	console.log("=== handleInput called ===");
 	var qsodate = "";
 	if ($("#qsodate").val()) {
 		qsodate = new Date($("#qsodate").val()).toISOString().split("T")[0];
@@ -112,8 +118,14 @@ function handleInput() {
 	var prevMode = "";
 	var mode = "";
 	var freq = "";
+	var freq_rx = "";
+	var band_rx = "";
 	var callsign = "";
 	var sotaWwff = "";
+	var sat_name = "";
+	var sat_mode = "";
+	var prop_mode = "";
+	var gridsquare = "";
 	qsoList = [];
 	$("#qsoTable tbody").empty();
 
@@ -149,10 +161,18 @@ function handleInput() {
 				}
 				mode = item.toUpperCase();
 			} else if (
-				item.match(/^[0-9]{1,4}(?:m|cm|mm)$/) ||
-				item.match(/^(sat)$/)
+				item.match(/^[0-9]{1,4}(?:m|cm|mm)$/)
 			) {
 				band = item;
+				freq = 0;
+			} else if (
+				item.match(/^satellite$/i) ||
+				item.match(/^sat$/i)
+			) {
+				// Set band to SAT and prop_mode
+				console.log("SAT keyword detected");
+				band = "SAT";
+				prop_mode = "SAT";
 				freq = 0;
 			} else if (item.match(/^\d+\.\d+$/)) {
 				freq = item;
@@ -174,12 +194,68 @@ function handleInput() {
 					/^[A-Z0-9]{1,3}\/[A-Z]{2}-\d{3}|[AENOS]*[FNSUACA]-\d{3}|(?!.*FF)[A-Z0-9]{1,3}-\d{4,5}|[A-Z0-9]{1,3}[F]{2}-\d{4}$/i
 				)
 			) {
-				sotaWwff = item.toUpperCase();			} else if (
+				sotaWwff = item.toUpperCase();
+			} else if (
+				band === "SAT" &&
+				item.match(/^[A-Z0-9]+-\d+[A-Z]*$/i)
+			) {
+				// Satellite name (e.g., AO-7, ISS, FO-29)
+				sat_name = item.toUpperCase();
+				console.log("Satellite name detected:", sat_name, "band is:", band);
+				// Try to auto-populate frequency and mode if we have satellite data
+				if (satelliteData[sat_name]) {
+					// We'll need the sat_mode first, so just store the name for now
+					console.log("Satellite found in database");
+				} else {
+					console.log("Satellite NOT found in database. Available:", Object.keys(satelliteData).length, "satellites");
+				}
+			} else if (
+				band === "SAT" &&
+				item.match(/^(ISS|ARISS)$/i)
+			) {
+				// Handle satellites without numbers (ISS, ARISS)
+				sat_name = item.toUpperCase();
+				console.log("Special satellite name detected:", sat_name);
+			} else if (
+				band === "SAT" &&
+				sat_name &&
+				item.match(/^[UVLSC](\/[UVLSC])?$/i)
+			) {
+				// Satellite mode (e.g., V/U, U/V, L/S)
+				sat_mode = item.toUpperCase();
+				// Now populate frequencies from satellite_data.json
+				console.log("Looking up satellite:", sat_name, "mode:", sat_mode);
+				if (satelliteData[sat_name] && satelliteData[sat_name].Modes && satelliteData[sat_name].Modes[sat_mode]) {
+					var modeData = satelliteData[sat_name].Modes[sat_mode][0];
+					freq = modeData.Uplink_Freq / 1000000;
+					freq_rx = modeData.Downlink_Freq / 1000000;
+					band_rx = getBandFromFreq(freq_rx);
+					
+					// Set mode based on uplink/downlink
+					if ((modeData.Downlink_Mode === "LSB" && modeData.Uplink_Mode === "USB") ||
+						(modeData.Downlink_Mode === "USB" && modeData.Uplink_Mode === "LSB")) {
+						mode = "SSB"; // Inverting transponder
+					} else {
+						mode = modeData.Uplink_Mode;
+					}
+					console.log("Satellite data found. Freq:", freq, "Mode:", mode, "Band RX:", band_rx);
+				} else {
+					// Satellite mode not found in database, but still valid
+					// User will need to manually set mode if not in database
+					console.log("Satellite mode " + sat_mode + " not found for " + sat_name);
+					console.log("Available satellites:", Object.keys(satelliteData).join(", "));
+				}
+			} else if (
 				item.match(
 					/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|.*\/([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])|([a-zA-Z0-9]{1,3}[0-9][a-zA-Z0-9]{0,3}[a-zA-Z])\/.*/
 				)
 			) {
 				callsign = item.toUpperCase();
+			} else if (
+				item.match(/^[A-R]{2}[0-9]{2}([A-X]{2})?([0-9]{2})?$/i)
+			) {
+				// Gridsquare (e.g., IO91, IO92TN, JO01AA55)
+				gridsquare = item.toUpperCase();
 			} else if (itemNumber > 0 && (item.match(/^\d{1,3}$/) || item.match(/^[+-]\d{1,2}$/))) {
 				if (rst_s === null) {
 					rst_s = item;
@@ -195,10 +271,24 @@ function handleInput() {
 		checkMainFieldsErrors();
 
 		if (callsign) {
-			if (freq === 0) {
-				freq = getFreqFromBand(band, mode);
-			} else if (band === "") {
-				band = getBandFromFreq(freq);
+			console.log("Processing QSO for callsign:", callsign, "Band:", band, "Mode:", mode, "Freq:", freq, "Sat:", sat_name, sat_mode);
+			// For satellite QSOs, freq should already be set from satellite mode lookup
+			// For regular QSOs, calculate freq if not provided
+			if (band === "SAT") {
+				// Satellite QSO - freq and mode should be set from satellite mode lookup
+				// If not set (satellite not in database), freq will be 0 or empty
+				if (!freq || freq === 0 || freq === "") {
+					// Satellite not found in database or mode not recognized
+					// We still have band=SAT but no freq - this is okay for sat QSOs
+					freq = 0;
+				}
+			} else {
+				// Regular QSO
+				if (freq === 0 || freq === "") {
+					freq = getFreqFromBand(band, mode);
+				} else if (band === "") {
+					band = getBandFromFreq(freq);
+				}
 			}
 
 			if (band === "") {
@@ -231,6 +321,12 @@ function handleInput() {
 				rst_s,
 				rst_r,
 				sotaWwff,
+				sat_name,
+				sat_mode,
+				prop_mode,
+				freq_rx,
+				band_rx,
+				gridsquare,
 			]);
 
 			let sotaWwffText = "";
@@ -245,11 +341,20 @@ function handleInput() {
 				sotaWwffText = `W: ${sotaWwff}`;
 			}
 
+			// Display satellite info
+			let satText = "";
+			if (sat_name) {
+				satText = sat_name;
+				if (sat_mode) {
+					satText += " " + sat_mode;
+				}
+			}
+
 			const tableRow = $(`<tr>
 			<td>${extraQsoDate}</td>
 			<td>${qsotime}</td>
 			<td>${callsign}</td>
-			<td><span data-bs-toggle="tooltip" data-placement="left" title="${freq}">${band}</span></td>
+			<td><span data-bs-toggle="tooltip" data-placement="left" title="${freq}">${band}${satText ? ' ' + satText : ''}</span></td>
 			<td>${mode}</td>
 			<td>${rst_s}</td>
 			<td>${rst_r}</td>
@@ -294,6 +399,8 @@ function handleInput() {
 
 			callsign = "";
 			sotaWwff = "";
+			gridsquare = "";
+			// Don't reset satellite info - it persists for multiple QSOs
 		}
 
 		prevMode = mode;
@@ -626,6 +733,12 @@ function isWWFF(value) {
 $(document).ready(function () {
 	setInterval(updateUTCTime, 1000);
 	updateUTCTime();
+	
+	// Load satellite data for frequency/mode lookups
+	$.getJSON(base_url + "assets/json/satellite_data.json", function(data) {
+		satelliteData = data;
+	});
+	
 	var tabledata = localStorage.getItem(`user_${user_id}_tabledata`);
 	var mycall = localStorage.getItem(`user_${user_id}_my-call`);
 	var operator = localStorage.getItem(`user_${user_id}_operator`);
@@ -757,6 +870,14 @@ $(".js-save-to-log").click(function () {
 						} else if (isWWFF(item[8])) {
 							wwff_ref = item[8];
 						}
+						
+						// Satellite data
+						var sat_name = item[9] || "";
+						var sat_mode = item[10] || "";
+						var prop_mode = item[11] || "";
+						var freq_display_rx = item[12] ? item[12] * 1000000 : "";
+						var band_rx = item[13] || "";
+						var gridsquare = item[14] || "";
 
 						$.ajax({
 							url: base_url + "index.php/qso/saveqso",
@@ -775,6 +896,12 @@ $(".js-save-to-log").click(function () {
 								iota_ref: iota_ref,
 								pota_ref: pota_ref,
 								wwff_ref: wwff_ref,
+								sat_name: sat_name,
+								sat_mode: sat_mode,
+								prop_mode: prop_mode,
+								freq_display_rx: freq_display_rx,
+								band_rx: band_rx,
+								locator: gridsquare,
 								isSFLE: true,
 							},
 							success: function (result) {},

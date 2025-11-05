@@ -27,3 +27,29 @@
 </pre>
 <p><?php echo lang('qso_simplefle_syntax_help_ln9') ?></p>
 
+<p><strong>Satellite QSOs:</strong></p>
+<p>For satellite contacts, use the <code>sat</code> or <code>satellite</code> keyword, followed by the satellite name and mode. The system will automatically populate frequencies from the satellite database.</p>
+<pre>
+    sat
+    ao-7 V/U
+    1234 m0abc
+    1236 g4xyz
+    
+    satellite
+    fo-29 U/L
+    1300 dl1abc 59 57
+</pre>
+<p>Supported satellite modes include: V/U, U/V, L/S, V, U, etc.</p>
+
+<p><strong>Gridsquares:</strong></p>
+<p>You can include gridsquares (locators) on the same line as the callsign:</p>
+<pre>
+    20m ssb
+    1234 g0abi io91
+    1244 g0iiq io92tn
+    
+    40m cw
+    1300 dl1abc jn48 59 57
+</pre>
+<p>Gridsquares can be 4, 6, or 8 characters (e.g., IO91, IO92TN, JO01AA55).</p>
+
