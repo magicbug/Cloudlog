@@ -398,10 +398,13 @@ class Logbookadvanced_model extends CI_Model {
 			$updatedData['COL_NAME'] = $callbook['name'];
 		}
 		if (!empty($callbook['gridsquare']) && empty($qso['COL_GRIDSQUARE']) && empty($qso['COL_VUCC_GRIDS'] )) {
-			if (strpos(trim($callbook['gridsquare']), ',') === false) {
-				$updatedData['COL_GRIDSQUARE'] = strtoupper(trim($callbook['gridsquare']));
-			} else {
-				$updatedData['COL_VUCC_GRIDS'] = strtoupper(trim($callbook['gridsquare']));
+			// Validate gridsquare before adding - reject obvious invalid/placeholder values
+			if ($this->isValidGridsquare($callbook['gridsquare'])) {
+				if (strpos(trim($callbook['gridsquare']), ',') === false) {
+					$updatedData['COL_GRIDSQUARE'] = strtoupper(trim($callbook['gridsquare']));
+				} else {
+					$updatedData['COL_VUCC_GRIDS'] = strtoupper(trim($callbook['gridsquare']));
+				}
 			}
 		}
 		if (!empty($callbook['city']) && empty($qso['COL_QTH'])) {
@@ -434,6 +437,52 @@ class Logbookadvanced_model extends CI_Model {
 
 		return false;
     }
+
+	/**
+	 * Validate gridsquare to reject obvious invalid/placeholder values
+	 * Returns false for gridsquares like AA00AA, JJ00JJ, etc. which are
+	 * commonly used as placeholders when the actual grid is unknown
+	 */
+	private function isValidGridsquare($gridsquare) {
+		if (empty($gridsquare)) {
+			return false;
+		}
+
+		$gridsquare = strtoupper(trim($gridsquare));
+		
+		// Handle multiple gridsquares (VUCC format)
+		$grids = explode(',', $gridsquare);
+		
+		foreach ($grids as $grid) {
+			$grid = trim($grid);
+			
+			// Must be valid length (4, 6, 8, or 10 characters)
+			$len = strlen($grid);
+			if ($len < 4 || $len > 10 || $len % 2 != 0) {
+				return false;
+			}
+			
+			// Basic format validation
+			if (!preg_match('/^[A-R]{2}[0-9]{2}([A-X]{2})?([0-9]{2})?([A-X]{2})?$/', $grid)) {
+				return false;
+			}
+			
+			// Reject obvious placeholder patterns where field and subfield are identical
+			// e.g., AA00AA, BB11BB, JJ00JJ etc.
+			if ($len >= 6) {
+				$field = substr($grid, 0, 2);      // First 2 chars (e.g., "AA", "JJ")
+				$subfield = substr($grid, 4, 2);   // Chars 5-6 (e.g., "AA", "JJ")
+				
+				// If both field letters are the same AND both subfield letters are the same
+				// AND they match each other, it's likely a placeholder
+				if ($field[0] === $field[1] && $subfield[0] === $subfield[1] && $field[0] === $subfield[0]) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+	}
 
 	function get_modes() {
 		$CI =& get_instance();
