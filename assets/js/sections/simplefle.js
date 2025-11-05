@@ -411,15 +411,15 @@ function handleInput() {
 			}
 
 			const tableRow = $(`<tr>
-			<td>${extraQsoDate}</td>
-			<td>${qsotime}</td>
-			<td>${callsign}</td>
-			<td><span data-bs-toggle="tooltip" data-placement="left" title="${freq}">${band}${satText ? ' ' + satText : ''}</span></td>
-			<td>${mode}</td>
-			<td>${rst_s}</td>
-			<td>${rst_r}</td>
-			<td>${operator}</td>
-			<td>${sotaWwffText}</td>
+			<td style="padding: 0.5rem; width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${extraQsoDate}</td>
+			<td style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${qsotime}</td>
+			<td style="padding: 0.5rem; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${callsign}</td>
+			<td style="padding: 0.5rem; width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><span data-bs-toggle="tooltip" data-placement="left" title="${freq}">${band}${satText ? ' ' + satText : ''}</span></td>
+			<td style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${mode}</td>
+			<td style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${rst_s}</td>
+			<td style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${rst_r}</td>
+			<td style="padding: 0.5rem; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${operator}</td>
+			<td style="padding: 0.5rem; width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${sotaWwffText}</td>
 			</tr>`);
 
 			$("#qsoTable > tbody:last-child").append(tableRow);

@@ -128,26 +128,48 @@
 				<?php echo lang('qso_simplefle_qso_list'); ?>
 			</div>
 			<div class="card-body py-2">
-				<div class="qsoList">
-					<table class="table contacttable table-striped table-hover sfletable" id="qsoTable">
+				<style>
+					/* Override the sfletable CSS to allow proper horizontal scrolling */
+					#qsoTable.sfletable.table thead,
+					#qsoTable.sfletable.table tbody tr {
+						display: table-row-group !important;
+						width: auto !important;
+					}
+					#qsoTable.sfletable.table thead tr,
+					#qsoTable.sfletable.table tbody tr {
+						display: table-row !important;
+					}
+					#qsoTable.sfletable.table tbody {
+						display: table-row-group !important;
+						position: static !important;
+						width: 100% !important;
+						overflow-y: visible !important;
+						max-height: none !important;
+					}
+					#qsoTable.sfletable {
+						height: auto !important;
+					}
+				</style>
+				<div class="qsoList table-responsive">
+					<table class="table contacttable table-striped table-hover sfletable" id="qsoTable" style="table-layout: fixed; min-width: 820px;">
 						<thead>
 							<tr>
-								<th><?php echo lang('general_word_date'); ?></th>
-								<th><?php echo lang('general_word_time'); ?></th>
-								<th><?php echo lang('gen_hamradio_callsign'); ?></th>
-								<th><?php echo lang('gen_hamradio_band'); ?></th>
-								<th><?php echo lang('gen_hamradio_mode'); ?></th>
-								<th><?php echo lang('gen_hamradio_rsts'); ?></th>
-								<th><?php echo lang('gen_hamradio_rstr'); ?></th>
-								<th><?php echo lang('gen_hamradio_operator'); ?></th>
-								<th><?php echo lang('gen_hamradio_refs'); ?>*</th>
+								<th style="padding: 0.5rem; width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('general_word_date'); ?></th>
+								<th style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('general_word_time'); ?></th>
+								<th style="padding: 0.5rem; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_callsign'); ?></th>
+								<th style="padding: 0.5rem; width: 140px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_band'); ?></th>
+								<th style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_mode'); ?></th>
+								<th style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_rsts'); ?></th>
+								<th style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_rstr'); ?></th>
+								<th style="padding: 0.5rem; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_operator'); ?></th>
+								<th style="padding: 0.5rem; width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_refs'); ?>*</th>
 							</tr>
 						</thead>
 						<tbody id="qsoTableBody">
 						</tbody>
 					</table>
 				</div>
-				<div class="d-flex justify-content-between align-items-center mt-3 mb-2">
+				<div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mt-3 mb-2 gap-2">
 					<div>
 						<span class="badge bg-secondary js-qso-count">0 QSOs</span>
 					</div>
