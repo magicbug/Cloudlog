@@ -95,7 +95,7 @@
 			<td><div class="form-check"><input class="form-check-input" name="operator" type="checkbox" <?php if (($options->operator->show ?? "true") == "true") { echo 'checked'; } ?>></div></td>
 		</tr>
 		<tr>
-			<td>Station Location</td>
+			<td><?php echo lang('cloudlog_station_profile'); ?></td>
 			<td><div class="form-check"><input class="form-check-input" name="stationLocation" type="checkbox" <?php if (($options->stationLocation->show ?? "true") == "true") { echo 'checked'; } ?>></div></td>
 		</tr>
 	</tbody>
