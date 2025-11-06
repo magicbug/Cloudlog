@@ -392,6 +392,37 @@ class Logbookadvanced_model extends CI_Model {
         }
     }
 
+	public function updateStationLocation($ids, $user_id, $station_id) {
+		$this->load->model('user_model');
+
+		if(!$this->user_model->authorize(2)) {
+			return array('message' => 'Error');
+		} else {
+			// Verify that the station_id belongs to the user
+			$this->load->model('Stations');
+			$stations = $this->Stations->all_of_user($user_id)->result();
+			$valid_station = false;
+			foreach ($stations as $station) {
+				if ($station->station_id == $station_id) {
+					$valid_station = true;
+					break;
+				}
+			}
+
+			if (!$valid_station) {
+				return array('message' => 'Invalid station ID');
+			}
+
+			$data = array(
+				'station_id' => $station_id
+			);
+			$this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
+			$this->db->update($this->config->item('table_name'), $data);
+
+			return array('message' => 'OK');
+		}
+	}
+
 	public function updateQsoWithCallbookInfo($qsoID, $qso, $callbook) {
 		$updatedData = array();
 		if (!empty($callbook['name']) && empty($qso['COL_NAME'])) {
