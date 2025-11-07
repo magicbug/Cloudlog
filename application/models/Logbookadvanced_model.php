@@ -423,6 +423,42 @@ class Logbookadvanced_model extends CI_Model {
 		}
 	}
 
+	public function updateSatellite($ids, $user_id, $sat_name, $sat_mode, $uplink_freq, $downlink_freq, $uplink_mode, $downlink_mode) {
+		$this->load->model('user_model');
+
+		if(!$this->user_model->authorize(2)) {
+			return array('message' => 'Error');
+		} else {
+			$this->load->library('frequency');
+			
+			// Calculate bands from frequencies using existing Frequency library
+			$uplink_band = $this->frequency->GetBand($uplink_freq);
+			$downlink_band = $this->frequency->GetBand($downlink_freq);
+			
+			// Determine mode based on uplink and downlink modes
+			$mode = $uplink_mode;
+			if (($uplink_mode == 'USB' && $downlink_mode == 'LSB') || ($uplink_mode == 'LSB' && $downlink_mode == 'USB')) {
+				$mode = 'SSB';
+			}
+
+			$data = array(
+				'COL_SAT_NAME' => $sat_name,
+				'COL_SAT_MODE' => $sat_mode,
+				'COL_FREQ' => $uplink_freq,
+				'COL_FREQ_RX' => $downlink_freq,
+				'COL_BAND' => $uplink_band,
+				'COL_BAND_RX' => $downlink_band,
+				'COL_MODE' => $mode,
+				'COL_PROP_MODE' => 'SAT'
+			);
+			
+			$this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
+			$this->db->update($this->config->item('table_name'), $data);
+
+			return array('message' => 'OK');
+		}
+	}
+
 	public function updateQsoWithCallbookInfo($qsoID, $qso, $callbook) {
 		$updatedData = array();
 		if (!empty($callbook['name']) && empty($qso['COL_NAME'])) {

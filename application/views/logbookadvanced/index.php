@@ -334,6 +334,7 @@ $options = json_decode($options);
             <span class="h6 me-1"><?php echo lang('filter_actions_w_selected'); ?></span>
             <button type="button" class="btn btn-sm btn-primary me-1" id="btnUpdateFromCallbook"><?php echo lang('filter_actions_update_f_callbook'); ?></button>
             <button type="button" class="btn btn-sm btn-primary me-1" id="changeStationLocation">Change Station Location</button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="changeSatellite">Assign Satellite</button>
             <button type="button" class="btn btn-sm btn-primary me-1" id="queueBureau"><?php echo lang('filter_actions_queue_bureau'); ?></button>
             <button type="button" class="btn btn-sm btn-primary me-1" id="queueDirect"><?php echo lang('filter_actions_queue_direct'); ?></button>
             <button type="button" class="btn btn-sm btn-primary me-1" id="queueElectronic"><?php echo lang('filter_actions_queue_electronic'); ?></button>

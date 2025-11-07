@@ -564,6 +564,141 @@ $(document).ready(function () {
 		});
 	});
 
+	$('#changeSatellite').click(function(event) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements === 0) {
+			return;
+		}
+
+		$('#changeSatellite').prop("disabled", true);
+
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/selectSatellite',
+			type: 'post',
+			success: function (html) {
+				BootstrapDialog.show({
+					title: 'Assign Satellite',
+					size: BootstrapDialog.SIZE_NORMAL,
+					cssClass: 'satellite-dialog',
+					nl2br: false,
+					message: html,
+					onshown: function(dialog) {
+						// Load satellite data
+						$.getJSON(base_url + "assets/json/satellite_data.json", function(data) {
+							var sat_names = [];
+							$.each(data, function(key, val) {
+								sat_names.push('<option value="' + key + '">' + key + '</option>');
+							});
+							$('.satellite_names_list_bulk').append(sat_names.join(""));
+						});
+
+						// Handle satellite name selection
+						$('#sat_name_select').on('input', function() {
+							var selectedSat = $(this).val();
+							$('#sat_mode_select').val("");
+							$('.satellite_modes_list_bulk').find('option').remove().end();
+							
+							$.getJSON(base_url + "assets/json/satellite_data.json", function(data) {
+								var sat_modes = [];
+								$.each(data, function(key, val) {
+									if (key == selectedSat) {
+										$.each(val.Modes, function(mode_key, mode_val) {
+											sat_modes.push('<option value="' + mode_key + '">' + mode_key + '</option>');
+										});
+									}
+								});
+								$('.satellite_modes_list_bulk').append(sat_modes.join(""));
+							});
+						});
+
+						// Handle satellite mode selection
+						$('#sat_mode_select').on('input', function() {
+							var selectedSat = $('#sat_name_select').val();
+							var selectedMode = $(this).val();
+							
+							$.getJSON(base_url + "assets/json/satellite_data.json", function(data) {
+								$.each(data, function(key, val) {
+									if (key == selectedSat) {
+										$.each(val.Modes, function(mode_key, mode_val) {
+											if (mode_key == selectedMode) {
+												// Store frequency and mode information
+												$('#uplink_freq_hidden').val(mode_val[0].Uplink_Freq);
+												$('#downlink_freq_hidden').val(mode_val[0].Downlink_Freq);
+												$('#uplink_mode_hidden').val(mode_val[0].Uplink_Mode);
+												$('#downlink_mode_hidden').val(mode_val[0].Downlink_Mode);
+											}
+										});
+									}
+								});
+							});
+						});
+					},
+					buttons: [{
+						label: 'Assign',
+						cssClass: 'btn-primary',
+						action: function(dialogItself) {
+							var selectedSatName = $('#sat_name_select').val();
+							var selectedSatMode = $('#sat_mode_select').val();
+							var uplinkFreq = $('#uplink_freq_hidden').val();
+							var downlinkFreq = $('#downlink_freq_hidden').val();
+							var uplinkMode = $('#uplink_mode_hidden').val();
+							var downlinkMode = $('#downlink_mode_hidden').val();
+							
+							if (!selectedSatName || !selectedSatMode) {
+								alert('Please select a satellite and mode');
+								return;
+							}
+
+							var id_list = [];
+							elements.each(function() {
+								let id = $(this).first().closest('tr').data('qsoID');
+								id_list.push(id);
+							});
+
+							$.ajax({
+								url: base_url + 'index.php/logbookadvanced/update_satellite',
+								type: 'post',
+								data: {
+									'id': JSON.stringify(id_list, null, 2),
+									'sat_name': selectedSatName,
+									'sat_mode': selectedSatMode,
+									'uplink_freq': uplinkFreq,
+									'downlink_freq': downlinkFreq,
+									'uplink_mode': uplinkMode,
+									'downlink_mode': downlinkMode
+								},
+								success: function(data) {
+									if (data !== []) {
+										$.each(data, function(k, v) {
+											updateRow(this);
+											unselectQsoID(this.qsoID);
+										});
+									}
+									$('#changeSatellite').prop("disabled", false);
+									dialogItself.close();
+								},
+								error: function() {
+									$('#changeSatellite').prop("disabled", false);
+									alert('Error assigning satellite');
+								}
+							});
+						}
+					}, {
+						label: 'Close',
+						action: function(dialogItself) {
+							$('#changeSatellite').prop("disabled", false);
+							dialogItself.close();
+						}
+					}],
+					onhide: function(dialogRef){
+						$('#changeSatellite').prop("disabled", false);
+					},
+				});
+			}
+		});
+	});
+
 	$('#searchGridsquare').click(function (event) {
 		quickSearch('gridsquare');
 	});
