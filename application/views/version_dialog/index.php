@@ -71,6 +71,13 @@
                     .release-notes em {
                         font-style: italic;
                     }
+                    .release-notes img {
+                        max-width: 100%;
+                        height: auto;
+                        margin: 1rem 0;
+                        border-radius: 5px;
+                        display: block;
+                    }
                 </style>
 
                 <script src="<?php echo base_url('assets/js/showdown.min.js'); ?>"></script>
@@ -173,6 +180,9 @@
                                     // Convert italic text (*text* or _text_)
                                     $htmlContent = preg_replace('/(?<![*_])\*([^*\n]+)\*(?![*_])/', '<em>$1</em>', $htmlContent);
                                     $htmlContent = preg_replace('/(?<![*_])_([^_\n]+)_(?![*_])/', '<em>$1</em>', $htmlContent);
+                                    
+                                    // Convert markdown images ![alt](url) - must be before regular links
+                                    $htmlContent = preg_replace('/!\[([^\]]*)\]\(([^)]+)\)/', '<img src="$2" alt="$1" class="img-fluid" style="max-width: 100%; height: auto;" />', $htmlContent);
                                     
                                     // Convert markdown links [text](url)
                                     $htmlContent = preg_replace('/\[([^\]]+)\]\(([^)]+)\)/', '<a href="$2" target="_blank">$1</a>', $htmlContent);
