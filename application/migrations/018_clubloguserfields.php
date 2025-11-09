@@ -8,9 +8,21 @@ class Migration_clubloguserfields extends CI_Migration {
         {
                 // Check and add each field only if it does not exist
                 $fields_to_add = array(
-                        'user_clublog_name' => 'VARCHAR(255) DEFAULT NULL',
-                        'user_clublog_password' => 'VARCHAR(255) DEFAULT NULL',
-                        'user_clublog_callsign' => 'VARCHAR(255) DEFAULT NULL'
+                        'user_clublog_name' => array(
+                                'type' => 'VARCHAR',
+                                'constraint' => 255,
+                                'null' => TRUE,
+                        ),
+                        'user_clublog_password' => array(
+                                'type' => 'VARCHAR',
+                                'constraint' => 255,
+                                'null' => TRUE,
+                        ),
+                        'user_clublog_callsign' => array(
+                                'type' => 'VARCHAR',
+                                'constraint' => 255,
+                                'null' => TRUE,
+                        ),
                 );
 
                 // Get current columns in 'users' table
@@ -18,7 +30,7 @@ class Migration_clubloguserfields extends CI_Migration {
 
                 foreach ($fields_to_add as $field => $definition) {
                         if (!in_array($field, $fields)) {
-                                $this->dbforge->add_column('users', array($field . ' ' . $definition));
+                                $this->dbforge->add_column('users', array($field => $definition));
                         }
                 }
         }
