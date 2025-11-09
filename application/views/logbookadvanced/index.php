@@ -7,7 +7,7 @@
 var custom_date_format = "<?php echo $custom_date_format ?>";
 <?php
 if (!isset($options)) {
-   $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"},\"pota\":{\"show\":\"true\"},\"operator\":{\"show\":\"true\"}}";
+   $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"},\"pota\":{\"show\":\"true\"},\"operator\":{\"show\":\"true\"},\"stationLocation\":{\"show\":\"true\"}}";
 }
 echo "var user_options = $options;";
 if (!isset($options->pota)) {
@@ -16,6 +16,10 @@ if (!isset($options->pota)) {
 }
 if (!isset($options->operator)) {
 	echo "\nvar o_template = { operator: {show: 'true'}};";
+	echo "\nuser_options={...user_options, ...o_template}";
+}
+if (!isset($options->stationLocation)) {
+	echo "\nvar o_template = { stationLocation: {show: 'true'}};";
 	echo "\nuser_options={...user_options, ...o_template}";
 }
 ?>
@@ -329,6 +333,8 @@ $options = json_decode($options);
         <div class="mb-2 btn-group">
             <span class="h6 me-1"><?php echo lang('filter_actions_w_selected'); ?></span>
             <button type="button" class="btn btn-sm btn-primary me-1" id="btnUpdateFromCallbook"><?php echo lang('filter_actions_update_f_callbook'); ?></button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="changeStationLocation">Change Station Location</button>
+            <button type="button" class="btn btn-sm btn-primary me-1" id="changeSatellite">Assign Satellite</button>
             <button type="button" class="btn btn-sm btn-primary me-1" id="queueBureau"><?php echo lang('filter_actions_queue_bureau'); ?></button>
             <button type="button" class="btn btn-sm btn-primary me-1" id="queueDirect"><?php echo lang('filter_actions_queue_direct'); ?></button>
             <button type="button" class="btn btn-sm btn-primary me-1" id="queueElectronic"><?php echo lang('filter_actions_queue_electronic'); ?></button>
@@ -424,6 +430,9 @@ $options = json_decode($options);
 			} ?>
 			<?php if (($options->de->show ?? "true") == "true") {
 				echo '<th>' . lang('gen_hamradio_de') . '</th>';
+			} ?>
+			<?php if (($options->stationLocation->show ?? "true") == "true") {
+				echo '<th>Station Location</th>';
 			} ?>
 			<?php if (($options->dx->show ?? "true") == "true") {
 				echo '<th>' . lang('gen_hamradio_dx') . '</th>';

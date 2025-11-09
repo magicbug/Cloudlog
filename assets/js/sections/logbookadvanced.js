@@ -45,6 +45,9 @@ function updateRow(qso) {
 	if (user_options.de.show == "true"){
 		cells.eq(c++).text(qso.de);
 	}
+	if ( (user_options.stationLocation) && (user_options.stationLocation.show == "true")){
+		cells.eq(c++).html(qso.stationLocation);
+	}
 	if (user_options.dx.show == "true"){
 		cells.eq(c++).html('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge bg-success'+qso.lotw_hint+'" data-bs-toggle="tooltip" title="LoTW User. Last upload was ' + qso.lastupload + '">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
 	}
@@ -146,6 +149,9 @@ function loadQSOTable(rows) {
 		}
 		if (user_options.de.show == "true"){
 			data.push(qso.de);
+		}
+		if ( (user_options.stationLocation) && (user_options.stationLocation.show == "true")){
+			data.push(qso.stationLocation);
 		}
 		if (user_options.dx.show == "true"){
 			data.push('<span class="qso_call"><a id="edit_qso" href="javascript:displayQso('+qso.qsoID+')"><span id="dx">'+qso.dx+'</span></a><span class="qso_icons">' + (qso.callsign == '' ? '' : ' <a href="https://lotw.arrl.org/lotwuser/act?act='+qso.callsign+'" target="_blank"><small id="lotw_info" class="badge bg-success'+qso.lotw_hint+'" data-bs-toggle="tooltip" title="LoTW User. Last upload was ' + qso.lastupload + ' ">L</small></a>') + ' <a target="_blank" href="https://www.qrz.com/db/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/qrz.png" alt="Lookup ' + qso.dx + ' on QRZ.com"></a> <a target="_blank" href="https://www.hamqth.com/'+qso.dx+'"><img width="16" height="16" src="'+base_url+ 'images/icons/hamqth.png" alt="Lookup ' + qso.dx + ' on HamQTH"></a></span></span>');
@@ -482,6 +488,215 @@ $(document).ready(function () {
 
 	$('#receivedElectronic').click(function (event) {
 		handleQslReceived('Y','E', 'receivedElectronic');
+	});
+
+	$('#changeStationLocation').click(function (event) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements == 0) {
+			return;
+		}
+		$('#changeStationLocation').prop("disabled", true);
+
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/selectStationLocation',
+			type: 'post',
+			success: function (html) {
+				BootstrapDialog.show({
+					title: 'Change Station Location',
+					size: BootstrapDialog.SIZE_NORMAL,
+					cssClass: 'station-dialog',
+					nl2br: false,
+					message: html,
+					onshown: function(dialog) {
+					},
+					buttons: [{
+						label: 'Change',
+						cssClass: 'btn-primary',
+						action: function(dialogItself) {
+							var selectedStationId = $('#station_id_select').val();
+							if (!selectedStationId) {
+								alert('Please select a station location');
+								return;
+							}
+
+							var id_list = [];
+							elements.each(function() {
+								let id = $(this).first().closest('tr').data('qsoID');
+								id_list.push(id);
+							});
+
+							$.ajax({
+								url: base_url + 'index.php/logbookadvanced/update_station_location',
+								type: 'post',
+								data: {
+									'id': JSON.stringify(id_list, null, 2),
+									'station_id': selectedStationId
+								},
+								success: function(data) {
+									if (data !== []) {
+										$.each(data, function(k, v) {
+											updateRow(this);
+											unselectQsoID(this.qsoID);
+										});
+									}
+									$('#changeStationLocation').prop("disabled", false);
+									dialogItself.close();
+								},
+								error: function() {
+									$('#changeStationLocation').prop("disabled", false);
+									alert('Error updating station location');
+								}
+							});
+						}
+					}, {
+						label: 'Close',
+						action: function(dialogItself) {
+							$('#changeStationLocation').prop("disabled", false);
+							dialogItself.close();
+						}
+					}],
+					onhide: function(dialogRef){
+						$('#changeStationLocation').prop("disabled", false);
+					},
+				});
+			}
+		});
+	});
+
+	$('#changeSatellite').click(function(event) {
+		var elements = $('#qsoList tbody input:checked');
+		var nElements = elements.length;
+		if (nElements === 0) {
+			return;
+		}
+
+		$('#changeSatellite').prop("disabled", true);
+
+		$.ajax({
+			url: base_url + 'index.php/logbookadvanced/selectSatellite',
+			type: 'post',
+			success: function (html) {
+				BootstrapDialog.show({
+					title: 'Assign Satellite',
+					size: BootstrapDialog.SIZE_NORMAL,
+					cssClass: 'satellite-dialog',
+					nl2br: false,
+					message: html,
+					onshown: function(dialog) {
+						// Load satellite data
+						$.getJSON(base_url + "assets/json/satellite_data.json", function(data) {
+							var sat_names = [];
+							$.each(data, function(key, val) {
+								sat_names.push('<option value="' + key + '">' + key + '</option>');
+							});
+							$('.satellite_names_list_bulk').append(sat_names.join(""));
+						});
+
+						// Handle satellite name selection
+						$('#sat_name_select').on('input', function() {
+							var selectedSat = $(this).val();
+							$('#sat_mode_select').val("");
+							$('.satellite_modes_list_bulk').find('option').remove().end();
+							
+							$.getJSON(base_url + "assets/json/satellite_data.json", function(data) {
+								var sat_modes = [];
+								$.each(data, function(key, val) {
+									if (key == selectedSat) {
+										$.each(val.Modes, function(mode_key, mode_val) {
+											sat_modes.push('<option value="' + mode_key + '">' + mode_key + '</option>');
+										});
+									}
+								});
+								$('.satellite_modes_list_bulk').append(sat_modes.join(""));
+							});
+						});
+
+						// Handle satellite mode selection
+						$('#sat_mode_select').on('input', function() {
+							var selectedSat = $('#sat_name_select').val();
+							var selectedMode = $(this).val();
+							
+							$.getJSON(base_url + "assets/json/satellite_data.json", function(data) {
+								$.each(data, function(key, val) {
+									if (key == selectedSat) {
+										$.each(val.Modes, function(mode_key, mode_val) {
+											if (mode_key == selectedMode) {
+												// Store frequency and mode information
+												$('#uplink_freq_hidden').val(mode_val[0].Uplink_Freq);
+												$('#downlink_freq_hidden').val(mode_val[0].Downlink_Freq);
+												$('#uplink_mode_hidden').val(mode_val[0].Uplink_Mode);
+												$('#downlink_mode_hidden').val(mode_val[0].Downlink_Mode);
+											}
+										});
+									}
+								});
+							});
+						});
+					},
+					buttons: [{
+						label: 'Assign',
+						cssClass: 'btn-primary',
+						action: function(dialogItself) {
+							var selectedSatName = $('#sat_name_select').val();
+							var selectedSatMode = $('#sat_mode_select').val();
+							var uplinkFreq = $('#uplink_freq_hidden').val();
+							var downlinkFreq = $('#downlink_freq_hidden').val();
+							var uplinkMode = $('#uplink_mode_hidden').val();
+							var downlinkMode = $('#downlink_mode_hidden').val();
+							
+							if (!selectedSatName || !selectedSatMode) {
+								alert('Please select a satellite and mode');
+								return;
+							}
+
+							var id_list = [];
+							elements.each(function() {
+								let id = $(this).first().closest('tr').data('qsoID');
+								id_list.push(id);
+							});
+
+							$.ajax({
+								url: base_url + 'index.php/logbookadvanced/update_satellite',
+								type: 'post',
+								data: {
+									'id': JSON.stringify(id_list, null, 2),
+									'sat_name': selectedSatName,
+									'sat_mode': selectedSatMode,
+									'uplink_freq': uplinkFreq,
+									'downlink_freq': downlinkFreq,
+									'uplink_mode': uplinkMode,
+									'downlink_mode': downlinkMode
+								},
+								success: function(data) {
+									if (data !== []) {
+										$.each(data, function(k, v) {
+											updateRow(this);
+											unselectQsoID(this.qsoID);
+										});
+									}
+									$('#changeSatellite').prop("disabled", false);
+									dialogItself.close();
+								},
+								error: function() {
+									$('#changeSatellite').prop("disabled", false);
+									alert('Error assigning satellite');
+								}
+							});
+						}
+					}, {
+						label: 'Close',
+						action: function(dialogItself) {
+							$('#changeSatellite').prop("disabled", false);
+							dialogItself.close();
+						}
+					}],
+					onhide: function(dialogRef){
+						$('#changeSatellite').prop("disabled", false);
+					},
+				});
+			}
+		});
 	});
 
 	$('#searchGridsquare').click(function (event) {
@@ -1116,6 +1331,7 @@ function loadMap(data) {
 				iota: $('input[name="iota"]').is(':checked') ? true : false,
 				pota: $('input[name="pota"]').is(':checked') ? true : false,
 				operator: $('input[name="operator"]').is(':checked') ? true : false,
+				stationLocation: $('input[name="stationLocation"]').is(':checked') ? true : false,
 			},
 			success: function(data) {
 				$('#saveButton').prop("disabled", false);

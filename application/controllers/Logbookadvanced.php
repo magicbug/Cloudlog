@@ -244,8 +244,77 @@ class Logbookadvanced extends CI_Controller {
 		print json_encode($q);
 	}
 
+	function update_station_location() {
+		$this->load->model('logbookadvanced_model');
+
+		$ids = xss_clean($this->input->post('id'));
+		$user_id = (int)$this->session->userdata('user_id');
+		$station_id = xss_clean($this->input->post('station_id'));
+
+		$status = $this->logbookadvanced_model->updateStationLocation($ids, $user_id, $station_id);
+
+		$data = $this->logbookadvanced_model->getQsosForAdif($ids, $user_id);
+
+		$results = $data->result('array');
+
+		$qsos = [];
+		foreach ($results as $data) {
+			$qsos[] = new QSO($data);
+		}
+
+		$q = [];
+		foreach ($qsos as $qso) {
+			$q[] = $qso->toArray();
+		}
+
+		header("Content-Type: application/json");
+		print json_encode($q);
+	}
+
+	function update_satellite() {
+		$this->load->model('logbookadvanced_model');
+
+		$ids = xss_clean($this->input->post('id'));
+		$user_id = (int)$this->session->userdata('user_id');
+		$sat_name = xss_clean($this->input->post('sat_name'));
+		$sat_mode = xss_clean($this->input->post('sat_mode'));
+		$uplink_freq = xss_clean($this->input->post('uplink_freq'));
+		$downlink_freq = xss_clean($this->input->post('downlink_freq'));
+		$uplink_mode = xss_clean($this->input->post('uplink_mode'));
+		$downlink_mode = xss_clean($this->input->post('downlink_mode'));
+
+		$status = $this->logbookadvanced_model->updateSatellite($ids, $user_id, $sat_name, $sat_mode, $uplink_freq, $downlink_freq, $uplink_mode, $downlink_mode);
+
+		$data = $this->logbookadvanced_model->getQsosForAdif($ids, $user_id);
+
+		$results = $data->result('array');
+
+		$qsos = [];
+		foreach ($results as $data) {
+			$qsos[] = new QSO($data);
+		}
+
+		$q = [];
+		foreach ($qsos as $qso) {
+			$q[] = $qso->toArray();
+		}
+
+		header("Content-Type: application/json");
+		print json_encode($q);
+	}
+
+	public function selectSatellite() {
+		$this->load->view('logbookadvanced/selectsatellite');
+	}
+
 	public function startAtLabel() {
 		$this->load->view('logbookadvanced/startatform');
+	}
+
+	public function selectStationLocation() {
+		$this->load->model('stations');
+		$data['station_profile'] = $this->stations->all_of_user();
+		$this->load->view('logbookadvanced/selectstationlocation', $data);
 	}
 
 	public function qslSlideshow() {
@@ -465,6 +534,7 @@ class Logbookadvanced extends CI_Controller {
 		$json_string['iota']['show'] = $this->input->post('iota');
 		$json_string['pota']['show'] = $this->input->post('pota');
 		$json_string['operator']['show'] = $this->input->post('operator');
+		$json_string['stationLocation']['show'] = $this->input->post('stationLocation');
 
 		$obj['column_settings']= json_encode($json_string);
 
