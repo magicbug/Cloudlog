@@ -117,6 +117,8 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="<?php echo site_url('statistics'); ?>" title="Statistics"><i class="fas fa-chart-line"></i> <?php echo lang('menu_statistics'); ?></a>
 								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="<?php echo site_url('monthlyreport'); ?>" title="Monthly Report"><i class="fas fa-calendar-alt"></i> Monthly Report</a>
+								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('gridmap'); ?>" title="Gridmap"><i class="fas fa-layer-group"></i> <?php echo lang('menu_gridmap'); ?></a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="<?php echo site_url('activated_gridmap'); ?>" title="Activated Gridsquares"><i class="fas fa-th-large"></i> <?php echo lang('menu_activated_gridsquares'); ?></a>
