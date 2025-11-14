@@ -307,18 +307,20 @@ class Monthlyreport_model extends CI_Model {
 		$all_grids = array();
 		
 		foreach ($query->result() as $row) {
-			// Process main gridsquare
+			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
-				$all_grids[$row->COL_GRIDSQUARE] = true;
+				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
+				$all_grids[$grid_4char] = true;
 			}
 			
-			// Process VUCC grids (comma-separated)
+			// Process VUCC grids (comma-separated, first 4 characters only)
 			if (!empty($row->COL_VUCC_GRIDS)) {
 				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
 				foreach ($vucc_grids as $grid) {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
-						$all_grids[$grid] = true;
+						$grid_4char = strtoupper(substr($grid, 0, 4));
+						$all_grids[$grid_4char] = true;
 					}
 				}
 			}
@@ -357,18 +359,20 @@ class Monthlyreport_model extends CI_Model {
 		$all_grids = array();
 		
 		foreach ($query->result() as $row) {
-			// Process main gridsquare
+			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
-				$all_grids[$row->COL_GRIDSQUARE] = true;
+				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
+				$all_grids[$grid_4char] = true;
 			}
 			
-			// Process VUCC grids
+			// Process VUCC grids (first 4 characters only)
 			if (!empty($row->COL_VUCC_GRIDS)) {
 				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
 				foreach ($vucc_grids as $grid) {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
-						$all_grids[$grid] = true;
+						$grid_4char = strtoupper(substr($grid, 0, 4));
+						$all_grids[$grid_4char] = true;
 					}
 				}
 			}
@@ -407,18 +411,20 @@ class Monthlyreport_model extends CI_Model {
 		$all_grids = array();
 		
 		foreach ($query->result() as $row) {
-			// Process main gridsquare
+			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
-				$all_grids[$row->COL_GRIDSQUARE] = true;
+				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
+				$all_grids[$grid_4char] = true;
 			}
 			
-			// Process VUCC grids
+			// Process VUCC grids (first 4 characters only)
 			if (!empty($row->COL_VUCC_GRIDS)) {
 				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
 				foreach ($vucc_grids as $grid) {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
-						$all_grids[$grid] = true;
+						$grid_4char = strtoupper(substr($grid, 0, 4));
+						$all_grids[$grid_4char] = true;
 					}
 				}
 			}
@@ -504,14 +510,14 @@ class Monthlyreport_model extends CI_Model {
 	private function get_countries_worked($locations, $start_date, $end_date) {
 		$countries = array();
 		
-		$this->db->distinct();
-		$this->db->select('COL_DXCC, COL_COUNTRY');
+		$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY', FALSE);
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
 		$this->db->where('COL_TIME_ON <=', $end_date);
 		$this->db->where('COL_DXCC IS NOT NULL');
 		$this->db->where('COL_DXCC !=', '');
+		$this->db->group_by('COL_DXCC');
 		
 		$query = $this->db->get();
 		
