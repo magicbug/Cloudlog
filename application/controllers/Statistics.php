@@ -416,52 +416,56 @@ class Statistics extends CI_Controller {
 			return;
 		}
 		
-		// Most worked callsigns
-		$this->db->select('COL_CALL, COUNT(*) as count, COL_COUNTRY, MAX(COL_TIME_ON) as last_qso');
-		$this->db->from($this->config->item('table_name'));
-		$this->db->where_in('station_id', $logbooks_locations_array);
-		$this->db->group_by('COL_CALL');
-		$this->db->order_by('count', 'DESC');
-		$this->db->limit(10);
-		$query = $this->db->get();
+		$result = array('callsigns' => array(), 'countries' => array());
 		
-		$callsigns = array();
-		if ($query->num_rows() > 0) {
-			foreach($query->result() as $row) {
-				$callsigns[] = array(
-					'callsign' => $row->COL_CALL,
-					'count' => $row->count,
-					'country' => $row->COL_COUNTRY,
-					'last_qso' => $row->last_qso
-				);
+		try {
+			// Most worked callsigns
+			$this->db->select('COL_CALL, COUNT(*) as count, MAX(COL_COUNTRY) as COL_COUNTRY, MAX(COL_TIME_ON) as last_qso');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->group_by('COL_CALL');
+			$this->db->order_by('count', 'DESC');
+			$this->db->limit(10);
+			$query = $this->db->get();
+			
+			$callsigns = array();
+			if ($query && $query->num_rows() > 0) {
+				foreach($query->result() as $row) {
+					$callsigns[] = array(
+						'callsign' => $row->COL_CALL,
+						'count' => $row->count,
+						'country' => isset($row->COL_COUNTRY) ? $row->COL_COUNTRY : '',
+						'last_qso' => $row->last_qso
+					);
+				}
 			}
-		}
-		
-		// Most worked countries
-		$this->db->select('COL_COUNTRY, COUNT(*) as count');
-		$this->db->from($this->config->item('table_name'));
-		$this->db->where('COL_COUNTRY IS NOT NULL');
-		$this->db->where('COL_COUNTRY !=', '');
-		$this->db->where_in('station_id', $logbooks_locations_array);
-		$this->db->group_by('COL_COUNTRY');
-		$this->db->order_by('count', 'DESC');
-		$this->db->limit(10);
-		$query = $this->db->get();
-		
-		$countries = array();
-		if ($query->num_rows() > 0) {
-			foreach($query->result() as $row) {
-				$countries[] = array(
-					'country' => $row->COL_COUNTRY,
-					'count' => $row->count
-				);
+			$result['callsigns'] = $callsigns;
+			
+			// Most worked countries
+			$this->db->select('COL_COUNTRY, COUNT(*) as count');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_COUNTRY IS NOT NULL');
+			$this->db->where('COL_COUNTRY !=', '');
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->group_by('COL_COUNTRY');
+			$this->db->order_by('count', 'DESC');
+			$this->db->limit(10);
+			$query = $this->db->get();
+			
+			$countries = array();
+			if ($query && $query->num_rows() > 0) {
+				foreach($query->result() as $row) {
+					$countries[] = array(
+						'country' => $row->COL_COUNTRY,
+						'count' => $row->count
+					);
+				}
 			}
+			$result['countries'] = $countries;
+			
+		} catch (Exception $e) {
+			log_message('error', 'Error in get_most_worked: ' . $e->getMessage());
 		}
-		
-		$result = array(
-			'callsigns' => $callsigns,
-			'countries' => $countries
-		);
 		
 		header('Content-Type: application/json');
 		echo json_encode($result);
