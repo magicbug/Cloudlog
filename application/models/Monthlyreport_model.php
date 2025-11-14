@@ -40,6 +40,7 @@ class Monthlyreport_model extends CI_Model {
 			'bands' => $this->get_bands_breakdown($logbooks_locations_array, $start_date, $end_date),
 			'continents' => $this->get_continents_breakdown($logbooks_locations_array, $start_date, $end_date),
 			'satellite_qsos' => $this->get_satellite_qsos($logbooks_locations_array, $start_date, $end_date),
+			'satellite_breakdown' => $this->get_satellite_breakdown($logbooks_locations_array, $start_date, $end_date),
 			'eme_qsos' => $this->get_eme_qsos($logbooks_locations_array, $start_date, $end_date),
 			'top_band' => '',
 			'top_mode' => ''
@@ -288,8 +289,8 @@ class Monthlyreport_model extends CI_Model {
 				
 				// If not worked before on this band, it's new
 				if ($prev_row->count == 0) {
-					// Get the callsign from the first QSO with this DXCC on this band
-					$this->db->select('COL_CALL');
+					// Get the callsign and mode from the first QSO with this DXCC on this band
+					$this->db->select('COL_CALL, COL_MODE, COL_SUBMODE');
 					$this->db->from($this->config->item('table_name'));
 					$this->db->where_in('station_id', $locations);
 					$this->db->where('COL_DXCC', $row->COL_DXCC);
@@ -300,10 +301,16 @@ class Monthlyreport_model extends CI_Model {
 					$call_query = $this->db->get();
 					$call_row = $call_query->row();
 					
+					$mode = '';
+					if ($call_row) {
+						$mode = !empty($call_row->COL_SUBMODE) ? $call_row->COL_SUBMODE : $call_row->COL_MODE;
+					}
+					
 					$new_dxcc_by_band[$band][] = array(
 						'dxcc_id' => $row->COL_DXCC,
 						'name' => $row->COL_COUNTRY,
-						'callsign' => $call_row ? $call_row->COL_CALL : ''
+						'callsign' => $call_row ? $call_row->COL_CALL : '',
+						'mode' => $mode
 					);
 				}
 			}
@@ -370,7 +377,7 @@ class Monthlyreport_model extends CI_Model {
 		$new_grids = array();
 		
 		// Get all gridsquares worked this month (including VUCC grids)
-		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON');
+		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON, COL_MODE, COL_SUBMODE');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
@@ -378,14 +385,19 @@ class Monthlyreport_model extends CI_Model {
 		$this->db->order_by('COL_TIME_ON', 'ASC');
 		
 		$query = $this->db->get();
-		$grid_callsigns = array();
+		$grid_data = array();
 		
 		foreach ($query->result() as $row) {
+			$mode = !empty($row->COL_SUBMODE) ? $row->COL_SUBMODE : $row->COL_MODE;
+			
 			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
 				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
-				if (!isset($grid_callsigns[$grid_4char])) {
-					$grid_callsigns[$grid_4char] = $row->COL_CALL;
+				if (!isset($grid_data[$grid_4char])) {
+					$grid_data[$grid_4char] = array(
+						'callsign' => $row->COL_CALL,
+						'mode' => $mode
+					);
 				}
 			}
 			
@@ -396,8 +408,11 @@ class Monthlyreport_model extends CI_Model {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
 						$grid_4char = strtoupper(substr($grid, 0, 4));
-						if (!isset($grid_callsigns[$grid_4char])) {
-							$grid_callsigns[$grid_4char] = $row->COL_CALL;
+						if (!isset($grid_data[$grid_4char])) {
+							$grid_data[$grid_4char] = array(
+								'callsign' => $row->COL_CALL,
+								'mode' => $mode
+							);
 						}
 					}
 				}
@@ -405,9 +420,13 @@ class Monthlyreport_model extends CI_Model {
 		}
 		
 		// Check each grid to see if it's new
-		foreach ($grid_callsigns as $grid => $callsign) {
+		foreach ($grid_data as $grid => $data) {
 			if ($this->is_grid_new($locations, $grid, $start_date)) {
-				$new_grids[] = array('grid' => $grid, 'callsign' => $callsign);
+				$new_grids[] = array(
+					'grid' => $grid,
+					'callsign' => $data['callsign'],
+					'mode' => $data['mode']
+				);
 			}
 		}
 		
@@ -426,7 +445,7 @@ class Monthlyreport_model extends CI_Model {
 		$new_grids = array();
 		
 		// Get all gridsquares worked this month with this prop mode
-		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON');
+		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON, COL_SAT_NAME, COL_MODE, COL_SUBMODE');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
@@ -435,14 +454,20 @@ class Monthlyreport_model extends CI_Model {
 		$this->db->order_by('COL_TIME_ON', 'ASC');
 		
 		$query = $this->db->get();
-		$grid_callsigns = array();
+		$grid_data = array();
 		
 		foreach ($query->result() as $row) {
+			$mode = !empty($row->COL_SUBMODE) ? $row->COL_SUBMODE : $row->COL_MODE;
+			
 			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
 				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
-				if (!isset($grid_callsigns[$grid_4char])) {
-					$grid_callsigns[$grid_4char] = $row->COL_CALL;
+				if (!isset($grid_data[$grid_4char])) {
+					$grid_data[$grid_4char] = array(
+						'callsign' => $row->COL_CALL,
+						'satellite' => !empty($row->COL_SAT_NAME) ? $row->COL_SAT_NAME : '',
+						'mode' => $mode
+					);
 				}
 			}
 			
@@ -453,8 +478,12 @@ class Monthlyreport_model extends CI_Model {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
 						$grid_4char = strtoupper(substr($grid, 0, 4));
-						if (!isset($grid_callsigns[$grid_4char])) {
-							$grid_callsigns[$grid_4char] = $row->COL_CALL;
+						if (!isset($grid_data[$grid_4char])) {
+							$grid_data[$grid_4char] = array(
+								'callsign' => $row->COL_CALL,
+								'satellite' => !empty($row->COL_SAT_NAME) ? $row->COL_SAT_NAME : '',
+								'mode' => $mode
+							);
 						}
 					}
 				}
@@ -462,9 +491,14 @@ class Monthlyreport_model extends CI_Model {
 		}
 		
 		// Check each grid to see if it's new for this prop mode
-		foreach ($grid_callsigns as $grid => $callsign) {
+		foreach ($grid_data as $grid => $data) {
 			if ($this->is_grid_new_for_prop($locations, $grid, $start_date, $prop_mode)) {
-				$new_grids[] = array('grid' => $grid, 'callsign' => $callsign);
+				$new_grids[] = array(
+					'grid' => $grid,
+					'callsign' => $data['callsign'],
+					'satellite' => $data['satellite'],
+					'mode' => $data['mode']
+				);
 			}
 		}
 		
@@ -483,7 +517,7 @@ class Monthlyreport_model extends CI_Model {
 		$new_grids = array();
 		
 		// Get all gridsquares worked this month via HF
-		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON');
+		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON, COL_MODE, COL_SUBMODE');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
@@ -492,14 +526,19 @@ class Monthlyreport_model extends CI_Model {
 		$this->db->order_by('COL_TIME_ON', 'ASC');
 		
 		$query = $this->db->get();
-		$grid_callsigns = array();
+		$grid_data = array();
 		
 		foreach ($query->result() as $row) {
+			$mode = !empty($row->COL_SUBMODE) ? $row->COL_SUBMODE : $row->COL_MODE;
+			
 			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
 				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
-				if (!isset($grid_callsigns[$grid_4char])) {
-					$grid_callsigns[$grid_4char] = $row->COL_CALL;
+				if (!isset($grid_data[$grid_4char])) {
+					$grid_data[$grid_4char] = array(
+						'callsign' => $row->COL_CALL,
+						'mode' => $mode
+					);
 				}
 			}
 			
@@ -510,8 +549,11 @@ class Monthlyreport_model extends CI_Model {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
 						$grid_4char = strtoupper(substr($grid, 0, 4));
-						if (!isset($grid_callsigns[$grid_4char])) {
-							$grid_callsigns[$grid_4char] = $row->COL_CALL;
+						if (!isset($grid_data[$grid_4char])) {
+							$grid_data[$grid_4char] = array(
+								'callsign' => $row->COL_CALL,
+								'mode' => $mode
+							);
 						}
 					}
 				}
@@ -519,9 +561,13 @@ class Monthlyreport_model extends CI_Model {
 		}
 		
 		// Check each grid to see if it's new for HF
-		foreach ($grid_callsigns as $grid => $callsign) {
+		foreach ($grid_data as $grid => $data) {
 			if ($this->is_grid_new_for_hf($locations, $grid, $start_date)) {
-				$new_grids[] = array('grid' => $grid, 'callsign' => $callsign);
+				$new_grids[] = array(
+					'grid' => $grid,
+					'callsign' => $data['callsign'],
+					'mode' => $data['mode']
+				);
 			}
 		}
 		
@@ -674,6 +720,32 @@ class Monthlyreport_model extends CI_Model {
 		$query = $this->db->get();
 		$row = $query->row();
 		return $row ? (int)$row->count : 0;
+	}
+
+	/**
+	 * Get breakdown of QSOs per satellite
+	 */
+	private function get_satellite_breakdown($locations, $start_date, $end_date) {
+		$satellites = array();
+		
+		$this->db->select('COL_SAT_NAME, COUNT(*) as count');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where_in('station_id', $locations);
+		$this->db->where('COL_TIME_ON >=', $start_date);
+		$this->db->where('COL_TIME_ON <=', $end_date);
+		$this->db->where('COL_PROP_MODE', 'SAT');
+		$this->db->where('COL_SAT_NAME IS NOT NULL');
+		$this->db->where('COL_SAT_NAME !=', '');
+		$this->db->group_by('COL_SAT_NAME');
+		$this->db->order_by('count', 'DESC');
+		
+		$query = $this->db->get();
+		
+		foreach ($query->result() as $row) {
+			$satellites[$row->COL_SAT_NAME] = (int)$row->count;
+		}
+		
+		return $satellites;
 	}
 
 	/**

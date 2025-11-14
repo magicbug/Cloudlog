@@ -127,10 +127,16 @@
 					<h6 class="text-muted"><i class="fas fa-signal"></i> <?php echo $band; ?> (<?php echo count($dxcc_list); ?> new)</h6>
 					<div class="row">
 						<?php foreach ($dxcc_list as $dxcc) { ?>
-							<div class="col-md-4 mb-2">
-								<span class="badge bg-success fs-6">
-									<i class="fas fa-star"></i> <?php echo $dxcc['name']; ?><?php if (!empty($dxcc['callsign'])) echo ' (' . $dxcc['callsign'] . ')'; ?>
-								</span>
+							<div class="col-md-6 col-lg-4 mb-2">
+								<div class="d-flex align-items-center">
+									<span class="badge bg-success me-2">
+										<i class="fas fa-star"></i> <?php echo $dxcc['name']; ?>
+									</span>
+									<small class="text-muted">
+										<?php echo $dxcc['callsign']; ?>
+										<?php if (!empty($dxcc['mode'])) echo ' • ' . $dxcc['mode']; ?>
+									</small>
+								</div>
 							</div>
 						<?php } ?>
 					</div>
@@ -195,8 +201,14 @@
 				<h6 class="text-muted"><i class="fas fa-tower-broadcast"></i> HF/VHF Terrestrial (<?php echo count($report['new_grids_hf']); ?>)</h6>
 				<div class="row">
 					<?php foreach ($report['new_grids_hf'] as $grid) { ?>
-						<div class="col-md-3 col-sm-4 col-6 mb-2">
-							<span class="badge bg-primary fs-6"><?php echo $grid['grid']; ?> (<?php echo $grid['callsign']; ?>)</span>
+						<div class="col-md-4 col-lg-3 mb-2">
+							<div class="d-flex align-items-center">
+								<span class="badge bg-primary me-2"><?php echo $grid['grid']; ?></span>
+								<small class="text-muted">
+									<?php echo $grid['callsign']; ?>
+									<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
+								</small>
+							</div>
 						</div>
 					<?php } ?>
 				</div>
@@ -208,8 +220,15 @@
 				<h6 class="text-muted"><i class="fas fa-satellite-dish"></i> Satellite (<?php echo count($report['new_grids_satellite']); ?>)</h6>
 				<div class="row">
 					<?php foreach ($report['new_grids_satellite'] as $grid) { ?>
-						<div class="col-md-3 col-sm-4 col-6 mb-2">
-							<span class="badge bg-success fs-6"><?php echo $grid['grid']; ?> (<?php echo $grid['callsign']; ?>)</span>
+						<div class="col-md-6 col-lg-4 mb-2">
+							<div class="d-flex align-items-center">
+								<span class="badge bg-success me-2"><?php echo $grid['grid']; ?></span>
+								<small class="text-muted">
+									<?php echo $grid['callsign']; ?>
+									<?php if (!empty($grid['satellite'])) echo ' • ' . $grid['satellite']; ?>
+									<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
+								</small>
+							</div>
 						</div>
 					<?php } ?>
 				</div>
@@ -221,8 +240,14 @@
 				<h6 class="text-muted"><i class="fas fa-moon"></i> EME (Moonbounce) (<?php echo count($report['new_grids_eme']); ?>)</h6>
 				<div class="row">
 					<?php foreach ($report['new_grids_eme'] as $grid) { ?>
-						<div class="col-md-3 col-sm-4 col-6 mb-2">
-							<span class="badge bg-warning text-dark fs-6"><?php echo $grid['grid']; ?> (<?php echo $grid['callsign']; ?>)</span>
+						<div class="col-md-4 col-lg-3 mb-2">
+							<div class="d-flex align-items-center">
+								<span class="badge bg-warning text-dark me-2"><?php echo $grid['grid']; ?></span>
+								<small class="text-muted">
+									<?php echo $grid['callsign']; ?>
+									<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
+								</small>
+							</div>
 						</div>
 					<?php } ?>
 				</div>
@@ -303,6 +328,37 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Satellite Breakdown -->
+	<?php if (!empty($report['satellite_breakdown'])) { ?>
+	<div class="card mb-4">
+		<div class="card-header">
+			<h5 class="mb-0"><i class="fas fa-satellite"></i> Satellites Worked (<?php echo count($report['satellite_breakdown']); ?>)</h5>
+		</div>
+		<div class="card-body">
+			<table class="table table-sm table-hover">
+				<thead class="table-light">
+					<tr>
+						<th>Satellite</th>
+						<th class="text-end">QSOs</th>
+						<th class="text-end">% of Satellite QSOs</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($report['satellite_breakdown'] as $satellite => $count) { 
+						$percentage = ($report['satellite_qsos'] > 0) ? round(($count / $report['satellite_qsos']) * 100, 1) : 0;
+					?>
+						<tr>
+							<td><strong><?php echo $satellite; ?></strong></td>
+							<td class="text-end"><?php echo number_format($count); ?></td>
+							<td class="text-end"><span class="badge bg-success"><?php echo $percentage; ?>%</span></td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<?php } ?>
 
 	<!-- Continental Distribution -->
 	<?php if (!empty($report['continents'])) { ?>
