@@ -144,8 +144,7 @@ class Monthlyreport_model extends CI_Model {
 		$new_dxcc = array();
 		
 		// Get all unique DXCC entities worked this month (group by DXCC)
-		$this->db->distinct();
-		$this->db->select('COL_DXCC, COL_COUNTRY');
+		$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY', FALSE);
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
@@ -203,8 +202,7 @@ class Monthlyreport_model extends CI_Model {
 			$new_dxcc_by_band[$band] = array();
 			
 			// Get all unique DXCC entities worked on this band this month (group by DXCC)
-			$this->db->distinct();
-			$this->db->select('COL_DXCC, COL_COUNTRY');
+			$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY', FALSE);
 			$this->db->from($this->config->item('table_name'));
 			$this->db->where_in('station_id', $locations);
 			$this->db->where('COL_TIME_ON >=', $start_date);
@@ -256,8 +254,7 @@ class Monthlyreport_model extends CI_Model {
 		$new_dxcc = array();
 		
 		// Get all unique DXCC entities worked this month via this prop mode (group by DXCC)
-		$this->db->distinct();
-		$this->db->select('COL_DXCC, COL_COUNTRY');
+		$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY', FALSE);
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
