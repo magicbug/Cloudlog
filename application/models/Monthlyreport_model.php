@@ -19,6 +19,10 @@ class Monthlyreport_model extends CI_Model {
 		// Calculate previous month end date for "new" calculations
 		$prev_month_end = date('Y-m-d 23:59:59', strtotime($start_date . ' -1 day'));
 		
+		// PERFORMANCE OPTIMIZATION: Pre-load all historical data for "new" checks
+		// This reduces hundreds of queries to just a few
+		$this->build_historical_caches($logbooks_locations_array, $start_date);
+		
 		$report = array(
 			'total_qsos' => $this->get_total_qsos($logbooks_locations_array, $start_date, $end_date),
 			'unique_callsigns' => $this->get_unique_callsigns($logbooks_locations_array, $start_date, $end_date),
@@ -53,6 +57,62 @@ class Monthlyreport_model extends CI_Model {
 		}
 		
 		return $report;
+	}
+
+	// Cache variables for historical data lookups
+	private $historical_grids = array();
+	private $historical_grids_by_prop = array();
+	private $historical_grids_hf = array();
+
+	/**
+	 * Build historical caches for fast "new" checks
+	 * This prevents hundreds of individual queries
+	 */
+	private function build_historical_caches($locations, $start_date) {
+		// Get ALL historical gridsquares (before this month)
+		$this->db->select('COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_PROP_MODE');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where_in('station_id', $locations);
+		$this->db->where('COL_TIME_ON <', $start_date);
+		$this->db->where("(COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != '') OR (COL_VUCC_GRIDS IS NOT NULL AND COL_VUCC_GRIDS != '')");
+		
+		$query = $this->db->get();
+		
+		foreach ($query->result() as $row) {
+			$prop_mode = !empty($row->COL_PROP_MODE) ? $row->COL_PROP_MODE : '';
+			
+			// Process main gridsquare
+			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
+				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
+				$this->historical_grids[$grid_4char] = true;
+				
+				// Track by prop mode
+				if ($prop_mode === 'SAT' || $prop_mode === 'EME') {
+					$this->historical_grids_by_prop[$prop_mode][$grid_4char] = true;
+				} else {
+					$this->historical_grids_hf[$grid_4char] = true;
+				}
+			}
+			
+			// Process VUCC grids
+			if (!empty($row->COL_VUCC_GRIDS)) {
+				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
+				foreach ($vucc_grids as $grid) {
+					$grid = trim($grid);
+					if (strlen($grid) >= 4) {
+						$grid_4char = strtoupper(substr($grid, 0, 4));
+						$this->historical_grids[$grid_4char] = true;
+						
+						// Track by prop mode
+						if ($prop_mode === 'SAT' || $prop_mode === 'EME') {
+							$this->historical_grids_by_prop[$prop_mode][$grid_4char] = true;
+						} else {
+							$this->historical_grids_hf[$grid_4char] = true;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -477,124 +537,24 @@ class Monthlyreport_model extends CI_Model {
 	 * Check if a grid is new (never worked before)
 	 */
 	private function is_grid_new($locations, $grid, $start_date) {
-		// Check if grid exists in COL_GRIDSQUARE (first 4 chars match)
-		$this->db->select('COUNT(*) as count');
-		$this->db->from($this->config->item('table_name'));
-		$this->db->where_in('station_id', $locations);
-		$this->db->where('COL_TIME_ON <', $start_date);
-		$this->db->where('UPPER(SUBSTR(COL_GRIDSQUARE, 1, 4)) =', strtoupper($grid));
-		
-		$query = $this->db->get();
-		if ($query->row()->count > 0) {
-			return false;
-		}
-		
-		// Check if grid exists in COL_VUCC_GRIDS
-		$this->db->select('COL_VUCC_GRIDS');
-		$this->db->from($this->config->item('table_name'));
-		$this->db->where_in('station_id', $locations);
-		$this->db->where('COL_TIME_ON <', $start_date);
-		$this->db->where('COL_VUCC_GRIDS IS NOT NULL');
-		$this->db->where('COL_VUCC_GRIDS !=', '');
-		
-		$query = $this->db->get();
-		foreach ($query->result() as $row) {
-			if (!empty($row->COL_VUCC_GRIDS)) {
-				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
-				foreach ($vucc_grids as $vucc_grid) {
-					$vucc_grid_4char = strtoupper(substr(trim($vucc_grid), 0, 4));
-					if ($vucc_grid_4char === strtoupper($grid)) {
-						return false;
-					}
-				}
-			}
-		}
-		
-		return true;
+		// Use pre-built cache for instant lookup
+		return !isset($this->historical_grids[strtoupper($grid)]);
 	}
 
 	/**
 	 * Check if a grid is new for a specific propagation mode
 	 */
 	private function is_grid_new_for_prop($locations, $grid, $start_date, $prop_mode) {
-		// Check if grid exists in COL_GRIDSQUARE (first 4 chars match) with prop mode
-		$this->db->select('COUNT(*) as count');
-		$this->db->from($this->config->item('table_name'));
-		$this->db->where_in('station_id', $locations);
-		$this->db->where('COL_TIME_ON <', $start_date);
-		$this->db->where('COL_PROP_MODE', $prop_mode);
-		$this->db->where('UPPER(SUBSTR(COL_GRIDSQUARE, 1, 4)) =', strtoupper($grid));
-		
-		$query = $this->db->get();
-		if ($query->row()->count > 0) {
-			return false;
-		}
-		
-		// Check if grid exists in COL_VUCC_GRIDS with prop mode
-		$this->db->select('COL_VUCC_GRIDS');
-		$this->db->from($this->config->item('table_name'));
-		$this->db->where_in('station_id', $locations);
-		$this->db->where('COL_TIME_ON <', $start_date);
-		$this->db->where('COL_PROP_MODE', $prop_mode);
-		$this->db->where('COL_VUCC_GRIDS IS NOT NULL');
-		$this->db->where('COL_VUCC_GRIDS !=', '');
-		
-		$query = $this->db->get();
-		foreach ($query->result() as $row) {
-			if (!empty($row->COL_VUCC_GRIDS)) {
-				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
-				foreach ($vucc_grids as $vucc_grid) {
-					$vucc_grid_4char = strtoupper(substr(trim($vucc_grid), 0, 4));
-					if ($vucc_grid_4char === strtoupper($grid)) {
-						return false;
-					}
-				}
-			}
-		}
-		
-		return true;
+		// Use pre-built cache for instant lookup
+		return !isset($this->historical_grids_by_prop[$prop_mode][strtoupper($grid)]);
 	}
 
 	/**
 	 * Check if a grid is new for HF (non-SAT, non-EME)
 	 */
 	private function is_grid_new_for_hf($locations, $grid, $start_date) {
-		// Check if grid exists in COL_GRIDSQUARE (first 4 chars match) for HF
-		$this->db->select('COUNT(*) as count');
-		$this->db->from($this->config->item('table_name'));
-		$this->db->where_in('station_id', $locations);
-		$this->db->where('COL_TIME_ON <', $start_date);
-		$this->db->where("(COL_PROP_MODE IS NULL OR COL_PROP_MODE = '' OR COL_PROP_MODE NOT IN ('SAT','EME'))");
-		$this->db->where('UPPER(SUBSTR(COL_GRIDSQUARE, 1, 4)) =', strtoupper($grid));
-		
-		$query = $this->db->get();
-		if ($query->row()->count > 0) {
-			return false;
-		}
-		
-		// Check if grid exists in COL_VUCC_GRIDS for HF
-		$this->db->select('COL_VUCC_GRIDS');
-		$this->db->from($this->config->item('table_name'));
-		$this->db->where_in('station_id', $locations);
-		$this->db->where('COL_TIME_ON <', $start_date);
-		$this->db->where("(COL_PROP_MODE IS NULL OR COL_PROP_MODE = '' OR COL_PROP_MODE NOT IN ('SAT','EME'))");
-		$this->db->where('COL_VUCC_GRIDS IS NOT NULL');
-		$this->db->where('COL_VUCC_GRIDS !=', '');
-		
-		$query = $this->db->get();
-		foreach ($query->result() as $row) {
-			if (!empty($row->COL_VUCC_GRIDS)) {
-				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
-				foreach ($vucc_grids as $vucc_grid) {
-					$vucc_grid_4char = strtoupper(substr(trim($vucc_grid), 0, 4));
-					if ($vucc_grid_4char === strtoupper($grid)) {
-						return false;
-					}
-				}
-			}
-		}
-		
-		return true;
+		// Use pre-built cache for instant lookup
+		return !isset($this->historical_grids_hf[strtoupper($grid)]);
 	}
 
 	/**
