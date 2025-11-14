@@ -143,8 +143,10 @@ class Monthlyreport extends CI_Controller {
 		);
 		
 		// Set headers for JSON download
+		$filename = "monthly_report_{$year}_{$month}.json";
 		$this->output
 			->set_content_type('application/json')
+			->set_header('Content-Disposition: attachment; filename="' . $filename . '"')
 			->set_output(json_encode($export, JSON_PRETTY_PRINT));
 	}
 

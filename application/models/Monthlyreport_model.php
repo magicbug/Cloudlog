@@ -201,8 +201,8 @@ class Monthlyreport_model extends CI_Model {
 			$band = $band_row->COL_BAND;
 			$new_dxcc_by_band[$band] = array();
 			
-			// Get all unique DXCC entities worked on this band this month (group by DXCC)
-			$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY', FALSE);
+			// Get all unique DXCC entities worked on this band this month (group by DXCC, get earliest callsign)
+			$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY, MIN(COL_TIME_ON) as FIRST_QSO', FALSE);
 			$this->db->from($this->config->item('table_name'));
 			$this->db->where_in('station_id', $locations);
 			$this->db->where('COL_TIME_ON >=', $start_date);
@@ -228,9 +228,22 @@ class Monthlyreport_model extends CI_Model {
 				
 				// If not worked before on this band, it's new
 				if ($prev_row->count == 0) {
+					// Get the callsign from the first QSO with this DXCC on this band
+					$this->db->select('COL_CALL');
+					$this->db->from($this->config->item('table_name'));
+					$this->db->where_in('station_id', $locations);
+					$this->db->where('COL_DXCC', $row->COL_DXCC);
+					$this->db->where('COL_BAND', $band);
+					$this->db->where('COL_TIME_ON', $row->FIRST_QSO);
+					$this->db->limit(1);
+					
+					$call_query = $this->db->get();
+					$call_row = $call_query->row();
+					
 					$new_dxcc_by_band[$band][] = array(
 						'dxcc_id' => $row->COL_DXCC,
-						'name' => $row->COL_COUNTRY
+						'name' => $row->COL_COUNTRY,
+						'callsign' => $call_row ? $call_row->COL_CALL : ''
 					);
 				}
 			}
@@ -297,20 +310,23 @@ class Monthlyreport_model extends CI_Model {
 		$new_grids = array();
 		
 		// Get all gridsquares worked this month (including VUCC grids)
-		$this->db->select('COL_GRIDSQUARE, COL_VUCC_GRIDS');
+		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
 		$this->db->where('COL_TIME_ON <=', $end_date);
+		$this->db->order_by('COL_TIME_ON', 'ASC');
 		
 		$query = $this->db->get();
-		$all_grids = array();
+		$grid_callsigns = array();
 		
 		foreach ($query->result() as $row) {
 			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
 				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
-				$all_grids[$grid_4char] = true;
+				if (!isset($grid_callsigns[$grid_4char])) {
+					$grid_callsigns[$grid_4char] = $row->COL_CALL;
+				}
 			}
 			
 			// Process VUCC grids (comma-separated, first 4 characters only)
@@ -320,16 +336,18 @@ class Monthlyreport_model extends CI_Model {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
 						$grid_4char = strtoupper(substr($grid, 0, 4));
-						$all_grids[$grid_4char] = true;
+						if (!isset($grid_callsigns[$grid_4char])) {
+							$grid_callsigns[$grid_4char] = $row->COL_CALL;
+						}
 					}
 				}
 			}
 		}
 		
 		// Check each grid to see if it's new
-		foreach (array_keys($all_grids) as $grid) {
+		foreach ($grid_callsigns as $grid => $callsign) {
 			if ($this->is_grid_new($locations, $grid, $start_date)) {
-				$new_grids[] = array('grid' => $grid);
+				$new_grids[] = array('grid' => $grid, 'callsign' => $callsign);
 			}
 		}
 		
@@ -348,21 +366,24 @@ class Monthlyreport_model extends CI_Model {
 		$new_grids = array();
 		
 		// Get all gridsquares worked this month with this prop mode
-		$this->db->select('COL_GRIDSQUARE, COL_VUCC_GRIDS');
+		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
 		$this->db->where('COL_TIME_ON <=', $end_date);
 		$this->db->where('COL_PROP_MODE', $prop_mode);
+		$this->db->order_by('COL_TIME_ON', 'ASC');
 		
 		$query = $this->db->get();
-		$all_grids = array();
+		$grid_callsigns = array();
 		
 		foreach ($query->result() as $row) {
 			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
 				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
-				$all_grids[$grid_4char] = true;
+				if (!isset($grid_callsigns[$grid_4char])) {
+					$grid_callsigns[$grid_4char] = $row->COL_CALL;
+				}
 			}
 			
 			// Process VUCC grids (first 4 characters only)
@@ -372,16 +393,18 @@ class Monthlyreport_model extends CI_Model {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
 						$grid_4char = strtoupper(substr($grid, 0, 4));
-						$all_grids[$grid_4char] = true;
+						if (!isset($grid_callsigns[$grid_4char])) {
+							$grid_callsigns[$grid_4char] = $row->COL_CALL;
+						}
 					}
 				}
 			}
 		}
 		
 		// Check each grid to see if it's new for this prop mode
-		foreach (array_keys($all_grids) as $grid) {
+		foreach ($grid_callsigns as $grid => $callsign) {
 			if ($this->is_grid_new_for_prop($locations, $grid, $start_date, $prop_mode)) {
-				$new_grids[] = array('grid' => $grid);
+				$new_grids[] = array('grid' => $grid, 'callsign' => $callsign);
 			}
 		}
 		
@@ -400,21 +423,24 @@ class Monthlyreport_model extends CI_Model {
 		$new_grids = array();
 		
 		// Get all gridsquares worked this month via HF
-		$this->db->select('COL_GRIDSQUARE, COL_VUCC_GRIDS');
+		$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
 		$this->db->where('COL_TIME_ON <=', $end_date);
 		$this->db->where("(COL_PROP_MODE IS NULL OR COL_PROP_MODE = '' OR COL_PROP_MODE NOT IN ('SAT','EME'))");
+		$this->db->order_by('COL_TIME_ON', 'ASC');
 		
 		$query = $this->db->get();
-		$all_grids = array();
+		$grid_callsigns = array();
 		
 		foreach ($query->result() as $row) {
 			// Process main gridsquare (first 4 characters only)
 			if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
 				$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
-				$all_grids[$grid_4char] = true;
+				if (!isset($grid_callsigns[$grid_4char])) {
+					$grid_callsigns[$grid_4char] = $row->COL_CALL;
+				}
 			}
 			
 			// Process VUCC grids (first 4 characters only)
@@ -424,16 +450,18 @@ class Monthlyreport_model extends CI_Model {
 					$grid = trim($grid);
 					if (strlen($grid) >= 4) {
 						$grid_4char = strtoupper(substr($grid, 0, 4));
-						$all_grids[$grid_4char] = true;
+						if (!isset($grid_callsigns[$grid_4char])) {
+							$grid_callsigns[$grid_4char] = $row->COL_CALL;
+						}
 					}
 				}
 			}
 		}
 		
 		// Check each grid to see if it's new for HF
-		foreach (array_keys($all_grids) as $grid) {
+		foreach ($grid_callsigns as $grid => $callsign) {
 			if ($this->is_grid_new_for_hf($locations, $grid, $start_date)) {
-				$new_grids[] = array('grid' => $grid);
+				$new_grids[] = array('grid' => $grid, 'callsign' => $callsign);
 			}
 		}
 		

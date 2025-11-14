@@ -129,7 +129,7 @@
 						<?php foreach ($dxcc_list as $dxcc) { ?>
 							<div class="col-md-4 mb-2">
 								<span class="badge bg-success fs-6">
-									<i class="fas fa-star"></i> <?php echo $dxcc['name']; ?>
+									<i class="fas fa-star"></i> <?php echo $dxcc['name']; ?><?php if (!empty($dxcc['callsign'])) echo ' (' . $dxcc['callsign'] . ')'; ?>
 								</span>
 							</div>
 						<?php } ?>
@@ -195,8 +195,8 @@
 				<h6 class="text-muted"><i class="fas fa-tower-broadcast"></i> HF/VHF Terrestrial (<?php echo count($report['new_grids_hf']); ?>)</h6>
 				<div class="row">
 					<?php foreach ($report['new_grids_hf'] as $grid) { ?>
-						<div class="col-md-2 col-sm-3 col-6 mb-2">
-							<span class="badge bg-info fs-6"><?php echo $grid['grid']; ?></span>
+						<div class="col-md-3 col-sm-4 col-6 mb-2">
+							<span class="badge bg-primary fs-6"><?php echo $grid['grid']; ?> (<?php echo $grid['callsign']; ?>)</span>
 						</div>
 					<?php } ?>
 				</div>
@@ -208,8 +208,8 @@
 				<h6 class="text-muted"><i class="fas fa-satellite-dish"></i> Satellite (<?php echo count($report['new_grids_satellite']); ?>)</h6>
 				<div class="row">
 					<?php foreach ($report['new_grids_satellite'] as $grid) { ?>
-						<div class="col-md-2 col-sm-3 col-6 mb-2">
-							<span class="badge bg-success fs-6"><?php echo $grid['grid']; ?></span>
+						<div class="col-md-3 col-sm-4 col-6 mb-2">
+							<span class="badge bg-success fs-6"><?php echo $grid['grid']; ?> (<?php echo $grid['callsign']; ?>)</span>
 						</div>
 					<?php } ?>
 				</div>
@@ -221,8 +221,8 @@
 				<h6 class="text-muted"><i class="fas fa-moon"></i> EME (Moonbounce) (<?php echo count($report['new_grids_eme']); ?>)</h6>
 				<div class="row">
 					<?php foreach ($report['new_grids_eme'] as $grid) { ?>
-						<div class="col-md-2 col-sm-3 col-6 mb-2">
-							<span class="badge bg-warning text-dark fs-6"><?php echo $grid['grid']; ?></span>
+						<div class="col-md-3 col-sm-4 col-6 mb-2">
+							<span class="badge bg-warning text-dark fs-6"><?php echo $grid['grid']; ?> (<?php echo $grid['callsign']; ?>)</span>
 						</div>
 					<?php } ?>
 				</div>
