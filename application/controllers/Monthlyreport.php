@@ -121,6 +121,7 @@ class Monthlyreport extends CI_Controller {
 				'new_countries_satellite' => $report['new_dxcc_satellite'],
 				'new_countries_eme' => $report['new_dxcc_eme'],
 				'new_gridsquares' => $report['new_grids'],
+				'new_gridsquares_by_band' => $report['new_grids_by_band'],
 				'new_gridsquares_hf' => $report['new_grids_hf'],
 				'new_gridsquares_satellite' => $report['new_grids_satellite'],
 				'new_gridsquares_eme' => $report['new_grids_eme'],
@@ -129,7 +130,8 @@ class Monthlyreport extends CI_Controller {
 				'bands_used' => $report['bands'],
 				'continents_worked' => $report['continents'],
 				'satellite_qsos' => $report['satellite_qsos'],
-				'eme_qsos' => $report['eme_qsos']
+				'eme_qsos' => $report['eme_qsos'],
+				'satellite_breakdown' => $report['satellite_breakdown']
 			),
 			'statistics' => array(
 				'qsos_per_day' => round($report['total_qsos'] / date('t', strtotime("$year-$month-01")), 2),
@@ -202,7 +204,15 @@ class Monthlyreport extends CI_Controller {
 			foreach ($report['new_dxcc_by_band'] as $band => $dxcc_list) {
 				$text .= "\n{$band} (" . count($dxcc_list) . " new):\n";
 				foreach ($dxcc_list as $dxcc) {
-					$text .= "  - {$dxcc['name']}\n";
+					$text .= "  - {$dxcc['name']}";
+					if (!empty($dxcc['callsign'])) {
+						$text .= " (worked {$dxcc['callsign']}";
+						if (!empty($dxcc['mode'])) {
+							$text .= " on {$dxcc['mode']}";
+						}
+						$text .= ")";
+					}
+					$text .= "\n";
 				}
 			}
 			$text .= "\n";
@@ -212,7 +222,15 @@ class Monthlyreport extends CI_Controller {
 			$text .= "NEW COUNTRIES VIA SATELLITE\n";
 			$text .= "---------------------------\n";
 			foreach ($report['new_dxcc_satellite'] as $dxcc) {
-				$text .= "- {$dxcc['name']}\n";
+				$text .= "- {$dxcc['name']}";
+				if (!empty($dxcc['callsign'])) {
+					$text .= " (worked {$dxcc['callsign']}";
+					if (!empty($dxcc['mode'])) {
+						$text .= " on {$dxcc['mode']}";
+					}
+					$text .= ")";
+				}
+				$text .= "\n";
 			}
 			$text .= "\n";
 		}
@@ -221,7 +239,15 @@ class Monthlyreport extends CI_Controller {
 			$text .= "NEW COUNTRIES VIA EME (MOONBOUNCE)\n";
 			$text .= "----------------------------------\n";
 			foreach ($report['new_dxcc_eme'] as $dxcc) {
-				$text .= "- {$dxcc['name']}\n";
+				$text .= "- {$dxcc['name']}";
+				if (!empty($dxcc['callsign'])) {
+					$text .= " (worked {$dxcc['callsign']}";
+					if (!empty($dxcc['mode'])) {
+						$text .= " on {$dxcc['mode']}";
+					}
+					$text .= ")";
+				}
+				$text .= "\n";
 			}
 			$text .= "\n";
 		}
@@ -230,37 +256,27 @@ class Monthlyreport extends CI_Controller {
 			$text .= "NEW GRIDSQUARES THIS MONTH\n";
 			$text .= "--------------------------\n";
 			
-			if (count($report['new_grids_hf']) > 0) {
-				$text .= "HF/VHF Terrestrial (" . count($report['new_grids_hf']) . "):\n";
-				$grids_per_line = 10;
-				$grid_list = array_column($report['new_grids_hf'], 'grid');
-				for ($i = 0; $i < count($grid_list); $i += $grids_per_line) {
-					$text .= implode(', ', array_slice($grid_list, $i, $grids_per_line)) . "\n";
-				}
-				$text .= "\n";
-			}
-			
-			if (count($report['new_grids_satellite']) > 0) {
-				$text .= "Satellite (" . count($report['new_grids_satellite']) . "):\n";
-				$grids_per_line = 10;
-				$grid_list = array_column($report['new_grids_satellite'], 'grid');
-				for ($i = 0; $i < count($grid_list); $i += $grids_per_line) {
-					$text .= implode(', ', array_slice($grid_list, $i, $grids_per_line)) . "\n";
-				}
-				$text .= "\n";
-			}
-			
-			if (count($report['new_grids_eme']) > 0) {
-				$text .= "EME (Moonbounce) (" . count($report['new_grids_eme']) . "):\n";
-				$grids_per_line = 10;
-				$grid_list = array_column($report['new_grids_eme'], 'grid');
-				for ($i = 0; $i < count($grid_list); $i += $grids_per_line) {
-					$text .= implode(', ', array_slice($grid_list, $i, $grids_per_line)) . "\n";
+			if (!empty($report['new_grids_by_band'])) {
+				foreach ($report['new_grids_by_band'] as $band => $grids_list) {
+					$text .= "\n{$band} (" . count($grids_list) . " new):\n";
+					foreach ($grids_list as $grid) {
+						$text .= "  {$grid['grid']}";
+						if (!empty($grid['callsign'])) {
+							$text .= " ({$grid['callsign']}";
+							if (!empty($grid['satellite'])) {
+								$text .= " via {$grid['satellite']}";
+							}
+							if (!empty($grid['mode'])) {
+								$text .= " - {$grid['mode']}";
+							}
+							$text .= ")";
+						}
+						$text .= "\n";
+					}
 				}
 			}
-		}
-		
-		$text .= "MODES USED\n";
+			$text .= "\n";
+		}		$text .= "MODES USED\n";
 		$text .= "----------\n";
 		foreach ($report['modes'] as $mode => $count) {
 			$text .= sprintf("%-10s %d QSOs\n", $mode, $count);
@@ -295,7 +311,15 @@ class Monthlyreport extends CI_Controller {
 		if ($report['satellite_qsos'] > 0) {
 			$text .= "SATELLITE ACTIVITY\n";
 			$text .= "------------------\n";
-			$text .= "Total Satellite QSOs: {$report['satellite_qsos']}\n\n";
+			$text .= "Total Satellite QSOs: {$report['satellite_qsos']}\n";
+			
+			if (!empty($report['satellite_breakdown'])) {
+				$text .= "\nQSOs per Satellite:\n";
+				foreach ($report['satellite_breakdown'] as $sat) {
+					$text .= sprintf("  %-20s %3d QSOs (%s%%)\n", $sat['satellite'], $sat['qso_count'], $sat['percentage']);
+				}
+			}
+			$text .= "\n";
 		}
 		
 		if ($report['eme_qsos'] > 0) {

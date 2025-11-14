@@ -213,77 +213,99 @@
 	
 	<?php } // End of new countries section ?>
 
-	<!-- New Gridsquares -->
-	<?php if (count($report['new_grids']) > 0) { ?>
+	<!-- New Gridsquares by Band -->
+	<?php 
+	// Filter out Satellite and EME from band list to see if there's anything to display
+	$terrestrial_grids = array();
+	if (!empty($report['new_grids_by_band'])) {
+		foreach ($report['new_grids_by_band'] as $band => $grids_list) {
+			if ($band != 'Satellite' && $band != 'EME') {
+				$terrestrial_grids[$band] = $grids_list;
+			}
+		}
+	}
+	
+	if (!empty($terrestrial_grids)) { 
+	?>
 	<div class="card mb-4 border-info">
 		<div class="card-header bg-info bg-opacity-10 border-info">
-			<h5 class="mb-0"><i class="fas fa-th text-info"></i> New Gridsquares This Month</h5>
+			<h5 class="mb-0"><i class="fas fa-th text-info"></i> New Gridsquares by Band</h5>
 		</div>
 		<div class="card-body">
-			
-			<?php if (count($report['new_grids_hf']) > 0) { ?>
-			<div class="mb-4">
-				<h6 class="text-muted"><i class="fas fa-tower-broadcast"></i> HF/VHF Terrestrial (<?php echo count($report['new_grids_hf']); ?>)</h6>
-				<div class="row">
-					<?php foreach ($report['new_grids_hf'] as $grid) { ?>
-						<div class="col-md-4 col-lg-3 mb-2">
-							<div class="d-flex align-items-center">
-								<span class="badge bg-primary me-2"><?php echo $grid['grid']; ?></span>
-								<small class="text-muted">
-									<?php echo $grid['callsign']; ?>
-									<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
-								</small>
+			<?php 
+			// Bands already sorted in model
+			foreach ($terrestrial_grids as $band => $grids_list) { 
+				$icon = '<i class="fas fa-signal"></i>';
+			?>
+				<div class="mb-3">
+					<h6 class="text-muted"><?php echo $icon; ?> <?php echo $band; ?> (<?php echo count($grids_list); ?> new)</h6>
+					<div class="row">
+						<?php foreach ($grids_list as $grid) { ?>
+							<div class="col-md-4 col-lg-3 mb-2">
+								<div class="d-flex align-items-center">
+									<span class="badge bg-primary me-2"><?php echo $grid['grid']; ?></span>
+									<small class="text-muted">
+										<?php echo $grid['callsign']; ?>
+										<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
+									</small>
+								</div>
 							</div>
-						</div>
-					<?php } ?>
+						<?php } ?>
+					</div>
 				</div>
-			</div>
 			<?php } ?>
-
-			<?php if (count($report['new_grids_satellite']) > 0) { ?>
-			<div class="mb-4">
-				<h6 class="text-muted"><i class="fas fa-satellite-dish"></i> Satellite (<?php echo count($report['new_grids_satellite']); ?>)</h6>
-				<div class="row">
-					<?php foreach ($report['new_grids_satellite'] as $grid) { ?>
-						<div class="col-md-6 col-lg-4 mb-2">
-							<div class="d-flex align-items-center">
-								<span class="badge bg-success me-2"><?php echo $grid['grid']; ?></span>
-								<small class="text-muted">
-									<?php echo $grid['callsign']; ?>
-									<?php if (!empty($grid['satellite'])) echo ' • ' . $grid['satellite']; ?>
-									<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
-								</small>
-							</div>
-						</div>
-					<?php } ?>
-				</div>
-			</div>
-			<?php } ?>
-
-			<?php if (count($report['new_grids_eme']) > 0) { ?>
-			<div class="mb-3">
-				<h6 class="text-muted"><i class="fas fa-moon"></i> EME (Moonbounce) (<?php echo count($report['new_grids_eme']); ?>)</h6>
-				<div class="row">
-					<?php foreach ($report['new_grids_eme'] as $grid) { ?>
-						<div class="col-md-4 col-lg-3 mb-2">
-							<div class="d-flex align-items-center">
-								<span class="badge bg-warning text-dark me-2"><?php echo $grid['grid']; ?></span>
-								<small class="text-muted">
-									<?php echo $grid['callsign']; ?>
-									<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
-								</small>
-							</div>
-						</div>
-					<?php } ?>
-				</div>
-			</div>
-			<?php } ?>
-
 		</div>
 	</div>
 	<?php } ?>
 
-	<!-- Modes and Bands -->
+	<!-- New Gridsquares via Satellite -->
+	<?php if (count($report['new_grids_satellite']) > 0) { ?>
+	<div class="card mb-4 border-info">
+		<div class="card-header bg-info bg-opacity-10 border-info">
+			<h5 class="mb-0"><i class="fas fa-satellite-dish text-info"></i> New Gridsquares via Satellite (<?php echo count($report['new_grids_satellite']); ?>)</h5>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<?php foreach ($report['new_grids_satellite'] as $grid) { ?>
+					<div class="col-md-6 col-lg-4 mb-2">
+						<div class="d-flex align-items-center">
+							<span class="badge bg-success me-2"><?php echo $grid['grid']; ?></span>
+							<small class="text-muted">
+								<?php echo $grid['callsign']; ?>
+								<?php if (!empty($grid['satellite'])) echo ' • ' . $grid['satellite']; ?>
+								<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
+							</small>
+						</div>
+					</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+
+	<!-- New Gridsquares via EME -->
+	<?php if (count($report['new_grids_eme']) > 0) { ?>
+	<div class="card mb-4 border-info">
+		<div class="card-header bg-info bg-opacity-10 border-info">
+			<h5 class="mb-0"><i class="fas fa-moon text-info"></i> New Gridsquares via EME (Moonbounce) (<?php echo count($report['new_grids_eme']); ?>)</h5>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<?php foreach ($report['new_grids_eme'] as $grid) { ?>
+					<div class="col-md-4 col-lg-3 mb-2">
+						<div class="d-flex align-items-center">
+							<span class="badge bg-warning text-dark me-2"><?php echo $grid['grid']; ?></span>
+							<small class="text-muted">
+								<?php echo $grid['callsign']; ?>
+								<?php if (!empty($grid['mode'])) echo ' • ' . $grid['mode']; ?>
+							</small>
+						</div>
+					</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<?php } ?>	<!-- Modes and Bands -->
 	<div class="row mb-4">
 		<div class="col-md-6 mb-3">
 			<div class="card h-100">

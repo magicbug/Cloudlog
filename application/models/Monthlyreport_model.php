@@ -32,6 +32,7 @@ class Monthlyreport_model extends CI_Model {
 			'new_dxcc_satellite' => $this->get_new_dxcc_by_prop($logbooks_locations_array, $start_date, $end_date, $prev_month_end, 'SAT'),
 			'new_dxcc_eme' => $this->get_new_dxcc_by_prop($logbooks_locations_array, $start_date, $end_date, $prev_month_end, 'EME'),
 			'new_grids' => $this->get_new_gridsquares($logbooks_locations_array, $start_date, $end_date, $prev_month_end),
+			'new_grids_by_band' => $this->get_new_gridsquares_by_band($logbooks_locations_array, $start_date, $end_date, $prev_month_end),
 			'new_grids_satellite' => $this->get_new_gridsquares_by_prop($logbooks_locations_array, $start_date, $end_date, $prev_month_end, 'SAT'),
 			'new_grids_eme' => $this->get_new_gridsquares_by_prop($logbooks_locations_array, $start_date, $end_date, $prev_month_end, 'EME'),
 			'new_grids_hf' => $this->get_new_gridsquares_hf($logbooks_locations_array, $start_date, $end_date, $prev_month_end),
@@ -430,6 +431,152 @@ class Monthlyreport_model extends CI_Model {
 		}
 		
 		return $new_dxcc;
+	}
+
+	/**
+	 * Get new gridsquares by band
+	 */
+	private function get_new_gridsquares_by_band($locations, $start_date, $end_date, $prev_month_end) {
+		$new_grids_by_band = array();
+		
+		// Get all bands worked this month, plus propagation mode to separate SAT/EME
+		$this->db->distinct();
+		$this->db->select('COL_BAND, COL_PROP_MODE');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where_in('station_id', $locations);
+		$this->db->where('COL_TIME_ON >=', $start_date);
+		$this->db->where('COL_TIME_ON <=', $end_date);
+		$this->db->where('COL_BAND IS NOT NULL');
+		$this->db->where('COL_BAND !=', '');
+		$bands_query = $this->db->get();
+		
+		foreach ($bands_query->result() as $band_row) {
+			$band = $band_row->COL_BAND;
+			$prop_mode = $band_row->COL_PROP_MODE;
+			
+			// Group SAT and EME separately, not by frequency band
+			if ($prop_mode == 'SAT') {
+				$band_key = 'Satellite';
+			} elseif ($prop_mode == 'EME') {
+				$band_key = 'EME';
+			} else {
+				$band_key = $band;
+			}
+			
+			if (!isset($new_grids_by_band[$band_key])) {
+				$new_grids_by_band[$band_key] = array();
+			}
+			
+			// Get all gridsquares worked on this band/prop this month
+			$this->db->select('COL_CALL, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_TIME_ON, COL_MODE, COL_SUBMODE, COL_SAT_NAME');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where_in('station_id', $locations);
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date);
+			$this->db->where('COL_BAND', $band);
+			
+			// Filter by propagation mode
+			if ($prop_mode) {
+				$this->db->where('COL_PROP_MODE', $prop_mode);
+			} else {
+				// For terrestrial, exclude SAT and EME
+				$this->db->where('(COL_PROP_MODE IS NULL OR (COL_PROP_MODE != "SAT" AND COL_PROP_MODE != "EME"))', NULL, FALSE);
+			}
+			
+			$this->db->order_by('COL_TIME_ON', 'ASC');
+			
+			$query = $this->db->get();
+			$grid_data = array();
+			
+			foreach ($query->result() as $row) {
+				$mode = !empty($row->COL_SUBMODE) ? $row->COL_SUBMODE : $row->COL_MODE;
+				
+				// Process main gridsquare (first 4 characters only)
+				if (!empty($row->COL_GRIDSQUARE) && strlen($row->COL_GRIDSQUARE) >= 4) {
+					$grid_4char = strtoupper(substr($row->COL_GRIDSQUARE, 0, 4));
+					if (!isset($grid_data[$grid_4char])) {
+						$grid_data[$grid_4char] = array(
+							'callsign' => $row->COL_CALL,
+							'satellite' => !empty($row->COL_SAT_NAME) ? $row->COL_SAT_NAME : '',
+							'mode' => $mode,
+							'time' => $row->COL_TIME_ON
+						);
+					}
+				}
+				
+				// Process VUCC grids (first 4 characters only)
+				if (!empty($row->COL_VUCC_GRIDS)) {
+					$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
+					foreach ($vucc_grids as $grid) {
+						$grid = trim($grid);
+						if (strlen($grid) >= 4) {
+							$grid_4char = strtoupper(substr($grid, 0, 4));
+							if (!isset($grid_data[$grid_4char])) {
+								$grid_data[$grid_4char] = array(
+									'callsign' => $row->COL_CALL,
+									'satellite' => !empty($row->COL_SAT_NAME) ? $row->COL_SAT_NAME : '',
+									'mode' => $mode,
+									'time' => $row->COL_TIME_ON
+								);
+							}
+						}
+					}
+				}
+			}
+			
+			// Check each grid to see if it was worked before on this band/prop
+			foreach ($grid_data as $grid => $data) {
+				// Check if this grid was worked before this month on this band/prop
+				$this->db->select('COUNT(*) as count');
+				$this->db->from($this->config->item('table_name'));
+				$this->db->where_in('station_id', $locations);
+				$this->db->where('COL_BAND', $band);
+				if ($prop_mode) {
+					$this->db->where('COL_PROP_MODE', $prop_mode);
+				} else {
+					$this->db->where('(COL_PROP_MODE IS NULL OR (COL_PROP_MODE != "SAT" AND COL_PROP_MODE != "EME"))', NULL, FALSE);
+				}
+				$this->db->where('COL_TIME_ON <', $start_date);
+				$this->db->group_start();
+				$this->db->where('UPPER(SUBSTR(COL_GRIDSQUARE, 1, 4)) =', $grid);
+				$this->db->or_like('COL_VUCC_GRIDS', $grid);
+				$this->db->group_end();
+				
+				$prev_query = $this->db->get();
+				$prev_row = $prev_query->row();
+				
+				// If not worked before on this band/prop, it's new
+				if ($prev_row->count == 0) {
+					// Avoid duplicates in the same band_key
+					$already_added = false;
+					foreach ($new_grids_by_band[$band_key] as $existing) {
+						if ($existing['grid'] == $grid) {
+							$already_added = true;
+							break;
+						}
+					}
+					
+					if (!$already_added) {
+						$new_grids_by_band[$band_key][] = array(
+							'grid' => $grid,
+							'callsign' => $data['callsign'],
+							'satellite' => $data['satellite'],
+							'mode' => $data['mode']
+						);
+					}
+				}
+			}
+		}
+		
+		// Remove bands with no new grids
+		$new_grids_by_band = array_filter($new_grids_by_band, function($arr) {
+			return !empty($arr);
+		});
+		
+		// Sort bands in proper amateur radio order
+		$new_grids_by_band = $this->sort_bands_array($new_grids_by_band);
+		
+		return $new_grids_by_band;
 	}
 
 	/**
