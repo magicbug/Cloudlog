@@ -56,6 +56,16 @@ function loadSummaryStats() {
         type: 'post',
         data: getDateFilterParams(),
         success: function (data) {
+            // Check if user has no QSOs
+            if (data.total_qsos == 0) {
+                $('#summaryCards').html('<div class="alert alert-info text-center"><h4><i class="fas fa-info-circle"></i> No QSOs Found</h4><p>You haven\'t logged any contacts yet. Start logging QSOs to see your statistics here!</p></div>');
+                
+                // Hide the tabs since there's no data
+                $('.nav-pills').hide();
+                $('.tab-content').html('<div class="alert alert-info text-center mt-3">Log your first QSO to start building your statistics.</div>');
+                return;
+            }
+            
             var html = '';
             html += '<div class="stats-card">';
             html += '<div class="stats-card-value">' + Number(data.total_qsos).toLocaleString() + '</div>';
@@ -83,6 +93,9 @@ function loadSummaryStats() {
             html += '</div>';
             
             $('#summaryCards').html(html);
+            
+            // Make sure tabs are visible
+            $('.nav-pills').show();
         },
         error: function() {
             $('#summaryCards').html('<div class="alert alert-danger">Failed to load summary statistics</div>');
