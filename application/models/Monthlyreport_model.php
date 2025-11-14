@@ -449,59 +449,124 @@ class Monthlyreport_model extends CI_Model {
 	 * Check if a grid is new (never worked before)
 	 */
 	private function is_grid_new($locations, $grid, $start_date) {
+		// Check if grid exists in COL_GRIDSQUARE (first 4 chars match)
 		$this->db->select('COUNT(*) as count');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON <', $start_date);
-		$this->db->group_start();
-		$this->db->where('COL_GRIDSQUARE', $grid);
-		$this->db->or_like('COL_VUCC_GRIDS', $grid);
-		$this->db->group_end();
+		$this->db->where('UPPER(SUBSTR(COL_GRIDSQUARE, 1, 4)) =', strtoupper($grid));
 		
 		$query = $this->db->get();
-		$row = $query->row();
+		if ($query->row()->count > 0) {
+			return false;
+		}
 		
-		return ($row->count == 0);
+		// Check if grid exists in COL_VUCC_GRIDS
+		$this->db->select('COL_VUCC_GRIDS');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where_in('station_id', $locations);
+		$this->db->where('COL_TIME_ON <', $start_date);
+		$this->db->where('COL_VUCC_GRIDS IS NOT NULL');
+		$this->db->where('COL_VUCC_GRIDS !=', '');
+		
+		$query = $this->db->get();
+		foreach ($query->result() as $row) {
+			if (!empty($row->COL_VUCC_GRIDS)) {
+				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
+				foreach ($vucc_grids as $vucc_grid) {
+					$vucc_grid_4char = strtoupper(substr(trim($vucc_grid), 0, 4));
+					if ($vucc_grid_4char === strtoupper($grid)) {
+						return false;
+					}
+				}
+			}
+		}
+		
+		return true;
 	}
 
 	/**
 	 * Check if a grid is new for a specific propagation mode
 	 */
 	private function is_grid_new_for_prop($locations, $grid, $start_date, $prop_mode) {
+		// Check if grid exists in COL_GRIDSQUARE (first 4 chars match) with prop mode
 		$this->db->select('COUNT(*) as count');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON <', $start_date);
 		$this->db->where('COL_PROP_MODE', $prop_mode);
-		$this->db->group_start();
-		$this->db->where('COL_GRIDSQUARE', $grid);
-		$this->db->or_like('COL_VUCC_GRIDS', $grid);
-		$this->db->group_end();
+		$this->db->where('UPPER(SUBSTR(COL_GRIDSQUARE, 1, 4)) =', strtoupper($grid));
 		
 		$query = $this->db->get();
-		$row = $query->row();
+		if ($query->row()->count > 0) {
+			return false;
+		}
 		
-		return ($row->count == 0);
+		// Check if grid exists in COL_VUCC_GRIDS with prop mode
+		$this->db->select('COL_VUCC_GRIDS');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where_in('station_id', $locations);
+		$this->db->where('COL_TIME_ON <', $start_date);
+		$this->db->where('COL_PROP_MODE', $prop_mode);
+		$this->db->where('COL_VUCC_GRIDS IS NOT NULL');
+		$this->db->where('COL_VUCC_GRIDS !=', '');
+		
+		$query = $this->db->get();
+		foreach ($query->result() as $row) {
+			if (!empty($row->COL_VUCC_GRIDS)) {
+				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
+				foreach ($vucc_grids as $vucc_grid) {
+					$vucc_grid_4char = strtoupper(substr(trim($vucc_grid), 0, 4));
+					if ($vucc_grid_4char === strtoupper($grid)) {
+						return false;
+					}
+				}
+			}
+		}
+		
+		return true;
 	}
 
 	/**
 	 * Check if a grid is new for HF (non-SAT, non-EME)
 	 */
 	private function is_grid_new_for_hf($locations, $grid, $start_date) {
+		// Check if grid exists in COL_GRIDSQUARE (first 4 chars match) for HF
 		$this->db->select('COUNT(*) as count');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON <', $start_date);
 		$this->db->where("(COL_PROP_MODE IS NULL OR COL_PROP_MODE = '' OR COL_PROP_MODE NOT IN ('SAT','EME'))");
-		$this->db->group_start();
-		$this->db->where('COL_GRIDSQUARE', $grid);
-		$this->db->or_like('COL_VUCC_GRIDS', $grid);
-		$this->db->group_end();
+		$this->db->where('UPPER(SUBSTR(COL_GRIDSQUARE, 1, 4)) =', strtoupper($grid));
 		
 		$query = $this->db->get();
-		$row = $query->row();
+		if ($query->row()->count > 0) {
+			return false;
+		}
 		
-		return ($row->count == 0);
+		// Check if grid exists in COL_VUCC_GRIDS for HF
+		$this->db->select('COL_VUCC_GRIDS');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where_in('station_id', $locations);
+		$this->db->where('COL_TIME_ON <', $start_date);
+		$this->db->where("(COL_PROP_MODE IS NULL OR COL_PROP_MODE = '' OR COL_PROP_MODE NOT IN ('SAT','EME'))");
+		$this->db->where('COL_VUCC_GRIDS IS NOT NULL');
+		$this->db->where('COL_VUCC_GRIDS !=', '');
+		
+		$query = $this->db->get();
+		foreach ($query->result() as $row) {
+			if (!empty($row->COL_VUCC_GRIDS)) {
+				$vucc_grids = explode(',', $row->COL_VUCC_GRIDS);
+				foreach ($vucc_grids as $vucc_grid) {
+					$vucc_grid_4char = strtoupper(substr(trim($vucc_grid), 0, 4));
+					if ($vucc_grid_4char === strtoupper($grid)) {
+						return false;
+					}
+				}
+			}
+		}
+		
+		return true;
 	}
 
 	/**
