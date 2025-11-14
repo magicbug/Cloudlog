@@ -245,9 +245,9 @@ class Monthlyreport_model extends CI_Model {
 	private function get_new_dxcc_by_band($locations, $start_date, $end_date, $prev_month_end) {
 		$new_dxcc_by_band = array();
 		
-		// Get all bands worked this month
+		// Get all bands worked this month, plus propagation mode to separate SAT/EME
 		$this->db->distinct();
-		$this->db->select('COL_BAND');
+		$this->db->select('COL_BAND, COL_PROP_MODE');
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
@@ -260,9 +260,22 @@ class Monthlyreport_model extends CI_Model {
 		
 		foreach ($bands_query->result() as $band_row) {
 			$band = $band_row->COL_BAND;
-			$new_dxcc_by_band[$band] = array();
+			$prop_mode = $band_row->COL_PROP_MODE;
 			
-			// Get all unique DXCC entities worked on this band this month (group by DXCC, get earliest callsign)
+			// Group SAT and EME separately, not by frequency band
+			if ($prop_mode == 'SAT') {
+				$band_key = 'Satellite';
+			} elseif ($prop_mode == 'EME') {
+				$band_key = 'EME';
+			} else {
+				$band_key = $band;
+			}
+			
+			if (!isset($new_dxcc_by_band[$band_key])) {
+				$new_dxcc_by_band[$band_key] = array();
+			}
+			
+			// Get all unique DXCC entities worked on this band/prop this month (group by DXCC, get earliest callsign)
 			$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY, MIN(COL_TIME_ON) as FIRST_QSO', FALSE);
 			$this->db->from($this->config->item('table_name'));
 			$this->db->where_in('station_id', $locations);
@@ -271,30 +284,49 @@ class Monthlyreport_model extends CI_Model {
 			$this->db->where('COL_BAND', $band);
 			$this->db->where('COL_DXCC IS NOT NULL');
 			$this->db->where('COL_DXCC !=', '');
+			
+			// Filter by propagation mode
+			if ($prop_mode) {
+				$this->db->where('COL_PROP_MODE', $prop_mode);
+			} else {
+				// For terrestrial, exclude SAT and EME
+				$this->db->where('(COL_PROP_MODE IS NULL OR (COL_PROP_MODE != "SAT" AND COL_PROP_MODE != "EME"))', NULL, FALSE);
+			}
+			
 			$this->db->group_by('COL_DXCC');
 			
 			$query = $this->db->get();
 			
 			foreach ($query->result() as $row) {
-				// Check if this DXCC was worked before this month on this band
+				// Check if this DXCC was worked before this month on this band/prop
 				$this->db->select('COUNT(*) as count');
 				$this->db->from($this->config->item('table_name'));
 				$this->db->where_in('station_id', $locations);
 				$this->db->where('COL_DXCC', $row->COL_DXCC);
 				$this->db->where('COL_BAND', $band);
+				if ($prop_mode) {
+					$this->db->where('COL_PROP_MODE', $prop_mode);
+				} else {
+					$this->db->where('(COL_PROP_MODE IS NULL OR (COL_PROP_MODE != "SAT" AND COL_PROP_MODE != "EME"))', NULL, FALSE);
+				}
 				$this->db->where('COL_TIME_ON <', $start_date);
 				
 				$prev_query = $this->db->get();
 				$prev_row = $prev_query->row();
 				
-				// If not worked before on this band, it's new
+				// If not worked before on this band/prop, it's new
 				if ($prev_row->count == 0) {
-					// Get the callsign and mode from the first QSO with this DXCC on this band
+					// Get the callsign and mode from the first QSO with this DXCC on this band/prop
 					$this->db->select('COL_CALL, COL_MODE, COL_SUBMODE');
 					$this->db->from($this->config->item('table_name'));
 					$this->db->where_in('station_id', $locations);
 					$this->db->where('COL_DXCC', $row->COL_DXCC);
 					$this->db->where('COL_BAND', $band);
+					if ($prop_mode) {
+						$this->db->where('COL_PROP_MODE', $prop_mode);
+					} else {
+						$this->db->where('(COL_PROP_MODE IS NULL OR (COL_PROP_MODE != "SAT" AND COL_PROP_MODE != "EME"))', NULL, FALSE);
+					}
 					$this->db->where('COL_TIME_ON', $row->FIRST_QSO);
 					$this->db->limit(1);
 					
@@ -306,12 +338,23 @@ class Monthlyreport_model extends CI_Model {
 						$mode = !empty($call_row->COL_SUBMODE) ? $call_row->COL_SUBMODE : $call_row->COL_MODE;
 					}
 					
-					$new_dxcc_by_band[$band][] = array(
-						'dxcc_id' => $row->COL_DXCC,
-						'name' => $row->COL_COUNTRY,
-						'callsign' => $call_row ? $call_row->COL_CALL : '',
-						'mode' => $mode
-					);
+					// Avoid duplicates in the same band_key
+					$already_added = false;
+					foreach ($new_dxcc_by_band[$band_key] as $existing) {
+						if ($existing['dxcc_id'] == $row->COL_DXCC) {
+							$already_added = true;
+							break;
+						}
+					}
+					
+					if (!$already_added) {
+						$new_dxcc_by_band[$band_key][] = array(
+							'dxcc_id' => $row->COL_DXCC,
+							'name' => $row->COL_COUNTRY,
+							'callsign' => $call_row ? $call_row->COL_CALL : '',
+							'mode' => $mode
+						);
+					}
 				}
 			}
 		}
@@ -333,8 +376,8 @@ class Monthlyreport_model extends CI_Model {
 	private function get_new_dxcc_by_prop($locations, $start_date, $end_date, $prev_month_end, $prop_mode) {
 		$new_dxcc = array();
 		
-		// Get all unique DXCC entities worked this month via this prop mode (group by DXCC)
-		$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY', FALSE);
+		// Get all unique DXCC entities worked this month via this prop mode (group by DXCC, get earliest time)
+		$this->db->select('COL_DXCC, MAX(COL_COUNTRY) as COL_COUNTRY, MIN(COL_TIME_ON) as FIRST_QSO', FALSE);
 		$this->db->from($this->config->item('table_name'));
 		$this->db->where_in('station_id', $locations);
 		$this->db->where('COL_TIME_ON >=', $start_date);
@@ -360,9 +403,28 @@ class Monthlyreport_model extends CI_Model {
 			
 			// If not worked before via this prop mode, it's new
 			if ($prev_row->count == 0) {
+				// Get the callsign and mode from the first QSO
+				$this->db->select('COL_CALL, COL_MODE, COL_SUBMODE');
+				$this->db->from($this->config->item('table_name'));
+				$this->db->where_in('station_id', $locations);
+				$this->db->where('COL_DXCC', $row->COL_DXCC);
+				$this->db->where('COL_PROP_MODE', $prop_mode);
+				$this->db->where('COL_TIME_ON', $row->FIRST_QSO);
+				$this->db->limit(1);
+				
+				$call_query = $this->db->get();
+				$call_row = $call_query->row();
+				
+				$mode = '';
+				if ($call_row) {
+					$mode = !empty($call_row->COL_SUBMODE) ? $call_row->COL_SUBMODE : $call_row->COL_MODE;
+				}
+				
 				$new_dxcc[] = array(
 					'dxcc_id' => $row->COL_DXCC,
-					'name' => $row->COL_COUNTRY
+					'name' => $row->COL_COUNTRY,
+					'callsign' => $call_row ? $call_row->COL_CALL : '',
+					'mode' => $mode
 				);
 			}
 		}

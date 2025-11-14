@@ -113,7 +113,19 @@
 	<?php } ?>
 
 	<!-- New Countries by Band -->
-	<?php if (!empty($report['new_dxcc_by_band'])) { ?>
+	<?php 
+	// Filter out Satellite and EME from band list to see if there's anything to display
+	$terrestrial_bands = array();
+	if (!empty($report['new_dxcc_by_band'])) {
+		foreach ($report['new_dxcc_by_band'] as $band => $dxcc_list) {
+			if ($band != 'Satellite' && $band != 'EME') {
+				$terrestrial_bands[$band] = $dxcc_list;
+			}
+		}
+	}
+	
+	if (!empty($terrestrial_bands)) { 
+	?>
 	<div class="card mb-4 border-success">
 		<div class="card-header bg-success bg-opacity-10 border-success">
 			<h5 class="mb-0"><i class="fas fa-broadcast-tower text-success"></i> New Countries by Band</h5>
@@ -121,10 +133,11 @@
 		<div class="card-body">
 			<?php 
 			// Bands already sorted in model
-			foreach ($report['new_dxcc_by_band'] as $band => $dxcc_list) { 
+			foreach ($terrestrial_bands as $band => $dxcc_list) { 
+				$icon = '<i class="fas fa-signal"></i>';
 			?>
 				<div class="mb-3">
-					<h6 class="text-muted"><i class="fas fa-signal"></i> <?php echo $band; ?> (<?php echo count($dxcc_list); ?> new)</h6>
+					<h6 class="text-muted"><?php echo $icon; ?> <?php echo $band; ?> (<?php echo count($dxcc_list); ?> new)</h6>
 					<div class="row">
 						<?php foreach ($dxcc_list as $dxcc) { ?>
 							<div class="col-md-6 col-lg-4 mb-2">
@@ -155,10 +168,16 @@
 		<div class="card-body">
 			<div class="row">
 				<?php foreach ($report['new_dxcc_satellite'] as $dxcc) { ?>
-					<div class="col-md-4 mb-2">
-						<span class="badge bg-success fs-6">
-							<i class="fas fa-satellite-dish"></i> <?php echo $dxcc['name']; ?>
-						</span>
+					<div class="col-md-6 col-lg-4 mb-2">
+						<div class="d-flex align-items-center">
+							<span class="badge bg-success me-2">
+								<i class="fas fa-star"></i> <?php echo $dxcc['name']; ?>
+							</span>
+							<small class="text-muted">
+								<?php echo $dxcc['callsign']; ?>
+								<?php if (!empty($dxcc['mode'])) echo ' • ' . $dxcc['mode']; ?>
+							</small>
+						</div>
 					</div>
 				<?php } ?>
 			</div>
@@ -175,10 +194,16 @@
 		<div class="card-body">
 			<div class="row">
 				<?php foreach ($report['new_dxcc_eme'] as $dxcc) { ?>
-					<div class="col-md-4 mb-2">
-						<span class="badge bg-success fs-6">
-							<i class="fas fa-moon"></i> <?php echo $dxcc['name']; ?>
-						</span>
+					<div class="col-md-6 col-lg-4 mb-2">
+						<div class="d-flex align-items-center">
+							<span class="badge bg-success me-2">
+								<i class="fas fa-star"></i> <?php echo $dxcc['name']; ?>
+							</span>
+							<small class="text-muted">
+								<?php echo $dxcc['callsign']; ?>
+								<?php if (!empty($dxcc['mode'])) echo ' • ' . $dxcc['mode']; ?>
+							</small>
+						</div>
 					</div>
 				<?php } ?>
 			</div>
