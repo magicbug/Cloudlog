@@ -85,8 +85,22 @@ class Statistics extends CI_Controller {
 	public function get_year() {
 		$this->load->model('logbook_model');
 
+		// Check for date filters
+		$start_date = $this->input->post('start_date');
+		$end_date = $this->input->post('end_date');
+
 		// get data
-		$totals_year = $this->logbook_model->totals_year();
+		if ($start_date && $end_date) {
+			$this->db->select('YEAR(COL_TIME_ON) as year, COUNT(*) as total');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+			$this->db->group_by('year');
+			$this->db->order_by('year', 'ASC');
+			$totals_year = $this->db->get();
+		} else {
+			$totals_year = $this->logbook_model->totals_year();
+		}
 
 		$yearstats = array();
 		
@@ -187,5 +201,288 @@ class Statistics extends CI_Controller {
 		$total_qsos['bands'] = $this->stats->get_bands();
 
 		$this->load->view('statistics/qsotable', $total_qsos);
+	}
+
+	public function get_summary_stats() {
+		$this->load->model('logbook_model');
+		$this->load->model('stats');
+
+		$data = array();
+		
+		// Check for date filters
+		$start_date = $this->input->post('start_date');
+		$end_date = $this->input->post('end_date');
+		
+		$where_clause = '';
+		if ($start_date && $end_date) {
+			$where_clause = "WHERE COL_TIME_ON >= '$start_date' AND COL_TIME_ON <= '$end_date 23:59:59'";
+		}
+		
+		// Total QSOs
+		if ($where_clause) {
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+			$data['total_qsos'] = $this->db->count_all_results($this->config->item('table_name'));
+		} else {
+			$data['total_qsos'] = $this->logbook_model->total_qsos();
+		}
+		
+		// Unique callsigns
+		if ($where_clause) {
+			$this->db->select('COUNT(DISTINCT COL_CALL) as count');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+			$query = $this->db->get();
+			$data['unique_callsigns'] = $query->row()->count;
+		} else {
+			$unique_result = $this->stats->unique_callsigns();
+			$unique_total = $unique_result['total'];
+			$data['unique_callsigns'] = is_object($unique_total) ? $unique_total->calls : $unique_total;
+		}
+		
+		// Total bands worked
+		if ($where_clause) {
+			$this->db->select('DISTINCT COL_BAND');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+			$this->db->where('COL_BAND IS NOT NULL');
+			$bands = $this->db->get();
+			$data['total_bands'] = $bands ? $bands->num_rows() : 0;
+		} else {
+			$bands = $this->logbook_model->total_bands();
+			$data['total_bands'] = $bands ? $bands->num_rows() : 0;
+		}
+		
+		// Total modes
+		$data['total_modes'] = 0;
+		if ($where_clause) {
+			// Count distinct mode categories with date filter
+			$this->db->select('COL_MODE');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+			$this->db->where_in('COL_MODE', ['SSB', 'USB', 'LSB']);
+			$data['total_modes'] += ($this->db->count_all_results() > 0) ? 1 : 0;
+			
+			$this->db->select('COL_MODE');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+			$this->db->where('COL_MODE', 'CW');
+			$data['total_modes'] += ($this->db->count_all_results() > 0) ? 1 : 0;
+			
+			$this->db->select('COL_MODE');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+			$this->db->where('COL_MODE', 'FM');
+			$data['total_modes'] += ($this->db->count_all_results() > 0) ? 1 : 0;
+			
+			// Digital modes
+			$this->db->select('COL_MODE');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+			$this->db->where_not_in('COL_MODE', ['SSB', 'USB', 'LSB', 'CW', 'FM', 'AM']);
+			$data['total_modes'] += ($this->db->count_all_results() > 0) ? 1 : 0;
+		} else {
+			$data['total_modes'] += ($this->logbook_model->total_ssb() > 0) ? 1 : 0;
+			$data['total_modes'] += ($this->logbook_model->total_cw() > 0) ? 1 : 0;
+			$data['total_modes'] += ($this->logbook_model->total_fm() > 0) ? 1 : 0;
+			$data['total_modes'] += ($this->logbook_model->total_digi() > 0) ? 1 : 0;
+		}
+		
+		// Countries worked
+		$data['total_countries'] = $this->get_total_countries($start_date, $end_date);
+		
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
+
+	public function get_trends() {
+		$this->load->model('logbook_model');
+		$this->load->model('logbooks_model');
+		
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			header('Content-Type: application/json');
+			echo json_encode(array('error' => 'No logbook relationships found'));
+			return;
+		}
+		
+		$trends = array();
+		
+		// QSOs this month
+		$this->db->select('COUNT(*) as count');
+		$this->db->where('MONTH(COL_TIME_ON)', date('m'));
+		$this->db->where('YEAR(COL_TIME_ON)', date('Y'));
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->from($this->config->item('table_name'));
+		$query = $this->db->get();
+		$result = $query->row();
+		$trends['this_month'] = $result ? $result->count : 0;
+		
+		// QSOs this year
+		$this->db->select('COUNT(*) as count');
+		$this->db->where('YEAR(COL_TIME_ON)', date('Y'));
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->from($this->config->item('table_name'));
+		$query = $this->db->get();
+		$result = $query->row();
+		$trends['this_year'] = $result ? $result->count : 0;
+		
+		// QSOs last 30 days
+		$this->db->select('COUNT(*) as count');
+		$this->db->where('COL_TIME_ON >=', date('Y-m-d', strtotime('-30 days')));
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->from($this->config->item('table_name'));
+		$query = $this->db->get();
+		$result = $query->row();
+		$trends['last_30_days'] = $result ? $result->count : 0;
+		
+		// Monthly trend (last 12 months)
+		$monthly = array();
+		for ($i = 11; $i >= 0; $i--) {
+			$month = date('Y-m', strtotime("-$i months"));
+			$year = substr($month, 0, 4);
+			$mon = substr($month, 5, 2);
+			
+			$this->db->select('COUNT(*) as count');
+			$this->db->where('YEAR(COL_TIME_ON)', $year);
+			$this->db->where('MONTH(COL_TIME_ON)', $mon);
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->from($this->config->item('table_name'));
+			$query = $this->db->get();
+			$result = $query->row();
+			
+			$monthly[] = array(
+				'month' => date('M Y', strtotime($month . '-01')),
+				'count' => $result ? $result->count : 0
+			);
+		}
+		$trends['monthly'] = $monthly;
+		
+		header('Content-Type: application/json');
+		echo json_encode($trends);
+	}
+
+	public function get_continents() {
+		$this->load->model('logbook_model');
+		$this->load->model('logbooks_model');
+		
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			header('Content-Type: application/json');
+			echo json_encode(array());
+			return;
+		}
+		
+		$this->db->select('COL_CONT, COUNT(*) as count');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where('COL_CONT IS NOT NULL');
+		$this->db->where('COL_CONT !=', '');
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->group_by('COL_CONT');
+		$this->db->order_by('count', 'DESC');
+		$query = $this->db->get();
+		
+		$continents = array();
+		if ($query->num_rows() > 0) {
+			foreach($query->result() as $row) {
+				$continents[] = array(
+					'continent' => $row->COL_CONT,
+					'count' => $row->count
+				);
+			}
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($continents);
+	}
+
+	public function get_most_worked() {
+		$this->load->model('logbook_model');
+		$this->load->model('logbooks_model');
+		
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
+		if (!$logbooks_locations_array) {
+			header('Content-Type: application/json');
+			echo json_encode(array('callsigns' => array(), 'countries' => array()));
+			return;
+		}
+		
+		$result = array('callsigns' => array(), 'countries' => array());
+		
+		try {
+			// Most worked callsigns
+			$this->db->select('COL_CALL, COUNT(*) as count, MAX(COL_COUNTRY) as COL_COUNTRY, MAX(COL_TIME_ON) as last_qso');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->group_by('COL_CALL');
+			$this->db->order_by('count', 'DESC');
+			$this->db->limit(10);
+			$query = $this->db->get();
+			
+			$callsigns = array();
+			if ($query && $query->num_rows() > 0) {
+				foreach($query->result() as $row) {
+					$callsigns[] = array(
+						'callsign' => $row->COL_CALL,
+						'count' => $row->count,
+						'country' => isset($row->COL_COUNTRY) ? $row->COL_COUNTRY : '',
+						'last_qso' => $row->last_qso
+					);
+				}
+			}
+			$result['callsigns'] = $callsigns;
+			
+			// Most worked countries
+			$this->db->select('COL_COUNTRY, COUNT(*) as count');
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('COL_COUNTRY IS NOT NULL');
+			$this->db->where('COL_COUNTRY !=', '');
+			$this->db->where_in('station_id', $logbooks_locations_array);
+			$this->db->group_by('COL_COUNTRY');
+			$this->db->order_by('count', 'DESC');
+			$this->db->limit(10);
+			$query = $this->db->get();
+			
+			$countries = array();
+			if ($query && $query->num_rows() > 0) {
+				foreach($query->result() as $row) {
+					$countries[] = array(
+						'country' => $row->COL_COUNTRY,
+						'count' => $row->count
+					);
+				}
+			}
+			$result['countries'] = $countries;
+			
+		} catch (Exception $e) {
+			log_message('error', 'Error in get_most_worked: ' . $e->getMessage());
+		}
+		
+		header('Content-Type: application/json');
+		echo json_encode($result);
+	}
+
+	private function get_total_countries($start_date = null, $end_date = null) {
+		$this->db->select('COUNT(DISTINCT COL_COUNTRY) as count');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where('COL_COUNTRY IS NOT NULL');
+		$this->db->where('COL_COUNTRY !=', '');
+		
+		if ($start_date && $end_date) {
+			$this->db->where('COL_TIME_ON >=', $start_date);
+			$this->db->where('COL_TIME_ON <=', $end_date . ' 23:59:59');
+		}
+		
+		$query = $this->db->get();
+		return $query->row()->count;
 	}
 }
