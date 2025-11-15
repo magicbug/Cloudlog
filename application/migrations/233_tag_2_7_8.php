@@ -11,7 +11,7 @@ class Migration_tag_2_7_8 extends CI_Migration {
     public function up()
     {
 
-        // Tag Cloudlog 2.7.7
+        // Tag Cloudlog 2.7.8
         $this->db->where('option_name', 'version');
         $this->db->update('options', array('option_value' => '2.7.8'));
 
