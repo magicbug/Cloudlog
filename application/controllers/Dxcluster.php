@@ -124,4 +124,64 @@ class Dxcluster extends CI_Controller {
             echo json_encode(['success' => false, 'message' => 'Failed to queue QSY command']);
         }
     }
+
+    /*
+     * Check if callsigns have been worked
+     * POST /dxcluster/check_worked
+     */
+    public function check_worked() {
+        header('Content-Type: application/json');
+        
+        $this->load->model('logbook_model');
+        $this->load->model('logbooks_model');
+        
+        // Get JSON input
+        $input = json_decode(file_get_contents("php://input"), true);
+        
+        if (!isset($input['callsigns']) || !is_array($input['callsigns'])) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Missing or invalid callsigns array']);
+            return;
+        }
+        
+        // Limit batch size to prevent excessive load
+        $max_batch_size = 50;
+        if (count($input['callsigns']) > $max_batch_size) {
+            $input['callsigns'] = array_slice($input['callsigns'], 0, $max_batch_size);
+        }
+        
+        // Get logbook locations for the active logbook
+        $logbook_id = $this->session->userdata('active_station_logbook');
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+        
+        if (!$logbooks_locations_array) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'No logbook locations found']);
+            return;
+        }
+        
+        $results = [];
+        
+        foreach ($input['callsigns'] as $item) {
+            $callsign = $item['callsign'];
+            $band = isset($item['band']) ? $item['band'] : null;
+            
+            // Check if worked on this band
+            $worked_on_band = false;
+            if ($band) {
+                $worked_on_band = $this->logbook_model->check_if_callsign_worked_in_logbook($callsign, $logbooks_locations_array, $band) > 0;
+            }
+            
+            // Check if worked on any band
+            $worked_overall = $this->logbook_model->check_if_callsign_worked_in_logbook($callsign, $logbooks_locations_array, null) > 0;
+            
+            $results[$callsign] = [
+                'worked_on_band' => $worked_on_band,
+                'worked_overall' => $worked_overall,
+                'band' => $band
+            ];
+        }
+        
+        echo json_encode(['success' => true, 'results' => $results]);
+    }
 }

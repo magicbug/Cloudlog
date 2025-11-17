@@ -130,6 +130,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let dataTable = null;
     let hideRbnSpots = true; // Default to hiding RBN spots
     let selectedBand = 'all'; // Default to all bands
+    let workedStatus = {}; // Cache for worked status
+    let checkWorkedTimeout = null;
     
     const connectionStatus = document.getElementById('connectionStatus');
     const spotsTableBody = document.getElementById('spotsTableBody');
@@ -220,6 +222,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             {
+                targets: 1, // DX Call column
+                render: function(data, type, row) {
+                    if (type === 'display') {
+                        const callsign = data;
+                        const status = workedStatus[callsign];
+                        let iconHtml = '';
+                        
+                        if (status) {
+                            if (status.worked_on_band) {
+                                iconHtml = `<i class="fas fa-check text-success ms-2" title="Worked on ${status.band}"></i>`;
+                            } else if (status.worked_overall) {
+                                iconHtml = `<i class="fas fa-check text-info ms-2" title="Worked on another band"></i>`;
+                            } else {
+                                iconHtml = `<i class="fas fa-times text-secondary ms-2" title="Not worked yet"></i>`;
+                            }
+                        }
+                        
+                        return `<span class="dx-callsign" data-callsign="${callsign}">${callsign}</span>${iconHtml}`;
+                    }
+                    return data;
+                }
+            },
+            {
                 targets: 2, // Frequency column
                 className: 'frequency-cell',
                 render: function(data, type, row) {
@@ -293,6 +318,65 @@ document.addEventListener('DOMContentLoaded', function() {
         updateTable();
     }
     
+    // Check worked status for callsigns
+    async function checkWorkedStatus() {
+        // Get unique callsigns from visible spots
+        const callsignsToCheck = [];
+        const spotArray = Array.from(spots.values());
+        const seen = new Set();
+        
+        spotArray.forEach(spot => {
+            // Skip if already checked or if filtered out
+            if (workedStatus[spot.dx]) return;
+            if (hideRbnSpots && isRbnSpot(spot.spotter)) return;
+            if (!matchesBandFilter(spot.frequency)) return;
+            if (seen.has(spot.dx)) return; // Avoid duplicates
+            
+            const band = getBandFromFrequency(spot.frequency);
+            callsignsToCheck.push({
+                callsign: spot.dx,
+                band: band
+            });
+            seen.add(spot.dx);
+        });
+        
+        console.log('Checking worked status for:', callsignsToCheck.length, 'callsigns');
+        
+        if (callsignsToCheck.length === 0) return;
+        
+        // Limit to 30 callsigns per request to reduce load
+        const batch = callsignsToCheck.slice(0, 30);
+        
+        try {
+            const response = await fetch('<?php echo site_url('dxcluster/check_worked'); ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ callsigns: batch })
+            });
+            
+            const data = await response.json();
+            console.log('Worked status response:', data);
+            
+            if (data.success) {
+                // Update worked status cache
+                Object.assign(workedStatus, data.results);
+                
+                // Redraw table to show badges
+                updateTable();
+            }
+        } catch (error) {
+            console.error('Error checking worked status:', error);
+        }
+    }
+    
+    // Update worked status badges in the table (legacy function - now handled in render)
+    function updateWorkedBadges() {
+        // No longer needed - badges are rendered directly in DataTable column render function
+        console.log('Badges updated via table redraw');
+    }
+    
     function updateTable() {
         // Clear existing data
         dataTable.clear();
@@ -336,6 +420,12 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             applyAgeBasedStyling();
         }, 100);
+        
+        // Check worked status after a short delay (debounce)
+        clearTimeout(checkWorkedTimeout);
+        checkWorkedTimeout = setTimeout(() => {
+            checkWorkedStatus();
+        }, 500);
     }
     
     function formatTime(timeString) {
