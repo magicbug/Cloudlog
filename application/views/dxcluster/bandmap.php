@@ -954,6 +954,9 @@
                 viewEnd = bandEnd;
             }
             
+            // Update frequency range display
+            document.getElementById('freqRange').textContent = `${(viewStart/1000).toFixed(3)}-${(viewEnd/1000).toFixed(3)}`;
+            
             updateDisplay();
         });
 
