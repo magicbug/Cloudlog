@@ -13,42 +13,66 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="mb-3 d-flex flex-wrap align-items-center gap-3">
-                        <div class="form-check form-check-inline mb-0">
-                            <input class="form-check-input" type="checkbox" id="hideRbnSpots" checked>
-                            <label class="form-check-label" for="hideRbnSpots">
-                                <i class="fas fa-filter"></i> Hide RBN Spots
-                            </label>
+                    <!-- Filters and Radio Control Panel -->
+                    <div class="card mb-3">
+                        <div class="card-body py-2">
+                            <div id="radio_status"></div>
+                            <div class="d-flex align-items-center gap-3 flex-wrap">
+                                <!-- Radio Selection -->
+                                <div class="d-flex align-items-center">
+                                    <label for="radio" class="form-label mb-0 me-2" style="white-space: nowrap;">
+                                        <i class="fas fa-broadcast-tower"></i> Radio:
+                                    </label>
+                                    <select class="form-select form-select-sm radios" id="radio" name="radio" style="min-width: 150px;">
+                                        <option value="0" selected="selected"><?php echo lang('general_word_none'); ?></option>
+                                        <?php foreach ($radios->result() as $row) { ?>
+                                            <option value="<?php echo $row->id; ?>" <?php if ($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                
+                                <!-- Band Filter -->
+                                <div class="d-flex align-items-center">
+                                    <label for="bandFilter" class="form-label mb-0 me-2" style="white-space: nowrap;">
+                                        <i class="fas fa-wave-square"></i> Band:
+                                    </label>
+                                    <select class="form-select form-select-sm" id="bandFilter" style="min-width: 120px;">
+                                        <option value="all">All Bands</option>
+                                        <option value="160m">160m</option>
+                                        <option value="80m">80m</option>
+                                        <option value="60m">60m</option>
+                                        <option value="40m">40m</option>
+                                        <option value="30m">30m</option>
+                                        <option value="20m">20m</option>
+                                        <option value="17m">17m</option>
+                                        <option value="15m">15m</option>
+                                        <option value="12m">12m</option>
+                                        <option value="10m">10m</option>
+                                        <option value="6m">6m</option>
+                                        <option value="4m">4m</option>
+                                        <option value="2m">2m</option>
+                                        <option value="70cm">70cm</option>
+                                        <option value="23cm">23cm</option>
+                                        <option value="ghz">GHz+</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- RBN Filter -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="hideRbnSpots" checked>
+                                    <label class="form-check-label" for="hideRbnSpots">
+                                        <i class="fas fa-filter"></i> Hide RBN Spots
+                                    </label>
+                                </div>
+                                
+                                <!-- Info -->
+                                <small class="text-muted ms-auto">
+                                    <i class="fas fa-info-circle"></i> Filters active
+                                </small>
+                            </div>
                         </div>
-                        <div class="d-flex align-items-center gap-2">
-                            <label for="bandFilter" class="form-label mb-0">
-                                <i class="fas fa-wave-square"></i> Band:
-                            </label>
-                            <select class="form-select form-select-sm" id="bandFilter" style="width: auto; min-width: 120px;">
-                                <option value="all">All Bands</option>
-                                <option value="160m">160m</option>
-                                <option value="80m">80m</option>
-                                <option value="60m">60m</option>
-                                <option value="40m">40m</option>
-                                <option value="30m">30m</option>
-                                <option value="20m">20m</option>
-                                <option value="17m">17m</option>
-                                <option value="15m">15m</option>
-                                <option value="12m">12m</option>
-                                <option value="10m">10m</option>
-                                <option value="6m">6m</option>
-                                <option value="4m">4m</option>
-                                <option value="2m">2m</option>
-                                <option value="70cm">70cm</option>
-                                <option value="23cm">23cm</option>
-                                <option value="ghz">GHz+</option>
-                            </select>
-                        </div>
-                        <small class="text-muted">
-                            <i class="fas fa-info-circle"></i>
-                            Filter spots by band and hide RBN spots
-                        </small>
                     </div>
+                    
                     <div class="table-responsive">
                         <table id="dxSpotsTable" class="table table-striped table-hover">
                             <thead class="table-dark">
@@ -67,6 +91,21 @@
                         </table>
                     </div>
                     <div class="mt-3">
+                        <div class="alert alert-info mb-2">
+                            <strong><i class="fas fa-info-circle"></i> Legend:</strong>
+                            <div class="mt-2">
+                                <span class="me-3"><i class="fas fa-check text-success"></i> = Worked on this band</span>
+                                <span class="me-3"><i class="fas fa-check text-info"></i> = Worked on another band</span>
+                                <span class="me-3"><i class="fas fa-times text-secondary"></i> = Not worked</span>
+                            </div>
+                            <div class="mt-1">
+                                <span class="me-3"><span class="badge bg-danger">New Band</span> = New DXCC on this band</span>
+                                <span class="me-3"><span class="badge bg-warning text-dark">New DXCC</span> = New DXCC entity (never worked)</span>
+                            </div>
+                            <div class="mt-2 pt-2 border-top">
+                                <small><i class="fas fa-mouse-pointer"></i> <strong>Tip:</strong> Click any frequency to QSY your radio (if selected above)</small>
+                            </div>
+                        </div>
                         <small class="text-muted">
                             <i class="fas fa-info-circle"></i>
                             Real-time DX cluster spots. Data refreshes automatically via WebSocket connection.
@@ -227,19 +266,27 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (type === 'display') {
                         const callsign = data;
                         const status = workedStatus[callsign];
-                        let iconHtml = '';
+                        let html = `<span class="dx-callsign" data-callsign="${callsign}">${callsign}</span>`;
                         
                         if (status) {
+                            // Worked status icon
                             if (status.worked_on_band) {
-                                iconHtml = `<i class="fas fa-check text-success ms-2" title="Worked on ${status.band}"></i>`;
+                                html += `<i class="fas fa-check text-success ms-2" title="Worked on ${status.band}"></i>`;
                             } else if (status.worked_overall) {
-                                iconHtml = `<i class="fas fa-check text-info ms-2" title="Worked on another band"></i>`;
+                                html += `<i class="fas fa-check text-info ms-2" title="Worked on another band"></i>`;
                             } else {
-                                iconHtml = `<i class="fas fa-times text-secondary ms-2" title="Not worked yet"></i>`;
+                                html += `<i class="fas fa-times text-secondary ms-2" title="Not worked yet"></i>`;
+                            }
+                            
+                            // New country badges
+                            if (status.dxcc && !status.dxcc_worked_on_band) {
+                                html += `<span class="badge bg-danger ms-2" title="New DXCC entity on this band">New Band</span>`;
+                            } else if (status.dxcc && !status.dxcc_worked_overall) {
+                                html += `<span class="badge bg-warning text-dark ms-2" title="New DXCC entity">New DXCC</span>`;
                             }
                         }
                         
-                        return `<span class="dx-callsign" data-callsign="${callsign}">${callsign}</span>${iconHtml}`;
+                        return html;
                     }
                     return data;
                 }
@@ -491,37 +538,67 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function handleFrequencyClick(frequency) {
-    // You can implement frequency tuning functionality here
-    // For example, send to radio or copy to clipboard
-    console.log('Frequency clicked:', frequency);
+    const radioId = document.getElementById('radio').value;
     
-    // Copy to clipboard as example
-    if (navigator.clipboard) {
-        const freqInMHz = (parseFloat(frequency) / 1000).toFixed(3);
-        navigator.clipboard.writeText(freqInMHz).then(() => {
-            // Show a temporary notification
-            const toast = document.createElement('div');
-            toast.className = 'toast align-items-center text-white bg-primary border-0 position-fixed top-0 end-0 m-3';
-            toast.setAttribute('role', 'alert');
-            toast.style.zIndex = '9999';
-            toast.innerHTML = `
-                <div class="d-flex">
-                    <div class="toast-body">
-                        Frequency ${freqInMHz} MHz copied to clipboard
-                    </div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>
-            `;
-            document.body.appendChild(toast);
-            
-            const bsToast = new bootstrap.Toast(toast);
-            bsToast.show();
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        });
+    if (radioId === '0') {
+        // No radio selected - copy to clipboard
+        if (navigator.clipboard) {
+            const freqInMHz = (parseFloat(frequency) / 1000).toFixed(3);
+            navigator.clipboard.writeText(freqInMHz).then(() => {
+                showToast('Frequency ' + freqInMHz + ' MHz copied to clipboard', 'info');
+            });
+        }
+        return;
     }
+    
+    // QSY the radio
+    const freqInMHz = (parseFloat(frequency) / 1000).toFixed(3);
+    
+    fetch('<?php echo site_url('dxcluster/qsy'); ?>', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            radio_id: radioId,
+            frequency: freqInMHz
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showToast('QSY command sent to radio: ' + freqInMHz + ' MHz', 'success');
+        } else {
+            showToast('Failed to QSY radio: ' + data.message, 'danger');
+        }
+    })
+    .catch(error => {
+        console.error('Error sending QSY command:', error);
+        showToast('Error sending QSY command', 'danger');
+    });
+}
+
+function showToast(message, type = 'primary') {
+    const toast = document.createElement('div');
+    toast.className = `toast align-items-center text-white bg-${type} border-0 position-fixed top-0 end-0 m-3`;
+    toast.setAttribute('role', 'alert');
+    toast.style.zIndex = '9999';
+    toast.innerHTML = `
+        <div class="d-flex">
+            <div class="toast-body">
+                ${message}
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    `;
+    document.body.appendChild(toast);
+    
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
 
 // Helper function for DataTables language URL (if it exists in Cloudlog)

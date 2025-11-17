@@ -14,6 +14,10 @@ class Dxcluster extends CI_Controller {
     function index()
     {
         $data['page_title'] = "DX Cluster Spots";
+        
+        // Load radio data for CAT control
+        $this->load->model('cat');
+        $data['radios'] = $this->cat->radios();
 
         /// Load layout
 
@@ -166,6 +170,10 @@ class Dxcluster extends CI_Controller {
             $callsign = $item['callsign'];
             $band = isset($item['band']) ? $item['band'] : null;
             
+            // Get DXCC entity for this callsign
+            $dxcc_info = $this->logbook_model->dxcc_lookup($callsign, date('Ymd'));
+            $dxcc = isset($dxcc_info['adif']) ? $dxcc_info['adif'] : null;
+            
             // Check if worked on this band
             $worked_on_band = false;
             if ($band) {
@@ -175,10 +183,37 @@ class Dxcluster extends CI_Controller {
             // Check if worked on any band
             $worked_overall = $this->logbook_model->check_if_callsign_worked_in_logbook($callsign, $logbooks_locations_array, null) > 0;
             
+            // Check if DXCC entity is worked on this band
+            $dxcc_worked_on_band = false;
+            if ($dxcc && $band) {
+                $this->db->select('COL_DXCC');
+                $this->db->where_in('station_id', $logbooks_locations_array);
+                $this->db->where('COL_DXCC', $dxcc);
+                $this->db->where('COL_BAND', $band);
+                $this->db->limit(1);
+                $query = $this->db->get($this->config->item('table_name'));
+                $dxcc_worked_on_band = $query->num_rows() > 0;
+            }
+            
+            // Check if DXCC entity is worked on any band
+            $dxcc_worked_overall = false;
+            if ($dxcc) {
+                $this->db->select('COL_DXCC');
+                $this->db->where_in('station_id', $logbooks_locations_array);
+                $this->db->where('COL_DXCC', $dxcc);
+                $this->db->limit(1);
+                $query = $this->db->get($this->config->item('table_name'));
+                $dxcc_worked_overall = $query->num_rows() > 0;
+            }
+            
             $results[$callsign] = [
                 'worked_on_band' => $worked_on_band,
                 'worked_overall' => $worked_overall,
-                'band' => $band
+                'band' => $band,
+                'dxcc' => $dxcc,
+                'dxcc_worked_on_band' => $dxcc_worked_on_band,
+                'dxcc_worked_overall' => $dxcc_worked_overall,
+                'country' => isset($dxcc_info['entity']) ? $dxcc_info['entity'] : null
             ];
         }
         
