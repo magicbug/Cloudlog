@@ -255,12 +255,14 @@
                             <div class="tab-pane fade" id="nav-satellites" role="tabpanel" aria-labelledby="nav-satellites-tab">
                                 <div class="mb-3">
                                     <label for="sat_name">Sat Name</label>
-                                    <input type="text" class="form-control form-control-sm" name="sat_name" id="sat_name" value="<?php echo $qso->COL_SAT_NAME; ?>">
+                                    <input list="satellite_names_edit" type="text" class="form-control form-control-sm" name="sat_name" id="sat_name_edit" value="<?php echo $qso->COL_SAT_NAME; ?>">
+                                    <datalist id="satellite_names_edit" class="satellite_names_list_edit"></datalist>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="sat_mode">Sat Mode</label>
-                                    <input type="text" class="form-control form-control-sm" name="sat_mode" id="sat_mode" value="<?php echo $qso->COL_SAT_MODE; ?>">
+                                    <input list="satellite_modes_edit" type="text" class="form-control form-control-sm" name="sat_mode" id="sat_mode_edit" value="<?php echo $qso->COL_SAT_MODE; ?>">
+                                    <datalist id="satellite_modes_edit" class="satellite_modes_list_edit"></datalist>
                                 </div>
                             </div>
 

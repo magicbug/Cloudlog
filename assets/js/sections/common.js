@@ -339,6 +339,86 @@ function qso_edit(id) {
                             });
                         }
                     });
+
+                    // Populate satellite names datalist for edit dialog
+                    $.getJSON(base_url+"assets/json/satellite_data.json", function( data ) {
+                        var items = [];
+                        $.each( data, function( key, val ) {
+                            items.push('<option value="' + key + '">' + key + '</option>');
+                        });
+                        $('.satellite_names_list_edit').append(items.join( "" ));
+                    });
+
+                    // Handle satellite name change in edit dialog
+                    var selected_sat_edit;
+                    $('#sat_name_edit').on('input', function(){
+                        var optionslist = $('.satellite_names_list_edit')[0].options;
+                        var value = $(this).val();
+                        for (var x=0; x<optionslist.length; x++){
+                            if (optionslist[x].value === value) {
+                                $("#sat_mode_edit").val("");
+                                $('.satellite_modes_list_edit').find('option').remove().end();
+                                selected_sat_edit = value;
+                                
+                                // Get satellite modes from JSON
+                                $.getJSON( base_url+"assets/json/satellite_data.json", function( data ) {
+                                    var sat_modes = [];
+                                    $.each( data, function( key, val ) {
+                                        if (key == value) {
+                                            $.each( val.Modes, function( key1, val2 ) {
+                                                sat_modes.push('<option value="' + key1 + '">' + key1 + '</option>');
+                                            });
+                                        }
+                                    });
+                                    $('.satellite_modes_list_edit').append(sat_modes.join( "" ));
+                                });
+                                break;
+                            }
+                        }
+                    });
+
+                    // Handle satellite mode change in edit dialog to update frequencies and modes
+                    $('#sat_mode_edit').on('input', function(){
+                        var optionslist = $('.satellite_modes_list_edit')[0].options;
+                        var value = $(this).val();
+                        for (var x=0; x<optionslist.length; x++){
+                            if (optionslist[x].value === value) {
+                                var selected_sat_mode_edit = value;
+                                
+                                // Get satellite data from JSON
+                                $.getJSON( base_url+"assets/json/satellite_data.json", function( data ) {
+                                    $.each( data, function( key, val ) {
+                                        if (key == selected_sat_edit) {
+                                            $.each( val.Modes, function( key1, val2 ) {
+                                                if(key1 == selected_sat_mode_edit) {
+                                                    // Update mode - handle inverting transponders
+                                                    if ( (val2[0].Downlink_Mode == "LSB" && val2[0].Uplink_Mode == "USB") || 
+                                                         (val2[0].Downlink_Mode == "USB" && val2[0].Uplink_Mode == "LSB") ) {
+                                                        $("#mode").val("SSB");
+                                                    } else {
+                                                        $("#mode").val(val2[0].Uplink_Mode);
+                                                    }
+                                                    
+                                                    // Update bands based on frequencies
+                                                    $("#band").val(frequencyToBand(val2[0].Uplink_Freq));
+                                                    $("#band_rx").val(frequencyToBand(val2[0].Downlink_Freq));
+                                                    
+                                                    // Update frequencies
+                                                    $("#freq").val(val2[0].Uplink_Freq);
+                                                    $("#freqrx").val(val2[0].Downlink_Freq);
+                                                    
+                                                    // Update propagation mode to SAT
+                                                    $("#prop_mode").val('SAT');
+                                                }
+                                            });
+                                        }
+                                    });
+                                });
+                                break;
+                            }
+                        }
+                    });
+
                     // [eQSL default msg] change value (for qso edit page) //
                     $('.modal-content #stationProfile').change(function() {
                         qso_set_eqsl_qslmsg($('.modal-content #stationProfile').val(),false,'.modal-content');
