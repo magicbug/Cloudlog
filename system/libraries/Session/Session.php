@@ -125,11 +125,6 @@ class CI_Session {
 		}
 
 		session_start();
-		
-		log_message('debug', 'Session started - ID: ' . session_id());
-		log_message('debug', 'Session name: ' . session_name());
-		log_message('debug', '_COOKIE contents: ' . print_r($_COOKIE, true));
-		log_message('debug', 'headers_sent: ' . (headers_sent() ? 'YES' : 'NO'));
 
 		// Is session ID auto-regeneration configured? (ignoring ajax requests)
 		if ((empty($_SERVER['HTTP_X_REQUESTED_WITH']) OR strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest')
@@ -165,7 +160,6 @@ class CI_Session {
 		// Force set cookie for new sessions
 		else
 		{
-			log_message('debug', 'Setting new session cookie: ' . $this->_config['cookie_name'] . ' = ' . session_id());
 			setcookie(
 				$this->_config['cookie_name'],
 				session_id(),

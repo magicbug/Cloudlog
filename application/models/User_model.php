@@ -441,10 +441,6 @@ class User_Model extends CI_Model {
 	// Validate a user's login session
 	// If the user's session is corrupted in any way, it will clear the session
 	function validate_session() {
-		log_message('debug', 'validate_session called');
-		log_message('debug', 'Session ID: ' . session_id());
-		log_message('debug', 'Cookie: ' . print_r($_COOKIE, true));
-		
 		// Check backup auth cookie first as workaround
 		if (!$this->session->userdata('user_id') && isset($_COOKIE['cloudlog_auth']) && !empty($_COOKIE['cloudlog_auth'])) {
 			log_message('debug', 'Session empty but backup cookie found, attempting restore');
@@ -455,7 +451,6 @@ class User_Model extends CI_Model {
 				if (!empty($encrypted_value)) {
 					$user_id = $CI->encryption->decrypt($encrypted_value);
 					if ($user_id) {
-						log_message('debug', 'Restored user_id from cookie: ' . $user_id);
 						$this->update_session($user_id);
 						return 1;
 					}
@@ -467,7 +462,6 @@ class User_Model extends CI_Model {
 		
 		if($this->session->userdata('user_id'))
 		{
-			log_message('debug', 'validate_session: user_id found = ' . $this->session->userdata('user_id'));
 			$user_id = $this->session->userdata('user_id');
 			$user_type = $this->session->userdata('user_type');
 			$user_hash = $this->session->userdata('user_hash');

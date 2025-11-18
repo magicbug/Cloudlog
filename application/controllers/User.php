@@ -295,13 +295,7 @@ class User extends CI_Controller
 		// Validate session first to restore from cookie if needed
 		$this->user_model->validate_session();
 		
-		// Debug logging
-		log_message('debug', 'User edit accessed - user_id in session: ' . var_export($this->session->userdata('user_id'), true));
-		log_message('debug', 'User edit accessed - URI segment 3: ' . var_export($this->uri->segment(3), true));
-		log_message('debug', 'User edit accessed - authorize(99): ' . var_export($this->user_model->authorize(99), true));
-		
 		if (($this->session->userdata('user_id') == '') || ((!$this->user_model->authorize(99)) && ($this->session->userdata('user_id') != $this->uri->segment(3)))) {
-			log_message('debug', 'User edit - access denied, redirecting to dashboard');
 			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
 			redirect('dashboard');
 		}
@@ -1065,9 +1059,6 @@ class User extends CI_Controller
 				$this->user_model->update_session($data['user']->user_id);
 				$this->user_model->set_last_login($data['user']->user_id);
 				
-				log_message('debug', 'Login successful - Session ID: ' . session_id());
-				log_message('debug', 'Login successful - user_id in session: ' . $this->session->userdata('user_id'));
-				
 				// Set a backup auth cookie as workaround for session issues
 				$user_id = $this->session->userdata('user_id');
 				if ($user_id) {
@@ -1080,7 +1071,6 @@ class User extends CI_Controller
 						'httponly' => true,
 						'samesite' => ''
 					]);
-					log_message('debug', 'Set backup auth cookie for user_id: ' . $user_id);
 				}
 				
 				$cookie = array(
@@ -1104,10 +1094,6 @@ class User extends CI_Controller
 					);
 					$this->input->set_cookie($cookie);
 				}
-				
-				log_message('debug', 'About to redirect - Session ID: ' . session_id());
-				log_message('debug', 'Session cookie name: ' . session_name());
-				log_message('debug', 'Session data: ' . print_r($_SESSION, true));
 				
 				// Force session to save
 				session_commit();
