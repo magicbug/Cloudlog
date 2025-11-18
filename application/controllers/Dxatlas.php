@@ -4,6 +4,9 @@ class Dxatlas extends CI_Controller {
 
 	public function index()	{
 		$this->load->model('user_model');
+		if (!$this->user_model->validate_session()) {
+			redirect('user/login');
+		}
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$this->load->model('modes');
@@ -26,6 +29,9 @@ class Dxatlas extends CI_Controller {
 
 	public function export()  {
 		$this->load->model('user_model');
+		if (!$this->user_model->validate_session()) {
+			redirect('user/login');
+		}
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$this->load->model('dxatlas_model');
@@ -48,6 +54,9 @@ class Dxatlas extends CI_Controller {
 
 	function generateFiles($wkdArray, $cfmArray, $band) {
 		$this->load->model('user_model');
+		if (!$this->user_model->validate_session()) {
+			redirect('user/login');
+		}
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$gridCfmArray = [];
@@ -105,6 +114,9 @@ class Dxatlas extends CI_Controller {
 
 	function makeZip($gridWkdString, $gridCfmString, $band) {
 		$this->load->model('user_model');
+		if (!$this->user_model->validate_session()) {
+			redirect('user/login');
+		}
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$zipFileName = 'dxatlas_gridsquares_'. $band . '.zip';
 		// Prepare File

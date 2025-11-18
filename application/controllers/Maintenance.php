@@ -9,6 +9,9 @@ class Maintenance extends CI_Controller {
 	/* User Facing Links to Maintenance URLs */
 	public function index() {
 		$this->load->model('user_model');
+		if (!$this->user_model->validate_session()) {
+			redirect('user/login');
+		}
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$this->load->model('Logbook_model');
 		$this->load->model('Stations');
@@ -25,6 +28,9 @@ class Maintenance extends CI_Controller {
 
 	public function reassign() {
 		$this->load->model('user_model');
+		if (!$this->user_model->validate_session()) {
+			redirect('user/login');
+		}
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		$this->load->model('Logbook_model');
 		$this->load->model('Stations');

@@ -10,6 +10,9 @@ class Qsl extends CI_Controller {
         parent::__construct();
         $this->lang->load('qslcard');
         $this->load->model('user_model');
+        if (!$this->user_model->validate_session()) {
+            redirect('user/login');
+        }
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
     }
 
