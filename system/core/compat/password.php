@@ -95,7 +95,8 @@ if ( ! function_exists('password_hash'))
 	function password_hash($password, $algo, array $options = array())
 	{
 		static $func_overload;
-		isset($func_overload) OR $func_overload = (extension_loaded('mbstring') && ini_get('mbstring.func_overload'));
+		// mbstring.func_overload was removed in PHP 8.0
+		isset($func_overload) OR $func_overload = ( ! is_php('8.0') && extension_loaded('mbstring') && @ini_get('mbstring.func_overload'));
 
 		if ($algo !== 1)
 		{

@@ -161,7 +161,8 @@ class CI_Encryption {
 			show_error('Encryption: Unable to find an available encryption driver.');
 		}
 
-		isset(self::$func_overload) OR self::$func_overload = (extension_loaded('mbstring') && ini_get('mbstring.func_overload'));
+		// mbstring.func_overload was removed in PHP 8.0
+		isset(self::$func_overload) OR self::$func_overload = ( ! is_php('8.0') && extension_loaded('mbstring') && @ini_get('mbstring.func_overload'));
 		$this->initialize($params);
 
 		if ( ! isset($this->_key) && self::strlen($key = config_item('encryption_key')) > 0)
