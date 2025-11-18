@@ -81,8 +81,9 @@ class CI_Exceptions {
 	 */
 	public function __construct()
 	{
-		// E_STRICT is deprecated in PHP 8.4, only add if defined
-		if (defined('E_STRICT'))
+		// E_STRICT is deprecated in PHP 8.4
+		// Only add it for PHP < 8.4
+		if (PHP_VERSION_ID < 80400 && defined('E_STRICT'))
 		{
 			$this->levels[E_STRICT] = 'Runtime Notice';
 		}

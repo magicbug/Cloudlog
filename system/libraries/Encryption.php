@@ -369,8 +369,12 @@ class CI_Encryption {
 	 * @param	array	$params	Input parameters
 	 * @return	string
 	 */
-	public function encrypt($data, array $params = NULL)
+	public function encrypt($data, ?array $params = null)
 	{
+		if ($data === null || $data === '') {
+			return FALSE;
+		}
+		
 		if (($params = $this->_get_params($params)) === FALSE)
 		{
 			return FALSE;
@@ -504,8 +508,12 @@ class CI_Encryption {
 	 * @param	array	$params	Input parameters
 	 * @return	string
 	 */
-	public function decrypt($data, array $params = NULL)
+	public function decrypt($data, ?array $params = null)
 	{
+		if ($data === null || $data === '') {
+			return FALSE;
+		}
+		
 		if (($params = $this->_get_params($params)) === FALSE)
 		{
 			return FALSE;
@@ -910,6 +918,9 @@ class CI_Encryption {
 	 */
 	protected static function strlen($str)
 	{
+		if ($str === null) {
+			return 0;
+		}
 		return (self::$func_overload)
 			? mb_strlen($str, '8bit')
 			: strlen($str);

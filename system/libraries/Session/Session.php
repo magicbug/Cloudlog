@@ -125,6 +125,11 @@ class CI_Session {
 		}
 
 		session_start();
+		
+		log_message('debug', 'Session started - ID: ' . session_id());
+		log_message('debug', 'Session name: ' . session_name());
+		log_message('debug', '_COOKIE contents: ' . print_r($_COOKIE, true));
+		log_message('debug', 'headers_sent: ' . (headers_sent() ? 'YES' : 'NO'));
 
 		// Is session ID auto-regeneration configured? (ignoring ajax requests)
 		if ((empty($_SERVER['HTTP_X_REQUESTED_WITH']) OR strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest')
@@ -147,11 +152,31 @@ class CI_Session {
 			setcookie(
 				$this->_config['cookie_name'],
 				session_id(),
-				(empty($this->_config['cookie_lifetime']) ? 0 : time() + $this->_config['cookie_lifetime']),
-				$this->_config['cookie_path'],
-				$this->_config['cookie_domain'],
-				$this->_config['cookie_secure'],
-				TRUE
+				[
+					'expires' => (empty($this->_config['cookie_lifetime']) ? 0 : time() + $this->_config['cookie_lifetime']),
+					'path' => $this->_config['cookie_path'],
+					'domain' => $this->_config['cookie_domain'],
+					'secure' => $this->_config['cookie_secure'],
+					'httponly' => TRUE,
+					'samesite' => ''
+				]
+			);
+		}
+		// Force set cookie for new sessions
+		else
+		{
+			log_message('debug', 'Setting new session cookie: ' . $this->_config['cookie_name'] . ' = ' . session_id());
+			setcookie(
+				$this->_config['cookie_name'],
+				session_id(),
+				[
+					'expires' => (empty($this->_config['cookie_lifetime']) ? 0 : time() + $this->_config['cookie_lifetime']),
+					'path' => $this->_config['cookie_path'],
+					'domain' => $this->_config['cookie_domain'],
+					'secure' => $this->_config['cookie_secure'],
+					'httponly' => TRUE,
+					'samesite' => ''
+				]
 			);
 		}
 
@@ -267,13 +292,14 @@ class CI_Session {
 		isset($params['cookie_domain']) OR $params['cookie_domain'] = config_item('cookie_domain');
 		isset($params['cookie_secure']) OR $params['cookie_secure'] = (bool) config_item('cookie_secure');
 
-		session_set_cookie_params(
-			$params['cookie_lifetime'],
-			$params['cookie_path'],
-			$params['cookie_domain'],
-			$params['cookie_secure'],
-			TRUE // HttpOnly; Yes, this is intentional and not configurable for security reasons
-		);
+		session_set_cookie_params([
+			'lifetime' => $params['cookie_lifetime'],
+			'path' => $params['cookie_path'],
+			'domain' => $params['cookie_domain'],
+			'secure' => $params['cookie_secure'],
+			'httponly' => TRUE,
+			'samesite' => ''
+		]);
 
 		if (empty($expiration))
 		{

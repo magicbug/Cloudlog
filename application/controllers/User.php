@@ -1026,10 +1026,10 @@ class User extends CI_Controller
 		$data['user'] = $query->row();
 
 		// Read the cookie remeber_me and log the user in
-		if ($this->input->cookie(config_item('cookie_prefix') . 'remember_me')) {
+		$remember_me_cookie = $this->input->cookie(config_item('cookie_prefix') . 'remember_me');
+		if ($remember_me_cookie && !empty($remember_me_cookie)) {
 			try {
-				$encrypted_string = $this->input->cookie(config_item('cookie_prefix') . 'remember_me');
-				$decrypted_string = $this->encryption->decrypt($encrypted_string);
+				$decrypted_string = $this->encryption->decrypt($remember_me_cookie);
 				$this->user_model->update_session($decrypted_string);
 				$this->user_model->set_last_login($decrypted_string);
 
@@ -1038,7 +1038,7 @@ class User extends CI_Controller
 				redirect('dashboard');
 			} catch (Exception $e) {
 				// Something went wrong with the cookie
-				log_message('error', 'Remember Me Login Failed');
+				log_message('error', 'Remember Me Login Failed: ' . $e->getMessage());
 				$this->session->set_flashdata('error', 'Remember Me Login Failed');
 				redirect('user/login');
 			}
@@ -1054,6 +1054,25 @@ class User extends CI_Controller
 				$this->session->set_flashdata('notice', 'User logged in');
 				$this->user_model->update_session($data['user']->user_id);
 				$this->user_model->set_last_login($data['user']->user_id);
+				
+				log_message('debug', 'Login successful - Session ID: ' . session_id());
+				log_message('debug', 'Login successful - user_id in session: ' . $this->session->userdata('user_id'));
+				
+				// Set a backup auth cookie as workaround for session issues
+				$user_id = $this->session->userdata('user_id');
+				if ($user_id) {
+					$encrypted_user_id = $this->encryption->encrypt($user_id);
+					setcookie('cloudlog_auth', $encrypted_user_id, [
+						'expires' => time() + 86400, // 24 hours
+						'path' => '/',
+						'domain' => '',
+						'secure' => false,
+						'httponly' => true,
+						'samesite' => ''
+					]);
+					log_message('debug', 'Set backup auth cookie for user_id: ' . $user_id);
+				}
+				
 				$cookie = array(
 
 					'name'   => 'language',
@@ -1075,6 +1094,14 @@ class User extends CI_Controller
 					);
 					$this->input->set_cookie($cookie);
 				}
+				
+				log_message('debug', 'About to redirect - Session ID: ' . session_id());
+				log_message('debug', 'Session cookie name: ' . session_name());
+				log_message('debug', 'Session data: ' . print_r($_SESSION, true));
+				
+				// Force session to save
+				session_commit();
+				
 				redirect('dashboard');
 			} else {
 				$this->session->set_flashdata('error', 'Incorrect username or password!');
@@ -1091,6 +1118,9 @@ class User extends CI_Controller
 
 		// Delete remember_me cookie
 		setcookie('remember_me', '', time() - 3600, '/');
+		
+		// Delete backup auth cookie
+		setcookie('cloudlog_auth', '', time() - 3600, '/');
 
 		$this->user_model->clear_session();
 
