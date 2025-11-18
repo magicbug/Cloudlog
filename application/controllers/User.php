@@ -1126,11 +1126,12 @@ class User extends CI_Controller
 
 		$user_name = $this->session->userdata('user_name');
 
-		// Delete remember_me cookie
-		setcookie('remember_me', '', time() - 3600, '/');
+		// Delete remember_me cookie using CodeIgniter's delete_cookie helper
+		// This ensures the cookie_prefix is properly handled
+		delete_cookie('remember_me');
 		
 		// Delete backup auth cookie
-		setcookie('cloudlog_auth', '', time() - 3600, '/');
+		delete_cookie('cloudlog_auth');
 
 		$this->user_model->clear_session();
 
