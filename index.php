@@ -76,11 +76,22 @@ switch (ENVIRONMENT)
 		ini_set('display_errors', 0);
 		if (version_compare(PHP_VERSION, '5.3', '>='))
 		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED);
+			// E_STRICT is deprecated in PHP 8.4, conditionally exclude it
+			$error_reporting = E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_USER_NOTICE & ~E_USER_DEPRECATED;
+			if (defined('E_STRICT'))
+			{
+				$error_reporting &= ~E_STRICT;
+			}
+			error_reporting($error_reporting);
 		}
 		else
 		{
-			error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+			$error_reporting = E_ALL & ~E_NOTICE & ~E_USER_NOTICE;
+			if (defined('E_STRICT'))
+			{
+				$error_reporting &= ~E_STRICT;
+			}
+			error_reporting($error_reporting);
 		}
 	break;
 
