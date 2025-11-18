@@ -22,6 +22,11 @@ class User extends CI_Controller
 	public function index()
 	{
 		$this->load->model('user_model');
+		
+		// Validate session first
+		if (!$this->user_model->validate_session()) {
+			redirect('user/login');
+		}
 
 		// Check if the user is authorized
 		if (!$this->user_model->authorize(99)) {
