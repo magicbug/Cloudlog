@@ -63,7 +63,11 @@
          $result = write_initials_data($timeline_array, $custom_date_format, $bandselect, $modeselect);
     }
     else {
-        echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
+        echo '<div class="alert alert-info" role="alert">';
+        echo '<h5 class="alert-heading">No EME Initials Found</h5>';
+        echo '<p>You haven\'t worked any callsigns via EME (Earth-Moon-Earth) yet. EME Initials tracks the first time you work a callsign starting with each letter of the alphabet using moon bounce.</p>';
+        echo '<p class="mb-0">Start logging your EME contacts to build your initials collection!</p>';
+        echo '</div>';
     }
     ?>
 
