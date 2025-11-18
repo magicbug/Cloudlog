@@ -342,11 +342,23 @@ class Workabledxcc_model extends CI_Model
 
     public function GetThisWeek()
     {
-        $json = file_get_contents($this->optionslib->get_option('dxped_url'));
+        try {
+            $json = @file_get_contents($this->optionslib->get_option('dxped_url'));
+
+            // Catch any errors from opening the file
+            if ($json === false) {
+                return array('error' => 'Failed to fetch DXpedition data');
+                exit;
+            }
+        } catch (Exception $e) {
+            return array('error' => 'Error fetching DXpedition data: ' . $e->getMessage());
+            exit;
+        }
+
         $data = json_decode($json, true);
 
-        if (empty($data)) {
-            return array();
+        if (empty($data) || !is_array($data)) {
+            return array('error' => 'Invalid DXpedition data received');
         }
 
         $thisWeekRecords = [];

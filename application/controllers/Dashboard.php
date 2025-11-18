@@ -227,11 +227,14 @@ class Dashboard extends CI_Controller
 
 		$data['thisWeekRecords'] = $thisWeekRecords;
 
-		usort($data['thisWeekRecords'], function ($a, $b) {
-			$dateA = new DateTime($a['1']);
-			$dateB = new DateTime($b['1']);
-			return $dateA <=> $dateB;
-		});
+		// Only sort if we have valid records (not an error)
+		if (!isset($thisWeekRecords['error']) && !empty($thisWeekRecords)) {
+			usort($data['thisWeekRecords'], function ($a, $b) {
+				$dateA = new DateTime($a['1']);
+				$dateB = new DateTime($b['1']);
+				return $dateA <=> $dateB;
+			});
+		}
 
 		$this->load->view('components/upcoming_dxccs', $data);
 	}
