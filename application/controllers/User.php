@@ -291,7 +291,17 @@ class User extends CI_Controller
 	function edit()
 	{
 		$this->load->model('user_model');
+		
+		// Validate session first to restore from cookie if needed
+		$this->user_model->validate_session();
+		
+		// Debug logging
+		log_message('debug', 'User edit accessed - user_id in session: ' . var_export($this->session->userdata('user_id'), true));
+		log_message('debug', 'User edit accessed - URI segment 3: ' . var_export($this->uri->segment(3), true));
+		log_message('debug', 'User edit accessed - authorize(99): ' . var_export($this->user_model->authorize(99), true));
+		
 		if (($this->session->userdata('user_id') == '') || ((!$this->user_model->authorize(99)) && ($this->session->userdata('user_id') != $this->uri->segment(3)))) {
+			log_message('debug', 'User edit - access denied, redirecting to dashboard');
 			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
 			redirect('dashboard');
 		}

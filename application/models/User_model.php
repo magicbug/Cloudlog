@@ -519,7 +519,15 @@ class User_Model extends CI_Model {
 		if($this->config->item('auth_mode') > $level) {
 			$level = $this->config->item('auth_mode');
 		}
-		if(($this->validate_session()) && ($u->row()->user_type >= $level) || $this->config->item('use_auth') == FALSE || $level == 0) {
+		
+		// Check if user exists
+		$user_row = $u->row();
+		if (!$user_row) {
+			log_message('error', 'authorize() called but user not found for user_id: ' . $this->session->userdata('user_id'));
+			return 0;
+		}
+		
+		if(($this->validate_session()) && ($user_row->user_type >= $level) || $this->config->item('use_auth') == FALSE || $level == 0) {
 			return 1;
 		} else {
 			return 0;

@@ -64,6 +64,43 @@ class CI_Cache extends CI_Driver_Library {
 	);
 
 	/**
+	 * Driver instances (for PHP 8.2+ compatibility)
+	 *
+	 * @var CI_Cache_apc|null
+	 */
+	public $apc;
+
+	/**
+	 * @var CI_Cache_apcu|null
+	 */
+	public $apcu;
+
+	/**
+	 * @var CI_Cache_dummy|null
+	 */
+	public $dummy;
+
+	/**
+	 * @var CI_Cache_file|null
+	 */
+	public $file;
+
+	/**
+	 * @var CI_Cache_memcached|null
+	 */
+	public $memcached;
+
+	/**
+	 * @var CI_Cache_redis|null
+	 */
+	public $redis;
+
+	/**
+	 * @var CI_Cache_wincache|null
+	 */
+	public $wincache;
+
+	/**
 	 * Path of cache files (if file-based cache)
 	 *
 	 * @var string
@@ -248,6 +285,12 @@ class CI_Cache extends CI_Driver_Library {
 
 		if ( ! isset($support, $support[$driver]))
 		{
+			// Load the driver if it's not already loaded (PHP 8.2+ compatibility)
+			if ($this->{$driver} === null)
+			{
+				$this->load_driver($driver);
+			}
+			
 			$support[$driver] = $this->{$driver}->is_supported();
 		}
 
