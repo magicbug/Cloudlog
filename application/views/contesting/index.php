@@ -3,7 +3,7 @@
         <button type="button" class="btn btn-sm btn-primary me-2" onclick="openBandmap()" title="Open DX Cluster Bandmap"><i class="fas fa-chart-line"></i> <?php echo lang('menu_bandmap'); ?></button>
         <button type="button" class="btn btn-sm btn-warning" onclick="reset_contest_session()"><i class="fas fa-sync-alt"></i> <?php echo lang('contesting_button_reset_contest_session'); ?></button>
     </div>
-    <h2 style="display:inline"><?php echo lang('contesting_page_title'); ?> </h2> <?php echo ($_GET['manual'] == 0 ? " <span style='display:inline' class='align-text-top badge text-bg-success'>LIVE</span>" : " <span style='display:inline' class='align-text-top badge text-bg-danger'>POST</span>");  ?>
+    <h2 style="display:inline"><?php echo lang('contesting_page_title'); ?> </h2> <?php echo ($_GET['manual'] == 0 ? " <span style='display:inline; cursor: pointer;' class='align-text-top badge text-bg-success' onclick=\"window.location.href='" . site_url('contesting') . "?manual=1'\" title='Switch to POST mode'>LIVE</span>" : " <span style='display:inline; cursor: pointer;' class='align-text-top badge text-bg-danger' onclick=\"window.location.href='" . site_url('contesting') . "?manual=0'\" title='Switch to LIVE mode'>POST</span>");  ?>
     <div class="row">
 
         <div class="col-sm-12 col-md-12">
