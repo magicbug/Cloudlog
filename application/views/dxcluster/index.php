@@ -256,12 +256,14 @@ document.addEventListener('DOMContentLoaded', function() {
         columnDefs: [
             {
                 targets: 0, // Time column
+                width: '8%',
                 render: function(data, type, row) {
                     return data;
                 }
             },
             {
                 targets: 1, // DX Call column
+                width: '35%',
                 render: function(data, type, row) {
                     if (type === 'display') {
                         const callsign = data;
@@ -269,6 +271,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         let html = `<span class="dx-callsign" data-callsign="${callsign}">${callsign}</span>`;
                         
                         if (status) {
+                            // Country name badge
+                            if (status.country) {
+                                html += `<span class="badge bg-secondary ms-2" title="Country: ${status.country}">${status.country}</span>`;
+                            }
+                            
                             // Worked status icon
                             if (status.worked_on_band) {
                                 html += `<i class="fas fa-check text-success ms-2" title="Worked on ${status.band}"></i>`;
@@ -293,6 +300,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             {
                 targets: 2, // Frequency column
+                width: '12%',
                 className: 'frequency-cell',
                 render: function(data, type, row) {
                     if (type === 'display') {
@@ -302,7 +310,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             {
+                targets: 3, // Spotter column
+                width: '10%'
+            },
+            {
+                targets: 4, // Comment column
+                width: '25%'
+            },
+            {
                 targets: 5, // Age column
+                width: '10%',
                 render: function(data, type, row) {
                     if (type === 'display') {
                         return `<span class="spot-age">${data}</span>`;
