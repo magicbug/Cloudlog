@@ -160,7 +160,7 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 <div class="container dashboard">
 	<?php if (($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 
-		<?php if (version_compare(PHP_VERSION, '7.4.0') <= 0) { ?>
+		<?php if (version_compare(PHP_VERSION, '8.0.0') < 0) { ?>
 			<div class="alert alert-danger" role="alert">
 				<?php echo lang('dashboard_php_version_warning') . ' ' . PHP_VERSION . '.'; ?>
 			</div>
