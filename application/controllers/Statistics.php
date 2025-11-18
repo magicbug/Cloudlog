@@ -18,14 +18,16 @@ class Statistics extends CI_Controller {
         $this->load->model('user_model');
         $this->load->model('bands');
 
+        // Validate session first
+        if (!$this->user_model->validate_session()) {
+            redirect('user/login');
+        }
+
+        // Then check authorization
         if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
-            if($this->user_model->validate_session()) {
-                $this->user_model->clear_session();
-                show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
-            } else {
-                redirect('user/login');
-            }
-        }	
+            $this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
+            redirect('dashboard');
+        }
 		// Render User Interface
 
 		// Set Page Title
@@ -41,13 +43,16 @@ class Statistics extends CI_Controller {
 	function custom() {
 	
 	    $this->load->model('user_model');
+	    
+		// Validate session first
+		if (!$this->user_model->validate_session()) {
+			redirect('user/login');
+		}
+		
+		// Then check authorization
 		if(!$this->user_model->authorize($this->config->item('auth_mode'))) {
-			if($this->user_model->validate_session()) {
-				$this->user_model->clear_session();
-				show_error('Access denied<p>Click <a href="'.site_url('user/login').'">here</a> to log in as another user', 403);
-			} else {
-				redirect('user/login');
-			}
+			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
+			redirect('dashboard');
 		}
 	
 	    $this->load->model('logbook_model');

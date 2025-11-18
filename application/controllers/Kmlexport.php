@@ -15,6 +15,9 @@ class Kmlexport extends CI_Controller {
         $this->load->model('logbook_model');
 	$this->load->model('bands');
 
+        if (!$this->user_model->validate_session()) {
+            redirect('user/login');
+        }
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
         $data['worked_bands'] = $this->bands->get_worked_bands(); // Used in the view for band select
@@ -30,6 +33,9 @@ class Kmlexport extends CI_Controller {
 
 	public function export() {
         $this->load->model('user_model');
+        if (!$this->user_model->validate_session()) {
+            redirect('user/login');
+        }
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 		// Load Libraries
 		$this->load->library('qra');

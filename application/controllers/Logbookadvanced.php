@@ -12,6 +12,7 @@ class Logbookadvanced extends CI_Controller {
 		$this->load->helper(array('form', 'url', 'psr4_autoloader'));
 
 		$this->load->model('user_model');
+		$this->user_model->validate_session();
 		if (!$this->user_model->authorize(2)) {
 			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
 			redirect('dashboard');
