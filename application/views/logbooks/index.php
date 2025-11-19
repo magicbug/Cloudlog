@@ -72,6 +72,11 @@
                                                     <i class="fas fa-check me-1"></i><?php echo lang('station_logbooks_active_logbook'); ?>
                                                 </span>
                                             <?php } ?>
+                                            <?php if(isset($row->access_level) && $row->access_level != 'owner') { ?>
+                                                <span class="badge bg-info ms-2" title="Shared logbook">
+                                                    <i class="fas fa-users me-1"></i>Shared (<?php echo ucfirst($row->access_level); ?>)
+                                                </span>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                 </td>
@@ -117,7 +122,14 @@
                                            title="<?php echo lang('station_logbooks_edit_logbook') . ': ' . $row->logbook_name;?>">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <?php if($this->session->userdata('active_station_logbook') != $row->logbook_id) { ?>
+                                        <?php if($row->user_id == $this->session->userdata('user_id') || (isset($row->access_level) && $row->access_level == 'admin')) { ?>
+                                            <a href="<?php echo site_url('logbooks/manage_sharing')."/".$row->logbook_id; ?>" 
+                                               class="btn btn-info btn-sm" 
+                                               title="Manage Sharing">
+                                                <i class="fas fa-users"></i>
+                                            </a>
+                                        <?php } ?>
+                                        <?php if($this->session->userdata('active_station_logbook') != $row->logbook_id && $row->user_id == $this->session->userdata('user_id')) { ?>
                                             <a href="<?php echo site_url('Logbooks/delete')."/".$row->logbook_id; ?>" 
                                                class="btn btn-danger btn-sm" 
                                                title="<?php echo lang('admin_delete')?>"

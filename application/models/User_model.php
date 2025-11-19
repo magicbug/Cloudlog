@@ -55,6 +55,17 @@ class User_Model extends CI_Model {
 		return $r;
 	}
 
+	// FUNCTION: object get_by_callsign($callsign)
+	// Retrieve a user by callsign (case-insensitive)
+	function get_by_callsign($callsign) {
+
+		$clean_callsign = $this->security->xss_clean($callsign);
+
+		$this->db->where('UPPER(user_callsign)', strtoupper($clean_callsign));
+		$r = $this->db->get($this->config->item('auth_table'));
+		return $r;
+	}
+
 	/*
 	 * Function: check_email_address
 	 *
