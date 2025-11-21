@@ -271,18 +271,18 @@ document.addEventListener('DOMContentLoaded', function() {
                         let html = `<span class="dx-callsign" data-callsign="${callsign}">${callsign}</span>`;
                         
                         if (status) {
-                            // Country name badge
-                            if (status.country) {
-                                html += `<span class="badge bg-secondary ms-2" title="Country: ${status.country}">${status.country}</span>`;
-                            }
-                            
-                            // Worked status icon
+                            // Worked status icon (right after callsign)
                             if (status.worked_on_band) {
                                 html += `<i class="fas fa-check text-success ms-2" title="Worked on ${status.band}"></i>`;
                             } else if (status.worked_overall) {
                                 html += `<i class="fas fa-check text-info ms-2" title="Worked on another band"></i>`;
                             } else {
                                 html += `<i class="fas fa-times text-secondary ms-2" title="Not worked yet"></i>`;
+                            }
+                            
+                            // Country name badge
+                            if (status.country) {
+                                html += `<span class="badge bg-secondary ms-2" title="Country: ${status.country}">${status.country}</span>`;
                             }
                             
                             // New country badges
