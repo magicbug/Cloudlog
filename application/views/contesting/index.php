@@ -1,6 +1,9 @@
 <div class="container qso_panel contesting">
-    <button type="button" class="btn btn-sm btn-warning float-end" onclick="reset_contest_session()"><i class="fas fa-sync-alt"></i> <?php echo lang('contesting_button_reset_contest_session'); ?></button>
-    <h2 style="display:inline"><?php echo lang('contesting_page_title'); ?> </h2> <?php echo ($_GET['manual'] == 0 ? " <span style='display:inline' class='align-text-top badge text-bg-success'>LIVE</span>" : " <span style='display:inline' class='align-text-top badge text-bg-danger'>POST</span>");  ?>
+    <div class="float-end">
+        <button type="button" class="btn btn-sm btn-primary me-2" onclick="openBandmap()" title="Open DX Cluster Bandmap"><i class="fas fa-chart-line"></i> <?php echo lang('menu_bandmap'); ?></button>
+        <button type="button" class="btn btn-sm btn-warning" onclick="reset_contest_session()"><i class="fas fa-sync-alt"></i> <?php echo lang('contesting_button_reset_contest_session'); ?></button>
+    </div>
+    <h2 style="display:inline"><?php echo lang('contesting_page_title'); ?> </h2> <?php echo ($_GET['manual'] == 0 ? " <span style='display:inline; cursor: pointer;' class='align-text-top badge text-bg-success' onclick=\"window.location.href='" . site_url('contesting') . "?manual=1'\" title='Switch to POST mode'>LIVE</span>" : " <span style='display:inline; cursor: pointer;' class='align-text-top badge text-bg-danger' onclick=\"window.location.href='" . site_url('contesting') . "?manual=0'\" title='Switch to LIVE mode'>POST</span>");  ?>
     <div class="row">
 
         <div class="col-sm-12 col-md-12">
@@ -98,6 +101,8 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div id="radio_status"></div>
 
                         <div class="row">
                             <div class="mb-3 col-md-3">
@@ -219,5 +224,27 @@
         </div>
     </div>
 </div>
-<?php
-?>
+
+<script>
+    function openBandmap() {
+        // Open bandmap in a new window without URL bar, toolbars, etc.
+        const width = 500; 
+        const height = 800;
+        const left = (screen.width - width) / 2;
+        const top = (screen.height - height) / 2;
+        
+        // Note: Modern browsers may still show address bar due to security restrictions
+        // For Chrome, you can use: chrome.exe --app=http://localhost/index.php/dxcluster/bandmap
+        const features = `width=${width},height=${height},left=${left},top=${top},` +
+                       `toolbar=no,location=no,directories=no,status=no,menubar=no,` +
+                       `scrollbars=yes,resizable=yes,copyhistory=no`;
+        
+        const popup = window.open('<?php echo site_url('dxcluster/bandmap'); ?>', 'bandmap', features);
+        
+        // Try to make it fullscreen (user will need to allow this)
+        if (popup) {
+            popup.focus();
+        }
+    }
+</script>
+

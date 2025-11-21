@@ -1,6 +1,15 @@
 <p>Data is collected by Cloudlog from multiple sources.</p>
 
 <?php
+if (isset($dxcclist['error'])) {
+?>
+<div class="alert alert-warning" role="alert">
+    <i class="fas fa-exclamation-triangle"></i> <?php echo $dxcclist['error']; ?>
+</div>
+<?php
+    return;
+}
+
 $grouped = [];
 
 // Step 2: Iterate over $dxcclist.

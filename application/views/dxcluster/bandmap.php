@@ -191,6 +191,42 @@
         .spot-marker.new {
             animation: spotAppear 0.5s ease-out;
         }
+        
+        /* Worked status styling */
+        .spot-marker.worked-on-band {
+            background: #27ae60;
+            border-color: #229954;
+        }
+        
+        .spot-marker.worked-on-band:hover {
+            background: #2ecc71;
+            border-color: #27ae60;
+        }
+        
+        .spot-marker.worked-other-band {
+            background: #3498db;
+            border-color: #2980b9;
+        }
+        
+        .spot-marker.worked-other-band:hover {
+            background: #5dade2;
+            border-color: #3498db;
+        }
+        
+        .spot-marker.not-worked {
+            background: #e74c3c;
+            border-color: #c0392b;
+        }
+        
+        .spot-marker.new-dxcc {
+            box-shadow: 0 0 10px #f39c12, 0 0 20px #f39c12;
+            border: 2px solid #f39c12;
+        }
+        
+        .spot-marker.new-band-dxcc {
+            box-shadow: 0 0 10px #e74c3c, 0 0 20px #e74c3c;
+            border: 2px solid #e74c3c;
+        }
 
         .tune-indicator {
             position: absolute;
@@ -404,7 +440,7 @@
             
             <div class="stats-display">
                 <div class="stat-item">Band: <span class="stat-value" id="currentBand">20m</span></div>
-                <div class="stat-item">Range: <span class="stat-value" id="freqRange">14.000-14.350</span></div>
+                    <div class="stat-item">Viewing: <span class="stat-value" id="freqRange">14.000-14.350</span> MHz</div>
                 <div class="stat-item">Spots: <span class="stat-value" id="bandSpotCount">0</span></div>
                 <div class="stat-item">Total: <span class="stat-value" id="totalSpots">0</span></div>
             </div>
@@ -422,6 +458,8 @@
     <script>
         let ws;
         let spots = new Map();
+        let workedStatus = {}; // Cache for worked status
+        let checkWorkedTimeout = null;
         let currentBandMeters = 20;
         let bandStart = 14000;
         let bandEnd = 14350;
@@ -492,6 +530,12 @@
 
             updateDisplay();
             updateStats();
+            
+            // Check worked status after a short delay (debounce)
+            clearTimeout(checkWorkedTimeout);
+            checkWorkedTimeout = setTimeout(() => {
+                checkWorkedStatus();
+            }, 500);
         }
 
         function handleBandChange() {
@@ -526,16 +570,87 @@
             return `${meters}m`;
         }
         
+        // Determine band from frequency (in kHz)
+        function getBandFromFrequency(freqKhz) {
+            const freq = parseFloat(freqKhz);
+            
+            if (freq >= 1800 && freq <= 2000) return '160m';
+            if (freq >= 3500 && freq <= 4000) return '80m';
+            if (freq >= 5250 && freq <= 5450) return '60m';
+            if (freq >= 7000 && freq <= 7300) return '40m';
+            if (freq >= 10100 && freq <= 10150) return '30m';
+            if (freq >= 14000 && freq <= 14350) return '20m';
+            if (freq >= 18068 && freq <= 18168) return '17m';
+            if (freq >= 21000 && freq <= 21450) return '15m';
+            if (freq >= 24890 && freq <= 24990) return '12m';
+            if (freq >= 28000 && freq <= 29700) return '10m';
+            if (freq >= 50000 && freq <= 54000) return '6m';
+            if (freq >= 70000 && freq <= 71000) return '4m';
+            if (freq >= 144000 && freq <= 148000) return '2m';
+            if (freq >= 420000 && freq <= 450000) return '70cm';
+            if (freq >= 1240000 && freq <= 1300000) return '23cm';
+            if (freq >= 1000000) return 'ghz';
+            
+            return 'unknown';
+        }
+        
+        // Check worked status for callsigns
+        async function checkWorkedStatus() {
+            const callsignsToCheck = [];
+            const seen = new Set();
+            
+            for (let [id, spot] of spots) {
+                if (workedStatus[spot.dx]) continue;
+                if (seen.has(spot.dx)) continue;
+                
+                const band = getBandFromFrequency(spot.frequency);
+                callsignsToCheck.push({
+                    callsign: spot.dx,
+                    band: band
+                });
+                seen.add(spot.dx);
+            }
+            
+            if (callsignsToCheck.length === 0) return;
+            
+            // Limit to 30 callsigns per request
+            const batch = callsignsToCheck.slice(0, 30);
+            
+            try {
+                const response = await fetch('<?php echo site_url('dxcluster/check_worked'); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ callsigns: batch })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    Object.assign(workedStatus, data.results);
+                    updateDisplay();
+                }
+            } catch (error) {
+                console.error('Error checking worked status:', error);
+            }
+        }
+        
         function selectBand(meters, start, end) {
             currentBandMeters = meters;
-            bandStart = start;
-            bandEnd = end;
+            
+            // Add 5% buffer padding on each end so spots near edges are visible
+            const bandRange = end - start;
+            const padding = bandRange * 0.05;
+            
+            bandStart = start - padding;
+            bandEnd = end + padding;
             
             // Apply default zoom level for better initial view
             const center = (start + end) / 2;
-            const newRange = (end - start) / zoomLevel;
-            viewStart = Math.max(start, center - newRange / 2);
-            viewEnd = Math.min(end, center + newRange / 2);
+            const newRange = (bandEnd - bandStart) / zoomLevel;
+            viewStart = Math.max(bandStart, center - newRange / 2);
+            viewEnd = Math.min(bandEnd, center + newRange / 2);
 
             // Handle band display properly for all bands
             document.getElementById('currentBand').textContent = formatBandName(meters);
@@ -664,6 +779,25 @@
                 // Apply aging class if spot is 15+ minutes old
                 if (age >= fifteenMinutes) {
                     spotElement.classList.add('aged');
+                }
+                
+                // Add worked status styling
+                const status = workedStatus[spot.dx];
+                if (status) {
+                    if (status.worked_on_band) {
+                        spotElement.classList.add('worked-on-band');
+                    } else if (status.worked_overall) {
+                        spotElement.classList.add('worked-other-band');
+                    } else {
+                        spotElement.classList.add('not-worked');
+                    }
+                    
+                    // Add DXCC new badge styling
+                    if (status.dxcc && !status.dxcc_worked_on_band) {
+                        spotElement.classList.add('new-band-dxcc');
+                    } else if (status.dxcc && !status.dxcc_worked_overall) {
+                        spotElement.classList.add('new-dxcc');
+                    }
                 }
                 
                 spotElement.textContent = spot.dx;
@@ -804,7 +938,7 @@
         // Mouse wheel scrolling
         bandmapDisplay.addEventListener('wheel', (event) => {
             event.preventDefault();
-            const delta = event.deltaY > 0 ? 1 : -1;
+            const delta = event.deltaY > 0 ? -1 : 1; // Inverted: scroll down = move down freq scale
             const scrollStep = (viewEnd - viewStart) * 0.1;
             
             viewStart += delta * scrollStep;
@@ -819,6 +953,9 @@
                 viewStart -= viewEnd - bandEnd;
                 viewEnd = bandEnd;
             }
+            
+            // Update frequency range display
+            document.getElementById('freqRange').textContent = `${(viewStart/1000).toFixed(3)}-${(viewEnd/1000).toFixed(3)}`;
             
             updateDisplay();
         });

@@ -17,10 +17,10 @@
             <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="qsp-tab" data-bs-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true"><?php echo lang('gen_hamradio_qso'); ?><?php if ($_GET['manual'] == 0) {
-                                                                                                                                                                                      echo " <span class=\"badge text-bg-success\">LIVE</span>";
+                                                                                                                                                                                      echo " <span class=\"badge text-bg-success\" style=\"cursor: pointer;\" onclick=\"window.location.href='" . site_url('qso') . "?manual=1'\" title=\"Switch to POST mode\">LIVE</span>";
                                                                                                                                                                                     };
                                                                                                                                                                                     if ($_GET['manual'] == 1) {
-                                                                                                                                                                                      echo " <span class=\"badge text-bg-danger\">POST</span>";
+                                                                                                                                                                                      echo " <span class=\"badge text-bg-danger\" style=\"cursor: pointer;\" onclick=\"window.location.href='" . site_url('qso') . "?manual=0'\" title=\"Switch to LIVE mode\">POST</span>";
                                                                                                                                                                                     } ?></a>
               </li>
 

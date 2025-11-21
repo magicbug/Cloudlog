@@ -1,3 +1,13 @@
+
+<?php
+
+if (isset($thisWeekRecords['error'])) {
+?>
+<div class="alert alert-warning" role="alert">
+    <i class="fas fa-exclamation-triangle"></i> <?php echo $thisWeekRecords['error']; ?>
+</div>
+<?php } else { ?>
+
 <table id="upcoming_dxccs_component" class="table table-striped border-top">
     <tr class="titles">
         <td colspan="3"><i class="fas fa-chart-bar"></i> DXPeditions (This Week)</td>
@@ -14,3 +24,4 @@
     }
     ?>
 </table>
+<?php } ?>

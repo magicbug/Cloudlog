@@ -28,18 +28,23 @@
 
 						<div class="mb-3">
 							<label for="stationLogbookNameInput"><?php echo lang('station_logbooks_create_name'); ?></label>
-							<input type="text" class="form-control" name="station_logbook_name" id="stationLogbookNameInput" aria-describedby="stationLogbookNameInputHelp" value="<?php if(set_value('station_logbook_name') != "") { echo set_value('station_logbook_name'); } else { echo $station_logbook_details->logbook_name; } ?>" required>
-							<small id="stationLogbookNameInputHelp" class="form-text text-muted"><?php echo lang('station_logbooks_edit_name_hint'); ?></small>
+							<input type="text" class="form-control" name="station_logbook_name" id="stationLogbookNameInput" aria-describedby="stationLogbookNameInputHelp" value="<?php if(set_value('station_logbook_name') != "") { echo set_value('station_logbook_name'); } else { echo $station_logbook_details->logbook_name; } ?>" <?php echo isset($is_owner) && !$is_owner ? 'readonly' : 'required'; ?>>
+							<small id="stationLogbookNameInputHelp" class="form-text text-muted"><?php echo isset($is_owner) && !$is_owner ? lang('station_logbooks_edit_name_hint').' '.lang('station_logbooks_shared_readonly') : lang('station_logbooks_edit_name_hint'); ?></small>
 						</div>
 
 						<input type="hidden" class="form-control" name="station_logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>" required>	
 
+						<?php if(isset($is_owner) && $is_owner) { ?>
 						<button type="submit" class="btn btn-primary"><i class="fas fa-plus-square"></i> <?php echo lang('station_logbooks_edit_name_update'); ?></button>
+						<?php } else { ?>
+						<p class="text-muted"><i class="fas fa-info-circle"></i> Only the owner can rename this logbook</p>
+						<?php } ?>
 					</form>
 				</div>
 			</div>
 		</div>
 
+		<?php if(isset($is_owner) && $is_owner) { ?>
 		<div class="col-md">
 			<div class="card">
 				<div class="card-header"><?php echo lang('station_logbooks_public_slug'); ?></div>
@@ -110,6 +115,7 @@
 				</div>
 			</div>
 		</div>
+		<?php } ?>
 	</div>
 
 	<div class="row">
@@ -161,6 +167,7 @@
 						<th scope="col"><?php echo lang('station_location_name'); ?></th>
 						<th scope="col"><?php echo lang('station_location_callsign'); ?></th>
 						<th scope="col"><?php echo lang('gen_hamradio_dxcc'); ?></th>
+						<th scope="col">Owner</th>
 						<th scope="col"><?php echo lang('station_logbooks_unlink_station_location'); ?></th>
 					</tr>
 				</thead>
@@ -173,17 +180,30 @@
 						<td style="text-align: center; vertical-align: middle;"><?php echo $row->station_profile_name;?></td>
 						<td style="text-align: center; vertical-align: middle;"><?php echo $row->station_callsign;?></td>
 						<td style="text-align: center; vertical-align: middle;"><?php echo $row->station_country; if ($row->end != NULL) { echo ' <span class="badge text-bg-danger">'.lang('gen_hamradio_deleted_dxcc').'</span>'; } ?></td>
-						<td style="text-align: center; vertical-align: middle;"><a href="<?php echo site_url('logbooks/delete_relationship/'); ?><?php echo $station_logbook_details->logbook_id; ?>/<?php echo $row->station_id;?>" class="btn btn-danger"><i class="fas fa-unlink"></i></a></td>
+						<td style="text-align: center; vertical-align: middle;">
+							<?php if ($row->is_shared == 1) { ?>
+								<span class="badge bg-info text-dark"><i class="fas fa-share-alt"></i> Shared (<?php echo $row->owner_callsign; ?>)</span>
+							<?php } else { ?>
+								<span class="badge bg-success"><i class="fas fa-user"></i> Yours</span>
+							<?php } ?>
+						</td>
+						<td style="text-align: center; vertical-align: middle;">
+							<?php 
+							// Only show unlink button if user is owner of logbook OR owner of this station location
+							if (isset($is_owner) && ($is_owner || $row->is_shared == 0)) { 
+							?>
+								<a href="<?php echo site_url('logbooks/delete_relationship/'); ?><?php echo $station_logbook_details->logbook_id; ?>/<?php echo $row->station_id;?>" class="btn btn-danger"><i class="fas fa-unlink"></i></a>
+							<?php } else { ?>
+								<span class="text-muted"><i class="fas fa-lock"></i></span>
+							<?php } ?>
+						</td>
 					</tr>
 					<?php
 							}
 						} else {
 					?>
 					<tr>
-						<td style="text-align: center; vertical-align: middle;" colspan="2"><?php echo lang('station_logbooks_no_linked_loc'); ?></td>
-						<td style="text-align: center; vertical-align: middle;"></td>
-						<td style="text-align: center; vertical-align: middle;"></td>
-						<td style="text-align: center; vertical-align: middle;"></td>
+						<td style="text-align: center; vertical-align: middle;" colspan="5"><?php echo lang('station_logbooks_no_linked_loc'); ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>

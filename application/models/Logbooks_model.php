@@ -3,8 +3,25 @@
 class Logbooks_model extends CI_Model {
 
     function show_all() {
-        $this->db->where('user_id', $this->session->userdata('user_id'));
-		return $this->db->get('station_logbooks');
+		// Get owned logbooks and shared logbooks with access level
+		$user_id = $this->session->userdata('user_id');
+		
+		$this->db->select('station_logbooks.*, 
+			CASE 
+				WHEN station_logbooks.user_id = '.$this->db->escape($user_id).' THEN "owner" 
+				ELSE slp.permission_level 
+			END as access_level', FALSE);
+		$this->db->from('station_logbooks');
+		$this->db->join('station_logbooks_permissions slp', 
+			'slp.logbook_id = station_logbooks.logbook_id AND slp.user_id = '.$this->db->escape($user_id), 
+			'left');
+		$this->db->group_start();
+			$this->db->where('station_logbooks.user_id', $user_id);
+			$this->db->or_where('slp.user_id', $user_id);
+		$this->db->group_end();
+		$this->db->order_by('station_logbooks.logbook_name', 'ASC');
+		
+		return $this->db->get();
 	}
 
 	function CountAllStationLogbooks() {
@@ -104,10 +121,21 @@ class Logbooks_model extends CI_Model {
 	function logbook($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
+		$user_id = $this->session->userdata('user_id');
 
-		$this->db->where('user_id', $this->session->userdata('user_id'));
-		$this->db->where('logbook_id', $clean_id);
-		return $this->db->get('station_logbooks');
+		// Get logbook if user owns it OR has shared access
+		$this->db->select('station_logbooks.*');
+		$this->db->from('station_logbooks');
+		$this->db->join('station_logbooks_permissions slp', 
+			'slp.logbook_id = station_logbooks.logbook_id AND slp.user_id = '.$this->db->escape($user_id), 
+			'left');
+		$this->db->where('station_logbooks.logbook_id', $clean_id);
+		$this->db->group_start();
+			$this->db->where('station_logbooks.user_id', $user_id);
+			$this->db->or_where('slp.user_id', $user_id);
+		$this->db->group_end();
+		
+		return $this->db->get();
 	}
 
 	function find_name($id) {
@@ -282,9 +310,16 @@ class Logbooks_model extends CI_Model {
 				array_push($relationships_array, $row->station_location_id);
 			}
 
-			$this->db->select('station_profile.*, dxcc_entities.name as station_country, dxcc_entities.end as end');
+			$current_user_id = $this->session->userdata('user_id');
+			
+			$this->db->select('station_profile.*, 
+				dxcc_entities.name as station_country, 
+				dxcc_entities.end as end,
+				users.user_callsign as owner_callsign,
+				CASE WHEN station_profile.user_id = '.$this->db->escape($current_user_id).' THEN 0 ELSE 1 END as is_shared', FALSE);
 			$this->db->where_in('station_id', $relationships_array);
 			$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
+			$this->db->join('users','station_profile.user_id = users.user_id','left');
 			$query = $this->db->get('station_profile');
 			
 			return $query;
@@ -317,16 +352,174 @@ class Logbooks_model extends CI_Model {
 		$this->db->delete('station_logbooks_relationship'); 
 	}
 
-	public function check_logbook_is_accessible($id) {
-	    // check if logbook belongs to user
+	public function check_logbook_is_accessible($id, $min_level = 'read') {
+	    // First check if user is the owner (existing behavior - highest priority)
 	    $this->db->select('logbook_id');
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', $id);
 		$query = $this->db->get('station_logbooks');
 		if ($query->num_rows() == 1) {
-			return true;
+			return true; // Owner always has full access
 		}
+		
+		// Check if user has shared access via permissions table
+		$this->db->select('permission_level');
+		$this->db->where('logbook_id', $id);
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$query = $this->db->get('station_logbooks_permissions');
+		
+		if ($query->num_rows() == 1) {
+			$permission = $query->row()->permission_level;
+			
+			// Map permission levels to hierarchy
+			$levels = array('read' => 1, 'write' => 2, 'admin' => 3);
+			$user_level = isset($levels[$permission]) ? $levels[$permission] : 0;
+			$required_level = isset($levels[$min_level]) ? $levels[$min_level] : 1;
+			
+			return ($user_level >= $required_level);
+		}
+		
 		return false;
+	}
+
+	public function is_logbook_owner($id) {
+		// Check if current user is the owner of the logbook
+		$this->db->select('logbook_id');
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('logbook_id', $id);
+		$query = $this->db->get('station_logbooks');
+		return ($query->num_rows() == 1);
+	}
+
+	public function get_user_permission($logbook_id, $user_id) {
+		// Get the permission level for a specific user on a specific logbook
+		// Returns 'owner', permission level, or null
+		
+		// Check if user is owner
+		$this->db->select('logbook_id');
+		$this->db->where('user_id', $user_id);
+		$this->db->where('logbook_id', $logbook_id);
+		$query = $this->db->get('station_logbooks');
+		if ($query->num_rows() == 1) {
+			return 'owner';
+		}
+		
+		// Check permissions table
+		$this->db->select('permission_level');
+		$this->db->where('logbook_id', $logbook_id);
+		$this->db->where('user_id', $user_id);
+		$query = $this->db->get('station_logbooks_permissions');
+		
+		if ($query->num_rows() == 1) {
+			return $query->row()->permission_level;
+		}
+		
+		return null;
+	}
+
+	public function add_logbook_permission($logbook_id, $user_id, $permission_level = 'read') {
+		// Add a user to a logbook with specified permission level
+		// Only owner or admin can add users
+		
+		$clean_logbook_id = $this->security->xss_clean($logbook_id);
+		$clean_user_id = $this->security->xss_clean($user_id);
+		$clean_permission = $this->security->xss_clean($permission_level);
+		
+		// Validate permission level
+		$valid_permissions = array('read', 'write', 'admin');
+		if (!in_array($clean_permission, $valid_permissions)) {
+			return false;
+		}
+		
+		// Check if current user has admin rights or is owner
+		if (!$this->is_logbook_owner($clean_logbook_id) && 
+			!$this->check_logbook_is_accessible($clean_logbook_id, 'admin')) {
+			return false;
+		}
+		
+		// Check if permission already exists
+		$this->db->where('logbook_id', $clean_logbook_id);
+		$this->db->where('user_id', $clean_user_id);
+		$existing = $this->db->get('station_logbooks_permissions');
+		
+		if ($existing->num_rows() > 0) {
+			// Update existing permission
+			$data = array(
+				'permission_level' => $clean_permission,
+				'modified' => date('Y-m-d H:i:s'),
+			);
+			$this->db->where('logbook_id', $clean_logbook_id);
+			$this->db->where('user_id', $clean_user_id);
+			$this->db->update('station_logbooks_permissions', $data);
+		} else {
+			// Insert new permission
+			$data = array(
+				'logbook_id' => $clean_logbook_id,
+				'user_id' => $clean_user_id,
+				'permission_level' => $clean_permission,
+			);
+			$this->db->insert('station_logbooks_permissions', $data);
+		}
+		
+		return true;
+	}
+
+	public function remove_logbook_permission($logbook_id, $user_id) {
+		// Remove a user's access to a logbook
+		// Only owner or admin can remove users
+		
+		$clean_logbook_id = $this->security->xss_clean($logbook_id);
+		$clean_user_id = $this->security->xss_clean($user_id);
+		
+		// Check if current user has admin rights or is owner
+		if (!$this->is_logbook_owner($clean_logbook_id) && 
+			!$this->check_logbook_is_accessible($clean_logbook_id, 'admin')) {
+			return false;
+		}
+		
+		$this->db->where('logbook_id', $clean_logbook_id);
+		$this->db->where('user_id', $clean_user_id);
+		$this->db->delete('station_logbooks_permissions');
+		
+		return true;
+	}
+
+	public function list_logbook_collaborators($logbook_id) {
+		// Get all users with access to a logbook (excluding owner)
+		// Returns array of users with their permission levels
+		
+		$clean_logbook_id = $this->security->xss_clean($logbook_id);
+		
+		// Get owner information
+		$this->db->select('station_logbooks.user_id, users.user_callsign, users.user_email, "owner" as permission_level, "" as created_at');
+		$this->db->from('station_logbooks');
+		$this->db->join('users', 'users.user_id = station_logbooks.user_id');
+		$this->db->where('station_logbooks.logbook_id', $clean_logbook_id);
+		$owner_query = $this->db->get();
+		
+		// Get shared users
+		$this->db->select('slp.user_id, users.user_callsign, users.user_email, slp.permission_level, slp.created_at');
+		$this->db->from('station_logbooks_permissions slp');
+		$this->db->join('users', 'users.user_id = slp.user_id');
+		$this->db->where('slp.logbook_id', $clean_logbook_id);
+		$this->db->order_by('slp.created_at', 'DESC');
+		$shared_query = $this->db->get();
+		
+		$results = array();
+		
+		// Add owner first
+		if ($owner_query->num_rows() > 0) {
+			$results[] = $owner_query->row();
+		}
+		
+		// Add shared users
+		if ($shared_query->num_rows() > 0) {
+			foreach ($shared_query->result() as $row) {
+				$results[] = $row;
+			}
+		}
+		
+		return $results;
 	}
 
 	public function find_active_station_logbook_from_userid($userid) {

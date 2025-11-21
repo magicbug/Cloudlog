@@ -29,11 +29,24 @@ class Workabledxcc extends CI_Controller
 
 	public function dxcclist()
 	{
-		$json = file_get_contents($this->optionslib->get_option('dxped_url'));
+		try {
+			$json = @file_get_contents($this->optionslib->get_option('dxped_url'));
+
+			if ($json === false) {
+				$data['dxcclist'] = array('error' => 'Failed to fetch DXpedition data');
+				$this->load->view('/workabledxcc/components/dxcclist', $data);
+				return;
+			}
+		} catch (Exception $e) {
+			$data['dxcclist'] = array('error' => 'Error fetching DXpedition data: ' . $e->getMessage());
+			$this->load->view('/workabledxcc/components/dxcclist', $data);
+			return;
+		}
+
 		$dataResult = json_decode($json, true);
 
-		if (empty($dataResult)) {
-			$data['dxcclist'] = array();
+		if (empty($dataResult) || !is_array($dataResult)) {
+			$data['dxcclist'] = array('error' => 'Invalid DXpedition data received');
 			$this->load->view('/workabledxcc/components/dxcclist', $data);
 			return;
 		}
