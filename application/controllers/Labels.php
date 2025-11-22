@@ -163,8 +163,10 @@ class Labels extends CI_Controller {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
 
-		// Define font path before creating PDF object
-		define('FPDF_FONTPATH', './src/Label/font/unifont/');
+		// Define font path before creating PDF object (only if not already defined)
+		if (!defined('FPDF_FONTPATH')) {
+			define('FPDF_FONTPATH', './src/Label/font/unifont/');
+		}
 
 		try {
 			if ($label) {
@@ -214,12 +216,14 @@ class Labels extends CI_Controller {
 				}
 			}
 		} catch (\Throwable $th) {
+			// Log the actual error for debugging
+			log_message('error', 'Label generation error: ' . $th->getMessage() . ' in ' . $th->getFile() . ' on line ' . $th->getLine());
 			if ($jscall) {
 				header('Content-Type: application/json');
-				echo json_encode(array('message' => 'Something went wrong! The label could not be generated. Check label size and font size.'));
+				echo json_encode(array('message' => 'Something went wrong! The label could not be generated. Error: ' . $th->getMessage()));
 				return;
 			} else {
-				$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Check label size and font size.');
+				$this->session->set_flashdata('error', 'Something went wrong! The label could not be generated. Error: ' . $th->getMessage());
 				redirect('labels');
 			}
 		}
