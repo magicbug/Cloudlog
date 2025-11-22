@@ -150,13 +150,14 @@ class Labels_model extends CI_Model {
         // always filter user. this ensures that even if the station_id is from another user no inaccesible QSOs will be returned
         $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
         $this->db->where_in('COL_QSL_SENT', array('R', 'Q'));
-        $this->db->order_by("COL_DXCC", "ASC");
-        $this->db->order_by("CASE WHEN COL_QSL_VIA IS NOT NULL AND COL_QSL_VIA != '' THEN COL_QSL_VIA ELSE COL_CALL END", "ASC");
-        $this->db->order_by("COL_SAT_NAME", "ASC");
-        $this->db->order_by("COL_SAT_MODE", "ASC");
-        $this->db->order_by("COL_BAND_RX", "ASC");
-        $this->db->order_by("COL_TIME_ON", "ASC");
-        $this->db->order_by("COL_MODE", "ASC");
+        // Natural callsign sorting: DXCC first, then callsign broken into prefix + number (padded) + suffix
+        $this->db->order_by('COL_DXCC', 'ASC', FALSE);
+        $this->db->order_by('REGEXP_REPLACE(COALESCE(NULLIF(COL_QSL_VIA, \'\'), COL_CALL), \'[0-9]\', \'\'), CAST(REGEXP_REPLACE(COALESCE(NULLIF(COL_QSL_VIA, \'\'), COL_CALL), \'[^0-9]\', \'\') AS UNSIGNED), COALESCE(NULLIF(COL_QSL_VIA, \'\'), COL_CALL)', 'ASC', FALSE);
+        $this->db->order_by('COL_SAT_NAME', 'ASC', FALSE);
+        $this->db->order_by('COL_SAT_MODE', 'ASC', FALSE);
+        $this->db->order_by('COL_BAND_RX', 'ASC', FALSE);
+        $this->db->order_by('COL_TIME_ON', 'ASC', FALSE);
+        $this->db->order_by('COL_MODE', 'ASC', FALSE);
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
@@ -168,8 +169,9 @@ class Labels_model extends CI_Model {
         $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif');
         $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
         $this->db->where_in('COL_PRIMARY_KEY', $ids);
-        $this->db->order_by("COL_DXCC", "ASC");
-        $this->db->order_by("CASE WHEN COL_QSL_VIA IS NOT NULL AND COL_QSL_VIA != '' THEN COL_QSL_VIA ELSE COL_CALL END", "ASC");
+        // Natural callsign sorting: DXCC first, then callsign broken into prefix + number (padded) + suffix
+        $this->db->order_by('COL_DXCC', 'ASC', FALSE);
+        $this->db->order_by('REGEXP_REPLACE(COALESCE(NULLIF(COL_QSL_VIA, \'\'), COL_CALL), \'[0-9]\', \'\'), CAST(REGEXP_REPLACE(COALESCE(NULLIF(COL_QSL_VIA, \'\'), COL_CALL), \'[^0-9]\', \'\') AS UNSIGNED), COALESCE(NULLIF(COL_QSL_VIA, \'\'), COL_CALL)', 'ASC', FALSE);
         $query = $this->db->get($this->config->item('table_name'));
 
         return $query;
