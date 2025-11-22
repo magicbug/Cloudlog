@@ -1050,13 +1050,19 @@ $(document).ready(function() {
     <!-- If this is the admin/radio page run the JS -->
     <script type="text/javascript">
         $(document).ready(function() {
-            setInterval(function() {
-                // Get Mode
+            // Load radio status immediately on page load
+            function loadRadioStatus() {
                 $.get('radio/status/', function(result) {
-                    //$('.status').append(result);
-                    $('.status').html(result);
+                    $('#radio-loading').hide();
+                    $('.status').html(result).show();
                 });
-            }, 2000);
+            }
+            
+            // Load immediately
+            loadRadioStatus();
+            
+            // Then refresh every 2 seconds
+            setInterval(loadRadioStatus, 2000);
         });
     </script>
 <?php } ?>
