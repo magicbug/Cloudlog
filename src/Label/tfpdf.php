@@ -535,6 +535,8 @@ function AddFont($family, $style='', $file='', $uni=false)
 			unset($ttf);
 		}
 		else {
+			// Always use the current path, not the cached one from .mtx.php
+			$ttffile = $ttffilename;
 			$cw = @file_get_contents($unifilename.'.cw.dat'); 
 		}
 		$i = count($this->fonts)+1;
