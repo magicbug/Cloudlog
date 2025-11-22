@@ -422,6 +422,7 @@ class Logbooks_model extends CI_Model {
 	public function add_logbook_permission($logbook_id, $user_id, $permission_level = 'read') {
 		// Add a user to a logbook with specified permission level
 		// Only owner or admin can add users
+		// Returns array with 'success' and 'is_new' keys
 		
 		$clean_logbook_id = $this->security->xss_clean($logbook_id);
 		$clean_user_id = $this->security->xss_clean($user_id);
@@ -430,19 +431,21 @@ class Logbooks_model extends CI_Model {
 		// Validate permission level
 		$valid_permissions = array('read', 'write', 'admin');
 		if (!in_array($clean_permission, $valid_permissions)) {
-			return false;
+			return array('success' => false, 'is_new' => false);
 		}
 		
 		// Check if current user has admin rights or is owner
 		if (!$this->is_logbook_owner($clean_logbook_id) && 
 			!$this->check_logbook_is_accessible($clean_logbook_id, 'admin')) {
-			return false;
+			return array('success' => false, 'is_new' => false);
 		}
 		
 		// Check if permission already exists
 		$this->db->where('logbook_id', $clean_logbook_id);
 		$this->db->where('user_id', $clean_user_id);
 		$existing = $this->db->get('station_logbooks_permissions');
+		
+		$is_new = ($existing->num_rows() == 0);
 		
 		if ($existing->num_rows() > 0) {
 			// Update existing permission
@@ -463,7 +466,7 @@ class Logbooks_model extends CI_Model {
 			$this->db->insert('station_logbooks_permissions', $data);
 		}
 		
-		return true;
+		return array('success' => true, 'is_new' => $is_new);
 	}
 
 	public function remove_logbook_permission($logbook_id, $user_id) {

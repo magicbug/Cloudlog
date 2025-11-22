@@ -112,10 +112,18 @@
                         <input class="btn btn-primary" type="submit" value="<?php echo lang('options_save'); ?>" />
                     </form>
                     <br>
-                    <?php echo form_open('options/sendTestMail'); ?>
-                        <input class="btn btn-primary" type="submit" value="<?php echo lang('options_send_testmail'); ?>" />
+                    <?php echo form_open('options/sendTestMail', ['id' => 'testMailForm']); ?>
+                        <input class="btn btn-primary" id="testMailBtn" type="submit" value="<?php echo lang('options_send_testmail'); ?>" />
+                        <span id="testMailSpinner" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display: none;"></span>
                         <small class="form-text text-muted"><?php echo lang('options_send_testmail_hint'); ?></small>
                     </form>
+                    
+                    <script>
+                    document.getElementById('testMailForm').addEventListener('submit', function() {
+                        document.getElementById('testMailBtn').disabled = true;
+                        document.getElementById('testMailSpinner').style.display = 'inline-block';
+                    });
+                    </script>
                 </div>
             </div>
 		</div>

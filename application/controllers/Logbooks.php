@@ -316,7 +316,12 @@ class Logbooks extends CI_Controller {
 		// Add permission
 		$result = $this->logbooks_model->add_logbook_permission($logbook_id, $user->user_id, $permission_level);
 		
-		if ($result) {
+		if ($result['success']) {
+			// Send email notification if this is a new user being added
+			if ($result['is_new'] && $user->user_email != "") {
+				$this->send_logbook_shared_email($logbook_id, $user, $permission_level);
+			}
+			
 			// Return updated collaborators list
 			$data['collaborators'] = $this->logbooks_model->list_logbook_collaborators($logbook_id);
 			$data['is_owner'] = $this->logbooks_model->is_logbook_owner($logbook_id);
@@ -380,6 +385,70 @@ class Logbooks extends CI_Controller {
 			}
 		} else {
 			echo '<span class="text-danger"><i class="fas fa-times-circle"></i> User not found</span>';
+		}
+	}
+
+	private function send_logbook_shared_email($logbook_id, $user, $permission_level) {
+		// Send email notification when a logbook is shared with a user
+		
+		// Check if email is configured
+		if ($this->optionslib->get_option('emailProtocol') == '') {
+			log_message('info', 'Email not configured - skipping logbook sharing notification');
+			return;
+		}
+		
+		// Get logbook details
+		$logbook_query = $this->logbooks_model->logbook($logbook_id);
+		if ($logbook_query->num_rows() == 0) {
+			return;
+		}
+		$logbook = $logbook_query->row();
+		
+		// Get owner information
+		$owner_query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+		if ($owner_query->num_rows() == 0) {
+			return;
+		}
+		$owner = $owner_query->row();
+		
+		// Load email library
+		$this->load->library('email');
+		
+		// Configure SMTP if needed
+		if ($this->optionslib->get_option('emailProtocol') == "smtp") {
+			$config = Array(
+				'protocol' => $this->optionslib->get_option('emailProtocol'),
+				'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
+				'smtp_host' => $this->optionslib->get_option('smtpHost'),
+				'smtp_port' => $this->optionslib->get_option('smtpPort'),
+				'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+				'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+				'crlf' => "\r\n",
+				'newline' => "\r\n"
+			);
+			$this->email->initialize($config);
+		}
+		
+		// Prepare email data
+		$email_data = array(
+			'user_callsign' => $user->user_callsign,
+			'owner_callsign' => $owner->user_callsign,
+			'logbook_name' => $logbook->logbook_name,
+			'permission_level' => $permission_level,
+			'base_url' => base_url(),
+		);
+		
+		$message = $this->load->view('email/logbook_shared.php', $email_data, TRUE);
+		
+		$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
+		$this->email->to($user->user_email);
+		$this->email->subject('Cloudlog - Logbook Shared With You');
+		$this->email->message($message);
+		
+		if (!$this->email->send()) {
+			log_message('error', 'Failed to send logbook sharing email to ' . $user->user_email . '. Error: ' . $this->email->print_debugger());
+		} else {
+			log_message('info', 'Logbook sharing notification sent to ' . $user->user_email);
 		}
 	}
 
