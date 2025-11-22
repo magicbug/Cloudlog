@@ -221,12 +221,13 @@ class Labels extends CI_Controller {
 				redirect('labels');
 			}
 		}
-		define('FPDF_FONTPATH', './src/Label/font/');
+		define('FPDF_FONTPATH', './src/Label/font/unifont/');
 
 		$pdf->AddPage($ptype->orientation);
 
 		if ($label->font == 'DejaVuSans') {	// leave this here, for future Use
 			$pdf->AddFont($label->font,'','DejaVuSansMono.ttf',true);
+			$pdf->AddFont($label->font,'B','DejaVuSans-Bold.ttf',true); // Add bold variant
 			$pdf->SetFont($label->font,'');
 		} else {
 			$pdf->AddFont($label->font);
@@ -354,28 +355,35 @@ class Labels extends CI_Controller {
 	function generateLabel($pdf, $current_callsign, $tableData,$numofqsos,$qso,$orientation,$grid=true, $via=false, $awards=false){
 		$builder = new \AsciiTable\Builder();
 		$builder->addRows($tableData);
-			$text = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
-			$text .= $current_callsign;
-			if (($via) && ($qso['via'] ?? '' != '')) {
-				$text.=' via '.substr($qso['via'],0,8);
-			}
-			$text .= "\n";
-			$text .= $builder->renderTable();
+		
+		// Build the header text (before callsign)
+		$header = "Confirming QSO".($numofqsos>1 ? 's' : '')." with ";
+		
+		// Build the callsign (to be rendered in bold + larger)
+		$callsign = $current_callsign;
+		if (($via) && ($qso['via'] ?? '' != '')) {
+			$callsign .= ' via '.substr($qso['via'],0,8);
+		}
+		
+		// Build the rest of the text (after callsign)
+		$rest = $builder->renderTable();
 		if($qso['sat'] != "") {
 			if (($qso['sat_mode'] == '') && ($qso['sat_band_rx'] !== '')) {
-				$text .= "\n".'Satellite: '.$qso['sat'].' Band RX: '.$qso['sat_band_rx'];
+				$rest .= "\n".'Satellite: '.$qso['sat'].' Band RX: '.$qso['sat_band_rx'];
 			} elseif (($qso['sat_mode'] == '') && ($qso['sat_band_rx'] == '')) {
-				$text .= "\n".'Satellite: '.$qso['sat'];
+				$rest .= "\n".'Satellite: '.$qso['sat'];
 			} else {
-				$text .= "\n".'Satellite: '.$qso['sat'].' Mode: '.$qso['sat_mode'];
+				$rest .= "\n".'Satellite: '.$qso['sat'].' Mode: '.$qso['sat_mode'];
 			}
 		}
-		$text.="\n";
-		if ($grid) { $text .= "My call: ".$qso['mycall']." Grid: ".$qso['mygrid']."\n"; }
-		if ($awards) { $text .= $qso['awards']."\n"; }
-		$text .= "Thanks for the QSO".($numofqsos>1 ? 's' : '');
-		$text .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
-		$pdf->Add_Label($text,$orientation);
+		$rest.="\n";
+		if ($grid) { $rest .= "My call: ".$qso['mycall']." Grid: ".$qso['mygrid']."\n"; }
+		if ($awards) { $rest .= $qso['awards']."\n"; }
+		$rest .= "Thanks for the QSO".($numofqsos>1 ? 's' : '');
+		$rest .= " | ".($qso['qsl_recvd'] == 'Y' ? 'TNX' : 'PSE')." QSL";
+		
+		// Use the new method that renders callsign in bold and larger
+		$pdf->Add_Label_With_Bold_Callsign($header, $callsign, $rest, $orientation);
 	}
 
 	// New End

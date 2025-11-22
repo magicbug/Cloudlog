@@ -152,6 +152,44 @@ class PDF_Label extends tfpdf {
         $this->MultiCell($this->_Width - $this->_Padding, $this->_Line_Height, $text, 0, 'L');
     }
 
+    // Print a label with custom styling for the first line (callsign)
+    function Add_Label_With_Bold_Callsign($header_text, $callsign, $rest_of_text, $orientation = 'P') {
+        $this->_COUNTX++;
+        if ($this->_COUNTX == $this->_X_Number) {
+            // Row full, we start a new one
+            $this->_COUNTX=0;
+            $this->_COUNTY++;
+            if ($this->_COUNTY == $this->_Y_Number) {
+                // End of page reached, we start a new one
+                $this->_COUNTY=0;
+                $this->AddPage($orientation);
+            }
+        }
+
+        $_PosX = $this->_Margin_Left + $this->_COUNTX*($this->_Width+$this->_X_Space) + $this->_Padding;
+        $_PosY = $this->_Margin_Top + $this->_COUNTY*($this->_Height+$this->_Y_Space) + $this->_Padding;
+        $this->SetXY($_PosX, $_PosY);
+        
+        // Save current font settings
+        $current_font_family = $this->FontFamily;
+        $current_font_size = $this->FontSizePt;
+        
+        // Write the header text (e.g., "Confirming QSO with ")
+        $this->Write($this->_Line_Height, $header_text);
+        
+        // Switch to bold and larger font for callsign (increase by 4 points)
+        $this->SetFont($current_font_family, 'B', $current_font_size + 4);
+        $this->Write($this->_Line_Height * 1.3, $callsign);
+        
+        // Reset to normal font
+        $this->SetFont($current_font_family, '', $current_font_size);
+        
+        // Write the rest of the text
+        $this->Write($this->_Line_Height, "\n");
+        $this->SetXY($_PosX, $this->GetY());
+        $this->MultiCell($this->_Width - $this->_Padding, $this->_Line_Height, $rest_of_text, 0, 'L');
+    }
+
     function _putcatalog()
     {
         parent::_putcatalog();
