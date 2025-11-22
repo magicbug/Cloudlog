@@ -43,9 +43,9 @@ class Logbooks extends CI_Controller {
 		else
 		{	
             $this->load->model('logbooks_model');
-			$this->logbooks_model->add();
+			$new_logbook_id = $this->logbooks_model->add();
 			
-			redirect('logbooks');
+			redirect('logbooks/edit/' . $new_logbook_id);
 		}
 	}
 

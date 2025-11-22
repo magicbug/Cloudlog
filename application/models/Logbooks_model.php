@@ -52,6 +52,8 @@ class Logbooks_model extends CI_Model {
 			$CI->load->model('user_model');
 			$CI->user_model->update_session($this->session->userdata('user_id'));
 		}
+
+		return $logbook_id;
 	}
 
 	function CreateDefaultLogbook() {
