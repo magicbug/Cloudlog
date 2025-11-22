@@ -164,8 +164,9 @@ class Labels extends CI_Controller {
 		$label = $this->labels_model->getDefaultLabel();
 
 		// Define font path before creating PDF object (only if not already defined)
+		// Note: The path should NOT include 'unifont/' as AddFont() adds that automatically
 		if (!defined('FPDF_FONTPATH')) {
-			define('FPDF_FONTPATH', './src/Label/font/unifont/');
+			define('FPDF_FONTPATH', './src/Label/font/');
 		}
 
 		try {
