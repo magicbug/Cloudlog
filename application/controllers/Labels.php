@@ -163,6 +163,8 @@ class Labels extends CI_Controller {
 		$this->load->model('labels_model');
 		$label = $this->labels_model->getDefaultLabel();
 
+		// Define font path before creating PDF object
+		define('FPDF_FONTPATH', './src/Label/font/unifont/');
 
 		try {
 			if ($label) {
@@ -221,7 +223,6 @@ class Labels extends CI_Controller {
 				redirect('labels');
 			}
 		}
-		define('FPDF_FONTPATH', './src/Label/font/unifont/');
 
 		$pdf->AddPage($ptype->orientation);
 
