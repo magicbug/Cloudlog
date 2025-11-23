@@ -6,6 +6,13 @@ class Logbooks_model extends CI_Model {
 		// Get owned logbooks and shared logbooks with access level
 		$user_id = $this->session->userdata('user_id');
 		
+		// If no user is logged in, return empty result
+		if ($user_id === NULL || $user_id === FALSE) {
+			$this->db->from('station_logbooks');
+			$this->db->where('1 = 0'); // Always false condition
+			return $this->db->get();
+		}
+		
 		$this->db->select('station_logbooks.*, 
 			CASE 
 				WHEN station_logbooks.user_id = '.$this->db->escape($user_id).' THEN "owner" 
@@ -124,6 +131,13 @@ class Logbooks_model extends CI_Model {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
 		$user_id = $this->session->userdata('user_id');
+
+		// If no user is logged in, return empty result
+		if ($user_id === NULL || $user_id === FALSE) {
+			$this->db->from('station_logbooks');
+			$this->db->where('1 = 0'); // Always false condition
+			return $this->db->get();
+		}
 
 		// Get logbook if user owns it OR has shared access
 		$this->db->select('station_logbooks.*');
@@ -314,11 +328,18 @@ class Logbooks_model extends CI_Model {
 
 			$current_user_id = $this->session->userdata('user_id');
 			
+			// Handle NULL user_id to prevent SQL errors
+			if ($current_user_id === NULL || $current_user_id === FALSE) {
+				$is_shared_case = '1 as is_shared'; // All are shared if no user logged in
+			} else {
+				$is_shared_case = 'CASE WHEN station_profile.user_id = '.$this->db->escape($current_user_id).' THEN 0 ELSE 1 END as is_shared';
+			}
+			
 			$this->db->select('station_profile.*, 
 				dxcc_entities.name as station_country, 
 				dxcc_entities.end as end,
 				users.user_callsign as owner_callsign,
-				CASE WHEN station_profile.user_id = '.$this->db->escape($current_user_id).' THEN 0 ELSE 1 END as is_shared', FALSE);
+				'.$is_shared_case, FALSE);
 			$this->db->where_in('station_id', $relationships_array);
 			$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
 			$this->db->join('users','station_profile.user_id = users.user_id','left');
