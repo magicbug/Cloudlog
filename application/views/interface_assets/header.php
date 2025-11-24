@@ -230,10 +230,6 @@
 
 									<div class="dropdown-divider"></div>
 
-									<a class="dropdown-item" href="<?php echo site_url('backup'); ?>" title="Backup Cloudlog content"><i class="fas fa-save"></i> <?php echo lang('menu_backup'); ?></a>
-
-									<div class="dropdown-divider"></div>
-
 									<a class="dropdown-item" href="<?php echo site_url('update'); ?>" title="Update Country Files"><i class="fas fa-download"></i> <?php echo lang('menu_update_country_files'); ?></a>
 
 									<div class="dropdown-divider"></div>
@@ -359,6 +355,10 @@
 										<a class="dropdown-item" href="<?php echo site_url('webadif/export'); ?>" title="Upload to webADIF"><i class="fas fa-upload"></i> <?php echo lang('menu_qo_100_dx_club_upload'); ?></a>
 									</ul>
 								</div>
+								
+								<div class="dropdown-divider"></div>
+								
+								<a class="dropdown-item" href="<?php echo site_url('backup'); ?>" title="Backup Cloudlog content"><i class="fas fa-save"></i> <?php echo lang('menu_backup'); ?></a>
 
 								<div class="dropdown-divider"></div>
 
