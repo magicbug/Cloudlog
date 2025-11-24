@@ -840,6 +840,18 @@ div#station_logbooks_linked_table_paginate {
 	color: var(--green);
 }
 
+/* QSO LIVE/POST badge hover effect for visibility */
+.badge.text-bg-success[style*="cursor: pointer;"]:hover {
+	background-color: #ff9800 !important; /* orange for hover */
+	color: #fff !important;
+	transition: background 0.2s;
+}
+.badge.text-bg-danger[style*="cursor: pointer;"]:hover {
+	background-color: #2196f3 !important; /* blue for hover */
+	color: #fff !important;
+	transition: background 0.2s;
+}
+
 .blue {
 	color: var(--indigo);
 }
