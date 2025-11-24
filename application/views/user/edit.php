@@ -155,7 +155,7 @@
 											<label><?php echo lang('account_callsign'); ?></label>
 											<input class="form-control" type="text" name="user_callsign" value="<?php if (isset($user_callsign)) {
 																													echo $user_callsign;
-																												} ?>" />
+																												} ?>" style="text-transform: uppercase;" />
 											<?php if (isset($callsign_error)) {
 												echo "<small class=\"error\">" . $callsign_error . "</small>";
 											} else { ?>
