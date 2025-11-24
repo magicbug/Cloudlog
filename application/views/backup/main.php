@@ -9,16 +9,23 @@
 
 <h2><?php echo $page_title; ?></h2>
 
-<div class="card">
-  <div class="card-header">
-    Backup
-  </div>
-  <div class="card-body">
-    <p class="card-text">Some of the data stored in Cloudlog can be exported so that you can keep a backup copy elsewhere.</p>
-	<p class="card-text">It's recommended to create backups on a regular basis to protect your data.</p>
-	<p><a href="<?php echo site_url('backup/adif'); ?>" title="Export a backup copy of your ADIF data" class="btn btn-primary">Backup ADIF data</a></p>
-	<p><a href="<?php echo site_url('backup/notes'); ?>" title="Export a backup copy of your notes" class="btn btn-primary">Backup Notes</a></p>
-  </div>
+<!-- Legacy backup card removed as ADIF/Notes exports superseded by user data ZIP import/export workflow -->
+
+<div class="card mt-4">
+	<div class="card-header d-flex justify-content-between align-items-center">
+		<span>User Data Backup & Restore</span>
+		<a href="<?php echo site_url('backup/user_export'); ?>" class="btn btn-sm btn-outline-primary" title="Download ZIP backup of your stations, logbooks & QSOs">Download ZIP Backup</a>
+	</div>
+	<div class="card-body">
+		<p class="card-text">Export and restore only your own Stations, Logbooks and QSOs. Imported stations/logbooks are never set active automatically; duplicates reuse existing records; QSOs skip conflicts.</p>
+		<form method="post" enctype="multipart/form-data" hx-post="<?php echo site_url('backup/user_import'); ?>" hx-target="#user-import-preview" hx-swap="innerHTML" class="mb-3">
+			<div class="mb-2">
+				<input type="file" name="backup_file" accept=".zip,application/zip,application/json" required class="form-control" />
+			</div>
+			<button type="submit" class="btn btn-success">Upload & Preview</button>
+		</form>
+		<div id="user-import-preview"></div>
+	</div>
 </div>
 
 
