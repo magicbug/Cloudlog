@@ -98,9 +98,9 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 								<a class="dropdown-item" href="<?php echo site_url('qso?manual=0'); ?>" title="Log Live QSOs"><i class="fas fa-list-ul"></i> <?php echo lang('menu_live_qso'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('simplefle'); ?>" title="Simple Fast Log Entry"><i class="fas fa-list-alt"></i> <?php echo lang('menu_fast_log_entry'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0'); ?>" title="Contest QSOs"><i class="fas fa-list-ol"></i> <?php echo lang('menu_live_contest_logging'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0'); ?>" title="Live contest QSOs"><i class="fas fa-list-ol"></i> <?php echo lang('menu_live_contest_logging'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('simplefle'); ?>" title="Simple Fast Log Entry"><i class="fas fa-list-alt"></i> <?php echo lang('menu_fast_log_entry'); ?></a>
 							</div>
 						</li>
 
