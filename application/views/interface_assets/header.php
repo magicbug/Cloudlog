@@ -96,11 +96,11 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_qso'); ?></a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="<?php echo site_url('qso?manual=0'); ?>" title="Log Live QSOs"><i class="fas fa-list-ul"></i> <?php echo lang('menu_live_qso'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('qso?manual=0'); ?>" title="Log Live QSOs"><i class="fas fa-pencil-alt"></i> <?php echo lang('menu_live_qso'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0'); ?>" title="Contest QSOs"><i class="fas fa-list-ol"></i> <?php echo lang('menu_live_contest_logging'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('contesting?manual=0'); ?>" title="Contest QSOs"><i class="fas fa-trophy"></i> <?php echo lang('menu_live_contest_logging'); ?></a>
 								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="<?php echo site_url('simplefle'); ?>" title="Simple Fast Log Entry"><i class="fas fa-list-alt"></i> <?php echo lang('menu_fast_log_entry'); ?></a>
+								<a class="dropdown-item" href="<?php echo site_url('simplefle'); ?>" title="Simple Fast Log Entry"><i class="fas fa-edit"></i> <?php echo lang('menu_fast_log_entry'); ?></a>
 							</div>
 						</li>
 

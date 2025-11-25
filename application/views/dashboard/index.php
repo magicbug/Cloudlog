@@ -248,10 +248,10 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 				<!-- Quick Logging Links -->
 				<div class="mb-3 d-flex gap-2">
 					<a href="<?php echo site_url('qso?manual=0'); ?>" class="btn btn-primary flex-fill">
-						<i class="fas fa-list-ul"></i> General Logging
+						<i class="fas fa-pencil-alt"></i> General Logging
 					</a>
 					<a href="<?php echo site_url('contesting?manual=0'); ?>" class="btn btn-success flex-fill">
-						<i class="fas fa-list-ol"></i> Contest Logging
+						<i class="fas fa-trophy"></i> Contest Logging
 					</a>
 				</div>
 
