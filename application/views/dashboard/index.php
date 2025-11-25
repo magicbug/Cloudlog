@@ -244,6 +244,17 @@ function echoQrbCalcLink($mygrid, $grid, $vucc)
 
 
 				<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 5s"></div>
+				
+				<!-- Quick Logging Links -->
+				<div class="mb-3 d-flex gap-2">
+					<a href="<?php echo site_url('qso'); ?>" class="btn btn-primary flex-fill">
+						<i class="fas fa-pencil-alt"></i> General Logging
+					</a>
+					<a href="<?php echo site_url('contesting'); ?>" class="btn btn-success flex-fill">
+						<i class="fas fa-trophy"></i> Contest Logging
+					</a>
+				</div>
+
 				<div>
 					<?php if ($dashboard_upcoming_dx_card != false) { ?>
 						<div id="upcoming_dxccs_component" hx-get="<?php echo site_url('dashboard/upcoming_dxcc_component'); ?>" hx-trigger="load" hx-indicator="#loading_upcoming_dxcc"></div>
