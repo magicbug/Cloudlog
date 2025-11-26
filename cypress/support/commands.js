@@ -1,6 +1,7 @@
 Cypress.Commands.add("login", () => {
-	const username = "m0abc";
-	const password = "demo";
+	// Use environment variables or change these to your actual test credentials
+	const username = Cypress.env('username') || "m0abc";
+	const password = Cypress.env('password') || "demo";
 	cy.visit("/index.php/user/login");
 	cy.get('input[name="user_name"]').type(username);
 	cy.get('input[name="user_password"]').type(password);
