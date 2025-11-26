@@ -39,8 +39,12 @@ describe("Create station logbook", () => {
 		// Check if the station location was created successfully
 		cy.url().should("include", "/logbooks");
 
-		// // Check if the station location is present in the table
-		cy.get("#station_logbooks_table")
+		// Wait for the page to fully load after redirect
+		cy.get('h2').should('contain', 'Station Logbooks');
+
+		// Check if the station location is present in the table
+		cy.get("#station_logbooks_table", { timeout: 10000 })
+			.should("exist")
 			.contains(stationLogbookName)
 			.should("exist");
 	});
