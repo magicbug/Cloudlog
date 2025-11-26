@@ -155,7 +155,7 @@
 											<label><?php echo lang('account_callsign'); ?></label>
 											<input class="form-control" type="text" name="user_callsign" value="<?php if (isset($user_callsign)) {
 																													echo $user_callsign;
-																												} ?>" />
+																												} ?>" style="text-transform: uppercase;" />
 											<?php if (isset($callsign_error)) {
 												echo "<small class=\"error\">" . $callsign_error . "</small>";
 											} else { ?>
@@ -1256,6 +1256,24 @@
 				</div>
 			</div>
 			<input type="hidden" name="id" value="<?php echo $this->uri->segment(3); ?>" />
+			
+			<?php if (isset($user_add)) { ?>
+			<!-- Email Notification Option (only for new users) -->
+			<div class="card mt-3">
+				<div class="card-body">
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" name="send_welcome_email" id="send_welcome_email" value="1" checked>
+						<label class="form-check-label" for="send_welcome_email">
+							<i class="fas fa-envelope me-1"></i><strong>Send Welcome Email</strong>
+						</label>
+						<small class="form-text text-muted d-block mt-1">
+							<i class="fas fa-info-circle"></i> Recommended: Sends an email to the user with their login credentials and instructions to change their password.
+						</small>
+					</div>
+				</div>
+			</div>
+			<?php } ?>
+			
 			<button type="submit" class="btn btn-primary mb-5 mt-3"><i class="fas fa-save"></i> <?php echo lang('account_save_account_changes'); ?></button>
 	</form>
 </div>

@@ -379,12 +379,14 @@ class Options extends CI_Controller {
 			$this->email->message($message);
 
 			if (! $this->email->send()){
-				$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed'));
+				// Log the error for debugging
+				log_message('error', 'Test email failed to send. Error: ' . $this->email->print_debugger());
+				$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed') . ' Check application logs for details.');
 			} else {
 				$this->session->set_flashdata('testmailSuccess', $this->lang->line('options_send_testmail_success'));
 			}
 		} else {
-			$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed'));
+			$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed') . ' No email address found in your account settings.');
 		}
 		
 		redirect('/options/email');

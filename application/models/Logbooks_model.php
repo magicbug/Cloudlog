@@ -6,6 +6,13 @@ class Logbooks_model extends CI_Model {
 		// Get owned logbooks and shared logbooks with access level
 		$user_id = $this->session->userdata('user_id');
 		
+		// If no user is logged in, return empty result
+		if ($user_id === NULL || $user_id === FALSE) {
+			$this->db->from('station_logbooks');
+			$this->db->where('1 = 0'); // Always false condition
+			return $this->db->get();
+		}
+		
 		$this->db->select('station_logbooks.*, 
 			CASE 
 				WHEN station_logbooks.user_id = '.$this->db->escape($user_id).' THEN "owner" 
@@ -52,6 +59,8 @@ class Logbooks_model extends CI_Model {
 			$CI->load->model('user_model');
 			$CI->user_model->update_session($this->session->userdata('user_id'));
 		}
+
+		return $logbook_id;
 	}
 
 	function CreateDefaultLogbook() {
@@ -122,6 +131,13 @@ class Logbooks_model extends CI_Model {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
 		$user_id = $this->session->userdata('user_id');
+
+		// If no user is logged in, return empty result
+		if ($user_id === NULL || $user_id === FALSE) {
+			$this->db->from('station_logbooks');
+			$this->db->where('1 = 0'); // Always false condition
+			return $this->db->get();
+		}
 
 		// Get logbook if user owns it OR has shared access
 		$this->db->select('station_logbooks.*');
@@ -312,11 +328,18 @@ class Logbooks_model extends CI_Model {
 
 			$current_user_id = $this->session->userdata('user_id');
 			
+			// Handle NULL user_id to prevent SQL errors
+			if ($current_user_id === NULL || $current_user_id === FALSE) {
+				$is_shared_case = '1 as is_shared'; // All are shared if no user logged in
+			} else {
+				$is_shared_case = 'CASE WHEN station_profile.user_id = '.$this->db->escape($current_user_id).' THEN 0 ELSE 1 END as is_shared';
+			}
+			
 			$this->db->select('station_profile.*, 
 				dxcc_entities.name as station_country, 
 				dxcc_entities.end as end,
 				users.user_callsign as owner_callsign,
-				CASE WHEN station_profile.user_id = '.$this->db->escape($current_user_id).' THEN 0 ELSE 1 END as is_shared', FALSE);
+				'.$is_shared_case, FALSE);
 			$this->db->where_in('station_id', $relationships_array);
 			$this->db->join('dxcc_entities','station_profile.station_dxcc = dxcc_entities.adif','left outer');
 			$this->db->join('users','station_profile.user_id = users.user_id','left');
@@ -420,6 +443,7 @@ class Logbooks_model extends CI_Model {
 	public function add_logbook_permission($logbook_id, $user_id, $permission_level = 'read') {
 		// Add a user to a logbook with specified permission level
 		// Only owner or admin can add users
+		// Returns array with 'success' and 'is_new' keys
 		
 		$clean_logbook_id = $this->security->xss_clean($logbook_id);
 		$clean_user_id = $this->security->xss_clean($user_id);
@@ -428,19 +452,21 @@ class Logbooks_model extends CI_Model {
 		// Validate permission level
 		$valid_permissions = array('read', 'write', 'admin');
 		if (!in_array($clean_permission, $valid_permissions)) {
-			return false;
+			return array('success' => false, 'is_new' => false);
 		}
 		
 		// Check if current user has admin rights or is owner
 		if (!$this->is_logbook_owner($clean_logbook_id) && 
 			!$this->check_logbook_is_accessible($clean_logbook_id, 'admin')) {
-			return false;
+			return array('success' => false, 'is_new' => false);
 		}
 		
 		// Check if permission already exists
 		$this->db->where('logbook_id', $clean_logbook_id);
 		$this->db->where('user_id', $clean_user_id);
 		$existing = $this->db->get('station_logbooks_permissions');
+		
+		$is_new = ($existing->num_rows() == 0);
 		
 		if ($existing->num_rows() > 0) {
 			// Update existing permission
@@ -461,7 +487,7 @@ class Logbooks_model extends CI_Model {
 			$this->db->insert('station_logbooks_permissions', $data);
 		}
 		
-		return true;
+		return array('success' => true, 'is_new' => $is_new);
 	}
 
 	public function remove_logbook_permission($logbook_id, $user_id) {

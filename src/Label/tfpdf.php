@@ -494,7 +494,7 @@ function AddFont($family, $style='', $file='', $uni=false)
 		}
 		if (!isset($type) ||  !isset($name) || $originalsize != $ttfstat['size']) {
 			$ttffile = $ttffilename;
-			//require_once($this->fontpath.'unifont/ttfonts.php');
+			require_once('./src/Label/font/unifont/ttfonts.php');
 			$ttf = new TTFontFile();
 			$ttf->getMetrics($ttffile);
 			$cw = $ttf->charWidths;
@@ -535,6 +535,8 @@ function AddFont($family, $style='', $file='', $uni=false)
 			unset($ttf);
 		}
 		else {
+			// Always use the current path, not the cached one from .mtx.php
+			$ttffile = $ttffilename;
 			$cw = @file_get_contents($unifilename.'.cw.dat'); 
 		}
 		$i = count($this->fonts)+1;
