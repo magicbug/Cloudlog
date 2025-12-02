@@ -103,6 +103,12 @@ $lang['options_version_dialog_hide_all_hint'] = "This will deactivate the automa
 $lang['options_save'] = 'Save';
 $lang['options_appearance_settings_saved'] = 'Appearance settings have been saved successfully.';
 
+// Registration
+$lang['options_registration'] = 'Registration';
+$lang['options_open_registration'] = 'Open Registration';
+$lang['options_open_registration_hint'] = 'Allow users to self-register via a public signup page.';
+$lang['options_registration_settings_saved'] = 'Registration settings have been saved successfully.';
+
 // Bands
 
 $lang['options_bands'] = "Bands";

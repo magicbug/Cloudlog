@@ -13,6 +13,9 @@ class Options extends CI_Controller {
 
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(99)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
+        
+		// Note: Managed deployments may hide specific subsections (e.g. registration)
+		// but should still allow access to the Options area in general.
 
 		// Load language files
 		$this->lang->load(array(
@@ -58,6 +61,43 @@ class Options extends CI_Controller {
 		$this->load->view('options/appearance');
 		$this->load->view('interface_assets/footer');
     }
+
+	// Registration options
+	function registration() {
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_registration');
+        
+		// If open registration is managed-disabled, keep page hidden
+		if ($this->config->item('disable_open_registration')) {
+			$this->session->set_flashdata('notice', 'This setting is managed and cannot be changed.');
+			redirect('options');
+		}
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('options/registration');
+		$this->load->view('interface_assets/footer');
+	}
+
+	function registration_save() {
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_registration');
+        
+		if ($this->config->item('disable_open_registration')) {
+			$this->session->set_flashdata('notice', 'This setting is managed and cannot be changed.');
+			redirect('/options');
+			return;
+		}
+
+		// Save the open registration option
+		$open_registration = $this->input->post('open_registration');
+		$update = $this->optionslib->update('open_registration', $open_registration, 'yes');
+		if ($update == TRUE) {
+			$this->session->set_flashdata('success', $this->lang->line('options_registration_settings_saved'));
+		}
+
+		redirect('/options/registration');
+	}
 
 	// Handles saving the appreance options to the options system.
 	function appearance_save() {

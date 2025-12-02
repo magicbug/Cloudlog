@@ -12,6 +12,9 @@ class OptionsLib {
         // Make Codeigniter functions available to library
         $CI =& get_instance();
 
+        // Load optional managed config if present (fail gracefully when missing)
+        $CI->load->config('managed', FALSE, TRUE);
+
 	// Force Migration to run on every page load
     	$CI->load->library('Migration');
 	    $CI->migration->current();

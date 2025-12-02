@@ -1095,6 +1095,177 @@ class User extends CI_Controller
 		}
 	}
 
+	// Public signup (open registration)
+	public function signup()
+	{
+		// Gate: open registration must be enabled
+		if ($this->config->item('disable_open_registration') || $this->optionslib->get_option('open_registration') != 'true') {
+			$this->session->set_flashdata('notice', 'Registration is currently disabled.');
+			redirect('user/login');
+			return;
+		}
+
+		$this->load->helper(array('form', 'url'));
+		$this->load->model('user_model');
+		$this->load->library('form_validation');
+
+		// Validation rules
+		$this->form_validation->set_rules('user_name', 'Username', 'required');
+		$this->form_validation->set_rules('user_email', 'E-mail', 'required|valid_email');
+		$this->form_validation->set_rules('user_password', 'Password', 'required');
+		$this->form_validation->set_rules('user_password_confirm', 'Password Confirmation', 'required|matches[user_password]');
+		$this->form_validation->set_rules('user_firstname', 'First name', 'required');
+		$this->form_validation->set_rules('user_lastname', 'Last name', 'required');
+		$this->form_validation->set_rules('user_callsign', 'Callsign', 'required');
+		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
+		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
+
+		// Timezones for select
+		$data['timezones'] = $this->user_model->timezones();
+		$data['page_title'] = 'Sign Up';
+
+		if ($this->form_validation->run() == FALSE) {
+			// Show form
+			$this->load->view('interface_assets/mini_header', $data);
+			$this->load->view('user/signup', $data);
+			$this->load->view('interface_assets/footer');
+			return;
+		}
+
+		// Defaults for new users
+		$user_type = 3; // operator (per config auth_level)
+		$measurement = 'M';
+		$user_date_format = 'd/m/y';
+		$user_stylesheet = $this->optionslib->get_option('option_theme') ?: 'default';
+		$user_qth_lookup = 0;
+		$user_sota_lookup = 0;
+		$user_wwff_lookup = 0;
+		$user_pota_lookup = 0;
+		$user_show_notes = 0;
+		$user_column1 = '';
+		$user_column2 = '';
+		$user_column3 = '';
+		$user_column4 = '';
+		$user_column5 = '';
+		$user_show_profile_image = 0;
+		$user_previous_qsl_type = '';
+		$user_amsat_status_upload = '';
+		$user_mastodon_url = '';
+		$user_default_band = '';
+		$user_default_confirmation = '';
+		$user_qso_end_times = 0;
+		$user_quicklog = 0;
+		$user_quicklog_enter = 1; // 1 = search, 0 = log
+		$language = 'english';
+		$user_hamsat_key = '';
+		$user_hamsat_workable_only = '';
+		$callbook_type = '';
+		$callbook_username = '';
+		$callbook_password = '';
+
+		// Attempt to create user
+		switch ($this->user_model->add(
+			$this->input->post('user_name', true),
+			$this->input->post('user_password', true),
+			$this->input->post('user_email', true),
+			$user_type,
+			$this->input->post('user_firstname', true),
+			$this->input->post('user_lastname', true),
+			$this->input->post('user_callsign', true),
+			$this->input->post('user_locator', true),
+			$this->input->post('user_timezone', true),
+			$measurement,
+			$user_date_format,
+			$user_stylesheet,
+			$user_qth_lookup,
+			$user_sota_lookup,
+			$user_wwff_lookup,
+			$user_pota_lookup,
+			$user_show_notes,
+			$user_column1,
+			$user_column2,
+			$user_column3,
+			$user_column4,
+			$user_column5,
+			$user_show_profile_image,
+			$user_previous_qsl_type,
+			$user_amsat_status_upload,
+			$user_mastodon_url,
+			$user_default_band,
+			$user_default_confirmation,
+			$user_qso_end_times,
+			$user_quicklog,
+			$user_quicklog_enter,
+			$language,
+			$user_hamsat_key,
+			$user_hamsat_workable_only,
+			$callbook_type,
+			$callbook_username,
+			$callbook_password
+		)) {
+			case EUSERNAMEEXISTS:
+				$data['username_error'] = 'Username <b>' . $this->input->post('user_name', true) . '</b> already in use!';
+				break;
+			case EEMAILEXISTS:
+				$data['email_error'] = 'E-mail address <b>' . $this->input->post('user_email', true) . '</b> already in use!';
+				break;
+			case EPASSWORDINVALID:
+				$data['password_error'] = 'Invalid password!';
+				break;
+			case OK:
+				// Send a welcome email (without password) if email is configured
+				if ($this->optionslib->get_option('emailProtocol') != '') {
+					// Fetch newly created user by username
+					$new_user_q = $this->user_model->get($this->input->post('user_name', true));
+					if ($new_user_q && $new_user_q->num_rows() > 0) {
+						$u = $new_user_q->row();
+
+						$this->load->library('email');
+						if ($this->optionslib->get_option('emailProtocol') == "smtp") {
+							$config = Array(
+								'protocol' => $this->optionslib->get_option('emailProtocol'),
+								'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
+								'smtp_host' => $this->optionslib->get_option('smtpHost'),
+								'smtp_port' => $this->optionslib->get_option('smtpPort'),
+								'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+								'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+								'crlf' => "\r\n",
+								'newline' => "\r\n"
+							);
+							$this->email->initialize($config);
+						}
+
+						$email_data = array(
+							'username' => $u->user_name,
+							'user_firstname' => $u->user_firstname,
+							'user_lastname' => $u->user_lastname,
+							'callsign' => $u->user_callsign,
+							'email' => $u->user_email,
+							'base_url' => base_url(),
+						);
+						$message = $this->load->view('email/welcome_reminder.php', $email_data, TRUE);
+
+						$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
+						$this->email->to($u->user_email);
+						$this->email->subject('Welcome to Cloudlog');
+						$this->email->message($message);
+						if (!$this->email->send()) {
+							log_message('error', 'Failed to send signup welcome email to ' . $u->user_email . '. Error: ' . $this->email->print_debugger());
+						}
+					}
+				}
+
+				$this->session->set_flashdata('success', 'Account created. You can now log in.');
+				redirect('user/login');
+				return;
+		}
+
+		// If we get here, something went wrong; re-render form with errors
+		$this->load->view('interface_assets/mini_header', $data);
+		$this->load->view('user/signup', $data);
+		$this->load->view('interface_assets/footer');
+	}
+
 	function logout()
 	{
 		$this->load->model('user_model');
