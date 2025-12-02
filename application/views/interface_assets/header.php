@@ -372,8 +372,6 @@
 
 								<a class="dropdown-item" href="<?php echo site_url('band'); ?>" title="Manage Bands"><i class="fas fa-wave-square"></i> <?php echo lang('menu_bands'); ?></a>
 
-								<a class="dropdown-item" href="<?php echo site_url('award'); ?>" title="Manage Award Settings"><i class="fas fa-trophy"></i> Award Settings</a>
-
 								<div class="dropdown-divider"></div>
 
 								<a class="dropdown-item" href="<?php echo site_url('adif'); ?>" title="Amateur Data Interchange Format (ADIF) import / export"><i class="fas fa-sync-alt"></i> <?php echo lang('menu_adif_import_export'); ?></a>
