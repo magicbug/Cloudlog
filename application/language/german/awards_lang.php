@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('Direkter Skriptzugriff nicht erlaubt');
 
+$lang['awards_menu_settings'] = "Diplom-Einstellungen";
 $lang['awards_info_button'] = "Diplom Info";
 $lang['awards_show_worked'] = "Zeige gearbeitete";
 $lang['awards_show_confirmed'] = "Zeige bestätigte";

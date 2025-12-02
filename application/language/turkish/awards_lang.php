@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('Doğrudan komut dosyası erişimine izin verilmiyor');
 
+$lang['awards_menu_settings'] = "Ödül Ayarları";
 $lang['awards_info_button'] = "Ödül Bilgisi";
 $lang['awards_show_worked'] = "Çaşılışanları Göster";
 $lang['awards_show_confirmed'] = "Onaylanan göster";

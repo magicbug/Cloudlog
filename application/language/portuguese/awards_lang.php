@@ -1,6 +1,7 @@
 <?php
 
 defined('BASEPATH') OR exit('No direct script access allowed');
+$lang['awards_menu_settings'] = "Configurações de prêmios";
 $lang['awards_info_button'] = "Informações do Prêmio";
 $lang['awards_show_worked'] = "Mostrar trabalhados";
 $lang['awards_show_confirmed'] = "Mostrar confirmados";

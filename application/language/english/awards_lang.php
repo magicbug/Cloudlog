@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$lang['awards_menu_settings'] = "Award Settings";
 $lang['awards_info_button'] = "Award Info";
 $lang['awards_show_worked'] = "Show worked";
 $lang['awards_show_confirmed'] = "Show confirmed";

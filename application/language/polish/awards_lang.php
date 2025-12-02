@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('Brak bezpośredniego dostępu do skryptu');
 
+$lang['awards_menu_settings'] = "Ustawienia nagród";
 $lang['awards_info_button'] = "Informacje o nagrodzie";
 $lang['awards_show_worked'] = "Pokaż wykonane";
 $lang['awards_show_confirmed'] = "Pokaż potwierdzone";
