@@ -1819,7 +1819,7 @@ class Logbook_model extends CI_Model
     $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
     
     // Use optimized subquery approach for better performance
-    $sql = "SELECT qsos.*, station_profile.*, dxcc_entities.*, lotw_users.callsign, lotw_users.lastupload
+    $sql = "SELECT qsos.*, station_profile.*, dxcc_entities.*, lotw.callsign, lotw.lastupload
             FROM (
                 SELECT DISTINCT COL_PRIMARY_KEY, COL_TIME_ON
                 FROM " . $this->config->item('table_name') . " qsos_inner
@@ -1831,7 +1831,11 @@ class Logbook_model extends CI_Model
             INNER JOIN " . $this->config->item('table_name') . " qsos ON qsos.COL_PRIMARY_KEY = FilteredIDs.COL_PRIMARY_KEY
             INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
             LEFT JOIN dxcc_entities ON qsos.col_dxcc = dxcc_entities.adif
-            LEFT OUTER JOIN lotw_users ON qsos.col_call = lotw_users.callsign
+        LEFT OUTER JOIN (
+          SELECT callsign, MAX(lastupload) AS lastupload
+          FROM lotw_users
+          GROUP BY callsign
+        ) AS lotw ON qsos.col_call = lotw.callsign
             ORDER BY qsos.COL_TIME_ON DESC, qsos.COL_PRIMARY_KEY DESC";
     
     return $this->db->query($sql);
