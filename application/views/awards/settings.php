@@ -100,15 +100,15 @@
 						<td class='award-checkbox-cell award_ffma'>
 							<input type="checkbox" data-award="ffma" <?php if ($user_awards->ffma == 1) echo 'checked'; ?>>
 						</td>
-						<td class="award-name">FFMA</td>
-						<td class="award-description">Flora and Fauna in Marche Award</td>
-					</tr>
-					<tr>
-						<td class='award-checkbox-cell award_iota'>
-							<input type="checkbox" data-award="iota" <?php if ($user_awards->iota == 1) echo 'checked'; ?>>
-						</td>
-						<td class="award-name">IOTA</td>
-						<td class="award-description">Islands On The Air</td>
+					<td class="award-name">FFMA</td>
+					<td class="award-description">Fred Fish Memorial Award</td>
+				</tr>
+				<tr>
+					<td class='award-checkbox-cell award_iota'>
+						<input type="checkbox" data-award="iota" <?php if ($user_awards->iota == 1) echo 'checked'; ?>>
+					</td>
+					<td class="award-name">IOTA</td>
+					<td class="award-description">Islands On The Air</td>
 					</tr>
 					<tr class="table-secondary">
 						<td colspan="3"><strong><i class="fas fa-th me-2"></i>Gridmaster Awards</strong></td>
