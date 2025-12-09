@@ -367,6 +367,10 @@
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="<?php echo site_url('user/edit') . "/" . $this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> <?php echo lang('menu_account'); ?></a>
 
+							<?php if ($this->config->item('subscription_management_url')) { ?>
+							<a class="dropdown-item" href="<?php echo $this->config->item('subscription_management_url'); ?>" target="_blank" title="Manage Subscription"><i class="fas fa-credit-card"></i> Manage Subscription</a>
+							<?php } ?>
+
 							<a class="dropdown-item" href="<?php echo site_url('logbooks'); ?>" title="Manage station logbooks"><i class="fas fa-book"></i> <?php echo lang('menu_station_logbooks'); ?></a>								<a class="dropdown-item" href="<?php echo site_url('station'); ?>" title="Manage station locations"><i class="fas fa-map-marker-alt"></i> <?php echo lang('menu_station_locations'); ?></a>
 
 								<a class="dropdown-item" href="<?php echo site_url('band'); ?>" title="Manage Bands"><i class="fas fa-wave-square"></i> <?php echo lang('menu_bands'); ?></a>

@@ -8,7 +8,7 @@
 		<!-- Content -->
 		<div class="col-md-9">
             <div class="card">
-                <div class="card-header"><h2><?php echo $page_title; ?> - <?php echo $sub_heading; ?></h2></div>
+                <div class="card-header"><h2><i class="fas fa-user-plus"></i> <?php echo $page_title; ?> - <?php echo $sub_heading; ?></h2></div>
 
                 <div class="card-body">
                     <?php if($this->session->flashdata('success')) { ?>
