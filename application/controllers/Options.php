@@ -274,6 +274,7 @@ class Options extends CI_Controller {
 
 		$data['page_title'] = $this->lang->line('options_cloudlog_options');
 		$data['sub_heading'] = $this->lang->line('options_email');
+		$data['is_managed'] = ($this->config->item('managed_service') || $this->config->item('managed_email_protocol')) ? true : false;
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('options/email');
@@ -282,6 +283,11 @@ class Options extends CI_Controller {
 
 	// Handles saving the radio options to the options system.
 	function email_save() {
+			// Check if email is managed - if so, redirect with message
+			if ($this->config->item('managed_service') || $this->config->item('managed_email_protocol')) {
+				$this->session->set_flashdata('notice', 'Email settings are centrally managed and cannot be changed here.');
+				redirect('options');
+			}
 
 			// Get Language Options
 	

@@ -48,6 +48,28 @@ class OptionsLib {
     function get_option($option_name) {
         // Make Codeigniter functions available to library
         $CI =& get_instance();
+        
+        // Check for managed email configuration overrides
+        $email_settings_map = array(
+            'emailProtocol' => 'managed_email_protocol',
+            'smtpEncryption' => 'managed_email_smtp_encryption',
+            'emailAddress' => 'managed_email_address',
+            'emailSenderName' => 'managed_email_sender_name',
+            'smtpHost' => 'managed_email_smtp_host',
+            'smtpPort' => 'managed_email_smtp_port',
+            'smtpUsername' => 'managed_email_smtp_username',
+            'smtpPassword' => 'managed_email_smtp_password'
+        );
+        
+        // If this is an email setting and managed email is configured, return managed value
+        if (array_key_exists($option_name, $email_settings_map)) {
+            $managed_key = $email_settings_map[$option_name];
+            $managed_value = $CI->config->item($managed_key);
+            if ($managed_value !== NULL && $managed_value !== FALSE) {
+                return $managed_value;
+            }
+        }
+        
         if (strpos($option_name, 'option_') !== false) { 
             if(!$CI->config->item($option_name)) {
                  //Load the options model
