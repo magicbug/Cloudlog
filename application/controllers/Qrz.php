@@ -212,13 +212,7 @@ class Qrz extends CI_Controller {
 
 		$this->load->model('logbook_model');
 
-		$customDate = $this->input->post('from');
-		if ($customDate != NULL) {
-			$qrz_last_date = date($customDate);
-		} else {
-			// Query the logbook to determine when the last LoTW confirmation was
-			$qrz_last_date = null;
-		}
+		// Download all QRZ data regardless of date selection
 		$this->download($this->session->userdata('user_id'),true);
 	} // end function
 
