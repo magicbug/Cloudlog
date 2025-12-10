@@ -8,7 +8,7 @@
 		<!-- Content -->
 		<div class="col-md-9">
             <div class="card">
-                <div class="card-header"><h2><?php echo $page_title; ?> - <?php echo $sub_heading; ?></h2></div>
+                <div class="card-header"><h2><i class="fas fa-envelope"></i> <?php echo $page_title; ?> - <?php echo $sub_heading; ?></h2></div>
 
                 <div class="card-body">
                     <?php if($this->session->flashdata('success')) { ?>
@@ -38,8 +38,60 @@
                             <?php echo $this->session->flashdata('testmailSuccess'); ?>
                         </div>
                     <?php } ?>
+
+                    <?php if (isset($is_managed) && $is_managed) { ?>
+                        <!-- Managed Email - Read-only display with test email -->
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Email settings are centrally managed and cannot be changed here.
+                        </div>
+
+                        <h5>Current Email Configuration</h5>
+                        <table class="table table-sm">
+                            <tr>
+                                <th style="width: 30%;"><?php echo lang('options_outgoing_protocol'); ?>:</th>
+                                <td><?php echo $this->optionslib->get_option('emailProtocol'); ?></td>
+                            </tr>
+                            <?php if($this->optionslib->get_option('emailProtocol') == 'smtp') { ?>
+                            <tr>
+                                <th><?php echo lang('options_smtp_encryption'); ?>:</th>
+                                <td><?php echo $this->optionslib->get_option('smtpEncryption') ?: 'None'; ?></td>
+                            </tr>
+                            <tr>
+                                <th><?php echo lang('options_smtp_host'); ?>:</th>
+                                <td><?php echo $this->optionslib->get_option('smtpHost'); ?></td>
+                            </tr>
+                            <tr>
+                                <th><?php echo lang('options_smtp_port'); ?>:</th>
+                                <td><?php echo $this->optionslib->get_option('smtpPort'); ?></td>
+                            </tr>
+                            <?php } ?>
+                            <tr>
+                                <th><?php echo lang('options_email_address'); ?>:</th>
+                                <td><?php echo $this->optionslib->get_option('emailAddress'); ?></td>
+                            </tr>
+                            <tr>
+                                <th><?php echo lang('options_email_sender_name'); ?>:</th>
+                                <td><?php echo $this->optionslib->get_option('emailSenderName'); ?></td>
+                            </tr>
+                        </table>
+
+                        <hr>
+                        <h5>Test Email</h5>
+                        <?php echo form_open('options/sendTestMail', ['id' => 'testMailForm']); ?>
+                            <input class="btn btn-primary" id="testMailBtn" type="submit" value="<?php echo lang('options_send_testmail'); ?>" />
+                            <span id="testMailSpinner" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true" style="display: none;"></span>
+                            <small class="form-text text-muted"><?php echo lang('options_send_testmail_hint'); ?></small>
+                        </form>
                         
-                    <?php echo form_open('options/email_save'); ?>
+                        <script>
+                        document.getElementById('testMailForm').addEventListener('submit', function() {
+                            document.getElementById('testMailBtn').disabled = true;
+                            document.getElementById('testMailSpinner').style.display = 'inline-block';
+                        });
+                        </script>
+
+                    <?php } else { ?>
+                        <!-- Normal email configuration form -->
 
                         <div class="mb-3">
                             <label for="emailProtocol"><?php echo lang('options_outgoing_protocol'); ?></label>
@@ -124,6 +176,7 @@
                         document.getElementById('testMailSpinner').style.display = 'inline-block';
                     });
                     </script>
+                    <?php } // end else - normal email configuration ?>
                 </div>
             </div>
 		</div>

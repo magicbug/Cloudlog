@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+$lang['awards_menu_settings'] = "Paramètres des diplômes";
 $lang['awards_info_button'] = "Informations complémentaires";
 $lang['awards_show_worked'] = "Voir les \"réalisés\"";
 $lang['awards_show_confirmed'] = "Voir les \"confirmés\"";

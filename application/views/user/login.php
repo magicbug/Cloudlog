@@ -61,6 +61,9 @@
                         <p><small><a class="" href="<?php echo site_url('user/forgot_password'); ?>"><?php echo lang('account_forgot_your_password'); ?></a></small></p>
                     </div>
                     <button class="w-100 btn btn-info" type="submit"><?php echo lang('account_login'); ?> →</button>
+                    <?php if ($this->optionslib->get_option('open_registration') == 'true' && !$this->config->item('disable_open_registration')) { ?>
+                        <p class="mt-2 text-center"><small><a class="" href="<?php echo site_url('user/signup'); ?>">Don't have an account? Sign up</a></small></p>
+                    <?php } ?>
             </form>
         </div>
     </div>

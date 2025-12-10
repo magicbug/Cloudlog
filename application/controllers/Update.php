@@ -389,9 +389,10 @@ class Update extends CI_Controller {
         // Only truncate table AFTER we've validated the remote file
         $this->db->query("TRUNCATE TABLE lotw_users"); 
         
-        $i = 0;
+        $i = 0; // raw rows read
         $batch_count = 0;
-        $lotwdata = array();
+        // Use a map to deduplicate by callsign and keep the latest timestamp
+        $lotw_map = array();
         $batch_size = 500; // Smaller batch size for better performance and memory usage
         
         // Skip CSV header row
@@ -403,36 +404,42 @@ class Update extends CI_Controller {
                 $callsign = strtoupper($data[0]);
                 // Validate callsign format (basic check)
                 if (preg_match('/^[A-Z0-9\/]+$/', $callsign)) {
-                    $lotwdata[] = array(
-                        'callsign' => $callsign,
-                        'lastupload' => $data[1] . ' ' . $data[2]
-                    );
                     $i++;
-                    
-                    // Insert batch when we reach batch_size
-                    if (count($lotwdata) >= $batch_size) {
-                        if (!$this->db->insert_batch('lotw_users', $lotwdata)) {
-                            echo "FAILED: Database error during batch insert";
-                            log_message('error', 'Database error during LoTW batch insert');
-                            fclose($handle);
-                            return;
-                        }
-                        $batch_count++;
-                        $lotwdata = array(); // Reset array
+                    // Compose timestamp string and compare; keep the latest per callsign
+                    $ts = $data[1] . ' ' . $data[2];
+                    // If we haven't seen this callsign, or this row is newer, store it
+                    if (!isset($lotw_map[$callsign]) || strtotime($ts) > strtotime($lotw_map[$callsign])) {
+                        $lotw_map[$callsign] = $ts;
                     }
                 }
             }
         }
         fclose($handle);
         
-        // Insert any remaining records in final batch
-        if (!empty($lotwdata)) {
-            if (!$this->db->insert_batch('lotw_users', $lotwdata)) {
-                echo "FAILED: Database error during final batch insert";
-                log_message('error', 'Database error during LoTW final batch insert');
-                return;
+        // Insert deduplicated records in batches
+        if (!empty($lotw_map)) {
+            $lotwdata = array();
+            foreach ($lotw_map as $cs => $lu) {
+                $lotwdata[] = array('callsign' => $cs, 'lastupload' => $lu);
+                if (count($lotwdata) >= $batch_size) {
+                    if (!$this->db->insert_batch('lotw_users', $lotwdata)) {
+                        echo "FAILED: Database error during batch insert";
+                        log_message('error', 'Database error during LoTW batch insert while inserting deduped map');
+                        return;
+                    }
+                    $batch_count++;
+                    $lotwdata = array();
+                }
             }
-            $batch_count++;
+            // Final batch
+            if (!empty($lotwdata)) {
+                if (!$this->db->insert_batch('lotw_users', $lotwdata)) {
+                    echo "FAILED: Database error during final batch insert";
+                    log_message('error', 'Database error during LoTW final batch insert while inserting deduped map');
+                    return;
+                }
+                $batch_count++;
+            }
         }
 
         // Verify we actually imported data
@@ -454,7 +461,8 @@ class Update extends CI_Controller {
         $endtime = $mtime; 
         $totaltime = ($endtime - $starttime); 
         echo "This page was created in ".$totaltime." seconds <br />"; 
-        echo "Records inserted: " . $i . " <br/>";
+        echo "Records read: " . $i . " <br/>";
+        echo "Unique callsigns inserted: " . $final_count . " <br/>";
     }
 
     public function lotw_check() {

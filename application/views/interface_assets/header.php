@@ -144,53 +144,101 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo lang('menu_awards'); ?></a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<?php
+								// Load award preferences for current user
+								$CI =& get_instance();
+								$CI->load->model('awards_model');
+								$user_awards = $CI->awards_model->get_user_awards();
+								
+								if ($user_awards->cq == 1) { ?>
 								<a class="dropdown-item" href="<?php echo site_url('awards/cq'); ?>"><i class="fas fa-globe-americas"></i> <?php echo lang('menu_cq'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->dok == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/dok'); ?>"><i class="fas fa-flag"></i> <?php echo lang('menu_dok'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->dxcc == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/dxcc'); ?>"><i class="fas fa-globe"></i> <?php echo lang('menu_dxcc'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->ffma == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/ffma'); ?>"><i class="fas fa-seedling"></i> <?php echo lang('menu_ffma'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->iota == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/iota'); ?>"><i class="fas fa-water"></i> <?php echo lang('menu_iota'); ?></a>
 								<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->gridmaster_dl == 1 || $user_awards->gridmaster_lx == 1 || $user_awards->gridmaster_ja == 1 || $user_awards->gridmaster_us == 1 || $user_awards->gridmaster_uk == 1) { ?>
 								<div class="nav-item dropdown dropdown-submenu" aria-labelledby="navbarDropdown"><a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-th"></i> Gridmaster</a>
 									<ul class="dropdown-menu">
+										<?php if ($user_awards->gridmaster_dl == 1) { ?>
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/dl'); ?>"><i class="fas fa-th"></i> <?php echo lang('menu_dl_gridmaster'); ?></a></li>
 										<div class="dropdown-divider"></div>
+										<?php } ?>
+										<?php if ($user_awards->gridmaster_lx == 1) { ?>
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/lx'); ?>"><i class="fas fa-th"></i> <?php echo lang('menu_lx_gridmaster'); ?></a></li>
 										<div class="dropdown-divider"></div>
+										<?php } ?>
+										<?php if ($user_awards->gridmaster_ja == 1) { ?>
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/ja'); ?>"><i class="fas fa-th"></i> <?php echo lang('menu_ja_gridmaster'); ?></a></li>
 										<div class="dropdown-divider"></div>
+										<?php } ?>
+										<?php if ($user_awards->gridmaster_us == 1) { ?>
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/us'); ?>"><i class="fas fa-th"></i> <?php echo lang('menu_us_gridmaster'); ?></a></li>
 										<div class="dropdown-divider"></div>
+										<?php } ?>
+										<?php if ($user_awards->gridmaster_uk == 1) { ?>
 										<li><a class="dropdown-item" href="<?php echo site_url('awards/gridmaster/uk'); ?>"><i class="fas fa-th"></i> <?php echo lang('menu_uk_gridmaster'); ?></a></li>
+										<?php } ?>
 									</ul>
 								</div>
 								<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->gmdxsummer == 1) { ?>
 								<a class="dropdown-item" href="<?php echo site_url('awards/gmdxsummer'); ?>"><i class="fas fa-medal"></i> GMDX Summer Challenge</a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->pota == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/pota'); ?>"><i class="fas fa-tree"></i> <?php echo lang('menu_pota'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->sig == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/sig'); ?>"><i class="fas fa-certificate"></i> <?php echo lang('menu_sig'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->sota == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/sota'); ?>"><i class="fas fa-mountain"></i> <?php echo lang('menu_sota'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->uscounties == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/counties'); ?>"><i class="fas fa-map-marked-alt"></i> <?php echo lang('menu_us_counties'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->vucc == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/vucc'); ?>"><i class="fas fa-th-large"></i> <?php echo lang('menu_vucc'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->wab == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/wab'); ?>"><i class="fas fa-map-pin"></i> Worked All Britain</a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->waja == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/waja'); ?>"><i class="fas fa-torii-gate"></i> <?php echo lang('menu_waja'); ?></a>
 							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if ($user_awards->was == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/was'); ?>"><i class="fas fa-flag-usa"></i> <?php echo lang('menu_was'); ?></a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="<?php echo site_url('awards/wwff'); ?>"><i class="fas fa-leaf"></i> <?php echo lang('menu_wwff'); ?></a>
-							</div>
-						</li>
-
-						<li class="nav-item dropdown">
+								<?php } ?>
+							<?php if ($user_awards->wwff == 1) { ?>
+						<a class="dropdown-item" href="<?php echo site_url('awards/wwff'); ?>"><i class="fas fa-leaf"></i> <?php echo lang('menu_wwff'); ?></a>
+						<div class="dropdown-divider"></div>
+							<?php } ?>
+						<a class="dropdown-item" href="<?php echo site_url('award'); ?>"><i class="fas fa-cog"></i> <?php echo lang('awards_menu_settings'); ?></a>
+					</div>
+				</li>						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Tools"><i class="fas fa-tools"></i>
 								<div class="d-inline d-lg-none" style="padding-left: 10px">Tools</div>
 							</a>
@@ -215,7 +263,6 @@
 									<div class="dropdown-divider"></div>
 
 									<a class="dropdown-item" href="<?php echo site_url('options'); ?>" title="Manage global options"><i class="fas fa-cog"></i> <?php echo lang('menu_global_options'); ?></a>
-
 									<div class="dropdown-divider"></div>
 
 									<a class="dropdown-item" href="<?php echo site_url('mode'); ?>" title="Manage QSO modes"><i class="fas fa-broadcast-tower"></i> <?php echo lang('menu_modes'); ?></a>
@@ -319,6 +366,10 @@
 
 							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<a class="dropdown-item" href="<?php echo site_url('user/edit') . "/" . $this->session->userdata('user_id'); ?>" title="Account"><i class="fas fa-user"></i> <?php echo lang('menu_account'); ?></a>
+
+							<?php if ($this->config->item('subscription_management_url')) { ?>
+							<a class="dropdown-item" href="<?php echo $this->config->item('subscription_management_url'); ?>" target="_blank" title="Manage Subscription"><i class="fas fa-credit-card"></i> Manage Subscription</a>
+							<?php } ?>
 
 							<a class="dropdown-item" href="<?php echo site_url('logbooks'); ?>" title="Manage station logbooks"><i class="fas fa-book"></i> <?php echo lang('menu_station_logbooks'); ?></a>								<a class="dropdown-item" href="<?php echo site_url('station'); ?>" title="Manage station locations"><i class="fas fa-map-marker-alt"></i> <?php echo lang('menu_station_locations'); ?></a>
 

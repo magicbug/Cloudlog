@@ -481,6 +481,40 @@ TD.lotw {
 	background-color: #e1e4e8;
 }
 
+/* Options page styling */
+.settings .list-group-item {
+	border-left: 3px solid transparent;
+	transition: all 0.2s ease;
+}
+
+.settings .list-group-item:hover {
+	border-left-color: #0d6efd;
+	background-color: #f8f9fa;
+}
+
+.settings .list-group-item.active {
+	background-color: #e7f1ff;
+	border-left-color: #0d6efd;
+}
+
+.settings .list-group-item.active .nav-link {
+	color: #0d6efd;
+	font-weight: 500;
+}
+
+.settings .list-group-item .nav-link {
+	padding: 0;
+	color: #212529;
+	display: flex;
+	align-items: center;
+}
+
+.settings .list-group-item .nav-link i {
+	margin-right: 10px;
+	width: 20px;
+	text-align: center;
+}
+
 /* QSL Card Management CSS */
 
 .qsl_management {
