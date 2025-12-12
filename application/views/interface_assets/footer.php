@@ -1964,6 +1964,19 @@ $(document).ready(function() {
 
         // Update UI from CAT data
         const updateFromCAT = (radioID) => {
+
+            // If manual logging is forced (manual=1), skip CAT updates entirely
+            const manualParam = new URLSearchParams(window.location.search).get('manual');
+            const manualMode = manualParam === '1';
+            if (manualMode) {
+                console.log("Manual QSO entry enabled, skipping CAT update.");
+
+                // Set Radio to Zero
+                $('#radio').val('0').trigger('change');
+                resetUI();
+                return;
+            }
+
             if (radioID === '0') return;
 
             $.getJSON(`radio/json/${radioID}`, (data) => {
