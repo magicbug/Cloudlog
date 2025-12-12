@@ -60,10 +60,10 @@
 
               <li class="nav-item ms-auto d-flex align-items-center">
                 <?php if ($_GET['manual'] == 0) {
-                  echo " <span class=\"badge text-bg-success\" style=\"cursor: pointer; font-size: 1rem; padding: 0.5rem 1rem;\" onclick=\"switchMode('" . site_url('qso') . "?manual=1')\" title=\"Switch to POST mode\">LIVE</span>";
+                  echo " <span class=\"badge text-bg-success\" style=\"cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0.9rem;\" onclick=\"switchMode('" . site_url('qso') . "?manual=1')\" title=\"Switch to POST mode\">LIVE</span>";
                 };
                 if ($_GET['manual'] == 1) {
-                  echo " <span class=\"badge text-bg-danger\" style=\"cursor: pointer; font-size: 1rem; padding: 0.5rem 1rem;\" onclick=\"switchMode('" . site_url('qso') . "?manual=0')\" title=\"Switch to LIVE mode\">POST</span>";
+                  echo " <span class=\"badge text-bg-danger\" style=\"cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0.9rem;\" onclick=\"switchMode('" . site_url('qso') . "?manual=0')\" title=\"Switch to LIVE mode\">POST</span>";
                 } ?>
               </li>
               
