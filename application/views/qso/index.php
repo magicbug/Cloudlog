@@ -4,6 +4,14 @@
     var text_error_timeoff_less_timeon = "<?php echo lang('qso_error_timeoff_less_timeon'); ?>";
     var lang_qso_title_previous_contacts = "<?php echo lang('qso_title_previous_contacts'); ?>";
     var lang_qso_title_times_worked_before = "<?php echo lang('qso_title_times_worked_before'); ?>";
+    
+    // Function to switch between LIVE and POST mode without the beforeunload warning
+    function switchMode(url) {
+      // Temporarily unbind the beforeunload event to prevent the "Leave site?" popup
+      $(window).unbind('beforeunload');
+      // Navigate to the new URL
+      window.location.href = url;
+    }
   </script>
 
   <div class="row qsopane">
@@ -16,12 +24,7 @@
           <div class="card-header">
             <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
               <li class="nav-item">
-                <a class="nav-link active" id="qsp-tab" data-bs-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true"><?php echo lang('gen_hamradio_qso'); ?><?php if ($_GET['manual'] == 0) {
-                                                                                                                                                                                      echo " <span class=\"badge text-bg-success\" style=\"cursor: pointer;\" onclick=\"window.location.href='" . site_url('qso') . "?manual=1'\" title=\"Switch to POST mode\">LIVE</span>";
-                                                                                                                                                                                    };
-                                                                                                                                                                                    if ($_GET['manual'] == 1) {
-                                                                                                                                                                                      echo " <span class=\"badge text-bg-danger\" style=\"cursor: pointer;\" onclick=\"window.location.href='" . site_url('qso') . "?manual=0'\" title=\"Switch to LIVE mode\">POST</span>";
-                                                                                                                                                                                    } ?></a>
+                <a class="nav-link active" id="qsp-tab" data-bs-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true"><?php echo lang('gen_hamradio_qso'); ?></a>
               </li>
 
               <li class="nav-item">
@@ -55,6 +58,15 @@
                 </div>
               </li>
 
+              <li class="nav-item ms-auto d-flex align-items-center">
+                <?php if ($_GET['manual'] == 0) {
+                  echo " <span class=\"badge text-bg-success\" style=\"cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0.9rem;\" onclick=\"switchMode('" . site_url('qso') . "?manual=1')\" title=\"Switch to Manual mode\">LIVE</span>";
+                };
+                if ($_GET['manual'] == 1) {
+                  echo " <span class=\"badge text-bg-danger\" style=\"cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0.9rem;\" onclick=\"switchMode('" . site_url('qso') . "?manual=0')\" title=\"Switch to LIVE mode\">POST</span>";
+                } ?>
+              </li>
+              
             </ul>
           </div>
 
@@ -680,9 +692,9 @@
           <div class="card-header">
             <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Winkey Web Sockets
 
-                <div id="cw_socket_status" class="badge text-bg-danger">
+              <div id="cw_socket_status" class="badge text-bg-danger">
                 Status: Disconnected
-                </div>
+              </div>
 
               <button id="toggleLogButton" onclick="toggleMessageLog()" class="btn btn-sm btn-outline-secondary" title="Toggle Message Log">
                 <i class="fas fa-list"></i>
@@ -711,7 +723,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- CW Speed Control Row -->
             <div class="row mb-3">
               <div class="col-12">
@@ -725,7 +737,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Send Message Row -->
             <div class="row mb-3">
               <div class="col-12">
@@ -785,7 +797,7 @@
                 </div>
               </div>
             </div>
-            
+
             <!-- Send Message Row -->
             <div class="row mb-3">
               <div class="col-12">
@@ -849,32 +861,72 @@
 
 </div>
 
+<!-- Custom Leave QSO Entry Modal -->
+<div class="modal fade" id="leaveQsoModal" tabindex="-1" aria-labelledby="leaveQsoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-warning">
+        <h5 class="modal-title" id="leaveQsoModalLabel">
+          <i class="fas fa-exclamation-triangle me-2"></i>Leave QSO Entry?
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-0">Are you sure you want to leave QSO entry? Any unsaved changes will be lost.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i>Stay on Page
+        </button>
+        <button type="button" class="btn btn-warning" id="confirmLeaveQso">
+          <i class="fas fa-sign-out-alt me-1"></i>Leave Page
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <script>
-        function openBandmap() {
-            // Open bandmap in a new window without URL bar, toolbars, etc.
-            const width = 500; 
-            const height = 800;
-            const left = (screen.width - width) / 2;
-            const top = (screen.height - height) / 2;
-            
-            // Note: Modern browsers may still show address bar due to security restrictions
-            // For Chrome, you can use: chrome.exe --app=http://localhost/index.php/dxcluster/bandmap
-            const features = `width=${width},height=${height},left=${left},top=${top},` +
-                           `toolbar=no,location=no,directories=no,status=no,menubar=no,` +
-                           `scrollbars=yes,resizable=yes,copyhistory=no`;
-            
-            const popup = window.open('<?php echo site_url('dxcluster/bandmap'); ?>', 'bandmap', features);
-            
-            // Try to make it fullscreen (user will need to allow this)
-            if (popup) {
-                popup.focus();
-            }
+  // Handle the confirm leave button for the custom modal (vanilla JS to avoid jQuery dependency)
+  document.addEventListener('DOMContentLoaded', function() {
+    var confirmBtn = document.getElementById('confirmLeaveQso');
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function() {
+        if (window.pendingNavigation) {
+          // Unbind beforeunload to allow navigation
+          window.jQuery && window.jQuery(window).unbind('beforeunload');
+          // Navigate to the pending URL
+          window.location.href = window.pendingNavigation;
         }
+      });
+    }
+  });
 
-        function openBandmapFullscreen() {
-            // Alternative: Open in current window and go fullscreen
-            window.location.href = '<?php echo site_url('dxcluster/bandmap'); ?>';
-        }
-    </script>
+  function openBandmap() {
+    // Open bandmap in a new window without URL bar, toolbars, etc.
+    const width = 500;
+    const height = 800;
+    const left = (screen.width - width) / 2;
+    const top = (screen.height - height) / 2;
+
+    // Note: Modern browsers may still show address bar due to security restrictions
+    // For Chrome, you can use: chrome.exe --app=http://localhost/index.php/dxcluster/bandmap
+    const features = `width=${width},height=${height},left=${left},top=${top},` +
+      `toolbar=no,location=no,directories=no,status=no,menubar=no,` +
+      `scrollbars=yes,resizable=yes,copyhistory=no`;
+
+    const popup = window.open('<?php echo site_url('dxcluster/bandmap'); ?>', 'bandmap', features);
+
+    // Try to make it fullscreen (user will need to allow this)
+    if (popup) {
+      popup.focus();
+    }
+  }
+
+  function openBandmapFullscreen() {
+    // Alternative: Open in current window and go fullscreen
+    window.location.href = '<?php echo site_url('dxcluster/bandmap'); ?>';
+  }
+</script>

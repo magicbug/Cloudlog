@@ -1605,7 +1605,7 @@ $(document).ready(function() {
             setRst($(".mode").val());
 
             /* On Page Load */
-            var catcher = function() {
+            var catcher = function(e) {
                 var changed = false;
                 $('form').each(function() {
                     if ($(this).data('initialForm') != $(this).serialize()) {
@@ -1616,7 +1616,10 @@ $(document).ready(function() {
                     }
                 });
                 if (changed) {
-                    return 'Unsaved QSO!';
+                    // For external navigation (closing tab/window), browsers require native dialog
+                    e.preventDefault();
+                    e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+                    return e.returnValue;
                 }
             };
 
@@ -1641,6 +1644,48 @@ $(document).ready(function() {
                     }
                 });
                 $(window).bind('beforeunload', catcher);
+                
+                // Intercept internal link clicks to show custom modal
+                $(document).on('click', 'a[href]:not([href^="#"]):not([target="_blank"]):not(.no-confirm):not([data-bs-toggle])', function(e) {
+                    var href = $(this).attr('href');
+                    
+                    // Skip if it's a javascript: link, empty, or hash link
+                    if (!href || href === '#' || href.indexOf('javascript:') === 0) {
+                        return true;
+                    }
+                    
+                    // Check if form has unsaved changes
+                    var hasChanges = false;
+                    $('form').each(function() {
+                        if ($(this).data('initialForm') != $(this).serialize()) {
+                            hasChanges = true;
+                            return false;
+                        }
+                    });
+                    
+                    if (hasChanges) {
+                        e.preventDefault();
+                        
+                        // Check if custom modal element exists in DOM at click time
+                        var modalEl = document.getElementById('leaveQsoModal');
+                        if (modalEl && typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+                            // Use custom modal
+                            window.pendingNavigation = href;
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            if (!modal) {
+                                modal = new bootstrap.Modal(modalEl);
+                            }
+                            modal.show();
+                        } else {
+                            // Fallback to confirm dialog on pages without custom modal
+                            if (confirm('You have unsaved changes. Are you sure you want to leave QSO entry?')) {
+                                $(window).unbind('beforeunload', catcher);
+                                window.location.href = href;
+                            }
+                        }
+                        return false;
+                    }
+                });
             });
 
             // Callsign always has focus on load
