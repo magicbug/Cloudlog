@@ -851,7 +851,9 @@ class Logbook extends CI_Controller
 				if (isset($callsign['callsign']['dxcc'])) {
 					$this->load->model('logbook_model');
 					$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
-					$callsign['callsign']['dxcc_name'] = $entity['name'];
+					if (is_array($entity) && isset($entity['name'])) {
+						$callsign['callsign']['dxcc_name'] = $entity['name'];
+					}
 				}
 			} elseif ($this->session->userdata('callbook_type') == "HamQTH") {
 				// Load the HamQTH library
