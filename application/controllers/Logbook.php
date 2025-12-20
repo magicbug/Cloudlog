@@ -613,17 +613,7 @@ class Logbook extends CI_Controller
 		$this->load->library('subdivisions');
 
 		$this->load->model('logbook_model');
-		
 		$data['query'] = $this->logbook_model->get_qso($id);
-		
-		// Check if query returned null (QSO not found or not accessible)
-		if ($data['query'] == null || $data['query']->num_rows() == 0) {
-			$this->session->set_flashdata('notice', 'QSO not found or not accessible');
-			redirect('dashboard');
-			return;
-		}
-
-
 		$data['dxccFlag'] = $this->dxccflag->get($data['query']->result()[0]->COL_DXCC);
 
 		if ($this->session->userdata('user_measurement_base') == NULL) {
