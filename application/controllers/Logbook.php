@@ -896,7 +896,9 @@ class Logbook extends CI_Controller
 				if (isset($callsign['callsign']['dxcc'])) {
 					$this->load->model('logbook_model');
 					$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
-					$callsign['callsign']['dxcc_name'] = $entity['name'];
+					if (is_array($entity) && isset($entity['name'])) {
+						$callsign['callsign']['dxcc_name'] = $entity['name'];
+					}
 				}
 				if (isset($callsign['callsign']['error'])) {
 					$callsign['error'] = $callsign['callsign']['error'];
@@ -980,7 +982,9 @@ class Logbook extends CI_Controller
 						if (isset($data['callsign']['dxcc'])) {
 							$this->load->model('logbook_model');
 							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
-							$data['callsign']['dxcc_name'] = $entity['name'];
+							if (is_array($entity) && isset($entity['name'])) {
+								$data['callsign']['dxcc_name'] = $entity['name'];
+							}
 						}
 						if (isset($data['callsign']['gridsquare'])) {
 							$this->load->model('logbook_model');
@@ -1017,7 +1021,9 @@ class Logbook extends CI_Controller
 						if (isset($data['callsign']['dxcc'])) {
 							$this->load->model('logbook_model');
 							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
-							$data['callsign']['dxcc_name'] = $entity['name'];
+							if (is_array($entity) && isset($entity['name'])) {
+								$data['callsign']['dxcc_name'] = $entity['name'];
+							}
 						}
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];
