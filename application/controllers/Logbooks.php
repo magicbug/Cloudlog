@@ -132,7 +132,7 @@ class Logbooks extends CI_Controller {
 		}
 		
 		// Get station location details
-		$station = $this->stations->profile($station_id);
+		$station = $this->stations->profile_clean($station_id);
 		
 		if ($station) {
 			$is_owner = $this->logbooks_model->is_logbook_owner($logbook_id);
@@ -144,6 +144,8 @@ class Logbooks extends CI_Controller {
 			} else {
 				$this->session->set_flashdata('notice', 'You can only unlink your own station locations');
 			}
+		} else {
+			$this->session->set_flashdata('notice', 'Station location not found');
 		}
 		
 		redirect('logbooks/edit/'.$logbook_id);

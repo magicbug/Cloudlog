@@ -11,7 +11,12 @@ class Setup_model extends CI_Model {
 
 	function getLogbookCount() {
 		$userid = xss_clean($this->session->userdata('user_id'));
-		$sql = 'select count(*) as count from station_logbooks where user_id =' . $userid;
+		// Count logbooks the user owns OR has been granted permissions to
+		$sql = "SELECT COUNT(DISTINCT sl.logbook_id) AS count
+			FROM station_logbooks sl
+			LEFT JOIN station_logbooks_permissions slp
+				ON slp.logbook_id = sl.logbook_id AND slp.user_id = {$userid}
+			WHERE sl.user_id = {$userid} OR slp.user_id = {$userid}";
 		$query = $this->db->query($sql);
 
 		return $query->row()->count;
@@ -31,7 +36,10 @@ class Setup_model extends CI_Model {
 		
 		$sql = "SELECT 
 			(SELECT COUNT(*) FROM dxcc_entities) as country_count,
-			(SELECT COUNT(*) FROM station_logbooks WHERE user_id = {$userid}) as logbook_count,
+			(SELECT COUNT(DISTINCT sl.logbook_id) FROM station_logbooks sl
+				LEFT JOIN station_logbooks_permissions slp
+					ON slp.logbook_id = sl.logbook_id AND slp.user_id = {$userid}
+				WHERE sl.user_id = {$userid} OR slp.user_id = {$userid}) as logbook_count,
 			(SELECT COUNT(*) FROM station_profile WHERE user_id = {$userid}) as location_count";
 		
 		$query = $this->db->query($sql);
