@@ -614,6 +614,12 @@ class Logbook extends CI_Controller
 
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
+		// Guard against inaccessible or missing QSO to avoid calling result() on null
+		if (!$data['query'] || $data['query']->num_rows() === 0) {
+			$this->session->set_flashdata('notice', "You're not allowed to do that!");
+			redirect('dashboard');
+			return;
+		}
 		$data['dxccFlag'] = $this->dxccflag->get($data['query']->result()[0]->COL_DXCC);
 
 		if ($this->session->userdata('user_measurement_base') == NULL) {

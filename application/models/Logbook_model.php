@@ -5026,15 +5026,39 @@ class Logbook_model extends CI_Model
 
   public function check_qso_is_accessible($id)
   {
-    // check if qso belongs to user
+    // Allow access if QSO belongs to current user OR
+    // if QSO's station is part of the user's active logbook (including shared permissions)
+
+    // First: owner check (current behavior)
     $this->db->select($this->config->item('table_name') . '.COL_PRIMARY_KEY');
     $this->db->join('station_profile', $this->config->item('table_name') . '.station_id = station_profile.station_id');
     $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
     $this->db->where($this->config->item('table_name') . '.COL_PRIMARY_KEY', $id);
-    $query = $this->db->get($this->config->item('table_name'));
-    if ($query->num_rows() == 1) {
+    $ownerQuery = $this->db->get($this->config->item('table_name'));
+    if ($ownerQuery->num_rows() == 1) {
       return true;
     }
+
+    // Second: shared-logbook check via active logbook relationships
+    $CI = &get_instance();
+    $CI->load->model('logbooks_model');
+    $activeLogbookId = $this->session->userdata('active_station_logbook');
+
+    // Ensure user has at least read access to the active logbook
+    if ($activeLogbookId && $CI->logbooks_model->check_logbook_is_accessible($activeLogbookId, 'read')) {
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($activeLogbookId);
+
+      if (!empty($logbooks_locations_array)) {
+        $this->db->select($this->config->item('table_name') . '.COL_PRIMARY_KEY');
+        $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
+        $this->db->where($this->config->item('table_name') . '.COL_PRIMARY_KEY', $id);
+        $sharedQuery = $this->db->get($this->config->item('table_name'));
+        if ($sharedQuery->num_rows() == 1) {
+          return true;
+        }
+      }
+    }
+
     return false;
   }
 
