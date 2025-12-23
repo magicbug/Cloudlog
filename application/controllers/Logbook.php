@@ -614,6 +614,12 @@ class Logbook extends CI_Controller
 
 		$this->load->model('logbook_model');
 		$data['query'] = $this->logbook_model->get_qso($id);
+		// Guard against inaccessible or missing QSO to avoid calling result() on null
+		if (!$data['query'] || $data['query']->num_rows() === 0) {
+			$this->session->set_flashdata('notice', "You're not allowed to do that!");
+			redirect('dashboard');
+			return;
+		}
 		$data['dxccFlag'] = $this->dxccflag->get($data['query']->result()[0]->COL_DXCC);
 
 		if ($this->session->userdata('user_measurement_base') == NULL) {
@@ -851,7 +857,9 @@ class Logbook extends CI_Controller
 				if (isset($callsign['callsign']['dxcc'])) {
 					$this->load->model('logbook_model');
 					$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
-					$callsign['callsign']['dxcc_name'] = $entity['name'];
+					if (is_array($entity) && isset($entity['name'])) {
+						$callsign['callsign']['dxcc_name'] = $entity['name'];
+					}
 				}
 			} elseif ($this->session->userdata('callbook_type') == "HamQTH") {
 				// Load the HamQTH library
@@ -884,7 +892,9 @@ class Logbook extends CI_Controller
 				if (isset($callsign['callsign']['dxcc'])) {
 					$this->load->model('logbook_model');
 					$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
-					$callsign['callsign']['dxcc_name'] = $entity['name'];
+					if (is_array($entity) && isset($entity['name'])) {
+						$callsign['callsign']['dxcc_name'] = $entity['name'];
+					}
 				}
 				if (isset($callsign['callsign']['error'])) {
 					$callsign['error'] = $callsign['callsign']['error'];
@@ -968,7 +978,9 @@ class Logbook extends CI_Controller
 						if (isset($data['callsign']['dxcc'])) {
 							$this->load->model('logbook_model');
 							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
-							$data['callsign']['dxcc_name'] = $entity['name'];
+							if (is_array($entity) && isset($entity['name'])) {
+								$data['callsign']['dxcc_name'] = $entity['name'];
+							}
 						}
 						if (isset($data['callsign']['gridsquare'])) {
 							$this->load->model('logbook_model');
@@ -1005,7 +1017,9 @@ class Logbook extends CI_Controller
 						if (isset($data['callsign']['dxcc'])) {
 							$this->load->model('logbook_model');
 							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
-							$data['callsign']['dxcc_name'] = $entity['name'];
+							if (is_array($entity) && isset($entity['name'])) {
+								$data['callsign']['dxcc_name'] = $entity['name'];
+							}
 						}
 						if (isset($data['callsign']['error'])) {
 							$data['error'] = $data['callsign']['error'];

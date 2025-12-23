@@ -122,6 +122,15 @@
                                            title="<?php echo lang('station_logbooks_edit_logbook') . ': ' . $row->logbook_name;?>">
                                             <i class="fas fa-edit"></i>
                                         </a>
+                                        <?php if($row->public_slug != '') { ?>
+                                            <button class="btn btn-success btn-sm" 
+                                                    title="Get Embed Code"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#embedModal"
+                                                    onclick="setEmbedCode('<?php echo $row->public_slug; ?>', '<?php echo addslashes($row->logbook_name); ?>')">
+                                                <i class="fas fa-code"></i>
+                                            </button>
+                                        <?php } ?>
                                         <?php if($row->user_id == $this->session->userdata('user_id') || (isset($row->access_level) && $row->access_level == 'admin')) { ?>
                                             <a href="<?php echo site_url('logbooks/manage_sharing')."/".$row->logbook_id; ?>" 
                                                class="btn btn-info btn-sm" 
@@ -167,3 +176,68 @@
 <?php } ?>
 
 </div>
+
+<!-- Embed Code Modal -->
+<div class="modal fade" id="embedModal" tabindex="-1" aria-labelledby="embedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="embedModalLabel">
+                    <i class="fas fa-code me-2"></i>Embed Widget - <span id="embedLogbookName"></span>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3">Copy the code below and paste it into your website to embed your logbook widget:</p>
+                <div class="mb-3">
+                    <label for="embedCodeInput" class="form-label">Embed Code</label>
+                    <div class="input-group">
+                        <textarea class="form-control" id="embedCodeInput" rows="4" readonly></textarea>
+                        <button class="btn btn-primary" type="button" id="copyEmbedBtn" title="Copy to clipboard">
+                            <i class="fas fa-copy me-1"></i>Copy
+                        </button>
+                    </div>
+                </div>
+                <div class="alert alert-info" role="alert">
+                    <strong>Note:</strong> Make sure your logbook has a public slug configured before embedding.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function setEmbedCode(publicSlug, logbookName) {
+    const baseUrl = '<?php echo site_url('widgets/qsos'); ?>';
+    const iframeCode = `<iframe src="${baseUrl}/${publicSlug}" width="100%" height="600" frameborder="0" allowfullscreen></iframe>`;
+    
+    document.getElementById('embedCodeInput').value = iframeCode;
+    document.getElementById('embedLogbookName').textContent = logbookName;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const copyBtn = document.getElementById('copyEmbedBtn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function() {
+            const textarea = document.getElementById('embedCodeInput');
+            textarea.select();
+            document.execCommand('copy');
+            
+            // Visual feedback
+            const originalText = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+            copyBtn.classList.add('btn-success');
+            copyBtn.classList.remove('btn-primary');
+            
+            setTimeout(() => {
+                copyBtn.innerHTML = originalText;
+                copyBtn.classList.remove('btn-success');
+                copyBtn.classList.add('btn-primary');
+            }, 2000);
+        });
+    }
+});
+</script>

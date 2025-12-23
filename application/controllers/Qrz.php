@@ -536,9 +536,14 @@ class Qrz extends CI_Controller {
 			}
 
 			$call = str_replace("_","/",$record['call']);
-			$station_callsign = str_replace("_","/",$record['station_callsign']);
+			$station_callsign = str_replace("_","/",$record['station_callsign'] ?? '');
 			$band = $record['band'] ?? ''; // Ensure band exists
 			$mode = $record['mode'] ?? ''; // Ensure mode exists
+
+			// Log if station_callsign is missing
+			if (!isset($record['station_callsign']) || $record['station_callsign'] === '') {
+				log_message('error', 'QRZ import: Missing station_callsign for QSO with callsign: ' . $call . ' on ' . $time_on);
+			}
 
 			// Add record data to batch
 			$batch_data[] = [

@@ -51,6 +51,9 @@
 				</tr>
 			<?php $i++; } ?>
 		</table>
+	<div style="text-align: right; margin-top: 10px; font-size: 0.85em; color: #999;">
+		Powered by <a href="https://github.com/magicbug/Cloudlog" target="_blank" style="color: #0066cc; text-decoration: none;">Cloudlog</a>
+	</div>
 </body>
 
 </html>
