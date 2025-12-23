@@ -1684,7 +1684,7 @@ class Logbook_model extends CI_Model
   // Set Paper to received
   function paperqsl_update($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
 
       $data = array(
         'COL_QSLRDATE' => date('Y-m-d H:i:s'),
@@ -1704,7 +1704,7 @@ class Logbook_model extends CI_Model
   // Set Paper to sent
   function paperqsl_update_sent($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
       if ($method != '') {
         $data = array(
           'COL_QSLSDATE' => date('Y-m-d H:i:s'),
@@ -1730,7 +1730,7 @@ class Logbook_model extends CI_Model
   // Set Paper to requested
   function paperqsl_requested($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
 
       $data = array(
         'COL_QSLSDATE' => date('Y-m-d H:i:s'),
@@ -1749,7 +1749,7 @@ class Logbook_model extends CI_Model
 
   function paperqsl_ignore($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
 
       $data = array(
         'COL_QSLSDATE' => date('Y-m-d H:i:s'),
@@ -5046,6 +5046,44 @@ class Logbook_model extends CI_Model
 
     // Ensure user has at least read access to the active logbook
     if ($activeLogbookId && $CI->logbooks_model->check_logbook_is_accessible($activeLogbookId, 'read')) {
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($activeLogbookId);
+
+      if (!empty($logbooks_locations_array)) {
+        $this->db->select($this->config->item('table_name') . '.COL_PRIMARY_KEY');
+        $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
+        $this->db->where($this->config->item('table_name') . '.COL_PRIMARY_KEY', $id);
+        $sharedQuery = $this->db->get($this->config->item('table_name'));
+        if ($sharedQuery->num_rows() == 1) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  public function check_qso_is_writable($id)
+  {
+    // Check if user has WRITE permission to modify this QSO
+    // Allows write if: QSO belongs to current user OR user has write/admin access to shared logbook
+
+    // First: owner check (current behavior - owners can always write)
+    $this->db->select($this->config->item('table_name') . '.COL_PRIMARY_KEY');
+    $this->db->join('station_profile', $this->config->item('table_name') . '.station_id = station_profile.station_id');
+    $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+    $this->db->where($this->config->item('table_name') . '.COL_PRIMARY_KEY', $id);
+    $ownerQuery = $this->db->get($this->config->item('table_name'));
+    if ($ownerQuery->num_rows() == 1) {
+      return true;
+    }
+
+    // Second: shared-logbook check with write permission
+    $CI = &get_instance();
+    $CI->load->model('logbooks_model');
+    $activeLogbookId = $this->session->userdata('active_station_logbook');
+
+    // Ensure user has at least WRITE access to the active logbook
+    if ($activeLogbookId && $CI->logbooks_model->check_logbook_is_accessible($activeLogbookId, 'write')) {
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($activeLogbookId);
 
       if (!empty($logbooks_locations_array)) {

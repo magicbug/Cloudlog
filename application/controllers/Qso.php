@@ -143,7 +143,16 @@ class QSO extends CI_Controller {
 		$this->load->model('user_model');
 		$this->load->model('modes');
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
-		$query = $this->logbook_model->qso_info($this->uri->segment(3));
+		
+		$qso_id = $this->uri->segment(3);
+		
+		// Check if user has write permission to this QSO
+		if (!$this->logbook_model->check_qso_is_writable($qso_id)) {
+			$this->session->set_flashdata('notice', 'You do not have permission to edit this QSO');
+			redirect('dashboard');
+		}
+		
+		$query = $this->logbook_model->qso_info($qso_id);
 
 		$this->load->library('form_validation');
 
@@ -331,6 +340,15 @@ class QSO extends CI_Controller {
         }
 
         $id = str_replace('"', "", $this->input->post("id"));
+        
+        // Check if user has write permission to this QSO
+        if (!$this->logbook_model->check_qso_is_writable($id)) {
+            $this->session->set_flashdata('notice', 'You do not have permission to edit this QSO');
+            header('Content-Type: application/json');
+            echo json_encode(array('message' => 'not allowed'));
+            return;
+        }
+        
         $query = $this->logbook_model->qso_info($id);
 
         $data['qso'] = $query->row();
@@ -348,6 +366,15 @@ class QSO extends CI_Controller {
         $this->load->model('user_model');
         if(!$this->user_model->authorize(2)) {
             $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard');
+        }
+
+        $qso_id = $this->input->post('id');
+        
+        // Check if user has write permission to this QSO
+        if (!$this->logbook_model->check_qso_is_writable($qso_id)) {
+            header('Content-Type: application/json');
+            echo json_encode(array('message' => 'not allowed'));
+            return;
         }
 
         $this->logbook_model->edit();
@@ -455,11 +482,16 @@ class QSO extends CI_Controller {
 	public function delete($id) {
 		$this->load->model('logbook_model');
 
-		if ($this->logbook_model->check_qso_is_accessible($id)) {
+		if ($this->logbook_model->check_qso_is_writable($id)) {
 			$this->logbook_model->delete($id);
 			$this->session->set_flashdata('notice', 'QSO Deleted Successfully');
 			$data['message_title'] = "Deleted";
 			$data['message_contents'] = "QSO Deleted Successfully";
+			$this->load->view('messages/message', $data);
+		} else {
+			$this->session->set_flashdata('notice', 'You do not have permission to delete this QSO');
+			$data['message_title'] = "Permission Denied";
+			$data['message_contents'] = "You do not have permission to delete this QSO";
 			$this->load->view('messages/message', $data);
 		}
 
@@ -474,7 +506,7 @@ class QSO extends CI_Controller {
         $id = str_replace('"', "", $this->input->post("id"));
 
         $this->load->model('logbook_model');
-	if ($this->logbook_model->check_qso_is_accessible($id)) {
+	if ($this->logbook_model->check_qso_is_writable($id)) {
         	$this->logbook_model->delete($id);
         	header('Content-Type: application/json');
         	echo json_encode(array('message' => 'OK'));

@@ -7,10 +7,10 @@ class Sstv_model extends CI_Model
         // Clean ID
         $clean_id = $this->security->xss_clean($qsoid);
 
-        // be sure that QSO belongs to user
+        // be sure that QSO belongs to user and user has write permission
         $CI = &get_instance();
         $CI->load->model('logbook_model');
-        if (!$CI->logbook_model->check_qso_is_accessible($clean_id)) {
+        if (!$CI->logbook_model->check_qso_is_writable($clean_id)) {
             return;
         }
 
@@ -53,14 +53,14 @@ class Sstv_model extends CI_Model
         // Clean ID
         $clean_id = $this->security->xss_clean($id);
 
-        // be sure that QSO belongs to user
+        // be sure that QSO belongs to user and user has write permission
         $CI = &get_instance();
         $CI->load->model('logbook_model');
         $this->db->select('qsoid');
         $this->db->from('sstv_images');
         $this->db->where('id', $clean_id);
         $qsoid = $this->db->get()->row()->qsoid;
-        if (!$CI->logbook_model->check_qso_is_accessible($qsoid)) {
+        if (!$CI->logbook_model->check_qso_is_writable($qsoid)) {
             return;
         }
 
