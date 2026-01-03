@@ -298,7 +298,7 @@ class AdifHelper {
         }
     }
 
-    	/*
+    /*
 	|	Function: lotw_satellite_map
 	|	Requires: OSCAR Satellite name $satname
 	|
