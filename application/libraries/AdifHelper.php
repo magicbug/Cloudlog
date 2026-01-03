@@ -327,6 +327,6 @@ class AdifHelper {
 			"INSPR7"	=> "INSPIRE-SAT 7",
 		);
 
-		return array_search(strtoupper($satname),$arr,true);
+		return array_search(strtoupper($satname),$arr);
 	}
 }
