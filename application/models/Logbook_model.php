@@ -684,7 +684,7 @@ class Logbook_model extends CI_Model
           $CI->load->library('AdifHelper');
           $qso = $this->get_qso($last_id, true)->result();
 
-          $adif = $CI->adifhelper->getAdifLine($qso[0]);
+          $adif = $CI->adifhelper->getAdifLine($qso[0], true);
           $clublog_result = $this->push_qso_to_clublog($clublog_creds->ucn, $clublog_creds->ucp, $data['COL_STATION_CALLSIGN'], $adif);
         
           if ($clublog_result['status'] == 'OK') {
