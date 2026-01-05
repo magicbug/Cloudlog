@@ -135,7 +135,8 @@
     const values = hourly && hourly.length === 24 ? hourly : new Array(24).fill(0);
     const max = Math.max.apply(null, values);
 
-    const showBandRows = hourlyByBand && Object.keys(hourlyByBand).length > 1;
+    const bandCount = hourlyByBand ? Object.keys(hourlyByBand).length : 0;
+    const showBandRows = bandCount > 0;
     if (showBandRows) {
       renderFallbackMultiRow(hourlyByBand);
     } else {
