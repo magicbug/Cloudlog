@@ -6,6 +6,34 @@ $lang['statistics_statistics'] = 'Statystyki';
 
 $lang['statistics_explore_the_logbook'] = 'Przeglądaj dziennik.';
 
+// Personal Propagation Advisor
+$lang['propagation_title'] = 'Personal Propagation Advisor';
+$lang['propagation_description'] = 'See when you most often work a DXCC entity, using your own QSOs only.';
+$lang['propagation_select_dxcc'] = 'DXCC entity';
+$lang['propagation_select_band'] = 'Band (optional)';
+$lang['propagation_select_mode'] = 'Mode (optional)';
+$lang['propagation_best_window'] = 'Best UTC window';
+$lang['propagation_best_band'] = 'Most successful band';
+$lang['propagation_best_mode'] = 'Most successful mode';
+$lang['propagation_last_worked'] = 'Last worked';
+$lang['propagation_total_qsos'] = 'Total QSOs analyzed';
+$lang['propagation_heatmap_title'] = '24-hour heatmap';
+$lang['propagation_band_breakdown'] = 'Band breakdown';
+$lang['propagation_download_csv'] = 'Download CSV';
+$lang['propagation_required_filters'] = 'Select a DXCC to start.';
+$lang['propagation_no_data'] = 'No QSOs found for this selection.';
+$lang['propagation_relative_intensity'] = 'Relative intensity:';
+$lang['propagation_intensity_none'] = 'None';
+$lang['propagation_intensity_low'] = 'Low';
+$lang['propagation_intensity_medium'] = 'Medium';
+$lang['propagation_intensity_high'] = 'High';
+$lang['propagation_intensity_very_high'] = 'Very high';
+$lang['propagation_strongest_band_label'] = 'Strongest band';
+$lang['propagation_activity_last_30'] = 'Activity last 30 days';
+$lang['propagation_trend_7d'] = '7d';
+$lang['propagation_trend_30d'] = '30d';
+$lang['propagation_trend_90d'] = '90d';
+
 $lang['statistics_years'] = 'Lata';
 
 $lang['statistics_modes'] = 'Tryb';

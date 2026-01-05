@@ -2720,6 +2720,129 @@ class Logbook_model extends CI_Model
     return $query;
   }
 
+  /*
+   * Personal Propagation Advisor helpers
+   */
+  public function get_propagation_hourly(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select('HOUR(COL_TIME_ON) AS hour_bucket, COUNT(*) AS total', false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->group_by('hour_bucket');
+    $this->db->order_by('hour_bucket', 'asc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_hourly_by_band(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select('COL_BAND AS band, HOUR(COL_TIME_ON) AS hour_bucket, COUNT(*) AS total', false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->group_by('band, hour_bucket');
+    $this->db->order_by('band', 'asc');
+    $this->db->order_by('hour_bucket', 'asc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_band_breakdown(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select('COL_BAND AS band, COUNT(*) AS total', false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->group_by('band');
+    $this->db->order_by('total', 'desc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_mode_breakdown(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select("COALESCE(NULLIF(COL_SUBMODE, ''), NULLIF(COL_MODE, ''), 'Unspecified') AS mode, COUNT(*) AS total", false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->group_by('mode');
+    $this->db->order_by('total', 'desc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_activity_trend(array $filters, array $stationIds, $days = 90)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select('DATE(COL_TIME_ON) AS day, COUNT(*) AS total', false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->where('COL_TIME_ON >=', date('Y-m-d 00:00:00', strtotime('-' . ((int)$days - 1) . ' days')));
+    $this->db->group_by('day');
+    $this->db->order_by('day', 'asc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_last_worked(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return null;
+    }
+
+    $this->db->select('MAX(COL_TIME_ON) AS last_worked');
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+
+    $query = $this->db->get($this->config->item('table_name'));
+    $row = $query->row();
+
+    return $row ? $row->last_worked : null;
+  }
+
+  private function apply_propagation_filters(array $filters, $includeBand = true)
+  {
+    // Exclude propagation modes that don't follow typical patterns
+    $excluded_prop_modes = array('SAT', 'INTERNET', 'EME', 'RPT');
+    $this->db->group_start();
+    $this->db->where_not_in('COL_PROP_MODE', $excluded_prop_modes);
+    $this->db->or_where('COL_PROP_MODE IS NULL', null, false);
+    $this->db->group_end();
+
+    if ($includeBand && !empty($filters['band'])) {
+      $this->db->where('COL_BAND', $filters['band']);
+    }
+
+    if (!empty($filters['mode'])) {
+      $this->db->group_start();
+      $this->db->where('COL_MODE', $filters['mode']);
+      $this->db->or_where('COL_SUBMODE', $filters['mode']);
+      $this->db->group_end();
+    }
+  }
+
   /* Return total number of QSOs per band */
   function total_bands()
   {
