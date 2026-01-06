@@ -472,10 +472,20 @@ class Statistics extends CI_Controller {
 	}
 
 	private function get_total_countries($start_date = null, $end_date = null) {
+		$this->load->model('logbooks_model');
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		
 		$this->db->select('COUNT(DISTINCT COL_COUNTRY) as count');
 		$this->db->from($this->config->item('table_name'));
-		$this->db->where('COL_COUNTRY IS NOT NULL');
-		$this->db->where('COL_COUNTRY !=', '');
+		
+		// Filter by active station's locations
+		if (!empty($logbooks_locations_array)) {
+			$this->db->where_in('station_id', $logbooks_locations_array);
+		}
+		
+		// Apply the same validation filters as Dashboard
+		$this->db->where('COL_COUNTRY !=', 'Invalid');
+		$this->db->where('COL_DXCC >', '0');
 		
 		if ($start_date && $end_date) {
 			$this->db->where('COL_TIME_ON >=', $start_date);
