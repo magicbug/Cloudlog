@@ -101,7 +101,7 @@ class DXCC extends CI_Model {
 			if ($postdata['worked'] != NULL) {
 				$workedDXCC = $this->getDxccBandWorked($location_list, $band, $postdata);
 				foreach ($workedDXCC as $wdxcc) {
-					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="bg-danger awardsBgDanger" ><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $wdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC", "")\'>W</a></div>';
+					$dxccMatrix[$wdxcc->dxcc][$band] = '<div class="bg-danger awardsBgDanger" ><a href=\'javascript:viewDxccQsosByStatus(' . $wdxcc->dxcc . ', "W")\'>W</a></div>';
 				}
 			}
 
@@ -109,7 +109,7 @@ class DXCC extends CI_Model {
 			if ($postdata['confirmed'] != NULL) {
 				$confirmedDXCC = $this->getDxccBandConfirmed($location_list, $band, $postdata);
 				foreach ($confirmedDXCC as $cdxcc) {
-					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="bg-success awardsBgSuccess"><a href=\'javascript:displayContacts("'.str_replace("&", "%26", $cdxcc->name).'","'. $band . '","'. $postdata['mode'] . '","DXCC","'.$qsl.'")\'>C</a></div>';
+					$dxccMatrix[$cdxcc->dxcc][$band] = '<div class="bg-success awardsBgSuccess"><a href=\'javascript:viewDxccQsosByStatus(' . $cdxcc->dxcc . ', "C")\'>C</a></div>';
 				}
 			}
 		}
@@ -222,7 +222,7 @@ class DXCC extends CI_Model {
 
 		$location_list = "'".implode("','",$logbooks_locations_array)."'";
 
-		$sql = "select adif, prefix, name, date(end) Enddate, date(start) Startdate, lat, `long`
+		$sql = "select adif, prefix, name, cont, date(end) Enddate, date(start) Startdate, lat, `long`
             from dxcc_entities";
 
 		if ($postdata['notworked'] == NULL) {
@@ -506,6 +506,153 @@ class DXCC extends CI_Model {
 				');
 
 		return $query->row();
+	}
+
+	/*
+	 * Get continent breakdown for DXCC statistics
+	 */
+	function get_continent_breakdown($dxccArray) {
+		$continents = array(
+			'Africa' => 0,
+			'Antarctica' => 0,
+			'Asia' => 0,
+			'Europe' => 0,
+			'NorthAmerica' => 0,
+			'SouthAmerica' => 0,
+			'Oceania' => 0
+		);
+
+		if (!$dxccArray) {
+			return $continents;
+		}
+
+		// Map continent codes to names
+		$continentMap = array(
+			'AF' => 'Africa',
+			'AN' => 'Antarctica',
+			'AS' => 'Asia',
+			'EU' => 'Europe',
+			'NA' => 'NorthAmerica',
+			'SA' => 'SouthAmerica',
+			'OC' => 'Oceania'
+		);
+
+		foreach ($dxccArray as $dxcc) {
+			if (isset($dxcc->cont) && isset($continentMap[$dxcc->cont])) {
+				$continentName = $continentMap[$dxcc->cont];
+				$continents[$continentName]++;
+			}
+		}
+
+		return $continents;
+	}
+
+	/*
+	 * Get overall DXCC statistics
+	 */
+	function get_dxcc_statistics($dxcc_array, $postdata) {
+		$stats = array(
+			'total_worked' => 0,
+			'total_confirmed' => 0,
+			'worked_by_continent' => array(
+				'Africa' => 0,
+				'Antarctica' => 0,
+				'Asia' => 0,
+				'Europe' => 0,
+				'NorthAmerica' => 0,
+				'SouthAmerica' => 0,
+				'Oceania' => 0
+			),
+			'confirmed_by_continent' => array(
+				'Africa' => 0,
+				'Antarctica' => 0,
+				'Asia' => 0,
+				'Europe' => 0,
+				'NorthAmerica' => 0,
+				'SouthAmerica' => 0,
+				'Oceania' => 0
+			),
+			'milestones' => array(
+				100 => false,
+				200 => false,
+				300 => false
+			)
+		);
+
+		if (!$dxcc_array) {
+			return $stats;
+		}
+
+		// Get DXCC entities to map continents
+		$dxcc_result = $this->db->get('dxcc_entities')->result_array();
+		$all_dxcc = array();
+		foreach ($dxcc_result as $row) {
+			$all_dxcc[$row['adif']] = $row;
+		}
+
+		// Map continent codes to names
+		$continentMap = array(
+			'AF' => 'Africa',
+			'AN' => 'Antarctica',
+			'AS' => 'Asia',
+			'EU' => 'Europe',
+			'NA' => 'NorthAmerica',
+			'SA' => 'SouthAmerica',
+			'OC' => 'Oceania'
+		);
+
+		// Count worked DXCC from array
+		$worked_count = 0;
+		$confirmed_count = 0;
+		
+		foreach ($dxcc_array as $adif => $entity) {
+			// Check if this DXCC has any confirmed contacts (any cell with 'bg-success')
+			$is_worked = false;
+			$is_confirmed = false;
+			
+			foreach ($entity as $key => $value) {
+				if (is_string($value) && strpos($value, 'bg-success') !== false) {
+					$is_confirmed = true;
+					$is_worked = true;
+					break;
+				}
+				if (is_string($value) && strpos($value, 'bg-danger') !== false) {
+					$is_worked = true;
+				}
+			}
+			
+			if ($is_worked) {
+				$worked_count++;
+			}
+			if ($is_confirmed) {
+				$confirmed_count++;
+			}
+			
+			// Map continent stats
+			if (isset($all_dxcc[$adif]) && isset($all_dxcc[$adif]['cont'])) {
+				$cont_code = $all_dxcc[$adif]['cont'];
+				$continent = isset($continentMap[$cont_code]) ? $continentMap[$cont_code] : null;
+				
+				if ($continent) {
+					if ($is_confirmed) {
+						$stats['confirmed_by_continent'][$continent]++;
+					}
+					if ($is_worked) {
+						$stats['worked_by_continent'][$continent]++;
+					}
+				}
+			}
+		}
+
+		$stats['total_worked'] = $worked_count;
+		$stats['total_confirmed'] = $confirmed_count;
+
+		// Check milestone achievements
+		$stats['milestones'][100] = $stats['total_worked'] >= 100;
+		$stats['milestones'][200] = $stats['total_worked'] >= 200;
+		$stats['milestones'][300] = $stats['total_worked'] >= 300;
+
+		return $stats;
 	}
 }
 ?>
