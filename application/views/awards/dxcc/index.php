@@ -161,106 +161,8 @@
         </div>
         <!-- End of Award Info Box -->
 
-    <!-- Statistics Summary Section -->
-    <?php if ($dxcc_array): ?>
-    <div class="row mt-4 mb-4">
-        <!-- Worked vs Confirmed -->
-        <div class="col-md-6">
-            <div class="stats-card">
-                <h5>DXCC Progress</h5>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="progress-label">Total Worked</div>
-                        <div class="stats-number"><?php echo $dxcc_statistics['total_worked']; ?></div>
-                    </div>
-                    <div class="col-6">
-                        <div class="progress-label">Total Confirmed</div>
-                        <div class="stats-number" style="color: #28a745;"><?php echo $dxcc_statistics['total_confirmed']; ?></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Milestones -->
-        <div class="col-md-6">
-            <div class="stats-card milestone <?php echo $dxcc_statistics['milestones'][100] ? 'achieved' : ''; ?>">
-                <h5>🏆 Milestone Progress</h5>
-                <div class="row text-center">
-                    <div class="col-4">
-                        <div style="font-size: 14px;">100</div>
-                        <div style="font-size: 20px; margin-top: 5px;">
-                            <?php echo $dxcc_statistics['milestones'][100] ? '✓' : '✗'; ?>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div style="font-size: 14px;">200</div>
-                        <div style="font-size: 20px; margin-top: 5px;">
-                            <?php echo $dxcc_statistics['milestones'][200] ? '✓' : '✗'; ?>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div style="font-size: 14px;">300</div>
-                        <div style="font-size: 20px; margin-top: 5px;">
-                            <?php echo $dxcc_statistics['milestones'][300] ? '✓' : '✗'; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Continent Breakdown -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="stats-card">
-                <h5>By Continent</h5>
-                <div class="row">
-                    <?php 
-                    $continents = array(
-                        'Africa' => 'Africa',
-                        'Antarctica' => 'Antarctica',
-                        'Asia' => 'Asia',
-                        'Europe' => 'Europe',
-                        'NorthAmerica' => 'North America',
-                        'SouthAmerica' => 'South America',
-                        'Oceania' => 'Oceania'
-                    );
-                    
-                    $continentCodes = array(
-                        'Africa' => 'AF',
-                        'Antarctica' => 'AN',
-                        'Asia' => 'AS',
-                        'Europe' => 'EU',
-                        'NorthAmerica' => 'NA',
-                        'SouthAmerica' => 'SA',
-                        'Oceania' => 'OC'
-                    );
-                    
-                    foreach ($continents as $key => $label): 
-                        $worked = isset($dxcc_statistics['worked_by_continent'][$key]) ? $dxcc_statistics['worked_by_continent'][$key] : 0;
-                        $confirmed = isset($dxcc_statistics['confirmed_by_continent'][$key]) ? $dxcc_statistics['confirmed_by_continent'][$key] : 0;
-                        $total = isset($continent_breakdown[$key]) ? $continent_breakdown[$key] : 0;
-                        $percentage = $total > 0 ? round(($confirmed / $total) * 100) : 0;
-                        $continentCode = isset($continentCodes[$key]) ? $continentCodes[$key] : '';
-                    ?>
-                    <div class="col-md-6 col-lg-3 mb-3 continent-card" onclick="viewContinentQsos('<?php echo $continentCode; ?>', '<?php echo htmlspecialchars($label); ?>')">
-                        <div class="progress-label"><?php echo $label; ?></div>
-                        <div style="font-size: 16px; margin-bottom: 5px;">
-                            <strong><?php echo $confirmed; ?>/<?php echo $total; ?></strong>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: <?php echo $percentage; ?>%" aria-valuenow="<?php echo $percentage; ?>" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php endif; ?>
-
-    <!-- Filters Section -->
-    <div class="card mb-3">
+    <!-- Filters Section (moved to top) -->
+    <div class="card mb-4" style="margin-top: 20px;">
         <div class="card-header filter-collapse" data-bs-toggle="collapse" data-bs-target="#filterPanel" style="cursor: pointer;">
             <i class="fas fa-filter me-2"></i><strong>Filters</strong>
             <span class="float-end"><i class="fas fa-chevron-down"></i></span>
@@ -413,6 +315,104 @@
         </div>
     </div>
 
+    <!-- Statistics Summary Section -->
+    <?php if ($dxcc_array): ?>
+    <div class="row mt-4 mb-4">
+        <!-- Worked vs Confirmed -->
+        <div class="col-md-6">
+            <div class="stats-card">
+                <h5>DXCC Progress</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="progress-label">Total Worked</div>
+                        <div class="stats-number"><?php echo $dxcc_statistics['total_worked']; ?></div>
+                    </div>
+                    <div class="col-6">
+                        <div class="progress-label">Total Confirmed</div>
+                        <div class="stats-number" style="color: #28a745;"><?php echo $dxcc_statistics['total_confirmed']; ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="col-md-6">
+            <div class="stats-card milestone <?php echo $dxcc_statistics['milestones'][100] ? 'achieved' : ''; ?>">
+                <h5>🏆 Milestone Progress</h5>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div style="font-size: 14px;">100</div>
+                        <div style="font-size: 20px; margin-top: 5px;">
+                            <?php echo $dxcc_statistics['milestones'][100] ? '✓' : '✗'; ?>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div style="font-size: 14px;">200</div>
+                        <div style="font-size: 20px; margin-top: 5px;">
+                            <?php echo $dxcc_statistics['milestones'][200] ? '✓' : '✗'; ?>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div style="font-size: 14px;">300</div>
+                        <div style="font-size: 20px; margin-top: 5px;">
+                            <?php echo $dxcc_statistics['milestones'][300] ? '✓' : '✗'; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Continent Breakdown -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="stats-card">
+                <h5>By Continent</h5>
+                <div class="row">
+                    <?php 
+                    $continents = array(
+                        'Africa' => 'Africa',
+                        'Antarctica' => 'Antarctica',
+                        'Asia' => 'Asia',
+                        'Europe' => 'Europe',
+                        'NorthAmerica' => 'North America',
+                        'SouthAmerica' => 'South America',
+                        'Oceania' => 'Oceania'
+                    );
+                    
+                    $continentCodes = array(
+                        'Africa' => 'AF',
+                        'Antarctica' => 'AN',
+                        'Asia' => 'AS',
+                        'Europe' => 'EU',
+                        'NorthAmerica' => 'NA',
+                        'SouthAmerica' => 'SA',
+                        'Oceania' => 'OC'
+                    );
+                    
+                    foreach ($continents as $key => $label): 
+                        $worked = isset($dxcc_statistics['worked_by_continent'][$key]) ? $dxcc_statistics['worked_by_continent'][$key] : 0;
+                        $confirmed = isset($dxcc_statistics['confirmed_by_continent'][$key]) ? $dxcc_statistics['confirmed_by_continent'][$key] : 0;
+                        $total = isset($continent_breakdown[$key]) ? $continent_breakdown[$key] : 0;
+                        $percentage = $total > 0 ? round(($confirmed / $total) * 100) : 0;
+                        $continentCode = isset($continentCodes[$key]) ? $continentCodes[$key] : '';
+                    ?>
+                    <div class="col-md-6 col-lg-3 mb-3 continent-card" onclick="viewContinentQsos('<?php echo $continentCode; ?>', '<?php echo htmlspecialchars($label); ?>')">
+                        <div class="progress-label"><?php echo $label; ?></div>
+                        <div style="font-size: 16px; margin-bottom: 5px;">
+                            <strong><?php echo $confirmed; ?>/<?php echo $total; ?></strong>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: <?php echo $percentage; ?>%" aria-valuenow="<?php echo $percentage; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="table-tab" data-bs-toggle="tab" href="#table" role="tab" aria-controls="table" aria-selected="true">Table</a>
@@ -430,8 +430,6 @@
     <div id="dxccmap" class="map-leaflet" ></div>
 
     </div>
-
-        <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
 
     <!-- Table Search Box -->
     <?php if ($dxcc_array): ?>
