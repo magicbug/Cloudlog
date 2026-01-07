@@ -1434,7 +1434,6 @@ class Awards extends CI_Controller
     public function get_continent_qsos()
     {
         $this->load->model('logbooks_model');
-        $this->load->model('dxcc');
 
         $continent_code = $this->security->xss_clean($this->input->post('continent_code'));
 
@@ -1455,46 +1454,33 @@ class Awards extends CI_Controller
         $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
 
         try {
-            // Get all DXCC entities for this continent
+            // Get all DXCC entities for this continent with their status in a single query
             $query = $this->db->query("
-                SELECT adif, name, prefix, cont
-                FROM dxcc_entities
-                WHERE cont = '" . $this->db->escape_like_str($continent_code) . "'
-                ORDER BY name ASC
+                SELECT 
+                    d.adif,
+                    d.name,
+                    d.prefix,
+                    d.cont,
+                    CASE 
+                        WHEN MAX(CASE WHEN (c.col_qsl_rcvd = 1 OR c.COL_LOTW_QSL_RCVD = 'Y') THEN 1 ELSE 0 END) = 1 THEN 'confirmed'
+                        WHEN COUNT(c.col_dxcc) > 0 THEN 'worked'
+                        ELSE 'unworked'
+                    END as status
+                FROM dxcc_entities d
+                LEFT JOIN " . $this->config->item('table_name') . " c ON d.adif = c.col_dxcc AND c.station_id IN (" . $location_list . ")
+                WHERE d.cont = '" . $this->db->escape_like_str($continent_code) . "'
+                GROUP BY d.adif, d.name, d.prefix, d.cont
+                ORDER BY d.name ASC
             ");
 
             $entities = array();
             if ($query->num_rows() > 0) {
-                foreach ($query->result() as $entity) {
-                    // Check if worked
-                    $worked_query = $this->db->query("
-                        SELECT COUNT(*) as count FROM " . $this->config->item('table_name') . "
-                        WHERE station_id IN (" . $location_list . ")
-                        AND col_dxcc = " . $entity->adif
-                    );
-                    $worked = $worked_query->row()->count > 0 ? true : false;
-
-                    // Check if confirmed
-                    $confirmed_query = $this->db->query("
-                        SELECT COUNT(*) as count FROM " . $this->config->item('table_name') . "
-                        WHERE station_id IN (" . $location_list . ")
-                        AND col_dxcc = " . $entity->adif . "
-                        AND (col_qsl_rcvd = 1 OR COL_LOTW_QSL_RCVD = 'Y')
-                    ");
-                    $confirmed = $confirmed_query->row()->count > 0 ? true : false;
-
-                    $status = 'unworked';
-                    if ($confirmed) {
-                        $status = 'confirmed';
-                    } elseif ($worked) {
-                        $status = 'worked';
-                    }
-
+                foreach ($query->result_array() as $entity) {
                     $entities[] = array(
-                        'adif' => $entity->adif,
-                        'name' => $entity->name,
-                        'prefix' => $entity->prefix,
-                        'status' => $status
+                        'adif' => $entity['adif'],
+                        'name' => $entity['name'],
+                        'prefix' => $entity['prefix'],
+                        'status' => $entity['status']
                     );
                 }
             }
