@@ -2961,23 +2961,7 @@ $(document).ready(function() {
 
 <?php if ($this->uri->segment(2) == "cq") { ?>
     <script>
-        $('.tablecq').DataTable({
-            "pageLength": 25,
-            responsive: false,
-            ordering: false,
-            "scrollY": "400px",
-            "scrollCollapse": true,
-            "paging": false,
-            "scrollX": true,
-            "language": {
-                url: getDataTablesLanguageUrl(),
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'csv'
-            ]
-        });
-
+        // Initialize DataTable for summary
         $('.tablesummary').DataTable({
             info: false,
             searching: false,
@@ -2992,9 +2976,150 @@ $(document).ready(function() {
             ]
         });
 
+        // Table search functionality
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const table = document.getElementById('cq_table');
+                const rows = table.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    const cqZone = row.querySelectorAll('td')[1].textContent.toLowerCase();
+                    
+                    if (cqZone.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Sortable column functionality
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', function() {
+                const table = document.getElementById('cq_table');
+                const column = parseInt(this.dataset.column);
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                
+                // Toggle sort direction
+                const isAsc = this.classList.contains('asc');
+                document.querySelectorAll('.sortable').forEach(h => h.classList.remove('asc', 'desc'));
+                
+                if (isAsc) {
+                    this.classList.add('desc');
+                    rows.reverse();
+                } else {
+                    this.classList.add('asc');
+                    rows.sort((a, b) => {
+                        const aVal = a.querySelectorAll('td')[column].textContent.trim();
+                        const bVal = b.querySelectorAll('td')[column].textContent.trim();
+                        
+                        // Try numeric sort first
+                        const aNum = parseFloat(aVal);
+                        const bNum = parseFloat(bVal);
+                        if (!isNaN(aNum) && !isNaN(bNum)) {
+                            return aNum - bNum;
+                        }
+                        
+                        // Fall back to string sort
+                        return aVal.localeCompare(bVal);
+                    });
+                }
+                
+                rows.forEach(row => tbody.appendChild(row));
+            });
+        });
+
         // change color of csv-button if dark mode is chosen
         if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
+        }
+    </script>
+    <script>
+        // Preset filter functions
+        function applyPreset(preset) {
+            const form = document.getElementById('cqForm');
+            
+            // Reset all checkboxes first
+            form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            // All QSL types
+            const allQslTypes = ['qsl', 'lotw', 'eqsl'];
+            
+            switch(preset) {
+                case 'confirmed':
+                    document.getElementById('confirmed').checked = true;
+                    allQslTypes.forEach(type => {
+                        const el = document.getElementById(type);
+                        if (el) el.checked = true;
+                    });
+                    break;
+                case 'worked':
+                    document.getElementById('worked').checked = true;
+                    allQslTypes.forEach(type => {
+                        const el = document.getElementById(type);
+                        if (el) el.checked = true;
+                    });
+                    break;
+                case 'unworked':
+                    document.getElementById('notworked').checked = true;
+                    allQslTypes.forEach(type => {
+                        const el = document.getElementById(type);
+                        if (el) el.checked = true;
+                    });
+                    break;
+            }
+            
+            form.submit();
+        }
+        
+        function resetFilters() {
+            const form = document.getElementById('cqForm');
+            form.reset();
+            // Make sure worked, confirmed, and QSL types are checked by default
+            document.getElementById('worked').checked = true;
+            document.getElementById('confirmed').checked = true;
+            document.getElementById('qsl').checked = true;
+            document.getElementById('lotw').checked = true;
+            form.submit();
+        }
+
+        // CSV Export functionality
+        function exportTableToCSV(filename) {
+            const table = document.getElementById('cq_table');
+            let csv = [];
+            
+            // Add header row
+            const headers = Array.from(table.querySelectorAll('thead tr td')).map(h => h.textContent.trim());
+            csv.push(headers.join(','));
+            
+            // Add data rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                if (row.style.display !== 'none') {  // Only export visible rows
+                    const cells = Array.from(row.querySelectorAll('td')).map(cell => {
+                        let text = cell.textContent.trim();
+                        // Escape quotes and wrap in quotes if contains comma
+                        text = text.replace(/"/g, '""');
+                        return '"' + text + '"';
+                    });
+                    csv.push(cells.join(','));
+                }
+            });
+            
+            // Create blob and download
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
         }
     </script>
 <?php } ?>
