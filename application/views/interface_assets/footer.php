@@ -3056,8 +3056,9 @@ $(document).ready(function() {
 
         // Call on page load to initialize with filtered data
         document.addEventListener('DOMContentLoaded', function() {
-            // Page has been loaded with server-calculated values
-            // No need to recalculate - the form filters handle updates via page reload
+            setTimeout(function() {
+                updateCqStatistics();
+            }, 500);
         });
 
         // Table search functionality
@@ -3077,6 +3078,8 @@ $(document).ready(function() {
                         row.style.display = 'none';
                     }
                 });
+                
+                updateCqStatistics();
             });
         }
 
@@ -3114,6 +3117,7 @@ $(document).ready(function() {
                 }
                 
                 rows.forEach(row => tbody.appendChild(row));
+                updateCqStatistics();
             });
         });
 
@@ -3305,8 +3309,9 @@ $(document).ready(function() {
 
         // Call on page load to initialize with filtered data
         document.addEventListener('DOMContentLoaded', function() {
-            // Page has been loaded with server-calculated values
-            // No need to recalculate - the form filters handle updates via page reload
+            setTimeout(function() {
+                updateWasStatistics();
+            }, 500);
         });
 
         // Table search functionality
@@ -3326,6 +3331,8 @@ $(document).ready(function() {
                         row.style.display = 'none';
                     }
                 });
+                
+                updateWasStatistics();
             });
         }
 
@@ -3363,6 +3370,7 @@ $(document).ready(function() {
                 }
                 
                 rows.forEach(row => tbody.appendChild(row));
+                updateWasStatistics();
             });
         });
 
