@@ -104,7 +104,10 @@ function echo_table_col($row, $name)
             echo ($row->COL_STATE);
             break;			
         case 'Grid':
-            echo strlen($row->COL_GRIDSQUARE) == 0 ? $row->COL_VUCC_GRIDS : $row->COL_GRIDSQUARE;
+            // Avoid strlen warnings on null under PHP 8 by normalizing first
+            $grid = $row->COL_GRIDSQUARE ?? '';
+            $vucc = $row->COL_VUCC_GRIDS ?? '';
+            echo ($grid === '' ? $vucc : $grid);
             break;
         case 'Distance':
             echo ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '');
