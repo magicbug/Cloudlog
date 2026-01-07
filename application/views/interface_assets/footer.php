@@ -2976,6 +2976,91 @@ $(document).ready(function() {
             ]
         });
 
+        // Helper function to update statistics cards based on visible rows
+        function updateCqStatistics() {
+            const table = document.getElementById('cq_table');
+            const rows = table.querySelectorAll('tbody tr');
+            
+            let workedCount = 0;
+            let confirmedCount = 0;
+            
+            rows.forEach((row, rowIndex) => {
+                // Check if row is actually visible (not display:none)
+                const isVisible = row.offsetParent !== null || row.style.display === '';
+                if (isVisible || row.style.display !== 'none') {
+                    const cells = row.querySelectorAll('td');
+                    
+                    if (cells.length > 1) {  // At least zone + one band
+                        // Check all band columns (starting from column 1, after zone)
+                        let hasWorked = false;
+                        let hasConfirmed = false;
+                        
+                        for (let i = 1; i < cells.length; i++) {
+                            const cellValue = cells[i].textContent.trim();
+                            // If cell is not empty and not a dash, it's worked
+                            if (cellValue && cellValue !== '-') {
+                                hasWorked = true;
+                                // If it contains 'C', it's confirmed
+                                if (cellValue.toUpperCase().includes('C')) {
+                                    hasConfirmed = true;
+                                }
+                            }
+                        }
+                        
+                        if (hasWorked) workedCount++;
+                        if (hasConfirmed) confirmedCount++;
+                    }
+                }
+            });
+            
+            // Update the stats cards
+            const statsCards = document.querySelectorAll('.stats-card');
+            statsCards.forEach(card => {
+                const labels = card.querySelectorAll('.progress-label');
+                labels.forEach(label => {
+                    const parent = label.parentElement;
+                    if (label.textContent.includes('Total Worked')) {
+                        const numberDiv = parent.querySelector('.stats-number');
+                        if (numberDiv) {
+                            numberDiv.textContent = workedCount;
+                        }
+                    } else if (label.textContent.includes('Total Confirmed')) {
+                        const numberDiv = parent.querySelector('.stats-number');
+                        if (numberDiv) {
+                            numberDiv.textContent = confirmedCount;
+                        }
+                    }
+                });
+            });
+            
+            // Update milestone indicators
+            const milestoneCard = document.querySelector('.stats-card.milestone');
+            if (milestoneCard) {
+                const cols = milestoneCard.querySelectorAll('.col-6');
+                cols.forEach(col => {
+                    const label = col.querySelector('div:first-child');
+                    const indicator = col.querySelector('div:nth-child(2)');
+                    
+                    if (label && indicator) {
+                        if (label.textContent.includes('All Worked')) {
+                            indicator.textContent = workedCount === 40 ? '✓' : '✗';
+                            indicator.style.color = workedCount === 40 ? '#28a745' : '#dc3545';
+                        } else if (label.textContent.includes('All Confirmed')) {
+                            indicator.textContent = confirmedCount === 40 ? '✓' : '✗';
+                            indicator.style.color = confirmedCount === 40 ? '#28a745' : '#dc3545';
+                        }
+                    }
+                });
+            }
+        }
+
+        // Call on page load to initialize with filtered data
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                updateCqStatistics();
+            }, 500);
+        });
+
         // Table search functionality
         const searchInput = document.getElementById('searchInput');
         if (searchInput) {
@@ -2985,7 +3070,7 @@ $(document).ready(function() {
                 const rows = table.querySelectorAll('tbody tr');
 
                 rows.forEach(row => {
-                    const cqZone = row.querySelectorAll('td')[1].textContent.toLowerCase();
+                    const cqZone = row.querySelectorAll('td')[0].textContent.toLowerCase();
                     
                     if (cqZone.includes(searchTerm)) {
                         row.style.display = '';
@@ -2993,6 +3078,8 @@ $(document).ready(function() {
                         row.style.display = 'none';
                     }
                 });
+                
+                updateCqStatistics();
             });
         }
 
@@ -3030,6 +3117,7 @@ $(document).ready(function() {
                 }
                 
                 rows.forEach(row => tbody.appendChild(row));
+                updateCqStatistics();
             });
         });
 
@@ -3126,23 +3214,7 @@ $(document).ready(function() {
 
 <?php if ($this->uri->segment(2) == "was") { ?>
     <script>
-        $('.tablewas').DataTable({
-            "pageLength": 25,
-            responsive: false,
-            ordering: false,
-            "scrollY": "400px",
-            "scrollCollapse": true,
-            "paging": false,
-            "scrollX": true,
-            "language": {
-                url: getDataTablesLanguageUrl(),
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'csv'
-            ]
-        });
-
+        // Initialize DataTable for summary
         $('.tablesummary').DataTable({
             info: false,
             searching: false,
@@ -3157,9 +3229,238 @@ $(document).ready(function() {
             ]
         });
 
+        // Helper function to update statistics cards based on visible rows
+        function updateWasStatistics() {
+            const table = document.getElementById('was_table');
+            const rows = table.querySelectorAll('tbody tr');
+            
+            let workedCount = 0;
+            let confirmedCount = 0;
+            
+            rows.forEach((row, rowIndex) => {
+                // Check if row is actually visible (not display:none)
+                const isVisible = row.offsetParent !== null || row.style.display === '';
+                if (isVisible || row.style.display !== 'none') {
+                    const cells = row.querySelectorAll('td');
+                    
+                    if (cells.length > 1) {  // At least state + one band
+                        // Check all band columns (starting from column 1, after state name)
+                        let hasWorked = false;
+                        let hasConfirmed = false;
+                        
+                        for (let i = 1; i < cells.length; i++) {
+                            const cellValue = cells[i].textContent.trim();
+                            // If cell is not empty and not a dash, it's worked
+                            if (cellValue && cellValue !== '-') {
+                                hasWorked = true;
+                                // If it contains 'C', it's confirmed
+                                if (cellValue.toUpperCase().includes('C')) {
+                                    hasConfirmed = true;
+                                }
+                            }
+                        }
+                        
+                        if (hasWorked) workedCount++;
+                        if (hasConfirmed) confirmedCount++;
+                    }
+                }
+            });
+            
+            // Update the stats cards
+            const statsCards = document.querySelectorAll('.stats-card');
+            statsCards.forEach(card => {
+                const labels = card.querySelectorAll('.progress-label');
+                labels.forEach(label => {
+                    const parent = label.parentElement;
+                    if (label.textContent.includes('Total Worked')) {
+                        const numberDiv = parent.querySelector('.stats-number');
+                        if (numberDiv) {
+                            numberDiv.textContent = workedCount;
+                        }
+                    } else if (label.textContent.includes('Total Confirmed')) {
+                        const numberDiv = parent.querySelector('.stats-number');
+                        if (numberDiv) {
+                            numberDiv.textContent = confirmedCount;
+                        }
+                    }
+                });
+            });
+            
+            // Update milestone indicators
+            const milestoneCard = document.querySelector('.stats-card.milestone');
+            if (milestoneCard) {
+                const cols = milestoneCard.querySelectorAll('.col-6');
+                cols.forEach(col => {
+                    const label = col.querySelector('div:first-child');
+                    const indicator = col.querySelector('div:nth-child(2)');
+                    
+                    if (label && indicator) {
+                        if (label.textContent.includes('All Worked')) {
+                            indicator.textContent = workedCount === 50 ? '✓' : '✗';
+                            indicator.style.color = workedCount === 50 ? '#28a745' : '#dc3545';
+                        } else if (label.textContent.includes('All Confirmed')) {
+                            indicator.textContent = confirmedCount === 50 ? '✓' : '✗';
+                            indicator.style.color = confirmedCount === 50 ? '#28a745' : '#dc3545';
+                        }
+                    }
+                });
+            }
+        }
+
+        // Call on page load to initialize with filtered data
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                updateWasStatistics();
+            }, 500);
+        });
+
+        // Table search functionality
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                const table = document.getElementById('was_table');
+                const rows = table.querySelectorAll('tbody tr');
+
+                rows.forEach(row => {
+                    const state = row.querySelectorAll('td')[0].textContent.toLowerCase();
+                    
+                    if (state.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+                
+                updateWasStatistics();
+            });
+        }
+
+        // Sortable column functionality
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', function() {
+                const table = document.getElementById('was_table');
+                const column = parseInt(this.dataset.column);
+                const tbody = table.querySelector('tbody');
+                const rows = Array.from(tbody.querySelectorAll('tr'));
+                
+                // Toggle sort direction
+                const isAsc = this.classList.contains('asc');
+                document.querySelectorAll('.sortable').forEach(h => h.classList.remove('asc', 'desc'));
+                
+                if (isAsc) {
+                    this.classList.add('desc');
+                    rows.reverse();
+                } else {
+                    this.classList.add('asc');
+                    rows.sort((a, b) => {
+                        const aVal = a.querySelectorAll('td')[column].textContent.trim();
+                        const bVal = b.querySelectorAll('td')[column].textContent.trim();
+                        
+                        // Try numeric sort first
+                        const aNum = parseFloat(aVal);
+                        const bNum = parseFloat(bVal);
+                        if (!isNaN(aNum) && !isNaN(bNum)) {
+                            return aNum - bNum;
+                        }
+                        
+                        // Fall back to string sort
+                        return aVal.localeCompare(bVal);
+                    });
+                }
+                
+                rows.forEach(row => tbody.appendChild(row));
+                updateWasStatistics();
+            });
+        });
+
         // change color of csv-button if dark mode is chosen
         if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
+        }
+    </script>
+    <script>
+        // Preset filter functions
+        function applyPreset(preset) {
+            const form = document.getElementById('wasForm');
+            
+            // Reset all checkboxes first
+            form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            
+            // All QSL types
+            const allQslTypes = ['qsl', 'lotw', 'eqsl'];
+            
+            switch(preset) {
+                case 'confirmed':
+                    document.getElementById('confirmed').checked = true;
+                    allQslTypes.forEach(type => {
+                        const el = document.getElementById(type);
+                        if (el) el.checked = true;
+                    });
+                    break;
+                case 'worked':
+                    document.getElementById('worked').checked = true;
+                    allQslTypes.forEach(type => {
+                        const el = document.getElementById(type);
+                        if (el) el.checked = true;
+                    });
+                    break;
+                case 'unworked':
+                    document.getElementById('notworked').checked = true;
+                    allQslTypes.forEach(type => {
+                        const el = document.getElementById(type);
+                        if (el) el.checked = true;
+                    });
+                    break;
+            }
+            
+            form.submit();
+        }
+        
+        function resetFilters() {
+            const form = document.getElementById('wasForm');
+            form.reset();
+            // Make sure worked, confirmed, and QSL types are checked by default
+            document.getElementById('worked').checked = true;
+            document.getElementById('confirmed').checked = true;
+            document.getElementById('qsl').checked = true;
+            document.getElementById('lotw').checked = true;
+            form.submit();
+        }
+
+        // CSV Export functionality
+        function exportTableToCSV(filename) {
+            const table = document.getElementById('was_table');
+            let csv = [];
+            
+            // Add header row
+            const headers = Array.from(table.querySelectorAll('thead tr td')).map(h => h.textContent.trim());
+            csv.push(headers.join(','));
+            
+            // Add data rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                if (row.style.display !== 'none') {  // Only export visible rows
+                    const cells = Array.from(row.querySelectorAll('td')).map(cell => {
+                        let text = cell.textContent.trim();
+                        // Escape quotes and wrap in quotes if contains comma
+                        text = text.replace(/"/g, '""');
+                        return '"' + text + '"';
+                    });
+                    csv.push(cells.join(','));
+                }
+            });
+            
+            // Create blob and download
+            const blob = new Blob([csv.join('\n')], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
         }
     </script>
 <?php } ?>
