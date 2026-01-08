@@ -127,7 +127,8 @@ class Logbook_model extends CI_Model
     } else {
       // if $country isn't empty and dxcc_id is 0 use the DXCC ID from the callsign lookup
       if (!empty($country) && $this->input->post('dxcc_id') == "0") {
-        $dxcc_id = $dxcc_id;
+        $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
+        $dxcc_id = !empty($dxcc[0]) ? $dxcc[0] : 0;
       } else {
         $dxcc_id = $this->input->post('dxcc_id');
       }
