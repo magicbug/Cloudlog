@@ -2,29 +2,49 @@ $('#distplot_bands').change(function(){
 	var band = $("#distplot_bands option:selected").text();
 	if (band != "SAT") {
 		$("#distplot_sats").prop('disabled', true);
-		$("#distplot_sats, #distplot_sats_lbl").hide();
+		$("#distplot_sats_container").hide();
 	} else {
 		$("#distplot_sats").prop('disabled', false);
-		$("#distplot_sats, #distplot_sats_lbl").show();
+		$("#distplot_sats_container").show();
 	}
 });
 
-function distPlot(form) {
+// Auto-load chart on page load
+$(document).ready(function() {
+	distPlot();
+});
+
+function distPlot() {
 	$(".alert").remove();
+	
+	// Show loading spinner
+	$("#loading_spinner").removeClass('d-none');
+	$("#plot").prop('disabled', true);
+	
 	var baseURL= "<?php echo base_url();?>";
 	$.ajax({
 		url: base_url+'index.php/distances/get_distances',
 		type: 'post',
-		data: {'band': form.distplot_bands.value,
-			'sat': form.distplot_sats.value,
-			'mode': form.distplot_modes.value,
-			'pwr': form.distplot_powers.value,
-			'propag': form.distplot_propag.value
+		data: {
+			'band': $("#distplot_bands").val(),
+			'sat': $("#distplot_sats").val(),
+			'mode': $("#distplot_modes").val(),
+			'pwr': $("#distplot_powers").val(),
+			'propag': $("#distplot_propag").val()
 		},
 		success: function(tmp) {
+			// Hide loading spinner
+			$("#loading_spinner").addClass('d-none');
+			$("#plot").prop('disabled', false);
+			
 			if (tmp.ok == 'OK') {
-				if (!($('#information').length > 0))
-					$("#distances_div").append('<div id="information"></div><div id="graphcontainer" style="height: 600px; margin: 0 auto"></div>');
+				// Create containers if they don't exist
+				if (!($('#stats_container').length > 0)) {
+					$("#distances_div").append('<div id="stats_container" class="mt-3"></div>');
+				}
+				if (!($('#graphcontainer').length > 0)) {
+					$("#distances_div").append('<div class="card mt-3"><div class="card-body"><div id="graphcontainer" style="height: 600px;"></div></div></div>');
+				}
 				var color = ifDarkModeThemeReturn('white', 'grey');
 				var options = {
 					chart: {
@@ -120,21 +140,60 @@ function distPlot(form) {
 
 				options.series.push(series);
 
-				$('#information').html(tmp.qrb.Qsos + " " + lang_statistics_distances_part1_contacts_were_plotted_furthest + " " + tmp.qrb.Callsign
-					+ " " + lang_statistics_distances_part2_contacts_were_plotted_furthest + " " + tmp.qrb.Grid
-					+". " + lang_statistics_distances_part3_contacts_were_plotted_furthest + " "
-					+ tmp.qrb.Distance + " " + tmp.unit + ". " + lang_statistics_distances_part4_contacts_were_plotted_furthest + " "
-					+ tmp.qrb.Avg_distance + " " + tmp.unit + ".");
+				// Create metric cards for statistics
+				var statsHtml = '<div class="row g-3">' +
+					'<div class="col-md-3">' +
+						'<div class="card text-center">' +
+							'<div class="card-body">' +
+								'<h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-satellite-dish"></i> Contacts Plotted</h6>' +
+								'<h3 class="card-title mb-0">' + tmp.qrb.Qsos.toLocaleString() + '</h3>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<div class="col-md-3">' +
+						'<div class="card text-center">' +
+							'<div class="card-body">' +
+								'<h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-ruler"></i> Furthest Distance</h6>' +
+								'<h3 class="card-title mb-0">' + tmp.qrb.Distance + ' ' + tmp.unit + '</h3>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<div class="col-md-3">' +
+						'<div class="card text-center">' +
+							'<div class="card-body">' +
+								'<h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-trophy"></i> Furthest Contact</h6>' +
+								'<h3 class="card-title mb-0">' + tmp.qrb.Callsign + '</h3>' +
+								'<small class="text-muted">' + tmp.qrb.Grid + '</small>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+					'<div class="col-md-3">' +
+						'<div class="card text-center">' +
+							'<div class="card-body">' +
+								'<h6 class="card-subtitle mb-2 text-muted"><i class="fas fa-chart-line"></i> Average Distance</h6>' +
+								'<h3 class="card-title mb-0">' + tmp.qrb.Avg_distance + ' ' + tmp.unit + '</h3>' +
+							'</div>' +
+						'</div>' +
+					'</div>' +
+				'</div>';
+				
+				$('#stats_container').html(statsHtml);
 
 				var chart = new Highcharts.Chart(options);
 			}
 			else {
-				if (($('#information').length > 0)) {
-					$("#information").remove();
-					$("#graphcontainer").remove();
+				if (($('#stats_container').length > 0)) {
+					$("#stats_container").remove();
+					$("#graphcontainer").parent().parent().remove();
 				}
-				$("#distances_div").append('<div class="alert alert-danger" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>' + tmp.Error + '</div>');
+				$("#distances_div").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">' + tmp.Error + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
 			}
+		},
+		error: function() {
+			// Hide loading spinner on error
+			$("#loading_spinner").addClass('d-none');
+			$("#plot").prop('disabled', false);
+			$("#distances_div").append('<div class="alert alert-danger alert-dismissible fade show" role="alert">An error occurred while loading the distances data.<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
 		}
 	});
 }

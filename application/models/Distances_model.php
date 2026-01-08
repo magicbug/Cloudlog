@@ -5,6 +5,19 @@ class Distances_model extends CI_Model
 {
 
 	function get_distances($postdata, $measurement_base) {
+		// Generate cache key based on request parameters
+		$cache_key = 'distances_' . md5(serialize($postdata) . $measurement_base . $this->session->userdata('active_station_logbook'));
+		
+		// Try to get from session cache (valid for 5 minutes)
+		$cached_data = $this->session->userdata($cache_key);
+		$cached_time = $this->session->userdata($cache_key . '_time');
+		
+		if ($cached_data && $cached_time && (time() - $cached_time) < 300) {
+			header('Content-Type: application/json');
+			echo json_encode($cached_data);
+			return;
+		}
+		
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
@@ -72,6 +85,10 @@ class Distances_model extends CI_Model
 		}
 
 		if ($result) {
+			// Store in session cache
+			$this->session->set_userdata($cache_key, $result);
+			$this->session->set_userdata($cache_key . '_time', time());
+			
 			header('Content-Type: application/json');
 			echo json_encode($result);
 		}
@@ -192,13 +209,13 @@ class Distances_model extends CI_Model
 
 			foreach ($qsoArray as $qso) {
 				$qrb['Qsos']++;                                                        // Counts up number of qsos
-				$bearingdistance = $this->qra->distance($stationgrid, $qso['grid'], $measurement_base);
-				$avg_distance += ($bearingdistance - $avg_distance) / $qrb['Qsos'];    // Calculates running average of distance
-				if ($bearingdistance != $qso['COL_DISTANCE']) {
-					$data = array('COL_DISTANCE' => $bearingdistance);
-	  				$this->db->where('COL_PRIMARY_KEY', $qso['COL_PRIMARY_KEY']);
-	  				$this->db->update($this->config->item('table_name'), $data);
+				// Use stored distance if available, otherwise calculate
+				if (!empty($qso['COL_DISTANCE']) && $qso['COL_DISTANCE'] > 0) {
+					$bearingdistance = $qso['COL_DISTANCE'];
+				} else {
+					$bearingdistance = $this->qra->distance($stationgrid, $qso['grid'], $measurement_base);
 				}
+				$avg_distance += ($bearingdistance - $avg_distance) / $qrb['Qsos'];    // Calculates running average of distance
 				$arrayplacement = (int)($bearingdistance / 50);                         // Resolution is 50, calculates where to put result in array
 				if ($bearingdistance > $qrb['Distance']) {                              // Saves the longest QSO
 					$qrb['Distance'] = $bearingdistance;

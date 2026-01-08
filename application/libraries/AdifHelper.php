@@ -298,7 +298,7 @@ class AdifHelper {
         }
     }
 
-    	/*
+    /*
 	|	Function: lotw_satellite_map
 	|	Requires: OSCAR Satellite name $satname
 	|
@@ -308,25 +308,28 @@ class AdifHelper {
 	function lotw_satellite_map($satname) {
 		$arr = array(
 			"ARISS"		=>	"ISS",
-			"UKUBE1"	=>	"UKUBE-1",
-			"KEDR"		=>	"ARISSAT-1",
-			"TO-108"	=>	"CAS-6",
-			"TAURUS"	=>	"TAURUS-1",
-			"AISAT1"	=>	"AISAT-1",
-			'UVSQ'		=>	"UVSQ-SAT",
-			'CAS-3H'	=>	"LILACSAT-2",
-			'IO-117'	=>	"GREENCUBE",
-			"TEVEL1"	=>	"TEVEL-1",
-			"TEVEL2"	=>	"TEVEL-2",
-			"TEVEL3"	=>	"TEVEL-3",
-			"TEVEL4"	=>	"TEVEL-4",
-			"TEVEL5"	=>	"TEVEL-5",
-			"TEVEL6"	=>	"TEVEL-6",
-			"TEVEL7"	=>	"TEVEL-7",
-			"TEVEL8"	=>	"TEVEL-8",
-			"INSPR7"	=> "INSPIRE-SAT 7",
+            "UKUBE1"	=>	"UKUBE-1",
+            "KEDR"		=>	"ARISSAT-1",
+            "TO-108"	=>	"CAS-6",
+            "TAURUS"	=>	"TAURUS-1",
+            "AISAT1"	=>	"AISAT-1",
+            'UVSQ'		=>	"UVSQ-SAT",
+            'CAS-3H'	=>	"LILACSAT-2",
+            'IO-117'	=>	"GREENCUBE",
+            "TEVEL1"	=>	"TEVEL-1",
+            "TEVEL2"	=>	"TEVEL-2",
+            "TEVEL3"	=>	"TEVEL-3",
+            "TEVEL4"	=>	"TEVEL-4",
+            "TEVEL5"	=>	"TEVEL-5",
+            "TEVEL6"	=>	"TEVEL-6",
+            "TEVEL7"	=>	"TEVEL-7",
+            "TEVEL8"	=>	"TEVEL-8",
+            "INSPR7"	=> "INSPIRE-SAT 7",
+            "SONATE"	=> "SONATE-2",
+            'AO-123'	=> "ASRTU-1",
+            'TEV2-3'	=> "TEVEL2-3",
 		);
 
-		return array_search(strtoupper($satname),$arr,true);
+		return array_search(strtoupper($satname),$arr);
 	}
 }

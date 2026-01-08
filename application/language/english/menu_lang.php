@@ -36,6 +36,7 @@ $lang['menu_most_worked'] = 'Most Worked';
 $lang['menu_custom_maps'] = 'Custom Maps';
 $lang['menu_continents'] = 'Continents';
 $lang['menu_eme_initials'] = 'EME Initials';
+$lang['menu_propagation_advisor'] = 'Propagation Advisor';
 
 $lang['menu_awards'] = 'Awards';
 $lang['menu_cq'] = 'CQ';

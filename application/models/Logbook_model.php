@@ -127,7 +127,8 @@ class Logbook_model extends CI_Model
     } else {
       // if $country isn't empty and dxcc_id is 0 use the DXCC ID from the callsign lookup
       if (!empty($country) && $this->input->post('dxcc_id') == "0") {
-        $dxcc_id = $dxcc_id;
+        $dxcc = $this->check_dxcc_table(strtoupper(trim($callsign)), $datetime);
+        $dxcc_id = !empty($dxcc[0]) ? $dxcc[0] : 0;
       } else {
         $dxcc_id = $this->input->post('dxcc_id');
       }
@@ -684,7 +685,7 @@ class Logbook_model extends CI_Model
           $CI->load->library('AdifHelper');
           $qso = $this->get_qso($last_id, true)->result();
 
-          $adif = $CI->adifhelper->getAdifLine($qso[0]);
+          $adif = $CI->adifhelper->getAdifLine($qso[0], true);
           $clublog_result = $this->push_qso_to_clublog($clublog_creds->ucn, $clublog_creds->ucp, $data['COL_STATION_CALLSIGN'], $adif);
         
           if ($clublog_result['status'] == 'OK') {
@@ -1684,7 +1685,7 @@ class Logbook_model extends CI_Model
   // Set Paper to received
   function paperqsl_update($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
 
       $data = array(
         'COL_QSLRDATE' => date('Y-m-d H:i:s'),
@@ -1704,7 +1705,7 @@ class Logbook_model extends CI_Model
   // Set Paper to sent
   function paperqsl_update_sent($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
       if ($method != '') {
         $data = array(
           'COL_QSLSDATE' => date('Y-m-d H:i:s'),
@@ -1730,7 +1731,7 @@ class Logbook_model extends CI_Model
   // Set Paper to requested
   function paperqsl_requested($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
 
       $data = array(
         'COL_QSLSDATE' => date('Y-m-d H:i:s'),
@@ -1749,7 +1750,7 @@ class Logbook_model extends CI_Model
 
   function paperqsl_ignore($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_accessible($qso_id)) {
+    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
 
       $data = array(
         'COL_QSLSDATE' => date('Y-m-d H:i:s'),
@@ -2718,6 +2719,129 @@ class Logbook_model extends CI_Model
   {
     $query = $this->db->query('select distinct(COL_MODE) from ' . $this->config->item('table_name') . ' order by COL_MODE');
     return $query;
+  }
+
+  /*
+   * Personal Propagation Advisor helpers
+   */
+  public function get_propagation_hourly(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select('HOUR(COL_TIME_ON) AS hour_bucket, COUNT(*) AS total', false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->group_by('hour_bucket');
+    $this->db->order_by('hour_bucket', 'asc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_hourly_by_band(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select('COL_BAND AS band, HOUR(COL_TIME_ON) AS hour_bucket, COUNT(*) AS total', false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->group_by('band, hour_bucket');
+    $this->db->order_by('band', 'asc');
+    $this->db->order_by('hour_bucket', 'asc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_band_breakdown(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select('COL_BAND AS band, COUNT(*) AS total', false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->group_by('band');
+    $this->db->order_by('total', 'desc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_mode_breakdown(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select("COALESCE(NULLIF(COL_SUBMODE, ''), NULLIF(COL_MODE, ''), 'Unspecified') AS mode, COUNT(*) AS total", false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->group_by('mode');
+    $this->db->order_by('total', 'desc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_activity_trend(array $filters, array $stationIds, $days = 90)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return array();
+    }
+
+    $this->db->select('DATE(COL_TIME_ON) AS day, COUNT(*) AS total', false);
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+    $this->db->where('COL_TIME_ON >=', date('Y-m-d 00:00:00', strtotime('-' . ((int)$days - 1) . ' days')));
+    $this->db->group_by('day');
+    $this->db->order_by('day', 'asc');
+
+    return $this->db->get($this->config->item('table_name'))->result();
+  }
+
+  public function get_propagation_last_worked(array $filters, array $stationIds)
+  {
+    if (empty($stationIds) || empty($filters['dxcc'])) {
+      return null;
+    }
+
+    $this->db->select('MAX(COL_TIME_ON) AS last_worked');
+    $this->db->where_in('station_id', $stationIds);
+    $this->db->where('COL_DXCC', $filters['dxcc']);
+    $this->apply_propagation_filters($filters);
+
+    $query = $this->db->get($this->config->item('table_name'));
+    $row = $query->row();
+
+    return $row ? $row->last_worked : null;
+  }
+
+  private function apply_propagation_filters(array $filters, $includeBand = true)
+  {
+    // Exclude propagation modes that don't follow typical patterns
+    $excluded_prop_modes = array('SAT', 'INTERNET', 'EME', 'RPT');
+    $this->db->group_start();
+    $this->db->where_not_in('COL_PROP_MODE', $excluded_prop_modes);
+    $this->db->or_where('COL_PROP_MODE IS NULL', null, false);
+    $this->db->group_end();
+
+    if ($includeBand && !empty($filters['band'])) {
+      $this->db->where('COL_BAND', $filters['band']);
+    }
+
+    if (!empty($filters['mode'])) {
+      $this->db->group_start();
+      $this->db->where('COL_MODE', $filters['mode']);
+      $this->db->or_where('COL_SUBMODE', $filters['mode']);
+      $this->db->group_end();
+    }
   }
 
   /* Return total number of QSOs per band */
@@ -5046,6 +5170,44 @@ class Logbook_model extends CI_Model
 
     // Ensure user has at least read access to the active logbook
     if ($activeLogbookId && $CI->logbooks_model->check_logbook_is_accessible($activeLogbookId, 'read')) {
+      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($activeLogbookId);
+
+      if (!empty($logbooks_locations_array)) {
+        $this->db->select($this->config->item('table_name') . '.COL_PRIMARY_KEY');
+        $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
+        $this->db->where($this->config->item('table_name') . '.COL_PRIMARY_KEY', $id);
+        $sharedQuery = $this->db->get($this->config->item('table_name'));
+        if ($sharedQuery->num_rows() == 1) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  public function check_qso_is_writable($id)
+  {
+    // Check if user has WRITE permission to modify this QSO
+    // Allows write if: QSO belongs to current user OR user has write/admin access to shared logbook
+
+    // First: owner check (current behavior - owners can always write)
+    $this->db->select($this->config->item('table_name') . '.COL_PRIMARY_KEY');
+    $this->db->join('station_profile', $this->config->item('table_name') . '.station_id = station_profile.station_id');
+    $this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
+    $this->db->where($this->config->item('table_name') . '.COL_PRIMARY_KEY', $id);
+    $ownerQuery = $this->db->get($this->config->item('table_name'));
+    if ($ownerQuery->num_rows() == 1) {
+      return true;
+    }
+
+    // Second: shared-logbook check with write permission
+    $CI = &get_instance();
+    $CI->load->model('logbooks_model');
+    $activeLogbookId = $this->session->userdata('active_station_logbook');
+
+    // Ensure user has at least WRITE access to the active logbook
+    if ($activeLogbookId && $CI->logbooks_model->check_logbook_is_accessible($activeLogbookId, 'write')) {
       $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($activeLogbookId);
 
       if (!empty($logbooks_locations_array)) {

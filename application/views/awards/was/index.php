@@ -49,6 +49,97 @@
     margin: 0 0 5px;
     color: #555;
 }
+
+.stats-card {
+  border-left: 4px solid #007bff;
+  padding: 20px;
+  margin-bottom: 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.stats-card.milestone {
+  border-left-color: #28a745;
+}
+
+.stats-card.milestone.achieved {
+  background-color: #d4edda;
+}
+
+.stats-card h5 {
+  margin: 0 0 10px 0;
+  color: #333;
+  font-weight: 600;
+}
+
+.stats-number {
+  font-size: 28px;
+  font-weight: bold;
+  color: #007bff;
+  margin: 10px 0;
+}
+
+.milestone.achieved .stats-number {
+  color: #28a745;
+}
+
+.progress {
+  height: 24px;
+  margin-top: 10px;
+}
+
+.progress-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.filter-collapse {
+  cursor: pointer;
+}
+
+.preset-filters {
+  margin-bottom: 15px;
+}
+
+.preset-btn {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.table-search {
+  margin-bottom: 15px;
+}
+
+.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.sortable::after {
+  content: ' ↕';
+  font-size: 12px;
+  color: #999;
+}
+
+.sortable.asc::after {
+  content: ' ↑';
+  color: #007bff;
+}
+
+.sortable.desc::after {
+  content: ' ↓';
+  color: #007bff;
+}
+
+.tab-pane {
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 </style>
 
 <div class="container">
@@ -66,7 +157,25 @@
             <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
         </div>
         <!-- End of Award Info Box -->
-    <form class="form" action="<?php echo site_url('awards/was'); ?>" method="post" enctype="multipart/form-data">
+
+    <!-- Filters Section (moved to top) -->
+    <div class="card mb-4" style="margin-top: 20px;">
+        <div class="card-header filter-collapse" data-bs-toggle="collapse" data-bs-target="#filterPanel" style="cursor: pointer;">
+            <i class="fas fa-filter me-2"></i><strong>Filters</strong>
+            <span class="float-end"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        <div id="filterPanel" class="collapse show">
+            <div class="card-body">
+                <!-- Preset Filters -->
+                <div class="preset-filters mb-3">
+                    <label class="form-label">Quick Presets:</label>
+                    <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="applyPreset('confirmed')">Show Confirmed Only</button>
+                    <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="applyPreset('worked')">Show Worked Only</button>
+                    <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="applyPreset('unworked')">Show Unworked</button>
+                    <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="resetFilters()">Reset All</button>
+                </div>
+
+                <form class="form" action="<?php echo site_url('awards/was'); ?>" method="post" enctype="multipart/form-data" id="wasForm">
         <fieldset>
 
             <div class="mb-3 row">
@@ -146,14 +255,67 @@
                 <div class="col-md-10">
                     <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>
                     <button id="button1id" type="submit" name="button1id" class="btn btn-sm btn-primary">Show</button>
-					<?php if ($was_array) {
+                    <?php if ($was_array) {
                         ?><button type="button" onclick="load_was_map();" class="btn btn-info btn-sm"><i class="fas fa-globe-americas"></i> Show WAS Map</button>
+                        <button type="button" onclick="exportTableToCSV('was_table.csv');" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Export CSV</button>
                     <?php }?>
                 </div>
             </div>
 
         </fieldset>
     </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Summary Section -->
+    <?php if ($was_array): ?>
+    <div class="row mt-4 mb-4">
+        <!-- Worked vs Confirmed -->
+        <div class="col-md-6">
+            <div class="stats-card">
+                <h5>WAS Progress</h5>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="progress-label">Total Worked</div>
+                        <div class="stats-number"><?php echo count(array_filter($was_summary['worked'], function($v) { return $v > 0; })); ?></div>
+                    </div>
+                    <div class="col-6">
+                        <div class="progress-label">Total Confirmed</div>
+                        <div class="stats-number" style="color: #28a745;"><?php echo count(array_filter($was_summary['confirmed'], function($v) { return $v > 0; })); ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="col-md-6">
+            <div class="stats-card milestone">
+                <h5>🏆 WAS Milestone Progress</h5>
+                <div class="row text-center">
+                    <div class="col-6">
+                        <div style="font-size: 14px;">All Worked</div>
+                        <div style="font-size: 20px; margin-top: 5px;">
+                            <?php 
+                            $all_states_worked = count(array_filter($was_summary['worked'], function($v) { return $v > 0; })) == 50;
+                            echo $all_states_worked ? '✓' : '✗'; 
+                            ?>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div style="font-size: 14px;">All Confirmed</div>
+                        <div style="font-size: 20px; margin-top: 5px;">
+                            <?php 
+                            $all_states_confirmed = count(array_filter($was_summary['confirmed'], function($v) { return $v > 0; })) == 50;
+                            echo $all_states_confirmed ? '✓' : '✗'; 
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
 
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
@@ -167,45 +329,46 @@
 
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade" id="wasmaptab" role="tabpanel" aria-labelledby="home-tab">
-    <br />
+            <br />
+            <div id="wasmap" class="map-leaflet" ></div>
+        </div>
 
-    <div id="wasmap" class="map-leaflet" ></div>
-
-    </div>
+        <!-- Table Search Box -->
+        <?php if ($was_array): ?>
+        <div class="table-search">
+            <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Search US State by abbreviation or name...">
+        </div>
+        <?php endif; ?>
 
         <div class="tab-pane fade show active" id="table" role="tabpanel" aria-labelledby="table-tab">
-
-
+        
 <?php
     if ($was_array) {
-        $i = 1;
     echo '
-    <table style="width:100%" class="table table-sm tablewas table-bordered table-hover table-striped table-condensed text-center">
-        <thead>
-        <tr>
-            <td>#</td>
-            <td>State</td>';
+                <table style="width:100%" class="table-sm table tablewas table-bordered table-hover table-striped table-condensed text-center" id="was_table">
+                    <thead>
+                    <tr>
+                        <td class="sortable" data-column="0">State</td>';
         foreach($bands as $band) {
-            echo '<td>' . $band . '</td>';
-            }
-            echo '</tr>
-        </thead>
-        <tbody>';
-
+            echo '<td class="sortable" data-column="' . (1 + array_search($band, $bands)) . '">' . $band . '</td>';
+        }
+        echo '</tr>
+                    </thead>
+                    <tbody>';
         foreach ($was_array as $was => $value) {      // Fills the table with the data
-        echo '<tr>
-            <td>' . $i++ . '</td>
-            <td>'. $was .'</td>';
-            foreach ($value  as $key) {
-            echo '<td style="text-align: center">' . $key . '</td>';
+            echo '<tr>
+                        <td>'. $was .'</td>';
+            foreach ($value as $name => $key) {
+                echo '<td style="text-align: center">' . $key . '</td>';
             }
             echo '</tr>';
         }
-        echo '</table>
+        echo '</table>';
+        echo "<h2 class=\"mt-5\">Summary</h2>";
 
-        <h2>Summary</h2>
+        echo '
+        <table class="table-sm tablesummary table table-bordered table-hover table-striped table-condensed text-center">
 
-        <table class="table tablesummary table-sm table-bordered table-hover table-striped table-condensed text-center">
         <thead>
         <tr><td></td>';
 

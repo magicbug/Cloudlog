@@ -160,6 +160,10 @@ class Awards extends CI_Controller
         $dxcclist = $this->dxcc->fetchdxcc($postdata);
         $data['dxcc_array'] = $this->dxcc->get_dxcc_array($dxcclist, $bands, $postdata);
         $data['dxcc_summary'] = $this->dxcc->get_dxcc_summary($bands, $postdata);
+        
+        // Calculate continent breakdown and totals
+        $data['continent_breakdown'] = $this->dxcc->get_continent_breakdown($dxcclist);
+        $data['dxcc_statistics'] = $this->dxcc->get_dxcc_statistics($data['dxcc_array'], $postdata);
 
         // Render Page
         $data['page_title'] = "Awards - DXCC";
@@ -1288,6 +1292,204 @@ class Awards extends CI_Controller
                     return '-';
                 }
             }
+        }
+    }
+
+    /*
+    * Get QSOs for a specific DXCC entity
+    */
+    public function get_dxcc_qsos()
+    {
+        $this->load->model('logbooks_model');
+
+        $dxcc_id = $this->security->xss_clean($this->input->post('dxcc_id'));
+        $limit = $this->security->xss_clean($this->input->post('limit')) ?: 20;
+
+        if (!$dxcc_id || !is_numeric($dxcc_id)) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => 'Invalid DXCC ID'));
+            return;
+        }
+
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => 'No logbook data'));
+            return;
+        }
+
+        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+
+        try {
+            // Get QSOs for this DXCC
+            $query = $this->db->query("
+                SELECT 
+                    col_time_on,
+                    col_call,
+                    col_band,
+                    col_mode,
+                    col_rst_sent,
+                    col_rst_rcvd,
+                    col_qsl_sent,
+                    col_qsl_rcvd,
+                    COL_LOTW_QSL_SENT,
+                    COL_LOTW_QSL_RCVD
+                FROM " . $this->config->item('table_name') . "
+                WHERE station_id IN (" . $location_list . ")
+                AND col_dxcc = " . $dxcc_id . "
+                ORDER BY col_time_on DESC
+                LIMIT " . intval($limit)
+            );
+
+            if ($query->num_rows() > 0) {
+                $qsos = $query->result_array();
+                header('Content-Type: application/json');
+                echo json_encode(array('qsos' => $qsos, 'count' => $query->num_rows()));
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(array('qsos' => array(), 'count' => 0));
+            }
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => $e->getMessage()));
+        }
+    }
+
+    /*
+    * Get QSOs for a specific DXCC entity filtered by status (Confirmed or Worked)
+    */
+    public function get_dxcc_qsos_by_status()
+    {
+        $this->load->model('logbooks_model');
+
+        $dxcc_id = $this->security->xss_clean($this->input->post('dxcc_id'));
+        $status = $this->security->xss_clean($this->input->post('status'));
+        $limit = $this->security->xss_clean($this->input->post('limit')) ?: 100;
+
+        if (!$dxcc_id || !is_numeric($dxcc_id) || !$status) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => 'Invalid parameters', 'count' => 0, 'qsos' => array()));
+            return;
+        }
+
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => 'No logbook data', 'count' => 0, 'qsos' => array()));
+            return;
+        }
+
+        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+
+        try {
+            // Build WHERE clause for status filter
+            $status_where = '';
+            if ($status === 'C') {
+                // Confirmed: either QSL received or LoTW received
+                $status_where = " AND (col_qsl_rcvd = 1 OR COL_LOTW_QSL_RCVD = 'Y')";
+            } elseif ($status === 'W') {
+                // Worked but not confirmed: neither QSL nor LoTW received
+                $status_where = " AND (col_qsl_rcvd IS NULL OR col_qsl_rcvd != 1) AND (COL_LOTW_QSL_RCVD IS NULL OR COL_LOTW_QSL_RCVD != 'Y')";
+            }
+
+            // Get QSOs for this DXCC filtered by status
+            $query = $this->db->query("
+                SELECT 
+                    col_time_on,
+                    col_call,
+                    col_band,
+                    col_mode,
+                    col_rst_sent,
+                    col_rst_rcvd,
+                    col_qsl_sent,
+                    col_qsl_rcvd,
+                    COL_LOTW_QSL_SENT,
+                    COL_LOTW_QSL_RCVD
+                FROM " . $this->config->item('table_name') . "
+                WHERE station_id IN (" . $location_list . ")
+                AND col_dxcc = " . $dxcc_id . $status_where . "
+                ORDER BY col_time_on DESC
+                LIMIT " . intval($limit)
+            );
+
+            if ($query->num_rows() > 0) {
+                $qsos = $query->result_array();
+                header('Content-Type: application/json');
+                echo json_encode(array('qsos' => $qsos, 'count' => $query->num_rows()));
+            } else {
+                header('Content-Type: application/json');
+                echo json_encode(array('qsos' => array(), 'count' => 0));
+            }
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => $e->getMessage(), 'count' => 0, 'qsos' => array()));
+        }
+    }
+
+    /*
+    * Get DXCC entities for a specific continent with their status
+    */
+    public function get_continent_qsos()
+    {
+        $this->load->model('logbooks_model');
+
+        $continent_code = $this->security->xss_clean($this->input->post('continent_code'));
+
+        if (!$continent_code) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => 'Invalid continent code', 'count' => 0, 'entities' => array()));
+            return;
+        }
+
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => 'No logbook data', 'count' => 0, 'entities' => array()));
+            return;
+        }
+
+        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+
+        try {
+            // Get all DXCC entities for this continent with their status in a single query
+            $query = $this->db->query("
+                SELECT 
+                    d.adif,
+                    d.name,
+                    d.prefix,
+                    d.cont,
+                    CASE 
+                        WHEN MAX(CASE WHEN (c.col_qsl_rcvd = 1 OR c.COL_LOTW_QSL_RCVD = 'Y') THEN 1 ELSE 0 END) = 1 THEN 'confirmed'
+                        WHEN COUNT(c.col_dxcc) > 0 THEN 'worked'
+                        ELSE 'unworked'
+                    END as status
+                FROM dxcc_entities d
+                LEFT JOIN " . $this->config->item('table_name') . " c ON d.adif = c.col_dxcc AND c.station_id IN (" . $location_list . ")
+                WHERE d.cont = '" . $this->db->escape_like_str($continent_code) . "'
+                GROUP BY d.adif, d.name, d.prefix, d.cont
+                ORDER BY d.name ASC
+            ");
+
+            $entities = array();
+            if ($query->num_rows() > 0) {
+                foreach ($query->result_array() as $entity) {
+                    $entities[] = array(
+                        'adif' => $entity['adif'],
+                        'name' => $entity['name'],
+                        'prefix' => $entity['prefix'],
+                        'status' => $entity['status']
+                    );
+                }
+            }
+
+            header('Content-Type: application/json');
+            echo json_encode(array('entities' => $entities, 'count' => count($entities)));
+        } catch (Exception $e) {
+            header('Content-Type: application/json');
+            echo json_encode(array('error' => $e->getMessage(), 'count' => 0, 'entities' => array()));
         }
     }
 }
