@@ -67,7 +67,7 @@
 							$plain = trim(strip_tags($row->note));
 							$excerpt = mb_substr($plain, 0, 140) . (mb_strlen($plain) > 140 ? '…' : '');
 							$catLink = !empty($row->cat) ? site_url('notes').'?category='.rawurlencode($row->cat) : '';
-								$createdDate = isset($row->created_at) ? date('M d, Y', strtotime($row->created_at)) : 'N/A';
+						$createdDate = (is_null($row->created_at) || $row->created_at === '' || $row->created_at === '0000-00-00 00:00:00') ? 'N/A' : date('M d, Y', strtotime($row->created_at));
 							?>
 								<li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start gap-2">
 									<div class="me-md-3 flex-grow-1">
