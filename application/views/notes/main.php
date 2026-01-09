@@ -28,14 +28,16 @@
 		$categoryOptions = array_values(array_unique(array_merge($defaultCategories, $existingCategories)));
 		$activeSearch = isset($filters['search']) ? $filters['search'] : (isset($filters['q']) ? $filters['q'] : '');
 		$activeCategory = isset($filters['category']) ? $filters['category'] : '';
+		$activeDateFrom = isset($filters['date_from']) ? $filters['date_from'] : '';
+		$activeDateTo = isset($filters['date_to']) ? $filters['date_to'] : '';
 		?>
 
 		<form class="row g-3 mb-4" method="get" action="<?php echo site_url('notes'); ?>">
-			<div class="col-md-6">
+			<div class="col-md-3">
 				<label for="notesSearch" class="form-label mb-1">Search</label>
 				<input type="text" class="form-control" id="notesSearch" name="q" value="<?php echo htmlspecialchars($activeSearch, ENT_QUOTES); ?>" placeholder="Search title or content">
 			</div>
-			<div class="col-md-4">
+			<div class="col-md-3">
 				<label for="notesCategory" class="form-label mb-1">Category</label>
 				<select class="form-select" id="notesCategory" name="category">
 					<option value="">All categories</option>
@@ -43,6 +45,14 @@
 					<option value="<?php echo $catOption; ?>" <?php echo ($activeCategory === $catOption) ? 'selected' : ''; ?>><?php echo $catOption; ?></option>
 					<?php } ?>
 				</select>
+			</div>
+			<div class="col-md-2">
+				<label for="notesDateFrom" class="form-label mb-1">From</label>
+				<input type="date" class="form-control" id="notesDateFrom" name="date_from" value="<?php echo htmlspecialchars($activeDateFrom, ENT_QUOTES); ?>">
+			</div>
+			<div class="col-md-2">
+				<label for="notesDateTo" class="form-label mb-1">To</label>
+				<input type="date" class="form-control" id="notesDateTo" name="date_to" value="<?php echo htmlspecialchars($activeDateTo, ENT_QUOTES); ?>">
 			</div>
 			<div class="col-md-2 d-flex align-items-end gap-2">
 				<button type="submit" class="btn btn-primary w-100">Filter</button>
@@ -57,13 +67,17 @@
 							$plain = trim(strip_tags($row->note));
 							$excerpt = mb_substr($plain, 0, 140) . (mb_strlen($plain) > 140 ? '…' : '');
 							$catLink = !empty($row->cat) ? site_url('notes').'?category='.rawurlencode($row->cat) : '';
-						?>
-							<li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start gap-2">
-								<div class="me-md-3">
-									<a class="fw-semibold text-decoration-none" href="<?php echo site_url('notes/view/'.$row->id); ?>"><?php echo $row->title; ?></a>
-									<?php if (!empty($row->cat)) { ?>
-										<a class="badge bg-secondary ms-2 align-middle text-decoration-none" href="<?php echo $catLink; ?>"><?php echo htmlspecialchars($row->cat, ENT_QUOTES); ?></a>
-									<?php } ?>
+								$createdDate = isset($row->created_at) ? date('M d, Y', strtotime($row->created_at)) : 'N/A';
+							?>
+								<li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start gap-2">
+									<div class="me-md-3 flex-grow-1">
+										<div class="d-flex align-items-start gap-2 flex-wrap">
+											<a class="fw-semibold text-decoration-none" href="<?php echo site_url('notes/view/'.$row->id); ?>"><?php echo $row->title; ?></a>
+											<?php if (!empty($row->cat)) { ?>
+												<a class="badge bg-secondary align-middle text-decoration-none" href="<?php echo $catLink; ?>"><?php echo htmlspecialchars($row->cat, ENT_QUOTES); ?></a>
+											<?php } ?>
+											<small class="text-muted"><?php echo $createdDate; ?></small>
+										</div>
 									<?php if (!empty($excerpt)) { ?>
 										<small class="text-muted d-block mt-1"><?php echo $excerpt; ?></small>
 									<?php } ?>

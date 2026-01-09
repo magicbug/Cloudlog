@@ -20,7 +20,9 @@ class Notes extends CI_Controller {
 		$this->load->model('note');
 		$filters = array(
 			'search' => $this->input->get('q', TRUE),
-			'category' => $this->input->get('category', TRUE)
+			'category' => $this->input->get('category', TRUE),
+			'date_from' => $this->input->get('date_from', TRUE),
+			'date_to' => $this->input->get('date_to', TRUE)
 		);
 		$data['filters'] = $filters;
 		$data['categories'] = $this->note->list_categories();

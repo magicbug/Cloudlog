@@ -18,6 +18,8 @@ class Note extends CI_Model {
 
 		$category = isset($filters['category']) ? trim($filters['category']) : '';
 		$search = isset($filters['search']) ? trim($filters['search']) : '';
+		$date_from = isset($filters['date_from']) ? trim($filters['date_from']) : '';
+		$date_to = isset($filters['date_to']) ? trim($filters['date_to']) : '';
 
 		if ($category !== '') {
 			$this->db->where('cat', xss_clean($category));
@@ -31,6 +33,17 @@ class Note extends CI_Model {
 			$this->db->group_end();
 		}
 
+		if ($date_from !== '') {
+			$date_from_clean = xss_clean($date_from);
+			$this->db->where('DATE(created_at) >=', $date_from_clean);
+		}
+
+		if ($date_to !== '') {
+			$date_to_clean = xss_clean($date_to);
+			$this->db->where('DATE(created_at) <=', $date_to_clean);
+		}
+
+		$this->db->order_by('created_at', 'DESC');
 		return $this->db->get('notes');
 	}
 
