@@ -18,7 +18,13 @@ class Notes extends CI_Controller {
 	public function index()
 	{
 		$this->load->model('note');
-		$data['notes'] = $this->note->list_all();
+		$filters = array(
+			'search' => $this->input->get('q', TRUE),
+			'category' => $this->input->get('category', TRUE)
+		);
+		$data['filters'] = $filters;
+		$data['categories'] = $this->note->list_categories();
+		$data['notes'] = $this->note->list_all(null, $filters);
 		$data['page_title'] = "Notes";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('notes/main');
@@ -29,6 +35,7 @@ class Notes extends CI_Controller {
 	function add() {
 	
 		$this->load->model('note');
+		$data['categories'] = $this->note->list_categories();
 	
 		$this->load->library('form_validation');
 
@@ -70,6 +77,7 @@ class Notes extends CI_Controller {
 		$data['id'] = $id;
 		
 		$data['note'] = $this->note->view($id);
+		$data['categories'] = $this->note->list_categories();
 			
 		$this->load->library('form_validation');
 
@@ -93,10 +101,57 @@ class Notes extends CI_Controller {
 	}
 	
 	/* Delete Note */
-	function delete($id) {
+	function delete() {
+		// Enforce POST for destructive action
+		if (strtolower($this->input->method()) !== 'post') {
+			$this->session->set_flashdata('notice', $this->lang->line('general_word_warning') . ': invalid request method.');
+			redirect('notes');
+			return;
+		}
+
+		$id = $this->input->post('id', TRUE);
+		if (empty($id)) {
+			$this->session->set_flashdata('notice', $this->lang->line('general_word_warning') . ': missing note id.');
+			redirect('notes');
+			return;
+		}
+
 		$this->load->model('note');
 		$this->note->delete($id);
-		
+		$this->session->set_flashdata('notice', $this->lang->line('admin_delete') ?: 'Deleted');
+		redirect('notes');
+	}
+
+	/* Delete/Merge Category */
+	function delete_category() {
+		if (strtolower($this->input->method()) !== 'post') {
+			$this->session->set_flashdata('notice', $this->lang->line('general_word_warning') . ': invalid request method.');
+			redirect('notes');
+			return;
+		}
+
+		$source = trim($this->input->post('source_category', TRUE));
+		$target = trim($this->input->post('target_category', TRUE));
+
+		if ($source === '') {
+			$this->session->set_flashdata('notice', $this->lang->line('general_word_warning') . ': missing source category.');
+			redirect('notes');
+			return;
+		}
+
+		if ($target === '') {
+			$target = 'General';
+		}
+
+		if ($source === $target) {
+			$this->session->set_flashdata('notice', $this->lang->line('general_word_warning') . ': choose a different target category.');
+			redirect('notes');
+			return;
+		}
+
+		$this->load->model('note');
+		$affected = $this->note->replace_category($source, $target);
+		$this->session->set_flashdata('notice', sprintf('%s → %s (%d)', $source, $target, $affected));
 		redirect('notes');
 	}
 }

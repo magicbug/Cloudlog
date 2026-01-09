@@ -2,7 +2,7 @@
 
 class Note extends CI_Model {
 
-	function list_all($api_key = null) {
+	function list_all($api_key = null, $filters = array()) {
         if ($api_key == null) {
 			$user_id = $this->session->userdata('user_id');
 		} else {
@@ -15,12 +15,46 @@ class Note extends CI_Model {
 		}
 		
 		$this->db->where('user_id', $user_id);
+
+		$category = isset($filters['category']) ? trim($filters['category']) : '';
+		$search = isset($filters['search']) ? trim($filters['search']) : '';
+
+		if ($category !== '') {
+			$this->db->where('cat', xss_clean($category));
+		}
+
+		if ($search !== '') {
+			$search_clean = xss_clean($search);
+			$this->db->group_start();
+			$this->db->like('title', $search_clean);
+			$this->db->or_like('note', $search_clean);
+			$this->db->group_end();
+		}
+
 		return $this->db->get('notes');
 	}
 
+	function list_categories() {
+		$user_id = $this->session->userdata('user_id');
+		$this->db->distinct();
+		$this->db->select('cat');
+		$this->db->where('user_id', $user_id);
+		$this->db->where('cat IS NOT NULL');
+		$this->db->where('cat !=', '');
+		$this->db->order_by('cat', 'ASC');
+		$query = $this->db->get('notes');
+		return array_map(function($row) { return $row->cat; }, $query->result());
+	}
+
 	function add() {
-		$data = array(
-			'cat' => xss_clean($this->input->post('category')),
+ 		$chosen_category = trim($this->input->post('new_category')); 
+ 		if ($chosen_category === '') {
+ 			$chosen_category = $this->input->post('category');
+ 		}
+ 		$chosen_category = $chosen_category === '' ? 'General' : $chosen_category;
+
+ 		$data = array(
+			'cat' => xss_clean($chosen_category),
 			'title' => xss_clean($this->input->post('title')),
 			'note' => xss_clean($this->input->post('content')),
 			'user_id' => $this->session->userdata('user_id')
@@ -30,8 +64,14 @@ class Note extends CI_Model {
 	}
 
 	function edit() {
+		$chosen_category = trim($this->input->post('new_category'));
+		if ($chosen_category === '') {
+			$chosen_category = $this->input->post('category');
+		}
+		$chosen_category = $chosen_category === '' ? 'General' : $chosen_category;
+
 		$data = array(
-			'cat' => xss_clean($this->input->post('category')),
+			'cat' => xss_clean($chosen_category),
 			'title' => xss_clean($this->input->post('title')),
 			'note' => xss_clean($this->input->post('content'))
 		);
@@ -71,6 +111,22 @@ class Note extends CI_Model {
 		$this->db->where('user_id =', NULL);
 		$query = $this->db->get('notes');
 		return $query->num_rows();
+	}
+
+	function replace_category($from, $to) {
+		$user_id = $this->session->userdata('user_id');
+		$from_clean = xss_clean(trim($from));
+		$to_clean = xss_clean(trim($to));
+		if ($from_clean === '') {
+			return 0;
+		}
+		if ($to_clean === '') {
+			$to_clean = 'General';
+		}
+		$this->db->where('user_id', $user_id);
+		$this->db->where('cat', $from_clean);
+		$this->db->update('notes', array('cat' => $to_clean));
+		return $this->db->affected_rows();
 	}
 
 }
