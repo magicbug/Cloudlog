@@ -89,6 +89,11 @@ class Note extends CI_Model {
 			'note' => xss_clean($this->input->post('content'))
 		);
 
+		$created_at = trim($this->input->post('created_at'));
+		if ($created_at !== '') {
+			$data['created_at'] = xss_clean($created_at);
+		}
+
 		$this->db->where('id', xss_clean($this->input->post('id')));
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->update('notes', $data);

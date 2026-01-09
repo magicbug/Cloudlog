@@ -60,6 +60,18 @@ $selectedCategory = set_value('category', $row->cat);
 	</div>
 
 	<div class="mb-3">
+		<label for="createdAtInput" class="form-label">Created Date</label>
+		<?php 
+		$dateValue = '';
+		if (!is_null($row->created_at) && $row->created_at !== '' && $row->created_at !== '0000-00-00 00:00:00') {
+			$dateValue = date('Y-m-d', strtotime($row->created_at));
+		}
+		?>
+		<input type="date" name="created_at" class="form-control" id="createdAtInput" value="<?php echo set_value('created_at', $dateValue); ?>">
+		<small class="text-muted">Leave empty to keep the current date, or set a custom creation date.</small>
+	</div>
+
+	<div class="mb-3">
 		<label for="hiddenArea" class="form-label"><?php echo lang('notes_input_notes_content'); ?></label>
 		<div id="quillArea"><?php echo $row->note; ?></div>
 		<textarea name="content" style="display:none" id="hiddenArea"></textarea>
