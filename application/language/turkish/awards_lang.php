@@ -12,6 +12,8 @@ $lang['awards_summary'] = "Özet";
 $lang['awards_total'] = "Toplam";
 $lang['awards_total_worked'] = "Toplam çalışıldı";
 $lang['awards_total_confirmed'] = "Toplam onaylandı";
+$lang['awards_unique_total'] = "Unique parks";
+$lang['awards_confirmed_total'] = "Confirmed parks";
 
 
 $lang['awards_cq_page_title'] = "Ödüller - CQ Magazine WAZ";

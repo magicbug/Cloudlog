@@ -12,6 +12,8 @@ $lang['awards_summary'] = "概览";
 $lang['awards_total'] = "总计";
 $lang['awards_total_worked'] = "共通联";
 $lang['awards_total_confirmed'] = "共确认";
+$lang['awards_unique_total'] = "Unique parks";
+$lang['awards_confirmed_total'] = "Confirmed parks";
 
 
 $lang['awards_cq_page_title'] = "CQ 杂志 WAZ 奖状";

@@ -12,6 +12,8 @@ $lang['awards_summary'] = "Riepilogo";
 $lang['awards_total'] = "Totale";
 $lang['awards_total_worked'] = "Totale lavorato";
 $lang['awards_total_confirmed'] = "Totale confermato";
+$lang['awards_unique_total'] = "Parchi unici";
+$lang['awards_confirmed_total'] = "Parchi confermati";
 
 
 $lang['awards_cq_page_title'] = "Awards  - CQ Magazine WAZ";

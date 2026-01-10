@@ -406,16 +406,72 @@ class Awards extends CI_Controller
 	*/
     public function pota()
     {
+        // Render the POTA dashboard shell; content loaded via HTMX
+        $this->load->model('modes');
+        $this->load->model('bands');
 
-        // Grab all worked pota stations
-        $this->load->model('pota');
-        $data['pota_all'] = $this->pota->get_all();
-
-        // Render page
         $data['page_title'] = "Awards - POTA";
+        $data['worked_bands'] = $this->bands->get_worked_bands('pota');
+        $data['modes'] = $this->modes->active();
+
         $this->load->view('interface_assets/header', $data);
-        $this->load->view('awards/pota/index');
+        $this->load->view('awards/pota/index', $data);
         $this->load->view('interface_assets/footer');
+    }
+
+    // HTMX: table fragment
+    public function pota_table() {
+        $filters = $this->pota_filters_from_request();
+        $this->load->model('pota');
+        $data['rows'] = $this->pota->fetch_qsos($filters);
+        $data['filters'] = $filters;
+        $this->load->view('awards/pota/components/table', $data);
+    }
+
+    // HTMX: stats fragment (totals, first/last)
+    public function pota_stats() {
+        $filters = $this->pota_filters_from_request();
+        $this->load->model('pota');
+        $data['total_uniques'] = $this->pota->get_uniques($filters);
+        $data['confirmed_uniques'] = $this->pota->get_confirmations($filters);
+        $data['first_last'] = $this->pota->get_first_last($filters);
+        $data['filters'] = $filters;
+        $this->load->view('awards/pota/components/stats', $data);
+    }
+
+    // HTMX: progress fragment (threshold bars)
+    public function pota_progress() {
+        $filters = $this->pota_filters_from_request();
+        $this->load->model('pota');
+        $worked = $this->pota->get_uniques($filters);
+        $thresholds = [10,25,50,100];
+        $data = [
+            'worked' => $worked,
+            'thresholds' => $thresholds,
+        ];
+        $this->load->view('awards/pota/components/progress', $data);
+    }
+
+    // HTMX: map fragment (Leaflet markers)
+    public function pota_map() {
+        $filters = $this->pota_filters_from_request();
+        $this->load->model('pota');
+        $rows = $this->pota->fetch_qsos($filters);
+        $refs = [];
+        foreach ($rows as $r) { $refs[$r->COL_POTA_REF] = true; }
+        $refs = array_keys($refs);
+        $data['parks'] = $this->pota->get_parks_meta($refs);
+        $this->load->view('awards/pota/components/map', $data);
+    }
+
+    private function pota_filters_from_request() {
+        $filters = [];
+        $filters['from'] = $this->security->xss_clean($this->input->get('from'));
+        $filters['to'] = $this->security->xss_clean($this->input->get('to'));
+        $filters['band'] = $this->security->xss_clean($this->input->get('band')) ?: 'All';
+        $filters['mode'] = $this->security->xss_clean($this->input->get('mode')) ?: 'All';
+        $filters['confirmed'] = $this->input->get('confirmed') ? true : false;
+        return $filters;
     }
 
     public function cq()

@@ -12,6 +12,8 @@ $lang['awards_summary'] = "Podsumowanie";
 $lang['awards_total'] = "Łącznie";
 $lang['awards_total_worked'] = "Łącznie wykonane";
 $lang['awards_total_confirmed'] = "Łącznie potwierdzone";
+$lang['awards_unique_total'] = "Unikalne parki";
+$lang['awards_confirmed_total'] = "Potwierdzone parki";
 
 $lang['awards_cq_page_title'] = "Nagrody - CQ Magazine WAZ";
 

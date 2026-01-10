@@ -596,7 +596,10 @@ class Update extends CI_Controller {
     public function update_pota() {
         $csvfile = 'https://pota.app/all_parks.csv';
 
+        // Text file used for autocomplete in QSO entry
         $potafile = './assets/json/pota.txt';
+        // Persist the full upstream CSV alongside for richer awards features
+        $potaCsvLocal = './assets/json/pota_parks.csv';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $csvfile);
@@ -609,6 +612,9 @@ class Update extends CI_Controller {
             echo "Something went wrong with fetching the POTA file";
             return;
         }
+
+        // Try to also save a verbatim copy of the CSV for later lookups (park name/coords)
+        $savedCsvOk = @file_put_contents($potaCsvLocal, $csv) !== FALSE;
 
         $potafilehandle = fopen($potafile, 'w');
         if ($potafilehandle === FALSE) {
@@ -630,7 +636,12 @@ class Update extends CI_Controller {
 
         if ($nCount > 0)
         {
-            echo "DONE: " . number_format($nCount) . " POTA's saved";
+            echo "DONE: " . number_format($nCount) . " POTA refs saved";
+            if ($savedCsvOk) {
+                echo ", CSV cached to assets/json/pota_parks.csv";
+            } else {
+                echo ", but failed to cache full CSV";
+            }
         } else {
             echo"FAILED: Empty file";
         }

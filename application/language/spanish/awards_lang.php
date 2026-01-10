@@ -12,6 +12,8 @@ $lang['awards_summary'] = "Resumen";
 $lang['awards_total'] = "Total";
 $lang['awards_total_worked'] = "Total de trabajados";
 $lang['awards_total_confirmed'] = "Total de confirmados";
+$lang['awards_unique_total'] = "Parques únicos";
+$lang['awards_confirmed_total'] = "Parques confirmados";
 
 
 $lang['awards_cq_page_title'] = "Diplomas - CQ Magazine WAZ";
