@@ -27,3 +27,4 @@ sync.sh
 /.vs
 .vscode/sftp.json
 /assets/json/pota.txt
+/assets/json/pota_parks.csv
