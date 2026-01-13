@@ -14,8 +14,6 @@ $confirmedRefs = isset($confirmed_refs) ? array_fill_keys($confirmed_refs, true)
             <th style="text-align:center"><?php echo lang('gen_hamradio_callsign'); ?></th>
             <th style="text-align:center"><?php echo lang('gen_hamradio_band'); ?></th>
             <th style="text-align:center"><?php echo lang('gen_hamradio_mode'); ?></th>
-            <th style="text-align:center"><?php echo lang('gen_hamradio_rsts'); ?></th>
-            <th style="text-align:center"><?php echo lang('gen_hamradio_rstr'); ?></th>
             <th style="text-align:center" title="W = Worked, C = Confirmed">QSL</th>
         </tr>
     </thead>
@@ -30,12 +28,10 @@ $confirmedRefs = isset($confirmed_refs) ? array_fill_keys($confirmed_refs, true)
             <td style="text-align:center"><?php echo htmlspecialchars($row->COL_CALL); ?></td>
             <td style="text-align:center"><?php echo htmlspecialchars($row->COL_BAND); ?></td>
             <td style="text-align:center"><?php echo htmlspecialchars($modeVal); ?></td>
-            <td style="text-align:center"><?php echo htmlspecialchars($row->COL_RST_SENT); ?></td>
-            <td style="text-align:center"><?php echo htmlspecialchars($row->COL_RST_RCVD); ?></td>
             <td style="text-align:center"><span style="font-weight: bold; color: <?php echo $isConfirmed ? '#28a745' : '#007bff'; ?>"><?php echo $isConfirmed ? 'C' : 'W'; ?></span></td>
         </tr>
         <?php } } else { ?>
-        <tr><td colspan="11" class="text-center"><?php echo lang('general_word_nothing_found'); ?></td></tr>
+        <tr><td colspan="9" class="text-center"><?php echo lang('general_word_nothing_found'); ?></td></tr>
         <?php } ?>
     </tbody>
 </table>
