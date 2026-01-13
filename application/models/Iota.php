@@ -163,8 +163,8 @@ class IOTA extends CI_Model {
             join iota on thcv.col_iota = iota.tag
             where station_id in (" . $location_list .
             ") and thcv.col_iota is not null
-            and not exists (select 1 from ". $this->config->item('table_name') . " where station_id = ". $location_list .
-            " and col_iota = thcv.col_iota";
+            and not exists (select 1 from ". $this->config->item('table_name') . " where station_id in (" . $location_list . ")
+            and col_iota = thcv.col_iota";
 
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
