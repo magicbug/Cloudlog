@@ -1,13 +1,14 @@
 <?php
 
-class Sota extends CI_Model {
+class Sota_model extends CI_Model {
 
 	private $table;
 
-	public function __construct()
-	{
-		parent::__construct();
-		$this->table = $this->config->item('table_name');
+	private function tableName() {
+		if (!$this->table) {
+			$this->table = $this->config->item('table_name');
+		}
+		return $this->table;
 	}
 
 	// Legacy helper used by older view; retained for compatibility
@@ -25,7 +26,7 @@ class Sota extends CI_Model {
 
 		if(!$bandslots) return null;
 
-		$this->db->from($this->table);
+		$this->db->from($this->tableName());
 		$this->db->where_in('station_id', $logbooks_locations_array);
 		$this->db->where_in('col_band', $bandslots);
 		$this->db->where('COL_SOTA_REF !=', '');
@@ -87,7 +88,15 @@ class Sota extends CI_Model {
 
 		$out = [];
 		foreach ($query->result() as $r) {
-			$out[$r->k] = (int)$r->v;
+			$key = $r->k;
+			// Normalize mode grouping: LSB, USB -> SSB
+			if ($by === 'mode' && in_array(strtoupper($key), ['LSB', 'USB'])) {
+				$key = 'SSB';
+			}
+			if (!isset($out[$key])) {
+				$out[$key] = 0;
+			}
+			$out[$key] += (int)$r->v;
 		}
 		return $out;
 	}
@@ -115,7 +124,7 @@ class Sota extends CI_Model {
 	}
 
 	public function get_summits_meta($refs) {
-		$refs = array_values(array_unique(array_filter($refs)));
+		$refs = array_values(array_unique(array_filter(array_map([$this, 'normalize_ref'], $refs))));
 		if (empty($refs)) {
 			return [];
 		}
@@ -132,7 +141,7 @@ class Sota extends CI_Model {
 			return false;
 		}
 
-		$this->db->from($this->table);
+		$this->db->from($this->tableName());
 		$this->db->where_in('station_id', $logbooks_locations_array);
 		$this->db->where('COL_SOTA_REF !=', '');
 
@@ -179,7 +188,7 @@ class Sota extends CI_Model {
 			return [];
 		}
 
-		$wantedSet = array_fill_keys($wantedRefs, true);
+		$wantedSet = array_fill_keys(array_map([$this, 'normalize_ref'], $wantedRefs), true);
 		$found = [];
 		$fh = fopen($path, 'r');
 		if ($fh === false) {
@@ -194,7 +203,7 @@ class Sota extends CI_Model {
 					continue;
 				}
 				if (stripos($cols[0], 'sota summits') !== false) {
-					continue; // descriptive header line
+					continue;
 				}
 				if (stripos($cols[0], 'summitcode') === 0) {
 					$header = $cols;
@@ -203,7 +212,8 @@ class Sota extends CI_Model {
 				continue;
 			}
 
-			$ref = isset($cols[$idx['ref']]) ? trim($cols[$idx['ref']]) : '';
+			$refRaw = isset($cols[$idx['ref']]) ? $cols[$idx['ref']] : '';
+			$ref = $this->normalize_ref($refRaw);
 			if ($ref === '' || !isset($wantedSet[$ref])) {
 				continue;
 			}
@@ -227,26 +237,35 @@ class Sota extends CI_Model {
 		return $found;
 	}
 
+	private function normalize_ref($ref) {
+		return strtoupper(trim((string)$ref));
+	}
+
 	private function map_header_indices($header) {
 		$find = function($candidates) use ($header) {
 			foreach ($header as $i => $h) {
 				$hn = strtolower(trim($h));
 				foreach ($candidates as $cand) {
 					if ($hn === $cand) return $i;
+				}
+			}
+			foreach ($header as $i => $h) {
+				$hn = strtolower(trim($h));
+				foreach ($candidates as $cand) {
 					if (strpos($hn, $cand) !== false) return $i;
 				}
 			}
 			return null;
 		};
 
-		$refIdx = $find(['summitcode', 'summit code', 'summit']);
+		$refIdx = $find(['summitcode', 'summit code']);
 		if ($refIdx === null) $refIdx = 0;
 
 		return [
 			'ref' => $refIdx,
-			'name' => $find(['summitname', 'summit name', 'name']),
-			'association' => $find(['associationname', 'association name', 'association']),
-			'region' => $find(['regionname', 'region name', 'region']),
+			'name' => $find(['summitname', 'summit name']),
+			'association' => $find(['associationname', 'association name']),
+			'region' => $find(['regionname', 'region name']),
 			'lat' => $find(['latitude', 'lat']),
 			'lon' => $find(['longitude', 'lon', 'lng']),
 			'alt_m' => $find(['altm', 'alt m', 'altitude', 'metres', 'meters']),

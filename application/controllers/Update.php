@@ -507,43 +507,21 @@ class Update extends CI_Controller {
      * Used for autoupdating the SOTA file which is used in the QSO entry dialog for autocompletion.
      */
     public function update_sota() {
-        $csvfile = 'https://www.sotadata.org.uk/summitslist.csv';
+        $this->load->library('sota');
+        $result = $this->sota->refreshFiles(true);
 
-        $sotafile = './assets/json/sota.txt';
-
-        $csvhandle = fopen($csvfile,"r");
-        if ($csvhandle === FALSE) {
-            echo "Something went wrong with fetching the SOTA file";
+        if (!$result['ok']) {
+            echo $result['message'];
             return;
         }
 
-        $data = fgetcsv($csvhandle,1000,","); // Skip line we are not interested in
-        $data = fgetcsv($csvhandle,1000,","); // Skip line we are not interested in
-        $data = fgetcsv($csvhandle,1000,",");
-        $sotafilehandle = fopen($sotafile, 'w');
-
-        if ($sotafilehandle === FALSE) {
-            echo"FAILED: Could not write to sota.txt file";
-            return;
+        $details = [];
+        $details[] = number_format($result['saved_refs']) . " SOTA refs saved";
+        if (!empty($result['csv_saved'])) {
+            $details[] = "full CSV cached";
         }
 
-        $nCount = 0;
-        do {
-            if ($data[0]) {
-                fwrite($sotafilehandle, $data[0].PHP_EOL);
-                $nCount++;
-            }
-        } while ($data = fgetcsv($csvhandle,1000,","));
-
-        fclose($csvhandle);
-        fclose($sotafilehandle);
-
-        if ($nCount > 0)
-        {
-            echo "DONE: " . number_format($nCount) . " SOTA's saved";
-        } else {
-            echo"FAILED: Empty file";
-        }
+        echo "DONE: " . implode('; ', $details);
     }
 
     /*

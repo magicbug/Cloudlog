@@ -370,16 +370,175 @@ class Awards extends CI_Controller
 	*/
     public function sota()
     {
+        $this->ensure_sota_dataset();
 
-        // Grab all worked sota stations
-        $this->load->model('sota');
-        $data['sota_all'] = $this->sota->get_all();
+        $this->load->model('sota_model');
+        $this->load->model('modes');
+        $this->load->model('bands');
 
-        // Render page
+        $data['worked_bands'] = $this->bands->get_worked_bands('sota');
+        $data['modes'] = $this->modes->active();
+
+        $refs = $this->sota_model->get_unique_refs();
+        $meta = $this->sota_model->get_summits_meta($refs);
+        $data['associations'] = $this->build_sota_options($meta, 'association');
+        $data['regions'] = $this->build_sota_options($meta, 'region');
+
         $data['page_title'] = "Awards - SOTA";
         $this->load->view('interface_assets/header', $data);
-        $this->load->view('awards/sota/index');
+        $this->load->view('awards/sota/index', $data);
         $this->load->view('interface_assets/footer');
+    }
+
+    // HTMX: table fragment
+    public function sota_table() {
+        $filters = $this->sota_filters_from_request();
+        $this->ensure_sota_dataset();
+        $this->load->model('sota_model');
+        $rows = $this->sota_model->fetch_qsos($filters);
+        $meta = $this->sota_model->get_summits_meta($this->extract_sota_refs($rows));
+        $rows = $this->filter_rows_by_meta($rows, $meta, $filters);
+        $filteredMeta = array_intersect_key($meta, array_fill_keys($this->extract_sota_refs($rows), true));
+        $data = [
+            'rows' => $rows,
+            'meta' => $filteredMeta,
+            'filters' => $filters,
+            'confirmed_refs' => $this->confirmed_sota_refs($rows),
+            'custom_date_format' => $this->session->userdata('user_date_format') ?: $this->config->item('qso_date_format'),
+        ];
+        $this->load->view('awards/sota/components/table', $data);
+    }
+
+    // HTMX: stats fragment
+    public function sota_stats() {
+        $filters = $this->sota_filters_from_request();
+        $this->ensure_sota_dataset();
+        $this->load->model('sota_model');
+        $data['total_uniques'] = $this->sota_model->get_uniques($filters);
+        $data['confirmed_uniques'] = $this->sota_model->get_confirmations($filters);
+        $data['first_last'] = $this->sota_model->get_first_last($filters);
+        $data['by_band'] = $this->sota_model->get_uniques($filters, 'band');
+        $data['by_mode'] = $this->sota_model->get_uniques($filters, 'mode');
+        $data['filters'] = $filters;
+        $this->load->view('awards/sota/components/stats', $data);
+    }
+
+    // HTMX: map fragment
+    public function sota_map() {
+        $filters = $this->sota_filters_from_request();
+        $this->ensure_sota_dataset();
+        $this->load->model('sota_model');
+        $rows = $this->sota_model->fetch_qsos($filters);
+        $meta = $this->sota_model->get_summits_meta($this->extract_sota_refs($rows));
+        $rows = $this->filter_rows_by_meta($rows, $meta, $filters);
+        $refs = $this->extract_sota_refs($rows);
+        
+        // Group QSOs by SOTA ref for modal display
+        $qsos_by_ref = [];
+        foreach ($rows as $row) {
+            $ref = $this->normalize_sota_ref($row->COL_SOTA_REF ?? null);
+            if (!empty($ref)) {
+                if (!isset($qsos_by_ref[$ref])) {
+                    $qsos_by_ref[$ref] = [];
+                }
+                $qsos_by_ref[$ref][] = $row;
+            }
+        }
+        
+        $data = [
+            'summits' => array_intersect_key($meta, array_fill_keys($refs, true)),
+            'confirmed_refs' => $this->confirmed_sota_refs($rows),
+            'qsos_by_ref' => $qsos_by_ref,
+            'custom_date_format' => $this->session->userdata('user_date_format') ?: $this->config->item('qso_date_format'),
+        ];
+        $this->load->view('awards/sota/components/map', $data);
+    }
+
+    private function ensure_sota_dataset() {
+        $fullPath = FCPATH . 'assets/json/sota_summits.csv';
+        $autoPath = FCPATH . 'assets/json/sota.txt';
+        if (is_readable($fullPath) && is_readable($autoPath)) {
+            return;
+        }
+        $this->load->library('sota', null, 'sotaLib');
+        $result = $this->sotaLib->refreshFiles(true);
+        if (!$result['ok']) {
+            log_message('error', 'Unable to refresh SOTA dataset: ' . $result['message']);
+        }
+    }
+
+    private function sota_filters_from_request() {
+        $payload = $this->input->method() === 'post' ? $this->input->post() : $this->input->get();
+        $filters = [];
+        $filters['from'] = $this->security->xss_clean($payload['from'] ?? null);
+        $filters['to'] = $this->security->xss_clean($payload['to'] ?? null);
+        $filters['band'] = $this->security->xss_clean($payload['band'] ?? 'All') ?: 'All';
+        $filters['mode'] = $this->security->xss_clean($payload['mode'] ?? 'All') ?: 'All';
+        $filters['association'] = $this->security->xss_clean($payload['association'] ?? null);
+        $filters['region'] = $this->security->xss_clean($payload['region'] ?? null);
+        $filters['confirmed'] = !empty($payload['confirmed']);
+        return $filters;
+    }
+
+    private function filter_rows_by_meta($rows, $meta, $filters) {
+        if (empty($filters['association']) && empty($filters['region'])) {
+            return $rows;
+        }
+
+        $out = [];
+        foreach ($rows as $row) {
+            $ref = $this->normalize_sota_ref($row->COL_SOTA_REF ?? null);
+            $info = $ref && isset($meta[$ref]) ? $meta[$ref] : null;
+            if (!$info) {
+                continue;
+            }
+            if (!empty($filters['association']) && strcasecmp($info['association'] ?? '', $filters['association']) !== 0) {
+                continue;
+            }
+            if (!empty($filters['region']) && strcasecmp($info['region'] ?? '', $filters['region']) !== 0) {
+                continue;
+            }
+            $out[] = $row;
+        }
+        return $out;
+    }
+
+    private function extract_sota_refs($rows) {
+        $refs = [];
+        foreach ($rows as $r) {
+            $ref = $this->normalize_sota_ref($r->COL_SOTA_REF ?? null);
+            if (!empty($ref)) {
+                $refs[$ref] = true;
+            }
+        }
+        return array_keys($refs);
+    }
+
+    private function confirmed_sota_refs($rows) {
+        $refs = [];
+        foreach ($rows as $r) {
+            $ref = $this->normalize_sota_ref($r->COL_SOTA_REF ?? null);
+            if (!empty($ref) && (($r->col_qsl_rcvd ?? '') === 'Y' || ($r->col_lotw_qsl_rcvd ?? '') === 'Y' || ($r->COL_QSL_RCVD ?? '') === 'Y' || ($r->COL_LOTW_QSL_RCVD ?? '') === 'Y')) {
+                $refs[$ref] = true;
+            }
+        }
+        return array_keys($refs);
+    }
+
+    private function normalize_sota_ref($ref) {
+        return strtoupper(trim((string)$ref));
+    }
+
+    private function build_sota_options($meta, $field) {
+        $values = [];
+        foreach ($meta as $info) {
+            if (!empty($info[$field])) {
+                $values[] = $info[$field];
+            }
+        }
+        $values = array_values(array_unique($values));
+        sort($values, SORT_NATURAL | SORT_FLAG_CASE);
+        return $values;
     }
 
     /*
