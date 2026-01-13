@@ -79,21 +79,65 @@ class Sota
 			];
 		}
 
-		$csv = $this->fetchCsv();
-		if ($csv === null) {
+		$tmpFile = tempnam(sys_get_temp_dir(), 'sota_');
+		if ($tmpFile === false) {
 			return [
 				'ok' => false,
 				'csv_saved' => false,
 				'auto_saved' => false,
 				'saved_refs' => 0,
-				'message' => 'Something went wrong with fetching the SOTA file',
+				'message' => 'Cannot create temporary file',
 			];
 		}
 
-		$csvSaved = @file_put_contents($fullPath, $csv) !== false;
+		$fh = fopen($tmpFile, 'w');
+		if ($fh === false) {
+			unlink($tmpFile);
+			return [
+				'ok' => false,
+				'csv_saved' => false,
+				'auto_saved' => false,
+				'saved_refs' => 0,
+				'message' => 'Cannot open temporary file',
+			];
+		}
 
-		$refs = $this->extractRefsFromCsv($csv);
-		$autoSaved = @file_put_contents($autocompletePath, implode(PHP_EOL, $refs)) !== false;
+		// Download directly to file
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $this->csvUrl);
+		curl_setopt($ch, CURLOPT_HEADER, false);
+		curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog SOTA Updater');
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 60);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+		curl_setopt($ch, CURLOPT_FILE, $fh);
+		curl_exec($ch);
+		$httpCode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+		curl_close($ch);
+		fclose($fh);
+
+		if (!is_int($httpCode) || $httpCode >= 400) {
+			unlink($tmpFile);
+			return [
+				'ok' => false,
+				'csv_saved' => false,
+				'auto_saved' => false,
+				'saved_refs' => 0,
+				'message' => 'Failed to download SOTA data',
+			];
+		}
+
+		// Extract refs from file and save CSV
+		$refs = $this->extractRefsFromFile($tmpFile);
+		$csvSaved = copy($tmpFile, $fullPath);
+		unlink($tmpFile);
+
+		$autoSaved = false;
+		if ($csvSaved && !empty($refs)) {
+			$autoSaved = @file_put_contents($autocompletePath, implode(PHP_EOL, $refs)) !== false;
+		}
 
 		$ok = $csvSaved && $autoSaved;
 		return [
@@ -105,44 +149,40 @@ class Sota
 		];
 	}
 
-	private function fetchCsv(): ?string
+	private function extractRefsFromFile(string $filePath): array
 	{
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $this->csvUrl);
-		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog SOTA Updater');
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		$csv = curl_exec($ch);
-		$httpCode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-		curl_close($ch);
-
-		if ($csv === false || (is_int($httpCode) && $httpCode >= 400)) {
-			return null;
+		$refs = [];
+		$fh = fopen($filePath, 'r');
+		if ($fh === false) {
+			return $refs;
 		}
 
-		return $csv;
-	}
+		while (($line = fgets($fh)) !== false) {
+			$line = trim($line);
+			if (empty($line)) {
+				continue;
+			}
 
-	private function extractRefsFromCsv(string $csv): array
-	{
-		$lines = str_getcsv($csv, "\n");
-		$refs = [];
-		foreach ($lines as $line) {
-			$row = str_getcsv($line, ',');
-			if (!isset($row[0])) {
+			// Skip header lines
+			if (stripos($line, 'summitcode') === 0 || stripos($line, 'sota summits') === 0) {
 				continue;
 			}
-			$candidate = trim($row[0]);
-			if ($candidate === '') {
+
+			// Parse CSV line (first column is the ref)
+			$pos = strpos($line, ',');
+			if ($pos === false) {
 				continue;
 			}
-			$lower = strtolower($candidate);
-			if (strpos($candidate, '/') === false || strpos($lower, 'summitcode') === 0 || strpos($lower, 'sota summits') === 0) {
+
+			$candidate = trim(substr($line, 0, $pos), '"');
+			if ($candidate === '' || strpos($candidate, '/') === false) {
 				continue;
 			}
+
 			$refs[] = $candidate;
 		}
+
+		fclose($fh);
 		return $refs;
 	}
 }
