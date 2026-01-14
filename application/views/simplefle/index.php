@@ -147,7 +147,7 @@
 					}
 				</style>
 				<div class="qsoList table-responsive">
-					<table class="table contacttable table-striped table-hover sfletable" id="qsoTable" style="table-layout: fixed; min-width: 820px;">
+					<table class="table contacttable table-striped table-hover sfletable" id="qsoTable" style="table-layout: fixed; min-width: 970px;">
 						<thead>
 							<tr>
 								<th style="padding: 0.5rem; width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('general_word_date'); ?></th>
@@ -159,6 +159,7 @@
 								<th style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_rstr'); ?></th>
 								<th style="padding: 0.5rem; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_operator'); ?></th>
 								<th style="padding: 0.5rem; width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?php echo lang('gen_hamradio_refs'); ?>*</th>
+								<th style="padding: 0.5rem; width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Comment</th>
 							</tr>
 						</thead>
 						<tbody id="qsoTableBody">

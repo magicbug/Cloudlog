@@ -26,3 +26,6 @@ sync.sh
 /node_modules
 /.vs
 .vscode/sftp.json
+/assets/json/pota.txt
+/assets/json/pota_parks.csv
+/assets/json/sota_summits.csv

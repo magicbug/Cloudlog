@@ -941,7 +941,11 @@ class Logbook_model extends CI_Model
    */
   function push_qso_to_qrz($apikey, $adif, $replaceoption = false)
   {
-    $url = 'http://logbook.qrz.com/api'; // TODO: Move this to database
+    $url = 'https://logbook.qrz.com/api';
+
+    // Build compliant User-Agent using helper for reuse across future calls
+    $this->load->helper('useragent');
+    $ua = cloudlog_user_agent();
 
     $post_data['KEY'] = $apikey;
     $post_data['ACTION'] = 'INSERT';
@@ -957,6 +961,7 @@ class Logbook_model extends CI_Model
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, $ua);
 
     $content = curl_exec($ch);
     if ($content) {

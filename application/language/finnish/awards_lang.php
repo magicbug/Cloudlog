@@ -12,6 +12,8 @@ $lang['awards_summary'] = "Summary";
 $lang['awards_total'] = "Total";
 $lang['awards_total_worked'] = "Total worked";
 $lang['awards_total_confirmed'] = "Total confirmed";
+$lang['awards_unique_total'] = "Ainutlaatuiset puistot";
+$lang['awards_confirmed_total'] = "Vahvistetut puistot";
 
 
 $lang['awards_cq_page_title'] = "Awards - CQ Magazine WAZ";

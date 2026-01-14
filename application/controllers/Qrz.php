@@ -344,6 +344,10 @@ class Qrz extends CI_Controller {
 		}
 		$url = 'https://logbook.qrz.com/api'; // Correct URL
 
+		// Build compliant User-Agent using helper for reuse across future calls
+		$this->load->helper('useragent');
+		$ua = cloudlog_user_agent();
+
 		$post_data['KEY'] = $qrz_api_key;      // Correct parameter
 		$post_data['ACTION'] = 'FETCH';         // Correct parameter
 		$post_data['OPTION'] = 'TYPE:ADIF'; // Correct parameter for fetching all confirmed in ADIF
@@ -356,6 +360,7 @@ class Qrz extends CI_Controller {
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true);  // Correct - get response as string
 		curl_setopt( $ch, CURLOPT_TIMEOUT, 300);          // 5 minute timeout
 		curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 30);    // 30 second connection timeout
+		curl_setopt( $ch, CURLOPT_USERAGENT, $ua );       // Set QRZ-required User-Agent
 		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
         curl_setopt($ch, CURLOPT_BUFFERSIZE, 128000);
         curl_setopt($ch, CURLOPT_ENCODING, 'gzip, deflate');

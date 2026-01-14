@@ -507,43 +507,21 @@ class Update extends CI_Controller {
      * Used for autoupdating the SOTA file which is used in the QSO entry dialog for autocompletion.
      */
     public function update_sota() {
-        $csvfile = 'https://www.sotadata.org.uk/summitslist.csv';
+        $this->load->library('sota');
+        $result = $this->sota->refreshFiles(true);
 
-        $sotafile = './assets/json/sota.txt';
-
-        $csvhandle = fopen($csvfile,"r");
-        if ($csvhandle === FALSE) {
-            echo "Something went wrong with fetching the SOTA file";
+        if (!$result['ok']) {
+            echo $result['message'];
             return;
         }
 
-        $data = fgetcsv($csvhandle,1000,","); // Skip line we are not interested in
-        $data = fgetcsv($csvhandle,1000,","); // Skip line we are not interested in
-        $data = fgetcsv($csvhandle,1000,",");
-        $sotafilehandle = fopen($sotafile, 'w');
-
-        if ($sotafilehandle === FALSE) {
-            echo"FAILED: Could not write to sota.txt file";
-            return;
+        $details = [];
+        $details[] = number_format($result['saved_refs']) . " SOTA refs saved";
+        if (!empty($result['csv_saved'])) {
+            $details[] = "full CSV cached";
         }
 
-        $nCount = 0;
-        do {
-            if ($data[0]) {
-                fwrite($sotafilehandle, $data[0].PHP_EOL);
-                $nCount++;
-            }
-        } while ($data = fgetcsv($csvhandle,1000,","));
-
-        fclose($csvhandle);
-        fclose($sotafilehandle);
-
-        if ($nCount > 0)
-        {
-            echo "DONE: " . number_format($nCount) . " SOTA's saved";
-        } else {
-            echo"FAILED: Empty file";
-        }
+        echo "DONE: " . implode('; ', $details);
     }
 
     /*
@@ -551,52 +529,62 @@ class Update extends CI_Controller {
      */
     public function update_wwff() {
         $csvfile = 'https://wwff.co/wwff-data/wwff_directory.csv';
-
         $wwfffile = './assets/json/wwff.txt';
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $csvfile);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog Updater');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $csv = curl_exec($ch);
-        curl_close($ch);
-        if ($csv === FALSE) {
+        // Use stream context to fetch data without loading entire file into memory
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 60,
+                'user_agent' => 'Cloudlog Updater'
+            ]
+        ]);
+
+        $handle = fopen($csvfile, "r", false, $context);
+        if ($handle === FALSE) {
             echo "Something went wrong with fetching the WWFF file";
             return;
         }
 
         $wwfffilehandle = fopen($wwfffile, 'w');
         if ($wwfffilehandle === FALSE) {
-            echo"FAILED: Could not write to wwff.txt file";
+            fclose($handle);
+            echo "FAILED: Could not write to wwff.txt file";
             return;
         }
 
-        $data = str_getcsv($csv,"\n");
         $nCount = 0;
-        foreach ($data as $idx => $row) {
-           if ($idx == 0) continue; // Skip line we are not interested in
-           $row = str_getcsv($row, ',');
-           if ($row[0]) {
-              fwrite($wwfffilehandle, $row[0].PHP_EOL);
-              $nCount++;
-           }
+        $isFirstLine = true;
+        
+        // Process CSV line by line to avoid memory issues
+        while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if ($isFirstLine) {
+                $isFirstLine = false;
+                continue; // Skip header line
+            }
+            
+            if (isset($row[0]) && $row[0]) {
+                fwrite($wwfffilehandle, $row[0] . PHP_EOL);
+                $nCount++;
+            }
         }
 
+        fclose($handle);
         fclose($wwfffilehandle);
 
-        if ($nCount > 0)
-        {
+        if ($nCount > 0) {
             echo "DONE: " . number_format($nCount) . " WWFF's saved";
         } else {
-            echo"FAILED: Empty file";
+            echo "FAILED: Empty file";
         }
     }
 
     public function update_pota() {
         $csvfile = 'https://pota.app/all_parks.csv';
 
+        // Text file used for autocomplete in QSO entry
         $potafile = './assets/json/pota.txt';
+        // Persist the full upstream CSV alongside for richer awards features
+        $potaCsvLocal = './assets/json/pota_parks.csv';
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $csvfile);
@@ -609,6 +597,9 @@ class Update extends CI_Controller {
             echo "Something went wrong with fetching the POTA file";
             return;
         }
+
+        // Try to also save a verbatim copy of the CSV for later lookups (park name/coords)
+        $savedCsvOk = @file_put_contents($potaCsvLocal, $csv) !== FALSE;
 
         $potafilehandle = fopen($potafile, 'w');
         if ($potafilehandle === FALSE) {
@@ -630,10 +621,89 @@ class Update extends CI_Controller {
 
         if ($nCount > 0)
         {
-            echo "DONE: " . number_format($nCount) . " POTA's saved";
+            echo "DONE: " . number_format($nCount) . " POTA refs saved";
+            if ($savedCsvOk) {
+                echo ", CSV cached to assets/json/pota_parks.csv";
+            } else {
+                echo ", but failed to cache full CSV";
+            }
         } else {
             echo"FAILED: Empty file";
         }
+    }
+
+    // UI-friendly wrapper methods with authorization for use from maintenance page
+    
+    public function update_clublog_scp_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_clublog_scp();
+        echo '</div>';
+    }
+
+    public function lotw_users_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->lotw_users();
+        echo '</div>';
+    }
+
+    public function update_dok_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_dok();
+        echo '</div>';
+    }
+
+    public function update_sota_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_sota();
+        echo '</div>';
+    }
+
+    public function update_wwff_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_wwff();
+        echo '</div>';
+    }
+
+    public function update_pota_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_pota();
+        echo '</div>';
     }
 
 }
