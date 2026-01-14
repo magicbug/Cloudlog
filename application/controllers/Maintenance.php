@@ -52,5 +52,3 @@ class Maintenance extends CI_Controller {
 	}
 
 }
-
-/* End of file Backup.php */

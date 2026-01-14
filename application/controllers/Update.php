@@ -529,45 +529,52 @@ class Update extends CI_Controller {
      */
     public function update_wwff() {
         $csvfile = 'https://wwff.co/wwff-data/wwff_directory.csv';
-
         $wwfffile = './assets/json/wwff.txt';
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $csvfile);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog Updater');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $csv = curl_exec($ch);
-        curl_close($ch);
-        if ($csv === FALSE) {
+        // Use stream context to fetch data without loading entire file into memory
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 60,
+                'user_agent' => 'Cloudlog Updater'
+            ]
+        ]);
+
+        $handle = fopen($csvfile, "r", false, $context);
+        if ($handle === FALSE) {
             echo "Something went wrong with fetching the WWFF file";
             return;
         }
 
         $wwfffilehandle = fopen($wwfffile, 'w');
         if ($wwfffilehandle === FALSE) {
-            echo"FAILED: Could not write to wwff.txt file";
+            fclose($handle);
+            echo "FAILED: Could not write to wwff.txt file";
             return;
         }
 
-        $data = str_getcsv($csv,"\n");
         $nCount = 0;
-        foreach ($data as $idx => $row) {
-           if ($idx == 0) continue; // Skip line we are not interested in
-           $row = str_getcsv($row, ',');
-           if ($row[0]) {
-              fwrite($wwfffilehandle, $row[0].PHP_EOL);
-              $nCount++;
-           }
+        $isFirstLine = true;
+        
+        // Process CSV line by line to avoid memory issues
+        while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if ($isFirstLine) {
+                $isFirstLine = false;
+                continue; // Skip header line
+            }
+            
+            if (isset($row[0]) && $row[0]) {
+                fwrite($wwfffilehandle, $row[0] . PHP_EOL);
+                $nCount++;
+            }
         }
 
+        fclose($handle);
         fclose($wwfffilehandle);
 
-        if ($nCount > 0)
-        {
+        if ($nCount > 0) {
             echo "DONE: " . number_format($nCount) . " WWFF's saved";
         } else {
-            echo"FAILED: Empty file";
+            echo "FAILED: Empty file";
         }
     }
 
@@ -623,6 +630,80 @@ class Update extends CI_Controller {
         } else {
             echo"FAILED: Empty file";
         }
+    }
+
+    // UI-friendly wrapper methods with authorization for use from maintenance page
+    
+    public function update_clublog_scp_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_clublog_scp();
+        echo '</div>';
+    }
+
+    public function lotw_users_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->lotw_users();
+        echo '</div>';
+    }
+
+    public function update_dok_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_dok();
+        echo '</div>';
+    }
+
+    public function update_sota_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_sota();
+        echo '</div>';
+    }
+
+    public function update_wwff_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_wwff();
+        echo '</div>';
+    }
+
+    public function update_pota_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+        
+        echo '<div class="alert alert-info">';
+        $this->update_pota();
+        echo '</div>';
     }
 
 }
