@@ -188,6 +188,9 @@ function handleInput() {
 		var rst_s = null;
 		var rst_r = null;
 		
+		// Reset comment at the beginning of each line iteration
+		comment = "";
+		
 		// Extract comment from angle brackets < >
 		var commentMatch = row.match(/<([^>]+)>/);
 		if (commentMatch) {
@@ -472,7 +475,6 @@ function handleInput() {
 			callsign = "";
 			sotaWwff = "";
 			gridsquare = "";
-			comment = "";
 			// Don't reset satellite info - it persists for multiple QSOs
 		}
 
