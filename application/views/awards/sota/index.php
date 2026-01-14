@@ -56,7 +56,7 @@
 					<label class="form-check-label" for="sotaConfirmed">Confirmed only</label>
 				</div>
 				<div class="col-auto mt-4">
-					<button type="button" class="btn btn-sm btn-primary" onclick="htmx.trigger('#sotaStats','refresh'); htmx.trigger('#sotaTable','refresh'); htmx.trigger('#sotaMap','refresh');">Apply</button>
+					<button type="button" class="btn btn-sm btn-primary" onclick="htmx.trigger('#sotaFilters','refresh');">Apply</button>
 				</div>
 			</form>
 		</div>
@@ -116,7 +116,11 @@
 				scrollCollapse: true,
 				paging: false,
 				scrollX: true,
-				language: { url: getDataTablesLanguageUrl() },
+				language: {
+					url: getDataTablesLanguageUrl(),
+					emptyTable: '',
+					infoEmpty: ''
+				},
 				order: [[0, 'asc']],
 				dom: 'Bfrtip',
 				buttons: [

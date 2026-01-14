@@ -30,8 +30,9 @@ $confirmedRefs = isset($confirmed_refs) ? array_fill_keys($confirmed_refs, true)
             <td style="text-align:center"><?php echo htmlspecialchars($modeVal); ?></td>
             <td style="text-align:center"><span style="font-weight: bold; color: <?php echo $isConfirmed ? '#28a745' : '#007bff'; ?>"><?php echo $isConfirmed ? 'C' : 'W'; ?></span></td>
         </tr>
-        <?php } } else { ?>
-        <tr><td colspan="9" class="text-center"><?php echo lang('general_word_nothing_found'); ?></td></tr>
-        <?php } ?>
+        <?php } } ?>
     </tbody>
 </table>
+<?php if (empty($rows)) { ?>
+<div class="text-center text-muted mt-2"><?php echo lang('general_word_nothing_found'); ?></div>
+<?php } ?>
