@@ -178,6 +178,7 @@ function handleInput() {
 	var sat_mode = "";
 	var prop_mode = "";
 	var gridsquare = "";
+	var comment = "";
 	qsoList = [];
 	$("#qsoTable tbody").empty();
 
@@ -186,6 +187,15 @@ function handleInput() {
 	lines.forEach((row) => {
 		var rst_s = null;
 		var rst_r = null;
+		
+		// Extract comment from angle brackets < >
+		var commentMatch = row.match(/<([^>]+)>/);
+		if (commentMatch) {
+			comment = commentMatch[1].trim();
+			// Remove the comment from the row before processing
+			row = row.replace(/<[^>]+>/, '').trim();
+		}
+		
 		items = row.startsWith("day ") ? [row] : row.split(" ");
 		var itemNumber = 0;
 
@@ -387,6 +397,7 @@ function handleInput() {
 				freq_rx,
 				band_rx,
 				gridsquare,
+				comment,
 			]);
 
 			let sotaWwffText = "";
@@ -420,6 +431,7 @@ function handleInput() {
 			<td style="padding: 0.5rem; width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${rst_r}</td>
 			<td style="padding: 0.5rem; width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${operator}</td>
 			<td style="padding: 0.5rem; width: 110px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${sotaWwffText}</td>
+			<td style="padding: 0.5rem; width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${comment}">${comment}</td>
 			</tr>`);
 
 			$("#qsoTable > tbody:last-child").append(tableRow);
@@ -460,6 +472,7 @@ function handleInput() {
 			callsign = "";
 			sotaWwff = "";
 			gridsquare = "";
+			comment = "";
 			// Don't reset satellite info - it persists for multiple QSOs
 		}
 
@@ -964,6 +977,7 @@ $(".js-save-to-log").click(function () {
 						var freq_display_rx = item[12] ? item[12] * 1000000 : "";
 						var band_rx = item[13] || "";
 						var gridsquare = item[14] || "";
+						var comment = item[15] || "";
 
 						$.ajax({
 							url: base_url + "index.php/qso/saveqso",
@@ -988,6 +1002,7 @@ $(".js-save-to-log").click(function () {
 								freq_display_rx: freq_display_rx,
 								band_rx: band_rx,
 								locator: gridsquare,
+								comment: comment,
 								isSFLE: true,
 							},
 							success: function (result) {},

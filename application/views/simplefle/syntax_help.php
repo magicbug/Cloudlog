@@ -53,3 +53,14 @@
 </pre>
 <p>Gridsquares can be 4, 6, or 8 characters (e.g., IO91, IO92TN, JO01AA55).</p>
 
+<p><strong>Comments:</strong></p>
+<p>You can add comments to any QSO by enclosing text in angle brackets. The comment will be saved in the QSO's comment field:</p>
+<pre>
+    20m ssb
+    1234 dl5mo < worked from home station >
+    1240 2m0sql < great signal >
+    
+    40m cw
+    1300 g4xyz < QRP 5W >
+</pre>
+<p>Everything inside &lt; &gt; will be stored as a comment and won't interfere with callsign or other field parsing.</p>
