@@ -66,6 +66,17 @@
                     </tr>
 
                     <tr>
+                        <td>Docker</td>
+                        <td>
+                            <?php if(isset($is_docker) && $is_docker) { ?>
+                                <span class="badge text-bg-success">Detected</span>
+                            <?php } else { ?>
+                                <span class="badge text-bg-warning">Not Detected</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td>PHP Version</td>
                         <td><?php echo phpversion(); ?></td>
                     </tr>
