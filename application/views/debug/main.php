@@ -25,6 +25,12 @@
                         <td>Migration</td>
                         <td><?php echo (isset($migration_version) ? $migration_version : "<span class='badge text-bg-danger'>There is something wrong with your Migration in Database!</span>"); ?></td>
                     </tr>
+                    <?php if(file_exists(APPPATH.'config/managed.php')) { ?>
+                    <tr>
+                        <td>Managed</td>
+                        <td><span class="badge text-bg-success">True</span></td>
+                    </tr>
+                    <?php } ?>
 
                 </table>
             </div>
