@@ -7,6 +7,12 @@
 		</div>
 	<?php } ?>
 
+	<?php if(!isset($zip_installed) || !$zip_installed) { ?>
+		<div class="alert alert-warning" role="alert">
+			<strong>Warning:</strong> The PHP ZIP extension is not installed. Backup and restore functionality requires the ZIP extension. Please install it to use these features. See the <a href="<?php echo site_url('debug'); ?>" class="alert-link">Debug page</a> for more information.
+		</div>
+	<?php } ?>
+
 <h2><?php echo $page_title; ?></h2>
 
 <!-- Legacy backup card removed as ADIF/Notes exports superseded by user data ZIP import/export workflow -->

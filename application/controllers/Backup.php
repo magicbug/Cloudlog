@@ -321,6 +321,7 @@ class Backup extends CI_Controller {
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
 		$data['page_title'] = "Backup";
+		$data['zip_installed'] = in_array('zip', get_loaded_extensions());
 
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('backup/main');
