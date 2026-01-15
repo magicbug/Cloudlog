@@ -12,7 +12,9 @@ class Backup extends CI_Controller {
 		if ($this->user_model->validate_session() == 0) { redirect('user/login'); }
 		if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-		ini_set('memory_limit', '512M');
+		// Increase time limit for large databases
+		ini_set('max_execution_time', '600');
+		ini_set('memory_limit', '256M'); // Reduced since we're streaming
 		$this->load->model('Stations');
 		$this->load->model('Logbook_model');
 		$this->load->dbutil();
@@ -26,70 +28,144 @@ class Backup extends CI_Controller {
 
 			while (ob_get_level()) { ob_end_clean(); }
 
-			$result = array();
+			// Open file handle for streaming JSON
+			$fp = fopen($tmp_json, 'w');
+			if (!$fp) { throw new Exception('Could not create temporary file'); }
+
+			// Start JSON object
+			fwrite($fp, "{\n");
+			fwrite($fp, '  "schema_version": "1.0",'."\n");
+			fwrite($fp, '  "exported_at": "'.date('c').'",'."\n");
 
 			// Stations for user
 			$this->db->where('user_id', $user_id);
 			$stations = $this->db->get('station_profile')->result_array();
-			$result['stations'] = $stations;
+			fwrite($fp, '  "stations": '.json_encode($stations, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES).",\n");
 
-			// QSOs per station
-			$station_qsos = array();
+			// QSOs per station - stream in chunks
+			fwrite($fp, '  "station_qsos": {'."\n");
+			$first_station = true;
 			foreach ($stations as $station) {
 				if (!isset($station['station_id'])) continue;
 				$station_id = $station['station_id'];
-				$qso_chunk_size = 10000; $qso_offset = 0; $qsos = array();
+				
+				if (!$first_station) { fwrite($fp, ",\n"); }
+				$first_station = false;
+				
+				fwrite($fp, '    "'.addslashes($station_id).'": ['."\n");
+				
+				$qso_chunk_size = 5000; // Smaller chunks for better memory efficiency
+				$qso_offset = 0;
+				$first_qso = true;
+				
 				do {
 					$this->db->where('station_id', $station_id);
 					$this->db->limit($qso_chunk_size, $qso_offset);
 					$chunk = $this->db->get($this->config->item('table_name'))->result_array();
-					$qsos = array_merge($qsos, $chunk); $qso_offset += $qso_chunk_size;
-				} while (count($chunk) === $qso_chunk_size);
-				$station_qsos[$station_id] = $qsos;
+					
+					foreach ($chunk as $qso) {
+						if (!$first_qso) { fwrite($fp, ",\n"); }
+						$first_qso = false;
+						fwrite($fp, '      '.json_encode($qso, JSON_UNESCAPED_SLASHES));
+					}
+					
+					$qso_offset += $qso_chunk_size;
+					
+					// Free memory
+					unset($chunk);
+					if ($qso_offset % 20000 == 0) {
+						gc_collect_cycles();
+					}
+				} while (count($this->db->where('station_id', $station_id)->limit(1, $qso_offset)->get($this->config->item('table_name'))->result_array()) > 0);
+				
+				fwrite($fp, "\n".'    ]');
 			}
-			$result['station_qsos'] = $station_qsos;
+			fwrite($fp, "\n".'  },'."\n");
 
-			// Logbooks for user (include QSOs snapshot for backwards compatibility)
-			$logbooks = array();
+			// Logbooks for user - stream QSOs
+			fwrite($fp, '  "logbooks": ['."\n");
 			$this->db->where('user_id', $user_id);
-			foreach ($this->db->get('station_logbooks')->result_array() as $logbook) {
+			$logbooks_result = $this->db->get('station_logbooks')->result_array();
+			$first_logbook = true;
+			
+			foreach ($logbooks_result as $logbook) {
+				if (!$first_logbook) { fwrite($fp, ",\n"); }
+				$first_logbook = false;
+				
 				$station_id = isset($logbook['station_id']) ? $logbook['station_id'] : null;
-				$qso_chunk_size = 10000; $qso_offset = 0; $qsos = array();
+				
+				// Write logbook metadata
+				fwrite($fp, '    {'."\n");
+				foreach ($logbook as $key => $value) {
+					fwrite($fp, '      "'.addslashes($key).'": '.json_encode($value, JSON_UNESCAPED_SLASHES).",\n");
+				}
+				fwrite($fp, '      "qsos": ['."\n");
+				
+				// Stream QSOs for this logbook
 				if ($station_id) {
+					$qso_chunk_size = 5000;
+					$qso_offset = 0;
+					$first_qso = true;
+					
 					do {
 						$this->db->where('station_id', $station_id);
 						$this->db->limit($qso_chunk_size, $qso_offset);
 						$chunk = $this->db->get($this->config->item('table_name'))->result_array();
-						$qsos = array_merge($qsos, $chunk); $qso_offset += $qso_chunk_size;
-					} while (count($chunk) === $qso_chunk_size);
+						
+						foreach ($chunk as $qso) {
+							if (!$first_qso) { fwrite($fp, ",\n"); }
+							$first_qso = false;
+							fwrite($fp, '        '.json_encode($qso, JSON_UNESCAPED_SLASHES));
+						}
+						
+						$qso_offset += $qso_chunk_size;
+						
+						// Free memory
+						unset($chunk);
+						if ($qso_offset % 20000 == 0) {
+							gc_collect_cycles();
+						}
+					} while (count($this->db->where('station_id', $station_id)->limit(1, $qso_offset)->get($this->config->item('table_name'))->result_array()) > 0);
 				}
-				$logbook['qsos'] = $qsos; $logbooks[] = $logbook;
+				
+				fwrite($fp, "\n".'      ]'."\n");
+				fwrite($fp, '    }');
 			}
-			$result['logbooks'] = $logbooks;
+			fwrite($fp, "\n".'  ],'."\n");
 
 			// Relationships if present
 			$tables = $this->db->list_tables();
 			if (in_array('station_logbooks_entity', $tables)) {
 				$this->db->where('user_id', $user_id);
-				$result['logbooks_entity'] = $this->db->get('station_logbooks_entity')->result_array();
-			} else { $result['logbooks_entity'] = []; }
+				$entities = $this->db->get('station_logbooks_entity')->result_array();
+				fwrite($fp, '  "logbooks_entity": '.json_encode($entities, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)."\n");
+			} else {
+				fwrite($fp, '  "logbooks_entity": []'."\n");
+			}
 
-			$result['schema_version'] = '1.0';
-			$result['exported_at'] = date('c');
+			// Close JSON object
+			fwrite($fp, "}\n");
+			fclose($fp);
 
-			file_put_contents($tmp_json, json_encode($result, JSON_PRETTY_PRINT));
+			// Create ZIP
 			$zip = new ZipArchive();
 			if ($zip->open($tmp_zip, ZipArchive::CREATE) !== TRUE) { throw new Exception('Could not create ZIP file'); }
 			$zip->addFile($tmp_json, 'cloudlog_backup.json');
 			$zip->close();
 
+			// Send to browser
 			header('Content-Type: application/zip');
 			header('Content-Disposition: attachment; filename="cloudlog_backup_'.date('Ymd_His').'.zip"');
 			header('Content-Length: ' . filesize($tmp_zip));
 			header('Cache-Control: no-store, no-cache');
 			readfile($tmp_zip);
+			
+			// Cleanup
 			@unlink($tmp_json); @unlink($tmp_zip); exit;
-		} catch (Exception $e) { log_message('error', 'User export error: '.$e->getMessage()); show_error('Export failed: '.$e->getMessage(), 500); }
+		} catch (Exception $e) {
+			log_message('error', 'User export error: '.$e->getMessage());
+			show_error('Export failed: '.$e->getMessage(), 500);
+		}
 	}
 
 	public function user_import() {
