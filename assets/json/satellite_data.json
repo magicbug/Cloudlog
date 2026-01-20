@@ -738,5 +738,41 @@
             }
          ]
       }
+   },
+   "QMR-KWT-2":{
+      "Modes":{
+         "V/U":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"145920000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"436950000"
+            }
+         ]
+      }
+   },
+   "Lobachevsky":{
+      "Modes":{
+         "U/V":[
+            {
+               "Uplink_Mode":"FM",
+               "Uplink_Freq":"435500000",
+               "Downlink_Mode":"FM",
+               "Downlink_Freq":"145910000"
+            }
+         ]
+      }
+   },
+   "BOTAN":{
+      "Modes":{
+         "V":[
+            {
+               "Uplink_Mode":"PKT",
+               "Uplink_Freq":"145825000",
+               "Downlink_Mode":"PKT",
+               "Downlink_Freq":"145825000"
+            }
+         ]
+      }
    }
 }
