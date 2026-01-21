@@ -547,10 +547,30 @@ class Awards extends CI_Controller
 	*/
     public function wwff()
     {
-
-        // Grab all worked wwff stations
         $this->load->model('wwff');
-        $data['wwff_all'] = $this->wwff->get_all();
+        $this->load->model('modes');
+        $this->load->model('bands');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands('wwff');
+        $data['modes'] = $this->modes->active();
+
+        if ($this->input->method() === 'post') {
+            $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
+            $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
+            $postdata['qsl'] = $this->security->xss_clean($this->input->post('qsl'));
+            $postdata['lotw'] = $this->security->xss_clean($this->input->post('lotw'));
+            $postdata['eqsl'] = $this->security->xss_clean($this->input->post('eqsl'));
+        } else {
+            $postdata['band'] = 'All';
+            $postdata['mode'] = 'All';
+            $postdata['qsl'] = 1;
+            $postdata['lotw'] = 1;
+            $postdata['eqsl'] = 0;
+        }
+
+        $data['postdata'] = $postdata;
+        $data['wwff_all'] = $this->wwff->get_all_filtered($postdata);
+        $data['wwff_summary'] = $this->wwff->get_wwff_summary($postdata);
 
         // Render page
         $data['page_title'] = "Awards - WWFF";
