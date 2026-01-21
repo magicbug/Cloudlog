@@ -146,6 +146,9 @@
         <a href="<?php echo site_url('/awards/sigexportadif/' . urlencode($type)); ?>" title="Export QSOs to ADIF" target="_blank" class="btn btn-primary">
             <i class="fa fa-download"></i> <?php echo lang('awards_sig_action_export'); ?>
         </a>
+        <a href="<?php echo site_url('/awards/sigexportcsv/' . urlencode($type)); ?>" title="Export QSOs to CSV" class="btn btn-secondary">
+            <i class="fa fa-file-csv"></i> Export CSV
+        </a>
     </p>
     <?php } else { ?>
         <div class="alert alert-warning" role="alert">

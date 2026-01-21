@@ -1332,6 +1332,63 @@ class Awards extends CI_Controller
         $this->load->view('adif/data/exportall', $data);
     }
 
+    public function sigexportcsv()
+    {
+        $this->load->model('sig');
+
+        $type = urldecode($this->security->xss_clean($this->uri->segment(3)));
+        $qsos = $this->sig->get_all($type)->result();
+
+        // Set headers for CSV download
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=SIG_' . $type . '_' . date('Y-m-d') . '.csv');
+
+        // Open output stream
+        $output = fopen('php://output', 'w');
+
+        // Write header row
+        fputcsv($output, array(
+            'Reference',
+            'Date/Time',
+            'Callsign',
+            'Mode',
+            'Band',
+            'RST Sent',
+            'RST Received',
+            'QSL Status'
+        ));
+
+        // Write data rows
+        foreach ($qsos as $row) {
+            $is_confirmed = ($row->COL_QSL_RCVD == 'Y' || $row->COL_EQSL_QSL_RCVD == 'Y' || $row->COL_LOTW_QSL_RCVD == 'Y');
+            
+            $qsl_status = '';
+            if ($row->COL_LOTW_QSL_RCVD == 'Y') {
+                $qsl_status = 'LoTW';
+            } elseif ($row->COL_EQSL_QSL_RCVD == 'Y') {
+                $qsl_status = 'eQSL';
+            } elseif ($row->COL_QSL_RCVD == 'Y') {
+                $qsl_status = 'QSL';
+            } else {
+                $qsl_status = 'Unconfirmed';
+            }
+
+            fputcsv($output, array(
+                $row->COL_SIG_INFO,
+                date('d/m/y H:i', strtotime($row->COL_TIME_ON)),
+                $row->COL_CALL,
+                $row->COL_MODE,
+                $row->COL_BAND,
+                $row->COL_RST_SENT,
+                $row->COL_RST_RCVD,
+                $qsl_status
+            ));
+        }
+
+        fclose($output);
+        exit;
+    }
+
     /*
         function was_map
 
