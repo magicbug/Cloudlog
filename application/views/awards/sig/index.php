@@ -26,16 +26,20 @@
             <tbody>
             <?php
             foreach ($sig_types as $row) {
+                // Redirect WAB to dedicated WAB awards page
+                $link = (strtoupper($row->col_sig) === 'WAB') 
+                    ? site_url('awards/wab')
+                    : site_url('awards/sig_details?type=' . urlencode($row->col_sig));
             ?>
             <tr>
                 <td>
                     <?php echo htmlspecialchars($row->col_sig); ?>
                 </td>
                 <td>
-                    <a href="<?php echo site_url('awards/sig_details?type=' . urlencode($row->col_sig)); ?>"><?php echo $row->qsos; ?></a>
+                    <a href="<?php echo $link; ?>"><?php echo $row->qsos; ?></a>
                 </td>
                 <td>
-                    <a href="<?php echo site_url('awards/sig_details?type=' . urlencode($row->col_sig)); ?>"><?php echo $row->refs; ?></a>
+                    <a href="<?php echo $link; ?>"><?php echo $row->refs; ?></a>
                 </td>
             </tr>
             <?php } ?>
