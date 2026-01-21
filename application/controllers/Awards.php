@@ -752,17 +752,40 @@ class Awards extends CI_Controller
     }
     public function wab()
     {
-        // get worked squares from Worked_all_britain_model
-        $this->load->model('worked_all_britain_model');
-        $data['worked_squares'] = array_filter($this->worked_all_britain_model->get_worked_squares());
+        $footerData = [];
+        $footerData['scripts'] = [
+            'assets/js/sections/wab.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/wab.js")),
+        ];
 
-        $data['confirmed_squares'] = array_filter($this->worked_all_britain_model->get_confirmed_squares());
+        $this->load->model('worked_all_britain_model');
+        $this->load->model('bands');
+        $this->load->model('modes');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands('wab') ?? [];
+        $data['modes'] = $this->modes->active();
+
+        $filters = [];
+        $filters['band'] = $this->input->post('band') ? $this->security->xss_clean($this->input->post('band')) : 'All';
+        $filters['band'] = $filters['band'] ?: 'All';
+        $filters['mode'] = $this->input->post('mode') ? $this->security->xss_clean($this->input->post('mode')) : 'All';
+        $filters['mode'] = $filters['mode'] ?: 'All';
+        $filters['confirmed_only'] = $this->input->post('confirmed_only') ? true : false;
+
+        $data['filters'] = $filters;
+
+        $data['worked_squares'] = array_filter($this->worked_all_britain_model->get_worked_squares($filters) ?? []);
+        $data['confirmed_squares'] = array_filter($this->worked_all_britain_model->get_confirmed_squares($filters) ?? []);
+        $data['worked_count'] = count($data['worked_squares']);
+        $data['confirmed_count'] = count($data['confirmed_squares']);
+
+        $data['wab_qsos'] = $this->worked_all_britain_model->get_wab_qsos($filters);
+        $data['filter_summary'] = $this->wab_filter_summary($filters);
 
         // Render page
         $data['page_title'] = "Awards - Worked All Britain";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/wab/index');
-        $this->load->view('interface_assets/footer');
+        $this->load->view('interface_assets/footer', $footerData);
     }
 
 
@@ -828,18 +851,35 @@ class Awards extends CI_Controller
 
     public function wab_details_ajax()
     {
-        $this->load->model('logbook_model');
-
         $wab = str_replace('"', "", $this->security->xss_clean($this->input->post("Wab")));
 
         $wab = str_replace(["Small Square ", " Boundry Box"], "", $wab);
+        $filters = [];
+        $filters['band'] = $this->input->post('Band') ? $this->security->xss_clean($this->input->post('Band')) : 'All';
+        $filters['band'] = $filters['band'] ?: 'All';
+        $filters['mode'] = $this->input->post('Mode') ? $this->security->xss_clean($this->input->post('Mode')) : 'All';
+        $filters['mode'] = $filters['mode'] ?: 'All';
+        $filters['confirmed_only'] = $this->input->post('ConfirmedOnly') ? true : false;
+        $filters['square'] = $wab;
 
-        $data['results'] = $this->logbook_model->wab_qso_details($wab);
+        $this->load->model('worked_all_britain_model');
+        $data['results'] = $this->worked_all_britain_model->get_wab_qsos($filters);
 
         // Render Page
         $data['page_title'] = "Log View - WAB";
-        $data['filter'] = "WAB " . $wab;
+        $data['filter'] = "WAB " . $wab . ' · ' . $this->wab_filter_summary($filters);
         $this->load->view('awards/wab/details', $data);
+    }
+
+    private function wab_filter_summary($filters)
+    {
+        $parts = [];
+        $parts[] = ($filters['band'] ?? 'All') === 'All' ? 'All bands' : ($filters['band'] . ' band');
+        $parts[] = ($filters['mode'] ?? 'All') === 'All' ? 'All modes' : ($filters['mode'] . ' mode');
+        if (!empty($filters['confirmed_only'])) {
+            $parts[] = 'Confirmed only';
+        }
+        return implode(' · ', $parts);
     }
 
 

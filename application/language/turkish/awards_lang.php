@@ -200,3 +200,16 @@ $lang['awards_wab_description_ln1'] = "WAB - Tüm Britanya'da Çalıştı Ödül
 $lang['awards_wab_description_ln2'] = "Amatör Radyo Tüm Britanya'da Çalıştı (WAB) Ödülü, amatör radyo topluluğu içinde Birleşik Krallık genelindeki iletişim başarılarını kutlayan prestijli bir tanınma programıdır. WAB Ödülü programı radyo operatörlerini istasyonlarla iletişim kurmaya teşvik eder Britanya'nın farklı bölgelerinde bulunan, dostluğu teşvik eden ve radyo iletişim becerilerini destekleyen WAB Ödülünü kazanmak için, katılımcıların Ordnance Survey Kılavuz kareleri tarafından tanımlanan belirli WAB alanlarında bulunan istasyonlarla başarılı radyo bağlantıları kurmaları gerekir. İngiltere, İskoçya, Galler ve bazı açık deniz adaları da dahil olmak üzere Büyük Britanya'nın.";
 $lang['awards_wab_description_ln3'] = "WAB Ödülü programındaki katılımcılar, radyo bağlantıları sırasında konumları, sinyal güçleri ve WAB kare referansı gibi bilgileri paylaşırlar. Puanlar, atanmış farklı puan değerleri ile, iletişim kurulan istasyonun konumuna göre verilir. Başarılı bağlantılardan puan toplayarak, telsiz operatörleri, her biri amatör telsiz yolculuklarında önemli bir dönüm noktasını temsil eden çeşitli ödül seviyelerinde ilerleyebilirler. WAB Ödülü, yalnızca telsiz operatörlerinin özveri ve becerilerini ödüllendirmektedir. coğrafi çeşitliliği teşvik eder ve amatör radyo aracılığıyla Britanya'nın her yerindeki zengin dokuların keşfedilmesini teşvik eder.";
 $lang['awards_wab_description_ln4'] = "Daha fazla bilgi için lütfen şu adresi ziyaret edin: <a href='https://wab.intermip.net/default.php' target='_blank'>https://wab.intermip.net /default.php</a>.";
+$lang['awards_wab_filter_band'] = "Bant";
+$lang['awards_wab_filter_mode'] = "Mod";
+$lang['awards_wab_filter_confirmed_only'] = "Yalnızca onaylandıları göster";
+$lang['awards_wab_stat_worked'] = "Çalışılan kareler (filtrelendi)";
+$lang['awards_wab_stat_confirmed'] = "Onaylanan kareler (filtrelendi)";
+$lang['awards_wab_tab_map'] = "Harita";
+$lang['awards_wab_tab_table'] = "Tablo";
+$lang['awards_wab_table_heading'] = "Görüşlerdeki QSO'lar";
+$lang['awards_wab_no_qsos'] = "Geçerli filtrelerle eşleşen QSO yok.";
+$lang['awards_wab_action_reset'] = "Sıfırla";
+$lang['awards_wab_action_apply'] = "Uygula";
+$lang['awards_wab_no_squares_title'] = "WAB Karesi Kaydedilmedi";
+$lang['awards_wab_no_squares_message'] = "Henüz herhangi bir WAB (Worked All Britain) iletişimini kaydetmediniz. WAB kare referanslarıyla iletişim kaydetmeye başlayın ve harita ile tablodaki ilerlemenizi görmek için.";
