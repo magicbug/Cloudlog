@@ -203,3 +203,35 @@ $lang['awards_wab_action_reset'] = "Ripristina";
 $lang['awards_wab_action_apply'] = "Applica";
 $lang['awards_wab_no_squares_title'] = "Nessun quadrato WAB registrato";
 $lang['awards_wab_no_squares_message'] = "Non hai ancora registrato alcun contatto WAB (Worked All Britain). Inizia a registrare i contatti con riferimenti quadrati WAB per vedere il tuo progresso sulla mappa e sulla tabella.";
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filtri";
+$lang['awards_sig_filter_all'] = "Tutto";
+$lang['awards_sig_filter_band'] = "Banda";
+$lang['awards_sig_filter_mode'] = "Modalità";
+$lang['awards_sig_filter_confirmed_only'] = "Mostra solo confermati";
+$lang['awards_sig_filter_detail'] = "Filtra QSO";
+$lang['awards_sig_action_apply'] = "Applica";
+$lang['awards_sig_action_reset'] = "Ripristina";
+$lang['awards_sig_action_export'] = "Esporta QSO in ADIF";
+$lang['awards_sig_filters_active'] = "Filtri attivi";
+$lang['awards_sig_stat_worked'] = "Riferimenti Unici Lavorati";
+$lang['awards_sig_stat_confirmed'] = "Riferimenti Confermati";
+$lang['awards_sig_stat_qsos'] = "QSO Totali";
+$lang['awards_sig_table_name'] = "Tipo di Premio";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Riferimenti";
+$lang['awards_sig_table_ref'] = "Riferimento";
+$lang['awards_sig_table_datetime'] = "Data/Ora";
+$lang['awards_sig_table_call'] = "Nominativo";
+$lang['awards_sig_table_mode'] = "Modalità";
+$lang['awards_sig_table_band'] = "Banda";
+$lang['awards_sig_table_rst_sent'] = "RST Inviato";
+$lang['awards_sig_table_rst_rcvd'] = "RST Ricevuto";
+$lang['awards_sig_table_qsl_status'] = "Stato QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "Non Confermato";
+$lang['awards_sig_no_data'] = "Niente trovato!";
+$lang['awards_sig_no_qsos'] = "Nessun QSO corrisponde ai filtri correnti.";

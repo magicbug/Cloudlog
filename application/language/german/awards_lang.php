@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "Zurücksetzen";
 $lang['awards_wab_action_apply'] = "Anwenden";
 $lang['awards_wab_no_squares_title'] = "Keine WAB-Quadrate protokolliert";
 $lang['awards_wab_no_squares_message'] = "Sie haben noch keine WAB-Kontakte (Worked All Britain) protokolliert. Beginnen Sie mit der Protokollierung von Kontakten mit WAB-Quadrat-Referenzen, um Ihren Fortschritt auf der Karte und in der Tabelle zu sehen.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filter";
+$lang['awards_sig_filter_all'] = "Alle";
+$lang['awards_sig_filter_band'] = "Band";
+$lang['awards_sig_filter_mode'] = "Betriebsart";
+$lang['awards_sig_filter_confirmed_only'] = "Nur bestätigte anzeigen";
+$lang['awards_sig_filter_detail'] = "QSO filtern";
+$lang['awards_sig_action_apply'] = "Anwenden";
+$lang['awards_sig_action_reset'] = "Zurücksetzen";
+$lang['awards_sig_action_export'] = "QSO in ADIF exportieren";
+$lang['awards_sig_filters_active'] = "Aktive Filter";
+$lang['awards_sig_stat_worked'] = "Eindeutige erreichbare Referenzen";
+$lang['awards_sig_stat_confirmed'] = "Bestätigte Referenzen";
+$lang['awards_sig_stat_qsos'] = "Gesamt-QSO";
+$lang['awards_sig_table_name'] = "Preistyp";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Referenzen";
+$lang['awards_sig_table_ref'] = "Referenz";
+$lang['awards_sig_table_datetime'] = "Datum/Uhrzeit";
+$lang['awards_sig_table_call'] = "Rufzeichen";
+$lang['awards_sig_table_mode'] = "Betriebsart";
+$lang['awards_sig_table_band'] = "Band";
+$lang['awards_sig_table_rst_sent'] = "RST gesendet";
+$lang['awards_sig_table_rst_rcvd'] = "RST empfangen";
+$lang['awards_sig_table_qsl_status'] = "QSL-Status";
+$lang['awards_sig_qsl_unconfirmed'] = "Unbekräftigt";
+$lang['awards_sig_no_data'] = "Nichts gefunden!";
+$lang['awards_sig_no_qsos'] = "Keine QSO entsprechen den aktuellen Filtern.";

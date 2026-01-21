@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "Reiniciar";
 $lang['awards_wab_action_apply'] = "Aplicar";
 $lang['awards_wab_no_squares_title'] = "Ningún cuadrado WAB registrado";
 $lang['awards_wab_no_squares_message'] = "Aún no ha registrado ningún contacto WAB (Worked All Britain). Comience a registrar contactos con referencias de cuadrados WAB para ver su progreso en el mapa y la tabla.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filtros";
+$lang['awards_sig_filter_all'] = "Todos";
+$lang['awards_sig_filter_band'] = "Banda";
+$lang['awards_sig_filter_mode'] = "Modo";
+$lang['awards_sig_filter_confirmed_only'] = "Mostrar solo confirmados";
+$lang['awards_sig_filter_detail'] = "Filtrar QSO";
+$lang['awards_sig_action_apply'] = "Aplicar";
+$lang['awards_sig_action_reset'] = "Reiniciar";
+$lang['awards_sig_action_export'] = "Exportar QSO a ADIF";
+$lang['awards_sig_filters_active'] = "Filtros activos";
+$lang['awards_sig_stat_worked'] = "Referencias Únicas Trabajadas";
+$lang['awards_sig_stat_confirmed'] = "Referencias Confirmadas";
+$lang['awards_sig_stat_qsos'] = "Total de QSO";
+$lang['awards_sig_table_name'] = "Tipo de Premio";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Referencias";
+$lang['awards_sig_table_ref'] = "Referencia";
+$lang['awards_sig_table_datetime'] = "Fecha/Hora";
+$lang['awards_sig_table_call'] = "Indicativo";
+$lang['awards_sig_table_mode'] = "Modo";
+$lang['awards_sig_table_band'] = "Banda";
+$lang['awards_sig_table_rst_sent'] = "RST Enviado";
+$lang['awards_sig_table_rst_rcvd'] = "RST Recibido";
+$lang['awards_sig_table_qsl_status'] = "Estado QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "No confirmado";
+$lang['awards_sig_no_data'] = "¡Nada encontrado!";
+$lang['awards_sig_no_qsos'] = "Ningún QSO coincide con los filtros actuales.";

@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "Επαναφορά";
 $lang['awards_wab_action_apply'] = "Εφαρμογή";
 $lang['awards_wab_no_squares_title'] = "Δεν καταγράφηκαν WAB Τετράγωνα";
 $lang['awards_wab_no_squares_message'] = "Δεν έχετε καταγράψει ακόμη επαφές WAB (Worked All Britain). Ξεκινήστε να καταγράφετε επαφές με αναφορές τετραγώνων WAB για να δείτε την πρόοδό σας στο χάρτη και τον πίνακα.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Φίλτρα";
+$lang['awards_sig_filter_all'] = "Όλα";
+$lang['awards_sig_filter_band'] = "Ζώνη";
+$lang['awards_sig_filter_mode'] = "Λειτουργία";
+$lang['awards_sig_filter_confirmed_only'] = "Εμφάνιση μόνο επιβεβαιωμένων";
+$lang['awards_sig_filter_detail'] = "Φιλτράρισμα QSO";
+$lang['awards_sig_action_apply'] = "Εφαρμογή";
+$lang['awards_sig_action_reset'] = "Επαναφορά";
+$lang['awards_sig_action_export'] = "Εξαγωγή QSO σε ADIF";
+$lang['awards_sig_filters_active'] = "Ενεργά φίλτρα";
+$lang['awards_sig_stat_worked'] = "Μοναδικές Αναφορές που Ολοκληρώθηκαν";
+$lang['awards_sig_stat_confirmed'] = "Επιβεβαιωμένες Αναφορές";
+$lang['awards_sig_stat_qsos'] = "Σύνολο QSO";
+$lang['awards_sig_table_name'] = "Τύπος Βραβείου";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Αναφορές";
+$lang['awards_sig_table_ref'] = "Αναφορά";
+$lang['awards_sig_table_datetime'] = "Ημερομηνία/Ώρα";
+$lang['awards_sig_table_call'] = "Κλήση";
+$lang['awards_sig_table_mode'] = "Λειτουργία";
+$lang['awards_sig_table_band'] = "Ζώνη";
+$lang['awards_sig_table_rst_sent'] = "RST Αποστολή";
+$lang['awards_sig_table_rst_rcvd'] = "RST Λήψη";
+$lang['awards_sig_table_qsl_status'] = "Κατάσταση QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "Μη επιβεβαιωμένο";
+$lang['awards_sig_no_data'] = "Δεν βρέθηκε τίποτα!";
+$lang['awards_sig_no_qsos'] = "Κανένα QSO δεν ταιριάζει με τα τρέχοντα φίλτρα.";

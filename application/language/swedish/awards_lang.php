@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "Återställ";
 $lang['awards_wab_action_apply'] = "Tillämpa";
 $lang['awards_wab_no_squares_title'] = "Inga WAB-rutor loggade";
 $lang['awards_wab_no_squares_message'] = "Du har inte loggat några WAB-kontakter (Worked All Britain) än. Börja logga kontakter med WAB-rutoreferenser för att se dina framsteg på kartan och tabellen.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filter";
+$lang['awards_sig_filter_all'] = "Alla";
+$lang['awards_sig_filter_band'] = "Band";
+$lang['awards_sig_filter_mode'] = "Läge";
+$lang['awards_sig_filter_confirmed_only'] = "Visa endast bekräftade";
+$lang['awards_sig_filter_detail'] = "Filtrera QSO:n";
+$lang['awards_sig_action_apply'] = "Använd";
+$lang['awards_sig_action_reset'] = "Återställ";
+$lang['awards_sig_action_export'] = "Exportera QSO till ADIF";
+$lang['awards_sig_filters_active'] = "Aktiva filter";
+$lang['awards_sig_stat_worked'] = "Unika arbetade referenser";
+$lang['awards_sig_stat_confirmed'] = "Bekräftade referencer";
+$lang['awards_sig_stat_qsos'] = "Totalt QSO";
+$lang['awards_sig_table_name'] = "Utmärkelstyp";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Referenser";
+$lang['awards_sig_table_ref'] = "Referens";
+$lang['awards_sig_table_datetime'] = "Datum/Tid";
+$lang['awards_sig_table_call'] = "Anropssignal";
+$lang['awards_sig_table_mode'] = "Läge";
+$lang['awards_sig_table_band'] = "Band";
+$lang['awards_sig_table_rst_sent'] = "RST Skickat";
+$lang['awards_sig_table_rst_rcvd'] = "RST Mottaget";
+$lang['awards_sig_table_qsl_status'] = "QSL-status";
+$lang['awards_sig_qsl_unconfirmed'] = "Obekräftad";
+$lang['awards_sig_no_data'] = "Inget hittades!";
+$lang['awards_sig_no_qsos'] = "Inga QSO matchar de aktuella filtren.";

@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "Opnieuw instellen";
 $lang['awards_wab_action_apply'] = "Toepassen";
 $lang['awards_wab_no_squares_title'] = "Geen WAB-vierkanten vastgelegd";
 $lang['awards_wab_no_squares_message'] = "U hebt nog geen WAB-contacten (Worked All Britain) vastgelegd. Begin contacten vast te leggen met WAB-vierkantverwijzingen om uw voortgang op de kaart en in de tabel te zien.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filters";
+$lang['awards_sig_filter_all'] = "Allemaal";
+$lang['awards_sig_filter_band'] = "Band";
+$lang['awards_sig_filter_mode'] = "Modus";
+$lang['awards_sig_filter_confirmed_only'] = "Alleen bevestigde weergeven";
+$lang['awards_sig_filter_detail'] = "QSO's filteren";
+$lang['awards_sig_action_apply'] = "Toepassen";
+$lang['awards_sig_action_reset'] = "Opnieuw instellen";
+$lang['awards_sig_action_export'] = "QSO's naar ADIF exporteren";
+$lang['awards_sig_filters_active'] = "Actieve filters";
+$lang['awards_sig_stat_worked'] = "Unieke referenties gewerkt";
+$lang['awards_sig_stat_confirmed'] = "Bevestigde referenties";
+$lang['awards_sig_stat_qsos'] = "Totaal QSO";
+$lang['awards_sig_table_name'] = "Awardtype";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Referenties";
+$lang['awards_sig_table_ref'] = "Verwijzing";
+$lang['awards_sig_table_datetime'] = "Datum/Tijd";
+$lang['awards_sig_table_call'] = "Roepnaam";
+$lang['awards_sig_table_mode'] = "Modus";
+$lang['awards_sig_table_band'] = "Band";
+$lang['awards_sig_table_rst_sent'] = "RST verzonden";
+$lang['awards_sig_table_rst_rcvd'] = "RST ontvangen";
+$lang['awards_sig_table_qsl_status'] = "QSL-status";
+$lang['awards_sig_qsl_unconfirmed'] = "Onbevestigd";
+$lang['awards_sig_no_data'] = "Niets gevonden!";
+$lang['awards_sig_no_qsos'] = "Geen QSO's voldoen aan de huidige filters.";

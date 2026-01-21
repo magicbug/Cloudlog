@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "Нулиране";
 $lang['awards_wab_action_apply'] = "Прилагане";
 $lang['awards_wab_no_squares_title'] = "Няма записани WAB полета";
 $lang['awards_wab_no_squares_message'] = "Все още не сте регистрирали никакви WAB контакти (Worked All Britain). Начнете да регистрирате контакти с референции на WAB полета, за да видите вашия прогрес на картата и таблицата.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Филтри";
+$lang['awards_sig_filter_all'] = "Всички";
+$lang['awards_sig_filter_band'] = "Лента";
+$lang['awards_sig_filter_mode'] = "Режим";
+$lang['awards_sig_filter_confirmed_only'] = "Показване само на потвърдени";
+$lang['awards_sig_filter_detail'] = "Филтриране на QSO";
+$lang['awards_sig_action_apply'] = "Прилагане";
+$lang['awards_sig_action_reset'] = "Нулиране";
+$lang['awards_sig_action_export'] = "Експортиране на QSO в ADIF";
+$lang['awards_sig_filters_active'] = "Активни филтри";
+$lang['awards_sig_stat_worked'] = "Уникални работени препратки";
+$lang['awards_sig_stat_confirmed'] = "Потвърдени препратки";
+$lang['awards_sig_stat_qsos'] = "Общо QSO";
+$lang['awards_sig_table_name'] = "Тип награда";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Препратки";
+$lang['awards_sig_table_ref'] = "Препратка";
+$lang['awards_sig_table_datetime'] = "Дата/Време";
+$lang['awards_sig_table_call'] = "Позивен сигнал";
+$lang['awards_sig_table_mode'] = "Режим";
+$lang['awards_sig_table_band'] = "Лента";
+$lang['awards_sig_table_rst_sent'] = "RST Изпратено";
+$lang['awards_sig_table_rst_rcvd'] = "RST Получено";
+$lang['awards_sig_table_qsl_status'] = "Статус QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "Не е потвърдено";
+$lang['awards_sig_no_data'] = "Нищо не е намерено!";
+$lang['awards_sig_no_qsos'] = "Няма QSO, отговарящи на текущите филтри.";

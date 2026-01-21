@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "Palauta";
 $lang['awards_wab_action_apply'] = "Käytä";
 $lang['awards_wab_no_squares_title'] = "Ei WAB-neliöitä kirjattu";
 $lang['awards_wab_no_squares_message'] = "Et ole vielä kirjannut WAB-yhteyksien (Worked All Britain). Aloita yhteyksien kirjaaminen WAB-neliöviitteillä nähdäksesi edistymisen kartalla ja taulukossa.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Suodattimet";
+$lang['awards_sig_filter_all'] = "Kaikki";
+$lang['awards_sig_filter_band'] = "Bändi";
+$lang['awards_sig_filter_mode'] = "Tila";
+$lang['awards_sig_filter_confirmed_only'] = "Näytä vain vahvistetut";
+$lang['awards_sig_filter_detail'] = "Suodata QSO:t";
+$lang['awards_sig_action_apply'] = "Käytä";
+$lang['awards_sig_action_reset'] = "Nollaa";
+$lang['awards_sig_action_export'] = "Vie QSO:t ADIF:iin";
+$lang['awards_sig_filters_active'] = "Aktiiviset suodattimet";
+$lang['awards_sig_stat_worked'] = "Ainutlaatuiset työtetyt viittaukset";
+$lang['awards_sig_stat_confirmed'] = "Vahvistetut viittaukset";
+$lang['awards_sig_stat_qsos'] = "Yhteensä QSO";
+$lang['awards_sig_table_name'] = "Palkinnon tyyppi";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Viittaukset";
+$lang['awards_sig_table_ref'] = "Viittaus";
+$lang['awards_sig_table_datetime'] = "Päivämäärä/Aika";
+$lang['awards_sig_table_call'] = "Kutsusignaali";
+$lang['awards_sig_table_mode'] = "Tila";
+$lang['awards_sig_table_band'] = "Bändi";
+$lang['awards_sig_table_rst_sent'] = "RST lähetetty";
+$lang['awards_sig_table_rst_rcvd'] = "RST vastaanotettu";
+$lang['awards_sig_table_qsl_status'] = "QSL-tila";
+$lang['awards_sig_qsl_unconfirmed'] = "Vahvistamaton";
+$lang['awards_sig_no_data'] = "Ei löytynyt!";
+$lang['awards_sig_no_qsos'] = "Yksikään QSO ei vastaa nykyisiä suodattimia.";

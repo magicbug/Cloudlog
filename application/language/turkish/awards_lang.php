@@ -213,3 +213,36 @@ $lang['awards_wab_action_reset'] = "Sıfırla";
 $lang['awards_wab_action_apply'] = "Uygula";
 $lang['awards_wab_no_squares_title'] = "WAB Karesi Kaydedilmedi";
 $lang['awards_wab_no_squares_message'] = "Henüz herhangi bir WAB (Worked All Britain) iletişimini kaydetmediniz. WAB kare referanslarıyla iletişim kaydetmeye başlayın ve harita ile tablodaki ilerlemenizi görmek için.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filtreler";
+$lang['awards_sig_filter_all'] = "Tümü";
+$lang['awards_sig_filter_band'] = "Bant";
+$lang['awards_sig_filter_mode'] = "Mod";
+$lang['awards_sig_filter_confirmed_only'] = "Yalnızca onaylı olanları göster";
+$lang['awards_sig_filter_detail'] = "QSO'ları Filtrele";
+$lang['awards_sig_action_apply'] = "Uygula";
+$lang['awards_sig_action_reset'] = "Sıfırla";
+$lang['awards_sig_action_export'] = "QSO'ları ADIF'e Aktar";
+$lang['awards_sig_filters_active'] = "Etkin Filtreler";
+$lang['awards_sig_stat_worked'] = "Çalışılan Benzersiz Referanslar";
+$lang['awards_sig_stat_confirmed'] = "Onaylı Referanslar";
+$lang['awards_sig_stat_qsos'] = "Toplam QSO";
+$lang['awards_sig_table_name'] = "Ödül Türü";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Referanslar";
+$lang['awards_sig_table_ref'] = "Referans";
+$lang['awards_sig_table_datetime'] = "Tarih/Saat";
+$lang['awards_sig_table_call'] = "Çağrı İşareti";
+$lang['awards_sig_table_mode'] = "Mod";
+$lang['awards_sig_table_band'] = "Bant";
+$lang['awards_sig_table_rst_sent'] = "RST Gönderilen";
+$lang['awards_sig_table_rst_rcvd'] = "RST Alınan";
+$lang['awards_sig_table_qsl_status'] = "QSL Durumu";
+$lang['awards_sig_qsl_unconfirmed'] = "Onaylanmamış";
+$lang['awards_sig_no_data'] = "Hiçbir şey bulunamadı!";
+$lang['awards_sig_no_qsos'] = "Geçerli filtrelere uyan QSO yok.";

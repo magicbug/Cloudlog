@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "重置";
 $lang['awards_wab_action_apply'] = "应用";
 $lang['awards_wab_no_squares_title'] = "未记录WAB方格";
 $lang['awards_wab_no_squares_message'] = "您尚未记录任何WAB（英国全部覆盖）联系。开始使用WAB方格参考来记录联系，以在地图和表格上查看您的进度。";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "筛选器";
+$lang['awards_sig_filter_all'] = "全部";
+$lang['awards_sig_filter_band'] = "波段";
+$lang['awards_sig_filter_mode'] = "模式";
+$lang['awards_sig_filter_confirmed_only'] = "仅显示已确认";
+$lang['awards_sig_filter_detail'] = "筛选QSO";
+$lang['awards_sig_action_apply'] = "应用";
+$lang['awards_sig_action_reset'] = "重置";
+$lang['awards_sig_action_export'] = "导出QSO到ADIF";
+$lang['awards_sig_filters_active'] = "活跃筛选器";
+$lang['awards_sig_stat_worked'] = "独特的工作参考文献";
+$lang['awards_sig_stat_confirmed'] = "已确认的参考文献";
+$lang['awards_sig_stat_qsos'] = "总QSO";
+$lang['awards_sig_table_name'] = "奖项类型";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# 参考文献";
+$lang['awards_sig_table_ref'] = "参考文献";
+$lang['awards_sig_table_datetime'] = "日期/时间";
+$lang['awards_sig_table_call'] = "呼号";
+$lang['awards_sig_table_mode'] = "模式";
+$lang['awards_sig_table_band'] = "波段";
+$lang['awards_sig_table_rst_sent'] = "RST发送";
+$lang['awards_sig_table_rst_rcvd'] = "RST接收";
+$lang['awards_sig_table_qsl_status'] = "QSL状态";
+$lang['awards_sig_qsl_unconfirmed'] = "未确认";
+$lang['awards_sig_no_data'] = "未找到任何内容！";
+$lang['awards_sig_no_qsos'] = "没有QSO与当前过滤器匹配。";

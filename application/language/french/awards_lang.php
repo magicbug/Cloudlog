@@ -219,3 +219,36 @@ $lang['awards_wab_action_reset'] = "Réinitialiser";
 $lang['awards_wab_action_apply'] = "Appliquer";
 $lang['awards_wab_no_squares_title'] = "Aucun carré WAB enregistré";
 $lang['awards_wab_no_squares_message'] = "Vous n'avez pas encore enregistré de contacts WAB (Worked All Britain). Commencez à enregistrer des contacts avec des références de carrés WAB pour voir votre progression sur la carte et le tableau.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filtres";
+$lang['awards_sig_filter_all'] = "Tous";
+$lang['awards_sig_filter_band'] = "Bande";
+$lang['awards_sig_filter_mode'] = "Mode";
+$lang['awards_sig_filter_confirmed_only'] = "Afficher uniquement les confirmés";
+$lang['awards_sig_filter_detail'] = "Filtrer les QSO";
+$lang['awards_sig_action_apply'] = "Appliquer";
+$lang['awards_sig_action_reset'] = "Réinitialiser";
+$lang['awards_sig_action_export'] = "Exporter les QSO en ADIF";
+$lang['awards_sig_filters_active'] = "Filtres actifs";
+$lang['awards_sig_stat_worked'] = "Références Uniques Traitées";
+$lang['awards_sig_stat_confirmed'] = "Références Confirmées";
+$lang['awards_sig_stat_qsos'] = "Total QSO";
+$lang['awards_sig_table_name'] = "Type de Prix";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Références";
+$lang['awards_sig_table_ref'] = "Référence";
+$lang['awards_sig_table_datetime'] = "Date/Heure";
+$lang['awards_sig_table_call'] = "Indicatif";
+$lang['awards_sig_table_mode'] = "Mode";
+$lang['awards_sig_table_band'] = "Bande";
+$lang['awards_sig_table_rst_sent'] = "RST Envoyé";
+$lang['awards_sig_table_rst_rcvd'] = "RST Reçu";
+$lang['awards_sig_table_qsl_status'] = "Statut QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "Non confirmé";
+$lang['awards_sig_no_data'] = "Rien trouvé!";
+$lang['awards_sig_no_qsos'] = "Aucun QSO ne correspond aux filtres actuels.";

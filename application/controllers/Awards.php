@@ -1221,8 +1221,30 @@ class Awards extends CI_Controller
     {
         // Grab all worked sig stations
         $this->load->model('sig');
+        $this->load->model('bands');
+        $this->load->model('modes');
 
-        $data['sig_types'] = $this->sig->get_all_sig_types();
+        // Parse filters from POST
+        $filters = array();
+        if ($this->input->method() === 'post') {
+            $filters['band'] = $this->security->xss_clean($this->input->post('band')) ?: 'all';
+            $filters['mode'] = $this->security->xss_clean($this->input->post('mode')) ?: 'all';
+            $filters['confirmed_only'] = $this->security->xss_clean($this->input->post('confirmed_only'));
+        } else {
+            $filters['band'] = 'all';
+            $filters['mode'] = 'all';
+            $filters['confirmed_only'] = false;
+        }
+
+        $data['sig_types'] = $this->sig->get_all_sig_types($filters);
+
+        // Get available bands and modes
+        $data['bands'] = $this->bands->get_worked_bands('sig');
+        $data['modes'] = $this->sig->get_worked_modes();
+
+        // Pass filters to view
+        $data['active_filters'] = $filters;
+        $data['filter_summary'] = $this->_sig_filter_summary($filters);
 
         // Render page
         $data['page_title'] = "Awards - SIG";
@@ -1239,15 +1261,59 @@ class Awards extends CI_Controller
 
         // Grab all worked sig stations
         $this->load->model('sig');
+        $this->load->model('bands');
+        $this->load->model('modes');
+
         $type = str_replace('"', "", $this->security->xss_clean($this->input->get("type")));
-        $data['sig_all'] = $this->sig->get_all($type);
+
+        // Parse filters
+        $filters = array();
+        if ($this->input->method() === 'post') {
+            $filters['band'] = $this->security->xss_clean($this->input->post('band')) ?: 'all';
+            $filters['mode'] = $this->security->xss_clean($this->input->post('mode')) ?: 'all';
+            $filters['confirmed_only'] = $this->security->xss_clean($this->input->post('confirmed_only'));
+        } else {
+            $filters['band'] = 'all';
+            $filters['mode'] = 'all';
+            $filters['confirmed_only'] = false;
+        }
+
+        $data['sig_all'] = $this->sig->get_all($type, $filters);
         $data['type'] = $type;
+        $data['filters'] = $filters;
+
+        // Get stats for this SIG type
+        $data['worked_refs'] = $this->sig->get_worked_sig_refs($type, $filters);
+        $data['confirmed_refs'] = $this->sig->get_confirmed_sig_refs($type, $filters);
+
+        // Get available bands and modes
+        $data['bands'] = $this->bands->get_worked_bands('sig');
+        $data['modes'] = $this->sig->get_worked_modes();
+
+        $data['filter_summary'] = $this->_sig_filter_summary($filters);
 
         // Render page
         $data['page_title'] = "Awards - SIG - " . $type;
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/sig/qso_list');
         $this->load->view('interface_assets/footer');
+    }
+
+    /**
+     * Helper: Generate human-readable filter summary for SIG
+     */
+    private function _sig_filter_summary($filters) {
+        $parts = array();
+        if (!empty($filters['band']) && $filters['band'] !== 'all') {
+            $parts[] = $filters['band'] . " band";
+        }
+        if (!empty($filters['mode']) && $filters['mode'] !== 'all') {
+            $parts[] = $filters['mode'] . " mode";
+        }
+        if (!empty($filters['confirmed_only']) && ($filters['confirmed_only'] === true || $filters['confirmed_only'] === 'true')) {
+            $parts[] = "Confirmed only";
+        }
+        return !empty($parts) ? implode(" · ", $parts) : "";
     }
 
     /*

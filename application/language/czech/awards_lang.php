@@ -218,3 +218,36 @@ $lang['awards_wab_action_reset'] = "Obnovit";
 $lang['awards_wab_action_apply'] = "Použít";
 $lang['awards_wab_no_squares_title'] = "Žádné WAB čtverce zaznamenány";
 $lang['awards_wab_no_squares_message'] = "Zatím jste nenahrávali žádné WAB kontakty (Worked All Britain). Začněte nahrávat kontakty s odkazem na WAB čtverce, abyste viděli svůj pokrok na mapě a tabulce.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filtry";
+$lang['awards_sig_filter_all'] = "Všechny";
+$lang['awards_sig_filter_band'] = "Pásmo";
+$lang['awards_sig_filter_mode'] = "Režim";
+$lang['awards_sig_filter_confirmed_only'] = "Zobrazit pouze potvrzené";
+$lang['awards_sig_filter_detail'] = "Filtrovat QSO";
+$lang['awards_sig_action_apply'] = "Použít";
+$lang['awards_sig_action_reset'] = "Obnovit";
+$lang['awards_sig_action_export'] = "Exportovat QSO do ADIF";
+$lang['awards_sig_filters_active'] = "Aktivní filtry";
+$lang['awards_sig_stat_worked'] = "Jedinečné pracované reference";
+$lang['awards_sig_stat_confirmed'] = "Potvrzené reference";
+$lang['awards_sig_stat_qsos'] = "Celkem QSO";
+$lang['awards_sig_table_name'] = "Typ ocenění";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Reference";
+$lang['awards_sig_table_ref'] = "Referenční";
+$lang['awards_sig_table_datetime'] = "Datum/Čas";
+$lang['awards_sig_table_call'] = "Výzva";
+$lang['awards_sig_table_mode'] = "Režim";
+$lang['awards_sig_table_band'] = "Pásmo";
+$lang['awards_sig_table_rst_sent'] = "RST Odesláno";
+$lang['awards_sig_table_rst_rcvd'] = "RST Přijato";
+$lang['awards_sig_table_qsl_status'] = "Stav QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "Nepotvrzené";
+$lang['awards_sig_no_data'] = "Nic nenalezeno!";
+$lang['awards_sig_no_qsos'] = "Žádné QSO neodpovídají aktuálním filtrům.";

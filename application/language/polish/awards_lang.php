@@ -203,3 +203,35 @@ $lang['awards_wab_action_reset'] = "Resetuj";
 $lang['awards_wab_action_apply'] = "Zastosuj";
 $lang['awards_wab_no_squares_title'] = "Brak zarejestrowanych kwadratów WAB";
 $lang['awards_wab_no_squares_message'] = "Nie zarejestrowałeś jeszcze żadnych kontaktów WAB (Worked All Britain). Zacznij rejestrować kontakty z odniesieniami kwadratów WAB, aby zobaczyć swoje postępy na mapie i w tabeli.";
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filtry";
+$lang['awards_sig_filter_all'] = "Wszystkie";
+$lang['awards_sig_filter_band'] = "Pasmo";
+$lang['awards_sig_filter_mode'] = "Tryb";
+$lang['awards_sig_filter_confirmed_only'] = "Pokaż tylko potwierdzone";
+$lang['awards_sig_filter_detail'] = "Filtruj QSO";
+$lang['awards_sig_action_apply'] = "Zastosuj";
+$lang['awards_sig_action_reset'] = "Resetuj";
+$lang['awards_sig_action_export'] = "Eksportuj QSO do ADIF";
+$lang['awards_sig_filters_active'] = "Aktywne filtry";
+$lang['awards_sig_stat_worked'] = "Unikalne Pracowane Odniesienia";
+$lang['awards_sig_stat_confirmed'] = "Potwierdzone Odniesienia";
+$lang['awards_sig_stat_qsos'] = "Razem QSO";
+$lang['awards_sig_table_name'] = "Typ Nagrody";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Odniesienia";
+$lang['awards_sig_table_ref'] = "Odniesienie";
+$lang['awards_sig_table_datetime'] = "Data/Czas";
+$lang['awards_sig_table_call'] = "Znak Wywoławczy";
+$lang['awards_sig_table_mode'] = "Tryb";
+$lang['awards_sig_table_band'] = "Pasmo";
+$lang['awards_sig_table_rst_sent'] = "RST Wysłany";
+$lang['awards_sig_table_rst_rcvd'] = "RST Otrzymany";
+$lang['awards_sig_table_qsl_status'] = "Status QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "Niepotwierdzone";
+$lang['awards_sig_no_data'] = "Nic nie znaleziono!";
+$lang['awards_sig_no_qsos'] = "Brak QSO pasujących do bieżących filtrów.";
