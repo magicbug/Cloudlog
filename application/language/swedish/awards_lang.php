@@ -206,3 +206,49 @@ $lang['awards_wab_description_ln1'] = "WAB - Worked All Britain Award";
 $lang['awards_wab_description_ln2'] = "The Amateur Radio Worked All Britain (WAB) Award is a prestigious recognition program within the amateur radio community that celebrates communication achievements across the United Kingdom. The WAB Award scheme encourages radio operators to establish contact with stations located in different regions of Britain, fostering camaraderie and promoting radio communication skills. To earn the WAB Award, participants must make successful radio contacts with stations located in specific WAB areas, which are defined by Ordnance Survey grid squares. These grid squares cover the entirety of Great Britain, including England, Scotland, Wales, and some offshore islands.";
 $lang['awards_wab_description_ln3'] = "Participants in the WAB Award program exchange information such as their location, signal strength, and WAB square reference during radio contacts. Points are awarded based on the location of the contacted station, with different point values assigned to contacts made within different WAB areas. By accumulating points from successful contacts, radio operators can progress through various award levels, each representing a significant milestone in their amateur radio journey. The WAB Award not only recognizes the dedication and skill of radio operators but also promotes geographic diversity and encourages exploration of the rich tapestry of locations across Britain through the medium of amateur radio.";
 $lang['awards_wab_description_ln4'] = "For more information, please visit: <a href='https://wab.intermip.net/default.php' target='_blank'>https://wab.intermip.net/default.php</a>.";
+$lang['awards_wab_filter_band'] = "Band";
+$lang['awards_wab_filter_mode'] = "Läge";
+$lang['awards_wab_filter_confirmed_only'] = "Visa endast bekräftade";
+$lang['awards_wab_stat_worked'] = "Arbetade rutor (filtrerad)";
+$lang['awards_wab_stat_confirmed'] = "Bekräftade rutor (filtrerad)";
+$lang['awards_wab_tab_map'] = "Karta";
+$lang['awards_wab_tab_table'] = "Tabell";
+$lang['awards_wab_table_heading'] = "QSO-samtal i vy";
+$lang['awards_wab_no_qsos'] = "Inga QSO-samtal motsvarar de aktuella filtren.";
+$lang['awards_wab_action_reset'] = "Återställ";
+$lang['awards_wab_action_apply'] = "Tillämpa";
+$lang['awards_wab_no_squares_title'] = "Inga WAB-rutor loggade";
+$lang['awards_wab_no_squares_message'] = "Du har inte loggat några WAB-kontakter (Worked All Britain) än. Börja logga kontakter med WAB-rutoreferenser för att se dina framsteg på kartan och tabellen.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filter";
+$lang['awards_sig_filter_all'] = "Alla";
+$lang['awards_sig_filter_band'] = "Band";
+$lang['awards_sig_filter_mode'] = "Läge";
+$lang['awards_sig_filter_confirmed_only'] = "Visa endast bekräftade";
+$lang['awards_sig_filter_detail'] = "Filtrera QSO:n";
+$lang['awards_sig_action_apply'] = "Använd";
+$lang['awards_sig_action_reset'] = "Återställ";
+$lang['awards_sig_action_export'] = "Exportera QSO till ADIF";
+$lang['awards_sig_filters_active'] = "Aktiva filter";
+$lang['awards_sig_stat_worked'] = "Unika arbetade referenser";
+$lang['awards_sig_stat_confirmed'] = "Bekräftade referencer";
+$lang['awards_sig_stat_qsos'] = "Totalt QSO";
+$lang['awards_sig_table_name'] = "Utmärkelstyp";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Referenser";
+$lang['awards_sig_table_ref'] = "Referens";
+$lang['awards_sig_table_datetime'] = "Datum/Tid";
+$lang['awards_sig_table_call'] = "Anropssignal";
+$lang['awards_sig_table_mode'] = "Läge";
+$lang['awards_sig_table_band'] = "Band";
+$lang['awards_sig_table_rst_sent'] = "RST Skickat";
+$lang['awards_sig_table_rst_rcvd'] = "RST Mottaget";
+$lang['awards_sig_table_qsl_status'] = "QSL-status";
+$lang['awards_sig_qsl_unconfirmed'] = "Obekräftad";
+$lang['awards_sig_no_data'] = "Inget hittades!";
+$lang['awards_sig_no_qsos'] = "Inga QSO matchar de aktuella filtren.";

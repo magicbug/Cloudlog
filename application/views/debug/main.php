@@ -25,6 +25,16 @@
                         <td>Migration</td>
                         <td><?php echo (isset($migration_version) ? $migration_version : "<span class='badge text-bg-danger'>There is something wrong with your Migration in Database!</span>"); ?></td>
                     </tr>
+                    <?php if(file_exists(APPPATH.'config/managed.php')) { ?>
+                    <tr>
+                        <td>Managed</td>
+                        <td><span class="badge text-bg-success">True</span></td>
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                        <td>Installation Path</td>
+                        <td><?php echo FCPATH; ?></td>
+                    </tr>
 
                 </table>
             </div>
@@ -40,6 +50,33 @@
                     </tr>
 
                     <tr>
+                        <td>Server API</td>
+                        <td><?php echo php_sapi_name(); ?></td>
+                    </tr>
+
+                    <tr>
+                        <td>HTTPS</td>
+                        <td>
+                            <?php if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') { ?>
+                                <span class="badge text-bg-success">Enabled</span>
+                            <?php } else { ?>
+                                <span class="badge text-bg-warning">Disabled</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Docker</td>
+                        <td>
+                            <?php if(isset($is_docker) && $is_docker) { ?>
+                                <span class="badge text-bg-success">Detected</span>
+                            <?php } else { ?>
+                                <span class="badge text-bg-warning">Not Detected</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td>PHP Version</td>
                         <td><?php echo phpversion(); ?></td>
                     </tr>
@@ -47,6 +84,42 @@
                     <tr>
                         <td>MySQL Version</td>
                         <td><?php echo $this->db->version(); ?></td>
+                    </tr>
+
+                    <tr>
+                        <td>Available Disk Space</td>
+                        <td>
+                            <?php 
+                            $bytes = disk_free_space(FCPATH);
+                            $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+                            $power = $bytes > 0 ? floor(log($bytes, 1024)) : 0;
+                            echo number_format($bytes / pow(1024, $power), 2) . ' ' . $units[$power];
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Database Information</div>
+            <div class="card-body">
+                <table width="100%">
+                    <tr>
+                        <td>Database Name</td>
+                        <td><?php echo $this->db->database; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Table Name</td>
+                        <td><?php echo $this->config->item('table_name'); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Character Set</td>
+                        <td><?php echo $this->db->char_set; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Collation</td>
+                        <td><?php echo $this->db->dbcollat; ?></td>
                     </tr>
                 </table>
             </div>
@@ -108,6 +181,60 @@
 
     <div class="col">
         <div class="card">
+            <div class="card-header">PHP Settings</div>
+            <div class="card-body">
+                <table width="100%">
+                    <tr>
+                        <td>memory_limit</td>
+                        <td><?php echo ini_get('memory_limit'); ?></td>
+                    </tr>
+                    <tr>
+                        <td>max_execution_time</td>
+                        <td><?php echo ini_get('max_execution_time'); ?> seconds</td>
+                    </tr>
+                    <tr>
+                        <td>upload_max_filesize</td>
+                        <td><?php echo ini_get('upload_max_filesize'); ?></td>
+                    </tr>
+                    <tr>
+                        <td>post_max_size</td>
+                        <td><?php echo ini_get('post_max_size'); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Timezone</td>
+                        <td><?php echo ini_get('date.timezone') ?: 'Not set (using system default)'; ?></td>
+                    </tr>
+                    <tr>
+                        <td>allow_url_fopen</td>
+                        <td>
+                            <?php if(ini_get('allow_url_fopen')) { ?>
+                                <span class="badge text-bg-success">Enabled</span>
+                            <?php } else { ?>
+                                <span class="badge text-bg-danger">Disabled</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Session Information</div>
+            <div class="card-body">
+                <table width="100%">
+                    <tr>
+                        <td>Session Handler</td>
+                        <td><?php echo ini_get('session.save_handler'); ?></td>
+                    </tr>
+                    <tr>
+                        <td>Session Save Path</td>
+                        <td><?php echo session_save_path() ?: ini_get('session.save_path'); ?></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
             <div class="card-header">PHP Modules</div>
             <div class="card-body">
                 <table width="100%">
@@ -159,6 +286,39 @@
                         <td>openssl</td>
                         <td>
                             <?php if(in_array  ('openssl', get_loaded_extensions())) { ?>
+                                <span class="badge text-bg-success">Installed</span>
+                            <?php } else { ?>
+                                <span class="badge text-bg-danger">Not Installed</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>zip</td>
+                        <td>
+                            <?php if(in_array  ('zip', get_loaded_extensions())) { ?>
+                                <span class="badge text-bg-success">Installed</span>
+                            <?php } else { ?>
+                                <span class="badge text-bg-danger">Not Installed</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>gd</td>
+                        <td>
+                            <?php if(in_array  ('gd', get_loaded_extensions())) { ?>
+                                <span class="badge text-bg-success">Installed</span>
+                            <?php } else { ?>
+                                <span class="badge text-bg-danger">Not Installed</span>
+                            <?php } ?>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>json</td>
+                        <td>
+                            <?php if(in_array  ('json', get_loaded_extensions())) { ?>
                                 <span class="badge text-bg-success">Installed</span>
                             <?php } else { ?>
                                 <span class="badge text-bg-danger">Not Installed</span>

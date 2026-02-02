@@ -24,8 +24,11 @@ $custom_date_format = $this->session->userdata('user_date_format') ?: $this->con
             <td style="text-align:center"><?php echo htmlspecialchars($row->COL_RST_SENT); ?></td>
             <td style="text-align:center"><?php echo htmlspecialchars($row->COL_RST_RCVD); ?></td>
         </tr>
-        <?php } } else { ?>
-        <tr><td colspan="7" class="text-center"><?php echo lang('general_word_nothing_found'); ?></td></tr>
-        <?php } ?>
+        <?php } } ?>
     </tbody>
+    <?php if (empty($rows)) { ?>
+    <tfoot>
+        <tr><td colspan="7" class="text-center"><?php echo lang('general_word_nothing_found'); ?></td></tr>
+    </tfoot>
+    <?php } ?>
 </table>

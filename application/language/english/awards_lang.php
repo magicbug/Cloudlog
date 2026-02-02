@@ -206,3 +206,49 @@ $lang['awards_wab_description_ln1'] = "WAB - Worked All Britain Award";
 $lang['awards_wab_description_ln2'] = "The Amateur Radio Worked All Britain (WAB) Award is a prestigious recognition program within the amateur radio community that celebrates communication achievements across the United Kingdom. The WAB Award scheme encourages radio operators to establish contact with stations located in different regions of Britain, fostering camaraderie and promoting radio communication skills. To earn the WAB Award, participants must make successful radio contacts with stations located in specific WAB areas, which are defined by Ordnance Survey grid squares. These grid squares cover the entirety of Great Britain, including England, Scotland, Wales, and some offshore islands.";
 $lang['awards_wab_description_ln3'] = "Participants in the WAB Award program exchange information such as their location, signal strength, and WAB square reference during radio contacts. Points are awarded based on the location of the contacted station, with different point values assigned to contacts made within different WAB areas. By accumulating points from successful contacts, radio operators can progress through various award levels, each representing a significant milestone in their amateur radio journey. The WAB Award not only recognizes the dedication and skill of radio operators but also promotes geographic diversity and encourages exploration of the rich tapestry of locations across Britain through the medium of amateur radio.";
 $lang['awards_wab_description_ln4'] = "For more information, please visit: <a href='https://wab.intermip.net/default.php' target='_blank'>https://wab.intermip.net/default.php</a>.";
+$lang['awards_wab_filter_band'] = "Band";
+$lang['awards_wab_filter_mode'] = "Mode";
+$lang['awards_wab_filter_confirmed_only'] = "Show confirmed only";
+$lang['awards_wab_stat_worked'] = "Worked squares (filtered)";
+$lang['awards_wab_stat_confirmed'] = "Confirmed squares (filtered)";
+$lang['awards_wab_tab_map'] = "Map";
+$lang['awards_wab_tab_table'] = "Table";
+$lang['awards_wab_table_heading'] = "QSOs in view";
+$lang['awards_wab_no_qsos'] = "No QSOs match the current filters.";
+$lang['awards_wab_action_reset'] = "Reset";
+$lang['awards_wab_action_apply'] = "Apply";
+$lang['awards_wab_no_squares_title'] = "No WAB Squares Logged";
+$lang['awards_wab_no_squares_message'] = "You haven't logged any WAB (Worked All Britain) contacts yet. Start logging contacts with WAB square references to see your progress on the map and table.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filters";
+$lang['awards_sig_filter_all'] = "All";
+$lang['awards_sig_filter_band'] = "Band";
+$lang['awards_sig_filter_mode'] = "Mode";
+$lang['awards_sig_filter_confirmed_only'] = "Show confirmed only";
+$lang['awards_sig_filter_detail'] = "Filter QSOs";
+$lang['awards_sig_action_apply'] = "Apply";
+$lang['awards_sig_action_reset'] = "Reset";
+$lang['awards_sig_action_export'] = "Export QSOs to ADIF";
+$lang['awards_sig_filters_active'] = "Active filters";
+$lang['awards_sig_stat_worked'] = "Unique References Worked";
+$lang['awards_sig_stat_confirmed'] = "References Confirmed";
+$lang['awards_sig_stat_qsos'] = "Total QSOs";
+$lang['awards_sig_table_name'] = "Award Type";
+$lang['awards_sig_table_qsos'] = "# QSOs";
+$lang['awards_sig_table_refs'] = "# References";
+$lang['awards_sig_table_ref'] = "Reference";
+$lang['awards_sig_table_datetime'] = "Date/Time";
+$lang['awards_sig_table_call'] = "Callsign";
+$lang['awards_sig_table_mode'] = "Mode";
+$lang['awards_sig_table_band'] = "Band";
+$lang['awards_sig_table_rst_sent'] = "RST Sent";
+$lang['awards_sig_table_rst_rcvd'] = "RST Received";
+$lang['awards_sig_table_qsl_status'] = "QSL Status";
+$lang['awards_sig_qsl_unconfirmed'] = "Unconfirmed";
+$lang['awards_sig_no_data'] = "Nothing found!";
+$lang['awards_sig_no_qsos'] = "No QSOs match the current filters.";

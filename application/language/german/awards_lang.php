@@ -206,3 +206,49 @@ $lang['awards_wab_description_ln1'] = "WAB - Worked All Britain Award";
 $lang['awards_wab_description_ln2'] = "The Amateur Radio Worked All Britain (WAB) Award is a prestigious recognition program within the amateur radio community that celebrates communication achievements across the United Kingdom. The WAB Award scheme encourages radio operators to establish contact with stations located in different regions of Britain, fostering camaraderie and promoting radio communication skills. To earn the WAB Award, participants must make successful radio contacts with stations located in specific WAB areas, which are defined by Ordnance Survey grid squares. These grid squares cover the entirety of Great Britain, including England, Scotland, Wales, and some offshore islands.";
 $lang['awards_wab_description_ln3'] = "Participants in the WAB Award program exchange information such as their location, signal strength, and WAB square reference during radio contacts. Points are awarded based on the location of the contacted station, with different point values assigned to contacts made within different WAB areas. By accumulating points from successful contacts, radio operators can progress through various award levels, each representing a significant milestone in their amateur radio journey. The WAB Award not only recognizes the dedication and skill of radio operators but also promotes geographic diversity and encourages exploration of the rich tapestry of locations across Britain through the medium of amateur radio.";
 $lang['awards_wab_description_ln4'] = "For more information, please visit: <a href='https://wab.intermip.net/default.php' target='_blank'>https://wab.intermip.net/default.php</a>.";
+$lang['awards_wab_filter_band'] = "Band";
+$lang['awards_wab_filter_mode'] = "Betriebsart";
+$lang['awards_wab_filter_confirmed_only'] = "Nur bestätigte anzeigen";
+$lang['awards_wab_stat_worked'] = "Bearbeitete Quadrate (gefiltert)";
+$lang['awards_wab_stat_confirmed'] = "Bestätigte Quadrate (gefiltert)";
+$lang['awards_wab_tab_map'] = "Karte";
+$lang['awards_wab_tab_table'] = "Tabelle";
+$lang['awards_wab_table_heading'] = "QSOs in Ansicht";
+$lang['awards_wab_no_qsos'] = "Keine QSOs entsprechen den aktuellen Filtern.";
+$lang['awards_wab_action_reset'] = "Zurücksetzen";
+$lang['awards_wab_action_apply'] = "Anwenden";
+$lang['awards_wab_no_squares_title'] = "Keine WAB-Quadrate protokolliert";
+$lang['awards_wab_no_squares_message'] = "Sie haben noch keine WAB-Kontakte (Worked All Britain) protokolliert. Beginnen Sie mit der Protokollierung von Kontakten mit WAB-Quadrat-Referenzen, um Ihren Fortschritt auf der Karte und in der Tabelle zu sehen.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filter";
+$lang['awards_sig_filter_all'] = "Alle";
+$lang['awards_sig_filter_band'] = "Band";
+$lang['awards_sig_filter_mode'] = "Betriebsart";
+$lang['awards_sig_filter_confirmed_only'] = "Nur bestätigte anzeigen";
+$lang['awards_sig_filter_detail'] = "QSO filtern";
+$lang['awards_sig_action_apply'] = "Anwenden";
+$lang['awards_sig_action_reset'] = "Zurücksetzen";
+$lang['awards_sig_action_export'] = "QSO in ADIF exportieren";
+$lang['awards_sig_filters_active'] = "Aktive Filter";
+$lang['awards_sig_stat_worked'] = "Eindeutige erreichbare Referenzen";
+$lang['awards_sig_stat_confirmed'] = "Bestätigte Referenzen";
+$lang['awards_sig_stat_qsos'] = "Gesamt-QSO";
+$lang['awards_sig_table_name'] = "Preistyp";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Referenzen";
+$lang['awards_sig_table_ref'] = "Referenz";
+$lang['awards_sig_table_datetime'] = "Datum/Uhrzeit";
+$lang['awards_sig_table_call'] = "Rufzeichen";
+$lang['awards_sig_table_mode'] = "Betriebsart";
+$lang['awards_sig_table_band'] = "Band";
+$lang['awards_sig_table_rst_sent'] = "RST gesendet";
+$lang['awards_sig_table_rst_rcvd'] = "RST empfangen";
+$lang['awards_sig_table_qsl_status'] = "QSL-Status";
+$lang['awards_sig_qsl_unconfirmed'] = "Unbekräftigt";
+$lang['awards_sig_no_data'] = "Nichts gefunden!";
+$lang['awards_sig_no_qsos'] = "Keine QSO entsprechen den aktuellen Filtern.";

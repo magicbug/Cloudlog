@@ -41,7 +41,7 @@ foreach ($summits as $ref => $meta) {
     if (!window.L) { return; }
     
     // QSO data by ref
-    var qsosByRef = <?php echo json_encode($qsos_by_ref); ?>;
+    var qsosByRef = <?php echo json_encode($qsos_by_ref, JSON_INVALID_UTF8_SUBSTITUTE) ?: '{}'; ?>;
     var dateFormat = '<?php echo $custom_date_format; ?>';
     
     var map = L.map('sotaMapCanvas').setView([20,0], 2);
@@ -50,7 +50,7 @@ foreach ($summits as $ref => $meta) {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    var confirmed = <?php echo json_encode(array_keys($confirmed)); ?>;
+    var confirmed = <?php echo json_encode(array_keys($confirmed), JSON_INVALID_UTF8_SUBSTITUTE) ?: '[]'; ?>;
     var confirmedSet = {};
     confirmed.forEach(function(c){ confirmedSet[c] = true; });
 

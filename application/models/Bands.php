@@ -49,7 +49,7 @@ class Bands extends CI_Model {
 		$this->db->where('bandxuser.userid', $this->session->userdata('user_id'));
 		$this->db->where('bandxuser.active', 1);
 
-		if ($award != 'None') {
+		if ($award != 'None' && $this->db->field_exists($award, 'bandxuser')) {
 			$this->db->where('bandxuser.'.$award, 1);
 		}
 

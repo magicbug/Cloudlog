@@ -334,12 +334,11 @@ class WAJA extends CI_Model {
         } else if ($band == 'All') {
             $this->load->model('bands');
 
-			$bandslots = $this->bands->get_worked_bands('was');
+			$bandslots = $this->bands->get_worked_bands('waja');
 
 			$bandslots_list = "'".implode("','",$bandslots)."'";
 
-			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
-					" and thcv.col_prop_mode !='SAT'";
+			$sql .= " and (thcv.col_band in (" . $bandslots_list . ") or thcv.col_prop_mode ='SAT')";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";
@@ -367,12 +366,11 @@ class WAJA extends CI_Model {
         } else if ($band == 'All') {
             $this->load->model('bands');
 
-			$bandslots = $this->bands->get_worked_bands('was');
+			$bandslots = $this->bands->get_worked_bands('waja');
 
 			$bandslots_list = "'".implode("','",$bandslots)."'";
 
-			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
-					" and thcv.col_prop_mode !='SAT'";
+			$sql .= " and (thcv.col_band in (" . $bandslots_list . ") or thcv.col_prop_mode ='SAT')";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
             $sql .= " and thcv.col_band ='" . $band . "'";

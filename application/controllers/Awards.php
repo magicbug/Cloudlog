@@ -547,10 +547,30 @@ class Awards extends CI_Controller
 	*/
     public function wwff()
     {
-
-        // Grab all worked wwff stations
         $this->load->model('wwff');
-        $data['wwff_all'] = $this->wwff->get_all();
+        $this->load->model('modes');
+        $this->load->model('bands');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands('wwff');
+        $data['modes'] = $this->modes->active();
+
+        if ($this->input->method() === 'post') {
+            $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
+            $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
+            $postdata['qsl'] = $this->security->xss_clean($this->input->post('qsl'));
+            $postdata['lotw'] = $this->security->xss_clean($this->input->post('lotw'));
+            $postdata['eqsl'] = $this->security->xss_clean($this->input->post('eqsl'));
+        } else {
+            $postdata['band'] = 'All';
+            $postdata['mode'] = 'All';
+            $postdata['qsl'] = 1;
+            $postdata['lotw'] = 1;
+            $postdata['eqsl'] = 0;
+        }
+
+        $data['postdata'] = $postdata;
+        $data['wwff_all'] = $this->wwff->get_all_filtered($postdata);
+        $data['wwff_summary'] = $this->wwff->get_wwff_summary($postdata);
 
         // Render page
         $data['page_title'] = "Awards - WWFF";
@@ -752,17 +772,40 @@ class Awards extends CI_Controller
     }
     public function wab()
     {
-        // get worked squares from Worked_all_britain_model
-        $this->load->model('worked_all_britain_model');
-        $data['worked_squares'] = array_filter($this->worked_all_britain_model->get_worked_squares());
+        $footerData = [];
+        $footerData['scripts'] = [
+            'assets/js/sections/wab.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/wab.js")),
+        ];
 
-        $data['confirmed_squares'] = array_filter($this->worked_all_britain_model->get_confirmed_squares());
+        $this->load->model('worked_all_britain_model');
+        $this->load->model('bands');
+        $this->load->model('modes');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands('wab') ?? [];
+        $data['modes'] = $this->modes->active();
+
+        $filters = [];
+        $filters['band'] = $this->input->post('band') ? $this->security->xss_clean($this->input->post('band')) : 'All';
+        $filters['band'] = $filters['band'] ?: 'All';
+        $filters['mode'] = $this->input->post('mode') ? $this->security->xss_clean($this->input->post('mode')) : 'All';
+        $filters['mode'] = $filters['mode'] ?: 'All';
+        $filters['confirmed_only'] = $this->input->post('confirmed_only') ? true : false;
+
+        $data['filters'] = $filters;
+
+        $data['worked_squares'] = array_filter($this->worked_all_britain_model->get_worked_squares($filters) ?? []);
+        $data['confirmed_squares'] = array_filter($this->worked_all_britain_model->get_confirmed_squares($filters) ?? []);
+        $data['worked_count'] = count($data['worked_squares']);
+        $data['confirmed_count'] = count($data['confirmed_squares']);
+
+        $data['wab_qsos'] = $this->worked_all_britain_model->get_wab_qsos($filters);
+        $data['filter_summary'] = $this->wab_filter_summary($filters);
 
         // Render page
         $data['page_title'] = "Awards - Worked All Britain";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/wab/index');
-        $this->load->view('interface_assets/footer');
+        $this->load->view('interface_assets/footer', $footerData);
     }
 
 
@@ -828,18 +871,35 @@ class Awards extends CI_Controller
 
     public function wab_details_ajax()
     {
-        $this->load->model('logbook_model');
-
         $wab = str_replace('"', "", $this->security->xss_clean($this->input->post("Wab")));
 
         $wab = str_replace(["Small Square ", " Boundry Box"], "", $wab);
+        $filters = [];
+        $filters['band'] = $this->input->post('Band') ? $this->security->xss_clean($this->input->post('Band')) : 'All';
+        $filters['band'] = $filters['band'] ?: 'All';
+        $filters['mode'] = $this->input->post('Mode') ? $this->security->xss_clean($this->input->post('Mode')) : 'All';
+        $filters['mode'] = $filters['mode'] ?: 'All';
+        $filters['confirmed_only'] = $this->input->post('ConfirmedOnly') ? true : false;
+        $filters['square'] = $wab;
 
-        $data['results'] = $this->logbook_model->wab_qso_details($wab);
+        $this->load->model('worked_all_britain_model');
+        $data['results'] = $this->worked_all_britain_model->get_wab_qsos($filters);
 
         // Render Page
         $data['page_title'] = "Log View - WAB";
-        $data['filter'] = "WAB " . $wab;
+        $data['filter'] = "WAB " . $wab . ' · ' . $this->wab_filter_summary($filters);
         $this->load->view('awards/wab/details', $data);
+    }
+
+    private function wab_filter_summary($filters)
+    {
+        $parts = [];
+        $parts[] = ($filters['band'] ?? 'All') === 'All' ? 'All bands' : ($filters['band'] . ' band');
+        $parts[] = ($filters['mode'] ?? 'All') === 'All' ? 'All modes' : ($filters['mode'] . ' mode');
+        if (!empty($filters['confirmed_only'])) {
+            $parts[] = 'Confirmed only';
+        }
+        return implode(' · ', $parts);
     }
 
 
@@ -1181,8 +1241,30 @@ class Awards extends CI_Controller
     {
         // Grab all worked sig stations
         $this->load->model('sig');
+        $this->load->model('bands');
+        $this->load->model('modes');
 
-        $data['sig_types'] = $this->sig->get_all_sig_types();
+        // Parse filters from POST
+        $filters = array();
+        if ($this->input->method() === 'post') {
+            $filters['band'] = $this->security->xss_clean($this->input->post('band')) ?: 'all';
+            $filters['mode'] = $this->security->xss_clean($this->input->post('mode')) ?: 'all';
+            $filters['confirmed_only'] = $this->security->xss_clean($this->input->post('confirmed_only'));
+        } else {
+            $filters['band'] = 'all';
+            $filters['mode'] = 'all';
+            $filters['confirmed_only'] = false;
+        }
+
+        $data['sig_types'] = $this->sig->get_all_sig_types($filters);
+
+        // Get available bands and modes
+        $data['bands'] = $this->bands->get_worked_bands('sig');
+        $data['modes'] = $this->sig->get_worked_modes();
+
+        // Pass filters to view
+        $data['active_filters'] = $filters;
+        $data['filter_summary'] = $this->_sig_filter_summary($filters);
 
         // Render page
         $data['page_title'] = "Awards - SIG";
@@ -1199,15 +1281,59 @@ class Awards extends CI_Controller
 
         // Grab all worked sig stations
         $this->load->model('sig');
+        $this->load->model('bands');
+        $this->load->model('modes');
+
         $type = str_replace('"', "", $this->security->xss_clean($this->input->get("type")));
-        $data['sig_all'] = $this->sig->get_all($type);
+
+        // Parse filters
+        $filters = array();
+        if ($this->input->method() === 'post') {
+            $filters['band'] = $this->security->xss_clean($this->input->post('band')) ?: 'all';
+            $filters['mode'] = $this->security->xss_clean($this->input->post('mode')) ?: 'all';
+            $filters['confirmed_only'] = $this->security->xss_clean($this->input->post('confirmed_only'));
+        } else {
+            $filters['band'] = 'all';
+            $filters['mode'] = 'all';
+            $filters['confirmed_only'] = false;
+        }
+
+        $data['sig_all'] = $this->sig->get_all($type, $filters);
         $data['type'] = $type;
+        $data['filters'] = $filters;
+
+        // Get stats for this SIG type
+        $data['worked_refs'] = $this->sig->get_worked_sig_refs($type, $filters);
+        $data['confirmed_refs'] = $this->sig->get_confirmed_sig_refs($type, $filters);
+
+        // Get available bands and modes
+        $data['bands'] = $this->bands->get_worked_bands('sig');
+        $data['modes'] = $this->sig->get_worked_modes();
+
+        $data['filter_summary'] = $this->_sig_filter_summary($filters);
 
         // Render page
         $data['page_title'] = "Awards - SIG - " . $type;
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/sig/qso_list');
         $this->load->view('interface_assets/footer');
+    }
+
+    /**
+     * Helper: Generate human-readable filter summary for SIG
+     */
+    private function _sig_filter_summary($filters) {
+        $parts = array();
+        if (!empty($filters['band']) && $filters['band'] !== 'all') {
+            $parts[] = $filters['band'] . " band";
+        }
+        if (!empty($filters['mode']) && $filters['mode'] !== 'all') {
+            $parts[] = $filters['mode'] . " mode";
+        }
+        if (!empty($filters['confirmed_only']) && ($filters['confirmed_only'] === true || $filters['confirmed_only'] === 'true')) {
+            $parts[] = "Confirmed only";
+        }
+        return !empty($parts) ? implode(" · ", $parts) : "";
     }
 
     /*
@@ -1224,6 +1350,63 @@ class Awards extends CI_Controller
         $data['qsos'] = $this->adif_data->sig_all($type);
 
         $this->load->view('adif/data/exportall', $data);
+    }
+
+    public function sigexportcsv()
+    {
+        $this->load->model('sig');
+
+        $type = urldecode($this->security->xss_clean($this->uri->segment(3)));
+        $qsos = $this->sig->get_all($type)->result();
+
+        // Set headers for CSV download
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=SIG_' . $type . '_' . date('Y-m-d') . '.csv');
+
+        // Open output stream
+        $output = fopen('php://output', 'w');
+
+        // Write header row
+        fputcsv($output, array(
+            'Reference',
+            'Date/Time',
+            'Callsign',
+            'Mode',
+            'Band',
+            'RST Sent',
+            'RST Received',
+            'QSL Status'
+        ));
+
+        // Write data rows
+        foreach ($qsos as $row) {
+            $is_confirmed = ($row->COL_QSL_RCVD == 'Y' || $row->COL_EQSL_QSL_RCVD == 'Y' || $row->COL_LOTW_QSL_RCVD == 'Y');
+            
+            $qsl_status = '';
+            if ($row->COL_LOTW_QSL_RCVD == 'Y') {
+                $qsl_status = 'LoTW';
+            } elseif ($row->COL_EQSL_QSL_RCVD == 'Y') {
+                $qsl_status = 'eQSL';
+            } elseif ($row->COL_QSL_RCVD == 'Y') {
+                $qsl_status = 'QSL';
+            } else {
+                $qsl_status = 'Unconfirmed';
+            }
+
+            fputcsv($output, array(
+                $row->COL_SIG_INFO,
+                date('d/m/y H:i', strtotime($row->COL_TIME_ON)),
+                $row->COL_CALL,
+                $row->COL_MODE,
+                $row->COL_BAND,
+                $row->COL_RST_SENT,
+                $row->COL_RST_RCVD,
+                $qsl_status
+            ));
+        }
+
+        fclose($output);
+        exit;
     }
 
     /*

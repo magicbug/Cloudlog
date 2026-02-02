@@ -30,6 +30,16 @@ class Debug extends CI_Controller {
         $uploads_folder = $this->is_really_writable('uploads');
         $data['uploads_folder'] = $uploads_folder;
 
+        // Detect if running inside Docker
+        $is_docker = false;
+        if (file_exists('/.dockerenv')) {
+            $is_docker = true;
+        } else if (is_readable('/proc/self/cgroup')) {
+            $cgroup = file_get_contents('/proc/self/cgroup');
+            $is_docker = (strpos($cgroup, 'docker') !== false || strpos($cgroup, 'kubepods') !== false || strpos($cgroup, 'containerd') !== false);
+        }
+        $data['is_docker'] = $is_docker;
+
         $data['page_title'] = "Debug";
 
         $this->load->view('interface_assets/header', $data);

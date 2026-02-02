@@ -206,3 +206,49 @@ $lang['awards_wab_description_ln1'] = "WAB - Worked All Britain Award";
 $lang['awards_wab_description_ln2'] = "The Amateur Radio Worked All Britain (WAB) Award is a prestigious recognition program within the amateur radio community that celebrates communication achievements across the United Kingdom. The WAB Award scheme encourages radio operators to establish contact with stations located in different regions of Britain, fostering camaraderie and promoting radio communication skills. To earn the WAB Award, participants must make successful radio contacts with stations located in specific WAB areas, which are defined by Ordnance Survey grid squares. These grid squares cover the entirety of Great Britain, including England, Scotland, Wales, and some offshore islands.";
 $lang['awards_wab_description_ln3'] = "Participants in the WAB Award program exchange information such as their location, signal strength, and WAB square reference during radio contacts. Points are awarded based on the location of the contacted station, with different point values assigned to contacts made within different WAB areas. By accumulating points from successful contacts, radio operators can progress through various award levels, each representing a significant milestone in their amateur radio journey. The WAB Award not only recognizes the dedication and skill of radio operators but also promotes geographic diversity and encourages exploration of the rich tapestry of locations across Britain through the medium of amateur radio.";
 $lang['awards_wab_description_ln4'] = "For more information, please visit: <a href='https://wab.intermip.net/default.php' target='_blank'>https://wab.intermip.net/default.php</a>.";
+$lang['awards_wab_filter_band'] = "Лента";
+$lang['awards_wab_filter_mode'] = "Режим";
+$lang['awards_wab_filter_confirmed_only'] = "Покажи само потвърдени";
+$lang['awards_wab_stat_worked'] = "Работени полета (филтрирани)";
+$lang['awards_wab_stat_confirmed'] = "Потвърдени полета (филтрирани)";
+$lang['awards_wab_tab_map'] = "Карта";
+$lang['awards_wab_tab_table'] = "Таблица";
+$lang['awards_wab_table_heading'] = "QSO-та в изглед";
+$lang['awards_wab_no_qsos'] = "Няма QSO-та, които да съответстват на текущите филтри.";
+$lang['awards_wab_action_reset'] = "Нулиране";
+$lang['awards_wab_action_apply'] = "Прилагане";
+$lang['awards_wab_no_squares_title'] = "Няма записани WAB полета";
+$lang['awards_wab_no_squares_message'] = "Все още не сте регистрирали никакви WAB контакти (Worked All Britain). Начнете да регистрирате контакти с референции на WAB полета, за да видите вашия прогрес на картата и таблицата.";
+
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Филтри";
+$lang['awards_sig_filter_all'] = "Всички";
+$lang['awards_sig_filter_band'] = "Лента";
+$lang['awards_sig_filter_mode'] = "Режим";
+$lang['awards_sig_filter_confirmed_only'] = "Показване само на потвърдени";
+$lang['awards_sig_filter_detail'] = "Филтриране на QSO";
+$lang['awards_sig_action_apply'] = "Прилагане";
+$lang['awards_sig_action_reset'] = "Нулиране";
+$lang['awards_sig_action_export'] = "Експортиране на QSO в ADIF";
+$lang['awards_sig_filters_active'] = "Активни филтри";
+$lang['awards_sig_stat_worked'] = "Уникални работени препратки";
+$lang['awards_sig_stat_confirmed'] = "Потвърдени препратки";
+$lang['awards_sig_stat_qsos'] = "Общо QSO";
+$lang['awards_sig_table_name'] = "Тип награда";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Препратки";
+$lang['awards_sig_table_ref'] = "Препратка";
+$lang['awards_sig_table_datetime'] = "Дата/Време";
+$lang['awards_sig_table_call'] = "Позивен сигнал";
+$lang['awards_sig_table_mode'] = "Режим";
+$lang['awards_sig_table_band'] = "Лента";
+$lang['awards_sig_table_rst_sent'] = "RST Изпратено";
+$lang['awards_sig_table_rst_rcvd'] = "RST Получено";
+$lang['awards_sig_table_qsl_status'] = "Статус QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "Не е потвърдено";
+$lang['awards_sig_no_data'] = "Нищо не е намерено!";
+$lang['awards_sig_no_qsos'] = "Няма QSO, отговарящи на текущите филтри.";

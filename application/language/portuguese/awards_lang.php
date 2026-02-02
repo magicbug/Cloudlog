@@ -191,3 +191,48 @@ $lang['awards_wab_description_ln1'] = "Prêmio WAB - Worked All Britain";
 $lang['awards_wab_description_ln2'] = "Reconhece contatos com áreas WAB definidas por Grids do Ordnance Survey em todo o Reino Unido.";
 $lang['awards_wab_description_ln3'] = "O objetivo é acumular pontos por contatos e conquistar níveis no programa de prêmios.";
 $lang['awards_wab_description_ln4'] = "Mais informações: <a href='https://wab.intermip.net/default.php' target='_blank'>https://wab.intermip.net/default.php</a>.";
+$lang['awards_wab_filter_band'] = "Banda";
+$lang['awards_wab_filter_mode'] = "Modo";
+$lang['awards_wab_filter_confirmed_only'] = "Mostrar apenas confirmados";
+$lang['awards_wab_stat_worked'] = "Quadrados trabalhados (filtrado)";
+$lang['awards_wab_stat_confirmed'] = "Quadrados confirmados (filtrado)";
+$lang['awards_wab_tab_map'] = "Mapa";
+$lang['awards_wab_tab_table'] = "Tabela";
+$lang['awards_wab_table_heading'] = "QSOs na visualização";
+$lang['awards_wab_no_qsos'] = "Nenhum QSO corresponde aos filtros atuais.";
+$lang['awards_wab_action_reset'] = "Redefinir";
+$lang['awards_wab_action_apply'] = "Aplicar";
+$lang['awards_wab_no_squares_title'] = "Nenhum quadrado WAB registrado";
+$lang['awards_wab_no_squares_message'] = "Você ainda não registrou nenhum contato WAB (Worked All Britain). Comece a registrar contatos com referências quadradas WAB para ver seu progresso no mapa e na tabela.";
+/*
+___________________________________________________________________________________________
+SIG -- Special Interest Group
+___________________________________________________________________________________________
+*/
+$lang['awards_sig_filters'] = "Filtros";
+$lang['awards_sig_filter_all'] = "Todos";
+$lang['awards_sig_filter_band'] = "Banda";
+$lang['awards_sig_filter_mode'] = "Modo";
+$lang['awards_sig_filter_confirmed_only'] = "Mostrar apenas confirmados";
+$lang['awards_sig_filter_detail'] = "Filtrar QSO";
+$lang['awards_sig_action_apply'] = "Aplicar";
+$lang['awards_sig_action_reset'] = "Redefinir";
+$lang['awards_sig_action_export'] = "Exportar QSO para ADIF";
+$lang['awards_sig_filters_active'] = "Filtros ativos";
+$lang['awards_sig_stat_worked'] = "Referências Únicas Trabalhadas";
+$lang['awards_sig_stat_confirmed'] = "Referências Confirmadas";
+$lang['awards_sig_stat_qsos'] = "Total de QSO";
+$lang['awards_sig_table_name'] = "Tipo de Prêmio";
+$lang['awards_sig_table_qsos'] = "# QSO";
+$lang['awards_sig_table_refs'] = "# Referências";
+$lang['awards_sig_table_ref'] = "Referência";
+$lang['awards_sig_table_datetime'] = "Data/Hora";
+$lang['awards_sig_table_call'] = "Indicativo";
+$lang['awards_sig_table_mode'] = "Modo";
+$lang['awards_sig_table_band'] = "Banda";
+$lang['awards_sig_table_rst_sent'] = "RST Enviado";
+$lang['awards_sig_table_rst_rcvd'] = "RST Recebido";
+$lang['awards_sig_table_qsl_status'] = "Status QSL";
+$lang['awards_sig_qsl_unconfirmed'] = "Não Confirmado";
+$lang['awards_sig_no_data'] = "Nada encontrado!";
+$lang['awards_sig_no_qsos'] = "Nenhum QSO corresponde aos filtros atuais.";

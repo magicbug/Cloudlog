@@ -35,7 +35,7 @@
 					<label class="form-label"><?php echo lang('gen_hamradio_mode'); ?></label>
 					<select name="mode" class="form-select form-select-sm">
 						<option value="All">All</option>
-						<?php if (!empty($modes)) { foreach ($modes as $m) { echo '<option value="'.htmlspecialchars($m->mode).'">'.htmlspecialchars($m->mode).'</option>'; } } ?>
+						<?php if (!empty($modes)) { foreach ($modes->result() as $mode) { $val = $mode->submode ?: $mode->mode; echo '<option value="'.htmlspecialchars($val).'">'.htmlspecialchars($val).'</option>'; } } ?>
 					</select>
 				</div>
 				<div class="col-auto form-check mt-4">
