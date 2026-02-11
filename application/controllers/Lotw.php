@@ -526,6 +526,10 @@ class Lotw extends CI_Controller {
 			$tableheaders .= "</tr>";
 
 			$table = "";
+			$batch_updates = array(); // Collect all updates for batch processing
+			$table_rows = array(); // Collect table rows for later rendering
+			
+			// First pass: collect all records for batch processing
 			while($record = $this->adif_parser->get_record())
 			{
 
@@ -548,75 +552,93 @@ class Lotw extends CI_Controller {
 				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'], $record['station_callsign']);
 
 				if($status[0] == "Found") {
-					if (isset($record['state'])) {
-						$state = $record['state'];
-					} else {
-						$state = "";
-					}
-					// Present only if the QSLing station specified a single valid grid square value in its station location uploaded to LoTW.
-					if (isset($record['gridsquare'])) {
-						$qsl_gridsquare = $record['gridsquare'];
-					} else {
-						$qsl_gridsquare = "";
-					}
+					$state = isset($record['state']) ? $record['state'] : "";
+					$qsl_gridsquare = isset($record['gridsquare']) ? $record['gridsquare'] : "";
+					$qsl_vucc_grids = isset($record['vucc_grids']) ? $record['vucc_grids'] : "";
+					$iota = isset($record['iota']) ? $record['iota'] : "";
+					$cnty = isset($record['cnty']) ? $record['cnty'] : "";
+					$cqz = isset($record['cqz']) ? $record['cqz'] : "";
+					$ituz = isset($record['ituz']) ? $record['ituz'] : "";
 
-					if (isset($record['vucc_grids'])) {
-						$qsl_vucc_grids = $record['vucc_grids'];
-					} else {
-						$qsl_vucc_grids = "";
-					}
+					// Add to batch update array
+					$batch_updates[] = array(
+						'datetime' => $time_on,
+						'callsign' => $record['call'],
+						'band' => $record['band'],
+						'qsl_date' => $qsl_date,
+						'qsl_status' => $record['qsl_rcvd'],
+						'state' => $state,
+						'qsl_gridsquare' => $qsl_gridsquare,
+						'qsl_vucc_grids' => $qsl_vucc_grids,
+						'iota' => $iota,
+						'cnty' => $cnty,
+						'cqz' => $cqz,
+						'ituz' => $ituz,
+						'station_callsign' => $record['station_callsign']
+					);
 
-					if (isset($record['iota'])) {
-						$iota = $record['iota'];
-					} else {
-						$iota = "";
-					}
-
-					if (isset($record['cnty'])) {
-						$cnty = $record['cnty'];
-					} else {
-						$cnty = "";
-					}
-
-					if (isset($record['cqz'])) {
-						$cqz = $record['cqz'];
-					} else {
-						$cqz = "";
-					}
-
-					if (isset($record['ituz'])) {
-						$ituz = $record['ituz'];
-					} else {
-						$ituz = "";
-					}
-
-					$lotw_status = $this->logbook_model->lotw_update($time_on, $record['call'], $record['band'], $qsl_date, $record['qsl_rcvd'], $state, $qsl_gridsquare, $qsl_vucc_grids, $iota, $cnty, $cqz, $ituz, $record['station_callsign']);
-
+					$table_rows[] = array(
+						'station_callsign' => $record['station_callsign'],
+						'time_on' => $time_on,
+						'call' => $record['call'],
+						'mode' => $record['mode'],
+						'qsl_rcvd' => $record['qsl_rcvd'],
+						'qsl_date' => $qsl_date,
+						'state' => $state,
+						'gridsquare' => ($qsl_gridsquare != '' ? $qsl_gridsquare : $qsl_vucc_grids),
+						'iota' => $iota,
+						'status' => $status[0],
+						'found' => true
+					);
+				} else {
+					$table_rows[] = array(
+						'station_callsign' => $record['station_callsign'],
+						'time_on' => $time_on,
+						'call' => $record['call'],
+						'mode' => $record['mode'],
+						'qsl_rcvd' => $record['qsl_rcvd'],
+						'status' => $status[0],
+						'found' => false
+					);
+				}
+			}
+			
+			// Batch update all LOTW confirmations in one operation
+			$lotw_status = "No updates";
+			if (!empty($batch_updates)) {
+				$result = $this->logbook_model->lotw_update_batch($batch_updates);
+				$lotw_status = "Batch Updated: {$result['updated']} QSOs, {$result['gridsquare_updated']} gridsquares";
+				log_message('info', 'LoTW Download: ' . $lotw_status);
+			}
+			
+			// Build table from collected rows
+			foreach ($table_rows as $row) {
+				if ($row['found']) {
 					$table .= "<tr>";
-						$table .= "<td>".$record['station_callsign']."</td>";
-						$table .= "<td>".$time_on."</td>";
-						$table .= "<td>".$record['call']."</td>";
-						$table .= "<td>".$record['mode']."</td>";
-						$table .= "<td>".$record['qsl_rcvd']."</td>";
-						$table .= "<td>".$qsl_date."</td>";
-						$table .= "<td>".$state."</td>";
-						$table .= "<td>".($qsl_gridsquare != '' ? $qsl_gridsquare : $qsl_vucc_grids)."</td>";
-						$table .= "<td>".$iota."</td>";
-						$table .= "<td>QSO Record: ".$status[0]."</td>";
+						$table .= "<td>".$row['station_callsign']."</td>";
+						$table .= "<td>".$row['time_on']."</td>";
+						$table .= "<td>".$row['call']."</td>";
+						$table .= "<td>".$row['mode']."</td>";
+						$table .= "<td>".$row['qsl_rcvd']."</td>";
+						$table .= "<td>".$row['qsl_date']."</td>";
+						$table .= "<td>".$row['state']."</td>";
+						$table .= "<td>".$row['gridsquare']."</td>";
+						$table .= "<td>".$row['iota']."</td>";
+						$table .= "<td>QSO Record: ".$row['status']."</td>";
 						$table .= "<td>LoTW Record: ".$lotw_status."</td>";
 					$table .= "</tr>";
 				} else {
 					$table .= "<tr>";
-						$table .= "<td>".$record['station_callsign']."</td>";
-						$table .= "<td>".$time_on."</td>";
-						$table .= "<td>".$record['call']."</td>";
-						$table .= "<td>".$record['mode']."</td>";
-						$table .= "<td>".$record['qsl_rcvd']."</td>";
+						$table .= "<td>".$row['station_callsign']."</td>";
+						$table .= "<td>".$row['time_on']."</td>";
+						$table .= "<td>".$row['call']."</td>";
+						$table .= "<td>".$row['mode']."</td>";
+						$table .= "<td>".$row['qsl_rcvd']."</td>";
 						$table .= "<td></td>";
 						$table .= "<td></td>";
 						$table .= "<td></td>";
 						$table .= "<td></td>";
-						$table .= "<td>QSO Record: ".$status[0]."</td>";
+						$table .= "<td>QSO Record: ".$row['status']."</td>";
 						$table .= "<td></td>";
 					$table .= "</tr>";
 				}

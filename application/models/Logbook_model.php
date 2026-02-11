@@ -3504,6 +3504,182 @@ class Logbook_model extends CI_Model
     return "Updated";
   }
 
+  /*
+   * Batch update multiple QSOs from LoTW confirmation downloads
+   * Replaces N individual lotw_update() calls with batch operations
+   * Provides massive performance improvement for large LOTW downloads
+   * 
+   * @param array $records Array of LOTW confirmation records with keys:
+   *                       datetime, callsign, band, qsl_date, qsl_status, 
+   *                       state, qsl_gridsquare, qsl_vucc_grids, iota, 
+   *                       cnty, cqz, ituz, station_callsign
+   * @return array Statistics array with 'updated', 'gridsquare_updated', 'errors' counts
+   */
+  function lotw_update_batch($records)
+  {
+    if (empty($records) || !is_array($records)) {
+      log_message('debug', 'LoTW batch update: No records provided');
+      return array('updated' => 0, 'gridsquare_updated' => 0, 'errors' => 0);
+    }
+
+    $record_count = count($records);
+    log_message('info', "LoTW batch update: Processing {$record_count} confirmation records");
+
+    $table_name = $this->config->item('table_name');
+    
+    // Step 1: Build WHERE conditions to find all matching QSOs and their current upload status
+    $match_conditions = array();
+    foreach ($records as $idx => $record) {
+      $match_conditions[] = sprintf(
+        "(date_format(COL_TIME_ON, '%%Y-%%m-%%d %%H:%%i') = '%s' AND COL_CALL = '%s' AND COL_BAND = '%s' AND COL_STATION_CALLSIGN = '%s')",
+        $this->db->escape_str($record['datetime']),
+        $this->db->escape_str($record['callsign']),
+        $this->db->escape_str($record['band']),
+        $this->db->escape_str($record['station_callsign'])
+      );
+    }
+    
+    // Step 2: Get all matching QSOs with their current upload status and gridsquare
+    $sql = "SELECT COL_PRIMARY_KEY, 
+                   date_format(COL_TIME_ON, '%Y-%m-%d %H:%i') as fmt_time,
+                   COL_CALL, COL_BAND, COL_STATION_CALLSIGN,
+                   COL_CLUBLOG_QSO_UPLOAD_STATUS as CL_STATE,
+                   COL_QRZCOM_QSO_UPLOAD_STATUS as QRZ_STATE,
+                   COL_LOTW_QSL_RCVD,
+                   station_profile.station_gridsquare,
+                   station_profile.station_id
+            FROM {$table_name}
+            LEFT JOIN station_profile ON {$table_name}.station_id = station_profile.station_id
+            WHERE (" . implode(' OR ', $match_conditions) . ")";
+    
+    $query = $this->db->query($sql);
+    
+    if ($query->num_rows() == 0) {
+      log_message('warning', 'LoTW batch update: No matching QSOs found in database');
+      return array('updated' => 0, 'gridsquare_updated' => 0, 'errors' => 0);
+    }
+    
+    // Step 3: Build lookup map and batch update array
+    $qso_map = array();
+    foreach ($query->result() as $qso) {
+      $key = $qso->fmt_time . '|' . $qso->COL_CALL . '|' . $qso->COL_BAND . '|' . $qso->COL_STATION_CALLSIGN;
+      $qso_map[$key] = $qso;
+    }
+    
+    $batch_updates = array();
+    $gridsquare_updates = array();
+    
+    foreach ($records as $record) {
+      $key = $record['datetime'] . '|' . $record['callsign'] . '|' . $record['band'] . '|' . $record['station_callsign'];
+      
+      if (!isset($qso_map[$key])) {
+        continue; // QSO not found in database
+      }
+      
+      $qso = $qso_map[$key];
+      
+      // Skip if already updated with this exact status
+      if ($qso->COL_LOTW_QSL_RCVD == $record['qsl_status']) {
+        continue;
+      }
+      
+      $update_data = array(
+        'COL_PRIMARY_KEY' => $qso->COL_PRIMARY_KEY,
+        'COL_LOTW_QSLRDATE' => $record['qsl_date'],
+        'COL_LOTW_QSL_RCVD' => $record['qsl_status'],
+        'COL_LOTW_QSL_SENT' => 'Y'
+      );
+      
+      // Add optional fields
+      if (!empty($record['state'])) {
+        $update_data['COL_STATE'] = $record['state'];
+      }
+      if (!empty($record['iota'])) {
+        $update_data['COL_IOTA'] = $record['iota'];
+      }
+      if (!empty($record['cnty'])) {
+        $update_data['COL_CNTY'] = $record['cnty'];
+      }
+      if (!empty($record['cqz'])) {
+        $update_data['COL_CQZ'] = $record['cqz'];
+      }
+      if (!empty($record['ituz'])) {
+        $update_data['COL_ITUZ'] = $record['ituz'];
+      }
+      
+      // Mark for re-upload to QRZ/ClubLog if already uploaded
+      if ($qso->QRZ_STATE == 'Y') {
+        $update_data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+      }
+      if ($qso->CL_STATE == 'Y') {
+        $update_data['COL_CLUBLOG_QSO_UPLOAD_STATUS'] = 'M';
+      }
+      
+      $batch_updates[] = $update_data;
+      
+      // Handle gridsquare updates separately (need distance calculation)
+      if (!empty($record['qsl_gridsquare']) || !empty($record['qsl_vucc_grids'])) {
+        $gridsquare_updates[] = array(
+          'COL_PRIMARY_KEY' => $qso->COL_PRIMARY_KEY,
+          'station_gridsquare' => $qso->station_gridsquare,
+          'qsl_gridsquare' => $record['qsl_gridsquare'] ?? '',
+          'qsl_vucc_grids' => $record['qsl_vucc_grids'] ?? ''
+        );
+      }
+    }
+    
+    // Step 4: Execute batch update
+    $updated_count = 0;
+    if (!empty($batch_updates)) {
+      $this->db->update_batch($table_name, $batch_updates, 'COL_PRIMARY_KEY');
+      $updated_count = $this->db->affected_rows();
+      log_message('info', "LoTW batch update: Updated {$updated_count} QSO records");
+    }
+    
+    // Step 5: Handle gridsquare updates with distance calculation
+    $gridsquare_count = 0;
+    if (!empty($gridsquare_updates)) {
+      if (!$this->load->is_loaded('Qra')) {
+        $this->load->library('Qra');
+      }
+      
+      $grid_batch = array();
+      foreach ($gridsquare_updates as $grid_update) {
+        $data = array('COL_PRIMARY_KEY' => $grid_update['COL_PRIMARY_KEY']);
+        
+        if (!empty($grid_update['qsl_gridsquare'])) {
+          $data['COL_GRIDSQUARE'] = $grid_update['qsl_gridsquare'];
+          $data['COL_DISTANCE'] = $this->qra->distance(
+            $grid_update['station_gridsquare'], 
+            $grid_update['qsl_gridsquare'], 
+            'K'
+          );
+        } elseif (!empty($grid_update['qsl_vucc_grids'])) {
+          $data['COL_VUCC_GRIDS'] = $grid_update['qsl_vucc_grids'];
+          $data['COL_DISTANCE'] = $this->qra->distance(
+            $grid_update['station_gridsquare'], 
+            $grid_update['qsl_vucc_grids'], 
+            'K'
+          );
+        }
+        
+        $grid_batch[] = $data;
+      }
+      
+      if (!empty($grid_batch)) {
+        $this->db->update_batch($table_name, $grid_batch, 'COL_PRIMARY_KEY');
+        $gridsquare_count = $this->db->affected_rows();
+        log_message('info', "LoTW batch update: Updated {$gridsquare_count} gridsquare/distance records");
+      }
+    }
+    
+    return array(
+      'updated' => $updated_count,
+      'gridsquare_updated' => $gridsquare_count,
+      'errors' => 0
+    );
+  }
+
   function qrz_last_qsl_date($user_id)
   {
     $sql = "SELECT date_format(MAX(COALESCE(COL_QRZCOM_QSO_DOWNLOAD_DATE, str_to_date('1900-01-01','%Y-%m-%d'))),'%Y-%m-%d') MAXDATE

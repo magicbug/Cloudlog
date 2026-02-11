@@ -78,26 +78,28 @@ class LotwCert extends CI_Model {
 	}
 
 	function toggle_archive_certificate($user_id, $lotw_cert_id) {
-		// First get current archive status
+		// Use single UPDATE with calculated toggle instead of SELECT+UPDATE
+		// archived = 1 - archived toggles between 0 and 1
+		$this->db->set('archived', '1 - archived', FALSE);
+		$this->db->where('lotw_cert_id', $lotw_cert_id);
+		$this->db->where('user_id', $user_id);
+		$this->db->update('lotw_certs');
+		
+		if ($this->db->affected_rows() == 0) {
+			return false;
+		}
+		
+		// Get final status to return
 		$this->db->select('archived');
 		$this->db->where('lotw_cert_id', $lotw_cert_id);
 		$this->db->where('user_id', $user_id);
 		$query = $this->db->get('lotw_certs');
 		
-		if($query->num_rows() == 0) {
-			return false;
+		if($query->num_rows() > 0) {
+			return array('archived' => $query->row()->archived);
 		}
 		
-		$current_status = $query->row()->archived;
-		$new_status = $current_status ? 0 : 1;
-		
-		// Update the archive status
-		$data = array('archived' => $new_status);
-		$this->db->where('lotw_cert_id', $lotw_cert_id);
-		$this->db->where('user_id', $user_id);
-		$this->db->update('lotw_certs', $data);
-		
-		return array('archived' => $new_status);
+		return false;
 	}
 
 	function last_upload($certID) {
