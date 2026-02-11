@@ -75,5 +75,13 @@ class Migration_add_lotw_performance_indexes extends CI_Migration
         }
         
         // Drop the LOTW/QRZ/eQSL confirmation match index if it exists
-        $confirmatioLOTW/QRZ
+        $confirmation_match_index_exists = $this->db->query("SHOW INDEX FROM $table_name WHERE Key_name = 'idx_confirmation_match'")->num_rows();
+        
+        if ($confirmation_match_index_exists > 0) {
+            $sql = "ALTER TABLE $table_name DROP INDEX `idx_confirmation_match`";
+            $this->db->query($sql);
+        }
+        
+        $this->db->db_debug = true;
+    }
 }
