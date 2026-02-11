@@ -3,6 +3,66 @@
 class Logbook_model extends CI_Model
 {
 
+  /**
+   * Clear dashboard cache for all users with access to a station
+   * This should be called whenever QSOs are added, edited, or deleted
+   * to ensure dashboard statistics remain accurate
+   * 
+   * @param int $station_id The station ID affected by the change (optional)
+   */
+  private function clear_dashboard_cache($station_id = null)
+  {
+    $CI = &get_instance();
+    $CI->load->driver('cache', array('adapter' => 'file'));
+    
+    // If station_id is provided, get all users with access to that station
+    if ($station_id !== null) {
+      // Get the station owner
+      $this->db->select('user_id');
+      $this->db->where('station_id', $station_id);
+      $query = $this->db->get('station_profile');
+      
+      $user_ids = array();
+      if ($query->num_rows() > 0) {
+        $user_ids[] = $query->row()->user_id;
+      }
+      
+      // Also get users with shared access via station_logbooks_permissions
+      $this->db->select('DISTINCT user_id');
+      $this->db->join('station_logbooks_relationship', 'station_logbooks_relationship.station_logbook_id = station_logbooks_permissions.logbook_id');
+      $this->db->where('station_logbooks_relationship.station_id', $station_id);
+      $query = $this->db->get('station_logbooks_permissions');
+      
+      if ($query->num_rows() > 0) {
+        foreach ($query->result() as $row) {
+          if (!in_array($row->user_id, $user_ids)) {
+            $user_ids[] = $row->user_id;
+          }
+        }
+      }
+      
+      // Clear cache for each affected user
+      foreach ($user_ids as $user_id) {
+        // Get all logbooks for this user to clear all possible cache entries
+        $this->db->select('logbook_id');
+        $this->db->where('user_id', $user_id);
+        $logbook_query = $this->db->get('station_logbooks');
+        
+        foreach ($logbook_query->result() as $logbook) {
+          $cache_key = 'dashboard_stats_' . $user_id . '_' . $logbook->logbook_id;
+          $CI->cache->delete($cache_key . '_qso');
+          $CI->cache->delete($cache_key . '_countries');
+          $CI->cache->delete($cache_key . '_vucc');
+          $CI->cache->delete($cache_key . '_qsl');
+        }
+      }
+    } else {
+      // No station specified - clear all dashboard cache (nuclear option)
+      // This is less efficient but ensures consistency
+      $CI->cache->clean();
+    }
+  }
+
   /* Add QSO to Logbook */
   function create_qso()
   {
@@ -659,6 +719,9 @@ class Logbook_model extends CI_Model
     $this->db->insert($this->config->item('table_name'), $data);
 
     $last_id = $this->db->insert_id();
+    
+    // Clear dashboard cache for affected station
+    $this->clear_dashboard_cache($data['station_id']);
 
     if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
       $this->upload_amsat_status($data);
@@ -1414,6 +1477,9 @@ class Logbook_model extends CI_Model
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
     $this->db->update($this->config->item('table_name'), $data);
+    
+    // Clear dashboard cache for affected station
+    $this->clear_dashboard_cache($stationId);
   }
 
   /* QSL received */
@@ -3363,8 +3429,23 @@ class Logbook_model extends CI_Model
   function delete($id)
   {
     if ($this->check_qso_is_accessible($id)) {
+      // Get station_id before deleting for cache clearing
+      $this->db->select('station_id');
+      $this->db->where('COL_PRIMARY_KEY', $id);
+      $qso_query = $this->db->get($this->config->item('table_name'));
+      $station_id = null;
+      if ($qso_query->num_rows() > 0) {
+        $station_id = $qso_query->row()->station_id;
+      }
+      
+      // Delete the QSO
       $this->db->where('COL_PRIMARY_KEY', $id);
       $this->db->delete($this->config->item('table_name'));
+      
+      // Clear dashboard cache for affected station
+      if ($station_id !== null) {
+        $this->clear_dashboard_cache($station_id);
+      }
     } else {
       return;
     }

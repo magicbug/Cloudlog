@@ -89,18 +89,35 @@ class Dashboard extends CI_Controller
 			//
 			$this->load->model('cat');
 			$this->load->model('vucc');
+			
+			// Load cache driver for dashboard statistics caching (15 minutes)
+			$this->load->driver('cache', array('adapter' => 'file'));
 
 			$data['radio_status'] = $this->cat->recent_status();
 
-			// Store info - Use consolidated query for QSO statistics
-			$qso_stats = $this->logbook_model->get_qso_statistics_consolidated($logbooks_locations_array);
+			// Create cache key based on user and active logbook
+			$cache_key = 'dashboard_stats_' . $this->session->userdata('user_id') . '_' . $this->session->userdata('active_station_logbook');
+			$cache_ttl = 900; // 15 minutes
+			
+			// Try to get QSO statistics from cache
+			$qso_stats = $this->cache->get($cache_key . '_qso');
+			if (!$qso_stats) {
+				// Cache miss - query database
+				$qso_stats = $this->logbook_model->get_qso_statistics_consolidated($logbooks_locations_array);
+				$this->cache->save($cache_key . '_qso', $qso_stats, $cache_ttl);
+			}
 			$data['todays_qsos'] = $qso_stats['todays_qsos'];
 			$data['total_qsos'] = $qso_stats['total_qsos'];
 			$data['month_qsos'] = $qso_stats['month_qsos'];
 			$data['year_qsos'] = $qso_stats['year_qsos'];
 
-			// Use consolidated countries statistics instead of separate queries
-			$countries_stats = $this->logbook_model->get_countries_statistics_consolidated($logbooks_locations_array);
+			// Try to get countries statistics from cache
+			$countries_stats = $this->cache->get($cache_key . '_countries');
+			if (!$countries_stats) {
+				// Cache miss - query database
+				$countries_stats = $this->logbook_model->get_countries_statistics_consolidated($logbooks_locations_array);
+				$this->cache->save($cache_key . '_countries', $countries_stats, $cache_ttl);
+			}
 			
 			$data['total_countries'] = $countries_stats['Countries_Worked'];
 			$data['total_countries_confirmed_paper'] = $countries_stats['Countries_Worked_QSL'];
@@ -131,12 +148,27 @@ class Dashboard extends CI_Controller
 
 			// Only load VUCC data if the card is actually enabled
 			if ($data['dashboard_vuccgrids_card']) {
-				$data['vucc'] = $this->vucc->fetchVuccSummary();
-				$data['vuccSAT'] = $this->vucc->fetchVuccSummary('SAT');
+				// Try to get VUCC data from cache
+				$vucc_data = $this->cache->get($cache_key . '_vucc');
+				if (!$vucc_data) {
+					// Cache miss - query database
+					$vucc_data = array(
+						'vucc' => $this->vucc->fetchVuccSummary(),
+						'vuccSAT' => $this->vucc->fetchVuccSummary('SAT')
+					);
+					$this->cache->save($cache_key . '_vucc', $vucc_data, $cache_ttl);
+				}
+				$data['vucc'] = $vucc_data['vucc'];
+				$data['vuccSAT'] = $vucc_data['vuccSAT'];
 			}
 
-		
-			$QSLStatsBreakdownArray = $this->logbook_model->get_QSLStats($logbooks_locations_array);
+			// Try to get QSL statistics from cache
+			$QSLStatsBreakdownArray = $this->cache->get($cache_key . '_qsl');
+			if (!$QSLStatsBreakdownArray) {
+				// Cache miss - query database
+				$QSLStatsBreakdownArray = $this->logbook_model->get_QSLStats($logbooks_locations_array);
+				$this->cache->save($cache_key . '_qsl', $QSLStatsBreakdownArray, $cache_ttl);
+			}
 
 			$data['total_qsl_sent'] = $QSLStatsBreakdownArray['QSL_Sent'];
 			$data['total_qsl_rcvd'] = $QSLStatsBreakdownArray['QSL_Received'];
