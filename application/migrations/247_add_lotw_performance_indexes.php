@@ -30,13 +30,14 @@ class Migration_add_lotw_performance_indexes extends CI_Migration
             $this->db->query($sql);
         }
         
-        // Add composite index for LOTW confirmation matching in batch downloads
-        // Speeds up import_check() and lotw_update_batch() lookups
+        // Add composite index for LOTW/QRZ confirmation matching in batch downloads
+        // Speeds up import_check(), lotw_update_batch(), and QRZ process_qrz_batch() JOIN operations
+        // This index benefits both LOTW and QRZ download processing
         // Format: (COL_TIME_ON, COL_CALL, COL_BAND, COL_STATION_CALLSIGN)
-        $lotw_match_index_exists = $this->db->query("SHOW INDEX FROM $table_name WHERE Key_name = 'idx_lotw_confirmation_match'")->num_rows();
+        $confirmation_match_index_exists = $this->db->query("SHOW INDEX FROM $table_name WHERE Key_name = 'idx_confirmation_match'")->num_rows();
         
-        if ($lotw_match_index_exists == 0) {
-            $sql = "ALTER TABLE $table_name ADD INDEX `idx_lotw_confirmation_match` (`COL_TIME_ON`, `COL_CALL`, `COL_BAND`, `COL_STATION_CALLSIGN`)";
+        if ($confirmation_match_index_exists == 0) {
+            $sql = "ALTER TABLE $table_name ADD INDEX `idx_confirmation_match` (`COL_TIME_ON`, `COL_CALL`, `COL_BAND`, `COL_STATION_CALLSIGN`)";
             $this->db->query($sql);
         }
         
@@ -65,11 +66,11 @@ class Migration_add_lotw_performance_indexes extends CI_Migration
             $this->db->query($sql);
         }
         
-        // Drop the LOTW confirmation match index if it exists
-        $lotw_match_index_exists = $this->db->query("SHOW INDEX FROM $table_name WHERE Key_name = 'idx_lotw_confirmation_match'")->num_rows();
+        // Drop the LOTW/QRZ confirmation match index if it exists
+        $confirmation_match_index_exists = $this->db->query("SHOW INDEX FROM $table_name WHERE Key_name = 'idx_confirmation_match'")->num_rows();
         
-        if ($lotw_match_index_exists > 0) {
-            $sql = "ALTER TABLE $table_name DROP INDEX `idx_lotw_confirmation_match`";
+        if ($confirmation_match_index_exists > 0) {
+            $sql = "ALTER TABLE $table_name DROP INDEX `idx_confirmation_match`";
             $this->db->query($sql);
         }
         
