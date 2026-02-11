@@ -48,15 +48,26 @@ class Hrdlog extends CI_Controller {
     /*
      * Function gets all QSOs from given station_id, that are not previously uploaded to hrdlog.
      * Adif is build for each qso, and then uploaded, one at a time
+     * Uses batch fetching to prevent memory exhaustion with large datasets
      */
     function mass_upload_qsos($station_id, $hrdlog_username, $hrdlog_code) {
 	    $i = 0;
-	    $data['qsos'] = $this->logbook_model->get_hrdlog_qsos($station_id);
 	    $errormessages = array();
+	    $batch_size = 1000;
+	    $offset = 0;
+	    $has_more_qsos = true;
 
 	    $this->load->library('AdifHelper');
 
-	    if ($data['qsos']) {
+	    // Process QSOs in batches to prevent memory exhaustion
+	    while ($has_more_qsos) {
+		    $data['qsos'] = $this->logbook_model->get_hrdlog_qsos($station_id, $batch_size, $offset);
+		    
+		    if (!$data['qsos'] || $data['qsos']->num_rows() == 0) {
+			    $has_more_qsos = false;
+			    break;
+		    }
+
 		    foreach ($data['qsos']->result() as $qso) {
 			    $adif = $this->adifhelper->getAdifLine($qso);
 
@@ -76,7 +87,7 @@ class Hrdlog extends CI_Controller {
 				    log_message('error', 'hrdlog upload stopped for Station_ID: ' . $station_id);
 				    $errormessages[] = $result['message'] . 'Invalid HRDLog-Code, stopped at Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
 				    $result['status'] = 'Error';
-				    break; /* If key is invalid, immediate stop syncing for more QSOs of this station */
+				    break 2; /* If key is invalid, immediate stop syncing for more QSOs of this station */
 			    } else {
 				    log_message('error', 'hrdlog upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
 				    log_message('error', 'hrdlog upload failed with the following message: ' . $result['message']);
@@ -84,18 +95,26 @@ class Hrdlog extends CI_Controller {
 				    $errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
 			    }
 		    }
-		    if ($i == 0) {
-			    $result['status']='Error';
+		    
+		    // Check if we got a full batch - if not, we've reached the end
+		    if ($data['qsos']->num_rows() < $batch_size) {
+			    $has_more_qsos = false;
+		    } else {
+			    $offset += $batch_size;
+			    log_message('info', 'HRDLog batch upload: Processed ' . $offset . ' QSOs so far for station_id: ' . $station_id);
 		    }
-		    $result['count'] = $i;
-		    $result['errormessages'] = $errormessages;
-		    return $result;
-	    } else {
-		    $result['status'] = 'Error';
-		    $result['count'] = $i;
-		    $result['errormessages'] = $errormessages;
-		    return $result;
-	    }
+		}
+		
+		if ($i > 0) {
+			log_message('info', 'HRDLog upload completed: Total of ' . $i . ' QSOs successfully uploaded for station_id: ' . $station_id);
+		}
+		
+		if ($i == 0) {
+			$result['status']='Error';
+		}
+		$result['count'] = $i;
+		$result['errormessages'] = $errormessages;
+		return $result;
     }
 
     /*

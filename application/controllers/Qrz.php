@@ -53,17 +53,28 @@ class Qrz extends CI_Controller {
 	 * Function gets all QSOs from given station_id, that are not previously uploaded to qrz.
 	 * Adif is build for each qso, and then uploaded, one at a time
 	 * Database updates are batched for better performance
+	 * Uses batch fetching to prevent memory exhaustion with large datasets
 	 */
 	function mass_upload_qsos($station_id, $qrz_api_key, $trusted = false) {
 		$i = 0;
-		$data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id, $trusted);
 		$errormessages = array();
 		$successful_uploads = array(); // Collect successful QSO primary keys for batch update
-		$batch_size = 100; // Process database updates in batches of 100 for memory efficiency
+		$batch_size = 1000; // Fetch 1000 QSOs at a time
+		$update_batch_size = 100; // Process database updates in batches of 100 for memory efficiency
+		$offset = 0;
+		$has_more_qsos = true;
 
 		$this->load->library('AdifHelper');
 
-		if ($data['qsos']) {
+		// Process QSOs in batches to prevent memory exhaustion
+		while ($has_more_qsos) {
+			$data['qsos'] = $this->logbook_model->get_qrz_qsos($station_id, $trusted, $batch_size, $offset);
+			
+			if (!$data['qsos'] || $data['qsos']->num_rows() == 0) {
+				$has_more_qsos = false;
+				break;
+			}
+
 			foreach ($data['qsos']->result() as $qso) {
 				$adif = $this->adifhelper->getAdifLine($qso);
 
@@ -80,9 +91,9 @@ class Qrz extends CI_Controller {
 					$result['status'] = 'OK';
 					
 					// Process batch updates in chunks for memory efficiency
-					if (count($successful_uploads) >= $batch_size) {
+					if (count($successful_uploads) >= $update_batch_size) {
 						$this->logbook_model->mark_qrz_qsos_sent_batch($successful_uploads);
-						log_message('info', 'QRZ batch upload: Successfully marked ' . count($successful_uploads) . ' QSOs as uploaded for station_id: ' . $station_id . ' (batch ' . ceil($i / $batch_size) . ')');
+						log_message('info', 'QRZ batch upload: Successfully marked ' . count($successful_uploads) . ' QSOs as uploaded for station_id: ' . $station_id . ' (batch ' . ceil($i / $update_batch_size) . ')');
 						$successful_uploads = array(); // Reset for next batch
 					}
 				} elseif ( ($result['status']=='error') && (substr($result['message'],0,11)  == 'STATUS=AUTH')) {
@@ -91,7 +102,7 @@ class Qrz extends CI_Controller {
 					log_message('error', 'QRZ upload stopped for Station_ID: ' .$station_id);
 					$errormessages[] = $result['message'] . ' Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON;
 					$result['status'] = 'Error';
-					break; /* If key is invalid, immediate stop syncing for more QSOs of this station */
+					break 2; /* If key is invalid, immediate stop syncing for more QSOs of this station */
 				} else {
 					log_message('error', 'QRZ upload failed for qso: Call: ' . $qso->COL_CALL . ' Band: ' . $qso->COL_BAND . ' Mode: ' . $qso->COL_MODE . ' Time: ' . $qso->COL_TIME_ON);
 					log_message('error', 'QRZ upload failed with the following message: ' .$result['message']);
@@ -100,28 +111,31 @@ class Qrz extends CI_Controller {
 				}
 			}
 			
-			// Process any remaining QSOs in the final batch
-			if (!empty($successful_uploads)) {
-				$this->logbook_model->mark_qrz_qsos_sent_batch($successful_uploads);
-				log_message('info', 'QRZ batch upload: Successfully marked final batch of ' . count($successful_uploads) . ' QSOs as uploaded for station_id: ' . $station_id);
+			// Check if we got a full batch - if not, we've reached the end
+			if ($data['qsos']->num_rows() < $batch_size) {
+				$has_more_qsos = false;
+			} else {
+				$offset += $batch_size;
+				log_message('info', 'QRZ batch fetch: Processed ' . $offset . ' QSOs so far for station_id: ' . $station_id);
 			}
-			
-			// Log summary of the entire upload operation
-			if ($i > 0) {
-				log_message('info', 'QRZ upload completed: Total of ' . $i . ' QSOs successfully uploaded for station_id: ' . $station_id);
-			}
-			if ($i == 0) {
-			    $result['status']='OK';
-		    }
-			$result['count'] = $i;
-			$result['errormessages'] = $errormessages;
-			return $result;
-		} else {
-			$result['status'] = 'Error';
-			$result['count'] = $i;
-			$result['errormessages'] = $errormessages;
-			return $result;
 		}
+		
+		// Process any remaining QSOs in the final batch
+		if (!empty($successful_uploads)) {
+			$this->logbook_model->mark_qrz_qsos_sent_batch($successful_uploads);
+			log_message('info', 'QRZ batch upload: Successfully marked final batch of ' . count($successful_uploads) . ' QSOs as uploaded for station_id: ' . $station_id);
+		}
+		
+		// Log summary of the entire upload operation
+		if ($i > 0) {
+			log_message('info', 'QRZ upload completed: Total of ' . $i . ' QSOs successfully uploaded for station_id: ' . $station_id);
+		}
+		if ($i == 0) {
+		    $result['status']='OK';
+	    }
+		$result['count'] = $i;
+		$result['errormessages'] = $errormessages;
+		return $result;
 	}
 
 	/*

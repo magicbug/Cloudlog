@@ -520,8 +520,9 @@ class Logbook_model extends CI_Model
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-    // Build WHERE conditions for the inner query
-    $inner_where = 'WHERE qsos_inner.station_id IN (SELECT station_id from station_profile WHERE station_gridsquare LIKE "%' . $searchphrase . '%") ';
+    // Build WHERE conditions for the inner query - use JOIN instead of subquery for better performance
+    $inner_join = 'INNER JOIN station_profile sp_filter ON qsos_inner.station_id = sp_filter.station_id ';
+    $inner_where = 'WHERE sp_filter.station_gridsquare LIKE "%' . $searchphrase . '%" ';
 
     if ($band != 'All') {
       if ($band != "SAT") {
@@ -541,7 +542,8 @@ class Logbook_model extends CI_Model
     $sql .= 'qsos.COL_QSLSDATE, qsos.COL_QSL_RCVD, qsos.COL_QSL_RCVD_VIA, qsos.COL_QSLRDATE, qsos.COL_EQSL_QSL_SENT, qsos.COL_EQSL_QSLSDATE, qsos.COL_EQSL_QSLRDATE, ';
     $sql .= 'qsos.COL_EQSL_QSL_RCVD, qsos.COL_LOTW_QSL_SENT, qsos.COL_LOTW_QSLSDATE, qsos.COL_LOTW_QSL_RCVD, qsos.COL_LOTW_QSLRDATE, qsos.COL_CONTEST_ID, station_profile.station_gridsquare, dxcc_entities.name as name, dxcc_entities.end as end, lotw_users.callsign, lotw_users.lastupload ';
     $sql .= 'FROM ( ';
-    $sql .= 'SELECT COL_PRIMARY_KEY FROM ' . $this->config->item('table_name') . ' qsos_inner ';
+    $sql .= 'SELECT qsos_inner.COL_PRIMARY_KEY FROM ' . $this->config->item('table_name') . ' qsos_inner ';
+    $sql .= $inner_join;
     $sql .= $inner_where;
     $sql .= ' ORDER BY qsos_inner.COL_TIME_ON DESC LIMIT 500 ';
     $sql .= ') AS FilteredIDs ';
@@ -1862,17 +1864,20 @@ class Logbook_model extends CI_Model
 
   /*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to hrdlog, or has been modified with an edit
+     * Batch processing with LIMIT and OFFSET to prevent memory exhaustion
      */
-  function get_hrdlog_qsos($station_id)
+  function get_hrdlog_qsos($station_id, $limit = 1000, $offset = 0)
   {
-    $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
+    $sql = 'select thcv.*, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
       ' left join station_profile on thcv.station_id = station_profile.station_id' .
       ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
-      ' where thcv.station_id = ' . $station_id .
+      ' where thcv.station_id = ' . intval($station_id) .
       ' and (COL_HRDLOG_QSO_UPLOAD_STATUS is NULL
             or COL_HRDLOG_QSO_UPLOAD_STATUS = ""
             or COL_HRDLOG_QSO_UPLOAD_STATUS = "M"
-            or COL_HRDLOG_QSO_UPLOAD_STATUS = "N")';
+            or COL_HRDLOG_QSO_UPLOAD_STATUS = "N")' .
+      ' ORDER BY thcv.COL_PRIMARY_KEY ASC' .
+      ' LIMIT ' . intval($limit) . ' OFFSET ' . intval($offset);
 
     $query = $this->db->query($sql);
     return $query;
@@ -1880,22 +1885,25 @@ class Logbook_model extends CI_Model
 
   /*
      * Function returns the QSOs from the logbook, which have not been either marked as uploaded to qrz, or has been modified with an edit
+     * Batch processing with LIMIT and OFFSET to prevent memory exhaustion
      */
-  function get_qrz_qsos($station_id, $trusted = false)
+  function get_qrz_qsos($station_id, $trusted = false, $limit = 1000, $offset = 0)
   {
     $CI = &get_instance();
     $CI->load->model('stations');
     if ((!$trusted) && (!$CI->stations->check_station_is_accessible($station_id))) {
       return;
     }
-    $sql = 'select *, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
+    $sql = 'select thcv.*, dxcc_entities.name as station_country from ' . $this->config->item('table_name') . ' thcv ' .
       ' left join station_profile on thcv.station_id = station_profile.station_id' .
       ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
-      ' where thcv.station_id = ' . $station_id .
+      ' where thcv.station_id = ' . intval($station_id) .
       ' and (COL_QRZCOM_QSO_UPLOAD_STATUS is NULL
 		  or COL_QRZCOM_QSO_UPLOAD_STATUS = ""
 		  or COL_QRZCOM_QSO_UPLOAD_STATUS = "M"
-		  or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")';
+		  or COL_QRZCOM_QSO_UPLOAD_STATUS = "N")' .
+      ' ORDER BY thcv.COL_PRIMARY_KEY ASC' .
+      ' LIMIT ' . intval($limit) . ' OFFSET ' . intval($offset);
 
     $query = $this->db->query($sql);
     return $query;
@@ -2705,8 +2713,14 @@ class Logbook_model extends CI_Model
   /* Return the list of modes in the logbook */
   function get_modes()
   {
-    $query = $this->db->query('select distinct(COL_MODE) from ' . $this->config->item('table_name') . ' order by COL_MODE');
-    return $query;
+    // Use index on COL_MODE for better performance
+    $this->db->distinct();
+    $this->db->select('COL_MODE');
+    $this->db->from($this->config->item('table_name'));
+    $this->db->where('COL_MODE IS NOT NULL');
+    $this->db->where('COL_MODE !=', '');
+    $this->db->order_by('COL_MODE', 'ASC');
+    return $this->db->get();
   }
 
   /*
@@ -4677,8 +4691,9 @@ class Logbook_model extends CI_Model
 
     $count = 0;
     $this->db->trans_start();
-    //query dxcc_prefixes
+    //query dxcc_prefixes - use batch update for better performance
     if ($r->num_rows() > 0) {
+      $batch_data = [];
       foreach ($r->result_array() as $row) {
         $qso_date = $row['COL_TIME_OFF'] == '' ? $row['COL_TIME_ON'] : $row['COL_TIME_OFF'];
         $qso_date = date("Y-m-d", strtotime($qso_date));
@@ -4690,18 +4705,19 @@ class Logbook_model extends CI_Model
         //$d = $this->check_dxcc_stored_proc($row["COL_CALL"], $qso_date);
 
         if ($d[0] != 'Not Found') {
-          $sql = sprintf(
-            "update %s set COL_COUNTRY = '%s', COL_DXCC='%s' where COL_PRIMARY_KEY=%d",
-            $this->config->item('table_name'),
-            addslashes(ucwords(strtolower($d[1]), "- (/")),
-            $d[0],
-            $row['COL_PRIMARY_KEY']
-          );
-          $this->db->query($sql);
-          //print($sql."\n");
+          $batch_data[] = [
+            'COL_PRIMARY_KEY' => $row['COL_PRIMARY_KEY'],
+            'COL_COUNTRY' => ucwords(strtolower($d[1]), "- (/"),
+            'COL_DXCC' => $d[0]
+          ];
           printf("Updating %s to %s and %s\n<br/>", $row['COL_PRIMARY_KEY'], ucwords(strtolower($d[1]), "- (/"), $d[0]);
           $count++;
         }
+      }
+      
+      // Batch update all rows at once instead of individual queries
+      if (!empty($batch_data)) {
+        $this->db->update_batch($this->config->item('table_name'), $batch_data, 'COL_PRIMARY_KEY');
       }
     }
     $this->db->trans_complete();
@@ -4835,7 +4851,8 @@ class Logbook_model extends CI_Model
 
   public function calls_without_station_id()
   {
-    $query = $this->db->query("select distinct COL_STATION_CALLSIGN from " . $this->config->item('table_name') . " where station_id is null or station_id = ''");
+    // Limit results to prevent UI hangs with large datasets
+    $query = $this->db->query("select distinct COL_STATION_CALLSIGN from " . $this->config->item('table_name') . " where station_id is null or station_id = '' LIMIT 500");
     $result = $query->result_array();
     return $result;
   }
