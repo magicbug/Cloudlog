@@ -1615,6 +1615,12 @@ $(document).ready(function() {
 
             /* On Page Load */
             var catcher = function(e) {
+                // Skip warning if callsign field is empty
+                var callsignField = $('#callsign');
+                if (callsignField.length > 0 && !callsignField.val().trim()) {
+                    return; // No warning if callsign is empty
+                }
+                
                 var changed = false;
                 $('form').each(function() {
                     if ($(this).data('initialForm') != $(this).serialize()) {
@@ -1661,6 +1667,12 @@ $(document).ready(function() {
                     // Skip if it's a javascript: link, empty, or hash link
                     if (!href || href === '#' || href.indexOf('javascript:') === 0) {
                         return true;
+                    }
+                    
+                    // Skip warning if callsign field is empty
+                    var callsignField = $('#callsign');
+                    if (callsignField.length > 0 && !callsignField.val().trim()) {
+                        return true; // No warning if callsign is empty
                     }
                     
                     // Check if form has unsaved changes
