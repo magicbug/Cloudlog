@@ -116,12 +116,6 @@ class Migration_add_query_performance_indexes extends CI_Migration
             $this->db->query($sql);
         }
         
-        // Drop the gridsquare prefix index if it exists
-        $gridsquare_index_exists = $this->db->query("SHOW INDEX FROM $table_name WHERE Key_name = 'idx_gridsquare_prefix'")->num_rows();
-        
-        if ($gridsquare_index_exists > 0) {
-            $sql = "ALTER TABLE $table_name DROP INDEX `idx_gridsquare_prefix`";
-            $this->db->query($sql);
-        }
-        
-        
+        $this->db->db_debug = true;
+    }
+}
