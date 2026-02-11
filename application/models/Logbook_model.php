@@ -405,11 +405,7 @@ class Logbook_model extends CI_Model
 
     $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
     $this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $this->config->item('table_name') . '.COL_DXCC', 'left outer');
-    $this->db->join('(
-      SELECT callsign, MAX(lastupload) AS lastupload
-      FROM lotw_users
-      GROUP BY callsign
-    ) lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left', false);
+    $this->db->join('lotw_users lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left');
     switch ($type) {
       case 'DXCC':
         $this->db->where('COL_COUNTRY', $searchphrase);
@@ -552,7 +548,7 @@ class Logbook_model extends CI_Model
     $sql .= 'INNER JOIN ' . $this->config->item('table_name') . ' qsos ON qsos.COL_PRIMARY_KEY = FilteredIDs.COL_PRIMARY_KEY ';
     $sql .= 'JOIN `station_profile` ON station_profile.station_id = qsos.station_id ';
     $sql .= 'LEFT OUTER JOIN `dxcc_entities` ON dxcc_entities.adif = qsos.COL_DXCC ';
-    $sql .= 'LEFT OUTER JOIN (SELECT callsign, MAX(lastupload) AS lastupload FROM lotw_users GROUP BY callsign) lotw ON lotw.callsign = qsos.COL_CALL ';
+    $sql .= 'LEFT JOIN lotw_users lotw ON lotw.callsign = qsos.COL_CALL ';
     $sql .= 'ORDER BY qsos.COL_TIME_ON DESC';
 
     return $this->db->query($sql);
@@ -602,11 +598,7 @@ class Logbook_model extends CI_Model
 
     $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
     $this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $this->config->item('table_name') . '.COL_DXCC', 'left outer');
-    $this->db->join('(
-      SELECT callsign, MAX(lastupload) AS lastupload
-      FROM lotw_users
-      GROUP BY callsign
-    ) lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left', false);
+    $this->db->join('lotw_users lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left');
     $this->db->where('COL_CALL', $call);
     if ($band != 'All') {
       if ($band == 'SAT') {
@@ -1835,21 +1827,16 @@ class Logbook_model extends CI_Model
     // Use optimized subquery approach for better performance
     $sql = "SELECT qsos.*, station_profile.*, dxcc_entities.*, lotw.callsign, lotw.lastupload
             FROM (
-                SELECT DISTINCT COL_PRIMARY_KEY, COL_TIME_ON
+                SELECT COL_PRIMARY_KEY, COL_TIME_ON
                 FROM " . $this->config->item('table_name') . " qsos_inner
-                INNER JOIN station_profile sp_inner ON qsos_inner.station_id = sp_inner.station_id
-                WHERE sp_inner.station_id IN (" . $location_list . ")
+                WHERE qsos_inner.station_id IN (" . $location_list . ")
                 ORDER BY qsos_inner.COL_TIME_ON DESC, qsos_inner.COL_PRIMARY_KEY DESC
                 LIMIT " . intval($num) . " OFFSET " . intval($offset) . "
             ) AS FilteredIDs
             INNER JOIN " . $this->config->item('table_name') . " qsos ON qsos.COL_PRIMARY_KEY = FilteredIDs.COL_PRIMARY_KEY
             INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
             LEFT JOIN dxcc_entities ON qsos.col_dxcc = dxcc_entities.adif
-        LEFT OUTER JOIN (
-          SELECT callsign, MAX(lastupload) AS lastupload
-          FROM lotw_users
-          GROUP BY callsign
-        ) AS lotw ON qsos.col_call = lotw.callsign
+            LEFT JOIN lotw_users lotw ON qsos.col_call = lotw.callsign
             ORDER BY qsos.COL_TIME_ON DESC, qsos.COL_PRIMARY_KEY DESC";
     
     return $this->db->query($sql);
@@ -1864,11 +1851,7 @@ class Logbook_model extends CI_Model
       $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id', 'left');
       $this->db->join('dxcc_entities as dxcc_entities_2', 'station_profile.station_dxcc = dxcc_entities_2.adif', 'left outer');
       $this->db->join('eQSL_images', $this->config->item('table_name') . '.COL_PRIMARY_KEY = eQSL_images.qso_id', 'left outer');
-      $this->db->join('(
-        SELECT callsign, MAX(lastupload) AS lastupload
-        FROM lotw_users
-        GROUP BY callsign
-      ) lotw', $this->config->item('table_name') . '.COL_CALL = lotw.callsign', 'left', false);
+      $this->db->join('lotw_users lotw', $this->config->item('table_name') . '.COL_CALL = lotw.callsign', 'left');
       $this->db->where('COL_PRIMARY_KEY', $id);
 
       return $this->db->get();
@@ -5121,11 +5104,7 @@ class Logbook_model extends CI_Model
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
     $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
-    $this->db->join('(
-      SELECT callsign, MAX(lastupload) AS lastupload
-      FROM lotw_users
-      GROUP BY callsign
-    ) lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left', false);
+    $this->db->join('lotw_users lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left');
     $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
     $this->db->where('COL_STATE', $state);
     $this->db->where('COL_CNTY', $county);
@@ -5141,11 +5120,7 @@ class Logbook_model extends CI_Model
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
     $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
-    $this->db->join('(
-      SELECT callsign, MAX(lastupload) AS lastupload
-      FROM lotw_users
-      GROUP BY callsign
-    ) lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left', false);
+    $this->db->join('lotw_users lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left');
     $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
     $this->db->where('COL_SIG', "WAB");
     $this->db->where('COL_SIG_INFO', $wab);

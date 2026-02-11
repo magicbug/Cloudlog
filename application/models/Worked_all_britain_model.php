@@ -68,11 +68,7 @@ class Worked_all_britain_model extends CI_Model
         }
 
         $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
-        $this->db->join('(
-      SELECT callsign, MAX(lastupload) AS lastupload
-      FROM lotw_users
-      GROUP BY callsign
-    ) lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left', false);
+        $this->db->join('lotw_users lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left');
         $this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $this->config->item('table_name') . '.col_dxcc', 'left outer');
         $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
         $this->db->where('COL_SIG', 'WAB');

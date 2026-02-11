@@ -271,11 +271,7 @@ class Distances_model extends CI_Model
 
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		$this->db->join('dxcc_entities', 'dxcc_entities.adif = '.$this->config->item('table_name').'.COL_DXCC', 'left outer');
-		$this->db->join('(
-			SELECT callsign, MAX(lastupload) AS lastupload
-			FROM lotw_users
-			GROUP BY callsign
-		) lotw', 'lotw.callsign = '.$this->config->item('table_name').'.col_call', 'left', false);
+		$this->db->join('lotw_users lotw', 'lotw.callsign = '.$this->config->item('table_name').'.col_call', 'left');
 		$this->db->where('COL_DISTANCE >=', $distarray[0]);
 		$this->db->where('COL_DISTANCE <=', $distarray[1]);
 		$this->db->where('LENGTH(col_gridsquare) >', 0);

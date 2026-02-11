@@ -233,11 +233,7 @@ class Logbookadvanced_model extends CI_Model {
 			INNER JOIN " . $this->config->item('table_name') . " qsos ON qsos.COL_PRIMARY_KEY = FilteredIDs.COL_PRIMARY_KEY
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.col_dxcc = dxcc_entities.adif
-			LEFT OUTER JOIN (
-				SELECT callsign, MAX(lastupload) AS lastupload
-				FROM lotw_users
-				GROUP BY callsign
-			) AS lotw ON qsos.col_call = lotw.callsign
+			LEFT JOIN lotw_users lotw ON qsos.col_call = lotw.callsign
 			LEFT OUTER JOIN (
 				select count(*) as qslcount, qsoid
 				from qsl_images
@@ -286,11 +282,7 @@ class Logbookadvanced_model extends CI_Model {
 			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
 			LEFT OUTER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
 			LEFT OUTER JOIN dxcc_entities d2 ON qsos.COL_DXCC = d2.adif
-			LEFT OUTER JOIN (
-				SELECT callsign, MAX(lastupload) AS lastupload
-				FROM lotw_users
-				GROUP BY callsign
-			) AS lotw ON qsos.col_call = lotw.callsign
+			LEFT JOIN lotw_users lotw ON qsos.col_call = lotw.callsign
 			LEFT OUTER JOIN (
 				select count(*) as qslcount, qsoid
 				from qsl_images
