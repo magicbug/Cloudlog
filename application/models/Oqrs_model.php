@@ -121,7 +121,8 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function getOqrsRequests($location_list) {
-        $sql = 'select * from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ')';
+        // Optimize SELECT to only fetch needed columns
+        $sql = 'select oqrs.id, oqrs.requestcallsign, oqrs.date, oqrs.time, oqrs.band, oqrs.mode, oqrs.status, oqrs.note, oqrs.email, oqrs.qslroute, station_profile.station_callsign, station_profile.station_profile_name from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ')';
 
         $query = $this->db->query($sql);
 
@@ -229,7 +230,8 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function check_oqrs($qsodata) {
-		$sql = 'select * from ' . $this->config->item('table_name') . 
+		// Optimize SELECT to only fetch COL_PRIMARY_KEY for matching
+		$sql = 'select COL_PRIMARY_KEY from ' . $this->config->item('table_name') . 
 		' where (col_band = \'' . $qsodata['band'] . '\' or col_prop_mode = \'' . $qsodata['band'] . '\')
 		 and col_call = \'' . $qsodata['requestcallsign'] . '\'
 		 and date(col_time_on) = \'' . $qsodata['date'] . '\'
@@ -277,7 +279,8 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function search_log_time_date($time, $date, $band, $mode) {
-		$sql = 'select * from ' . $this->config->item('table_name') . ' thcv
+		// Optimize SELECT to only fetch needed columns
+		$sql = 'select thcv.COL_PRIMARY_KEY, thcv.COL_CALL, thcv.COL_BAND, thcv.COL_MODE, thcv.COL_TIME_ON, station_profile.station_callsign from ' . $this->config->item('table_name') . ' thcv
 		 join station_profile on thcv.station_id = station_profile.station_id where (col_band = \'' . $band . '\' or col_prop_mode = \'' . $band . '\')
 		 and date(col_time_on) = \'' . $date . '\'
 		 and (col_mode = \'' . $mode . '\'

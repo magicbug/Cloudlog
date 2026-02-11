@@ -2,6 +2,9 @@
 
 class Logbooks_model extends CI_Model {
 
+	// Cache for list_logbook_relationships to avoid redundant queries
+	private $relationship_cache = array();
+
     function show_all() {
 		// Get owned logbooks and shared logbooks with access level
 		$user_id = $this->session->userdata('user_id');
@@ -294,6 +297,11 @@ class Logbooks_model extends CI_Model {
 
 	function list_logbook_relationships($logbook_id) {
 
+		// Check cache first to avoid redundant queries
+		if (isset($this->relationship_cache[$logbook_id])) {
+			return $this->relationship_cache[$logbook_id];
+		}
+
 		$relationships_array = array();
 
 		$this->db->where('station_logbook_id', $logbook_id);
@@ -305,9 +313,13 @@ class Logbooks_model extends CI_Model {
 				array_push($relationships_array, $row->station_location_id);
 			}
 
+			// Cache the result
+			$this->relationship_cache[$logbook_id] = $relationships_array;
 			return $relationships_array;
 		}
 		else{
+			// Cache empty result
+			$this->relationship_cache[$logbook_id] = array();
 			return array();
 		}
 	}

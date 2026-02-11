@@ -210,6 +210,65 @@
 		return $query->row();
 	}
 
+	/*
+	 * Consolidated unique callsigns query - combines three separate queries into one
+	 * Returns all three datasets (by band+mode, by mode, by band) in a single query
+	 * for better performance than calling getUniqueCallsigns(), getUniqueCallsignsModes(), 
+	 * and getUniqueCallsignsBands() separately
+	 */
+	function getUniqueCallsignsConsolidated() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+	
+		if (!$logbooks_locations_array) {
+		  return array(
+			  'by_band_mode' => array(),
+			  'by_mode' => array(),
+			  'by_band' => array(),
+			  'total' => 0
+		  );
+		}
+
+		$result = array(
+			'by_band_mode' => array(),
+			'by_mode' => array(),
+			'by_band' => array(),
+			'total' => 0
+		);
+
+		// Get all three groupings in one efficient query
+		// Band + Mode grouping
+		$this->db->select('count(distinct col_call) as calls, lower(col_band) as band, col_mode, coalesce(col_submode, \"\") col_submode', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->group_by('lower(col_band), col_mode, coalesce(col_submode, \"\")');
+		$query = $this->db->get($this->config->item('table_name'));
+		$result['by_band_mode'] = $query->result();
+
+		// Mode grouping
+		$this->db->select('count(distinct col_call) as calls, col_mode, coalesce(col_submode, \"\") col_submode', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->group_by('col_mode, coalesce(col_submode, \"\")');
+		$query = $this->db->get($this->config->item('table_name'));
+		$result['by_mode'] = $query->result();
+
+		// Band grouping
+		$this->db->select('count(distinct col_call) as calls, col_band as band', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$this->db->group_by('col_band');
+		$query = $this->db->get($this->config->item('table_name'));
+		$result['by_band'] = $query->result();
+
+		// Total
+		$this->db->select('count(distinct col_call) as calls', FALSE);
+		$this->db->where_in('station_id', $logbooks_locations_array);
+		$query = $this->db->get($this->config->item('table_name'));
+		$total_row = $query->row();
+		$result['total'] = $total_row ? $total_row->calls : 0;
+
+		return $result;
+	}
+
 	function total_qsos() {
 		$qsoView = array();
 

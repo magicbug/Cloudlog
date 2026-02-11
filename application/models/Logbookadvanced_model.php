@@ -398,18 +398,9 @@ class Logbookadvanced_model extends CI_Model {
 		if(!$this->user_model->authorize(2)) {
 			return array('message' => 'Error');
 		} else {
-			// Verify that the station_id belongs to the user
+			// Verify that the station_id belongs to the user - optimized to avoid N+1 query
 			$this->load->model('Stations');
-			$stations = $this->Stations->all_of_user($user_id)->result();
-			$valid_station = false;
-			foreach ($stations as $station) {
-				if ($station->station_id == $station_id) {
-					$valid_station = true;
-					break;
-				}
-			}
-
-			if (!$valid_station) {
+			if (!$this->Stations->user_owns_station($user_id, $station_id)) {
 				return array('message' => 'Invalid station ID');
 			}
 

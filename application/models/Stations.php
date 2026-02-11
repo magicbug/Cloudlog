@@ -44,6 +44,16 @@ class Stations extends CI_Model {
 		return $this->db->get('station_profile');
 	}
 
+	/*
+	 * Check if a specific station belongs to a specific user
+	 * More efficient than fetching all stations and looping
+	 */
+	function user_owns_station($user_id, $station_id) {
+		$this->db->where('user_id', $user_id);
+		$this->db->where('station_id', $station_id);
+		return $this->db->count_all_results('station_profile') > 0;
+	}
+
 	function profile($id) {
 		// Clean ID
 		$clean_id = $this->security->xss_clean($id);
