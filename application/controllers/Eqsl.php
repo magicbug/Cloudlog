@@ -162,6 +162,8 @@ class eqsl extends CI_Controller
 			}
 
 			$rows = '';
+			$successful_uploads = array(); // Collect successful QSO primary keys for batch update
+			
 			// Grab the list of QSOs to send information about
 			// perform an HTTP get on each one, and grab the status back
 			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
@@ -172,7 +174,7 @@ class eqsl extends CI_Controller
 				// The station callsign is handled in the ADIF data via eqslqthnickname
 				$adif = $this->generateAdif($qsl, $data);
 
-				$status = $this->uploadQso($adif, $qsl);
+				$status = $this->uploadQso($adif, $qsl, $successful_uploads);
 
 				$timestamp = strtotime($qsl['COL_TIME_ON']);
 				$rows .= "<td>" . date($custom_date_format, $timestamp) . "</td>";
@@ -188,6 +190,13 @@ class eqsl extends CI_Controller
 				$rows .= "<td>" . $status . "</td>";
 			}
 			$rows .= "</tr>";
+			
+			// Batch update all successful uploads at the end for better performance
+			if (!empty($successful_uploads)) {
+				$affected_rows = $this->eqslmethods_model->eqsl_mark_sent_batch($successful_uploads);
+				log_message('info', 'eQSL export: Marked ' . $affected_rows . ' QSOs as sent to eQSL');
+			}
+			
 			$data['eqsl_table'] = $this->generateResultTable($custom_date_format, $rows);
 		} else {
 			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
@@ -201,7 +210,7 @@ class eqsl extends CI_Controller
 		$this->load->view('interface_assets/footer');
 	}
 
-	function uploadQso($adif, $qsl)
+	function uploadQso($adif, $qsl, &$successful_uploads = null)
 	{
 		$this->load->model('eqslmethods_model');
 		$status = "";
@@ -232,7 +241,14 @@ class eqsl extends CI_Controller
 		if ($chi['http_code'] == "200") {
 			if (stristr($result, "Result: 1 out of 1 records added")) {
 				$status = "Sent";
-				$this->eqslmethods_model->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
+				
+				// If batch array is provided, add to it instead of immediate update
+				if ($successful_uploads !== null) {
+					$successful_uploads[] = $qsl['COL_PRIMARY_KEY'];
+				} else {
+					// Legacy: immediate update (for backward compatibility)
+					$this->eqslmethods_model->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
+				}
 			} else {
 				if (stristr($result, "Error: No match on eQSL_User/eQSL_Pswd")) {
 					$this->session->set_flashdata('warning', 'Your eQSL username and/or password is incorrect.');
@@ -246,7 +262,11 @@ class eqsl extends CI_Controller
 							$status = "Duplicate";
 
 							# Mark the QSL as sent if this is a dupe.
-							$this->eqslmethods_model->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
+							if ($successful_uploads !== null) {
+								$successful_uploads[] = $qsl['COL_PRIMARY_KEY'];
+							} else {
+								$this->eqslmethods_model->eqsl_mark_sent($qsl['COL_PRIMARY_KEY']);
+							}
 						}
 					}
 				}
