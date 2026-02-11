@@ -28,9 +28,10 @@ class Logbook_model extends CI_Model
       }
       
       // Also get users with shared access via station_logbooks_permissions
-      $this->db->select('DISTINCT user_id');
+      $this->db->distinct();
+      $this->db->select('user_id');
       $this->db->join('station_logbooks_relationship', 'station_logbooks_relationship.station_logbook_id = station_logbooks_permissions.logbook_id');
-      $this->db->where('station_logbooks_relationship.station_id', $station_id);
+      $this->db->where('station_logbooks_relationship.station_location_id', $station_id);
       $query = $this->db->get('station_logbooks_permissions');
       
       if ($query->num_rows() > 0) {
