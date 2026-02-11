@@ -2,6 +2,9 @@
 /application/config/config.php
 /application/config/managed.php
 /application/config/managed.sample.php
+/application/cache/*
+!/application/cache/index.html
+!/application/cache/.htaccess
 /application/logs/*.php
 /uploads/*.adi
 /uploads/*.ADI
