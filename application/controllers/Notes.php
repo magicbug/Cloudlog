@@ -60,6 +60,25 @@ class Notes extends CI_Controller {
 		}
 	}
 	
+	/* Quick add note via HTMX (for Station Diary modal) */
+	function quick_add() {
+		$this->load->model('note');
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('title', 'Note Title', 'required');
+		$this->form_validation->set_rules('content', 'Content', 'required');
+		$this->form_validation->set_rules('category', 'Category', 'required');
+
+		if ($this->form_validation->run() == FALSE) {
+			echo '<div class="alert alert-danger">' . validation_errors() . '</div>';
+		} else {
+			$this->note->add();
+			echo '<div class="alert alert-success">Note saved successfully! <a href="' . site_url('notes') . '">View all notes</a></div>';
+			// Reset form via JavaScript
+			echo '<script>setTimeout(function(){ document.getElementById("stationDiaryForm").reset(); }, 1500);</script>';
+		}
+	}
+	
 	/* View Notes */
 	function view($id) {
 		$this->load->model('note');
