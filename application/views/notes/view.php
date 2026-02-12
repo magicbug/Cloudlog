@@ -35,6 +35,12 @@
 							<a href="<?php echo site_url('notes'); ?>" class="btn btn-outline-secondary btn-sm"><?php echo lang('general_word_back') ?: 'Back'; ?></a>
 							<a href="<?php echo site_url('notes/add'); ?>" class="btn btn-outline-primary btn-sm"><?php echo lang('notes_create_note'); ?></a>
 						</div>
+						<small class="text-muted">
+							<?php 
+								$savedTime = (is_null($row->created_at) || $row->created_at === '' || $row->created_at === '0000-00-00 00:00:00') ? 'N/A' : date('M d, Y \a\t g:i A', strtotime($row->created_at));
+								echo 'Saved: ' . $savedTime;
+							?>
+						</small>
 					</div>
 				</div>
 			</div>
