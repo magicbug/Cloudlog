@@ -27,6 +27,12 @@ class Notes extends CI_Controller {
 		$data['filters'] = $filters;
 		$data['categories'] = $this->note->list_categories();
 		$data['notes'] = $this->note->list_all(null, $filters);
+		
+		// Check if there are any Station Diary entries
+		$diary_filter = array('category' => 'Station Diary');
+		$diary_entries = $this->note->list_all(null, $diary_filter);
+		$data['has_diary_entries'] = $diary_entries->num_rows() > 0;
+		
 		$data['page_title'] = "Notes";
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('notes/main');
@@ -141,6 +147,21 @@ class Notes extends CI_Controller {
 		$this->note->delete($id);
 		$this->session->set_flashdata('notice', $this->lang->line('admin_delete') ?: 'Deleted');
 		redirect('notes');
+	}
+
+	/* Print Station Diary */
+	public function station_diary() {
+		$this->load->model('note');
+		
+		$filters = array(
+			'category' => 'Station Diary'
+		);
+		
+		$data['diary_entries'] = $this->note->list_all(null, $filters);
+		$data['page_title'] = "Station Diary";
+		
+		// Load without header/footer for print formatting
+		$this->load->view('notes/station_diary_print', $data);
 	}
 
 	/* Delete/Merge Category */

@@ -14,8 +14,11 @@
 	      	</li>
 	    	</ul>
 	  	</div>
-	  	<div class="ms-auto">
-	  		<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#manageCategoriesModal">
+	  	<div class="ms-auto">	  		<?php if (isset($has_diary_entries) && $has_diary_entries) { ?>
+	  		<a href="<?php echo site_url('notes/station_diary'); ?>" target="_blank" class="btn btn-outline-secondary btn-sm me-2" title="Print and view all Station Diary entries">
+	  			<i class="fas fa-book"></i> Station Diary
+	  		</a>
+	  		<?php } ?>	  		<button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#manageCategoriesModal">
 	  			<?php echo lang('notes_manage_categories') ?: 'Manage categories'; ?>
 	  		</button>
 	  	</div>
