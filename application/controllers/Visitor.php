@@ -310,7 +310,7 @@ class Visitor extends CI_Controller {
 		$array_confirmed_grid_6char = array();
 
 		// Get initial data for "All" bands
-		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, 'true', 'true', 'true', 'true', $default_sat, $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0)
 		{
@@ -395,7 +395,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// Confirmed VUCC Squares  
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($default_band, $default_mode, 'true', 'true', 'true', 'true', $default_sat, $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0)
 		{
@@ -545,7 +545,7 @@ class Visitor extends CI_Controller {
 		$array_grid_6char_confirmed = array();
 
 		// For public visitor, we don't show QSL confirmations, so set all to false
-		$query = $this->gridmap_model->get_band_confirmed($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band_confirmed($band, $mode, 'true', 'true', 'true', 'true', $sat, $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) 	{
@@ -617,7 +617,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// // Confirmed Squares
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, 'true', 'true', 'true', 'true', $sat, $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) 			{
