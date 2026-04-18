@@ -77,6 +77,21 @@ $config['auth_mode'] = "3";
 $config['auth_level'][3] = "Operator";
 $config['auth_level'][99] = "Administrator";
 
+
+/*
+|--------------------------------------------------------------------------
+| Public Visitor Page
+|--------------------------------------------------------------------------
+|
+| 'public_map_show_confirmations'
+|     When true, the public visitor gridmap (/visitor/gridmap/<callsign>)
+|     distinguishes confirmed grids (LoTW, eQSL, paper QSL, QRZ.com) from
+|     worked-only grids. When false, confirmed grids are shown in the same
+|     color as worked grids, hiding which confirmation sources the
+|     operator uses. Default: false (privacy-minimal).
+*/
+
+$config['public_map_show_confirmations'] = false;
 /*
 |--------------------------------------------------------------------------
 | Base Site URL

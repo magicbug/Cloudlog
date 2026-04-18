@@ -309,8 +309,10 @@ class Visitor extends CI_Controller {
 		$array_confirmed_grid_4char = array();
 		$array_confirmed_grid_6char = array();
 
+		$show_conf = $this->config->item('public_map_show_confirmations') ? 'true' : 'false';
+
 		// Get initial data for "All" bands
-		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, $show_conf, $show_conf, $show_conf, $show_conf, $default_sat, $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0)
 		{
@@ -395,7 +397,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// Confirmed VUCC Squares  
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($default_band, $default_mode, $show_conf, $show_conf, $show_conf, $show_conf, $default_sat, $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0)
 		{
@@ -544,8 +546,11 @@ class Visitor extends CI_Controller {
 		$array_grid_4char_confirmed = array();
 		$array_grid_6char_confirmed = array();
 
-		// For public visitor, we don't show QSL confirmations, so set all to false
-		$query = $this->gridmap_model->get_band_confirmed($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		// See satellites() — the public_map_show_confirmations config flag governs
+		// whether confirmed grids are disclosed on the public map.
+		$show_conf = $this->config->item('public_map_show_confirmations') ? 'true' : 'false';
+
+		$query = $this->gridmap_model->get_band_confirmed($band, $mode, $show_conf, $show_conf, $show_conf, $show_conf, $sat, $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) 	{
@@ -617,7 +622,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// // Confirmed Squares
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, $show_conf, $show_conf, $show_conf, $show_conf, $sat, $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) 			{
