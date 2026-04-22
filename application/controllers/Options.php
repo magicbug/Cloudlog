@@ -531,4 +531,41 @@ class Options extends CI_Controller {
 		}
 	}
 
+	// Display the /public_map_show_confirmations options page
+	function public_map_show_confirmations() {
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_public_map_show_confirmations');
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('options/public_map_show_confirmations');
+		$this->load->view('interface_assets/footer');
+	}
+
+	// Save the public map confirmations option
+	function public_map_show_confirmations_save() {
+
+		$data['page_title'] = $this->lang->line('options_cloudlog_options');
+		$data['sub_heading'] = $this->lang->line('options_public_map_show_confirmations');
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('public_map_show_confirmations', 'Public Map Confirmations', 'required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$this->load->view('interface_assets/header', $data);
+			$this->load->view('options/public_map_show_confirmations');
+			$this->load->view('interface_assets/footer');
+		} else {
+			$update = $this->optionslib->update('public_map_show_confirmations', $this->input->post('public_map_show_confirmations'), 'yes');
+			if($update == TRUE) {
+				$this->session->set_flashdata('success', $this->lang->line('options_public_map_show_confirmations_settings_saved'));
+			}
+
+			redirect('/options/public_map_show_confirmations');
+		}
+	}
+
 }

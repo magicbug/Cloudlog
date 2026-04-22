@@ -203,7 +203,7 @@ class Visitor extends CI_Controller {
 
 		$qsos = $this->logbook_model->get_qsos('18', $offset, $logbooks_locations_array);
 		// [PLOT] ADD plot //
-		$hide_conf = !$this->config->item('public_map_show_confirmations');
+		$hide_conf = $this->optionslib->get_option('public_map_show_confirmations') != "1";
 		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result(), $hide_conf);
 	
 		header('Content-Type: application/json; charset=utf-8');
@@ -310,7 +310,7 @@ class Visitor extends CI_Controller {
 		$array_confirmed_grid_4char = array();
 		$array_confirmed_grid_6char = array();
 
-		$show_conf = $this->config->item('public_map_show_confirmations') ? 'true' : 'false';
+		$show_conf = $this->optionslib->get_option('public_map_show_confirmations') == "1" ? 'true' : 'false';
 
 		// Get initial data for "All" bands
 		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, $show_conf, $show_conf, $show_conf, $show_conf, $default_sat, $logbooks_locations_array);
@@ -547,9 +547,9 @@ class Visitor extends CI_Controller {
 		$array_grid_4char_confirmed = array();
 		$array_grid_6char_confirmed = array();
 
-		// See satellites() — the public_map_show_confirmations config flag governs
+		// See satellites() — the public_map_show_confirmations option governs
 		// whether confirmed grids are disclosed on the public map.
-		$show_conf = $this->config->item('public_map_show_confirmations') ? 'true' : 'false';
+		$show_conf = $this->optionslib->get_option('public_map_show_confirmations') == "1" ? 'true' : 'false';
 
 		$query = $this->gridmap_model->get_band_confirmed($band, $mode, $show_conf, $show_conf, $show_conf, $show_conf, $sat, $logbooks_locations_array);
 
