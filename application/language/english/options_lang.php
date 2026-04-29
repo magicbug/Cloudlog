@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = 'Public Station Diary';
 $lang['options_public_station_diary_enabled'] = 'Public Station Diary';
 $lang['options_public_station_diary_enabled_hint'] = 'Enable or disable the ability for users to create public station diary entries. When disabled, all diary entries remain private regardless of individual settings.';
 $lang['options_public_station_diary_settings_saved'] = 'Public Station Diary settings have been saved successfully.';
+$lang['options_public_map_show_confirmations'] = 'Public Map Confirmations';
+$lang['options_public_map_show_confirmations_enabled'] = 'Show Confirmations on Public Maps';
+$lang['options_public_map_show_confirmations_hint'] = 'Enable or disable the ability for visitors to view which QSOs are confirmed on public visitor maps.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'Public Map Confirmations settings have been saved successfully.';
 $lang['options_enabled'] = 'Enabled';
 $lang['options_disabled'] = 'Disabled';
 
