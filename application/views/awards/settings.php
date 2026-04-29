@@ -221,6 +221,30 @@
 						<td class="award-name">WWFF</td>
 						<td class="award-description">World Wide Flora and Fauna</td>
 					</tr>
+					<?php if (!empty($plugin_award_entries)) { ?>
+					<tr class="table-secondary">
+						<td colspan="3"><strong><i class="fas fa-puzzle-piece me-2"></i>Plugin Awards</strong></td>
+					</tr>
+					<?php foreach ($plugin_award_entries as $plugin_award_entry) {
+						$slug = $plugin_award_entry['slug'];
+						$show = true;
+						if (isset($plugin_award_visibility[$slug])) {
+							$show = (bool)$plugin_award_visibility[$slug];
+						}
+					?>
+					<tr class="plugin-award-row">
+						<td class="award-checkbox-cell award_plugin_<?php echo htmlspecialchars($slug); ?>">
+							<input
+								type="checkbox"
+								data-plugin-award="<?php echo htmlspecialchars($slug); ?>"
+								<?php if ($show) echo 'checked'; ?>
+							>
+						</td>
+						<td class="award-name"><?php echo htmlspecialchars($plugin_award_entry['title']); ?></td>
+						<td class="award-description">Plugin Award (<?php echo htmlspecialchars($slug); ?>)</td>
+					</tr>
+					<?php } ?>
+					<?php } ?>
 				</tbody>
 			</table>
 		</div>

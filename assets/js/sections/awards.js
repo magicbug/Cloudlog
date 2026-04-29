@@ -4,9 +4,15 @@ $(document).ready(function(){
 		var $checkbox = $(this);
 		var $row = $checkbox.closest('tr');
 		var awardType = $checkbox.data('award');
+		var pluginAwardSlug = $checkbox.attr('data-plugin-award') || '';
 		
 		if (awardType) {
 			saveAward(awardType, $checkbox.is(':checked'), $row);
+			return;
+		}
+
+		if (pluginAwardSlug !== '') {
+			savePluginAward(pluginAwardSlug, $checkbox.is(':checked'), $row);
 		}
 	});
 });
@@ -39,6 +45,43 @@ function saveAward(awardType, isChecked, $row) {
 		error: function() {
 			$row.removeClass('saving').addClass('error');
 			showToast('Error', 'Failed to save award settings', 'danger');
+		}
+	});
+}
+
+function savePluginAward(pluginSlug, isChecked, $row) {
+	// Add saving state to row
+	$row.addClass('saving').removeClass('saved error');
+
+	$.ajax({
+		url: base_url + 'index.php/award/savePluginAward',
+		type: 'post',
+		dataType: 'json',
+		data: {
+			plugin_slug: pluginSlug,
+			show_in_menu: isChecked ? '1' : '0'
+		},
+		success: function(data) {
+			if (data.message == 'OK') {
+				// Visual feedback on entire row
+				$row.removeClass('saving').addClass('saved');
+				setTimeout(function() {
+					$row.removeClass('saved');
+				}, 800);
+
+				// Show toast notification
+				var awardName = $row.find('.award-name').text();
+				var status = isChecked ? 'shown in' : 'hidden from';
+				showToast('Success', awardName + ' will be ' + status + ' the Awards menu', 'success');
+				return;
+			}
+
+			$row.removeClass('saving').addClass('error');
+			showToast('Error', 'Failed to save plugin award settings', 'danger');
+		},
+		error: function() {
+			$row.removeClass('saving').addClass('error');
+			showToast('Error', 'Failed to save plugin award settings', 'danger');
 		}
 	});
 }
