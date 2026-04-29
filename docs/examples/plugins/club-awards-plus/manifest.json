@@ -1,0 +1,20 @@
+{
+  "slug": "club-awards-plus",
+  "name": "Club Awards Plus",
+  "version": "1.0.0",
+  "description": "Example plugin showing Phase 1 hook usage for custom club workflows.",
+  "entry": "Plugin.php",
+  "class": "ClubAwardsPlusPlugin",
+  "award_menu": {
+    "title": "Club Awards Plus",
+    "icon": "fas fa-trophy",
+    "route": "plugin_awards/view/club-awards-plus",
+    "method": "renderAwardPage",
+    "order": 120
+  },
+  "hooks": {
+    "qso.filter.before_save": "beforeSave",
+    "qso.action.after_save": "afterSave",
+    "qso.action.after_edit": "afterEdit"
+  }
+}

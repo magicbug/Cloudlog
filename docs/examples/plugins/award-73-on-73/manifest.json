@@ -1,0 +1,15 @@
+{
+  "slug": "award-73-on-73",
+  "name": "73 on 73",
+  "version": "1.0.0",
+  "description": "Award for working 73 unique stations on satellite AO-73.",
+  "entry": "Plugin.php",
+  "class": "Award73On73Plugin",
+  "award_menu": {
+    "title": "73 on 73",
+    "icon": "fas fa-satellite",
+    "route": "plugin_awards/view/award-73-on-73",
+    "method": "renderAwardPage",
+    "order": 90
+  }
+}

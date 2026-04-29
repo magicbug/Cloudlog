@@ -261,6 +261,15 @@
 						<a class="dropdown-item" href="<?php echo site_url('awards/wwff'); ?>"><i class="fas fa-leaf"></i> <?php echo lang('menu_wwff'); ?></a>
 						<div class="dropdown-divider"></div>
 							<?php } ?>
+						<?php
+						$CI->load->library('plugin_manager');
+						$plugin_award_entries = $CI->plugin_manager->get_award_menu_entries();
+						if (!empty($plugin_award_entries)) {
+							foreach ($plugin_award_entries as $plugin_award_entry) { ?>
+						<a class="dropdown-item" href="<?php echo site_url($plugin_award_entry['route']); ?>"><i class="<?php echo htmlspecialchars($plugin_award_entry['icon']); ?>"></i> <?php echo htmlspecialchars($plugin_award_entry['title']); ?></a>
+						<div class="dropdown-divider"></div>
+							<?php }
+						} ?>
 						<a class="dropdown-item" href="<?php echo site_url('award'); ?>"><i class="fas fa-cog"></i> <?php echo lang('awards_menu_settings'); ?></a>
 					</div>
 				</li>						<li class="nav-item dropdown">
@@ -311,6 +320,10 @@
 									<div class="dropdown-divider"></div>
 
 									<a class="dropdown-item" href="<?php echo site_url('maintenance'); ?>" title="maintenance"><i class="fas fa-wrench"></i> <?php echo lang('menu_maintenance'); ?></a>
+
+									<div class="dropdown-divider"></div>
+
+									<a class="dropdown-item" href="<?php echo site_url('plugins'); ?>" title="Plugin Manager"><i class="fas fa-puzzle-piece"></i> Plugin Manager</a>
 
 									<div class="dropdown-divider"></div>
 

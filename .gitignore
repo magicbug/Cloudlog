@@ -6,6 +6,8 @@
 !/application/cache/index.html
 !/application/cache/.htaccess
 /application/logs/*.php
+/application/plugins/*
+!/application/plugins/index.html
 /uploads/*.adi
 /uploads/*.ADI
 /uploads/*.tq8

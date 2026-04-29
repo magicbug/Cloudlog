@@ -443,6 +443,16 @@ class Logbook_model extends CI_Model
       $data['COL_LOTW_QSL_RCVD'] = 'N';
     }
 
+    $this->load->library('cloudlog_hooks');
+    $filtered_data = $this->cloudlog_hooks->apply_filters('qso.filter.before_save', $data, array(
+      'source' => 'manual',
+      'station_id' => $station_id,
+    ));
+
+    if (is_array($filtered_data)) {
+      $data = $filtered_data;
+    }
+
     $this->add_qso($data, $skipexport = false);
   }
 
@@ -745,6 +755,15 @@ class Logbook_model extends CI_Model
     if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
       $this->upload_amsat_status($data);
     }
+
+    $this->load->library('cloudlog_hooks');
+    $this->cloudlog_hooks->do_action('qso.action.after_save', array(
+      'qso_id' => $last_id,
+      'qso' => $data,
+    ), array(
+      'source' => $skipexport ? 'import' : 'manual',
+      'station_id' => isset($data['station_id']) ? $data['station_id'] : null,
+    ));
 
     // No point in fetching hrdlog code or qrz api key and qrzrealtime setting if we're skipping the export
     if (!$skipexport) {
@@ -1529,6 +1548,14 @@ class Logbook_model extends CI_Model
     
     // Clear dashboard cache for affected station
     $this->clear_dashboard_cache($stationId);
+
+    $this->load->library('cloudlog_hooks');
+    $this->cloudlog_hooks->do_action('qso.action.after_edit', array(
+      'qso_id' => (int)$this->input->post('id'),
+      'qso' => $data,
+    ), array(
+      'station_id' => $stationId,
+    ));
   }
 
   /* QSL received */
