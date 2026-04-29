@@ -9,6 +9,12 @@ if (isset($thisWeekRecords['error'])) {
 <?php } else { ?>
 
 <?php
+// Hide entries with unknown callsigns in the dashboard list.
+$thisWeekRecords = array_values(array_filter($thisWeekRecords, function ($record) {
+    $callsign = isset($record['callsign']) ? trim((string) $record['callsign']) : '';
+    return strcasecmp($callsign, 'Unknown') !== 0;
+}));
+
 $pageSize = 8;
 $recordCount = count($thisWeekRecords);
 $totalPages = max(1, (int) ceil($recordCount / $pageSize));
