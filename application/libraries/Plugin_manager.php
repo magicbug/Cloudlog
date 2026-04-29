@@ -314,15 +314,18 @@ class Plugin_manager {
         $award_menu = $manifest['award_menu'];
         $method = isset($award_menu['method']) ? trim((string)$award_menu['method']) : 'renderAwardPage';
         if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $method)) {
+            $this->disable_plugin_after_failure($slug, 'Invalid plugin award method name: ' . $method);
             return array('ok' => false, 'message' => 'Invalid plugin award method.');
         }
 
         $instance = $this->instantiate_plugin($plugin, $manifest);
         if (!$instance) {
+            $this->disable_plugin_after_failure($slug, 'Unable to load plugin class instance');
             return array('ok' => false, 'message' => 'Unable to load plugin class.');
         }
 
         if (!method_exists($instance, $method)) {
+            $this->disable_plugin_after_failure($slug, 'Plugin award method not found: ' . $method);
             return array('ok' => false, 'message' => 'Plugin award method not found: ' . $method);
         }
 
@@ -334,6 +337,7 @@ class Plugin_manager {
             ));
         } catch (Throwable $e) {
             log_message('error', 'Plugin award render failed (' . $slug . '): ' . $e->getMessage());
+            $this->disable_plugin_after_failure($slug, 'Plugin award render exception: ' . $e->getMessage());
             return array('ok' => false, 'message' => 'Plugin award rendering failed.');
         }
 
@@ -411,7 +415,12 @@ class Plugin_manager {
             return null;
         }
 
-        require_once $entry_path;
+        try {
+            require_once $entry_path;
+        } catch (Throwable $e) {
+            log_message('error', 'Plugin entry include failed (' . $plugin->plugin_slug . '): ' . $e->getMessage());
+            return null;
+        }
 
         if (!class_exists($class_name)) {
             log_message('error', 'Plugin class not found: ' . $class_name . ' (' . $plugin->plugin_slug . ')');
@@ -605,5 +614,18 @@ class Plugin_manager {
         }
 
         @rmdir($path);
+    }
+
+    private function disable_plugin_after_failure($slug, $reason)
+    {
+        if (!preg_match('/^[a-z0-9_-]+$/', (string)$slug)) {
+            return;
+        }
+
+        if ($this->CI->plugins_model->table_exists()) {
+            $this->CI->plugins_model->set_status($slug, 'disabled');
+        }
+
+        log_message('error', 'Plugin auto-disabled: ' . $slug . ' reason=' . $reason);
     }
 }

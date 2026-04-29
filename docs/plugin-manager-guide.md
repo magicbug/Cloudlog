@@ -161,6 +161,7 @@ Installer validates:
 
 - Hook and award-render exceptions are caught/logged.
 - Core QSO workflows continue if plugin execution fails.
+- Failing plugins are automatically disabled when runtime hook or award-render exceptions are detected.
 
 ## 8. Enable/Disable Semantics
 

@@ -29,6 +29,10 @@ class Cloudlog_hooks {
 
             $method = $handler['method'];
             if (!method_exists($plugin_instance, $method)) {
+                $this->disable_plugin_after_failure(
+                    $handler['plugin']->plugin_slug,
+                    'Hook method not found [' . $hook_name . '] method=' . $method
+                );
                 continue;
             }
 
@@ -39,6 +43,10 @@ class Cloudlog_hooks {
                 }
             } catch (Throwable $e) {
                 log_message('error', 'Plugin filter failed [' . $hook_name . '] plugin=' . $handler['plugin']->plugin_slug . ' error=' . $e->getMessage());
+                $this->disable_plugin_after_failure(
+                    $handler['plugin']->plugin_slug,
+                    'Hook filter exception [' . $hook_name . '] ' . $e->getMessage()
+                );
             }
         }
 
@@ -60,6 +68,10 @@ class Cloudlog_hooks {
 
             $method = $handler['method'];
             if (!method_exists($plugin_instance, $method)) {
+                $this->disable_plugin_after_failure(
+                    $handler['plugin']->plugin_slug,
+                    'Hook method not found [' . $hook_name . '] method=' . $method
+                );
                 continue;
             }
 
@@ -67,6 +79,10 @@ class Cloudlog_hooks {
                 $plugin_instance->$method($payload, $context);
             } catch (Throwable $e) {
                 log_message('error', 'Plugin action failed [' . $hook_name . '] plugin=' . $handler['plugin']->plugin_slug . ' error=' . $e->getMessage());
+                $this->disable_plugin_after_failure(
+                    $handler['plugin']->plugin_slug,
+                    'Hook action exception [' . $hook_name . '] ' . $e->getMessage()
+                );
             }
         }
     }
@@ -121,11 +137,13 @@ class Cloudlog_hooks {
 
         if (!preg_match('/^[A-Za-z0-9_\/.-]+$/', $entry_file)) {
             log_message('error', 'Plugin entry path invalid for ' . $slug);
+            $this->disable_plugin_after_failure($slug, 'Invalid plugin entry path');
             return null;
         }
 
         if (!preg_match('/^[A-Za-z_][A-Za-z0-9_]*$/', $class_name)) {
             log_message('error', 'Plugin class invalid for ' . $slug);
+            $this->disable_plugin_after_failure($slug, 'Invalid plugin class name');
             return null;
         }
 
@@ -135,13 +153,21 @@ class Cloudlog_hooks {
 
         if ($plugin_root === false || $entry_path === false || strpos($entry_path, $plugin_root) !== 0) {
             log_message('error', 'Plugin entry file missing or outside plugin root for ' . $slug);
+            $this->disable_plugin_after_failure($slug, 'Plugin entry file missing or outside plugin root');
             return null;
         }
 
-        require_once $entry_path;
+        try {
+            require_once $entry_path;
+        } catch (Throwable $e) {
+            log_message('error', 'Plugin entry include failed (' . $slug . '): ' . $e->getMessage());
+            $this->disable_plugin_after_failure($slug, 'Plugin entry include failed: ' . $e->getMessage());
+            return null;
+        }
 
         if (!class_exists($class_name)) {
             log_message('error', 'Plugin class not found: ' . $class_name . ' (' . $slug . ')');
+            $this->disable_plugin_after_failure($slug, 'Plugin class not found: ' . $class_name);
             return null;
         }
 
@@ -149,11 +175,26 @@ class Cloudlog_hooks {
             $instance = new $class_name($this->CI);
         } catch (Throwable $e) {
             log_message('error', 'Plugin construction failed (' . $slug . '): ' . $e->getMessage());
+            $this->disable_plugin_after_failure($slug, 'Plugin construction failed: ' . $e->getMessage());
             return null;
         }
 
         $this->plugin_instances[$slug] = $instance;
 
         return $instance;
+    }
+
+    private function disable_plugin_after_failure($slug, $reason)
+    {
+        if (!preg_match('/^[a-z0-9_-]+$/', (string)$slug)) {
+            return;
+        }
+
+        if ($this->CI->plugins_model->table_exists()) {
+            $this->CI->plugins_model->set_status($slug, 'disabled');
+        }
+
+        unset($this->plugin_instances[$slug]);
+        log_message('error', 'Plugin auto-disabled: ' . $slug . ' reason=' . $reason);
     }
 }
