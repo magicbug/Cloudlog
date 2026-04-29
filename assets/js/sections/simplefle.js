@@ -240,9 +240,8 @@ function handleInput() {
 				item.match(/^satellite$/i) ||
 				item.match(/^sat$/i)
 			) {
-				// Set band to SAT and prop_mode
+				// Set prop_mode to SAT
 				console.log("SAT keyword detected");
-				band = "SAT";
 				prop_mode = "SAT";
 				freq = 0;
 			} else if (item.match(/^\d+\.\d+$/)) {
@@ -267,7 +266,7 @@ function handleInput() {
 			) {
 				sotaWwff = item.toUpperCase();
 			} else if (
-				band === "SAT" &&
+				prop_mode === "SAT" &&
 				item.match(/^[A-Z0-9]+-\d+[A-Z]*$/i)
 			) {
 				// Satellite name (e.g., AO-7, ISS, FO-29)
@@ -283,7 +282,7 @@ function handleInput() {
 					console.log("Satellite NOT found in database. Available:", Object.keys(satelliteData).length, "satellites");
 				}
 			} else if (
-				band === "SAT" &&
+				prop_mode === "SAT" &&
 				item.match(/^(ISS|ARISS)$/i)
 			) {
 				// Handle satellites without numbers (ISS, ARISS)
@@ -292,7 +291,7 @@ function handleInput() {
 				// Update visual feedback
 				updateSatelliteFeedback(sat_name, null);
 			} else if (
-				band === "SAT" &&
+				prop_mode === "SAT" &&
 				sat_name &&
 				item.match(/^[UVLSCX](\/[UVLSCX])?$/i)
 			) {
@@ -301,10 +300,11 @@ function handleInput() {
 				// Update visual feedback with selected mode
 				updateSatelliteFeedback(sat_name, sat_mode);
 				// Now populate frequencies from satellite_data.json
-				console.log("Looking up satellite:", sat_name, "mode:", sat_mode, "band:", band);
+				console.log("Looking up satellite:", sat_name, "mode:", sat_mode);
 				if (satelliteData[sat_name] && satelliteData[sat_name].Modes && satelliteData[sat_name].Modes[sat_mode]) {
 					var modeData = satelliteData[sat_name].Modes[sat_mode][0];
 					freq = modeData.Uplink_Freq / 1000000;
+					band = getBandFromFreq(freq);
 					freq_rx = modeData.Downlink_Freq / 1000000;
 					band_rx = getBandFromFreq(freq_rx);
 					
@@ -315,7 +315,7 @@ function handleInput() {
 					} else {
 						mode = modeData.Uplink_Mode;
 					}
-					console.log("Satellite data found. Freq:", freq, "Mode:", mode, "Band RX:", band_rx);
+					console.log("Satellite data found. Freq:", freq, "Mode:", mode, "Band:", band, "Band RX:", band_rx);
 				} else {
 					// Satellite mode not found in database, but still valid
 					// User will need to manually set mode if not in database
@@ -353,7 +353,7 @@ function handleInput() {
 			console.log("Processing QSO for callsign:", callsign, "Band:", band, "Mode:", mode, "Freq:", freq, "Sat:", sat_name, sat_mode);
 			// For satellite QSOs, freq should already be set from satellite mode lookup
 			// For regular QSOs, calculate freq if not provided
-			if (band === "SAT") {
+			if (prop_mode === "SAT") {
 				// Satellite QSO - freq and mode should be set from satellite mode lookup
 				// If not set (satellite not in database), freq will be 0 or empty
 				if (!freq || freq === 0 || freq === "") {
@@ -659,6 +659,16 @@ function getBandFromFreq(freq) {
 		return "2m";
 	} else if (freq > 430 && freq < 460) {
 		return "70cm";
+	} else if (freq > 1240 && freq < 1300) {
+		return "23cm";
+	} else if (freq > 2300 && freq < 2450) {
+		return "13cm";
+	} else if (freq > 3300 && freq < 3500) {
+		return "9cm";
+	} else if (freq > 5650 && freq < 5925) {
+		return "6cm";
+	} else if (freq > 10000 && freq < 10500) {
+		return "3cm";
 	}
 
 	return "";
