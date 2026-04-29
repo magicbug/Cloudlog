@@ -659,6 +659,16 @@ function getBandFromFreq(freq) {
 		return "2m";
 	} else if (freq > 430 && freq < 460) {
 		return "70cm";
+	} else if (freq > 1240 && freq < 1300) {
+		return "23cm";
+	} else if (freq > 2300 && freq < 2450) {
+		return "13cm";
+	} else if (freq > 3300 && freq < 3500) {
+		return "9cm";
+	} else if (freq > 5650 && freq < 5925) {
+		return "6cm";
+	} else if (freq > 10000 && freq < 10500) {
+		return "3cm";
 	}
 
 	return "";
