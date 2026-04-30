@@ -106,6 +106,16 @@ class Plugin_manager {
 
         $award_menu_warning = $this->validate_award_menu_definition($plugin_root, $manifest);
 
+        $read_only_policy_error = $this->validate_plugin_read_only_policy($plugin_root);
+        if ($read_only_policy_error !== null) {
+            $this->recursive_delete($extract_dir);
+            return array(
+                'ok' => false,
+                'message' => 'Plugin blocked by security policy.',
+                'security_alert' => $read_only_policy_error,
+            );
+        }
+
         $slug = $this->resolve_slug($manifest);
         if ($slug === null) {
             $this->recursive_delete($extract_dir);
@@ -304,6 +314,13 @@ class Plugin_manager {
         $plugin = $this->CI->plugins_model->get_by_slug($slug);
         if (!$plugin || $plugin->plugin_status !== 'enabled') {
             return array('ok' => false, 'message' => 'Award plugin is not enabled.');
+        }
+
+        $plugin_root = $this->get_plugin_root() . $slug . DIRECTORY_SEPARATOR;
+        $read_only_policy_error = $this->validate_plugin_read_only_policy($plugin_root);
+        if ($read_only_policy_error !== null) {
+            $this->disable_plugin_after_failure($slug, $read_only_policy_error);
+            return array('ok' => false, 'message' => 'Plugin disabled due to read-only policy violation.');
         }
 
         $manifest = $this->get_manifest_for_plugin($plugin);
@@ -627,5 +644,102 @@ class Plugin_manager {
         }
 
         log_message('error', 'Plugin auto-disabled: ' . $slug . ' reason=' . $reason);
+    }
+
+    private function validate_plugin_read_only_policy($plugin_root)
+    {
+        $plugin_root_real = realpath($plugin_root);
+        if ($plugin_root_real === false || !is_dir($plugin_root_real)) {
+            return 'Plugin files are missing on disk.';
+        }
+
+        $php_files = $this->collect_php_files($plugin_root_real);
+        if (empty($php_files)) {
+            return null;
+        }
+
+        foreach ($php_files as $php_file) {
+            $contents = @file_get_contents($php_file);
+            if ($contents === false) {
+                return 'Plugin policy check failed: unable to read ' . basename($php_file) . '.';
+            }
+
+            $violation = $this->find_forbidden_plugin_operation($contents);
+            if ($violation !== null) {
+                $relative_path = ltrim(str_replace($plugin_root_real, '', $php_file), DIRECTORY_SEPARATOR);
+                return 'Forbidden operation "' . $violation . '" in ' . $relative_path . '. Plugins must be read-only and cannot execute system commands.';
+            }
+        }
+
+        return null;
+    }
+
+    private function collect_php_files($root)
+    {
+        $files = array();
+        $items = @scandir($root);
+        if (!is_array($items)) {
+            return $files;
+        }
+
+        foreach ($items as $item) {
+            if ($item === '.' || $item === '..') {
+                continue;
+            }
+
+            $path = $root . DIRECTORY_SEPARATOR . $item;
+            if (is_dir($path)) {
+                $files = array_merge($files, $this->collect_php_files($path));
+                continue;
+            }
+
+            if (strtolower(pathinfo($path, PATHINFO_EXTENSION)) === 'php') {
+                $files[] = $path;
+            }
+        }
+
+        return $files;
+    }
+
+    private function find_forbidden_plugin_operation($php_code)
+    {
+        $forbidden_functions = array(
+            'file_put_contents',
+            'fopen',
+            'fwrite',
+            'fputs',
+            'mkdir',
+            'rmdir',
+            'rename',
+            'unlink',
+            'copy',
+            'touch',
+            'symlink',
+            'link',
+            'move_uploaded_file',
+            'chmod',
+            'chown',
+            'chgrp',
+            'ftruncate',
+            'tempnam',
+            'tmpfile',
+            'system',
+            'exec',
+            'shell_exec',
+            'passthru',
+            'proc_open',
+            'popen',
+            'pcntl_exec',
+            'assert',
+            'eval',
+        );
+
+        foreach ($forbidden_functions as $function_name) {
+            if (preg_match('/\\b' . preg_quote($function_name, '/') . '\\s*\\(/i', $php_code)) {
+                return $function_name;
+            }
+        }
+
+        return null;
     }
 }

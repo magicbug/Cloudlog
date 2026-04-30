@@ -6,6 +6,7 @@ Related guides:
 
 - [docs/plugin-manager-guide.md](docs/plugin-manager-guide.md)
 - [docs/awards-plugin-guide.md](docs/awards-plugin-guide.md)
+- [docs/qso-hooks-plugin-guide.md](docs/qso-hooks-plugin-guide.md)
 
 ## Goals
 

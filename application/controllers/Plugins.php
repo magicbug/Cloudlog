@@ -5,13 +5,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Plugins extends CI_Controller {
 
     private const PLUGINS_CSRF_SESSION_KEY = 'plugins_csrf_token';
+    private const PLUGINS_SECURITY_ALERT_SESSION_KEY = 'plugins_security_alert';
 
     public function __construct()
     {
         parent::__construct();
 
         $this->load->model('user_model');
-        if (!$this->user_model->authorize(99)) {
+        if ($this->user_model->validate_session() == 0) {
+            redirect('user/login');
+        }
+
+        if ((int)$this->session->userdata('user_type') !== 99) {
             $this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
             redirect('dashboard');
         }
@@ -24,6 +29,7 @@ class Plugins extends CI_Controller {
         $data['page_title'] = 'Plugin Manager';
         $data['plugins'] = $this->plugin_manager->list_plugins();
         $data['plugins_csrf_token'] = $this->get_plugins_csrf_token();
+        $data['plugins_security_alert'] = (string)$this->session->flashdata(self::PLUGINS_SECURITY_ALERT_SESSION_KEY);
 
         $this->load->view('interface_assets/header', $data);
         $this->load->view('plugins/index', $data);
@@ -71,6 +77,10 @@ class Plugins extends CI_Controller {
         $upload_data = $this->upload->data();
         $result = $this->plugin_manager->install_from_zip($upload_data['full_path']);
         @unlink($upload_data['full_path']);
+
+        if (isset($result['security_alert']) && trim((string)$result['security_alert']) !== '') {
+            $this->session->set_flashdata(self::PLUGINS_SECURITY_ALERT_SESSION_KEY, (string)$result['security_alert']);
+        }
 
         $this->session->set_flashdata('notice', $result['message']);
         redirect('plugins');
