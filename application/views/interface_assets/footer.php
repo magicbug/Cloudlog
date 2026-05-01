@@ -2119,29 +2119,34 @@ $(document).ready(function() {
             const requestId = ++catRequestCounter;
             const requestContextVersion = catSelectionContextVersion;
 
-            $.getJSON(`radio/json/${requestedRadioID}`, (data) => {
-                const currentSelectedRadioID = String($('select.radios option:selected').val() || '0');
+            $.ajax({
+                url: `radio/json/${requestedRadioID}`,
+                dataType: 'json',
+                cache: false,
+                success: (data) => {
+                    const currentSelectedRadioID = String($('select.radios option:selected').val() || '0');
 
-                // Ignore stale CAT responses when radio selection changed or newer requests have already been applied.
-                if (
-                    requestContextVersion !== catSelectionContextVersion ||
-                    currentSelectedRadioID !== requestedRadioID ||
-                    requestId < lastProcessedCatRequest
-                ) {
-                    return;
-                }
-
-                lastProcessedCatRequest = requestId;
-
-                if (data.error) {
-                    if (data.error === 'not_logged_in') {
-                        handleLoginError();
+                    // Ignore stale CAT responses when radio selection changed or newer requests have already been applied.
+                    if (
+                        requestContextVersion !== catSelectionContextVersion ||
+                        currentSelectedRadioID !== requestedRadioID ||
+                        requestId < lastProcessedCatRequest
+                    ) {
+                        return;
                     }
-                    return;
-                }
 
-                clearLoginError();
-                updateUIWithCATData(data);
+                    lastProcessedCatRequest = requestId;
+
+                    if (data.error) {
+                        if (data.error === 'not_logged_in') {
+                            handleLoginError();
+                        }
+                        return;
+                    }
+
+                    clearLoginError();
+                    updateUIWithCATData(data);
+                }
             });
         };
 

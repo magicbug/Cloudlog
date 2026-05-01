@@ -79,6 +79,10 @@
 	}
 
 	function json($id) {
+		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+		$this->output->set_header('Cache-Control: post-check=0, pre-check=0', false);
+		$this->output->set_header('Pragma: no-cache');
+		$this->output->set_header('Expires: Sat, 01 Jan 2000 00:00:00 GMT');
 
 		$this->load->model('user_model');
 
