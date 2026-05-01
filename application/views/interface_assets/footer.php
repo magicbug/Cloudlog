@@ -2096,6 +2096,13 @@ $(document).ready(function() {
         let catRequestCounter = 0;
         let lastProcessedCatRequest = 0;
         let catSelectionContextVersion = 0;
+        let consecutiveCatPollFailures = 0;
+        let catPollTimer = null;
+        let lastSuccessfulCatUpdateAt = null;
+
+        const CAT_POLL_BASE_INTERVAL_MS = 3000;
+        const CAT_POLL_MAX_INTERVAL_MS = 15000;
+        const CAT_POLL_WARNING_THRESHOLD = 3;
 
         // Helper function to update a UI element with CAT data
         const cat2UI = (ui, cat, allowEmpty = true, allowZero = true, callbackOnUpdate) => {
@@ -2141,13 +2148,96 @@ $(document).ready(function() {
                         if (data.error === 'not_logged_in') {
                             handleLoginError();
                         }
+                        handleCATPollFailure(requestedRadioID);
                         return;
                     }
 
                     clearLoginError();
+                    handleCATPollSuccess();
                     updateUIWithCATData(data);
+                },
+                error: () => {
+                    handleCATPollFailure(requestedRadioID);
                 }
             });
+        };
+
+        const getNextCATPollDelay = () => {
+            if (consecutiveCatPollFailures <= 0) {
+                return CAT_POLL_BASE_INTERVAL_MS;
+            }
+
+            return Math.min(
+                CAT_POLL_MAX_INTERVAL_MS,
+                CAT_POLL_BASE_INTERVAL_MS * Math.pow(2, consecutiveCatPollFailures - 1)
+            );
+        };
+
+        const clearCATPollWarning = () => {
+            $('.radio_poll_warning').remove();
+        };
+
+        const showCATPollWarning = () => {
+            const secondsSinceSuccess = lastSuccessfulCatUpdateAt === null
+                ? null
+                : Math.max(0, Math.floor((Date.now() - lastSuccessfulCatUpdateAt) / 1000));
+
+            let warningText = 'Live rig sync is temporarily unstable. Retrying automatically.';
+            if (secondsSinceSuccess !== null) {
+                warningText += ` Last successful update was ${secondsSinceSuccess} seconds ago.`;
+            }
+
+            if ($('.radio_poll_warning').length === 0) {
+                $('#radio_status').prepend(
+                    `<div class="alert alert-warning radio_poll_warning" role="alert"><i class="fas fa-exclamation-triangle"></i> ${warningText}</div>`
+                );
+            } else {
+                $('.radio_poll_warning').html(`<i class="fas fa-exclamation-triangle"></i> ${warningText}`);
+            }
+        };
+
+        const handleCATPollSuccess = () => {
+            consecutiveCatPollFailures = 0;
+            lastSuccessfulCatUpdateAt = Date.now();
+            clearCATPollWarning();
+            scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
+        };
+
+        const handleCATPollFailure = (radioID) => {
+            const currentSelectedRadioID = String($('select.radios option:selected').val() || '0');
+            if (!radioID || currentSelectedRadioID !== String(radioID)) {
+                return;
+            }
+
+            consecutiveCatPollFailures += 1;
+
+            if (consecutiveCatPollFailures >= CAT_POLL_WARNING_THRESHOLD) {
+                showCATPollWarning();
+            }
+
+            scheduleNextCATPoll(getNextCATPollDelay());
+        };
+
+        const scheduleNextCATPoll = (delayMs) => {
+            if (catPollTimer !== null) {
+                clearTimeout(catPollTimer);
+            }
+
+            catPollTimer = setTimeout(() => {
+                pollSelectedRadio();
+            }, delayMs);
+        };
+
+        const pollSelectedRadio = () => {
+            const selectedRadioID = String($('select.radios option:selected').val() || '0');
+            if (selectedRadioID !== '0') {
+                updateFromCAT(selectedRadioID);
+                return;
+            }
+
+            consecutiveCatPollFailures = 0;
+            clearCATPollWarning();
+            scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
         };
 
         // Handle login error display
@@ -2244,6 +2334,7 @@ $(document).ready(function() {
             // Clear CAT value cache so re-selecting a radio with identical values still repopulates fields.
             $('#frequency, #frequency_rx, #sat_name, #sat_mode, #transmit_power, #selectPropagation, #mode').removeData('catValue');
             $(".radio_timeout_error").remove();
+            clearCATPollWarning();
         };
 
         // Event listeners
@@ -2270,20 +2361,17 @@ $(document).ready(function() {
                 isSubmitting = true;
             });
 
-            // Update frequency every three seconds for the selected radio
-            setInterval(() => {
-                const selectedRadioID = $('select.radios option:selected').val();
-                if (selectedRadioID !== '0') {
-                    updateFromCAT(selectedRadioID);
-                }
-            }, 3000);
+            scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
 
             // Trigger updateFromCAT when any <select> with class 'radios' changes
             $('.radios').on('change', function() {
                 catSelectionContextVersion++;
+                consecutiveCatPollFailures = 0;
+                clearCATPollWarning();
                 const selectedRadioID = $(this).val();
                 if (selectedRadioID === '0') {
                     resetUI();
+                    scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
                 } else {
                     updateFromCAT(selectedRadioID);
                 }
