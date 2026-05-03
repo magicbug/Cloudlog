@@ -299,6 +299,18 @@
                     </div>
 
                     <div class="mb-3 row">
+                        <label class="col-md-2 control-label" for="year">Year</label>
+                        <div class="col-md-2">
+                            <select id="year" name="year" class="form-select form-select-sm">
+                                <option value="All" <?php if ($this->input->post('year') == 'All' || $this->input->method() !== 'post') echo ' selected'; ?>>All years</option>
+                                <?php foreach ($worked_years as $yr): ?>
+                                    <option value="<?php echo $yr; ?>" <?php if ($this->input->post('year') == $yr) echo ' selected'; ?>><?php echo $yr; ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
                         <label class="col-md-2 control-label" for="button1id"></label>
                         <div class="col-md-10">
                             <button id="button2id" type="reset" name="button2id" class="btn btn-sm btn-warning">Reset</button>

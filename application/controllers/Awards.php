@@ -108,6 +108,7 @@ class Awards extends CI_Controller
 
         $data['worked_bands'] = $this->bands->get_worked_bands('dxcc'); // Used in the view for band select
         $data['modes'] = $this->modes->active(); // Used in the view for mode select
+        $data['worked_years'] = $this->dxcc->get_worked_years(); // Used in the view for year select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -138,6 +139,7 @@ class Awards extends CI_Controller
             $postdata['Antarctica'] = $this->security->xss_clean($this->input->post('Antarctica'));
             $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
             $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
+            $postdata['year'] = $this->security->xss_clean($this->input->post('year'));
         } else { // Setting default values at first load of page
             $postdata['qsl'] = 1;
             $postdata['lotw'] = 1;
@@ -155,6 +157,7 @@ class Awards extends CI_Controller
             $postdata['Antarctica'] = 1;
             $postdata['band'] = 'All';
             $postdata['mode'] = 'All';
+            $postdata['year'] = 'All';
         }
 
         $dxcclist = $this->dxcc->fetchdxcc($postdata);

@@ -155,6 +155,7 @@ class DXCC extends CI_Model {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
+		$sql .= $this->addYearToQuery($postdata);
 		$sql .= $this->addQslToQuery($postdata);
 
 		$sql .= " group by col_dxcc
@@ -184,6 +185,8 @@ class DXCC extends CI_Model {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
+		$sql .= $this->addYearToQuery($postdata);
+
 		$sql .= " group by col_dxcc
 				) x on dxcc_entities.adif = x.col_dxcc";;
 
@@ -210,6 +213,29 @@ class DXCC extends CI_Model {
         }
         return $sql;
     }
+
+	function addYearToQuery($postdata) {
+		$sql = '';
+		if (!empty($postdata['year']) && $postdata['year'] !== 'All') {
+			$year = (int) $postdata['year'];
+			$sql .= " and YEAR(col_time_on) = " . $year;
+		}
+		return $sql;
+	}
+
+	function get_worked_years() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		if (!$logbooks_locations_array) {
+			return [];
+		}
+		$location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+		$sql = "SELECT DISTINCT YEAR(col_time_on) as year FROM " . $this->config->item('table_name') .
+			" WHERE station_id IN (" . $location_list . ") AND col_dxcc > 0 AND col_time_on IS NOT NULL ORDER BY year DESC";
+		$query = $this->db->query($sql);
+		return array_column($query->result_array(), 'year');
+	}
 
 	function fetchDxcc($postdata) {
 		$CI =& get_instance();
@@ -273,6 +299,8 @@ class DXCC extends CI_Model {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
+		$sql .= $this->addYearToQuery($postdata);
+
 		$sql .= " and not exists (select 1 from ".$this->config->item('table_name')." where station_id in (". $location_list .") and col_dxcc = thcv.col_dxcc and col_dxcc > 0";
 
 		$sql .= $this->addBandToQuery($postdata['band']);
@@ -280,6 +308,8 @@ class DXCC extends CI_Model {
 		if ($postdata['mode'] != 'All') {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
+
+		$sql .= $this->addYearToQuery($postdata);
 
 		$sql .= $this->addQslToQuery($postdata);
 
@@ -314,6 +344,7 @@ class DXCC extends CI_Model {
 			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
 		}
 
+		$sql .= $this->addYearToQuery($postdata);
 		$sql .= $this->addQslToQuery($postdata);
 
 		$sql .= " group by col_dxcc
