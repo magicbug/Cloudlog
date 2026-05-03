@@ -2,6 +2,8 @@
 /application/config/config.php
 /application/config/managed.php
 /application/config/managed.sample.php
+/.env
+/PluginDirectory/.env
 /application/cache/*
 !/application/cache/index.html
 !/application/cache/.htaccess
