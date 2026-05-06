@@ -12,11 +12,11 @@
             What is the GMDX Summer Challenge?
         </div>
         <div class="card-body">
-            <p class="card-text">The GMDX Summer Challenge will takes place over 6 weeks beginning 00:00 on Monday 13th May until 2359 on Sunday 30th June.</p>
-            <p class="card-text">The Summer Challenge is a single event using CW, SSB or Digital Modes on both 4m and 6m. GMDX members are expected not to set up FT8 in automated robot mode. You are trusted to operate your station manually.</p>
-            <p class="card-text">The overall winner will have worked the most 4 digit maidenhead locator squares (eg IO75) on 4m and 6m to give the highest combined score. DXCC Countries are not counted, only locator squares.  In order to have the leading score, it is expected operators would have to make contacts on both 4m and 6m using all modes.</p>
+            <p class="card-text">The GMDX Summer VHF Challenge 2026 takes place from 00:00 on Monday 11th May until 23:59 on Sunday 5th July.</p>
+            <p class="card-text">The challenge is a single event using CW, Voice, and Digital modes on both 4m and 6m. Acceptable voice modes are SSB, AM, and FM. Entrants are expected not to set up FT8 or other digital modes in automated robot mode, and to operate manually.</p>
+            <p class="card-text">Score is based on 4-digit Maidenhead locator squares (for example IO72), and DXCC countries are not counted. The same locator can be counted once per mode category (CW, Voice, Digital) on each band, so the same locator can count up to 3 times on 4m and again up to 3 times on 6m.</p>
             <p class="card-text">All GMDX members worldwide are welcome to enter.</p>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSek4GlQzx7OXJBxYh-KCLdK86_yRbqXGL1rTl1dFXmTlkpdlA/viewform" class="btn btn-primary" target="_blank">Submit your entry</a>
+            <a href="https://forms.gle/UUVLG4oASBxeWGFf7" class="btn btn-primary" target="_blank">Submit your entry</a>
         </div>
     </div>
 
@@ -39,7 +39,7 @@
             </tr>
 
             <tr>
-                <td>18:00 on Sunday 26th May</td>
+                <td>18:00 on Sunday 24th May</td>
                 <td><?php echo $week1_6m_ssb; ?></td>
                 <td><?php echo $week1_6m_cw; ?></td>
                 <td><?php echo $week1_6m_digital; ?></td>
@@ -51,7 +51,7 @@
             </tr>
 
             <tr>
-                <td>18:00 on Sunday 9th June</td>
+                <td>18:00 on Sunday 7th June</td>
                 <td><?php echo $week2_6m_ssb; ?></td>
                 <td><?php echo $week2_6m_cw; ?></td>
                 <td><?php echo $week2_6m_digital; ?></td>
@@ -63,7 +63,7 @@
             </tr>
 
             <tr>
-                <td>18:00 on Sunday 23th June</td>
+                <td>18:00 on Sunday 21st June</td>
                 <td><?php echo $week3_6m_ssb; ?></td>
                 <td><?php echo $week3_6m_cw; ?></td>
                 <td><?php echo $week3_6m_digital; ?></td>
@@ -75,7 +75,7 @@
             </tr>
 
             <tr>
-                <td>18:00 on Monday 1st July</td>
+                <td>18:00 on Monday 6th July (QSOs counted to 23:59 Sunday 5th July)</td>
                 <td><?php echo $week4_6m_ssb; ?></td>
                 <td><?php echo $week4_6m_cw; ?></td>
                 <td><?php echo $week4_6m_digital; ?></td>
