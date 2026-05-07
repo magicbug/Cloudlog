@@ -1,51 +1,53 @@
 <?php
-function echo_table_header_col($ctx, $name) {
+function echo_table_header_col($ctx, $name, $class = '') {
+    $classAttr = $class !== '' ? ' class="' . $class . '"' : '';
 	switch($name) {
-		case 'Mode': echo '<th>'.$ctx->lang->line('gen_hamradio_mode').'</th>'; break;
-		case 'RSTS': echo '<th>'.$ctx->lang->line('gen_hamradio_rsts').'</th>'; break;
-		case 'RSTR': echo '<th>'.$ctx->lang->line('gen_hamradio_rstr').'</th>'; break;
-		case 'Country': echo '<th>'.$ctx->lang->line('general_word_country').'</th>'; break;
-		case 'IOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_iota').'</th>'; break;
-		case 'SOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_sota').'</th>'; break;
-		case 'WWFF': echo '<th>'.$ctx->lang->line('gen_hamradio_wwff').'</th>'; break;
-		case 'POTA': echo '<th>'.$ctx->lang->line('gen_hamradio_pota').'</th>'; break;
-		case 'State': echo '<th>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
-		case 'Grid': echo '<th>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
-		case 'Distance': echo '<th>'.$ctx->lang->line('gen_hamradio_distance').'</th>'; break;
-		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</td>'; break;
-		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
-		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
-		case 'Location': echo '<th>'.$ctx->lang->line('cloudlog_station_profile').'</th>'; break;
-		case 'Name': echo '<th>'.$ctx->lang->line('general_word_name').'</th>'; break;
-		case 'Flag': echo '<th>&nbsp;</th>'; break;
+        case 'Mode': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_mode').'</th>'; break;
+        case 'RSTS': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_rsts').'</th>'; break;
+        case 'RSTR': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_rstr').'</th>'; break;
+        case 'Country': echo '<th' . $classAttr . '>'.$ctx->lang->line('general_word_country').'</th>'; break;
+        case 'IOTA': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_iota').'</th>'; break;
+        case 'SOTA': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_sota').'</th>'; break;
+        case 'WWFF': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_wwff').'</th>'; break;
+        case 'POTA': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_pota').'</th>'; break;
+        case 'State': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
+        case 'Grid': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
+        case 'Distance': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_distance').'</th>'; break;
+        case 'Band': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_band').'</th>'; break;
+        case 'Frequency': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
+        case 'Operator': echo '<th' . $classAttr . '>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
+        case 'Location': echo '<th' . $classAttr . '>'.$ctx->lang->line('cloudlog_station_profile').'</th>'; break;
+        case 'Name': echo '<th' . $classAttr . '>'.$ctx->lang->line('general_word_name').'</th>'; break;
+        case 'Flag': echo '<th' . $classAttr . '>&nbsp;</th>'; break;
 	}
 }
 
-function echo_table_col($row, $name) {
+function echo_table_col($row, $name, $class = '') {
+    $classAttr = $class !== '' ? ' class="' . $class . '"' : '';
 	$ci =& get_instance();
     $dxccName = property_exists($row, 'name') ? $row->name : null;
     $dxccEnd = property_exists($row, 'end') ? $row->end : null;
 	switch($name) {
-		case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
-        case 'RSTS':    echo '<td>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
-        case 'RSTR':    echo '<td>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_SRX_STRING . '</span>';} echo '</td>'; break;
-        case 'Country': echo '<td>' . ucwords(strtolower(($dxccName==null?"- NONE -":$dxccName))); if ($dxccEnd != null) echo ' <span class="badge text-bg-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>' . '</td>'; break;
-		case 'IOTA':    echo '<td>' . ($row->COL_IOTA) . '</td>'; break;
-		case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
-		case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
-		case 'POTA':    echo '<td>' . ($row->COL_POTA_REF) . '</td>'; break;
-		case 'Grid':    echo '<td>'; echoQrbCalcLink($row->station_gridsquare, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE); echo '</td>'; break;
-		case 'Distance':echo '<td><span data-bs-toggle="tooltip" title="'.$row->COL_GRIDSQUARE.'">' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</span></td>'; break;
-		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank"><span data-bs-toggle="tooltip" title="'.$row->COL_BAND.'">'.$row->COL_SAT_NAME.'</span></a></td>'; } else { if ($row->COL_FREQ != null) { echo ' <span data-bs-toggle="tooltip" title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'. strtolower($row->COL_BAND).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
-		case 'Frequency':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo ' <span data-bs-toggle="tooltip" title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo ' <span data-bs-toggle="tooltip" title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
-		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
-		case 'Operator':echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
-		case 'Location':echo '<td>' . ($row->station_profile_name) . '</td>'; break;
-		case 'Name':echo '<td>' . ($row->COL_NAME) . '</td>'; break;
+        case 'Mode':    echo '<td' . $classAttr . '>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
+        case 'RSTS':    echo '<td' . $classAttr . '>' . $row->COL_RST_SENT; if ($row->COL_STX) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
+        case 'RSTR':    echo '<td' . $classAttr . '>' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_SRX_STRING . '</span>';} echo '</td>'; break;
+        case 'Country': echo '<td' . $classAttr . '>' . ucwords(strtolower(($dxccName==null?"- NONE -":$dxccName))); if ($dxccEnd != null) echo ' <span class="badge text-bg-danger">'.$ci->lang->line('gen_hamradio_deleted_dxcc').'</span>' . '</td>'; break;
+        case 'IOTA':    echo '<td' . $classAttr . '>' . ($row->COL_IOTA) . '</td>'; break;
+        case 'SOTA':    echo '<td' . $classAttr . '>' . ($row->COL_SOTA_REF) . '</td>'; break;
+        case 'WWFF':    echo '<td' . $classAttr . '>' . ($row->COL_WWFF_REF) . '</td>'; break;
+        case 'POTA':    echo '<td' . $classAttr . '>' . ($row->COL_POTA_REF) . '</td>'; break;
+        case 'Grid':    echo '<td' . $classAttr . '>'; echoQrbCalcLink($row->station_gridsquare, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE); echo '</td>'; break;
+        case 'Distance':echo '<td' . $classAttr . '><span data-bs-toggle="tooltip" title="'.$row->COL_GRIDSQUARE.'">' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</span></td>'; break;
+        case 'Band':    echo '<td' . $classAttr . '>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank"><span data-bs-toggle="tooltip" title="'.$row->COL_BAND.'">'.$row->COL_SAT_NAME.'</span></a></td>'; } else { if ($row->COL_FREQ != null) { echo ' <span data-bs-toggle="tooltip" title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'. strtolower($row->COL_BAND).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
+        case 'Frequency':    echo '<td' . $classAttr . '>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'; if ($row->COL_FREQ != null) { echo ' <span data-bs-toggle="tooltip" title="'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'">'.$row->COL_SAT_NAME.'</span>'; } else { echo $row->COL_SAT_NAME; } echo '</a></td>'; } else { if ($row->COL_FREQ != null) { echo ' <span data-bs-toggle="tooltip" title="'.$row->COL_BAND.'">'.$ci->frequency->hz_to_mhz($row->COL_FREQ).'</span>'; } else { echo strtolower($row->COL_BAND); } } echo '</td>'; break;
+        case 'State':   echo '<td' . $classAttr . '>' . ($row->COL_STATE) . '</td>'; break;
+        case 'Operator':echo '<td' . $classAttr . '>' . ($row->COL_OPERATOR) . '</td>'; break;
+        case 'Location':echo '<td' . $classAttr . '>' . ($row->station_profile_name) . '</td>'; break;
+        case 'Name':echo '<td' . $classAttr . '>' . ($row->COL_NAME) . '</td>'; break;
 		case 'Flag':
 			$ci->load->library('DxccFlag');	
 			$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
-            echo '<td><span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($dxccName==null?"- NONE -":$dxccName))) . '"><span class="fi fi-' . $flag .'"></span></span></td>'; 
+            echo '<td' . $classAttr . '><span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($dxccName==null?"- NONE -":$dxccName))) . '"><span class="fi fi-' . $flag .'"></span></span></td>'; 
 			break;
 	}
 }
@@ -70,31 +72,31 @@ if ($results) {
             <tr class="titles">
                 <th><?php echo lang('general_word_date'); ?></th>
                 <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-                <th><?php echo lang('general_word_time'); ?></th>
+                <th class="d-none d-sm-table-cell"><?php echo lang('general_word_time'); ?></th>
                 <?php } ?>
                 <th><?php echo lang('gen_hamradio_call'); ?></th>
                 <?php
                 echo_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
-                echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
-                echo_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
+                echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'), 'd-none d-md-table-cell');
+                echo_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'), 'd-none d-md-table-cell');
                 echo_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-                echo_table_header_col($this, $this->session->userdata('user_column5'));
+                echo_table_header_col($this, $this->session->userdata('user_column5'), 'd-none d-lg-table-cell');
 
                     if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                    <th>QSL</th>
+                    <th class="d-none d-md-table-cell">QSL</th>
                     <?php if($this->session->userdata('user_eqsl_name') != "") { ?>
-                        <th>eQSL</th>
+                        <th class="d-none d-md-table-cell">eQSL</th>
                     <?php } ?>
                     <?php if($this->session->userdata('user_lotw_name') != "") { ?>
-                        <th>LoTW</th>
+                        <th class="d-none d-md-table-cell">LoTW</th>
                     <?php } ?>
     		    <?php if($this->session->userdata('hasQrzKey') != "") { ?>
-                        <th>QRZ</th>
+                        <th class="d-none d-md-table-cell">QRZ</th>
                     <?php } ?>
                 <?php } ?>
-                    <th><?php echo lang('gen_hamradio_station'); ?></th>
+                    <th class="d-none d-md-table-cell"><?php echo lang('gen_hamradio_station'); ?></th>
                 <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                    <th></th>
+                    <th class="d-none d-md-table-cell"></th>
                 <?php } ?>
             </tr>
         </thead>
@@ -113,7 +115,7 @@ if ($results) {
                 echo '<tr class="tr'.($i & 1).'" id="qso_'. $row->COL_PRIMARY_KEY .'">'; ?>
             <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
             <?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-            <td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
+            <td class="d-none d-sm-table-cell"><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
             <?php } ?>
             <td>
                 <a id="edit_qso" href="javascript:displayQso(<?php echo $row->COL_PRIMARY_KEY; ?>)"><?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?></a>
@@ -135,13 +137,13 @@ if ($results) {
 			<?php
 
                 echo_table_col($row, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
-                echo_table_col($row, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
-                echo_table_col($row, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
+                echo_table_col($row, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'), 'd-none d-md-table-cell');
+                echo_table_col($row, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'), 'd-none d-md-table-cell');
                 echo_table_col($row, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-                echo_table_col($row, $this->session->userdata('user_column5'));
+                echo_table_col($row, $this->session->userdata('user_column5'), 'd-none d-lg-table-cell');
 			
 				if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                <td id="qsl_<?php echo $row->COL_PRIMARY_KEY; ?>" class="qsl">
+                <td id="qsl_<?php echo $row->COL_PRIMARY_KEY; ?>" class="qsl d-none d-md-table-cell">
                 <span <?php if ($row->COL_QSL_SENT != "N") {
                        switch ($row->COL_QSL_SENT) {
                        case "Y":
@@ -221,7 +223,7 @@ if ($results) {
                 </td>
 
                 <?php if ($this->session->userdata('user_eqsl_name') != ""){ ?>
-                    <td class="eqsl">
+                    <td class="eqsl d-none d-md-table-cell">
                         <span <?php if ($row->COL_EQSL_QSL_SENT == "Y") { echo "title=\"".lang('eqsl_short')." ".lang('general_word_sent'); if ($row->COL_EQSL_QSLSDATE != null) { $timestamp = strtotime($row->COL_EQSL_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
                         <span <?php if ($row->COL_EQSL_QSL_RCVD == "Y") { echo "title=\"".lang('eqsl_short')." ".lang('general_word_received'); if ($row->COL_EQSL_QSLRDATE != null) { $timestamp = strtotime($row->COL_EQSL_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="eqsl-<?php echo ($row->COL_EQSL_QSL_RCVD=='Y')?'green':'red'?>">
 			    	<?php if($row->COL_EQSL_QSL_RCVD =='Y') { ?>
@@ -234,14 +236,14 @@ if ($results) {
                 <?php } ?>
 
                 <?php if($this->session->userdata('user_lotw_name') != "") { ?>
-                    <td class="lotw">
+                    <td class="lotw d-none d-md-table-cell">
                         <span <?php if ($row->COL_LOTW_QSL_SENT == "Y") { echo "title=\"".lang('lotw_short')." ".lang('general_word_sent'); if ($row->COL_LOTW_QSLSDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLSDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_SENT=='Y')?'green':'red'?>">&#9650;</span>
                         <span <?php if ($row->COL_LOTW_QSL_RCVD == "Y") { echo "title=\"".lang('lotw_short')." ".lang('general_word_received'); if ($row->COL_LOTW_QSLRDATE != null) { $timestamp = strtotime($row->COL_LOTW_QSLRDATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="lotw-<?php echo ($row->COL_LOTW_QSL_RCVD=='Y')?'green':'red'?>">&#9660;</span>
                     </td>
                 <?php } ?>
 
 		<?php if($this->session->userdata('hasQrzKey') != "") { ?>
-                    <td class="qrz">
+                    <td class="qrz d-none d-md-table-cell">
                         <span <?php if ($row->COL_QRZCOM_QSO_UPLOAD_STATUS == "Y") { echo "title=\"QRZ ".lang('general_word_sent'); if ($row->COL_QRZCOM_QSO_UPLOAD_DATE != null) { $timestamp = strtotime($row->COL_QRZCOM_QSO_UPLOAD_DATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="qrz-<?php echo ($row->COL_QRZCOM_QSO_UPLOAD_STATUS=='Y')?'green':'red'?>">&#9650;</span>
                         <span <?php if ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS == "Y") { echo "title=\"QRZ ".lang('general_word_received'); if ($row->COL_QRZCOM_QSO_DOWNLOAD_DATE != null) { $timestamp = strtotime($row->COL_QRZCOM_QSO_DOWNLOAD_DATE); echo " ".($timestamp!=''?date($custom_date_format, $timestamp):''); } echo "\" data-bs-toggle=\"tooltip\""; } ?> class="qrz-<?php echo ($row->COL_QRZCOM_QSO_DOWNLOAD_STATUS=='Y')?'green':'red'?>">&#9660;</span>
                     </td>
@@ -250,13 +252,13 @@ if ($results) {
             <?php } ?>
 
                     <?php if(isset($row->station_callsign)) { ?>
-                        <td>
+                        <td class="d-none d-md-table-cell">
                             <span class="badge text-bg-light"><?php echo $row->station_callsign; ?></span>
                         </td>
                     <?php } ?>
 
             <?php if(($this->config->item('use_auth')) && ($this->session->userdata('user_type') >= 2)) { ?>
-                <td>
+                <td class="d-none d-md-table-cell">
                     <div class="dropdown">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
                             <i class="fas fa-cog"></i>
