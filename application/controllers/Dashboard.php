@@ -11,6 +11,7 @@ class Dashboard extends CI_Controller
 		$this->load->model('user_model');
 		$this->load->model('logbook_model');
 		$this->load->model('logbooks_model');
+		$this->load->helper('dashboard');
 	}
 
 	public function index()
@@ -229,16 +230,23 @@ class Dashboard extends CI_Controller
 			return;
 		}
 
+		$this->load->library('user_agent');
+
 		// Get Logbook Locations
 		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-		// Get the last 20 QSOs
-		$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('20', $logbooks_locations_array);
+		// Show fewer rows on mobile to reduce dashboard noise.
+		$recent_qso_limit = $this->agent->is_mobile() ? '10' : '20';
+		$data['last_five_qsos'] = $this->logbook_model->get_last_qsos($recent_qso_limit, $logbooks_locations_array);
 		$this->load->view('components/dashboard_logbook_table', $data);
 	}
 
 	function radio_display_component()
 	{
+		if ($this->user_model->validate_session() == 0) {
+			return;
+		}
+
 		$this->load->model('cat');
 
 		$data['radio_status'] = $this->cat->recent_status();
