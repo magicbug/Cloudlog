@@ -21,9 +21,71 @@
     }
   </script>
 
+  <style>
+    @media (max-width: 991.98px) {
+      .qso_panel {
+        overflow-x: hidden;
+      }
+
+      .qso_panel .card-header {
+        overflow: hidden;
+      }
+
+      .qso_panel #myTab,
+      .qso_panel #qsoRightTabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        max-width: 100%;
+      }
+
+      .qso_panel #myTab::-webkit-scrollbar,
+      .qso_panel #qsoRightTabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .qso_panel #myTab .nav-item,
+      .qso_panel #qsoRightTabs .nav-item {
+        flex: 0 0 auto;
+      }
+
+      .qso_panel #myTab .nav-link,
+      .qso_panel #qsoRightTabs .nav-link {
+        padding: 0.35rem 0.55rem;
+        font-size: 0.95rem;
+      }
+
+      .qso_panel .card-body {
+        padding: 0.9rem;
+      }
+
+      .qso_panel .radio_selection {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .qso_panel .radio_selection .form-label {
+        margin-bottom: 0;
+      }
+
+      .qso_panel .radio_selection .btn {
+        width: 100%;
+      }
+
+      .qso_panel #qso-last-table-content .table th:nth-child(n+5),
+      .qso_panel #qso-last-table-content .table td:nth-child(n+5) {
+        display: none;
+      }
+    }
+  </style>
+
   <div class="row qsopane">
 
-    <div class="col-sm-5">
+    <div class="col-lg-5">
       <div class="card">
 
         <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $manual; ?>" data-ajax-save-url="<?php echo site_url('qso/ajax_saveqso'); ?>" name="qsos" autocomplete="off" onReset="resetTimers(<?php echo $manual; ?>);">
@@ -91,7 +153,7 @@
                 <!-- HTML for Date/Time -->
                 <?php if ($this->session->userdata('user_qso_end_times')  == 1) { ?>
                   <div class="row">
-                    <div class="mb-3 col-md-3">
+                    <div class="mb-3 col-6 col-md-3">
                       <label for="start_date"><?php echo lang('general_word_date'); ?></label>
                       <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
                                                                                                                                     echo $this->session->userdata('start_date');
@@ -100,7 +162,7 @@
                                                                                                                                   } ?>" <?php echo ($manual == 0 ? "disabled" : "");  ?> required>
                     </div>
 
-                    <div class="mb-3 col-md-3">
+                    <div class="mb-3 col-6 col-md-3">
                       <label for="start_time"><?php echo lang('general_word_time_on'); ?></label>
                       <?php if ($manual != 1) { ?>
                         <i id="reset_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch"></i>
@@ -114,7 +176,7 @@
                                                                                                                                         } ?>" size="7" <?php echo ($manual == 0 ? "disabled" : "");  ?> required pattern="[0-2][0-9]:[0-5][0-9]">
                     </div>
 
-                    <div class="mb-3 col-md-3">
+                    <div class="mb-3 col-6 col-md-3">
                       <label for="end_time"><?php echo lang('general_word_time_off'); ?></label>
                       <?php if ($manual == 1) { ?>
                         <i id="reset_end_time" data-bs-toggle="tooltip" title="Reset end time" class="fas fa-stopwatch"></i>
@@ -135,7 +197,7 @@
 
                 <?php } else { ?>
                   <div class="row">
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-6 col-md-6">
                       <label for="start_date"><?php echo lang('general_word_date'); ?></label>
                       <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
                                                                                                                                     echo $this->session->userdata('start_date');
@@ -144,7 +206,7 @@
                                                                                                                                   } ?>" <?php echo ($manual == 0 ? "disabled" : "");  ?> required>
                     </div>
 
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-6 col-md-6">
                       <label for="start_time"><?php echo lang('general_word_time'); ?></label>
                       <?php if ($manual == 1) { ?>
                         <i id="reset_start_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch"></i>
@@ -177,7 +239,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-6">
                     <label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
                     <select id="mode" class="form-select mode form-select-sm" name="mode">
                       <?php
@@ -192,7 +254,7 @@
                     </select>
                   </div>
 
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-6">
                     <label for="band"><?php echo lang('gen_hamradio_band'); ?></label>
 
                     <select id="band" class="form-select form-select-sm" name="band">
@@ -215,12 +277,12 @@
                 <!-- Signal Report Information -->
                 <?php if ($qso_fields['rst']): ?>
                 <div class="row">
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-6">
                     <label for="rst_sent"><?php echo lang('gen_hamradio_rsts'); ?></label>
                     <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                   </div>
 
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-6">
                     <label for="rst_rcvd"><?php echo lang('gen_hamradio_rstr'); ?></label>
                     <input type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59">
                   </div>
@@ -239,6 +301,15 @@
                 </div>
                 <?php endif; ?>
 
+                <?php if ($qso_fields['qth'] || $qso_fields['locator']): ?>
+                <div class="d-lg-none mb-2">
+                  <button class="btn btn-outline-secondary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#qsoMobileOptionalFields" aria-expanded="false" aria-controls="qsoMobileOptionalFields">
+                    More QSO Fields
+                  </button>
+                </div>
+                <div id="qsoMobileOptionalFields" class="collapse d-lg-block">
+                <?php endif; ?>
+
                 <?php if ($qso_fields['qth']): ?>
                 <div class="mb-3 row">
                   <label for="qth" class="col-sm-3 col-form-label"><?php echo lang('general_word_location'); ?></label>
@@ -255,6 +326,10 @@
                     <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
                     <small id="locator_info" class="form-text text-muted"></small>
                   </div>
+                </div>
+                <?php endif; ?>
+
+                <?php if ($qso_fields['qth'] || $qso_fields['locator']): ?>
                 </div>
                 <?php endif; ?>
 
@@ -709,7 +784,7 @@
     </div>
 
 
-    <div class="col-sm-7">
+    <div class="col-lg-7">
 
       <div id="notice-alerts-container">
 
@@ -728,7 +803,7 @@
       </div>
 
       <!-- QSO Map -->
-      <div class="card qso-map">
+      <div class="card qso-map d-none d-md-block">
         <div id="qsomap" class="map-leaflet" style="width: 100%; height: 200px;"></div>
       </div>
 
