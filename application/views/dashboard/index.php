@@ -1,5 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <div class="container dashboard">
+	<style>
+		.htmx-indicator {
+			display: none !important;
+		}
+	</style>
 	<?php if (($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) { ?>
 
 		<?php if (version_compare(PHP_VERSION, '7.4.0') <= 0) { ?>
