@@ -750,7 +750,7 @@ class Logbook_model extends CI_Model
     $last_id = $this->db->insert_id();
     
     // Clear dashboard cache for affected station (skipped during bulk import - cleared once at end)
-    if (!$skipCacheClear) {
+    if (!$skipexport) {
       $this->clear_dashboard_cache($data['station_id']);
     }
 
