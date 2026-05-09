@@ -749,8 +749,10 @@ class Logbook_model extends CI_Model
 
     $last_id = $this->db->insert_id();
     
-    // Clear dashboard cache for affected station
-    $this->clear_dashboard_cache($data['station_id']);
+    // Clear dashboard cache for affected station (skipped during bulk import - cleared once at end)
+    if (!$skipCacheClear) {
+      $this->clear_dashboard_cache($data['station_id']);
+    }
 
     if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
       $this->upload_amsat_status($data);
@@ -4032,11 +4034,13 @@ class Logbook_model extends CI_Model
   {
     $custom_errors = '';
     foreach ($records as $record) {
-      $one_error = $this->logbook_model->import($record, $station_id, $skipDuplicate, $markClublog, $markLotw, $dxccAdif, $markQrz, $markHrd, $skipexport, $operatorName, $apicall, $skipStationCheck);
+      $one_error = $this->logbook_model->import($record, $station_id, $skipDuplicate, $markClublog, $markLotw, $dxccAdif, $markQrz, $markHrd, $skipexport, $operatorName, $apicall, $skipStationCheck, true);
       if ($one_error != '') {
         $custom_errors .= $one_error . "<br/>";
       }
     }
+    // Clear dashboard cache once after all records are imported, rather than after every single QSO
+    $this->clear_dashboard_cache($station_id);
     return $custom_errors;
   }
   /*
@@ -4047,7 +4051,7 @@ class Logbook_model extends CI_Model
      * $markHrd - used in ADIF import to mark QSOs as exported to HRDLog.net Logbook when importing QSOs
      * $skipexport - used in ADIF import to skip the realtime upload to QRZ Logbook when importing QSOs from ADIF
      */
-  function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false, $skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false)
+  function import($record, $station_id = "0", $skipDuplicate = false, $markClublog = false, $markLotw = false, $dxccAdif = false, $markQrz = false, $markHrd = false, $skipexport = false, $operatorName = false, $apicall = false, $skipStationCheck = false, $skipCacheClear = false)
   {
     // be sure that station belongs to user
     $this->load->model('stations');
