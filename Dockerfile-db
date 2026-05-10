@@ -4,8 +4,12 @@ FROM mariadb:latest
 # Add the install.sql file to the docker image
 ADD install/assets/install.sql /docker-entrypoint-initdb.d
 
-# Create a healthcheck script that uses mariadb-admin
-RUN echo '#!/bin/bash\nmariadb-admin ping -h "localhost" --silent' > /usr/local/bin/healthcheck.sh \
+# Healthcheck: must use DB credentials (MariaDB 12 rejects anonymous/root-without-password probes → log spam)
+RUN printf '%s\n' \
+    '#!/bin/bash' \
+    'set -e' \
+    'exec mariadb-admin ping -h localhost --silent -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}"' \
+    > /usr/local/bin/healthcheck.sh \
     && chmod +x /usr/local/bin/healthcheck.sh
 
 # Expose port 3306
