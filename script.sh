@@ -1,23 +1,27 @@
 #!/bin/bash
 
-# Define the file path for .env and the file to modify
-if [ -f "./.env" ]; then
-    ENV_FILE="./.env"
-else
-    ENV_FILE="./.env.sample"
-fi
+# App root (Dockerfile WORKDIR); ensures ./.env resolves even if the process cwd differs
+cd /var/www/html || exit 1
+
 CONFIG_FILE="install/config/config.php"
 DATABASE_FILE="install/config/database.php"
 DEST_DIR="application/config"
 
-# Check if .env file exists
-if [ ! -f "$ENV_FILE" ]; then
-    echo ".env file not found!"
+# Load variables: prefer files on the bind mount; otherwise use env already injected by Compose (env_file)
+if [ -f "./.env" ]; then
+    # shellcheck disable=SC1091
+    source "./.env"
+elif [ -f "./.env.sample" ]; then
+    # shellcheck disable=SC1091
+    source "./.env.sample"
+elif [ -n "${MYSQL_DATABASE:-}" ] && [ -n "${MYSQL_USER:-}" ] && [ -n "${MYSQL_PASSWORD:-}" ] && \
+     [ -n "${MYSQL_HOST:-}" ] && [ -n "${BASE_LOCATOR:-}" ] && [ -n "${WEBSITE_URL:-}" ] && [ -n "${DIRECTORY:-}" ]; then
+    :
+else
+    echo ".env file not found under /var/www/html and required variables are not set in the environment."
+    echo "Add .env next to docker-compose.yml (bind-mounted as /var/www/html) or pass variables via Compose env_file / environment."
     exit 1
 fi
-
-# Read the .env file
-source $ENV_FILE
 
 # Check if MYSQL_DATABASE is set
 if [ -z "${MYSQL_DATABASE}" ]; then
