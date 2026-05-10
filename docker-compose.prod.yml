@@ -1,8 +1,7 @@
-# Development stack — local code, optional local image build.
-#   docker compose up -d
-#   docker compose build && docker compose up -d   # without registry images
-#
-# Production: use docker-compose.prod.yml
+# Production stack — images from GHCR only (no local build).
+# Requires application files on the host (clone/checkout); Dockerfile does not bake app code.
+#   docker compose -f docker-compose.prod.yml pull
+#   docker compose -f docker-compose.prod.yml up -d
 
 networks:
   mynet:
@@ -10,9 +9,6 @@ networks:
 services:
   web:
     image: ${CLOUDLOG_IMAGE_REGISTRY:-ghcr.io/magicbug}/cloudlog-web:${CLOUDLOG_IMAGE_TAG:-latest}
-    build:
-      context: .
-      dockerfile: Dockerfile
     env_file:
       - .env
     ports:
@@ -25,19 +21,17 @@ services:
         condition: service_healthy
     networks:
       - mynet
-    restart: on-failure
+    restart: unless-stopped
 
   db:
     image: ${CLOUDLOG_IMAGE_REGISTRY:-ghcr.io/magicbug}/cloudlog-db:${CLOUDLOG_IMAGE_TAG:-latest}
-    build:
-      context: .
-      dockerfile: Dockerfile-db
     env_file:
       - .env
     volumes:
       - db_data:/var/lib/mysql
     networks:
       - mynet
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "/usr/local/bin/healthcheck.sh"]
       timeout: 20s
