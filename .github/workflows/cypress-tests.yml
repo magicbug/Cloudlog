@@ -48,7 +48,7 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
 
       - name: Build Docker services
-        run: docker-compose up -d
+        run: docker-compose up -d --build
 
       - name: Wait for services to start
         run: |

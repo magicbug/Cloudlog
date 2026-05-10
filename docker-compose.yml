@@ -1,9 +1,18 @@
+# Development stack — local code, optional local image build.
+#   docker compose up -d
+#   docker compose build && docker compose up -d   # without registry images
+#
+# Production: use docker-compose.prod.yml
+
 networks:
   mynet:
 
 services:
   web:
-    build: .
+    image: ghcr.io/magicbug/cloudlog-web:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - .env
     ports:
@@ -19,6 +28,7 @@ services:
     restart: on-failure
 
   db:
+    image: ghcr.io/magicbug/cloudlog-db:latest
     build:
       context: .
       dockerfile: Dockerfile-db
