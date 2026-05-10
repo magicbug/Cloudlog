@@ -16,6 +16,11 @@ RUN apt-get update \
     && docker-php-ext-install -j"$(nproc)" curl pdo_mysql mysqli gd mbstring zip xml \
     && a2enmod rewrite
 
+COPY . /var/www/html/
+
+# Duplicate for seeding an empty Docker volume mounted over /var/www/html (Compose cloudlog_html)
+RUN cp -a /var/www/html /usr/local/share/cloudlog-stock
+
 COPY script.sh /usr/local/bin/startup.sh
 RUN sed -i 's/\r$//' /usr/local/bin/startup.sh && chmod +x /usr/local/bin/startup.sh
 
