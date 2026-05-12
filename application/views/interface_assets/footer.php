@@ -1576,7 +1576,7 @@ $(document).ready(function() {
                 // Clear the input field and return focus so the next message can be typed immediately
                 const sendTextEl = document.getElementById('sendText');
                 sendTextEl.value = '';
-                sendTextEl.focus();
+                setTimeout(function() { sendTextEl.focus(); }, 0);
             }
 
             // CW Speed Control Functions
