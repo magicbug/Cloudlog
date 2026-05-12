@@ -1573,8 +1573,10 @@ $(document).ready(function() {
                 ws.send(cwMessage);
                 logMessage('Sent: ' + cwMessage);
 
-                // Clear the input field
-                document.getElementById('sendText').value = '';
+                // Clear the input field and return focus so the next message can be typed immediately
+                const sendTextEl = document.getElementById('sendText');
+                sendTextEl.value = '';
+                sendTextEl.focus();
             }
 
             // CW Speed Control Functions
