@@ -74,6 +74,14 @@ if (connectButton) {
 if (sendButton) {
     sendButton.addEventListener("click", clickSend)
 }
+if (sendText) {
+    sendText.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            clickSend();
+        }
+    });
+}
 // statusButton.addEventListener("click", clickStatus)
 
 //When the connectButton is pressed

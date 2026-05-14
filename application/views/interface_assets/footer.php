@@ -1437,15 +1437,18 @@ $(document).ready(function() {
                 messageLog.scrollTop = messageLog.scrollHeight;
             }
 
-            // Support for Enter key in the input field
-            const messageElement = document.getElementById('message');
-            if (messageElement) {
-                messageElement.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        sendMessage();
-                    }
-                });
-            }
+            // Support for Enter key in the CW free text field.
+            document.addEventListener('DOMContentLoaded', function() {
+                const sendTextElement = document.getElementById('sendText');
+                if (sendTextElement) {
+                    sendTextElement.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            sendMyMessage();
+                        }
+                    });
+                }
+            });
         </script>
 
         <script>
