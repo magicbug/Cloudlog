@@ -1320,6 +1320,7 @@ $(document).ready(function() {
 
     <script src="<?php echo base_url(); ?>assets/js/qra-utils.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/qso.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/cw-sidetone.js"></script>
     <?php if ($this->session->userdata('isWinkeyEnabled') && !$this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
         <script src="<?php echo base_url(); ?>assets/js/winkey.js"></script>
     <?php } elseif ($this->session->userdata('isWinkeyEnabled') && $this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
@@ -1452,34 +1453,53 @@ $(document).ready(function() {
 
 
             function morsekey_func1() {
-                console.log("F1: " + UpdateMacros(function1Macro));
-
-                const cwMessage = 'CW:' + UpdateMacros(function1Macro);
+                const textToSend = UpdateMacros(function1Macro);
+                console.log("F1: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
                 ws.send(cwMessage);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             function morsekey_func2() {
-                console.log("F2: " + UpdateMacros(function2Macro));
-                const cwMessage = 'CW:' + UpdateMacros(function2Macro);
+                const textToSend = UpdateMacros(function2Macro);
+                console.log("F2: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
                 ws.send(cwMessage);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             function morsekey_func3() {
-                console.log("F3: " + UpdateMacros(function3Macro));
-                const cwMessage = 'CW:' + UpdateMacros(function3Macro);
+                const textToSend = UpdateMacros(function3Macro);
+                console.log("F3: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
                 ws.send(cwMessage);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             function morsekey_func4() {
-                console.log("F4: " + UpdateMacros(function4Macro));
-                const cwMessage = 'CW:' + UpdateMacros(function4Macro);
+                const textToSend = UpdateMacros(function4Macro);
+                console.log("F4: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
                 ws.send(cwMessage);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             function morsekey_func5() {
-                console.log("F5: " + UpdateMacros(function5Macro));
-                const cwMessage = 'CW:' + UpdateMacros(function5Macro);
+                const textToSend = UpdateMacros(function5Macro);
+                console.log("F5: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
                 ws.send(cwMessage);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             let function1Name, function1Macro, function2Name, function2Macro, function3Name, function3Macro, function4Name, function4Macro, function5Name, function5Macro;
@@ -1572,6 +1592,9 @@ $(document).ready(function() {
                 const cwMessage = 'CW:' + message;
                 ws.send(cwMessage);
                 logMessage('Sent: ' + cwMessage);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(message, currentCwSpeed || 20);
+                }
 
                 // Clear the input field and return focus so the next message can be typed immediately
                 const sendTextEl = document.getElementById('sendText');

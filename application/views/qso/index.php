@@ -863,6 +863,20 @@
               </div>
             </div>
 
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
+                  <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" id="cwSidetoneEnabled">
+                    <label class="form-check-label" for="cwSidetoneEnabled">Speaker Sidetone</label>
+                  </div>
+                  <label for="cwSidetoneFrequency" class="mb-0 fw-bold">Tone</label>
+                  <input id="cwSidetoneFrequency" type="range" class="form-range" min="300" max="1000" step="10" style="width: 180px;">
+                  <span id="cwSidetoneFrequencyValue" class="badge bg-secondary">600 Hz</span>
+                </div>
+              </div>
+            </div>
+
             <!-- CW Speed Control Row -->
             <div class="row mb-3">
               <div class="col-12">
@@ -933,6 +947,20 @@
                   <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
                   <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
                   <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-12">
+                <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
+                  <div class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" id="cwSidetoneEnabled">
+                    <label class="form-check-label" for="cwSidetoneEnabled">Speaker Sidetone</label>
+                  </div>
+                  <label for="cwSidetoneFrequency" class="mb-0 fw-bold">Tone</label>
+                  <input id="cwSidetoneFrequency" type="range" class="form-range" min="300" max="1000" step="10" style="width: 180px;">
+                  <span id="cwSidetoneFrequencyValue" class="badge bg-secondary">600 Hz</span>
                 </div>
               </div>
             </div>
