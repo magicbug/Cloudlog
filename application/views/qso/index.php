@@ -863,16 +863,28 @@
               </div>
             </div>
 
-            <div class="row mb-3">
-              <div class="col-12">
-                <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
-                  <div class="form-check mb-0">
+            <div class="row g-2 mb-3 align-items-center">
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-lg-start justify-content-center">
+                  <div class="form-check form-switch mb-0">
                     <input class="form-check-input" type="checkbox" id="cwSidetoneEnabled">
                     <label class="form-check-label" for="cwSidetoneEnabled">Speaker Sidetone</label>
                   </div>
-                  <label for="cwSidetoneFrequency" class="mb-0 fw-bold">Tone</label>
-                  <input id="cwSidetoneFrequency" type="range" class="form-range" min="300" max="1000" step="10" style="width: 180px;">
-                  <span id="cwSidetoneFrequencyValue" class="badge bg-secondary">600 Hz</span>
+                  <span id="cwSidetoneStatus" class="badge bg-secondary">Off</span>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-center">
+                  <label for="cwSidetoneFrequency" class="mb-0 fw-bold text-nowrap">Tone</label>
+                  <input id="cwSidetoneFrequency" type="range" class="form-range flex-grow-1" min="300" max="1000" step="10">
+                  <span id="cwSidetoneFrequencyValue" class="badge bg-secondary text-nowrap">600 Hz</span>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-center justify-content-lg-end">
+                  <label for="cwSidetoneVolume" class="mb-0 fw-bold text-nowrap">Volume</label>
+                  <input id="cwSidetoneVolume" type="range" class="form-range flex-grow-1" min="0.01" max="0.2" step="0.01">
+                  <span id="cwSidetoneVolumeValue" class="badge bg-secondary text-nowrap">5%</span>
                 </div>
               </div>
             </div>
@@ -951,16 +963,28 @@
               </div>
             </div>
 
-            <div class="row mb-3">
-              <div class="col-12">
-                <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
-                  <div class="form-check mb-0">
+            <div class="row g-2 mb-3 align-items-center">
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-lg-start justify-content-center">
+                  <div class="form-check form-switch mb-0">
                     <input class="form-check-input" type="checkbox" id="cwSidetoneEnabled">
                     <label class="form-check-label" for="cwSidetoneEnabled">Speaker Sidetone</label>
                   </div>
-                  <label for="cwSidetoneFrequency" class="mb-0 fw-bold">Tone</label>
-                  <input id="cwSidetoneFrequency" type="range" class="form-range" min="300" max="1000" step="10" style="width: 180px;">
-                  <span id="cwSidetoneFrequencyValue" class="badge bg-secondary">600 Hz</span>
+                  <span id="cwSidetoneStatus" class="badge bg-secondary">Off</span>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-center">
+                  <label for="cwSidetoneFrequency" class="mb-0 fw-bold text-nowrap">Tone</label>
+                  <input id="cwSidetoneFrequency" type="range" class="form-range flex-grow-1" min="300" max="1000" step="10">
+                  <span id="cwSidetoneFrequencyValue" class="badge bg-secondary text-nowrap">600 Hz</span>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-center justify-content-lg-end">
+                  <label for="cwSidetoneVolume" class="mb-0 fw-bold text-nowrap">Volume</label>
+                  <input id="cwSidetoneVolume" type="range" class="form-range flex-grow-1" min="0.01" max="0.2" step="0.01">
+                  <span id="cwSidetoneVolumeValue" class="badge bg-secondary text-nowrap">5%</span>
                 </div>
               </div>
             </div>

@@ -30,17 +30,35 @@
         }
     }
 
+    function updateVolumeLabel() {
+        const label = getElement('cwSidetoneVolumeValue');
+        if (label) {
+            label.textContent = Math.round(state.volume * 100) + '%';
+        }
+    }
+
+    function updateStatusLabel() {
+        const label = getElement('cwSidetoneStatus');
+        if (label) {
+            label.textContent = state.enabled ? 'On' : 'Off';
+            label.className = state.enabled ? 'badge bg-success' : 'badge bg-secondary';
+        }
+    }
+
     function loadSettings() {
         const enabled = localStorage.getItem('cloudlog.cwSidetone.enabled');
         const frequency = parseInt(localStorage.getItem('cloudlog.cwSidetone.frequency') || '600', 10);
+        const volume = parseFloat(localStorage.getItem('cloudlog.cwSidetone.volume') || '0.05');
 
         state.enabled = enabled === '1';
         state.frequency = Number.isFinite(frequency) ? Math.max(300, Math.min(1000, frequency)) : 600;
+        state.volume = Number.isFinite(volume) ? Math.max(0.01, Math.min(0.2, volume)) : 0.05;
     }
 
     function persistSettings() {
         localStorage.setItem('cloudlog.cwSidetone.enabled', state.enabled ? '1' : '0');
         localStorage.setItem('cloudlog.cwSidetone.frequency', String(state.frequency));
+        localStorage.setItem('cloudlog.cwSidetone.volume', String(state.volume));
     }
 
     function initControls() {
@@ -48,11 +66,13 @@
 
         const enabledInput = getElement('cwSidetoneEnabled');
         const frequencyInput = getElement('cwSidetoneFrequency');
+        const volumeInput = getElement('cwSidetoneVolume');
 
         if (enabledInput) {
             enabledInput.checked = state.enabled;
             enabledInput.addEventListener('change', function() {
                 state.enabled = enabledInput.checked;
+                updateStatusLabel();
                 persistSettings();
             });
         }
@@ -69,7 +89,21 @@
             });
         }
 
+        if (volumeInput) {
+            volumeInput.value = String(state.volume);
+            volumeInput.addEventListener('input', function() {
+                const value = parseFloat(volumeInput.value);
+                if (Number.isFinite(value)) {
+                    state.volume = Math.max(0.01, Math.min(0.2, value));
+                    updateVolumeLabel();
+                    persistSettings();
+                }
+            });
+        }
+
         updateFrequencyLabel();
+        updateVolumeLabel();
+        updateStatusLabel();
     }
 
     function getAudioContext() {
