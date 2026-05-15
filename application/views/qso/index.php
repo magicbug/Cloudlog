@@ -843,11 +843,51 @@
                 hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
                 hx-target="#modals-here"
                 hx-trigger="click"
-                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
+                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-keyboard"></i> Macros</button>
+
+              <button type="button" class="btn btn-sm btn-secondary" onclick="openWinkeyRelaySettings()"><i class="fas fa-network-wired"></i> Relay</button>
             </h4>
           </div>
 
           <div id="modals-here"></div>
+
+          <div class="modal fade" id="winkeyRelaySettingsModal" tabindex="-1" aria-labelledby="winkeyRelaySettingsLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="winkeyRelaySettingsLabel">Winkey Relay Settings</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="winkeyRelayEnabled">
+                    <label class="form-check-label" for="winkeyRelayEnabled">Use Relay Server</label>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="winkeyRelayUrl" class="form-label">Relay WebSocket URL</label>
+                    <input type="text" class="form-control" id="winkeyRelayUrl" placeholder="wss://relay.cloudlog.org/">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="winkeyRelayToken" class="form-label">Relay Token</label>
+                    <input type="password" class="form-control" id="winkeyRelayToken" autocomplete="off" placeholder="Shared secret (min 8 chars)">
+                  </div>
+
+                  <div class="mb-2">
+                    <label for="winkeyRelayRoom" class="form-label">Relay Room</label>
+                    <input type="text" class="form-control" id="winkeyRelayRoom" placeholder="cw_room">
+                  </div>
+
+                  <small class="text-muted">Settings are currently stored in your browser localStorage.</small>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="saveWinkeyRelaySettings">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div id="winkey_buttons" class="card-body">
             <!-- Function Keys Row -->

@@ -1354,41 +1354,205 @@ $(document).ready(function() {
 
         <script>
             let ws = null;
+            let wsRelayEnabled = false;
+            let wsRelayRoom = 'cw_room';
+
+            const RELAY_STORAGE = {
+                enabled: 'cloudlog.winkeyRelay.enabled',
+                url: 'cloudlog.winkeyRelay.url',
+                token: 'cloudlog.winkeyRelay.token',
+                room: 'cloudlog.winkeyRelay.room'
+            };
+
+            function getRelayConfig() {
+                return {
+                    enabled: localStorage.getItem(RELAY_STORAGE.enabled) === '1',
+                    url: localStorage.getItem(RELAY_STORAGE.url) || 'wss://relay.cloudlog.org/',
+                    token: localStorage.getItem(RELAY_STORAGE.token) || '',
+                    room: localStorage.getItem(RELAY_STORAGE.room) || 'cw_room'
+                };
+            }
+
+            function setRelayConfig(config) {
+                localStorage.setItem(RELAY_STORAGE.enabled, config.enabled ? '1' : '0');
+                localStorage.setItem(RELAY_STORAGE.url, config.url);
+                localStorage.setItem(RELAY_STORAGE.token, config.token);
+                localStorage.setItem(RELAY_STORAGE.room, config.room);
+            }
+
+            function setSocketStatus(text, className) {
+                const statusBadge = document.getElementById('cw_socket_status');
+                if (!statusBadge) {
+                    return;
+                }
+
+                statusBadge.className = className;
+                statusBadge.innerHTML = text;
+            }
+
+            function getTransportLabel() {
+                return wsRelayEnabled ? 'Relay' : 'Direct';
+            }
+
+            function openWinkeyRelaySettings() {
+                const config = getRelayConfig();
+
+                const enabledField = document.getElementById('winkeyRelayEnabled');
+                const urlField = document.getElementById('winkeyRelayUrl');
+                const tokenField = document.getElementById('winkeyRelayToken');
+                const roomField = document.getElementById('winkeyRelayRoom');
+
+                if (enabledField) {
+                    enabledField.checked = config.enabled;
+                }
+                if (urlField) {
+                    urlField.value = config.url;
+                }
+                if (tokenField) {
+                    tokenField.value = config.token;
+                }
+                if (roomField) {
+                    roomField.value = config.room;
+                }
+
+                const modalEl = document.getElementById('winkeyRelaySettingsModal');
+                if (modalEl) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                }
+            }
+
+            function saveWinkeyRelaySettings() {
+                const enabledField = document.getElementById('winkeyRelayEnabled');
+                const urlField = document.getElementById('winkeyRelayUrl');
+                const tokenField = document.getElementById('winkeyRelayToken');
+                const roomField = document.getElementById('winkeyRelayRoom');
+
+                const config = {
+                    enabled: enabledField ? enabledField.checked : false,
+                    url: urlField ? urlField.value.trim() : '',
+                    token: tokenField ? tokenField.value.trim() : '',
+                    room: roomField ? roomField.value.trim() : 'cw_room'
+                };
+
+                if (config.enabled) {
+                    if (!config.url.startsWith('ws://') && !config.url.startsWith('wss://')) {
+                        alert('Relay URL must start with ws:// or wss://');
+                        return;
+                    }
+
+                    if (config.token.length < 8) {
+                        alert('Relay token must be at least 8 characters');
+                        return;
+                    }
+
+                    if (config.room === '') {
+                        alert('Relay room is required');
+                        return;
+                    }
+                }
+
+                if (config.room === '') {
+                    config.room = 'cw_room';
+                }
+
+                setRelayConfig(config);
+
+                const modalEl = document.getElementById('winkeyRelaySettingsModal');
+                if (modalEl) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+                }
+
+                logMessage('Relay settings saved');
+                connectWebSocket();
+            }
 
             function connectWebSocket() {
                 if (ws !== null) {
                     ws.close();
                 }
 
-                const chatRoom = "cw_room";
-                const wsUrl = `ws://localhost:8181?chatRoom=${encodeURIComponent(chatRoom)}`;
+                const relayConfig = getRelayConfig();
+                wsRelayEnabled = relayConfig.enabled;
+                wsRelayRoom = relayConfig.room || 'cw_room';
+
+                if (wsRelayEnabled) {
+                    if ((!relayConfig.url.startsWith('ws://') && !relayConfig.url.startsWith('wss://')) || relayConfig.token.length < 8) {
+                        setSocketStatus('Status: Relay Config Error', 'badge bg-danger');
+                        logMessage('Relay settings are invalid. Open Relay settings to fix URL/token.');
+                        return;
+                    }
+                }
+
+                const wsUrl = wsRelayEnabled
+                    ? relayConfig.url
+                    : `ws://localhost:8181?chatRoom=${encodeURIComponent(wsRelayRoom)}`;
+
+                setSocketStatus('Status: Connecting (' + getTransportLabel() + ')', 'badge bg-warning text-dark');
+                logMessage('Connecting to ' + wsUrl);
 
                 ws = new WebSocket(wsUrl);
 
                 ws.onopen = function() {
-                    document.getElementById('cw_socket_status').className = 'badge bg-success';
-                    document.getElementById('cw_socket_status').innerHTML = `Status: Connected`;
-                    logMessage(`Connected to WebSocket server in room: ${chatRoom}`);
-                    // Get initial speed once when connected, no polling
-                    setTimeout(getCwSpeed, 1000);
+                    if (wsRelayEnabled) {
+                        const joinMessage = {
+                            op: 'join',
+                            token: relayConfig.token,
+                            role: 'browser',
+                            rooms: [wsRelayRoom]
+                        };
+
+                        ws.send(JSON.stringify(joinMessage));
+                        setSocketStatus('Status: Authenticating (Relay)', 'badge bg-warning text-dark');
+                        logMessage('Sent relay join request for room: ' + wsRelayRoom);
+                    } else {
+                        setSocketStatus('Status: Connected (Direct)', 'badge bg-success');
+                        logMessage('Connected to WebSocket server in room: ' + wsRelayRoom);
+                        setTimeout(getCwSpeed, 1000);
+                    }
                 };
 
                 ws.onclose = function() {
-                    document.getElementById('cw_socket_status').className = 'badge bg-secondary';
-                    document.getElementById('cw_socket_status').innerHTML = 'Status: Disconnected';
+                    setSocketStatus('Status: Disconnected (' + getTransportLabel() + ')', 'badge bg-secondary');
                     logMessage('Disconnected from WebSocket server');
                     ws = null;
                 };
 
                 ws.onerror = function(error) {
+                    setSocketStatus('Status: Error', 'badge bg-danger');
                     logMessage('WebSocket Error: ' + error);
                 };
 
                 ws.onmessage = function(event) {
-                    logMessage('Received: ' + event.data);
-                    
-                    // Handle CW speed responses
-                    const message = event.data;
+                    let message = event.data;
+
+                    if (wsRelayEnabled) {
+                        try {
+                            const relayMessage = JSON.parse(event.data);
+                            if (relayMessage && relayMessage.op === 'joined') {
+                                setSocketStatus('Status: Connected (Relay)', 'badge bg-success');
+                                logMessage('Relay joined room: ' + wsRelayRoom);
+                                setTimeout(getCwSpeed, 1000);
+                                return;
+                            }
+
+                            if (relayMessage && relayMessage.op === 'frame') {
+                                if (relayMessage.room !== wsRelayRoom) {
+                                    return;
+                                }
+
+                                message = relayMessage.data;
+                            } else if (relayMessage && relayMessage.op === 'error') {
+                                setSocketStatus('Status: Relay Error', 'badge bg-danger');
+                                logMessage('Relay error: ' + (relayMessage.message || 'unknown'));
+                                return;
+                            }
+                        } catch (e) {
+                            // Keep compatibility with plain text payloads.
+                        }
+                    }
+
+                    logMessage('Received: ' + message);
+
                     if (message.startsWith('CWSPEED SET:')) {
                         const match = message.match(/CWSPEED SET: (\d+) WPM/);
                         if (match) {
@@ -1409,35 +1573,38 @@ $(document).ready(function() {
                 }
             }
 
-            function sendMessage() {
-                if (ws === null) {
-                    alert('Please connect to the WebSocket server first');
+            function sendWinkeyCommand(command, quiet) {
+                if (!ws || ws.readyState !== WebSocket.OPEN) {
+                    if (!quiet) {
+                        alert('Please connect to the WebSocket server first');
+                    }
                     return;
                 }
 
-                const message = document.getElementById('message').value;
-                if (message.trim() === '') {
-                    alert('Please enter a message');
-                    return;
+                if (wsRelayEnabled) {
+                    const relayFrame = {
+                        op: 'frame',
+                        room: wsRelayRoom,
+                        data: command
+                    };
+                    ws.send(JSON.stringify(relayFrame));
+                } else {
+                    ws.send(command);
                 }
 
-                // Prefix the message with "CW:" to indicate it's a CW message
-                const cwMessage = 'CW:' + message;
-                ws.send(cwMessage);
-                logMessage('Sent: ' + cwMessage);
-
-                // Clear the input field
-                document.getElementById('message').value = '';
+                logMessage('Sent: ' + command);
             }
 
             function logMessage(message) {
                 const messageLog = document.getElementById('messageLog');
+                if (!messageLog) {
+                    return;
+                }
                 messageLog.value += message + '\n';
                 // Auto-scroll to bottom
                 messageLog.scrollTop = messageLog.scrollHeight;
             }
 
-            // Support for Enter key in the CW free text field.
             document.addEventListener('DOMContentLoaded', function() {
                 const sendTextElement = document.getElementById('sendText');
                 if (sendTextElement) {
@@ -1447,6 +1614,11 @@ $(document).ready(function() {
                             sendMyMessage();
                         }
                     });
+                }
+
+                const saveRelayButton = document.getElementById('saveWinkeyRelaySettings');
+                if (saveRelayButton) {
+                    saveRelayButton.addEventListener('click', saveWinkeyRelaySettings);
                 }
             });
         </script>
@@ -1459,7 +1631,7 @@ $(document).ready(function() {
                 const textToSend = UpdateMacros(function1Macro);
                 console.log("F1: " + textToSend);
                 const cwMessage = 'CW:' + textToSend;
-                ws.send(cwMessage);
+                sendWinkeyCommand(cwMessage, false);
                 if (window.cloudlogCwSidetone) {
                     window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
                 }
@@ -1469,7 +1641,7 @@ $(document).ready(function() {
                 const textToSend = UpdateMacros(function2Macro);
                 console.log("F2: " + textToSend);
                 const cwMessage = 'CW:' + textToSend;
-                ws.send(cwMessage);
+                sendWinkeyCommand(cwMessage, false);
                 if (window.cloudlogCwSidetone) {
                     window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
                 }
@@ -1479,7 +1651,7 @@ $(document).ready(function() {
                 const textToSend = UpdateMacros(function3Macro);
                 console.log("F3: " + textToSend);
                 const cwMessage = 'CW:' + textToSend;
-                ws.send(cwMessage);
+                sendWinkeyCommand(cwMessage, false);
                 if (window.cloudlogCwSidetone) {
                     window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
                 }
@@ -1489,7 +1661,7 @@ $(document).ready(function() {
                 const textToSend = UpdateMacros(function4Macro);
                 console.log("F4: " + textToSend);
                 const cwMessage = 'CW:' + textToSend;
-                ws.send(cwMessage);
+                sendWinkeyCommand(cwMessage, false);
                 if (window.cloudlogCwSidetone) {
                     window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
                 }
@@ -1499,7 +1671,7 @@ $(document).ready(function() {
                 const textToSend = UpdateMacros(function5Macro);
                 console.log("F5: " + textToSend);
                 const cwMessage = 'CW:' + textToSend;
-                ws.send(cwMessage);
+                sendWinkeyCommand(cwMessage, false);
                 if (window.cloudlogCwSidetone) {
                     window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
                 }
@@ -1593,8 +1765,7 @@ $(document).ready(function() {
                 }
 
                 const cwMessage = 'CW:' + message;
-                ws.send(cwMessage);
-                logMessage('Sent: ' + cwMessage);
+                sendWinkeyCommand(cwMessage, false);
                 if (window.cloudlogCwSidetone) {
                     window.cloudlogCwSidetone.playText(message, currentCwSpeed || 20);
                 }
@@ -1618,8 +1789,7 @@ $(document).ready(function() {
                 
                 if (newSpeed !== currentCwSpeed) {
                     const speedMessage = 'CWSPEED:' + newSpeed;
-                    ws.send(speedMessage);
-                    logMessage('Sent: ' + speedMessage);
+                    sendWinkeyCommand(speedMessage, false);
                     // Get updated speed after changing it
                     setTimeout(getCwSpeed, 500);
                 }
@@ -1630,7 +1800,7 @@ $(document).ready(function() {
                     return;
                 }
 
-                ws.send('GETCWSPEED');
+                sendWinkeyCommand('GETCWSPEED', true);
             }
 
             function updateSpeedDisplay(speed) {
