@@ -879,7 +879,7 @@
                     <input type="text" class="form-control" id="winkeyRelayRoom" placeholder="cw_room">
                   </div>
 
-                  <small class="text-muted">Settings are currently stored in your browser localStorage.</small>
+                  <small class="text-muted">Relay settings are stored in your user account and follow your login across devices.</small>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

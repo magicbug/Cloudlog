@@ -1356,6 +1356,8 @@ $(document).ready(function() {
             let ws = null;
             let wsRelayEnabled = false;
             let wsRelayRoom = 'cw_room';
+            let wsRelayToken = '';
+            let wsRelayUrl = 'wss://relay.cloudlog.org/';
 
             const RELAY_STORAGE = {
                 enabled: 'cloudlog.winkeyRelay.enabled',
@@ -1364,20 +1366,68 @@ $(document).ready(function() {
                 room: 'cloudlog.winkeyRelay.room'
             };
 
-            function getRelayConfig() {
-                return {
-                    enabled: localStorage.getItem(RELAY_STORAGE.enabled) === '1',
-                    url: localStorage.getItem(RELAY_STORAGE.url) || 'wss://relay.cloudlog.org/',
-                    token: localStorage.getItem(RELAY_STORAGE.token) || '',
-                    room: localStorage.getItem(RELAY_STORAGE.room) || 'cw_room'
-                };
+            async function loadRelaySettingsFromAccount() {
+                try {
+                    const response = await fetch(base_url + 'index.php/qso/winkeyrelaysettings_json');
+                    const data = await response.json();
+
+                    if (data.status === 'ok' && data.settings) {
+                        wsRelayEnabled = !!data.settings.enabled;
+                        wsRelayUrl = data.settings.url || 'wss://relay.cloudlog.org/';
+                        wsRelayRoom = data.settings.room || 'cw_room';
+                        wsRelayToken = data.settings.token || '';
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Failed to load relay settings from account', error);
+                }
+
+                // Backward compatibility fallback from previous localStorage implementation.
+                wsRelayEnabled = localStorage.getItem(RELAY_STORAGE.enabled) === '1';
+                wsRelayUrl = localStorage.getItem(RELAY_STORAGE.url) || 'wss://relay.cloudlog.org/';
+                wsRelayRoom = localStorage.getItem(RELAY_STORAGE.room) || 'cw_room';
+                wsRelayToken = localStorage.getItem('cloudlog.winkeyRelay.token') || '';
             }
 
-            function setRelayConfig(config) {
-                localStorage.setItem(RELAY_STORAGE.enabled, config.enabled ? '1' : '0');
-                localStorage.setItem(RELAY_STORAGE.url, config.url);
-                localStorage.setItem(RELAY_STORAGE.token, config.token);
-                localStorage.setItem(RELAY_STORAGE.room, config.room);
+            async function saveRelaySettingsToAccount(config) {
+                const payload = new URLSearchParams();
+                payload.append('enabled', config.enabled ? '1' : '0');
+                payload.append('url', config.url);
+                payload.append('room', config.room);
+                payload.append('token', config.token);
+
+                const response = await fetch(base_url + 'index.php/qso/winkeyrelaysettings_save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    },
+                    body: payload.toString()
+                });
+
+                const data = await response.json();
+                if (!response.ok || data.status !== 'ok') {
+                    throw new Error(data.message || 'Failed to save relay token');
+                }
+
+                wsRelayEnabled = config.enabled;
+                wsRelayUrl = config.url;
+                wsRelayRoom = config.room;
+                wsRelayToken = config.token;
+
+                // Clear legacy local storage keys after successful account save.
+                localStorage.removeItem(RELAY_STORAGE.enabled);
+                localStorage.removeItem(RELAY_STORAGE.url);
+                localStorage.removeItem(RELAY_STORAGE.room);
+                localStorage.removeItem(RELAY_STORAGE.token);
+            }
+
+            function getRelayConfig() {
+                return {
+                    enabled: wsRelayEnabled,
+                    url: wsRelayUrl,
+                    token: wsRelayToken,
+                    room: wsRelayRoom
+                };
             }
 
             function setSocketStatus(text, className) {
@@ -1421,7 +1471,7 @@ $(document).ready(function() {
                 }
             }
 
-            function saveWinkeyRelaySettings() {
+            async function saveWinkeyRelaySettings() {
                 const enabledField = document.getElementById('winkeyRelayEnabled');
                 const urlField = document.getElementById('winkeyRelayUrl');
                 const tokenField = document.getElementById('winkeyRelayToken');
@@ -1455,7 +1505,12 @@ $(document).ready(function() {
                     config.room = 'cw_room';
                 }
 
-                setRelayConfig(config);
+                try {
+                    await saveRelaySettingsToAccount(config);
+                } catch (error) {
+                    alert(error.message || 'Failed to save relay settings');
+                    return;
+                }
 
                 const modalEl = document.getElementById('winkeyRelaySettingsModal');
                 if (modalEl) {
@@ -1474,9 +1529,11 @@ $(document).ready(function() {
                 const relayConfig = getRelayConfig();
                 wsRelayEnabled = relayConfig.enabled;
                 wsRelayRoom = relayConfig.room || 'cw_room';
+                wsRelayUrl = relayConfig.url || 'wss://relay.cloudlog.org/';
+                wsRelayToken = relayConfig.token || '';
 
                 if (wsRelayEnabled) {
-                    if ((!relayConfig.url.startsWith('ws://') && !relayConfig.url.startsWith('wss://')) || relayConfig.token.length < 8) {
+                    if ((!wsRelayUrl.startsWith('ws://') && !wsRelayUrl.startsWith('wss://')) || wsRelayToken.length < 8) {
                         setSocketStatus('Status: Relay Config Error', 'badge bg-danger');
                         logMessage('Relay settings are invalid. Open Relay settings to fix URL/token.');
                         return;
@@ -1484,7 +1541,7 @@ $(document).ready(function() {
                 }
 
                 const wsUrl = wsRelayEnabled
-                    ? relayConfig.url
+                    ? wsRelayUrl
                     : `ws://localhost:8181?chatRoom=${encodeURIComponent(wsRelayRoom)}`;
 
                 setSocketStatus('Status: Connecting (' + getTransportLabel() + ')', 'badge bg-warning text-dark');
@@ -1496,7 +1553,7 @@ $(document).ready(function() {
                     if (wsRelayEnabled) {
                         const joinMessage = {
                             op: 'join',
-                            token: relayConfig.token,
+                            token: wsRelayToken,
                             role: 'browser',
                             rooms: [wsRelayRoom]
                         };
@@ -1620,13 +1677,14 @@ $(document).ready(function() {
                 if (saveRelayButton) {
                     saveRelayButton.addEventListener('click', saveWinkeyRelaySettings);
                 }
+
+                loadRelaySettingsFromAccount().finally(function() {
+                    connectWebSocket();
+                });
             });
         </script>
 
         <script>
-            connectWebSocket();
-
-
             function morsekey_func1() {
                 const textToSend = UpdateMacros(function1Macro);
                 console.log("F1: " + textToSend);

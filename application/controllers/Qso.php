@@ -433,6 +433,115 @@ class QSO extends CI_Controller {
         }
     }
 
+    public function winkeyrelaytoken_json() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $this->load->model('user_options_model');
+            $result = $this->user_options_model->get_options('winkey_websocket_relay', array('option_name' => 'relay', 'option_key' => 'token'))->result();
+            $token = isset($result[0]->option_value) ? (string)$result[0]->option_value : '';
+
+            echo json_encode(array('status' => 'ok', 'token' => $token));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
+    public function winkeyrelaytoken_save() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $token = trim((string)$this->security->xss_clean($this->input->post('token', true)));
+
+            if ($token !== '' && strlen($token) < 8) {
+                echo json_encode(array('status' => 'error', 'message' => 'Relay token must be at least 8 characters'));
+                return;
+            }
+
+            $this->load->model('user_options_model');
+            $this->user_options_model->set_option('winkey_websocket_relay', 'relay', array('token' => $token));
+
+            echo json_encode(array('status' => 'ok'));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
+    public function winkeyrelaysettings_json() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $this->load->model('user_options_model');
+            $rows = $this->user_options_model->get_options('winkey_websocket_relay', array('option_name' => 'relay'))->result();
+
+            $settings = array(
+                'enabled' => false,
+                'url' => 'wss://relay.cloudlog.org/',
+                'room' => 'cw_room',
+                'token' => '',
+            );
+
+            foreach ($rows as $row) {
+                if ($row->option_key === 'enabled') {
+                    $settings['enabled'] = ((string)$row->option_value === '1');
+                } elseif ($row->option_key === 'url' && (string)$row->option_value !== '') {
+                    $settings['url'] = (string)$row->option_value;
+                } elseif ($row->option_key === 'room' && (string)$row->option_value !== '') {
+                    $settings['room'] = (string)$row->option_value;
+                } elseif ($row->option_key === 'token') {
+                    $settings['token'] = (string)$row->option_value;
+                }
+            }
+
+            echo json_encode(array('status' => 'ok', 'settings' => $settings));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
+    public function winkeyrelaysettings_save() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $enabled = $this->input->post('enabled', true) === '1';
+            $url = trim((string)$this->security->xss_clean($this->input->post('url', true)));
+            $room = trim((string)$this->security->xss_clean($this->input->post('room', true)));
+            $token = trim((string)$this->security->xss_clean($this->input->post('token', true)));
+
+            if ($url === '') {
+                $url = 'wss://relay.cloudlog.org/';
+            }
+
+            if ($room === '') {
+                $room = 'cw_room';
+            }
+
+            if ($enabled) {
+                if (!preg_match('/^wss?:\/\//', $url)) {
+                    echo json_encode(array('status' => 'error', 'message' => 'Relay URL must start with ws:// or wss://'));
+                    return;
+                }
+
+                if (strlen($token) < 8) {
+                    echo json_encode(array('status' => 'error', 'message' => 'Relay token must be at least 8 characters'));
+                    return;
+                }
+            }
+
+            $this->load->model('user_options_model');
+            $this->user_options_model->set_option('winkey_websocket_relay', 'relay', array(
+                'enabled' => $enabled ? '1' : '0',
+                'url' => $url,
+                'room' => $room,
+                'token' => $token,
+            ));
+
+            echo json_encode(array('status' => 'ok'));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
     public function edit_ajax() {
 
         $this->load->model('logbook_model');
