@@ -871,6 +871,10 @@
               </div>
               <div class="col-12 col-md-6 d-flex align-items-center gap-3">
                 <div class="form-check mb-0 mt-3">
+                  <input class="form-check-input" type="checkbox" id="remoteOperationMicMuteToggle" checked>
+                  <label class="form-check-label small" for="remoteOperationMicMuteToggle">Mute microphone</label>
+                </div>
+                <div class="form-check mb-0 mt-3">
                   <input class="form-check-input" type="checkbox" id="remoteOperationMuteToggle">
                   <label class="form-check-label small" for="remoteOperationMuteToggle">Mute playback</label>
                 </div>

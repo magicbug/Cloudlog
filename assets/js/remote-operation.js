@@ -10,6 +10,7 @@
         audioOut: 'cloudlog.remoteOperation.audioOut',
         playbackVolume: 'cloudlog.remoteOperation.playbackVolume',
         playbackMuted: 'cloudlog.remoteOperation.playbackMuted',
+        micMuted: 'cloudlog.remoteOperation.micMuted',
         stun: 'cloudlog.remoteOperation.stun',
         turnUrl: 'cloudlog.remoteOperation.turnUrl',
         turnUser: 'cloudlog.remoteOperation.turnUser',
@@ -29,6 +30,7 @@
         audioOut: '',
         playbackVolume: 50,
         playbackMuted: false,
+        micMuted: true,
         stun: 'stun:stun.l.google.com:19302',
         turnUrl: '',
         turnUser: '',
@@ -224,15 +226,29 @@
         rx.muted = !!currentSettings.playbackMuted;
     }
 
+    function applyMicMuteState() {
+        if (!mediaStream) {
+            return;
+        }
+
+        mediaStream.getAudioTracks().forEach(function(track) {
+            track.enabled = !currentSettings.micMuted;
+        });
+    }
+
     function syncPlaybackControlsToUi() {
         const volumeInput = $('remoteOperationPlaybackVolume');
         const muteToggle = $('remoteOperationMuteToggle');
+        const micMuteToggle = $('remoteOperationMicMuteToggle');
 
         if (volumeInput) {
             volumeInput.value = String(Math.max(0, Math.min(100, Number(currentSettings.playbackVolume || 0))));
         }
         if (muteToggle) {
             muteToggle.checked = !!currentSettings.playbackMuted;
+        }
+        if (micMuteToggle) {
+            micMuteToggle.checked = !!currentSettings.micMuted;
         }
     }
 
@@ -432,6 +448,7 @@
             settings.playbackVolume = DEFAULTS.playbackVolume;
         }
         settings.playbackMuted = localStorage.getItem(STORAGE.playbackMuted) === '1';
+        settings.micMuted = localStorage.getItem(STORAGE.micMuted) === '1';
         settings.stun = localStorage.getItem(STORAGE.stun) || DEFAULTS.stun;
         settings.turnUrl = localStorage.getItem(STORAGE.turnUrl) || '';
         settings.turnUser = localStorage.getItem(STORAGE.turnUser) || '';
@@ -452,6 +469,7 @@
         localStorage.setItem(STORAGE.audioOut, settings.audioOut || '');
         localStorage.setItem(STORAGE.playbackVolume, String(Math.max(0, Math.min(100, Number(settings.playbackVolume || 0)))));
         localStorage.setItem(STORAGE.playbackMuted, settings.playbackMuted ? '1' : '0');
+        localStorage.setItem(STORAGE.micMuted, settings.micMuted ? '1' : '0');
         localStorage.setItem(STORAGE.stun, settings.stun || DEFAULTS.stun);
         localStorage.setItem(STORAGE.turnUrl, settings.turnUrl || '');
         localStorage.setItem(STORAGE.turnUser, settings.turnUser || '');
@@ -967,6 +985,7 @@
         }
         mediaStream = stream;
         attachLevelMeter('mic', stream, 'remoteOperationMicLevel');
+        applyMicMuteState();
         stream.getTracks().forEach(function(track) {
             pc.addTrack(track, stream);
         });
@@ -1527,6 +1546,7 @@
         const modalEl = getModal();
         const volumeInput = $('remoteOperationPlaybackVolume');
         const muteToggle = $('remoteOperationMuteToggle');
+        const micMuteToggle = $('remoteOperationMicMuteToggle');
         const unlockButton = $('remoteOperationEnableAudioButton');
 
         ['remoteOperationConnectButton', 'remoteOperationModalConnectButton'].forEach(function(id) {
@@ -1549,6 +1569,14 @@
                 currentSettings.playbackMuted = !!muteToggle.checked;
                 writeSettingsToStorage(currentSettings);
                 applyPlaybackControlsToAudioElement();
+            });
+        }
+
+        if (micMuteToggle) {
+            micMuteToggle.addEventListener('change', function() {
+                currentSettings.micMuted = !!micMuteToggle.checked;
+                writeSettingsToStorage(currentSettings);
+                applyMicMuteState();
             });
         }
 
