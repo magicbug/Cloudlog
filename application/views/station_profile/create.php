@@ -325,6 +325,21 @@
 
 				<div class="row">
 					<div class="mb-3 col-sm-6">
+						<label for="qrzcallApiKey">QRZCALL.EU Personal Access Token</label> <!-- This does not need Multilanguage Support -->
+						<input type="text" class="form-control" name="qrzcallapikey" id="qrzcallApiKey" aria-describedby="qrzcallApiKeyHelp" placeholder="pat_xxxxx">
+						<small id="qrzcallApiKeyHelp" class="form-text text-muted">Generate at <a href="https://qrzcall.eu/" target="_blank">qrzcall.eu</a> → My Profile → Account → API Tokens (Data / Extra tier)</small>
+					</div>
+					<div class="mb-3 col-sm-6">
+						<label for="qrzcallrealtime">QRZCALL.EU real-time upload</label> <!-- This does not need Multilanguage Support -->
+						<select class="form-select" id="qrzcallrealtime" name="qrzcallrealtime">
+							<option value="1"><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" selected><?php echo lang("general_word_no"); ?></option>
+						</select>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="mb-3 col-sm-6">
 						<label for="webadifApiKey"> QO-100 Dx Club API Key </label> <!-- This does not need Multilanguage Support -->
 						<input type="text" class="form-control" name="webadifapikey" id="webadifApiKey" aria-describedby="webadifApiKeyHelp">
 						<small id="webadifApiKeyHelp" class="form-text text-muted"><?php echo lang("station_location_qo100_hint"); ?></a></small>

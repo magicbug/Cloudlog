@@ -1048,6 +1048,28 @@
 	<div class="row">
 		<div class="col-md">
 			<div class="card">
+				<h5 class="card-header">QRZCALL.EU <span class="badge text-bg-warning">Data / Extra</span></h5> <!-- This does not need Multilanguage Support -->
+				<div class="card-body">
+					<div class="mb-3">
+						<label for="qrzcallApiKey">QRZCALL.EU Personal Access Token</label> <!-- This does not need Multilanguage Support -->
+						<input type="text" class="form-control" name="qrzcallapikey" id="qrzcallApiKey" aria-describedby="qrzcallApiKeyHelp" placeholder="pat_xxxxx" value="<?php if(set_value('qrzcallapikey') != "") { echo set_value('qrzcallapikey'); } else { echo $my_station_profile->qrzcallapikey; } ?>">
+						<small id="qrzcallApiKeyHelp" class="form-text text-muted">Generate at <a href="https://qrzcall.eu/" target="_blank">qrzcall.eu</a> → My Profile → Account → API Tokens (requires Data or Extra subscription)</small>
+					</div>
+					<div class="mb-3">
+						<label for="qrzcallrealtime">Real-time QSO upload</label> <!-- This does not need Multilanguage Support -->
+						<select class="form-select" id="qrzcallrealtime" name="qrzcallrealtime">
+							<option value="1" <?php if ($my_station_profile->qrzcallrealtime == 1) { echo " selected=\"selected\""; } ?>><?php echo lang("general_word_yes"); ?></option>
+							<option value="0" <?php if ($my_station_profile->qrzcallrealtime == 0) { echo " selected=\"selected\""; } ?>><?php echo lang("general_word_no"); ?></option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="row">
+		<div class="col-md">
+			<div class="card">
 				<h5 class="card-header">QO-100 Dx Club</h5> <!-- This does not need Multilanguage Support -->
 				<div class="card-body">
 					<div class="mb-3">
