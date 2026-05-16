@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $config['app_name'] = "Cloudlog";
 $config['app_version'] = "2.4.5";
 $config['directory'] = "%directory%";
-$config['callbook'] = "hamqth"; // Options are hamqth or qrz
+$config['callbook'] = "hamqth"; // Options are hamqth, qrz or qrzcall
 
 $config['datadir'] = null; // default to install directory
 
@@ -59,6 +59,17 @@ $config['use_fullname'] = false;
 */
 $config['hamqth_username'] = "";
 $config['hamqth_password'] = "";
+
+/*
+|--------------------------------------------------------------------------
+| QRZCALL.EU Login Options
+|--------------------------------------------------------------------------
+|
+|	'qrzcall_token'   Personal Access Token for QRZCALL.EU callbook lookups
+|                     and QSO upload. Generate at https://qrzcall.eu/
+|                     Requires a Data or Extra subscription.
+*/
+$config['qrzcall_token'] = "%qrzcall_token%";
 
 /*
 |--------------------------------------------------------------------------

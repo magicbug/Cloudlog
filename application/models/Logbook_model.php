@@ -5446,6 +5446,18 @@ class Logbook_model extends CI_Model
           $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
         }
       }
+
+      if ($this->session->userdata('callbook_type') == "QRZCALL") {
+        // Lookup using QRZCALL.EU — stateless PAT auth, no session-key dance needed
+        $this->load->library('qrzcall');
+        $token = $this->config->item('qrzcall_token');
+        $callbook = $this->qrzcall->search($callsign, $token, $use_fullname);
+
+        // If the base callsign lookup failed and it's a compound callsign, retry with base call
+        if (($callbook['callsign'] ?? '') == '' && strpos($callsign, '/') !== false) {
+          $callbook = $this->qrzcall->search($this->get_plaincall($callsign), $token, $use_fullname);
+        }
+      }
     } finally {
       return $callbook;
     }
