@@ -1157,7 +1157,15 @@ class Lotw extends CI_Controller {
 			"INSPR7"	=> "INSPIRE-SAT 7",
 			"SONATE"	=> "SONATE-2",
 			'AO-123'	=> "ASRTU-1",
+			'TEV2-1'	=> "TEVEL2-1",
+			'TEV2-2'	=> "TEVEL2-2",
 			'TEV2-3'	=> "TEVEL2-3",
+			'TEV2-4'	=> "TEVEL2-4",
+			'TEV2-5'	=> "TEVEL2-5",
+			'TEV2-6'	=> "TEVEL2-6",
+			'TEV2-7'	=> "TEVEL2-7",
+			'TEV2-8'	=> "TEVEL2-8",
+			'TEV2-9'	=> "TEVEL2-9",
 		);
 
 		return array_search(strtoupper($satname),$arr,true);
