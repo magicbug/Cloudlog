@@ -44,6 +44,15 @@ class QSO extends CI_Controller {
 		$data['bands'] = $this->bands->get_user_bands_for_qso_entry();
 		$data['user_default_band'] = $this->session->userdata('user_default_band');
 		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
+
+        $remote_operation_option = $this->user_options_model->get_options(
+            'remote_operation',
+            array('option_name' => 'enabled', 'option_key' => 'value'),
+            $this->session->userdata('user_id')
+        )->row();
+        $data['isRemoteOperationEnabled'] = isset($remote_operation_option->option_value)
+            ? ((string)$remote_operation_option->option_value === 'true' || (string)$remote_operation_option->option_value === '1')
+            : (bool)$this->session->userdata('isRemoteOperationEnabled');
 		
 		// Set user's preferred date format
 		if($this->session->userdata('user_date_format')) {
@@ -302,6 +311,10 @@ class QSO extends CI_Controller {
         } else {
             $this->load->view('qso/components/winkeysettings_results', $data);
         }
+    }
+
+    function remoteoperationsettings() {
+        $this->load->view('qso/components/remoteoperationsettings');
     }
 
     public function cwmacrosave(){

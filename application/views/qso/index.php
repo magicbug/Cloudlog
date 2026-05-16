@@ -823,6 +823,67 @@
         <button class="btn btn-primary" onclick="openBandmap()">Open Bandmap</button>
       </div>
 
+      <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
+        <div id="remote_operation" class="card remote-operation-settings" style="margin-bottom: 10px;">
+          <div class="card-header">
+            <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Remote Operation
+
+              <span class="badge text-bg-danger ms-2"><?php echo lang('admin_experimental'); ?></span>
+
+              <div id="remote_operation_status" class="badge text-bg-secondary ms-2">Status: Disconnected</div>
+
+              <button type="button" class="btn btn-sm btn-primary ms-2" id="remoteOperationConnectButton">Connect</button>
+
+              <button type="button" class="btn btn-sm btn-secondary"
+                id="remoteOperationSettingsButton"
+                hx-get="<?php echo base_url(); ?>index.php/qso/remoteoperationsettings"
+                hx-target="#remote-modals-here"
+                hx-trigger="click"
+                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-sliders-h"></i> Settings</button>
+            </h4>
+          </div>
+
+          <audio id="remoteOperationRx" autoplay playsinline style="display:none;"></audio>
+
+          <div id="remote-modals-here"></div>
+
+          <div class="card-body">
+            <p class="mb-2">Experimental browser-based shack audio bridge. Use Settings to configure the signalling server, link and audio devices.</p>
+            <div id="remoteOperationDeviceWarning" class="alert alert-warning py-2 px-3 small mb-2 d-none" role="alert"></div>
+            <div class="row g-2 align-items-center mb-2">
+              <div class="col-12 col-md-6">
+                <div class="small text-muted mb-1">Mic level</div>
+                <div class="progress" role="progressbar" aria-label="Remote operation microphone level" aria-valuemin="0" aria-valuemax="100">
+                  <div id="remoteOperationMicLevel" class="progress-bar bg-primary" style="width: 0%">0%</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="small text-muted mb-1">Receive level</div>
+                <div class="progress" role="progressbar" aria-label="Remote operation receive level" aria-valuemin="0" aria-valuemax="100">
+                  <div id="remoteOperationRxLevel" class="progress-bar bg-success" style="width: 0%">0%</div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center mb-2">
+              <div class="col-12 col-md-6">
+                <label for="remoteOperationPlaybackVolume" class="form-label small text-muted mb-1">Playback volume</label>
+                <input id="remoteOperationPlaybackVolume" type="range" class="form-range" min="0" max="100" step="1" value="50">
+              </div>
+              <div class="col-12 col-md-6 d-flex align-items-center gap-3">
+                <div class="form-check mb-0 mt-3">
+                  <input class="form-check-input" type="checkbox" id="remoteOperationMuteToggle">
+                  <label class="form-check-label small" for="remoteOperationMuteToggle">Mute playback</label>
+                </div>
+                <button type="button" id="remoteOperationEnableAudioButton" class="btn btn-sm btn-outline-warning mt-2 d-none">Enable Audio</button>
+              </div>
+            </div>
+            <div id="remoteOperationAudioUnlockHint" class="small text-warning mb-2 d-none"></div>
+            <div id="remoteOperationQuickDiagnostics" class="small text-muted mb-2">State: Disconnected | speaker: default | inbound packets: 0 | jitter: n/a | reconnects: 0</div>
+            <small class="text-muted d-block">The card stays hidden unless you enable Remote Operation in your account settings.</small>
+          </div>
+        </div>
+      <?php } ?>
+
 
       <!-- Winkey Starts -->
 

@@ -1321,6 +1321,9 @@ $(document).ready(function() {
     <script src="<?php echo base_url(); ?>assets/js/qra-utils.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/qso.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/cw-sidetone.js"></script>
+    <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
+        <script src="<?php echo base_url(); ?>assets/js/remote-operation.js"></script>
+    <?php } ?>
     <?php if ($this->session->userdata('isWinkeyEnabled') && !$this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
         <script src="<?php echo base_url(); ?>assets/js/winkey.js"></script>
     <?php } elseif ($this->session->userdata('isWinkeyEnabled') && $this->session->userdata('isWinkeyWebsocketEnabled')) { ?>

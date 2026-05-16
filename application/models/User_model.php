@@ -202,7 +202,8 @@ class User_Model extends CI_Model {
 		$user_pota_lookup, $user_show_notes, $user_column1, $user_column2, $user_column3, $user_column4, $user_column5,
 		$user_show_profile_image, $user_previous_qsl_type, $user_amsat_status_upload, $user_mastodon_url,
 		$user_default_band, $user_default_confirmation, $user_qso_end_times, $user_quicklog, $user_quicklog_enter,
-		$language, $user_hamsat_key, $user_hamsat_workable_only, $callbook_type, $callbook_username, $callbook_password) {
+		$language, $user_hamsat_key, $user_hamsat_workable_only, $callbook_type, $callbook_username, $callbook_password,
+		$user_winkey, $user_winkey_websocket, $user_remote_operation) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
@@ -238,6 +239,9 @@ class User_Model extends CI_Model {
 				'user_quicklog' => (int)$user_quicklog,
 				'user_quicklog_enter' => xss_clean($user_quicklog_enter),
 				'language' => xss_clean($language),
+				'winkey' => (int)$user_winkey,
+				'winkey_websocket' => (int)$user_winkey_websocket,
+				'remote_operation' => (int)$user_remote_operation,
 				'user_eqsl_qth_nickname' => "",
 			);
 
@@ -326,6 +330,7 @@ class User_Model extends CI_Model {
 					'language' => xss_clean($fields['language']),
 					'winkey' => (isset($fields['user_winkey']) && is_numeric($clean = xss_clean($fields['user_winkey'])) && $clean !== '') ? intval($clean) : 0,
 					'winkey_websocket' => isset($fields['user_winkey_websocket']) ? xss_clean($fields['user_winkey_websocket']) : 0,
+					'remote_operation' => isset($fields['user_remote_operation']) ? xss_clean($fields['user_remote_operation']) : 0,
 				);
 
 				$this->db->query("replace into user_options (user_id, option_type, option_name, option_key, option_value) values (" . $fields['id'] . ", 'hamsat','hamsat_key','api','".xss_clean($fields['user_hamsat_key'])."');");
@@ -430,6 +435,11 @@ class User_Model extends CI_Model {
 		$CI =& get_instance();
         $CI->load->model('user_options_model');
         $callbook_type_object = $CI->user_options_model->get_options('callbook')->result();
+		$remote_operation_option = $CI->user_options_model->get_options(
+			'remote_operation',
+			array('option_name' => 'enabled', 'option_key' => 'value'),
+			$id
+		)->row();
 		$show_qsl_cards_option = $CI->user_options_model->get_options(
 			'menu',
 			array('option_name' => 'show_qsl_cards', 'option_key' => 'enabled'),
@@ -515,6 +525,7 @@ class User_Model extends CI_Model {
 			'language' => isset($u->row()->language) ? $u->row()->language: 'english',
 			'isWinkeyEnabled' => $u->row()->winkey,
 			'isWinkeyWebsocketEnabled' => (bool)$u->row()->winkey_websocket,
+			'isRemoteOperationEnabled' => (isset($remote_operation_option->option_value) ? ((string)$remote_operation_option->option_value === 'true' || (string)$remote_operation_option->option_value === '1') : (isset($u->row()->remote_operation) ? (bool)$u->row()->remote_operation : false)),
 			'hasQrzKey' => $this->hasQrzKey($u->row()->user_id),
 			'callbook_type' => $callbook_type,
 			'callbook_username' => $callbook_username,

@@ -1359,6 +1359,21 @@
 												</div>
 											</div>
 
+											<hr />
+											<div class="mb-3">
+												<div class="form-check form-switch">
+													<?php if (!isset($user_remote_operation)) {
+														$user_remote_operation = '0';
+													} ?>
+													<input name="user_remote_operation" class="form-check-input" type="checkbox" role="switch" id="user_remote_operation" value="1" <?php if ($user_remote_operation == 1) {
+														echo 'checked';
+													} ?>>
+													<label class="form-check-label" for="user_remote_operation">Remote Operation</label>
+												</div>
+											</div>
+
+											<small class="form-text text-muted d-block mt-3">Experimental browser-based remote audio control. Turn it on only if you want the QSO page card.</small>
+
 											<small class="form-text text-muted d-block mt-3"><?php echo lang('account_winkeyer_hint'); ?></small>
 										</div>
 									</div>

@@ -187,6 +187,9 @@ class User extends CI_Controller
 				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
 				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
+				$data['user_winkey'] = $this->input->post('user_winkey');
+				$data['user_winkey_websocket'] = $this->input->post('user_winkey_websocket');
+				$data['user_remote_operation'] = $this->input->post('user_remote_operation');
 				$data['language'] = $this->input->post('language');
 				$this->load->view('user/edit', $data);
 			} else {
@@ -231,7 +234,10 @@ class User extends CI_Controller
 				$this->input->post('user_hamsat_workable_only'),
 				$this->input->post('user_callbook_type'),
 				$this->input->post('user_callbook_username'),
-				$this->input->post('user_callbook_password')
+				$this->input->post('user_callbook_password'),
+				$this->input->post('user_winkey'),
+				$this->input->post('user_winkey_websocket'),
+				$this->input->post('user_remote_operation')
 			)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
@@ -615,6 +621,12 @@ class User extends CI_Controller
 			} else {
 				$data['user_winkey_websocket'] = $q->winkey_websocket;
 			}
+
+			if ($this->input->post('user_remote_operation')) {
+				$data['user_remote_operation'] = $this->input->post('user_remote_operation', true);
+			} else {
+				$data['user_remote_operation'] = isset($q->remote_operation) ? $q->remote_operation : 0;
+			}
 			
 			$this->load->model('user_options_model');
 			$callbook_type_object = $this->user_options_model->get_options('callbook')->result();
@@ -963,6 +975,12 @@ class User extends CI_Controller
 							$this->session->set_userdata('user_show_qsl_cards', false);
 						}
 
+						if (isset($_POST['user_remote_operation'])) {
+							$this->user_options_model->set_option('remote_operation', 'enabled', array('value' => 'true'));
+						} else {
+							$this->user_options_model->set_option('remote_operation', 'enabled', array('value' => 'false'));
+						}
+
 						// [QSO Form] Save field visibility preferences
 						$qso_field_keys = ['rst', 'name', 'qth', 'locator', 'comment',
 							'station_tab', 'freq_tx', 'freq_rx', 'band_rx', 'transmit_power', 'operator_callsign',
@@ -992,6 +1010,9 @@ class User extends CI_Controller
 						}
 
 						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited'));
+						if ($this->session->userdata('user_id') == $this->input->post('id', true)) {
+							$this->user_model->update_session($this->input->post('id', true));
+						}
 						redirect('user/edit/' . $this->uri->segment(3));
 					} else {
 						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited'));
