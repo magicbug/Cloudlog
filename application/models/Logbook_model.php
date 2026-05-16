@@ -830,6 +830,21 @@ class Logbook_model extends CI_Model
         }
       }
 
+      $result = ''; // Empty result from previous attempt for safety
+      $result = $this->exists_qrzcall_api_key($data['station_id']);
+      // Push QSO to QRZCALL.EU if PAT is set and realtime upload is enabled
+      if (isset($result->qrzcallapikey) && !empty($result->qrzcallapikey) && $result->qrzcallrealtime == 1) {
+        $CI = &get_instance();
+        $CI->load->library('AdifHelper');
+        $qso = $this->get_qso($last_id, true)->result();
+
+        $adif = $CI->adifhelper->getAdifLine($qso[0]);
+        $upload = $this->push_qso_to_qrzcall($result->qrzcallapikey, $adif);
+        if ($upload['status'] == 'OK') {
+          $this->mark_qrzcall_qso_sent($last_id);
+        }
+      }
+
       $result = $this->exists_webadif_api_key($data['station_id']);
       // Push qso to webadif if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
       if (isset($result->webadifapikey) && $result->webadifrealtime == 1) {
@@ -1077,6 +1092,101 @@ class Logbook_model extends CI_Model
       return $result;
     }
     curl_close($ch);
+  }
+
+  /*
+   * Function uploads a QSO to QRZCALL.EU logbook using the QRZ-compatible endpoint.
+   * $pat is the user's Personal Access Token (format: pat_xxxxx).
+   * $adif contains a line with the QSO in the ADIF format.
+   */
+  function push_qso_to_qrzcall($pat, $adif, $replaceoption = false)
+  {
+    $url = 'https://api.qrzcall.eu/v1/pub/logbook_api.php';
+
+    $ci = & get_instance();
+    $ua = 'Cloudlog/' . $ci->config->item('app_version');
+
+    $post_data['KEY']    = $pat;
+    $post_data['ACTION'] = 'INSERT';
+    $post_data['ADIF']   = $adif;
+
+    // OPTION=REPLACE asks QRZCALL.EU to update an existing matching QSO in
+    // place instead of rejecting it as a duplicate — used to re-sync edited
+    // QSOs (status 'M'). Mirrors Cloudlog's QRZ.com push_qso_to_qrz().
+    if ($replaceoption) {
+      $post_data['OPTION'] = 'REPLACE';
+    }
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, $ua);
+
+    $content = curl_exec($ch);
+    curl_close($ch);
+
+    if ($content) {
+      if (stristr($content, 'RESULT=OK') || stristr($content, 'RESULT=REPLACE')) {
+        $result['status'] = 'OK';
+        return $result;
+      } elseif (stristr($content, 'duplicate')) {
+        // QRZCALL.EU rejected the QSO because an identical one is already in
+        // the logbook. Treat it as success so the QSO is marked uploaded and
+        // not retried on every run (mirrors Cloudlog's QRZ.com handling).
+        $result['status']    = 'OK';
+        $result['duplicate'] = true;
+        return $result;
+      } elseif (stristr($content, 'RESULT=AUTH')) {
+        $result['status'] = 'error';
+        $result['message'] = $content;
+        return $result;
+      } else {
+        $result['status'] = 'error';
+        $result['message'] = $content;
+        return $result;
+      }
+    }
+    if (curl_errno($ch)) {
+      $result['status'] = 'error';
+      $result['message'] = 'Curl error: ' . curl_errno($ch);
+      return $result;
+    }
+  }
+
+  /*
+   * Function marks a QSO as uploaded to QRZCALL.EU
+   */
+  function mark_qrzcall_qso_sent($primarykey)
+  {
+    $data = array(
+      'COL_QRZCALL_QSO_UPLOAD_DATE'   => date("Y-m-d H:i:s", strtotime("now")),
+      'COL_QRZCALL_QSO_UPLOAD_STATUS' => 'Y',
+    );
+    $this->db->where('COL_PRIMARY_KEY', $primarykey);
+    $this->db->update($this->config->item('table_name'), $data);
+  }
+
+  /*
+   * Function marks a batch of QSOs as uploaded to QRZCALL.EU
+   */
+  function mark_qrzcall_qsos_sent_batch($primarykeys)
+  {
+    if (empty($primarykeys)) return;
+    $placeholders = implode(',', array_fill(0, count($primarykeys), '?'));
+    $params = array_merge(
+      [date("Y-m-d H:i:s", strtotime("now"))],
+      $primarykeys
+    );
+    $this->db->query(
+      "UPDATE " . $this->config->item('table_name') . "
+       SET COL_QRZCALL_QSO_UPLOAD_DATE = ?,
+           COL_QRZCALL_QSO_UPLOAD_STATUS = 'Y'
+       WHERE COL_PRIMARY_KEY IN (" . $placeholders . ")",
+      $params
+    );
   }
 
   /*
@@ -1527,6 +1637,11 @@ class Logbook_model extends CI_Model
 
     if ($this->exists_qrz_api_key($data['station_id'])) {
       $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+    }
+
+    $qrzcall_station = $this->exists_qrzcall_api_key($data['station_id']);
+    if (isset($qrzcall_station->qrzcallapikey) && !empty($qrzcall_station->qrzcallapikey)) {
+      $data['COL_QRZCALL_QSO_UPLOAD_STATUS'] = 'M';
     }
 
     if ($this->exists_clublog_credentials($data['station_id'])) {
@@ -2228,6 +2343,82 @@ class Logbook_model extends CI_Model
     } else {
       return null;
     }
+  }
+
+  /*
+     * Function returns all the station_id's with a QRZCALL.EU PAT configured
+     */
+  function get_station_id_with_qrzcall_api()
+  {
+    $sql = 'select station_id, qrzcallapikey from station_profile
+              where coalesce(qrzcallapikey, "") <> ""';
+
+    $query = $this->db->query($sql);
+    $result = $query->result();
+
+    if ($result) {
+      return $result;
+    } else {
+      return null;
+    }
+  }
+
+  /*
+     * Function checks if a QRZCALL.EU PAT exists for the given station id
+     */
+  function exists_qrzcall_api_key($station_id)
+  {
+    $sql = 'select qrzcallapikey, qrzcallrealtime from station_profile
+              where station_id = ?';
+
+    $query = $this->db->query($sql, $station_id);
+    $result = $query->row();
+
+    if ($result) {
+      return $result;
+    } else {
+      return false;
+    }
+  }
+
+  /*
+     * Function returns QSOs not yet uploaded to QRZCALL.EU for the given station
+     */
+  function get_qrzcall_qsos($station_id, $trusted = false, $limit = 1000, $offset = 0)
+  {
+    $CI = &get_instance();
+    $CI->load->model('stations');
+    if ((!$trusted) && (!$CI->stations->check_station_is_accessible($station_id))) {
+      return;
+    }
+    // Select the station_profile columns AdifHelper::getAdifLine() reads for
+    // the "MY" station fields (STATION_CALLSIGN, MY_GRIDSQUARE, MY_DXCC, ...),
+    // so the exported ADIF is complete and no undefined-property notices are
+    // raised while building it.
+    $sql = "select thcv.*, dxcc_entities.name as station_country,
+              station_profile.station_callsign, station_profile.station_city,
+              station_profile.station_cnty, station_profile.station_cq,
+              station_profile.station_dxcc, station_profile.station_gridsquare,
+              station_profile.station_iota, station_profile.station_itu,
+              station_profile.station_pota, station_profile.station_sig,
+              station_profile.station_sig_info, station_profile.station_sota,
+              station_profile.station_wab, station_profile.station_wwff,
+              station_profile.state,
+              TRIM(COALESCE(NULLIF(CONCAT_WS(' ', users.user_firstname, users.user_lastname), ''), users.user_name, '')) as export_my_name
+              from " . $this->config->item('table_name') . ' thcv
+              left join station_profile on thcv.station_id = station_profile.station_id
+              left join ' . $this->config->item('auth_table') . ' users on station_profile.user_id = users.user_id
+              left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif
+              where thcv.station_id = ' . intval($station_id) . '
+              and (COL_QRZCALL_QSO_UPLOAD_STATUS is NULL
+                or COL_QRZCALL_QSO_UPLOAD_STATUS = ""
+                or COL_QRZCALL_QSO_UPLOAD_STATUS = "N"
+                or COL_QRZCALL_QSO_UPLOAD_STATUS = "M")
+              ORDER BY thcv.COL_PRIMARY_KEY ASC
+              LIMIT ' . intval($limit) . ' OFFSET ' . intval($offset);
+
+    $query = $this->db->query($sql);
+    return $query;
   }
 
   /*
@@ -3742,11 +3933,14 @@ class Logbook_model extends CI_Model
     }
 
     // Check if QRZ or ClubLog is already uploaded. If so, set qso to reupload to qrz.com (M) or clublog
-    $qsql = "select COL_CLUBLOG_QSO_UPLOAD_STATUS as CL_STATE, COL_QRZCOM_QSO_UPLOAD_STATUS as QRZ_STATE from " . $this->config->item('table_name') . " where COL_BAND=? and COL_CALL=? and COL_STATION_CALLSIGN=? and date_format(COL_TIME_ON, '%Y-%m-%d %H:%i') = ?";
+    $qsql = "select COL_CLUBLOG_QSO_UPLOAD_STATUS as CL_STATE, COL_QRZCOM_QSO_UPLOAD_STATUS as QRZ_STATE, COL_QRZCALL_QSO_UPLOAD_STATUS as QRZCALL_STATE from " . $this->config->item('table_name') . " where COL_BAND=? and COL_CALL=? and COL_STATION_CALLSIGN=? and date_format(COL_TIME_ON, '%Y-%m-%d %H:%i') = ?";
     $query = $this->db->query($qsql, array($band, $callsign, $station_callsign, $datetime));
     $row = $query->row();
     if (($row->QRZ_STATE ?? '') == 'Y') {
       $data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+    }
+    if (($row->QRZCALL_STATE ?? '') == 'Y') {
+      $data['COL_QRZCALL_QSO_UPLOAD_STATUS'] = 'M';
     }
     if (($row->CL_STATE ?? '') == 'Y') {
       $data['COL_CLUBLOG_QSO_UPLOAD_STATUS'] = 'M';
@@ -3858,6 +4052,7 @@ class Logbook_model extends CI_Model
                    COL_CALL, COL_BAND, COL_STATION_CALLSIGN,
                    COL_CLUBLOG_QSO_UPLOAD_STATUS as CL_STATE,
                    COL_QRZCOM_QSO_UPLOAD_STATUS as QRZ_STATE,
+                   COL_QRZCALL_QSO_UPLOAD_STATUS as QRZCALL_STATE,
                    COL_LOTW_QSL_RCVD,
                    station_profile.station_gridsquare,
                    station_profile.station_id
@@ -3928,9 +4123,12 @@ class Logbook_model extends CI_Model
         $update_data['COL_ITUZ'] = $record['ituz'];
       }
       
-      // Mark for re-upload to QRZ/ClubLog if already uploaded
+      // Mark for re-upload to QRZ/QRZCALL.EU/ClubLog if already uploaded
       if ($qso->QRZ_STATE == 'Y') {
         $update_data['COL_QRZCOM_QSO_UPLOAD_STATUS'] = 'M';
+      }
+      if ($qso->QRZCALL_STATE == 'Y') {
+        $update_data['COL_QRZCALL_QSO_UPLOAD_STATUS'] = 'M';
       }
       if ($qso->CL_STATE == 'Y') {
         $update_data['COL_CLUBLOG_QSO_UPLOAD_STATUS'] = 'M';
