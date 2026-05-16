@@ -21,7 +21,7 @@
     };
 
     const DEFAULTS = {
-        wsUrl: 'ws://127.0.0.1:8787/ws-webrtc',
+        wsUrl: 'wss://relay.cloudlog.org/ws-webrtc',
         linkPassword: '',
         linkName: '',
         radioName: '',
@@ -422,7 +422,7 @@
     function readSettingsFromStorage() {
         const settings = Object.assign({}, DEFAULTS);
         settings.wsUrl = localStorage.getItem(STORAGE.wsUrl) || DEFAULTS.wsUrl;
-        settings.linkPassword = localStorage.getItem(STORAGE.linkPassword) || '';
+        settings.linkPassword = '';
         settings.linkName = localStorage.getItem(STORAGE.linkName) || '';
         settings.radioName = localStorage.getItem(STORAGE.radioName) || '';
         settings.audioIn = localStorage.getItem(STORAGE.audioIn) || '';
@@ -446,7 +446,6 @@
 
     function writeSettingsToStorage(settings) {
         localStorage.setItem(STORAGE.wsUrl, settings.wsUrl || DEFAULTS.wsUrl);
-        localStorage.setItem(STORAGE.linkPassword, settings.linkPassword || '');
         localStorage.setItem(STORAGE.linkName, settings.linkName || '');
         localStorage.setItem(STORAGE.radioName, settings.radioName || '');
         localStorage.setItem(STORAGE.audioIn, settings.audioIn || '');
@@ -462,6 +461,45 @@
         localStorage.setItem(STORAGE.playoutHint, settings.playoutHint ? '1' : '0');
         localStorage.setItem(STORAGE.statsPoll, settings.statsPoll ? '1' : '0');
         currentSettings = settings;
+    }
+
+    async function loadRemoteOperationSecretFromAccount() {
+        const response = await fetch(base_url + 'index.php/qso/remoteoperationsecret_json', {
+            method: 'GET',
+            credentials: 'same-origin'
+        });
+
+        const data = await response.json();
+        if (!data || data.status !== 'ok') {
+            throw new Error(data && data.message ? data.message : 'Failed to load remote operation secret');
+        }
+
+        currentSettings.linkPassword = typeof data.link_password === 'string' ? data.link_password : '';
+        const input = $('remoteOperationLinkPassword');
+        if (input) {
+            input.value = currentSettings.linkPassword;
+        }
+    }
+
+    async function saveRemoteOperationSecretToAccount(linkPassword) {
+        const body = new URLSearchParams();
+        body.set('link_password', linkPassword || '');
+
+        const response = await fetch(base_url + 'index.php/qso/remoteoperationsecret_save', {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: body.toString()
+        });
+
+        const data = await response.json();
+        if (!data || data.status !== 'ok') {
+            throw new Error(data && data.message ? data.message : 'Failed to save remote operation secret');
+        }
+
+        currentSettings.linkPassword = linkPassword || '';
     }
 
     function dismissRemoteOperationMarkup() {
@@ -1159,6 +1197,15 @@
 
         currentSettings = readSettingsFromStorage();
 
+        try {
+            await loadRemoteOperationSecretFromAccount();
+        } catch (error) {
+            shouldAutoReconnect = false;
+            alert('Could not load link password from your account.');
+            log('Remote Operation link password load failed: ' + String(error && error.message ? error.message : error), 'err');
+            return;
+        }
+
         if (!/^wss?:\/\//i.test(currentSettings.wsUrl)) {
             shouldAutoReconnect = false;
             alert('WebSocket URL must start with ws:// or wss://');
@@ -1244,7 +1291,6 @@
         const settings = readSettingsFromStorage();
         const mapping = {
             remoteOperationWsUrl: settings.wsUrl,
-            remoteOperationLinkPassword: settings.linkPassword,
             remoteOperationLinkName: settings.linkName,
             remoteOperationRadioName: settings.radioName,
             remoteOperationStun: settings.stun,
@@ -1285,6 +1331,10 @@
             modalStatus.textContent = 'Saved settings';
             modalStatus.className = 'badge bg-secondary';
         }
+
+        loadRemoteOperationSecretFromAccount().catch(function(error) {
+            log('Could not load account link password: ' + String(error && error.message ? error.message : error), 'err');
+        });
     }
 
     function resetRemoteOperationSettings() {
@@ -1299,6 +1349,9 @@
         populateModalFromSettings();
         populateDevices().catch(function(error) {
             log(String(error && error.message ? error.message : error), 'err');
+        });
+        saveRemoteOperationSecretToAccount('').catch(function(error) {
+            log('Could not clear account link password: ' + String(error && error.message ? error.message : error), 'err');
         });
         setDeviceWarning('Remote settings reset to defaults for this browser.');
         log('Remote Operation settings reset.', 'ok');
@@ -1348,6 +1401,22 @@
         if (saveButton) {
             saveButton.disabled = true;
             saveButton.textContent = 'Saving...';
+        }
+
+        try {
+            await saveRemoteOperationSecretToAccount(config.linkPassword);
+        } catch (error) {
+            if (saveButton) {
+                saveButton.disabled = false;
+                saveButton.textContent = 'Save settings';
+            }
+            if (modalStatus) {
+                modalStatus.textContent = 'Save failed';
+                modalStatus.className = 'badge bg-danger';
+            }
+            alert('Could not save link password to your account.');
+            log('Remote Operation link password save failed: ' + String(error && error.message ? error.message : error), 'err');
+            return;
         }
 
         writeSettingsToStorage(config);
@@ -1531,6 +1600,10 @@
         if ($('remoteOperationStats')) {
             $('remoteOperationStats').textContent = '(run a call - stats appear after media flows)';
         }
+
+        loadRemoteOperationSecretFromAccount().catch(function(error) {
+            log('Could not load account link password: ' + String(error && error.message ? error.message : error), 'err');
+        });
     }
 
     window.openRemoteOperationSettings = openRemoteOperationSettings;

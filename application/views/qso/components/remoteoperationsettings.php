@@ -28,7 +28,7 @@
               <div class="card-body">
                 <div class="mb-3">
                   <label for="remoteOperationWsUrl" class="form-label">Signalling server WebSocket URL</label>
-                  <input type="text" class="form-control" id="remoteOperationWsUrl" spellcheck="false" placeholder="ws://127.0.0.1:8787/ws-webrtc">
+                  <input type="text" class="form-control" id="remoteOperationWsUrl" spellcheck="false" placeholder="wss://relay.cloudlog.org/ws-webrtc">
                 </div>
 
                 <div class="mb-3">

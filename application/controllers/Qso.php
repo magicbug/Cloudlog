@@ -317,6 +317,58 @@ class QSO extends CI_Controller {
         $this->load->view('qso/components/remoteoperationsettings');
     }
 
+    public function remoteoperationsecret_json() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $this->load->model('user_options_model');
+            $this->load->library('encryption');
+
+            $row = $this->user_options_model->get_options(
+                'remote_operation',
+                array('option_name' => 'secret', 'option_key' => 'link_password')
+            )->row();
+
+            $encrypted = isset($row->option_value) ? (string)$row->option_value : '';
+            $plain = '';
+            if ($encrypted !== '') {
+                $decrypted = $this->encryption->decrypt($encrypted);
+                $plain = ($decrypted !== false && $decrypted !== null) ? (string)$decrypted : '';
+            }
+
+            echo json_encode(array('status' => 'ok', 'link_password' => $plain));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
+    public function remoteoperationsecret_save() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $this->load->model('user_options_model');
+            $this->load->library('encryption');
+
+            $link_password = trim((string)$this->security->xss_clean($this->input->post('link_password', true)));
+
+            if ($link_password !== '' && strlen($link_password) < 16) {
+                echo json_encode(array('status' => 'error', 'message' => 'Link password must be at least 16 characters'));
+                return;
+            }
+
+            if ($link_password === '') {
+                $this->user_options_model->set_option('remote_operation', 'secret', array('link_password' => ''));
+            } else {
+                $encrypted = $this->encryption->encrypt($link_password);
+                $this->user_options_model->set_option('remote_operation', 'secret', array('link_password' => $encrypted));
+            }
+
+            echo json_encode(array('status' => 'ok'));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
     public function cwmacrosave(){
         try {
             // Get the data from the form with proper sanitization
