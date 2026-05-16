@@ -5291,6 +5291,15 @@ class Logbook_model extends CI_Model
             $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
           }
         }
+
+        if ($this->session->userdata('callbook_type') == "QRZCALL") {
+          // Lookup using QRZCALL.EU — stateless PAT auth, no session-key dance
+          $this->load->library('qrzcall');
+          $this->load->library('encryption');
+
+          $token = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+          $callbook = $this->qrzcall->search($callsign, $token);
+        }
         if (isset($callbook)) {
           if (isset($callbook['error'])) {
             printf("Error: " . $callbook['error'] . "<br />");
@@ -5444,6 +5453,21 @@ class Logbook_model extends CI_Model
           $hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
           $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
           $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+        }
+      }
+
+      if ($this->session->userdata('callbook_type') == "QRZCALL") {
+        // Lookup using QRZCALL.EU — stateless PAT auth, no session-key dance needed.
+        // The user pastes their Personal Access Token into the "Callbook Password"
+        // field in Account Settings; it is stored encrypted like the QRZ password.
+        $this->load->library('qrzcall');
+        $this->load->library('encryption');
+        $token = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+        $callbook = $this->qrzcall->search($callsign, $token, $use_fullname);
+
+        // If the base callsign lookup failed and it's a compound callsign, retry with base call
+        if (($callbook['callsign'] ?? '') == '' && strpos($callsign, '/') !== false) {
+          $callbook = $this->qrzcall->search($this->get_plaincall($callsign), $token, $use_fullname);
         }
       }
     } finally {
