@@ -625,7 +625,14 @@ class User extends CI_Controller
 			if ($this->input->post('user_remote_operation')) {
 				$data['user_remote_operation'] = $this->input->post('user_remote_operation', true);
 			} else {
-				$data['user_remote_operation'] = isset($q->remote_operation) ? $q->remote_operation : 0;
+				$remote_operation_option = $this->user_options_model->get_options(
+					'remote_operation',
+					array('option_name' => 'enabled', 'option_key' => 'value'),
+					$this->uri->segment(3)
+				)->row();
+				$data['user_remote_operation'] = isset($remote_operation_option->option_value)
+					? (((string)$remote_operation_option->option_value === 'true' || (string)$remote_operation_option->option_value === '1') ? 1 : 0)
+					: (isset($q->remote_operation) ? $q->remote_operation : 0);
 			}
 			
 			$this->load->model('user_options_model');
@@ -839,6 +846,9 @@ class User extends CI_Controller
 			if (!isset($post_data['user_winkey_websocket'])) {
 				$post_data['user_winkey_websocket'] = '0';
 			}
+			if (!isset($post_data['user_remote_operation'])) {
+				$post_data['user_remote_operation'] = '0';
+			}
 			switch ($this->user_model->edit($post_data)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
@@ -975,7 +985,7 @@ class User extends CI_Controller
 							$this->session->set_userdata('user_show_qsl_cards', false);
 						}
 
-						if (isset($_POST['user_remote_operation'])) {
+						if (isset($post_data['user_remote_operation']) && (string)$post_data['user_remote_operation'] === '1') {
 							$this->user_options_model->set_option('remote_operation', 'enabled', array('value' => 'true'));
 						} else {
 							$this->user_options_model->set_option('remote_operation', 'enabled', array('value' => 'false'));
@@ -1009,7 +1019,10 @@ class User extends CI_Controller
 							$this->user_options_model->del_option('map_custom', 'gridsquare');
 						}
 
-						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited'));
+						$remote_operation_status_message = ((string)$post_data['user_remote_operation'] === '1')
+							? 'Remote Operation enabled.'
+							: 'Remote Operation disabled.';
+						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited') . ' ' . $remote_operation_status_message);
 						if ($this->session->userdata('user_id') == $this->input->post('id', true)) {
 							$this->user_model->update_session($this->input->post('id', true));
 						}
