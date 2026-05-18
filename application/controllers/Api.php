@@ -1598,7 +1598,6 @@ class API extends CI_Controller
 					if (is_array($plot_latlng) && count($plot_latlng) === 2) {
 						$qso['lat'] = $plot_latlng[0];
 						$qso['long'] = $plot_latlng[1];
-						$qso['lng'] = $plot_latlng[1];
 					}
 
 					$dxcc = $this->logbook_model->check_dxcc_table(strtoupper(trim(strtoupper($row->COL_CALL))), $row->COL_TIME_ON);
@@ -1609,7 +1608,6 @@ class API extends CI_Controller
 						if (!isset($qso['lat']) || !isset($qso['long'])) {
 							$qso['lat'] = $dxcc[4];
 							$qso['long'] = $dxcc[5];
-							$qso['lng'] = $dxcc[5];
 						}
 					}
 
