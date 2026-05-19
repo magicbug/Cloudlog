@@ -830,6 +830,21 @@ class Logbook_model extends CI_Model
         }
       }
 
+      $result = ''; // Empty result from previous attempt for safety
+      $result = $this->exists_qrzcall_api_key($data['station_id']);
+      // Push QSO to QRZCALL.EU if PAT is set and realtime upload is enabled
+      if (isset($result->qrzcallapikey) && !empty($result->qrzcallapikey) && $result->qrzcallrealtime == 1) {
+        $CI = &get_instance();
+        $CI->load->library('AdifHelper');
+        $qso = $this->get_qso($last_id, true)->result();
+
+        $adif = $CI->adifhelper->getAdifLine($qso[0]);
+        $upload = $this->push_qso_to_qrzcall($result->qrzcallapikey, $adif);
+        if ($upload['status'] == 'OK') {
+          $this->mark_qrzcall_qso_sent($last_id);
+        }
+      }
+
       $result = $this->exists_webadif_api_key($data['station_id']);
       // Push qso to webadif if apikey is set, and realtime upload is enabled, and we're not importing an adif-file
       if (isset($result->webadifapikey) && $result->webadifrealtime == 1) {
@@ -1077,6 +1092,78 @@ class Logbook_model extends CI_Model
       return $result;
     }
     curl_close($ch);
+  }
+
+  /*
+   * Function uploads a QSO to QRZCALL.EU logbook using the QRZ-compatible endpoint.
+   * $pat is the user's Personal Access Token (format: pat_xxxxx).
+   * $adif contains a line with the QSO in the ADIF format.
+   */
+  function push_qso_to_qrzcall($pat, $adif, $replaceoption = false)
+  {
+    $url = 'https://api.qrzcall.eu/v1/pub/logbook_api.php';
+
+    // Build compliant User-Agent using the shared helper, as push_qso_to_qrz() does
+    $this->load->helper('useragent');
+    $ua = cloudlog_user_agent();
+
+    $post_data['KEY']    = $pat;
+    $post_data['ACTION'] = 'INSERT';
+    $post_data['ADIF']   = $adif;
+
+    // OPTION=REPLACE asks QRZCALL.EU to update an existing matching QSO in
+    // place instead of rejecting it as a duplicate — used to re-sync edited
+    // QSOs. Mirrors Cloudlog's QRZ.com push_qso_to_qrz().
+    if ($replaceoption) {
+      $post_data['OPTION'] = 'REPLACE';
+    }
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_USERAGENT, $ua);
+
+    $content = curl_exec($ch);
+
+    if ($content) {
+      if (stristr($content, 'RESULT=OK') || stristr($content, 'RESULT=REPLACE')) {
+        $result['status'] = 'OK';
+      } elseif (stristr($content, 'RESULT=FAIL') && stristr($content, 'duplicate')) {
+        // QRZCALL.EU reports the QSO is already in the logbook — treat it as
+        // success so the QSO is recorded with status 'Y' rather than flagged
+        // as an upload error.
+        $result['status']    = 'OK';
+        $result['duplicate'] = true;
+      } else {
+        $result['status']  = 'error';
+        $result['message'] = $content;
+      }
+    } elseif (curl_errno($ch)) {
+      $result['status']  = 'error';
+      $result['message'] = 'Curl error: ' . curl_errno($ch);
+    } else {
+      $result['status']  = 'error';
+      $result['message'] = 'Empty response from QRZCALL.EU';
+    }
+
+    curl_close($ch);
+    return $result;
+  }
+
+  /*
+   * Function marks a QSO as uploaded to QRZCALL.EU
+   */
+  function mark_qrzcall_qso_sent($primarykey)
+  {
+    $data = array(
+      'COL_QRZCALL_QSO_UPLOAD_DATE'   => date("Y-m-d H:i:s", strtotime("now")),
+      'COL_QRZCALL_QSO_UPLOAD_STATUS' => 'Y',
+    );
+    $this->db->where('COL_PRIMARY_KEY', $primarykey);
+    $this->db->update($this->config->item('table_name'), $data);
   }
 
   /*
@@ -1547,7 +1634,24 @@ class Logbook_model extends CI_Model
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
     $this->db->update($this->config->item('table_name'), $data);
-    
+
+    // Real-time re-upload of the edited QSO to QRZCALL.EU. The QSO already
+    // exists there from the create-time upload, so it is sent with
+    // OPTION=REPLACE — QRZCALL.EU updates the existing record in place.
+    $qrzcall_station = $this->exists_qrzcall_api_key($data['station_id']);
+    if (isset($qrzcall_station->qrzcallapikey) && !empty($qrzcall_station->qrzcallapikey) && $qrzcall_station->qrzcallrealtime == 1) {
+      $CI = &get_instance();
+      $CI->load->library('AdifHelper');
+      $qso = $this->get_qso($this->input->post('id'), true)->result();
+      if (!empty($qso)) {
+        $adif = $CI->adifhelper->getAdifLine($qso[0]);
+        $upload = $this->push_qso_to_qrzcall($qrzcall_station->qrzcallapikey, $adif, true);
+        if ($upload['status'] == 'OK') {
+          $this->mark_qrzcall_qso_sent($this->input->post('id'));
+        }
+      }
+    }
+
     // Clear dashboard cache for affected station
     $this->clear_dashboard_cache($stationId);
 
@@ -2227,6 +2331,24 @@ class Logbook_model extends CI_Model
       return $result;
     } else {
       return null;
+    }
+  }
+
+  /*
+     * Function checks if a QRZCALL.EU PAT exists for the given station id
+     */
+  function exists_qrzcall_api_key($station_id)
+  {
+    $sql = 'select qrzcallapikey, qrzcallrealtime from station_profile
+              where station_id = ?';
+
+    $query = $this->db->query($sql, $station_id);
+    $result = $query->row();
+
+    if ($result) {
+      return $result;
+    } else {
+      return false;
     }
   }
 
