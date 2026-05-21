@@ -524,7 +524,7 @@ class User_Model extends CI_Model {
 			'active_station_logbook' => $u->row()->active_station_logbook,
 			'language' => isset($u->row()->language) ? $u->row()->language: 'english',
 			'isWinkeyEnabled' => $u->row()->winkey,
-			'isWinkeyWebsocketEnabled' => (bool)$u->row()->winkey_websocket,
+			'isWinkeyWebsocketEnabled' => isset($u->row()->winkey_websocket) ? (bool)$u->row()->winkey_websocket : false,
 			'isRemoteOperationEnabled' => (isset($remote_operation_option->option_value) ? ((string)$remote_operation_option->option_value === 'true' || (string)$remote_operation_option->option_value === '1') : (isset($u->row()->remote_operation) ? (bool)$u->row()->remote_operation : false)),
 			'hasQrzKey' => $this->hasQrzKey($u->row()->user_id),
 			'callbook_type' => $callbook_type,
