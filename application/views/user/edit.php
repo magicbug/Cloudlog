@@ -1148,10 +1148,12 @@
 													<option value="None" <?php if (isset($user_callbook_type) && $user_callbook_type == 'None') echo 'selected'; ?>>None</option>
 													<option value="QRZ" <?php if (isset($user_callbook_type) && $user_callbook_type == 'QRZ') echo 'selected'; ?>>QRZ</option>
 													<option value="HamQTH" <?php if (isset($user_callbook_type) && $user_callbook_type == 'HamQTH') echo 'selected'; ?>>HamQTH</option>
+													<option value="QRZCALL" <?php if (isset($user_callbook_type) && $user_callbook_type == 'QRZCALL') echo 'selected'; ?>>QRZCALL.EU</option>
 												</select>
 												<?php if (isset($callbook_type_error)) {
 													echo "<small class=\"error\">" . $callbook_type_error . "</small>";
 												} ?>
+												<small class="form-text text-muted">QRZCALL.EU: paste your Personal Access Token into the Callbook Password field below and leave Callbook Username blank.</small>
 											</div>
 
 											<div class="mb-3">
