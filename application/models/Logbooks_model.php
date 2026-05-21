@@ -4,10 +4,32 @@ class Logbooks_model extends CI_Model {
 
 	// Cache for list_logbook_relationships to avoid redundant queries
 	private $relationship_cache = array();
+	private $slp_permission_column = null;
+
+	private function get_slp_permission_column() {
+		if ($this->slp_permission_column !== null) {
+			return $this->slp_permission_column;
+		}
+
+		if ($this->db->field_exists('permission_level', 'station_logbooks_permissions')) {
+			$this->slp_permission_column = 'permission_level';
+			return $this->slp_permission_column;
+		}
+
+		if ($this->db->field_exists('access_level', 'station_logbooks_permissions')) {
+			$this->slp_permission_column = 'access_level';
+			return $this->slp_permission_column;
+		}
+
+		// Legacy fallback to avoid hard failures on partially migrated instances.
+		$this->slp_permission_column = 'permission';
+		return $this->slp_permission_column;
+	}
 
     function show_all() {
 		// Get owned logbooks and shared logbooks with access level
 		$user_id = $this->session->userdata('user_id');
+		$permission_column = $this->get_slp_permission_column();
 		
 		// If no user is logged in, return empty result
 		if ($user_id === NULL || $user_id === FALSE) {
@@ -19,7 +41,7 @@ class Logbooks_model extends CI_Model {
 		$this->db->select('station_logbooks.*, 
 			CASE 
 				WHEN station_logbooks.user_id = '.$this->db->escape($user_id).' THEN "owner" 
-				ELSE slp.permission_level 
+				ELSE slp.'.$permission_column.' 
 			END as access_level', FALSE);
 		$this->db->from('station_logbooks');
 		$this->db->join('station_logbooks_permissions slp', 
@@ -258,11 +280,12 @@ class Logbooks_model extends CI_Model {
 
 	function public_slugs_accessible_by_user($user_id) {
 		$clean_user_id = $this->security->xss_clean($user_id);
+		$permission_column = $this->get_slp_permission_column();
 
 		$this->db->select('station_logbooks.logbook_id, station_logbooks.logbook_name, station_logbooks.public_slug,
 			CASE
 				WHEN station_logbooks.user_id = '.$this->db->escape($clean_user_id).' THEN "owner"
-				ELSE slp.permission_level
+				ELSE slp.'.$permission_column.'
 			END as access_level', FALSE);
 		$this->db->from('station_logbooks');
 		$this->db->join('station_logbooks_permissions slp',
@@ -425,6 +448,7 @@ class Logbooks_model extends CI_Model {
 
 	public function check_logbook_is_accessible($id, $min_level = 'read') {
 	    // First check if user is the owner (existing behavior - highest priority)
+		$permission_column = $this->get_slp_permission_column();
 	    $this->db->select('logbook_id');
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', $id);
@@ -434,7 +458,7 @@ class Logbooks_model extends CI_Model {
 		}
 		
 		// Check if user has shared access via permissions table
-		$this->db->select('permission_level');
+		$this->db->select($permission_column.' as permission_level', FALSE);
 		$this->db->where('logbook_id', $id);
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$query = $this->db->get('station_logbooks_permissions');
@@ -465,6 +489,7 @@ class Logbooks_model extends CI_Model {
 	public function get_user_permission($logbook_id, $user_id) {
 		// Get the permission level for a specific user on a specific logbook
 		// Returns 'owner', permission level, or null
+		$permission_column = $this->get_slp_permission_column();
 		
 		// Check if user is owner
 		$this->db->select('logbook_id');
@@ -476,7 +501,7 @@ class Logbooks_model extends CI_Model {
 		}
 		
 		// Check permissions table
-		$this->db->select('permission_level');
+		$this->db->select($permission_column.' as permission_level', FALSE);
 		$this->db->where('logbook_id', $logbook_id);
 		$this->db->where('user_id', $user_id);
 		$query = $this->db->get('station_logbooks_permissions');
@@ -492,6 +517,7 @@ class Logbooks_model extends CI_Model {
 		// Add a user to a logbook with specified permission level
 		// Only owner or admin can add users
 		// Returns array with 'success' and 'is_new' keys
+		$permission_column = $this->get_slp_permission_column();
 		
 		$clean_logbook_id = $this->security->xss_clean($logbook_id);
 		$clean_user_id = $this->security->xss_clean($user_id);
@@ -519,7 +545,7 @@ class Logbooks_model extends CI_Model {
 		if ($existing->num_rows() > 0) {
 			// Update existing permission
 			$data = array(
-				'permission_level' => $clean_permission,
+				$permission_column => $clean_permission,
 				'modified' => date('Y-m-d H:i:s'),
 			);
 			$this->db->where('logbook_id', $clean_logbook_id);
@@ -530,7 +556,7 @@ class Logbooks_model extends CI_Model {
 			$data = array(
 				'logbook_id' => $clean_logbook_id,
 				'user_id' => $clean_user_id,
-				'permission_level' => $clean_permission,
+				$permission_column => $clean_permission,
 			);
 			$this->db->insert('station_logbooks_permissions', $data);
 		}
@@ -561,6 +587,7 @@ class Logbooks_model extends CI_Model {
 	public function list_logbook_collaborators($logbook_id) {
 		// Get all users with access to a logbook (excluding owner)
 		// Returns array of users with their permission levels
+		$permission_column = $this->get_slp_permission_column();
 		
 		$clean_logbook_id = $this->security->xss_clean($logbook_id);
 		
@@ -572,7 +599,7 @@ class Logbooks_model extends CI_Model {
 		$owner_query = $this->db->get();
 		
 		// Get shared users
-		$this->db->select('slp.user_id, users.user_callsign, users.user_email, slp.permission_level, slp.created_at');
+		$this->db->select('slp.user_id, users.user_callsign, users.user_email, slp.'.$permission_column.' as permission_level, slp.created_at', FALSE);
 		$this->db->from('station_logbooks_permissions slp');
 		$this->db->join('users', 'users.user_id = slp.user_id');
 		$this->db->where('slp.logbook_id', $clean_logbook_id);
