@@ -624,11 +624,13 @@ var favs={};
 				success: function(response) {
 					if (response && response.status === 'ok') {
 						var savedCallsign = normalizeFieldValue($('#callsign').val()).toUpperCase();
+						var savedStartDate = normalizeFieldValue($('#qso_input [name="start_date"]').first().val());
 						var savedBand = normalizeFieldValue($('#band').val());
 						var savedMode = normalizeFieldValue($('#mode').val());
 						var savedSatName = normalizeFieldValue($('#sat_name').val());
 						var savedSatMode = normalizeFieldValue($('#sat_mode').val());
 						var postSaveDefaults = {
+							start_date: savedStartDate,
 							band: savedBand,
 							mode: savedMode,
 							sat_name: savedSatName,
@@ -970,6 +972,10 @@ function reset_fields() {
 function reapplyPostSaveDefaults(defaults) {
 	if (!defaults) {
 		return;
+	}
+
+	if (typeof defaults.start_date !== 'undefined') {
+		$('#qso_input [name="start_date"]').val(defaults.start_date);
 	}
 
 	if (typeof defaults.band !== 'undefined') {
