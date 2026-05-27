@@ -2537,6 +2537,7 @@ $(document).ready(function() {
             if (!lockSatelliteFieldsToUserInput) {
                 const satNameFromCat = String(data.satname || '').trim();
                 const satModeFromCat = String(data.satmode || '').trim();
+                const propModeFromCat = String(data.prop_mode || '').trim();
 
                 // If CAT does not provide satellite fields for this radio, clear stale values
                 // so we do not carry over sat details from a previous save or radio.
@@ -2552,7 +2553,11 @@ $(document).ready(function() {
                     cat2UI($('#sat_mode'), satModeFromCat, false, false);
                 }
 
-                cat2UI($('#selectPropagation'), data.prop_mode, false, false);
+                if (propModeFromCat === '') {
+                    $('#selectPropagation').val('').removeData('catValue');
+                } else {
+                    cat2UI($('#selectPropagation'), propModeFromCat, false, false);
+                }
             }
             cat2UI($('#transmit_power'), data.power, false, false);
 
