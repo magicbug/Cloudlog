@@ -629,12 +629,14 @@ var favs={};
 						var savedMode = normalizeFieldValue($('#mode').val());
 						var savedSatName = normalizeFieldValue($('#sat_name').val());
 						var savedSatMode = normalizeFieldValue($('#sat_mode').val());
+						var savedRadio = normalizeFieldValue($('#qso_input select[name="radio"]').val());
 						var postSaveDefaults = {
 							start_date: savedStartDate,
 							band: savedBand,
 							mode: savedMode,
 							sat_name: savedSatName,
-							sat_mode: savedSatMode
+							sat_mode: savedSatMode,
+							radio: savedRadio
 						};
 						var saveMessage = (response && response.message) ? response.message : 'QSO Added';
 						if (savedCallsign && savedBand) {
@@ -992,6 +994,19 @@ function reapplyPostSaveDefaults(defaults) {
 
 	if (typeof defaults.sat_mode !== 'undefined') {
 		$('#sat_mode').val(defaults.sat_mode);
+	}
+
+	if (typeof defaults.radio !== 'undefined' && defaults.radio !== '') {
+		var radioValue = String(defaults.radio);
+		$('#qso_input select[name="radio"]').val(radioValue);
+		$('select.radios').val(radioValue);
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem('selectedRadio', radioValue);
+		}
+	}
+
+	if ((defaults.sat_name && defaults.sat_name !== '') || (defaults.sat_mode && defaults.sat_mode !== '')) {
+		$('#sat_name').trigger('input');
 	}
 
 	if (typeof setRst === 'function') {

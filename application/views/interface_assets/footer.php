@@ -2358,6 +2358,7 @@ $(document).ready(function() {
         let consecutiveCatPollFailures = 0;
         let catPollTimer = null;
         let lastSuccessfulCatUpdateAt = null;
+        let lockSatelliteFieldsToUserInput = false;
 
         const CAT_POLL_BASE_INTERVAL_MS = 3000;
         const CAT_POLL_MAX_INTERVAL_MS = 15000;
@@ -2533,10 +2534,27 @@ $(document).ready(function() {
                     $('#winkey').hide();
                 }
             });
-            cat2UI($('#sat_name'), data.satname, false, false);
-            cat2UI($('#sat_mode'), data.satmode, false, false);
+            if (!lockSatelliteFieldsToUserInput) {
+                const satNameFromCat = String(data.satname || '').trim();
+                const satModeFromCat = String(data.satmode || '').trim();
+
+                // If CAT does not provide satellite fields for this radio, clear stale values
+                // so we do not carry over sat details from a previous save or radio.
+                if (satNameFromCat === '') {
+                    $('#sat_name').val('').removeData('catValue');
+                } else {
+                    cat2UI($('#sat_name'), satNameFromCat, false, false);
+                }
+
+                if (satModeFromCat === '') {
+                    $('#sat_mode').val('').removeData('catValue');
+                } else {
+                    cat2UI($('#sat_mode'), satModeFromCat, false, false);
+                }
+
+                cat2UI($('#selectPropagation'), data.prop_mode, false, false);
+            }
             cat2UI($('#transmit_power'), data.power, false, false);
-            cat2UI($('#selectPropagation'), data.prop_mode, false, false);
 
             handleCATTimeout(data);
         };
@@ -2588,6 +2606,7 @@ $(document).ready(function() {
 
         // Reset UI when no radio is selected
         const resetUI = () => {
+            lockSatelliteFieldsToUserInput = false;
             $("#sat_name, #sat_mode, #frequency, #frequency_rx, #band_rx").val("");
             $("#selectPropagation").val($("#selectPropagation option:first").val());
             // Clear CAT value cache so re-selecting a radio with identical values still repopulates fields.
@@ -2622,11 +2641,19 @@ $(document).ready(function() {
 
             scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
 
+            $('#sat_name, #sat_mode, #selectPropagation').on('input change', function() {
+                const satName = String($('#sat_name').val() || '').trim();
+                const satMode = String($('#sat_mode').val() || '').trim();
+                const propMode = String($('#selectPropagation').val() || '').trim().toUpperCase();
+                lockSatelliteFieldsToUserInput = satName !== '' || satMode !== '' || propMode === 'SAT';
+            });
+
             // Trigger updateFromCAT when any <select> with class 'radios' changes
             $('.radios').on('change', function() {
                 catSelectionContextVersion++;
                 consecutiveCatPollFailures = 0;
                 clearCATPollWarning();
+                lockSatelliteFieldsToUserInput = false;
                 const selectedRadioID = $(this).val();
                 if (selectedRadioID === '0') {
                     resetUI();
