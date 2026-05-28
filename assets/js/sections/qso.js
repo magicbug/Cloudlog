@@ -658,6 +658,7 @@ var favs={};
 							new bootstrap.Tab(document.getElementById('qsp-tab')).show();
 						}
 						reapplyPostSaveDefaults(postSaveDefaults);
+						syncFromSelectedRadioAfterReset();
 						showQsoNotice(saveMessage, 'info');
 
 						if (typeof htmx !== 'undefined' && document.getElementById('qso-last-table')) {
