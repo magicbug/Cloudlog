@@ -659,6 +659,9 @@ var favs={};
 						}
 						reapplyPostSaveDefaults(postSaveDefaults);
 						syncFromSelectedRadioAfterReset();
+						setTimeout(function() {
+							syncFromSelectedRadioAfterReset();
+						}, 250);
 						showQsoNotice(saveMessage, 'info');
 
 						if (typeof htmx !== 'undefined' && document.getElementById('qso-last-table')) {
