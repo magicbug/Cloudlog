@@ -1382,7 +1382,7 @@ function resetQsoEntryOnEscape() {
 	setTimeout(function() {
 		$('#band').val(preBand);
 		$('#mode').val(preMode);
-		if (preSatName) {
+		if (preSatName || preSatMode || String(prePropMode || '').toUpperCase() === 'SAT') {
 			$('#sat_name').val(preSatName);
 			$('#sat_mode').val(preSatMode);
 			$('#selectPropagation').val(prePropMode || 'SAT');
@@ -1410,6 +1410,7 @@ $(document).off('keydown.qsoEscapeReset').on('keydown.qsoEscapeReset', function(
 
 	e.preventDefault();
 	e.stopPropagation();
+	window.cloudlogQsoEscHandledAt = Date.now();
 	resetQsoEntryOnEscape();
 });
 

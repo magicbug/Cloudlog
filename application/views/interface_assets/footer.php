@@ -2087,6 +2087,10 @@ $(document).ready(function() {
                     $('#callsign').val(fixedcall.replace('Ø', '0'));
                 }
                 if (e.key === "Escape") { // escape key maps to keycode `27`
+                    const escHandledAt = Number(window.cloudlogQsoEscHandledAt || 0);
+                    if (escHandledAt && (Date.now() - escHandledAt) < 500) {
+                        return;
+                    }
                     reset_fields();
                     if (!manual) {
                         resetTimers(0)
