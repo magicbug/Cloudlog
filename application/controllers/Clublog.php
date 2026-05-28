@@ -73,10 +73,13 @@ class Clublog extends CI_Controller {
 							// Initialize the CURL request to Clublog's API endpoint
 							$request = curl_init('https://clublog.org/putlogs.php');
 
-							if($this->config->item('directory') != "") {
-								 $filepath = $_SERVER['DOCUMENT_ROOT']."/".$this->config->item('directory')."/".$file_info['server_path'];
-							} else {
-								 $filepath = $_SERVER['DOCUMENT_ROOT']."/".$file_info['server_path'];
+							$filepath = FCPATH . ltrim($file_info['server_path'], '/\\');
+							if (!file_exists($filepath) && !empty($this->config->item('directory'))) {
+								$document_root = rtrim((string)($_SERVER['DOCUMENT_ROOT'] ?? ''), '/\\');
+								$install_dir = trim((string)$this->config->item('directory'), '/\\');
+								if ($document_root !== '') {
+									$filepath = $document_root . '/' . $install_dir . '/' . ltrim($file_info['server_path'], '/\\');
+								}
 							}
 
 							if (function_exists('curl_file_create')) { // php 5.5+
