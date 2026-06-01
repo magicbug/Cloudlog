@@ -207,7 +207,7 @@ function loadQSOTable(rows) {
 		if (user_options.pota.show == "true"){
 			data.push(qso.pota);
 		}
-		if (user_options.operator.show == "true"){
+		if ((user_options.operator) && (user_options.operator.show == "true")){
 			data.push(qso.operator);
 		}
 
