@@ -57,6 +57,9 @@ echo 'var user_options = ' . json_encode($options_obj) . ';';
     padding-right: 5px;
     padding-left: 5px;
 }
+.advanced-search-status {
+    min-width: 180px;
+}
 </style>
 <?php
 $options = $options_obj;
@@ -414,6 +417,7 @@ $options = $options_obj;
         <button type="button" class="btn btn-sm btn-primary me-1" id="mapButton" onclick="mapQsos(this.form);"><?php echo lang('filter_map'); ?></button>
 		<button type="options" class="btn btn-sm btn-primary me-1" id="optionButton"><?php echo lang('filter_options'); ?></button>
 		<button type="reset" class="btn btn-sm btn-danger me-1" id="resetButton"><?php echo lang('filter_reset'); ?></button>
+        <span id="advancedSearchStatus" class="small text-muted ms-2 advanced-search-status"></span>
 
     </div>
 </div>

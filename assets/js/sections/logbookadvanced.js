@@ -1,6 +1,103 @@
 var callBookProcessingDialog = null;
 var inCallbookProcessing = false;
 var inCallbookItemProcessing = false;
+var collapseSections = ['quickfilterbody', 'qslfilterbody', 'filterbody', 'actionbody'];
+
+function setAdvancedSearchStatus(message, cssClass) {
+	var status = $('#advancedSearchStatus');
+	if (status.length == 0) {
+		return;
+	}
+
+	if (message) {
+		status.text(message);
+		status.removeClass('text-muted text-primary text-danger text-success');
+		if (cssClass) {
+			status.addClass(cssClass);
+		}
+		return;
+	}
+
+	var totalRows = $.fn.DataTable.fnIsDataTable('#qsoList') ? $('#qsoList').DataTable().rows().count() : $('#qsoList tbody tr').length;
+	var selectedRows = $('#qsoList tbody input:checked').length;
+	status.text('Results: ' + totalRows + ' | Selected: ' + selectedRows);
+	status.removeClass('text-primary text-danger text-success').addClass('text-muted');
+}
+
+function getVisibleColumnIndex(columnKey) {
+	var index = 1;
+	var visibleColumns = [
+		{ key: 'datetime', visible: user_options.datetime && user_options.datetime.show == 'true' },
+		{ key: 'de', visible: user_options.de && user_options.de.show == 'true' },
+		{ key: 'stationLocation', visible: user_options.stationLocation && user_options.stationLocation.show == 'true' },
+		{ key: 'dx', visible: user_options.dx && user_options.dx.show == 'true' },
+		{ key: 'mode', visible: user_options.mode && user_options.mode.show == 'true' },
+		{ key: 'rsts', visible: user_options.rsts && user_options.rsts.show == 'true' },
+		{ key: 'rstr', visible: user_options.rstr && user_options.rstr.show == 'true' },
+		{ key: 'band', visible: user_options.band && user_options.band.show == 'true' },
+		{ key: 'myrefs', visible: user_options.myrefs && user_options.myrefs.show == 'true' },
+		{ key: 'refs', visible: user_options.refs && user_options.refs.show == 'true' },
+		{ key: 'name', visible: user_options.name && user_options.name.show == 'true' },
+		{ key: 'qslvia', visible: user_options.qslvia && user_options.qslvia.show == 'true' },
+		{ key: 'qsl', visible: user_options.qsl && user_options.qsl.show == 'true' },
+		{ key: 'eqsl', visible: $('.eqslconfirmation')[0] && user_options.eqsl && user_options.eqsl.show == 'true' },
+		{ key: 'lotw', visible: $('.lotwconfirmation')[0] && user_options.lotw && user_options.lotw.show == 'true' },
+		{ key: 'qslmsg', visible: user_options.qslmsg && user_options.qslmsg.show == 'true' },
+		{ key: 'dxcc', visible: user_options.dxcc && user_options.dxcc.show == 'true' },
+		{ key: 'state', visible: user_options.state && user_options.state.show == 'true' },
+		{ key: 'cqzone', visible: user_options.cqzone && user_options.cqzone.show == 'true' },
+		{ key: 'iota', visible: user_options.iota && user_options.iota.show == 'true' },
+		{ key: 'pota', visible: user_options.pota && user_options.pota.show == 'true' },
+		{ key: 'operator', visible: user_options.operator && user_options.operator.show == 'true' }
+	];
+
+	for (var i = 0; i < visibleColumns.length; i++) {
+		if (visibleColumns[i].visible) {
+			if (visibleColumns[i].key == columnKey) {
+				return index;
+			}
+			index++;
+		}
+	}
+
+	return -1;
+}
+
+function restoreAdvancedSearchUiState() {
+	if (window.localStorage == undefined) {
+		return;
+	}
+
+	var savedResults = localStorage.getItem('logbookadvanced:qsoResults');
+	if (savedResults && $('#qsoResults option[value="' + savedResults + '"]').length > 0) {
+		$('#qsoResults').val(savedResults);
+	}
+
+	collapseSections.forEach(function(section) {
+		if (localStorage.getItem('logbookadvanced:' + section) == 'open') {
+			$('.' + section).addClass('show');
+		}
+	});
+}
+
+function persistAdvancedSearchUiState() {
+	if (window.localStorage == undefined) {
+		return;
+	}
+
+	$('#qsoResults').on('change', function() {
+		localStorage.setItem('logbookadvanced:qsoResults', this.value);
+	});
+
+	collapseSections.forEach(function(section) {
+		$('.' + section).on('shown.bs.collapse', function() {
+			localStorage.setItem('logbookadvanced:' + section, 'open');
+		});
+		$('.' + section).on('hidden.bs.collapse', function() {
+			localStorage.setItem('logbookadvanced:' + section, 'closed');
+		});
+	});
+}
 
 // Ensure CSRF token is included in all POST requests
 if (typeof CSRF_NAME !== 'undefined' && typeof CSRF_HASH !== 'undefined') {
@@ -257,6 +354,7 @@ function selectQsoID(qsoID) {
 	var element = $("#qsoID-" + qsoID);
 	element.find("input[type=checkbox]").prop("checked", true);
 	element.addClass('activeRow');
+	setAdvancedSearchStatus();
 }
 
 function unselectQsoID(qsoID) {
@@ -264,11 +362,29 @@ function unselectQsoID(qsoID) {
 	element.find("input[type=checkbox]").prop("checked", false);
 	element.removeClass('activeRow');
 	$('#checkBoxAll').prop("checked", false);
+	setAdvancedSearchStatus();
 }
 
 $(document).ready(function () {
+	restoreAdvancedSearchUiState();
+	persistAdvancedSearchUiState();
+	setAdvancedSearchStatus('Loading results...', 'text-primary');
 
 	$('#searchForm').submit(function (e) {
+		e.preventDefault();
+
+		if (this.dateFrom.value !== '' && this.dateTo.value !== '' && this.dateFrom.value > this.dateTo.value) {
+			BootstrapDialog.alert({
+				title: 'WARNING',
+				message: 'From date cannot be later than To date.',
+				type: BootstrapDialog.TYPE_WARNING,
+				closable: true,
+				draggable: false,
+			});
+			return false;
+		}
+
+		setAdvancedSearchStatus('Searching...', 'text-primary');
 		var container = L.DomUtil.get('advancedmap');
 
 		if(container != null){
@@ -320,9 +436,11 @@ $(document).ready(function () {
 			success: function (data) {
 				$('#searchButton').prop("disabled", false);
 				loadQSOTable(data);
+				setAdvancedSearchStatus();
 			},
 			error: function (data) {
 				$('#searchButton').prop("disabled", false);
+				setAdvancedSearchStatus('Search failed', 'text-danger');
 				BootstrapDialog.alert({
 					title: 'ERROR',
 					message: 'An error ocurred while making the request',
@@ -343,6 +461,7 @@ $(document).ready(function () {
 		} else {
 			$(this).closest('tr').removeClass('activeRow');
 		}
+		setAdvancedSearchStatus();
 	});
 
 	$('#btnUpdateFromCallbook').click(function (event) {
@@ -871,6 +990,8 @@ $(document).ready(function () {
 		elements.each(function() {
 			var currentRow = $(this).first().closest('tr');
 			var col1 = '';
+			var modeIndex;
+			var bandIndex;
 			switch (type) {
 				case 'dxcc': 		col1 = currentRow.find('#dxcc').html(); col1 = col1.match(/\d/g); col1 = col1.join(""); break;
 				case 'cqzone': 		col1 = currentRow.find('#cqzone').text(); break;
@@ -882,8 +1003,17 @@ $(document).ready(function () {
 				case 'wwff': 		col1 = $(currentRow).find('#dxwwff').text(); break;
 				case 'pota': 		col1 = $(currentRow).find('#dxpota').text(); break;
 				case 'operator': 	col1 = $(currentRow).find('#operator').text(); break;
-				case 'mode': 		col1 = currentRow.find("td:eq(4)").text(); break;
-				case 'band': 		col1 = currentRow.find("td:eq(7)").text(); col1 = col1.match(/\S\w*/); break;
+				case 'mode':
+					modeIndex = getVisibleColumnIndex('mode');
+					col1 = modeIndex > -1 ? currentRow.find('td:eq(' + modeIndex + ')').text().trim() : '';
+					break;
+				case 'band':
+					bandIndex = getVisibleColumnIndex('band');
+					col1 = bandIndex > -1 ? currentRow.find('td:eq(' + bandIndex + ')').text().trim() : '';
+					if (col1.length > 0) {
+						col1 = col1.match(/\S\w*/);
+					}
+					break;
 			}
 			if (col1.length == 0) return;
 			$('#searchForm').trigger("reset");
@@ -1006,6 +1136,7 @@ $(document).ready(function () {
 				unselectQsoID($(this).data('qsoID'))
 			});
 		}
+		setAdvancedSearchStatus();
 	});
 
 	$('#searchForm').submit();
