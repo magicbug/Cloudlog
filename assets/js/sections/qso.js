@@ -624,15 +624,19 @@ var favs={};
 				success: function(response) {
 					if (response && response.status === 'ok') {
 						var savedCallsign = normalizeFieldValue($('#callsign').val()).toUpperCase();
+						var savedStartDate = normalizeFieldValue($('#qso_input [name="start_date"]').first().val());
 						var savedBand = normalizeFieldValue($('#band').val());
 						var savedMode = normalizeFieldValue($('#mode').val());
 						var savedSatName = normalizeFieldValue($('#sat_name').val());
 						var savedSatMode = normalizeFieldValue($('#sat_mode').val());
+						var savedRadio = normalizeFieldValue($('#qso_input select[name="radio"]').val());
 						var postSaveDefaults = {
+							start_date: savedStartDate,
 							band: savedBand,
 							mode: savedMode,
 							sat_name: savedSatName,
-							sat_mode: savedSatMode
+							sat_mode: savedSatMode,
+							radio: savedRadio
 						};
 						var saveMessage = (response && response.message) ? response.message : 'QSO Added';
 						if (savedCallsign && savedBand) {
@@ -654,6 +658,10 @@ var favs={};
 							new bootstrap.Tab(document.getElementById('qsp-tab')).show();
 						}
 						reapplyPostSaveDefaults(postSaveDefaults);
+						syncFromSelectedRadioAfterReset();
+						setTimeout(function() {
+							syncFromSelectedRadioAfterReset();
+						}, 250);
 						showQsoNotice(saveMessage, 'info');
 
 						if (typeof htmx !== 'undefined' && document.getElementById('qso-last-table')) {
@@ -972,6 +980,13 @@ function reapplyPostSaveDefaults(defaults) {
 		return;
 	}
 
+	var selectedRadioForReset = normalizeFieldValue(defaults.radio || $('select.radios').first().val());
+	var hasSelectedRadioForReset = selectedRadioForReset !== '' && selectedRadioForReset !== '0';
+
+	if (typeof defaults.start_date !== 'undefined') {
+		$('#qso_input [name="start_date"]').val(defaults.start_date);
+	}
+
 	if (typeof defaults.band !== 'undefined') {
 		$('#band').val(defaults.band);
 	}
@@ -980,12 +995,30 @@ function reapplyPostSaveDefaults(defaults) {
 		$('#mode').val(defaults.mode);
 	}
 
-	if (typeof defaults.sat_name !== 'undefined') {
+	if (!hasSelectedRadioForReset && typeof defaults.sat_name !== 'undefined') {
 		$('#sat_name').val(defaults.sat_name);
 	}
 
-	if (typeof defaults.sat_mode !== 'undefined') {
+	if (!hasSelectedRadioForReset && typeof defaults.sat_mode !== 'undefined') {
 		$('#sat_mode').val(defaults.sat_mode);
+	}
+
+	if (typeof defaults.radio !== 'undefined' && defaults.radio !== '') {
+		var radioValue = String(defaults.radio);
+		$('#qso_input select[name="radio"]').val(radioValue);
+		$('select.radios').val(radioValue);
+		if (typeof localStorage !== 'undefined') {
+			localStorage.setItem('selectedRadio', radioValue);
+		}
+	}
+
+	if (hasSelectedRadioForReset) {
+		// Prefer selected radio CAT values after save; avoid restoring stale sat fields.
+		$('#sat_name').val('').removeData('catValue');
+		$('#sat_mode').val('').removeData('catValue');
+		$('#selectPropagation').val('').removeData('catValue');
+	} else if ((defaults.sat_name && defaults.sat_name !== '') || (defaults.sat_mode && defaults.sat_mode !== '')) {
+		$('#sat_name').trigger('input');
 	}
 
 	if (typeof setRst === 'function') {
@@ -1297,9 +1330,16 @@ if (typeof htmx !== 'undefined' && document.body) {
 
 // If a radio is selected, prefer current CAT values over stale form defaults.
 function syncFromSelectedRadioAfterReset() {
-	var selectedRadioID = String($('select.radios option:selected').val() || '0');
+	var $radios = $('select.radios');
+	var selectedRadioID = String($radios.first().val() || '0');
 	if (selectedRadioID === '0') {
 		return false;
+	}
+
+	// Use the radio change path so CAT lock state is reset before applying values.
+	if ($radios.length > 0) {
+		$radios.first().trigger('change');
+		return true;
 	}
 
 	if (typeof updateFromCAT === 'function') {
@@ -1336,6 +1376,8 @@ function resetQsoEntryOnEscape() {
 	if (!qsoForm) {
 		return;
 	}
+	var selectedRadioID = String($('select.radios').first().val() || '0');
+	var hasSelectedRadio = selectedRadioID !== '0';
 
 	// Capture the operating context the user currently has selected BEFORE native
 	// form reset clobbers it with server-session defaults (last logged QSO values).
@@ -1357,10 +1399,15 @@ function resetQsoEntryOnEscape() {
 	setTimeout(function() {
 		$('#band').val(preBand);
 		$('#mode').val(preMode);
-		if (preSatName) {
+		if (!hasSelectedRadio && (preSatName || preSatMode || String(prePropMode || '').toUpperCase() === 'SAT')) {
 			$('#sat_name').val(preSatName);
 			$('#sat_mode').val(preSatMode);
 			$('#selectPropagation').val(prePropMode || 'SAT');
+		} else if (hasSelectedRadio) {
+			// Keep satellite fields clear until fresh CAT data is applied.
+			$('#sat_name').val('').removeData('catValue');
+			$('#sat_mode').val('').removeData('catValue');
+			$('#selectPropagation').val('').removeData('catValue');
 		}
 		if (typeof setRst === 'function') {
 			setRst($('#mode').val());
@@ -1385,6 +1432,7 @@ $(document).off('keydown.qsoEscapeReset').on('keydown.qsoEscapeReset', function(
 
 	e.preventDefault();
 	e.stopPropagation();
+	window.cloudlogQsoEscHandledAt = Date.now();
 	resetQsoEntryOnEscape();
 });
 

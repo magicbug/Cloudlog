@@ -104,17 +104,31 @@
 	color: #0d6efd;
 	text-decoration: underline;
 }
+
+@media (max-width: 767.98px) {
+	.logbook-info-bar .logbook-diary-action .btn {
+		width: 100%;
+	}
+}
+
+@media (min-width: 768px) {
+	.logbook-info-bar .logbook-diary-action {
+		width: auto !important;
+	}
+}
 </style>
 
 <div class="alert alert-secondary" role="alert" style="margin-bottom: 0px !important;">
 <div class="container">
 	<?php if ($results) { ?>
-		<div class="d-flex justify-content-between align-items-center">
-			<p style="margin-bottom: 0px !important;"><?php echo lang('gen_hamradio_logbook'); ?>: <span class="badge text-bg-info"><?php echo $this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?></span> <?php echo lang('general_word_location'); ?>: <span class="badge text-bg-info"><?php echo $this->stations->find_name(); ?></span></p>
+		<div class="logbook-info-bar d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
+			<p class="mb-0 small d-flex flex-wrap align-items-center gap-1"><?php echo lang('gen_hamradio_logbook'); ?>: <span class="badge text-bg-info"><?php echo $this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?></span> <?php echo lang('general_word_location'); ?>: <span class="badge text-bg-info"><?php echo $this->stations->find_name(); ?></span></p>
 			<?php if ($this->session->userdata('user_show_notes') == 1) { ?>
-				<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#stationDiaryModal">
+				<div class="logbook-diary-action w-100">
+					<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#stationDiaryModal">
 					<i class="fas fa-book"></i> Station Diary
-				</button>
+					</button>
+				</div>
 			<?php } ?>
 		</div>
 	<?php } ?>

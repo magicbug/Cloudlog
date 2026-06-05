@@ -16,9 +16,15 @@ class Clublog extends CI_Controller {
 		$this->load->model('clublog_model');
 
 		$users = $this->clublog_model->get_clublog_users();
+		$uploaded_any_qsos = false;
 
 		foreach ($users as $user) {
-			$this->uploadUser($user->user_id, $user->user_clublog_name, $user->user_clublog_password);
+			$uploaded_any_qsos = $this->uploadUser($user->user_id, $user->user_clublog_name, $user->user_clublog_password) || $uploaded_any_qsos;
+		}
+
+		if (!$uploaded_any_qsos) {
+			echo 'Nothing awaiting upload to Clublog.' . "<br>";
+			log_message('info', 'Nothing awaiting upload to Clublog.');
 		}
 	}
 
@@ -31,7 +37,7 @@ class Clublog extends CI_Controller {
 		if (!empty($clean_username) && !filter_var($clean_username, FILTER_VALIDATE_EMAIL)) {
 			echo "Error: Clublog username must be a valid email address. Clublog no longer accepts callsigns as usernames for " . $clean_username . "<br>";
 			log_message('error', 'Clublog upload failed for user ID ' . $clean_userid . ': invalid email format for username ' . $clean_username);
-			return;
+			return false;
 		}
 
 		$this->config->load('config');
@@ -48,6 +54,7 @@ class Clublog extends CI_Controller {
 		$station_profiles = $this->clublog_model->all_with_count($clean_userid);
 
 		if($station_profiles->num_rows()){
+			$uploaded_for_user = false;
 			foreach ($station_profiles->result() as $station_row)
 			{
 				// Only process stations that have QSOs to upload
@@ -73,10 +80,13 @@ class Clublog extends CI_Controller {
 							// Initialize the CURL request to Clublog's API endpoint
 							$request = curl_init('https://clublog.org/putlogs.php');
 
-							if($this->config->item('directory') != "") {
-								 $filepath = $_SERVER['DOCUMENT_ROOT']."/".$this->config->item('directory')."/".$file_info['server_path'];
-							} else {
-								 $filepath = $_SERVER['DOCUMENT_ROOT']."/".$file_info['server_path'];
+							$filepath = FCPATH . ltrim($file_info['server_path'], '/\\');
+							if (!file_exists($filepath) && !empty($this->config->item('directory'))) {
+								$document_root = rtrim((string)($_SERVER['DOCUMENT_ROOT'] ?? ''), '/\\');
+								$install_dir = trim((string)$this->config->item('directory'), '/\\');
+								if ($document_root !== '') {
+									$filepath = $document_root . '/' . $install_dir . '/' . ltrim($file_info['server_path'], '/\\');
+								}
 							}
 
 							if (function_exists('curl_file_create')) { // php 5.5+
@@ -112,6 +122,7 @@ class Clublog extends CI_Controller {
 							// If Clublog Accepts mark the QSOs
 							if (preg_match('/\baccepted\b/', $response)) {
 								echo "QSOs uploaded and Logbook QSOs marked as sent to Clublog"."<br>";
+								$uploaded_for_user = true;
 
 								$this->load->model('clublog_model');
 								$this->clublog_model->mark_qsos_sent($station_row->station_id);
@@ -141,7 +152,11 @@ class Clublog extends CI_Controller {
 						log_message('info', 'Nothing awaiting upload to clublog for '.$station_row->station_callsign);
 					}
 				}
+
+					return $uploaded_for_user;
 			}
+
+				return false;
 		}
 	}
 

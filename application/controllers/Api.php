@@ -1575,7 +1575,9 @@ class API extends CI_Controller
 					if ($row->COL_SRX_STRING) {
 						$qso['srx_string'] = $row->COL_SRX_STRING;
 					}
-					if ($row->COL_GRIDSQUARE) {
+					if ($row->COL_VUCC_GRIDS) {
+						$qso['gridsquare'] = $row->COL_VUCC_GRIDS;
+					} elseif ($row->COL_GRIDSQUARE) {
 						$qso['gridsquare'] = $row->COL_GRIDSQUARE;
 					}
 					if ($row->COL_QTH) {
@@ -1585,13 +1587,28 @@ class API extends CI_Controller
 						$qso['name'] = $row->COL_NAME;
 					}
 
+					// Prefer grid-derived coordinates for plotting, including VUCC multi-grid line/corner records.
+					$plot_latlng = false;
+					if (!empty($row->COL_VUCC_GRIDS)) {
+						$plot_latlng = $this->qralatlng($row->COL_VUCC_GRIDS);
+					} elseif (!empty($row->COL_GRIDSQUARE)) {
+						$plot_latlng = $this->qralatlng($row->COL_GRIDSQUARE);
+					}
+
+					if (is_array($plot_latlng) && count($plot_latlng) === 2) {
+						$qso['lat'] = $plot_latlng[0];
+						$qso['long'] = $plot_latlng[1];
+					}
+
 					$dxcc = $this->logbook_model->check_dxcc_table(strtoupper(trim(strtoupper($row->COL_CALL))), $row->COL_TIME_ON);
 					if (empty($dxcc[0])) {
 						$dxcc_id = null;
 					} else {
 						$qso['country'] = $dxcc[1];
-						$qso['lat'] = $dxcc[4];
-						$qso['long'] = $dxcc[5];
+						if (!isset($qso['lat']) || !isset($qso['long'])) {
+							$qso['lat'] = $dxcc[4];
+							$qso['long'] = $dxcc[5];
+						}
 					}
 
 					$qsos[] = $qso;

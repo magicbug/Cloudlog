@@ -2,6 +2,7 @@
 
 class Gmdxsummer_model extends CI_Model
 {
+    private const START_DATE = '2026-05-11 00:00:00';
 
     public function get_week($end_date, $band, $mode)
     {
@@ -17,7 +18,8 @@ class Gmdxsummer_model extends CI_Model
             SELECT COUNT(DISTINCT SUBSTRING(COL_GRIDSQUARE, 1, 4)) AS count
             FROM " . $table_name . "
             WHERE station_id in (" . $location_list . ") AND COL_MODE = '" . $mode . "' AND COL_BAND = '" . $band . "'
-            AND (COL_TIME_ON >= '2024-05-13 00:00:00' AND COL_TIME_ON <= '" . $end_date . "')
+            AND COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != ''
+            AND (COL_TIME_ON >= '" . self::START_DATE . "' AND COL_TIME_ON <= '" . $end_date . "')
         ");
 
         return $query->row()->count;
@@ -37,7 +39,8 @@ class Gmdxsummer_model extends CI_Model
         SELECT COUNT(DISTINCT SUBSTRING(COL_GRIDSQUARE, 1, 4)) AS count
         FROM " . $table_name . "
         WHERE station_id in (".$location_list.") AND COL_MODE IN ('SSB', 'AM', 'FM') AND COL_BAND = '" . $band . "'
-        AND (COL_TIME_ON >= '2024-05-13 00:00:00' AND COL_TIME_ON <= '" . $end_date . "')
+        AND COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != ''
+        AND (COL_TIME_ON >= '" . self::START_DATE . "' AND COL_TIME_ON <= '" . $end_date . "')
         ");
 
 
@@ -58,7 +61,8 @@ class Gmdxsummer_model extends CI_Model
         SELECT COUNT(DISTINCT SUBSTRING(COL_GRIDSQUARE, 1, 4)) AS count
         FROM " . $table_name . "
         WHERE station_id in (".$location_list.") AND COL_MODE NOT IN ('CW', 'FM', 'SSB', 'AM') AND COL_BAND = '" . $band . "'
-        AND (COL_TIME_ON >= '2024-05-13 00:00:00' AND COL_TIME_ON <= '" . $end_date . "')
+        AND COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != ''
+        AND (COL_TIME_ON >= '" . self::START_DATE . "' AND COL_TIME_ON <= '" . $end_date . "')
         ");
 
         return $query->row()->count;
@@ -75,10 +79,19 @@ class Gmdxsummer_model extends CI_Model
         $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
 
         $query = $this->db->query("
-        SELECT COUNT(DISTINCT SUBSTRING(COL_GRIDSQUARE, 1, 4)) AS count
+        SELECT COUNT(DISTINCT CONCAT(
+            UPPER(SUBSTRING(COL_GRIDSQUARE, 1, 4)),
+            '-',
+            CASE
+                WHEN COL_MODE = 'CW' THEN 'CW'
+                WHEN COL_MODE IN ('SSB', 'AM', 'FM') THEN 'VOICE'
+                ELSE 'DIGITAL'
+            END
+        )) AS count
         FROM " . $table_name . "
         WHERE station_id in (".$location_list.") AND COL_BAND = '" . $band . "'
-        AND (COL_TIME_ON >= '2024-05-13 00:00:00' AND COL_TIME_ON <= '" . $end_date . "')
+        AND COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != ''
+        AND (COL_TIME_ON >= '" . self::START_DATE . "' AND COL_TIME_ON <= '" . $end_date . "')
         ");
 
         return $query->row()->count;

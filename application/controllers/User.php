@@ -187,6 +187,9 @@ class User extends CI_Controller
 				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
 				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
+				$data['user_winkey'] = $this->input->post('user_winkey');
+				$data['user_winkey_websocket'] = $this->input->post('user_winkey_websocket');
+				$data['user_remote_operation'] = $this->input->post('user_remote_operation');
 				$data['language'] = $this->input->post('language');
 				$this->load->view('user/edit', $data);
 			} else {
@@ -231,7 +234,10 @@ class User extends CI_Controller
 				$this->input->post('user_hamsat_workable_only'),
 				$this->input->post('user_callbook_type'),
 				$this->input->post('user_callbook_username'),
-				$this->input->post('user_callbook_password')
+				$this->input->post('user_callbook_password'),
+				$this->input->post('user_winkey'),
+				$this->input->post('user_winkey_websocket'),
+				$this->input->post('user_remote_operation')
 			)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
@@ -615,6 +621,19 @@ class User extends CI_Controller
 			} else {
 				$data['user_winkey_websocket'] = $q->winkey_websocket;
 			}
+
+			if ($this->input->post('user_remote_operation')) {
+				$data['user_remote_operation'] = $this->input->post('user_remote_operation', true);
+			} else {
+				$remote_operation_option = $this->user_options_model->get_options(
+					'remote_operation',
+					array('option_name' => 'enabled', 'option_key' => 'value'),
+					$this->uri->segment(3)
+				)->row();
+				$data['user_remote_operation'] = isset($remote_operation_option->option_value)
+					? (((string)$remote_operation_option->option_value === 'true' || (string)$remote_operation_option->option_value === '1') ? 1 : 0)
+					: (isset($q->remote_operation) ? $q->remote_operation : 0);
+			}
 			
 			$this->load->model('user_options_model');
 			$callbook_type_object = $this->user_options_model->get_options('callbook')->result();
@@ -827,6 +846,9 @@ class User extends CI_Controller
 			if (!isset($post_data['user_winkey_websocket'])) {
 				$post_data['user_winkey_websocket'] = '0';
 			}
+			if (!isset($post_data['user_remote_operation'])) {
+				$post_data['user_remote_operation'] = '0';
+			}
 			switch ($this->user_model->edit($post_data)) {
 				// Check for errors
 				case EUSERNAMEEXISTS:
@@ -963,6 +985,12 @@ class User extends CI_Controller
 							$this->session->set_userdata('user_show_qsl_cards', false);
 						}
 
+						if (isset($post_data['user_remote_operation']) && (string)$post_data['user_remote_operation'] === '1') {
+							$this->user_options_model->set_option('remote_operation', 'enabled', array('value' => 'true'));
+						} else {
+							$this->user_options_model->set_option('remote_operation', 'enabled', array('value' => 'false'));
+						}
+
 						// [QSO Form] Save field visibility preferences
 						$qso_field_keys = ['rst', 'name', 'qth', 'locator', 'comment',
 							'station_tab', 'freq_tx', 'freq_rx', 'band_rx', 'transmit_power', 'operator_callsign',
@@ -991,7 +1019,13 @@ class User extends CI_Controller
 							$this->user_options_model->del_option('map_custom', 'gridsquare');
 						}
 
-						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited'));
+						$remote_operation_status_message = ((string)$post_data['user_remote_operation'] === '1')
+							? 'Remote Operation enabled.'
+							: 'Remote Operation disabled.';
+						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited') . ' ' . $remote_operation_status_message);
+						if ($this->session->userdata('user_id') == $this->input->post('id', true)) {
+							$this->user_model->update_session($this->input->post('id', true));
+						}
 						redirect('user/edit/' . $this->uri->segment(3));
 					} else {
 						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited'));

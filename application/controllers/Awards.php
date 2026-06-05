@@ -108,6 +108,7 @@ class Awards extends CI_Controller
 
         $data['worked_bands'] = $this->bands->get_worked_bands('dxcc'); // Used in the view for band select
         $data['modes'] = $this->modes->active(); // Used in the view for mode select
+        $data['worked_years'] = $this->dxcc->get_worked_years(); // Used in the view for year select
 
         if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
             if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
@@ -138,6 +139,7 @@ class Awards extends CI_Controller
             $postdata['Antarctica'] = $this->security->xss_clean($this->input->post('Antarctica'));
             $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
             $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
+            $postdata['year'] = $this->security->xss_clean($this->input->post('year'));
         } else { // Setting default values at first load of page
             $postdata['qsl'] = 1;
             $postdata['lotw'] = 1;
@@ -155,6 +157,7 @@ class Awards extends CI_Controller
             $postdata['Antarctica'] = 1;
             $postdata['band'] = 'All';
             $postdata['mode'] = 'All';
+            $postdata['year'] = 'All';
         }
 
         $dxcclist = $this->dxcc->fetchdxcc($postdata);
@@ -813,51 +816,51 @@ class Awards extends CI_Controller
         $this->load->model('gmdxsummer_model');
 
         // Get Week 1
-        $data['week1_6m_cw'] = $this->gmdxsummer_model->get_week('2024-05-26 18:00:00', '6m', 'CW');
-        $data['week1_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-05-26 18:00:00', '6m');
-        $data['week1_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-05-26 18:00:00', '6m');
-        $data['week1_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-05-26 18:00:00', '6m');
+        $data['week1_6m_cw'] = $this->gmdxsummer_model->get_week('2026-05-24 18:00:00', '6m', 'CW');
+        $data['week1_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2026-05-24 18:00:00', '6m');
+        $data['week1_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2026-05-24 18:00:00', '6m');
+        $data['week1_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2026-05-24 18:00:00', '6m');
 
 
-        $data['week1_4m_cw'] = $this->gmdxsummer_model->get_week('2024-05-26 18:00:00', '4m', 'CW');
-        $data['week1_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-05-26 18:00:00', '4m');
-        $data['week1_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-05-26 18:00:00', '4m');
-        $data['week1_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-05-26 18:00:00', '4m');
+        $data['week1_4m_cw'] = $this->gmdxsummer_model->get_week('2026-05-24 18:00:00', '4m', 'CW');
+        $data['week1_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2026-05-24 18:00:00', '4m');
+        $data['week1_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2026-05-24 18:00:00', '4m');
+        $data['week1_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2026-05-24 18:00:00', '4m');
 
         // Get Week 2
-        $data['week2_6m_cw'] = $this->gmdxsummer_model->get_week('2024-06-09 18:00:00', '6m', 'CW');
-        $data['week2_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-06-09 18:00:00', '6m');
-        $data['week2_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-06-09 18:00:00', '6m');
-        $data['week2_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-06-09 18:00:00', '6m');
+        $data['week2_6m_cw'] = $this->gmdxsummer_model->get_week('2026-06-07 18:00:00', '6m', 'CW');
+        $data['week2_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2026-06-07 18:00:00', '6m');
+        $data['week2_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2026-06-07 18:00:00', '6m');
+        $data['week2_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2026-06-07 18:00:00', '6m');
 
 
-        $data['week2_4m_cw'] = $this->gmdxsummer_model->get_week('2024-06-09 18:00:00', '4m', 'CW');
-        $data['week2_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-06-09 18:00:00', '4m');
-        $data['week2_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-06-09 18:00:00', '4m');
-        $data['week2_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-06-09 18:00:00', '4m');
+        $data['week2_4m_cw'] = $this->gmdxsummer_model->get_week('2026-06-07 18:00:00', '4m', 'CW');
+        $data['week2_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2026-06-07 18:00:00', '4m');
+        $data['week2_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2026-06-07 18:00:00', '4m');
+        $data['week2_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2026-06-07 18:00:00', '4m');
 
 
         // Get Week 3
-        $data['week3_6m_cw'] = $this->gmdxsummer_model->get_week('2024-06-23 18:00:00', '6m', 'CW');
-        $data['week3_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-06-23 18:00:00', '6m');
-        $data['week3_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-06-23 18:00:00', '6m');
-        $data['week3_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-06-23 18:00:00', '6m');
+        $data['week3_6m_cw'] = $this->gmdxsummer_model->get_week('2026-06-21 18:00:00', '6m', 'CW');
+        $data['week3_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2026-06-21 18:00:00', '6m');
+        $data['week3_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2026-06-21 18:00:00', '6m');
+        $data['week3_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2026-06-21 18:00:00', '6m');
 
-        $data['week3_4m_cw'] = $this->gmdxsummer_model->get_week('2024-06-23 18:00:00', '4m', 'CW');
-        $data['week3_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-06-23 18:00:00', '4m');
-        $data['week3_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-06-23 18:00:00', '4m');
-        $data['week3_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-06-23 18:00:00', '4m');
+        $data['week3_4m_cw'] = $this->gmdxsummer_model->get_week('2026-06-21 18:00:00', '4m', 'CW');
+        $data['week3_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2026-06-21 18:00:00', '4m');
+        $data['week3_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2026-06-21 18:00:00', '4m');
+        $data['week3_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2026-06-21 18:00:00', '4m');
 
         // Get Week 4
-        $data['week4_6m_cw'] = $this->gmdxsummer_model->get_week('2024-07-01 18:00:00', '6m', 'CW');
-        $data['week4_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-07-01 18:00:00', '6m');
-        $data['week4_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-07-01 18:00:00', '6m');
-        $data['week4_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-07-01 18:00:00', '6m');
+        $data['week4_6m_cw'] = $this->gmdxsummer_model->get_week('2026-07-05 23:59:59', '6m', 'CW');
+        $data['week4_6m_ssb'] = $this->gmdxsummer_model->get_week_voice('2026-07-05 23:59:59', '6m');
+        $data['week4_6m_digital'] = $this->gmdxsummer_model->get_week_digital('2026-07-05 23:59:59', '6m');
+        $data['week4_6m_combined'] = $this->gmdxsummer_model->get_week_combined('2026-07-05 23:59:59', '6m');
 
-        $data['week4_4m_cw'] = $this->gmdxsummer_model->get_week('2024-07-01 18:00:00', '4m', 'CW');
-        $data['week4_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2024-07-01 18:00:00', '4m');
-        $data['week4_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2024-07-01 18:00:00', '4m');
-        $data['week4_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2024-07-01 18:00:00', '4m');
+        $data['week4_4m_cw'] = $this->gmdxsummer_model->get_week('2026-07-05 23:59:59', '4m', 'CW');
+        $data['week4_4m_ssb'] = $this->gmdxsummer_model->get_week_voice('2026-07-05 23:59:59', '4m');
+        $data['week4_4m_digital'] = $this->gmdxsummer_model->get_week_digital('2026-07-05 23:59:59', '4m');
+        $data['week4_4m_combined'] = $this->gmdxsummer_model->get_week_combined('2026-07-05 23:59:59', '4m');
 
 
         // Render page

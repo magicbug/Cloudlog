@@ -261,6 +261,31 @@
 						<a class="dropdown-item" href="<?php echo site_url('awards/wwff'); ?>"><i class="fas fa-leaf"></i> <?php echo lang('menu_wwff'); ?></a>
 						<div class="dropdown-divider"></div>
 							<?php } ?>
+						<?php
+						$CI->load->library('plugin_manager');
+						$CI->load->model('user_options_model');
+						$plugin_award_entries = $CI->plugin_manager->get_award_menu_entries();
+						$plugin_award_visibility = array();
+						$plugin_award_visibility_query = $CI->user_options_model->get_options('plugin_awards_menu');
+						foreach ($plugin_award_visibility_query->result() as $plugin_award_visibility_row) {
+							if ($plugin_award_visibility_row->option_key === 'show') {
+								$plugin_award_visibility[$plugin_award_visibility_row->option_name] = (string)$plugin_award_visibility_row->option_value === '1';
+							}
+						}
+						if (!empty($plugin_award_entries)) {
+							foreach ($plugin_award_entries as $plugin_award_entry) {
+								$show_plugin_award = true;
+								if (isset($plugin_award_visibility[$plugin_award_entry['slug']])) {
+									$show_plugin_award = (bool)$plugin_award_visibility[$plugin_award_entry['slug']];
+								}
+								if (!$show_plugin_award) {
+									continue;
+								}
+						?>
+						<a class="dropdown-item" href="<?php echo site_url($plugin_award_entry['route']); ?>"><i class="<?php echo htmlspecialchars($plugin_award_entry['icon']); ?>"></i> <?php echo htmlspecialchars($plugin_award_entry['title']); ?></a>
+						<div class="dropdown-divider"></div>
+							<?php }
+						} ?>
 						<a class="dropdown-item" href="<?php echo site_url('award'); ?>"><i class="fas fa-cog"></i> <?php echo lang('awards_menu_settings'); ?></a>
 					</div>
 				</li>						<li class="nav-item dropdown">
@@ -311,6 +336,10 @@
 									<div class="dropdown-divider"></div>
 
 									<a class="dropdown-item" href="<?php echo site_url('maintenance'); ?>" title="maintenance"><i class="fas fa-wrench"></i> <?php echo lang('menu_maintenance'); ?></a>
+
+									<div class="dropdown-divider"></div>
+
+									<a class="dropdown-item" href="<?php echo site_url('plugins'); ?>" title="Plugin Manager"><i class="fas fa-puzzle-piece"></i> Plugin Manager</a>
 
 									<div class="dropdown-divider"></div>
 

@@ -1320,6 +1320,10 @@ $(document).ready(function() {
 
     <script src="<?php echo base_url(); ?>assets/js/qra-utils.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/qso.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/cw-sidetone.js"></script>
+    <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
+        <script src="<?php echo base_url(); ?>assets/js/remote-operation.js"></script>
+    <?php } ?>
     <?php if ($this->session->userdata('isWinkeyEnabled') && !$this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
         <script src="<?php echo base_url(); ?>assets/js/winkey.js"></script>
     <?php } elseif ($this->session->userdata('isWinkeyEnabled') && $this->session->userdata('isWinkeyWebsocketEnabled')) { ?>
@@ -1353,41 +1357,262 @@ $(document).ready(function() {
 
         <script>
             let ws = null;
+            let wsRelayEnabled = false;
+            let wsRelayRoom = 'cw_room';
+            let wsRelayToken = '';
+            let wsRelayUrl = 'wss://relay.cloudlog.org/';
+
+            const RELAY_STORAGE = {
+                enabled: 'cloudlog.winkeyRelay.enabled',
+                url: 'cloudlog.winkeyRelay.url',
+                token: 'cloudlog.winkeyRelay.token',
+                room: 'cloudlog.winkeyRelay.room'
+            };
+
+            async function loadRelaySettingsFromAccount() {
+                try {
+                    const response = await fetch(base_url + 'index.php/qso/winkeyrelaysettings_json');
+                    const data = await response.json();
+
+                    if (data.status === 'ok' && data.settings) {
+                        wsRelayEnabled = !!data.settings.enabled;
+                        wsRelayUrl = data.settings.url || 'wss://relay.cloudlog.org/';
+                        wsRelayRoom = data.settings.room || 'cw_room';
+                        wsRelayToken = data.settings.token || '';
+                        return;
+                    }
+                } catch (error) {
+                    console.error('Failed to load relay settings from account', error);
+                }
+
+                // Backward compatibility fallback from previous localStorage implementation.
+                wsRelayEnabled = localStorage.getItem(RELAY_STORAGE.enabled) === '1';
+                wsRelayUrl = localStorage.getItem(RELAY_STORAGE.url) || 'wss://relay.cloudlog.org/';
+                wsRelayRoom = localStorage.getItem(RELAY_STORAGE.room) || 'cw_room';
+                wsRelayToken = localStorage.getItem('cloudlog.winkeyRelay.token') || '';
+            }
+
+            async function saveRelaySettingsToAccount(config) {
+                const payload = new URLSearchParams();
+                payload.append('enabled', config.enabled ? '1' : '0');
+                payload.append('url', config.url);
+                payload.append('room', config.room);
+                payload.append('token', config.token);
+
+                const response = await fetch(base_url + 'index.php/qso/winkeyrelaysettings_save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    },
+                    body: payload.toString()
+                });
+
+                const data = await response.json();
+                if (!response.ok || data.status !== 'ok') {
+                    throw new Error(data.message || 'Failed to save relay token');
+                }
+
+                wsRelayEnabled = config.enabled;
+                wsRelayUrl = config.url;
+                wsRelayRoom = config.room;
+                wsRelayToken = config.token;
+
+                // Clear legacy local storage keys after successful account save.
+                localStorage.removeItem(RELAY_STORAGE.enabled);
+                localStorage.removeItem(RELAY_STORAGE.url);
+                localStorage.removeItem(RELAY_STORAGE.room);
+                localStorage.removeItem(RELAY_STORAGE.token);
+            }
+
+            function getRelayConfig() {
+                return {
+                    enabled: wsRelayEnabled,
+                    url: wsRelayUrl,
+                    token: wsRelayToken,
+                    room: wsRelayRoom
+                };
+            }
+
+            function setSocketStatus(text, className) {
+                const statusBadge = document.getElementById('cw_socket_status');
+                if (!statusBadge) {
+                    return;
+                }
+
+                statusBadge.className = className;
+                statusBadge.innerHTML = text;
+            }
+
+            function getTransportLabel() {
+                return wsRelayEnabled ? 'Relay' : 'Direct';
+            }
+
+            function openWinkeyRelaySettings() {
+                const config = getRelayConfig();
+
+                const enabledField = document.getElementById('winkeyRelayEnabled');
+                const urlField = document.getElementById('winkeyRelayUrl');
+                const tokenField = document.getElementById('winkeyRelayToken');
+                const roomField = document.getElementById('winkeyRelayRoom');
+
+                if (enabledField) {
+                    enabledField.checked = config.enabled;
+                }
+                if (urlField) {
+                    urlField.value = config.url;
+                }
+                if (tokenField) {
+                    tokenField.value = config.token;
+                }
+                if (roomField) {
+                    roomField.value = config.room;
+                }
+
+                const modalEl = document.getElementById('winkeyRelaySettingsModal');
+                if (modalEl) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                }
+            }
+
+            async function saveWinkeyRelaySettings() {
+                const enabledField = document.getElementById('winkeyRelayEnabled');
+                const urlField = document.getElementById('winkeyRelayUrl');
+                const tokenField = document.getElementById('winkeyRelayToken');
+                const roomField = document.getElementById('winkeyRelayRoom');
+
+                const config = {
+                    enabled: enabledField ? enabledField.checked : false,
+                    url: urlField ? urlField.value.trim() : '',
+                    token: tokenField ? tokenField.value.trim() : '',
+                    room: roomField ? roomField.value.trim() : 'cw_room'
+                };
+
+                if (config.enabled) {
+                    if (!config.url.startsWith('ws://') && !config.url.startsWith('wss://')) {
+                        alert('Relay URL must start with ws:// or wss://');
+                        return;
+                    }
+
+                    if (config.token.length < 8) {
+                        alert('Relay token must be at least 8 characters');
+                        return;
+                    }
+
+                    if (config.room === '') {
+                        alert('Relay room is required');
+                        return;
+                    }
+                }
+
+                if (config.room === '') {
+                    config.room = 'cw_room';
+                }
+
+                try {
+                    await saveRelaySettingsToAccount(config);
+                } catch (error) {
+                    alert(error.message || 'Failed to save relay settings');
+                    return;
+                }
+
+                const modalEl = document.getElementById('winkeyRelaySettingsModal');
+                if (modalEl) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+                }
+
+                logMessage('Relay settings saved');
+                connectWebSocket();
+            }
 
             function connectWebSocket() {
                 if (ws !== null) {
                     ws.close();
                 }
 
-                const chatRoom = "cw_room";
-                const wsUrl = `ws://localhost:8181?chatRoom=${encodeURIComponent(chatRoom)}`;
+                const relayConfig = getRelayConfig();
+                wsRelayEnabled = relayConfig.enabled;
+                wsRelayRoom = relayConfig.room || 'cw_room';
+                wsRelayUrl = relayConfig.url || 'wss://relay.cloudlog.org/';
+                wsRelayToken = relayConfig.token || '';
+
+                if (wsRelayEnabled) {
+                    if ((!wsRelayUrl.startsWith('ws://') && !wsRelayUrl.startsWith('wss://')) || wsRelayToken.length < 8) {
+                        setSocketStatus('Status: Relay Config Error', 'badge bg-danger');
+                        logMessage('Relay settings are invalid. Open Relay settings to fix URL/token.');
+                        return;
+                    }
+                }
+
+                const wsUrl = wsRelayEnabled
+                    ? wsRelayUrl
+                    : `ws://localhost:8181?chatRoom=${encodeURIComponent(wsRelayRoom)}`;
+
+                setSocketStatus('Status: Connecting (' + getTransportLabel() + ')', 'badge bg-warning text-dark');
+                logMessage('Connecting to ' + wsUrl);
 
                 ws = new WebSocket(wsUrl);
 
                 ws.onopen = function() {
-                    document.getElementById('cw_socket_status').className = 'badge bg-success';
-                    document.getElementById('cw_socket_status').innerHTML = `Status: Connected`;
-                    logMessage(`Connected to WebSocket server in room: ${chatRoom}`);
-                    // Get initial speed once when connected, no polling
-                    setTimeout(getCwSpeed, 1000);
+                    if (wsRelayEnabled) {
+                        const joinMessage = {
+                            op: 'join',
+                            token: wsRelayToken,
+                            role: 'browser',
+                            rooms: [wsRelayRoom]
+                        };
+
+                        ws.send(JSON.stringify(joinMessage));
+                        setSocketStatus('Status: Authenticating (Relay)', 'badge bg-warning text-dark');
+                        logMessage('Sent relay join request for room: ' + wsRelayRoom);
+                    } else {
+                        setSocketStatus('Status: Connected (Direct)', 'badge bg-success');
+                        logMessage('Connected to WebSocket server in room: ' + wsRelayRoom);
+                        setTimeout(getCwSpeed, 1000);
+                    }
                 };
 
                 ws.onclose = function() {
-                    document.getElementById('cw_socket_status').className = 'badge bg-secondary';
-                    document.getElementById('cw_socket_status').innerHTML = 'Status: Disconnected';
+                    setSocketStatus('Status: Disconnected (' + getTransportLabel() + ')', 'badge bg-secondary');
                     logMessage('Disconnected from WebSocket server');
                     ws = null;
                 };
 
                 ws.onerror = function(error) {
+                    setSocketStatus('Status: Error', 'badge bg-danger');
                     logMessage('WebSocket Error: ' + error);
                 };
 
                 ws.onmessage = function(event) {
-                    logMessage('Received: ' + event.data);
-                    
-                    // Handle CW speed responses
-                    const message = event.data;
+                    let message = event.data;
+
+                    if (wsRelayEnabled) {
+                        try {
+                            const relayMessage = JSON.parse(event.data);
+                            if (relayMessage && relayMessage.op === 'joined') {
+                                setSocketStatus('Status: Connected (Relay)', 'badge bg-success');
+                                logMessage('Relay joined room: ' + wsRelayRoom);
+                                setTimeout(getCwSpeed, 1000);
+                                return;
+                            }
+
+                            if (relayMessage && relayMessage.op === 'frame') {
+                                if (relayMessage.room !== wsRelayRoom) {
+                                    return;
+                                }
+
+                                message = relayMessage.data;
+                            } else if (relayMessage && relayMessage.op === 'error') {
+                                setSocketStatus('Status: Relay Error', 'badge bg-danger');
+                                logMessage('Relay error: ' + (relayMessage.message || 'unknown'));
+                                return;
+                            }
+                        } catch (e) {
+                            // Keep compatibility with plain text payloads.
+                        }
+                    }
+
+                    logMessage('Received: ' + message);
+
                     if (message.startsWith('CWSPEED SET:')) {
                         const match = message.match(/CWSPEED SET: (\d+) WPM/);
                         if (match) {
@@ -1408,78 +1633,109 @@ $(document).ready(function() {
                 }
             }
 
-            function sendMessage() {
-                if (ws === null) {
-                    alert('Please connect to the WebSocket server first');
+            function sendWinkeyCommand(command, quiet) {
+                if (!ws || ws.readyState !== WebSocket.OPEN) {
+                    if (!quiet) {
+                        alert('Please connect to the WebSocket server first');
+                    }
                     return;
                 }
 
-                const message = document.getElementById('message').value;
-                if (message.trim() === '') {
-                    alert('Please enter a message');
-                    return;
+                if (wsRelayEnabled) {
+                    const relayFrame = {
+                        op: 'frame',
+                        room: wsRelayRoom,
+                        data: command
+                    };
+                    ws.send(JSON.stringify(relayFrame));
+                } else {
+                    ws.send(command);
                 }
 
-                // Prefix the message with "CW:" to indicate it's a CW message
-                const cwMessage = 'CW:' + message;
-                ws.send(cwMessage);
-                logMessage('Sent: ' + cwMessage);
-
-                // Clear the input field
-                document.getElementById('message').value = '';
+                logMessage('Sent: ' + command);
             }
 
             function logMessage(message) {
                 const messageLog = document.getElementById('messageLog');
+                if (!messageLog) {
+                    return;
+                }
                 messageLog.value += message + '\n';
                 // Auto-scroll to bottom
                 messageLog.scrollTop = messageLog.scrollHeight;
             }
 
-            // Support for Enter key in the input field
-            const messageElement = document.getElementById('message');
-            if (messageElement) {
-                messageElement.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        sendMessage();
-                    }
+            document.addEventListener('DOMContentLoaded', function() {
+                const sendTextElement = document.getElementById('sendText');
+                if (sendTextElement) {
+                    sendTextElement.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            sendMyMessage();
+                        }
+                    });
+                }
+
+                const saveRelayButton = document.getElementById('saveWinkeyRelaySettings');
+                if (saveRelayButton) {
+                    saveRelayButton.addEventListener('click', saveWinkeyRelaySettings);
+                }
+
+                loadRelaySettingsFromAccount().finally(function() {
+                    connectWebSocket();
                 });
-            }
+            });
         </script>
 
         <script>
-            connectWebSocket();
-
-
             function morsekey_func1() {
-                console.log("F1: " + UpdateMacros(function1Macro));
-
-                const cwMessage = 'CW:' + UpdateMacros(function1Macro);
-                ws.send(cwMessage);
+                const textToSend = UpdateMacros(function1Macro);
+                console.log("F1: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
+                sendWinkeyCommand(cwMessage, false);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             function morsekey_func2() {
-                console.log("F2: " + UpdateMacros(function2Macro));
-                const cwMessage = 'CW:' + UpdateMacros(function2Macro);
-                ws.send(cwMessage);
+                const textToSend = UpdateMacros(function2Macro);
+                console.log("F2: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
+                sendWinkeyCommand(cwMessage, false);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             function morsekey_func3() {
-                console.log("F3: " + UpdateMacros(function3Macro));
-                const cwMessage = 'CW:' + UpdateMacros(function3Macro);
-                ws.send(cwMessage);
+                const textToSend = UpdateMacros(function3Macro);
+                console.log("F3: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
+                sendWinkeyCommand(cwMessage, false);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             function morsekey_func4() {
-                console.log("F4: " + UpdateMacros(function4Macro));
-                const cwMessage = 'CW:' + UpdateMacros(function4Macro);
-                ws.send(cwMessage);
+                const textToSend = UpdateMacros(function4Macro);
+                console.log("F4: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
+                sendWinkeyCommand(cwMessage, false);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             function morsekey_func5() {
-                console.log("F5: " + UpdateMacros(function5Macro));
-                const cwMessage = 'CW:' + UpdateMacros(function5Macro);
-                ws.send(cwMessage);
+                const textToSend = UpdateMacros(function5Macro);
+                console.log("F5: " + textToSend);
+                const cwMessage = 'CW:' + textToSend;
+                sendWinkeyCommand(cwMessage, false);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(textToSend, currentCwSpeed || 20);
+                }
             }
 
             let function1Name, function1Macro, function2Name, function2Macro, function3Name, function3Macro, function4Name, function4Macro, function5Name, function5Macro;
@@ -1570,11 +1826,15 @@ $(document).ready(function() {
                 }
 
                 const cwMessage = 'CW:' + message;
-                ws.send(cwMessage);
-                logMessage('Sent: ' + cwMessage);
+                sendWinkeyCommand(cwMessage, false);
+                if (window.cloudlogCwSidetone) {
+                    window.cloudlogCwSidetone.playText(message, currentCwSpeed || 20);
+                }
 
-                // Clear the input field
-                document.getElementById('sendText').value = '';
+                // Clear the input field and return focus so the next message can be typed immediately
+                const sendTextEl = document.getElementById('sendText');
+                sendTextEl.value = '';
+                setTimeout(function() { sendTextEl.focus(); }, 0);
             }
 
             // CW Speed Control Functions
@@ -1590,8 +1850,7 @@ $(document).ready(function() {
                 
                 if (newSpeed !== currentCwSpeed) {
                     const speedMessage = 'CWSPEED:' + newSpeed;
-                    ws.send(speedMessage);
-                    logMessage('Sent: ' + speedMessage);
+                    sendWinkeyCommand(speedMessage, false);
                     // Get updated speed after changing it
                     setTimeout(getCwSpeed, 500);
                 }
@@ -1602,7 +1861,7 @@ $(document).ready(function() {
                     return;
                 }
 
-                ws.send('GETCWSPEED');
+                sendWinkeyCommand('GETCWSPEED', true);
             }
 
             function updateSpeedDisplay(speed) {
@@ -1828,6 +2087,10 @@ $(document).ready(function() {
                     $('#callsign').val(fixedcall.replace('Ø', '0'));
                 }
                 if (e.key === "Escape") { // escape key maps to keycode `27`
+                    const escHandledAt = Number(window.cloudlogQsoEscHandledAt || 0);
+                    if (escHandledAt && (Date.now() - escHandledAt) < 500) {
+                        return;
+                    }
                     reset_fields();
                     if (!manual) {
                         resetTimers(0)
@@ -2096,6 +2359,14 @@ $(document).ready(function() {
         let catRequestCounter = 0;
         let lastProcessedCatRequest = 0;
         let catSelectionContextVersion = 0;
+        let consecutiveCatPollFailures = 0;
+        let catPollTimer = null;
+        let lastSuccessfulCatUpdateAt = null;
+        let lockSatelliteFieldsToUserInput = false;
+
+        const CAT_POLL_BASE_INTERVAL_MS = 3000;
+        const CAT_POLL_MAX_INTERVAL_MS = 15000;
+        const CAT_POLL_WARNING_THRESHOLD = 3;
 
         // Helper function to update a UI element with CAT data
         const cat2UI = (ui, cat, allowEmpty = true, allowZero = true, callbackOnUpdate) => {
@@ -2119,30 +2390,118 @@ $(document).ready(function() {
             const requestId = ++catRequestCounter;
             const requestContextVersion = catSelectionContextVersion;
 
-            $.getJSON(`radio/json/${requestedRadioID}`, (data) => {
-                const currentSelectedRadioID = String($('select.radios option:selected').val() || '0');
+            $.ajax({
+                url: `radio/json/${requestedRadioID}`,
+                dataType: 'json',
+                cache: false,
+                success: (data) => {
+                    const currentSelectedRadioID = String($('select.radios option:selected').val() || '0');
 
-                // Ignore stale CAT responses when radio selection changed or newer requests have already been applied.
-                if (
-                    requestContextVersion !== catSelectionContextVersion ||
-                    currentSelectedRadioID !== requestedRadioID ||
-                    requestId < lastProcessedCatRequest
-                ) {
-                    return;
-                }
-
-                lastProcessedCatRequest = requestId;
-
-                if (data.error) {
-                    if (data.error === 'not_logged_in') {
-                        handleLoginError();
+                    // Ignore stale CAT responses when radio selection changed or newer requests have already been applied.
+                    if (
+                        requestContextVersion !== catSelectionContextVersion ||
+                        currentSelectedRadioID !== requestedRadioID ||
+                        requestId < lastProcessedCatRequest
+                    ) {
+                        return;
                     }
-                    return;
-                }
 
-                clearLoginError();
-                updateUIWithCATData(data);
+                    lastProcessedCatRequest = requestId;
+
+                    if (data.error) {
+                        if (data.error === 'not_logged_in') {
+                            handleLoginError();
+                        }
+                        handleCATPollFailure(requestedRadioID);
+                        return;
+                    }
+
+                    clearLoginError();
+                    handleCATPollSuccess();
+                    updateUIWithCATData(data);
+                },
+                error: () => {
+                    handleCATPollFailure(requestedRadioID);
+                }
             });
+        };
+
+        const getNextCATPollDelay = () => {
+            if (consecutiveCatPollFailures <= 0) {
+                return CAT_POLL_BASE_INTERVAL_MS;
+            }
+
+            return Math.min(
+                CAT_POLL_MAX_INTERVAL_MS,
+                CAT_POLL_BASE_INTERVAL_MS * Math.pow(2, consecutiveCatPollFailures - 1)
+            );
+        };
+
+        const clearCATPollWarning = () => {
+            $('.radio_poll_warning').remove();
+        };
+
+        const showCATPollWarning = () => {
+            const secondsSinceSuccess = lastSuccessfulCatUpdateAt === null
+                ? null
+                : Math.max(0, Math.floor((Date.now() - lastSuccessfulCatUpdateAt) / 1000));
+
+            let warningText = 'Live rig sync is temporarily unstable. Retrying automatically.';
+            if (secondsSinceSuccess !== null) {
+                warningText += ` Last successful update was ${secondsSinceSuccess} seconds ago.`;
+            }
+
+            if ($('.radio_poll_warning').length === 0) {
+                $('#radio_status').prepend(
+                    `<div class="alert alert-warning radio_poll_warning" role="alert"><i class="fas fa-exclamation-triangle"></i> ${warningText}</div>`
+                );
+            } else {
+                $('.radio_poll_warning').html(`<i class="fas fa-exclamation-triangle"></i> ${warningText}`);
+            }
+        };
+
+        const handleCATPollSuccess = () => {
+            consecutiveCatPollFailures = 0;
+            lastSuccessfulCatUpdateAt = Date.now();
+            clearCATPollWarning();
+            scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
+        };
+
+        const handleCATPollFailure = (radioID) => {
+            const currentSelectedRadioID = String($('select.radios option:selected').val() || '0');
+            if (!radioID || currentSelectedRadioID !== String(radioID)) {
+                return;
+            }
+
+            consecutiveCatPollFailures += 1;
+
+            if (consecutiveCatPollFailures >= CAT_POLL_WARNING_THRESHOLD) {
+                showCATPollWarning();
+            }
+
+            scheduleNextCATPoll(getNextCATPollDelay());
+        };
+
+        const scheduleNextCATPoll = (delayMs) => {
+            if (catPollTimer !== null) {
+                clearTimeout(catPollTimer);
+            }
+
+            catPollTimer = setTimeout(() => {
+                pollSelectedRadio();
+            }, delayMs);
+        };
+
+        const pollSelectedRadio = () => {
+            const selectedRadioID = String($('select.radios option:selected').val() || '0');
+            if (selectedRadioID !== '0') {
+                updateFromCAT(selectedRadioID);
+                return;
+            }
+
+            consecutiveCatPollFailures = 0;
+            clearCATPollWarning();
+            scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
         };
 
         // Handle login error display
@@ -2179,10 +2538,32 @@ $(document).ready(function() {
                     $('#winkey').hide();
                 }
             });
-            cat2UI($('#sat_name'), data.satname, false, false);
-            cat2UI($('#sat_mode'), data.satmode, false, false);
+            if (!lockSatelliteFieldsToUserInput) {
+                const satNameFromCat = String(data.satname || '').trim();
+                const satModeFromCat = String(data.satmode || '').trim();
+                const propModeFromCat = String(data.prop_mode || '').trim();
+
+                // If CAT does not provide satellite fields for this radio, clear stale values
+                // so we do not carry over sat details from a previous save or radio.
+                if (satNameFromCat === '') {
+                    $('#sat_name').val('').removeData('catValue');
+                } else {
+                    cat2UI($('#sat_name'), satNameFromCat, false, false);
+                }
+
+                if (satModeFromCat === '') {
+                    $('#sat_mode').val('').removeData('catValue');
+                } else {
+                    cat2UI($('#sat_mode'), satModeFromCat, false, false);
+                }
+
+                if (propModeFromCat === '') {
+                    $('#selectPropagation').val('').removeData('catValue');
+                } else {
+                    cat2UI($('#selectPropagation'), propModeFromCat, false, false);
+                }
+            }
             cat2UI($('#transmit_power'), data.power, false, false);
-            cat2UI($('#selectPropagation'), data.prop_mode, false, false);
 
             handleCATTimeout(data);
         };
@@ -2234,11 +2615,13 @@ $(document).ready(function() {
 
         // Reset UI when no radio is selected
         const resetUI = () => {
+            lockSatelliteFieldsToUserInput = false;
             $("#sat_name, #sat_mode, #frequency, #frequency_rx, #band_rx").val("");
             $("#selectPropagation").val($("#selectPropagation option:first").val());
             // Clear CAT value cache so re-selecting a radio with identical values still repopulates fields.
             $('#frequency, #frequency_rx, #sat_name, #sat_mode, #transmit_power, #selectPropagation, #mode').removeData('catValue');
             $(".radio_timeout_error").remove();
+            clearCATPollWarning();
         };
 
         // Event listeners
@@ -2265,20 +2648,25 @@ $(document).ready(function() {
                 isSubmitting = true;
             });
 
-            // Update frequency every three seconds for the selected radio
-            setInterval(() => {
-                const selectedRadioID = $('select.radios option:selected').val();
-                if (selectedRadioID !== '0') {
-                    updateFromCAT(selectedRadioID);
-                }
-            }, 3000);
+            scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
+
+            $('#sat_name, #sat_mode, #selectPropagation').on('input change', function() {
+                const satName = String($('#sat_name').val() || '').trim();
+                const satMode = String($('#sat_mode').val() || '').trim();
+                const propMode = String($('#selectPropagation').val() || '').trim().toUpperCase();
+                lockSatelliteFieldsToUserInput = satName !== '' || satMode !== '' || propMode === 'SAT';
+            });
 
             // Trigger updateFromCAT when any <select> with class 'radios' changes
             $('.radios').on('change', function() {
                 catSelectionContextVersion++;
+                consecutiveCatPollFailures = 0;
+                clearCATPollWarning();
+                lockSatelliteFieldsToUserInput = false;
                 const selectedRadioID = $(this).val();
                 if (selectedRadioID === '0') {
                     resetUI();
+                    scheduleNextCATPoll(CAT_POLL_BASE_INTERVAL_MS);
                 } else {
                     updateFromCAT(selectedRadioID);
                 }

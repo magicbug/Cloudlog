@@ -68,8 +68,20 @@ let connectButton = document.getElementById("connectButton");
 let statusBar = document.getElementById("statusBar");
 
 //Couple the elements to the Events
-connectButton.addEventListener("click", clickConnect)
-sendButton.addEventListener("click", clickSend)
+if (connectButton) {
+    connectButton.addEventListener("click", clickConnect)
+}
+if (sendButton) {
+    sendButton.addEventListener("click", clickSend)
+}
+if (sendText) {
+    sendText.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            clickSend();
+        }
+    });
+}
 // statusButton.addEventListener("click", clickStatus)
 
 //When the connectButton is pressed
@@ -228,8 +240,12 @@ async function disconnect() {
 
 //When the send button is pressed
 function clickSend() {
-    writeToStream(sendText.value);
+    const textToSend = sendText.value;
+    writeToStream(textToSend);
     writeToStream("\r");
+    if (window.cloudlogCwSidetone) {
+        window.cloudlogCwSidetone.playText(textToSend, speed);
+    }
     
     //and clear the input field, so it's clear it has been sent
     sendText.value = "";
@@ -237,36 +253,56 @@ function clickSend() {
 }
 
 function morsekey_func1() {
-    console.log("F1: " + UpdateMacros(function1Macro));
-    writeToStream(UpdateMacros(function1Macro));
+    const textToSend = UpdateMacros(function1Macro);
+    console.log("F1: " + textToSend);
+    writeToStream(textToSend);
+    if (window.cloudlogCwSidetone) {
+        window.cloudlogCwSidetone.playText(textToSend, speed);
+    }
     //and clear the input field, so it's clear it has been sent
     sendText.value = "";
 }
 
 function morsekey_func2() {
-    console.log("F2: " + UpdateMacros(function2Macro));
-    writeToStream(UpdateMacros(function2Macro));
+    const textToSend = UpdateMacros(function2Macro);
+    console.log("F2: " + textToSend);
+    writeToStream(textToSend);
+    if (window.cloudlogCwSidetone) {
+        window.cloudlogCwSidetone.playText(textToSend, speed);
+    }
     //and clear the input field, so it's clear it has been sent
     sendText.value = "";
 }
 
 function morsekey_func3() {
-    console.log("F3: " + UpdateMacros(function3Macro));
-    writeToStream(UpdateMacros(function3Macro));
+    const textToSend = UpdateMacros(function3Macro);
+    console.log("F3: " + textToSend);
+    writeToStream(textToSend);
+    if (window.cloudlogCwSidetone) {
+        window.cloudlogCwSidetone.playText(textToSend, speed);
+    }
     //and clear the input field, so it's clear it has been sent
     sendText.value = "";
 }
 
 function morsekey_func4() {
-    console.log("F4: " + UpdateMacros(function4Macro));
-    writeToStream(UpdateMacros(function4Macro));
+    const textToSend = UpdateMacros(function4Macro);
+    console.log("F4: " + textToSend);
+    writeToStream(textToSend);
+    if (window.cloudlogCwSidetone) {
+        window.cloudlogCwSidetone.playText(textToSend, speed);
+    }
     //and clear the input field, so it's clear it has been sent
     sendText.value = "";
 }
 
 function morsekey_func5() {
-    console.log("F5: " + UpdateMacros(function5Macro));
-    writeToStream(UpdateMacros(function5Macro));
+    const textToSend = UpdateMacros(function5Macro);
+    console.log("F5: " + textToSend);
+    writeToStream(textToSend);
+    if (window.cloudlogCwSidetone) {
+        window.cloudlogCwSidetone.playText(textToSend, speed);
+    }
     //and clear the input field, so it's clear it has been sent
     sendText.value = "";
 }

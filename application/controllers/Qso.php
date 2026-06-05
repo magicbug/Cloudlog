@@ -44,6 +44,15 @@ class QSO extends CI_Controller {
 		$data['bands'] = $this->bands->get_user_bands_for_qso_entry();
 		$data['user_default_band'] = $this->session->userdata('user_default_band');
 		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
+
+        $remote_operation_option = $this->user_options_model->get_options(
+            'remote_operation',
+            array('option_name' => 'enabled', 'option_key' => 'value'),
+            $this->session->userdata('user_id')
+        )->row();
+        $data['isRemoteOperationEnabled'] = isset($remote_operation_option->option_value)
+            ? ((string)$remote_operation_option->option_value === 'true' || (string)$remote_operation_option->option_value === '1')
+            : (bool)$this->session->userdata('isRemoteOperationEnabled');
 		
 		// Set user's preferred date format
 		if($this->session->userdata('user_date_format')) {
@@ -304,6 +313,62 @@ class QSO extends CI_Controller {
         }
     }
 
+    function remoteoperationsettings() {
+        $this->load->view('qso/components/remoteoperationsettings');
+    }
+
+    public function remoteoperationsecret_json() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $this->load->model('user_options_model');
+            $this->load->library('encryption');
+
+            $row = $this->user_options_model->get_options(
+                'remote_operation',
+                array('option_name' => 'secret', 'option_key' => 'link_password')
+            )->row();
+
+            $encrypted = isset($row->option_value) ? (string)$row->option_value : '';
+            $plain = '';
+            if ($encrypted !== '') {
+                $decrypted = $this->encryption->decrypt($encrypted);
+                $plain = ($decrypted !== false && $decrypted !== null) ? (string)$decrypted : '';
+            }
+
+            echo json_encode(array('status' => 'ok', 'link_password' => $plain));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
+    public function remoteoperationsecret_save() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $this->load->model('user_options_model');
+            $this->load->library('encryption');
+
+            $link_password = trim((string)$this->security->xss_clean($this->input->post('link_password', true)));
+
+            if ($link_password !== '' && strlen($link_password) < 16) {
+                echo json_encode(array('status' => 'error', 'message' => 'Link password must be at least 16 characters'));
+                return;
+            }
+
+            if ($link_password === '') {
+                $this->user_options_model->set_option('remote_operation', 'secret', array('link_password' => ''));
+            } else {
+                $encrypted = $this->encryption->encrypt($link_password);
+                $this->user_options_model->set_option('remote_operation', 'secret', array('link_password' => $encrypted));
+            }
+
+            echo json_encode(array('status' => 'ok'));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
     public function cwmacrosave(){
         try {
             // Get the data from the form with proper sanitization
@@ -430,6 +495,115 @@ class QSO extends CI_Controller {
         } catch (Exception $e) {
             header('Content-Type: application/json; charset=utf-8');
             echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function winkeyrelaytoken_json() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $this->load->model('user_options_model');
+            $result = $this->user_options_model->get_options('winkey_websocket_relay', array('option_name' => 'relay', 'option_key' => 'token'))->result();
+            $token = isset($result[0]->option_value) ? (string)$result[0]->option_value : '';
+
+            echo json_encode(array('status' => 'ok', 'token' => $token));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
+    public function winkeyrelaytoken_save() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $token = trim((string)$this->security->xss_clean($this->input->post('token', true)));
+
+            if ($token !== '' && strlen($token) < 8) {
+                echo json_encode(array('status' => 'error', 'message' => 'Relay token must be at least 8 characters'));
+                return;
+            }
+
+            $this->load->model('user_options_model');
+            $this->user_options_model->set_option('winkey_websocket_relay', 'relay', array('token' => $token));
+
+            echo json_encode(array('status' => 'ok'));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
+    public function winkeyrelaysettings_json() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $this->load->model('user_options_model');
+            $rows = $this->user_options_model->get_options('winkey_websocket_relay', array('option_name' => 'relay'))->result();
+
+            $settings = array(
+                'enabled' => false,
+                'url' => 'wss://relay.cloudlog.org/',
+                'room' => 'cw_room',
+                'token' => '',
+            );
+
+            foreach ($rows as $row) {
+                if ($row->option_key === 'enabled') {
+                    $settings['enabled'] = ((string)$row->option_value === '1');
+                } elseif ($row->option_key === 'url' && (string)$row->option_value !== '') {
+                    $settings['url'] = (string)$row->option_value;
+                } elseif ($row->option_key === 'room' && (string)$row->option_value !== '') {
+                    $settings['room'] = (string)$row->option_value;
+                } elseif ($row->option_key === 'token') {
+                    $settings['token'] = (string)$row->option_value;
+                }
+            }
+
+            echo json_encode(array('status' => 'ok', 'settings' => $settings));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
+        }
+    }
+
+    public function winkeyrelaysettings_save() {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $enabled = $this->input->post('enabled', true) === '1';
+            $url = trim((string)$this->security->xss_clean($this->input->post('url', true)));
+            $room = trim((string)$this->security->xss_clean($this->input->post('room', true)));
+            $token = trim((string)$this->security->xss_clean($this->input->post('token', true)));
+
+            if ($url === '') {
+                $url = 'wss://relay.cloudlog.org/';
+            }
+
+            if ($room === '') {
+                $room = 'cw_room';
+            }
+
+            if ($enabled) {
+                if (!preg_match('/^wss?:\/\//', $url)) {
+                    echo json_encode(array('status' => 'error', 'message' => 'Relay URL must start with ws:// or wss://'));
+                    return;
+                }
+
+                if (strlen($token) < 8) {
+                    echo json_encode(array('status' => 'error', 'message' => 'Relay token must be at least 8 characters'));
+                    return;
+                }
+            }
+
+            $this->load->model('user_options_model');
+            $this->user_options_model->set_option('winkey_websocket_relay', 'relay', array(
+                'enabled' => $enabled ? '1' : '0',
+                'url' => $url,
+                'room' => $room,
+                'token' => $token,
+            ));
+
+            echo json_encode(array('status' => 'ok'));
+        } catch (Exception $e) {
+            echo json_encode(array('status' => 'error', 'message' => $e->getMessage()));
         }
     }
 

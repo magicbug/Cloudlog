@@ -9,19 +9,18 @@ var custom_date_format = "<?php echo $custom_date_format ?>";
 if (!isset($options)) {
    $options = "{\"datetime\":{\"show\":\"true\"},\"de\":{\"show\":\"true\"},\"dx\":{\"show\":\"true\"},\"mode\":{\"show\":\"true\"},\"rstr\":{\"show\":\"true\"},\"rsts\":{\"show\":\"true\"},\"band\":{\"show\":\"true\"},\"myrefs\":{\"show\":\"true\"},\"refs\":{\"show\":\"true\"},\"name\":{\"show\":\"true\"},\"qslvia\":{\"show\":\"true\"},\"qsl\":{\"show\":\"true\"},\"lotw\":{\"show\":\"true\"},\"eqsl\":{\"show\":\"true\"},\"qslmsg\":{\"show\":\"true\"},\"dxcc\":{\"show\":\"true\"},\"state\":{\"show\":\"true\"},\"cqzone\":{\"show\":\"true\"},\"iota\":{\"show\":\"true\"},\"pota\":{\"show\":\"true\"},\"operator\":{\"show\":\"true\"},\"stationLocation\":{\"show\":\"true\"}}";
 }
-echo "var user_options = $options;";
-if (!isset($options->pota)) {
-        echo "\nvar o_template = { pota: {show: 'true'}};";
-        echo "\nuser_options={...user_options, ...o_template}";
+$options_obj = json_decode($options);
+if (!is_object($options_obj)) {
+    $options_obj = new stdClass();
 }
-if (!isset($options->operator)) {
-	echo "\nvar o_template = { operator: {show: 'true'}};";
-	echo "\nuser_options={...user_options, ...o_template}";
+
+foreach (['pota', 'operator', 'stationLocation'] as $new_option) {
+    if (!isset($options_obj->{$new_option}) || !is_object($options_obj->{$new_option}) || !isset($options_obj->{$new_option}->show)) {
+        $options_obj->{$new_option} = (object)['show' => 'true'];
+    }
 }
-if (!isset($options->stationLocation)) {
-	echo "\nvar o_template = { stationLocation: {show: 'true'}};";
-	echo "\nuser_options={...user_options, ...o_template}";
-}
+
+echo 'var user_options = ' . json_encode($options_obj) . ';';
 ?>
 </script>
 <script>
@@ -58,9 +57,12 @@ if (!isset($options->stationLocation)) {
     padding-right: 5px;
     padding-left: 5px;
 }
+.advanced-search-status {
+    min-width: 180px;
+}
 </style>
 <?php
-$options = json_decode($options);
+$options = $options_obj;
 ?>
 <div class="container-fluid qso_manager pt-3 ps-4 pe-4">
     <?php if ($this->session->flashdata('message')) { ?>
@@ -415,6 +417,7 @@ $options = json_decode($options);
         <button type="button" class="btn btn-sm btn-primary me-1" id="mapButton" onclick="mapQsos(this.form);"><?php echo lang('filter_map'); ?></button>
 		<button type="options" class="btn btn-sm btn-primary me-1" id="optionButton"><?php echo lang('filter_options'); ?></button>
 		<button type="reset" class="btn btn-sm btn-danger me-1" id="resetButton"><?php echo lang('filter_reset'); ?></button>
+        <span id="advancedSearchStatus" class="small text-muted ms-2 advanced-search-status"></span>
 
     </div>
 </div>

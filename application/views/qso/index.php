@@ -21,9 +21,71 @@
     }
   </script>
 
+  <style>
+    @media (max-width: 991.98px) {
+      .qso_panel {
+        overflow-x: hidden;
+      }
+
+      .qso_panel .card-header {
+        overflow: hidden;
+      }
+
+      .qso_panel #myTab,
+      .qso_panel #qsoRightTabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        max-width: 100%;
+      }
+
+      .qso_panel #myTab::-webkit-scrollbar,
+      .qso_panel #qsoRightTabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .qso_panel #myTab .nav-item,
+      .qso_panel #qsoRightTabs .nav-item {
+        flex: 0 0 auto;
+      }
+
+      .qso_panel #myTab .nav-link,
+      .qso_panel #qsoRightTabs .nav-link {
+        padding: 0.35rem 0.55rem;
+        font-size: 0.95rem;
+      }
+
+      .qso_panel .card-body {
+        padding: 0.9rem;
+      }
+
+      .qso_panel .radio_selection {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .qso_panel .radio_selection .form-label {
+        margin-bottom: 0;
+      }
+
+      .qso_panel .radio_selection .btn {
+        width: 100%;
+      }
+
+      .qso_panel #qso-last-table-content .table th:nth-child(n+5),
+      .qso_panel #qso-last-table-content .table td:nth-child(n+5) {
+        display: none;
+      }
+    }
+  </style>
+
   <div class="row qsopane">
 
-    <div class="col-sm-5">
+    <div class="col-lg-5">
       <div class="card">
 
         <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $manual; ?>" data-ajax-save-url="<?php echo site_url('qso/ajax_saveqso'); ?>" name="qsos" autocomplete="off" onReset="resetTimers(<?php echo $manual; ?>);">
@@ -91,7 +153,7 @@
                 <!-- HTML for Date/Time -->
                 <?php if ($this->session->userdata('user_qso_end_times')  == 1) { ?>
                   <div class="row">
-                    <div class="mb-3 col-md-3">
+                    <div class="mb-3 col-6 col-md-3">
                       <label for="start_date"><?php echo lang('general_word_date'); ?></label>
                       <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
                                                                                                                                     echo $this->session->userdata('start_date');
@@ -100,7 +162,7 @@
                                                                                                                                   } ?>" <?php echo ($manual == 0 ? "disabled" : "");  ?> required>
                     </div>
 
-                    <div class="mb-3 col-md-3">
+                    <div class="mb-3 col-6 col-md-3">
                       <label for="start_time"><?php echo lang('general_word_time_on'); ?></label>
                       <?php if ($manual != 1) { ?>
                         <i id="reset_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch"></i>
@@ -114,7 +176,7 @@
                                                                                                                                         } ?>" size="7" <?php echo ($manual == 0 ? "disabled" : "");  ?> required pattern="[0-2][0-9]:[0-5][0-9]">
                     </div>
 
-                    <div class="mb-3 col-md-3">
+                    <div class="mb-3 col-6 col-md-3">
                       <label for="end_time"><?php echo lang('general_word_time_off'); ?></label>
                       <?php if ($manual == 1) { ?>
                         <i id="reset_end_time" data-bs-toggle="tooltip" title="Reset end time" class="fas fa-stopwatch"></i>
@@ -135,7 +197,7 @@
 
                 <?php } else { ?>
                   <div class="row">
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-6 col-md-6">
                       <label for="start_date"><?php echo lang('general_word_date'); ?></label>
                       <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
                                                                                                                                     echo $this->session->userdata('start_date');
@@ -144,7 +206,7 @@
                                                                                                                                   } ?>" <?php echo ($manual == 0 ? "disabled" : "");  ?> required>
                     </div>
 
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-6 col-md-6">
                       <label for="start_time"><?php echo lang('general_word_time'); ?></label>
                       <?php if ($manual == 1) { ?>
                         <i id="reset_start_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch"></i>
@@ -177,7 +239,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-6">
                     <label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
                     <select id="mode" class="form-select mode form-select-sm" name="mode">
                       <?php
@@ -192,7 +254,7 @@
                     </select>
                   </div>
 
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-6">
                     <label for="band"><?php echo lang('gen_hamradio_band'); ?></label>
 
                     <select id="band" class="form-select form-select-sm" name="band">
@@ -215,12 +277,12 @@
                 <!-- Signal Report Information -->
                 <?php if ($qso_fields['rst']): ?>
                 <div class="row">
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-6">
                     <label for="rst_sent"><?php echo lang('gen_hamradio_rsts'); ?></label>
                     <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
                   </div>
 
-                  <div class="mb-3 col-md-6">
+                  <div class="mb-3 col-6">
                     <label for="rst_rcvd"><?php echo lang('gen_hamradio_rstr'); ?></label>
                     <input type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59">
                   </div>
@@ -239,6 +301,15 @@
                 </div>
                 <?php endif; ?>
 
+                <?php if ($qso_fields['qth'] || $qso_fields['locator']): ?>
+                <div class="d-lg-none mb-2">
+                  <button class="btn btn-outline-secondary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#qsoMobileOptionalFields" aria-expanded="false" aria-controls="qsoMobileOptionalFields">
+                    More QSO Fields
+                  </button>
+                </div>
+                <div id="qsoMobileOptionalFields" class="collapse d-lg-block">
+                <?php endif; ?>
+
                 <?php if ($qso_fields['qth']): ?>
                 <div class="mb-3 row">
                   <label for="qth" class="col-sm-3 col-form-label"><?php echo lang('general_word_location'); ?></label>
@@ -255,6 +326,10 @@
                     <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
                     <small id="locator_info" class="form-text text-muted"></small>
                   </div>
+                </div>
+                <?php endif; ?>
+
+                <?php if ($qso_fields['qth'] || $qso_fields['locator']): ?>
                 </div>
                 <?php endif; ?>
 
@@ -709,7 +784,7 @@
     </div>
 
 
-    <div class="col-sm-7">
+    <div class="col-lg-7">
 
       <div id="notice-alerts-container">
 
@@ -728,7 +803,7 @@
       </div>
 
       <!-- QSO Map -->
-      <div class="card qso-map">
+      <div class="card qso-map d-none d-md-block">
         <div id="qsomap" class="map-leaflet" style="width: 100%; height: 200px;"></div>
       </div>
 
@@ -747,6 +822,71 @@
 
         <button class="btn btn-primary" onclick="openBandmap()">Open Bandmap</button>
       </div>
+
+      <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
+        <div id="remote_operation" class="card remote-operation-settings" style="margin-bottom: 10px;">
+          <div class="card-header">
+            <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Remote Operation
+
+              <span class="badge text-bg-danger ms-2"><?php echo lang('admin_experimental'); ?></span>
+
+              <div id="remote_operation_status" class="badge text-bg-secondary ms-2">Status: Disconnected</div>
+
+              <button type="button" class="btn btn-sm btn-primary ms-2" id="remoteOperationConnectButton">Connect</button>
+
+              <button type="button" class="btn btn-sm btn-secondary"
+                id="remoteOperationSettingsButton"
+                hx-get="<?php echo base_url(); ?>index.php/qso/remoteoperationsettings"
+                hx-target="#remote-modals-here"
+                hx-trigger="click"
+                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-sliders-h"></i> Settings</button>
+            </h4>
+          </div>
+
+          <audio id="remoteOperationRx" autoplay playsinline style="display:none;"></audio>
+
+          <div id="remote-modals-here"></div>
+
+          <div class="card-body">
+            <p class="mb-2">Experimental browser-based shack audio bridge. Use Settings to configure the signalling server, link and audio devices.</p>
+            <div id="remoteOperationDeviceWarning" class="alert alert-warning py-2 px-3 small mb-2 d-none" role="alert"></div>
+            <div class="row g-2 align-items-center mb-2">
+              <div class="col-12 col-md-6">
+                <div class="small text-muted mb-1">Mic level</div>
+                <div class="progress" role="progressbar" aria-label="Remote operation microphone level" aria-valuemin="0" aria-valuemax="100">
+                  <div id="remoteOperationMicLevel" class="progress-bar bg-primary" style="width: 0%">0%</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="small text-muted mb-1">Receive level</div>
+                <div class="progress" role="progressbar" aria-label="Remote operation receive level" aria-valuemin="0" aria-valuemax="100">
+                  <div id="remoteOperationRxLevel" class="progress-bar bg-success" style="width: 0%">0%</div>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 align-items-center mb-2">
+              <div class="col-12 col-md-6">
+                <label for="remoteOperationPlaybackVolume" class="form-label small text-muted mb-1">Playback volume</label>
+                <input id="remoteOperationPlaybackVolume" type="range" class="form-range" min="0" max="100" step="1" value="50">
+              </div>
+              <div class="col-12 col-md-6 d-flex align-items-center gap-3">
+                <div class="form-check mb-0 mt-3">
+                  <input class="form-check-input" type="checkbox" id="remoteOperationMicMuteToggle" checked>
+                  <label class="form-check-label small" for="remoteOperationMicMuteToggle">Mute microphone</label>
+                </div>
+                <div class="form-check mb-0 mt-3">
+                  <input class="form-check-input" type="checkbox" id="remoteOperationMuteToggle">
+                  <label class="form-check-label small" for="remoteOperationMuteToggle">Mute playback</label>
+                </div>
+                <button type="button" id="remoteOperationEnableAudioButton" class="btn btn-sm btn-outline-warning mt-2 d-none">Enable Audio</button>
+              </div>
+            </div>
+            <div id="remoteOperationAudioUnlockHint" class="small text-warning mb-2 d-none"></div>
+            <div id="remoteOperationQuickDiagnostics" class="small text-muted mb-2">State: Disconnected | speaker: default | inbound packets: 0 | jitter: n/a | reconnects: 0</div>
+            <small class="text-muted d-block">The card stays hidden unless you enable Remote Operation in your account settings.</small>
+          </div>
+        </div>
+      <?php } ?>
 
 
       <!-- Winkey Starts -->
@@ -768,11 +908,51 @@
                 hx-get="<?php echo base_url(); ?>index.php/qso/winkeysettings"
                 hx-target="#modals-here"
                 hx-trigger="click"
-                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-cog"></i> Settings</button>
+                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-keyboard"></i> Macros</button>
+
+              <button type="button" class="btn btn-sm btn-secondary" onclick="openWinkeyRelaySettings()"><i class="fas fa-network-wired"></i> Relay</button>
             </h4>
           </div>
 
           <div id="modals-here"></div>
+
+          <div class="modal fade" id="winkeyRelaySettingsModal" tabindex="-1" aria-labelledby="winkeyRelaySettingsLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="winkeyRelaySettingsLabel">Winkey Relay Settings</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="winkeyRelayEnabled">
+                    <label class="form-check-label" for="winkeyRelayEnabled">Use Relay Server</label>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="winkeyRelayUrl" class="form-label">Relay WebSocket URL</label>
+                    <input type="text" class="form-control" id="winkeyRelayUrl" placeholder="wss://relay.cloudlog.org/">
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="winkeyRelayToken" class="form-label">Relay Token</label>
+                    <input type="password" class="form-control" id="winkeyRelayToken" autocomplete="off" placeholder="Shared secret (min 8 chars)">
+                  </div>
+
+                  <div class="mb-2">
+                    <label for="winkeyRelayRoom" class="form-label">Relay Room</label>
+                    <input type="text" class="form-control" id="winkeyRelayRoom" placeholder="cw_room">
+                  </div>
+
+                  <small class="text-muted">Relay settings are stored in your user account and follow your login across devices.</small>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" id="saveWinkeyRelaySettings">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div id="winkey_buttons" class="card-body">
             <!-- Function Keys Row -->
@@ -784,6 +964,32 @@
                   <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
                   <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
                   <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3 align-items-center">
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-lg-start justify-content-center">
+                  <div class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" id="cwSidetoneEnabled">
+                    <label class="form-check-label" for="cwSidetoneEnabled">Speaker Sidetone</label>
+                  </div>
+                  <span id="cwSidetoneStatus" class="badge bg-secondary">Off</span>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-center">
+                  <label for="cwSidetoneFrequency" class="mb-0 fw-bold text-nowrap">Tone</label>
+                  <input id="cwSidetoneFrequency" type="range" class="form-range flex-grow-1" min="300" max="1000" step="10">
+                  <span id="cwSidetoneFrequencyValue" class="badge bg-secondary text-nowrap">600 Hz</span>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-center justify-content-lg-end">
+                  <label for="cwSidetoneVolume" class="mb-0 fw-bold text-nowrap">Volume</label>
+                  <input id="cwSidetoneVolume" type="range" class="form-range flex-grow-1" min="0.01" max="0.2" step="0.01">
+                  <span id="cwSidetoneVolumeValue" class="badge bg-secondary text-nowrap">5%</span>
                 </div>
               </div>
             </div>
@@ -858,6 +1064,32 @@
                   <button id="morsekey_func3" onclick="morsekey_func3()" class="btn btn-warning">F3</button>
                   <button id="morsekey_func4" onclick="morsekey_func4()" class="btn btn-warning">F4</button>
                   <button id="morsekey_func5" onclick="morsekey_func5()" class="btn btn-warning">F5</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-2 mb-3 align-items-center">
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-lg-start justify-content-center">
+                  <div class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" id="cwSidetoneEnabled">
+                    <label class="form-check-label" for="cwSidetoneEnabled">Speaker Sidetone</label>
+                  </div>
+                  <span id="cwSidetoneStatus" class="badge bg-secondary">Off</span>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-center">
+                  <label for="cwSidetoneFrequency" class="mb-0 fw-bold text-nowrap">Tone</label>
+                  <input id="cwSidetoneFrequency" type="range" class="form-range flex-grow-1" min="300" max="1000" step="10">
+                  <span id="cwSidetoneFrequencyValue" class="badge bg-secondary text-nowrap">600 Hz</span>
+                </div>
+              </div>
+              <div class="col-12 col-lg-4">
+                <div class="d-flex align-items-center gap-2 justify-content-center justify-content-lg-end">
+                  <label for="cwSidetoneVolume" class="mb-0 fw-bold text-nowrap">Volume</label>
+                  <input id="cwSidetoneVolume" type="range" class="form-range flex-grow-1" min="0.01" max="0.2" step="0.01">
+                  <span id="cwSidetoneVolumeValue" class="badge bg-secondary text-nowrap">5%</span>
                 </div>
               </div>
             </div>
