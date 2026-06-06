@@ -515,7 +515,11 @@ $config['encryption_key'] = '%encryption_key%';
 $config['sess_driver'] = 'files';
 $config['sess_cookie_name'] = 'ci_cloudlog';
 $config['sess_expiration'] = 0;
-$config['sess_save_path'] = '/tmp';
+$cloudlog_session_path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'cloudlog_' . md5((string) (realpath(FCPATH) ?: FCPATH)) . '_sessions';
+if (!is_dir($cloudlog_session_path)) {
+	@mkdir($cloudlog_session_path, 0700, true);
+}
+$config['sess_save_path'] = $cloudlog_session_path;
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
