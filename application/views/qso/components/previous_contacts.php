@@ -50,16 +50,20 @@
 
 <!-- Pagination Controls -->
 <?php if (isset($total_pages) && $total_pages > 1): ?>
+<?php
+  $prev_label = $this->lang->line('general_word_previous', false) ?: 'Previous';
+  $next_label = $this->lang->line('general_word_next', false) ?: 'Next';
+?>
 <nav aria-label="Previous contacts pagination">
   <ul class="pagination pagination-sm mb-0">
     <!-- Previous Button -->
     <li class="page-item <?php echo ($current_page == 0) ? 'disabled' : ''; ?>">
       <?php if ($current_page > 0): ?>
         <a class="page-link" href="#" hx-get="<?php echo site_url('/qso/component_past_contacts?page=' . ($current_page - 1)); ?>" hx-target="#qso-last-table-content" hx-swap="outerHTML">
-          <?php echo lang('prev'); ?>
+          <?php echo $prev_label; ?>
         </a>
       <?php else: ?>
-        <span class="page-link"><?php echo lang('prev'); ?></span>
+        <span class="page-link"><?php echo $prev_label; ?></span>
       <?php endif; ?>
     </li>
 
@@ -98,10 +102,10 @@
     <li class="page-item <?php echo ($current_page >= $total_pages - 1) ? 'disabled' : ''; ?>">
       <?php if ($current_page < $total_pages - 1): ?>
         <a class="page-link" href="#" hx-get="<?php echo site_url('/qso/component_past_contacts?page=' . ($current_page + 1)); ?>" hx-target="#qso-last-table-content" hx-swap="outerHTML">
-          <?php echo lang('next'); ?>
+          <?php echo $next_label; ?>
         </a>
       <?php else: ?>
-        <span class="page-link"><?php echo lang('next'); ?></span>
+        <span class="page-link"><?php echo $next_label; ?></span>
       <?php endif; ?>
     </li>
   </ul>
