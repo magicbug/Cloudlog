@@ -798,7 +798,7 @@ $(document).on('change', 'input', function(){
 });
 
 function changebadge(entityname) {
-	if($("#sat_name" ).val() != "") {
+	if (isSatelliteLookupContext()) {
 		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/SAT/0/0', function(result)
 		{
 
@@ -894,6 +894,31 @@ function clearSatelliteFields() {
 	if ($('#selectPropagation').val() === 'SAT') {
 		$('#selectPropagation').val('');
 	}
+}
+
+function isSatelliteLookupContext() {
+	var propagationMode = normalizeFieldValue($('#selectPropagation').val()).toUpperCase();
+	var propagationModeCat = normalizeFieldValue($('#selectPropagation').data('catValue')).toUpperCase();
+	var satName = normalizeFieldValue($('#sat_name').val());
+	var satMode = normalizeFieldValue($('#sat_mode').val());
+	var satNameCat = normalizeFieldValue($('#sat_name').data('catValue'));
+	var satModeCat = normalizeFieldValue($('#sat_mode').data('catValue'));
+
+	if (propagationMode === 'SAT' || propagationModeCat === 'SAT' || satName !== '' || satMode !== '' || satNameCat !== '' || satModeCat !== '') {
+		return true;
+	}
+
+	var selectedRadioID = normalizeFieldValue($('select.radios').first().val());
+	var lastCatRadioID = normalizeFieldValue(window.cloudlogLastCatRadioId);
+	var lastCatData = window.cloudlogLastCatData;
+	if (selectedRadioID === '' || selectedRadioID === '0' || selectedRadioID !== lastCatRadioID || !lastCatData) {
+		return false;
+	}
+
+	var catPropMode = normalizeFieldValue(lastCatData.prop_mode).toUpperCase();
+	var catSatName = normalizeFieldValue(lastCatData.satname);
+	var catSatMode = normalizeFieldValue(lastCatData.satmode);
+	return catPropMode === 'SAT' || catSatName !== '' || catSatMode !== '';
 }
 
 function clearCatTrackedFieldState() {
@@ -1047,7 +1072,7 @@ $("#callsign").focusout(function() {
 		/* Find and populate DXCC */
 		$('.callsign-suggest').hide();
 
-		if($("#sat_name").val() != ""){
+		if (isSatelliteLookupContext()) {
 			var sat_type = "SAT";
 			var json_band = "0";
 			var json_mode = "0";
@@ -1516,7 +1541,7 @@ $("#locator").keyup(function(){
 		if(qra_lookup.length >= 4) {
 
 			// Check Log if satname is provided
-			if($("#sat_name" ).val() != "") {
+			if (isSatelliteLookupContext()) {
 
 				//logbook/jsonlookupgrid/io77/SAT/0/0
 

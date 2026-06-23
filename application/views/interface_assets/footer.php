@@ -2364,6 +2364,9 @@ $(document).ready(function() {
         let lastSuccessfulCatUpdateAt = null;
         let lockSatelliteFieldsToUserInput = false;
 
+        window.cloudlogLastCatData = null;
+        window.cloudlogLastCatRadioId = null;
+
         const CAT_POLL_BASE_INTERVAL_MS = 3000;
         const CAT_POLL_MAX_INTERVAL_MS = 15000;
         const CAT_POLL_WARNING_THRESHOLD = 3;
@@ -2418,6 +2421,8 @@ $(document).ready(function() {
 
                     clearLoginError();
                     handleCATPollSuccess();
+                    window.cloudlogLastCatData = data || null;
+                    window.cloudlogLastCatRadioId = requestedRadioID;
                     updateUIWithCATData(data);
                 },
                 error: () => {
@@ -2616,6 +2621,8 @@ $(document).ready(function() {
         // Reset UI when no radio is selected
         const resetUI = () => {
             lockSatelliteFieldsToUserInput = false;
+            window.cloudlogLastCatData = null;
+            window.cloudlogLastCatRadioId = null;
             $("#sat_name, #sat_mode, #frequency, #frequency_rx, #band_rx").val("");
             $("#selectPropagation").val($("#selectPropagation option:first").val());
             // Clear CAT value cache so re-selecting a radio with identical values still repopulates fields.
