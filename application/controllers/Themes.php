@@ -56,7 +56,7 @@ class Themes extends CI_Controller {
 
 		$this->load->model('Themes_model');
 
-		$item_id_clean = $this->security->xss_clean($id);
+		$item_id_clean = (int) $id;
 
 		$data['theme'] = $this->Themes_model->theme($item_id_clean);
 

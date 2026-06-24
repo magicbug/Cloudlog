@@ -216,12 +216,11 @@ class Contesting_model extends CI_Model {
 	}
 
 	function contest($id) {
-		// Clean ID
-		$clean_id = $this->security->xss_clean($id);
+		$clean_id = (int) $id;
 
-		$sql = "SELECT id, name, adifname, active FROM contest where id =" . $clean_id;
-
-		$data = $this->db->query($sql);
+		$this->db->select('id, name, adifname, active');
+		$this->db->where('id', $clean_id);
+		$data = $this->db->get('contest');
 
 		return ($data->row());
 	}

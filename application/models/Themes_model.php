@@ -28,12 +28,10 @@ class Themes_model extends CI_Model {
 
 
 	function theme($id) {
-		// Clean ID
-		$clean_id = $this->security->xss_clean($id);
+		$clean_id = (int) $id;
 
-		$sql = "SELECT * FROM themes where id =" . $clean_id;
-
-		$data = $this->db->query($sql);
+		$this->db->where('id', $clean_id);
+		$data = $this->db->get('themes');
 
 		return ($data->row());
 	}
