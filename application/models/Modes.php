@@ -16,8 +16,7 @@ class Modes extends CI_Model {
 	}
 
 	function mode($id) {
-		// Clean ID
-		$clean_id = $this->security->xss_clean($id);
+		$clean_id = (int) $id;
 
 
 		$this->db->where('id', $clean_id);
@@ -59,16 +58,14 @@ class Modes extends CI_Model {
 	}
 
 	function delete($id) {
-		// Clean ID
-		$clean_id = $this->security->xss_clean($id);
+		$clean_id = (int) $id;
 
 		// Delete Mode
 		$this->db->delete('adif_modes', array('id' => $clean_id)); 
 	}
 
     function activate($id) {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+		$clean_id = (int) $id;
 
         $data = array(
             'active' => '1',
@@ -82,8 +79,7 @@ class Modes extends CI_Model {
     }
 
     function deactivate($id) {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+		$clean_id = (int) $id;
 
         $data = array(
             'active' => '0',

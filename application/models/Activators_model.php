@@ -3,6 +3,21 @@ if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Activators_model extends CI_Model
 {
+   private function normalize_location_ids($location_list) {
+      if (!is_array($location_list)) {
+         return array();
+      }
+
+      $ids = array();
+      foreach ($location_list as $id) {
+         if (is_numeric($id)) {
+            $ids[] = (int) $id;
+         }
+      }
+
+      return array_values(array_unique($ids));
+   }
+
     function get_activators($band, $mincount, $leogeo)  {
 		$CI =& get_instance();
 		$CI->load->model('logbooks_model');
@@ -16,36 +31,44 @@ class Activators_model extends CI_Model
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_ids = $this->normalize_location_ids($logbooks_locations_array);
+      if (empty($location_ids)) {
+         return null;
+      }
 
-		$sql = "select COL_CALL as `call`, COUNT(DISTINCT(SUBSTR(COL_GRIDSQUARE,1,4))) AS `count`, GROUP_CONCAT(DISTINCT SUBSTR(`COL_GRIDSQUARE`,1,4) ORDER BY `COL_GRIDSQUARE` SEPARATOR ', ') AS `grids` from ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ")";
+      $this->db->select("COL_CALL as `call`, COUNT(DISTINCT(SUBSTR(COL_GRIDSQUARE,1,4))) AS `count`, GROUP_CONCAT(DISTINCT SUBSTR(`COL_GRIDSQUARE`,1,4) ORDER BY `COL_GRIDSQUARE` SEPARATOR ', ') AS `grids`", false);
+      $this->db->from($this->config->item('table_name'));
+      $this->db->where_in('station_id', $location_ids);
         if ($band != 'All') {
             if ($band == 'SAT') {
                switch ($leogeo) {
                case 'both' :
-                  $sql .= " and col_prop_mode ='" . $band . "'";
+              $this->db->where('col_prop_mode', $band);
                   break;
                case 'leo' :
-                  $sql .= " and col_prop_mode = '" . $band . "'";
-                  $sql .= " and col_sat_name != 'QO-100'";
+              $this->db->where('col_prop_mode', $band);
+              $this->db->where('col_sat_name !=', 'QO-100');
                   break;
                case 'geo' :
-                  $sql .= " and col_prop_mode = '" . $band . "'";
-                  $sql .= " and col_sat_name = 'QO-100'";
+              $this->db->where('col_prop_mode', $band);
+              $this->db->where('col_sat_name', 'QO-100');
                   break;
                default :
-                  $sql .= " and col_prop_mode ='" . $band . "'";
+              $this->db->where('col_prop_mode', $band);
                   break;
                }
             }
             else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and COL_BAND ='" . $band . "'";
+            $this->db->where('col_prop_mode !=', 'SAT');
+            $this->db->where('COL_BAND', $band);
             }
         }
-		$sql .= " AND `COL_GRIDSQUARE` != '' GROUP BY `COL_CALL` HAVING `count` >= ".$mincount." ORDER BY `count` DESC;";
+      $this->db->where('COL_GRIDSQUARE !=', '');
+      $this->db->group_by('COL_CALL');
+      $this->db->having('COUNT(DISTINCT(SUBSTR(COL_GRIDSQUARE,1,4))) >=', (int) $mincount, false);
+      $this->db->order_by('count', 'DESC', false);
 
-        $query = $this->db->query($sql);
+      $query = $this->db->get();
 
         return $query->result();
     }
@@ -59,36 +82,42 @@ class Activators_model extends CI_Model
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_ids = $this->normalize_location_ids($logbooks_locations_array);
+      if (empty($location_ids)) {
+         return null;
+      }
 
-      $sql = "SELECT DISTINCT COL_CALL AS `call`, GROUP_CONCAT(COL_VUCC_GRIDS) AS `vucc_grids` FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ")";
+      $this->db->select('COL_CALL AS `call`, GROUP_CONCAT(COL_VUCC_GRIDS) AS `vucc_grids`', false);
+      $this->db->from($this->config->item('table_name'));
+      $this->db->where_in('station_id', $location_ids);
         if ($band != 'All') {
             if ($band == 'SAT') {
                switch ($leogeo) {
                case 'both' :
-                  $sql .= " and col_prop_mode ='" . $band . "'";
+              $this->db->where('col_prop_mode', $band);
                   break;
                case 'leo' :
-                  $sql .= " and col_prop_mode = '" . $band . "'";
-                  $sql .= " and col_sat_name != 'QO-100'";
+              $this->db->where('col_prop_mode', $band);
+              $this->db->where('col_sat_name !=', 'QO-100');
                   break;
                case 'geo' :
-                  $sql .= " and col_prop_mode = '" . $band . "'";
-                  $sql .= " and col_sat_name = 'QO-100'";
+              $this->db->where('col_prop_mode', $band);
+              $this->db->where('col_sat_name', 'QO-100');
                   break;
                default :
-                  $sql .= " and col_prop_mode ='" . $band . "'";
+              $this->db->where('col_prop_mode', $band);
                   break;
                }
             }
             else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and COL_BAND ='" . $band . "'";
+            $this->db->where('col_prop_mode !=', 'SAT');
+            $this->db->where('COL_BAND', $band);
             }
         }
-      $sql .= " AND COL_VUCC_GRIDS != '' GROUP BY COL_CALL;";
+      $this->db->where('COL_VUCC_GRIDS !=', '');
+      $this->db->group_by('COL_CALL');
 
-        $query = $this->db->query($sql);
+      $query = $this->db->get();
 
         return $query->result();
     }
@@ -101,12 +130,19 @@ class Activators_model extends CI_Model
 			return array();
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_ids = $this->normalize_location_ids($logbooks_locations_array);
+      if (empty($location_ids)) {
+         return array();
+      }
 
-		// Get max no of activated grids of single operator
-		$data = $this->db->query(
-			"select COUNT(DISTINCT(SUBSTR(COL_GRIDSQUARE,1,4))) AS `count` from " . $this->config->item('table_name') . " WHERE station_id in (" . $location_list . ") AND `COL_GRIDSQUARE` != '' GROUP BY `COL_CALL` ORDER BY `count` DESC LIMIT 1"
-		);
+      $this->db->select('COUNT(DISTINCT(SUBSTR(COL_GRIDSQUARE,1,4))) AS `count`', false);
+      $this->db->from($this->config->item('table_name'));
+      $this->db->where_in('station_id', $location_ids);
+      $this->db->where('COL_GRIDSQUARE !=', '');
+      $this->db->group_by('COL_CALL');
+      $this->db->order_by('count', 'DESC', false);
+      $this->db->limit(1);
+      $data = $this->db->get();
 		foreach($data->result() as $row){
 			$max =  $row->count;
 		}

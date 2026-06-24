@@ -4,8 +4,7 @@ class Sstv_model extends CI_Model
 
     function saveSstvImages($qsoid, $filename)
     {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($qsoid);
+        $clean_id = (int) $qsoid;
 
         // be sure that QSO belongs to user and user has write permission
         $CI = &get_instance();
@@ -26,8 +25,7 @@ class Sstv_model extends CI_Model
 
     function getSSTVFilename($id)
     {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+        $clean_id = (int) $id;
 
         // be sure that QSO belongs to user
         $CI = &get_instance();
@@ -50,8 +48,7 @@ class Sstv_model extends CI_Model
     
     function deleteSstv($id)
     {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+        $clean_id = (int) $id;
 
         // be sure that QSO belongs to user and user has write permission
         $CI = &get_instance();
@@ -71,8 +68,7 @@ class Sstv_model extends CI_Model
 
     function getSstvForQsoId($id)
     {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+        $clean_id = (int) $id;
 
         // be sure that QSO belongs to user
         $CI = &get_instance();

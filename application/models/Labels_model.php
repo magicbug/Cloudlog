@@ -95,15 +95,14 @@ class Labels_model extends CI_Model {
 
  	function fetchQsos($user_id) {
 
-		$qsl = "select count(*) count, station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare
-        from ". $this->config->item('table_name') . " as l
-        join station_profile on l.station_id = station_profile.station_id
-        where l.COL_QSL_SENT in ('R', 'Q')
-        and station_profile.user_id = " . $user_id .
-        " group by station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare
-        order by station_profile.station_callsign";
-
-        $query = $this->db->query($qsl);
+        $this->db->select("count(*) count, station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare", false);
+        $this->db->from($this->config->item('table_name') . ' as l');
+        $this->db->join('station_profile', 'l.station_id = station_profile.station_id');
+        $this->db->where_in('l.COL_QSL_SENT', array('R', 'Q'));
+        $this->db->where('station_profile.user_id', (int) $user_id);
+        $this->db->group_by('station_profile.station_profile_name, station_profile.station_callsign, station_profile.station_id, station_profile.station_gridsquare');
+        $this->db->order_by('station_profile.station_callsign');
+        $query = $this->db->get();
 
 		return $query->result();
 	}
@@ -125,12 +124,15 @@ class Labels_model extends CI_Model {
     }
 
     function saveDefaultLabel($id) {
-        $sql = 'update label_types set useforprint = 0 where user_id = ' . $this->session->userdata('user_id');
-        $this->db->query($sql);
+        $user_id = (int) $this->session->userdata('user_id');
+        $cleanid = (int) $id;
 
-        $cleanid = xss_clean($id);
-        $sql = 'update label_types set useforprint = 1 where user_id = ' . $this->session->userdata('user_id') . ' and id = ' . $cleanid;
-        $this->db->query($sql);
+        $this->db->where('user_id', $user_id);
+        $this->db->update('label_types', array('useforprint' => 0));
+
+        $this->db->where('user_id', $user_id);
+        $this->db->where('id', $cleanid);
+        $this->db->update('label_types', array('useforprint' => 1));
     }
 
     function export_printrequested($station_id = NULL) {

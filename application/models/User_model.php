@@ -99,9 +99,11 @@ class User_Model extends CI_Model {
 	}
 
 	function hasQrzKey($user_id) {
+		$user_id = (int) $user_id;
 		$this->db->where('station_profile.qrzapikey is not null');
 		$this->db->where('station_profile.qrzapikey != ""');
-		$this->db->join('station_profile', 'station_profile.user_id = '.$user_id);
+		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
+		$this->db->where('station_profile.user_id', $user_id);
 		$query = $this->db->get($this->config->item('auth_table'));
 
 		$ret = $query->row();
@@ -113,7 +115,7 @@ class User_Model extends CI_Model {
 	}
 
 	function get_email_address($station_id) {
-		$this->db->where('station_id', $station_id);
+		$this->db->where('station_id', (int) $station_id);
 		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
 		$query = $this->db->get($this->config->item('auth_table'));
 

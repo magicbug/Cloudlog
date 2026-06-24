@@ -1,21 +1,34 @@
 <?php
 
 class Oqrs_model extends CI_Model {
+	private function normalize_location_ids($location_list) {
+		if (empty($location_list)) {
+			return array();
+		}
+
+		$ids = array();
+		$parts = explode(',', $location_list);
+		foreach ($parts as $part) {
+			$trimmed = trim($part, " \t\n\r\0\x0B'\"");
+			if (is_numeric($trimmed)) {
+				$ids[] = (int) $trimmed;
+			}
+		}
+
+		return array_values(array_unique($ids));
+	}
+
     function get_oqrs_stations() {
         $this->db->where('oqrs', "1");
 		return $this->db->get('station_profile');
 	}
 
     function get_station_info($station_id) {
-        $station_id = $this->security->xss_clean($station_id);
+		$station_id = (int) $station_id;
 
-        $sql = 'select 
-        count(*) as count,
-        min(col_time_on) as mindate,
-        max(col_time_on) as maxdate
-        from ' . $this->config->item('table_name') . ' where station_id = ' . $station_id;
-
-        $query = $this->db->query($sql);
+		$this->db->select('count(*) as count, min(col_time_on) as mindate, max(col_time_on) as maxdate', false);
+		$this->db->where('station_id', $station_id);
+		$query = $this->db->get($this->config->item('table_name'));
 
         return $query->row();
     }
@@ -99,18 +112,26 @@ class Oqrs_model extends CI_Model {
 	 */
 	function get_worked_modes($station_id)
 	{
+		$station_id = (int) $station_id;
 		// get all worked modes from database
-		$data = $this->db->query(
-			"SELECT distinct LOWER(`COL_MODE`) as `COL_MODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id in (" . $station_id . ") order by COL_MODE ASC"
-		);
+		$this->db->distinct();
+		$this->db->select('LOWER(`COL_MODE`) as `COL_MODE`', false);
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where('station_id', $station_id);
+		$this->db->order_by('COL_MODE', 'ASC');
+		$data = $this->db->get();
 		$results = array();
 		foreach ($data->result() as $row) {
 			array_push($results, $row->COL_MODE);
 		}
 
-		$data = $this->db->query(
-			"SELECT distinct LOWER(`COL_SUBMODE`) as `COL_SUBMODE` FROM `" . $this->config->item('table_name') . "` WHERE station_id in (" . $station_id . ") and coalesce(COL_SUBMODE, '') <> '' order by COL_SUBMODE ASC"
-		);
+		$this->db->distinct();
+		$this->db->select('LOWER(`COL_SUBMODE`) as `COL_SUBMODE`', false);
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where('station_id', $station_id);
+		$this->db->where("coalesce(COL_SUBMODE, '') <> ''", NULL, false);
+		$this->db->order_by('COL_SUBMODE', 'ASC');
+		$data = $this->db->get();
 		foreach ($data->result() as $row) {
 			if (!in_array($row, $results)) {
 				array_push($results, $row->COL_SUBMODE);
@@ -121,10 +142,16 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function getOqrsRequests($location_list) {
-        // Optimize SELECT to only fetch needed columns
-        $sql = 'select oqrs.id, oqrs.requestcallsign, oqrs.date, oqrs.time, oqrs.band, oqrs.mode, oqrs.status, oqrs.note, oqrs.email, oqrs.qslroute, station_profile.station_callsign, station_profile.station_profile_name from oqrs join station_profile on oqrs.station_id = station_profile.station_id where oqrs.station_id in (' . $location_list . ')';
+		$location_ids = $this->normalize_location_ids($location_list);
+		if (empty($location_ids)) {
+			return array();
+		}
 
-        $query = $this->db->query($sql);
+		$this->db->select('oqrs.id, oqrs.requestcallsign, oqrs.date, oqrs.time, oqrs.band, oqrs.mode, oqrs.status, oqrs.note, oqrs.email, oqrs.qslroute, station_profile.station_callsign, station_profile.station_profile_name');
+		$this->db->from('oqrs');
+		$this->db->join('station_profile', 'oqrs.station_id = station_profile.station_id');
+		$this->db->where_in('oqrs.station_id', $location_ids);
+		$query = $this->db->get();
 
         return $query->result();
 	}
@@ -229,17 +256,21 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function check_oqrs($qsodata) {
-		// Optimize SELECT to only fetch COL_PRIMARY_KEY for matching
-		$sql = 'select COL_PRIMARY_KEY from ' . $this->config->item('table_name') . 
-		' where (col_band = \'' . $qsodata['band'] . '\' or col_prop_mode = \'' . $qsodata['band'] . '\')
-		 and col_call = \'' . $qsodata['requestcallsign'] . '\'
-		 and date(col_time_on) = \'' . $qsodata['date'] . '\'
-		 and (col_mode = \'' . $qsodata['mode'] . '\'
-		 or col_submode = \'' . $qsodata['mode'] . '\')
-		 and timediff(time(col_time_on), \'' . $qsodata['time'] . '\') <= 3000
-		 and station_id = ' . $qsodata['station_id'];
-		
-		$query = $this->db->query($sql);
+		$this->db->select('COL_PRIMARY_KEY');
+		$this->db->from($this->config->item('table_name'));
+		$this->db->group_start();
+		$this->db->where('col_band', $qsodata['band']);
+		$this->db->or_where('col_prop_mode', $qsodata['band']);
+		$this->db->group_end();
+		$this->db->where('col_call', $qsodata['requestcallsign']);
+		$this->db->where('date(col_time_on)', $qsodata['date']);
+		$this->db->group_start();
+		$this->db->where('col_mode', $qsodata['mode']);
+		$this->db->or_where('col_submode', $qsodata['mode']);
+		$this->db->group_end();
+		$this->db->where('timediff(time(col_time_on), ' . $this->db->escape($qsodata['time']) . ') <= 3000', NULL, false);
+		$this->db->where('station_id', (int) $qsodata['station_id']);
+		$query = $this->db->get();
 
 		if ($result = $query->result()) {
 			$id = 0;
@@ -270,7 +301,7 @@ class Oqrs_model extends CI_Model {
 		$this->db->join('station_profile', 'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
 		// always filter user. this ensures that no inaccesible QSOs will be returned
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
-		$this->db->where('COL_CALL like "%'.$callsign.'%"');
+		$this->db->like('COL_CALL', $callsign);
 		$this->db->order_by("COL_TIME_ON", "ASC");
 		$query = $this->db->get($this->config->item('table_name'));
 
@@ -278,16 +309,22 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function search_log_time_date($time, $date, $band, $mode) {
-		// Optimize SELECT to only fetch needed columns
-		$sql = 'select thcv.COL_PRIMARY_KEY, thcv.COL_CALL, thcv.COL_BAND, thcv.COL_MODE, thcv.COL_TIME_ON, station_profile.station_callsign from ' . $this->config->item('table_name') . ' thcv
-		 join station_profile on thcv.station_id = station_profile.station_id where (col_band = \'' . $band . '\' or col_prop_mode = \'' . $band . '\')
-		 and date(col_time_on) = \'' . $date . '\'
-		 and (col_mode = \'' . $mode . '\'
-		 or col_submode = \'' . $mode . '\')
-		 and timediff(time(col_time_on), \'' . $time . '\') <= 3000
-		 and station_profile.user_id = '. $this->session->userdata('user_id');
+		$this->db->select('thcv.COL_PRIMARY_KEY, thcv.COL_CALL, thcv.COL_BAND, thcv.COL_MODE, thcv.COL_TIME_ON, station_profile.station_callsign');
+		$this->db->from($this->config->item('table_name') . ' thcv');
+		$this->db->join('station_profile', 'thcv.station_id = station_profile.station_id');
+		$this->db->group_start();
+		$this->db->where('thcv.col_band', $band);
+		$this->db->or_where('thcv.col_prop_mode', $band);
+		$this->db->group_end();
+		$this->db->where('date(thcv.col_time_on)', $date);
+		$this->db->group_start();
+		$this->db->where('thcv.col_mode', $mode);
+		$this->db->or_where('thcv.col_submode', $mode);
+		$this->db->group_end();
+		$this->db->where('timediff(time(thcv.col_time_on), ' . $this->db->escape($time) . ') <= 3000', NULL, false);
+		$this->db->where('station_profile.user_id', (int) $this->session->userdata('user_id'));
 
-		return $this->db->query($sql);;
+		return $this->db->get();
 	}
 
 	function mark_oqrs_line_as_done($id) {
@@ -378,9 +415,14 @@ class Oqrs_model extends CI_Model {
 	}
 
 	public function oqrs_requests($location_list) {
-		if ($location_list != "") {
-			$sql = 'SELECT COUNT(*) AS number FROM oqrs JOIN station_profile ON oqrs.station_id = station_profile.station_id WHERE oqrs.station_id IN ('.$location_list.') AND status < 2';
-			$query = $this->db->query($sql);
+		$location_ids = $this->normalize_location_ids($location_list);
+		if (!empty($location_ids)) {
+			$this->db->select('COUNT(*) AS number', false);
+			$this->db->from('oqrs');
+			$this->db->join('station_profile', 'oqrs.station_id = station_profile.station_id');
+			$this->db->where_in('oqrs.station_id', $location_ids);
+			$this->db->where('status <', 2);
+			$query = $this->db->get();
 			$row = $query->row();
 			return $row->number;
 		} else {

@@ -143,7 +143,7 @@ class Labels extends CI_Controller {
 	}
 
 	public function print($station_id) {
-		$clean_id = xss_clean($station_id);
+		$clean_id = (int) $station_id;
 		$offset = xss_clean($this->input->post('startat'));
 		$grid = xss_clean($this->input->post('grid') ?? 0);
 		$via = xss_clean($this->input->post('via') ?? 0);
@@ -397,7 +397,7 @@ class Labels extends CI_Controller {
 	public function edit($id) {
 		$this->load->model('labels_model');
 
-		$cleanid = $this->security->xss_clean($id);
+		$cleanid = (int) $id;
 
 		$data['label'] = $this->labels_model->getLabel($cleanid,$this->session->userdata('user_id'));
 
@@ -425,7 +425,7 @@ class Labels extends CI_Controller {
 	}
 
 	public function saveDefaultLabel() {
-		$id = $this->input->post('id');
+		$id = (int) $this->input->post('id');
 		$this->load->model('labels_model');
 		$this->labels_model->saveDefaultLabel($id);
 	}
@@ -438,7 +438,7 @@ class Labels extends CI_Controller {
 	public function editPaper($id) {
 		$this->load->model('labels_model');
 
-		$cleanid = $this->security->xss_clean($id);
+		$cleanid = (int) $id;
 
 		$data['paper'] = $this->labels_model->getPaper($cleanid);
 
@@ -455,7 +455,7 @@ class Labels extends CI_Controller {
 			$this->labels_model->updatePaper($id);
 		} catch (\Throwable $th) {
 			$this->session->set_flashdata('error', 'Your paper could not be saved. Remember that it can\'t have the same name as existing paper types.');
-			$cleanid = $this->security->xss_clean($id);
+			$cleanid = (int) $id;
 			redirect('labels/editpaper/'.$cleanid);
 		}
 		$this->session->set_flashdata('message', 'Paper was saved.');

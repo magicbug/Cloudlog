@@ -22,8 +22,7 @@ class Qsl_model extends CI_Model
 
     function getQslForQsoId($id)
     {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+        $clean_id = (int) $id;
 
         // be sure that QSO belongs to user
         $CI = &get_instance();
@@ -41,8 +40,7 @@ class Qsl_model extends CI_Model
 
     function saveQsl($qsoid, $filename)
     {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($qsoid);
+        $clean_id = (int) $qsoid;
 
         // be sure that QSO belongs to user and user has write permission
         $CI = &get_instance();
@@ -63,8 +61,7 @@ class Qsl_model extends CI_Model
 
     function deleteQsl($id)
     {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+        $clean_id = (int) $id;
 
         // be sure that QSO belongs to user and user has write permission
         $CI = &get_instance();
@@ -83,8 +80,7 @@ class Qsl_model extends CI_Model
 
     function getFilename($id)
     {
-        // Clean ID
-        $clean_id = $this->security->xss_clean($id);
+        $clean_id = (int) $id;
 
         // be sure that QSO belongs to user
         $CI = &get_instance();
@@ -120,7 +116,7 @@ class Qsl_model extends CI_Model
 
     function addQsotoQsl($qsoid, $filename)
     {
-        $clean_qsoid = $this->security->xss_clean($qsoid);
+        $clean_qsoid = (int) $qsoid;
         $clean_filename = $this->security->xss_clean($filename);
 
         // be sure that QSO belongs to user
