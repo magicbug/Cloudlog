@@ -237,7 +237,7 @@ class Visitor extends CI_Controller {
 		$data['page_title'] = "Public Gridsquare Map";
 
 		// Get available bands for this logbook
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 		
 		// Get bands (excluding satellites) 
 		$bands_query = $this->db->query(

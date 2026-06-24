@@ -214,7 +214,7 @@ class CQ extends CI_Model{
         $sql .= " where station_id in (" . $location_list . ') and col_cqz <= 40 and col_cqz > 0';
 
         if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
         } else if ($band == 'All') {
             $this->load->model('bands');
 
@@ -226,7 +226,7 @@ class CQ extends CI_Model{
 					" and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
+			$sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
         }
 
         if ($postdata['mode'] != 'All') {
@@ -249,7 +249,7 @@ class CQ extends CI_Model{
         $sql .= " where station_id in (" . $location_list . ') and col_cqz <= 40 and col_cqz > 0';
 
         if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
         } else if ($band == 'All') {
             $this->load->model('bands');
 
@@ -261,7 +261,7 @@ class CQ extends CI_Model{
 					" and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
+			$sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
         }
 
         if ($postdata['mode'] != 'All') {

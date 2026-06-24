@@ -1715,7 +1715,7 @@ class Awards extends CI_Controller
     {
         $this->load->model('logbooks_model');
 
-        $dxcc_id = $this->security->xss_clean($this->input->post('dxcc_id'));
+        $dxcc_id = (int) $this->security->xss_clean($this->input->post('dxcc_id'));
         $limit = $this->security->xss_clean($this->input->post('limit')) ?: 20;
 
         if (!$dxcc_id || !is_numeric($dxcc_id)) {
@@ -1732,7 +1732,7 @@ class Awards extends CI_Controller
             return;
         }
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         try {
             // Get QSOs for this DXCC
@@ -1776,7 +1776,7 @@ class Awards extends CI_Controller
     {
         $this->load->model('logbooks_model');
 
-        $dxcc_id = $this->security->xss_clean($this->input->post('dxcc_id'));
+        $dxcc_id = (int) $this->security->xss_clean($this->input->post('dxcc_id'));
         $status = $this->security->xss_clean($this->input->post('status'));
         $limit = $this->security->xss_clean($this->input->post('limit')) ?: 100;
 
@@ -1794,7 +1794,7 @@ class Awards extends CI_Controller
             return;
         }
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         try {
             // Build WHERE clause for status filter
@@ -1864,7 +1864,7 @@ class Awards extends CI_Controller
             return;
         }
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         try {
             // Get all DXCC entities for this continent with their status in a single query
@@ -1881,7 +1881,7 @@ class Awards extends CI_Controller
                     END as status
                 FROM dxcc_entities d
                 LEFT JOIN " . $this->config->item('table_name') . " c ON d.adif = c.col_dxcc AND c.station_id IN (" . $location_list . ")
-                WHERE d.cont = '" . $this->db->escape_like_str($continent_code) . "'
+                WHERE d.cont = '" . $this->db->escape_str($continent_code) . "'
                 GROUP BY d.adif, d.name, d.prefix, d.cont
                 ORDER BY d.name ASC
             ");
