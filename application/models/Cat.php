@@ -157,8 +157,9 @@
 		}
 
 		function radio_status($id) {
-			$sql = 'SELECT * FROM `cat` WHERE id = ' . $id . ' and user_id =' . $this->session->userdata('user_id');
-			return $this->db->query($sql);
+			$this->db->where('id', (int) $id);
+			$this->db->where('user_id', (int) $this->session->userdata('user_id'));
+			return $this->db->get('cat');
 		}
 
 		// Return recent radio status for a specific user_id (no session required, for public widgets)

@@ -196,11 +196,10 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function delete_oqrs_line($id) {
-		$sql = 'delete from oqrs where id =' . xss_clean((intval($id)));
+		$this->db->where('id', (int) $id);
+		$this->db->delete('oqrs');
 
-        $query = $this->db->query($sql);
-
-        return true;
+		return true;
 	}
 
 
@@ -302,9 +301,9 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function getQslInfo($station_id) {
-		$sql = 'select oqrs_text from station_profile where station_id = ' . $station_id;
-
-		$query = $this->db->query($sql);
+		$this->db->select('oqrs_text');
+		$this->db->where('station_id', (int) $station_id);
+		$query = $this->db->get('station_profile');
 
 		if ($query->num_rows() > 0)
 		{
@@ -316,9 +315,9 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function getOqrsEmailSetting($station_id) {
-		$sql = 'select oqrs_email from station_profile where station_id = ' . $station_id;
-
-		$query = $this->db->query($sql);
+		$this->db->select('oqrs_email');
+		$this->db->where('station_id', (int) $station_id);
+		$query = $this->db->get('station_profile');
 
 		if ($query->num_rows() > 0)
 		{
@@ -390,9 +389,12 @@ class Oqrs_model extends CI_Model {
 	}
 
 	function getOqrsStationsFromSlug($logbook_id) {
-		$sql = 'SELECT station_callsign FROM `station_logbooks_relationship` JOIN `station_profile` ON station_logbooks_relationship.station_location_id = station_profile.station_id WHERE station_profile.oqrs = 1 AND station_logbook_id = '.$logbook_id.';';
-
-		$query = $this->db->query($sql);
+		$this->db->select('station_callsign');
+		$this->db->from('station_logbooks_relationship');
+		$this->db->join('station_profile', 'station_logbooks_relationship.station_location_id = station_profile.station_id');
+		$this->db->where('station_profile.oqrs', 1);
+		$this->db->where('station_logbook_id', (int) $logbook_id);
+		$query = $this->db->get();
 
 		if ($query->num_rows() > 0) {
 			return true;

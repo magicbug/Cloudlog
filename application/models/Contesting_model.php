@@ -18,17 +18,17 @@ class Contesting_model extends CI_Model {
         if ($date == false) $date = new DateTime('today', new DateTimeZone('UTC'));
         $date = $date->format('Y-m-d H:i:s');
 
-        $sql = "SELECT date_format(col_time_on, '%d-%m-%Y %H:%i:%s') as col_time_on, col_call, col_band, col_mode,
-       		col_submode, col_rst_sent, col_rst_rcvd, coalesce(col_srx, '') col_srx, coalesce(col_srx_string, '') col_srx_string,
-       		coalesce(col_stx, '') col_stx, coalesce(col_stx_string, '') col_stx_string, coalesce(col_gridsquare, '') col_gridsquare,
-       		coalesce(col_vucc_grids, '') col_vucc_grids FROM " .
-            $this->config->item('table_name') .
-            " WHERE station_id = " . $station_id .
-            " AND COL_TIME_ON >= '" . $date . "'" .
-            " AND COL_CONTEST_ID = '" . $contestid . "'" .
-            " ORDER BY COL_PRIMARY_KEY ASC";
+		$this->db->select("date_format(col_time_on, '%d-%m-%Y %H:%i:%s') as col_time_on, col_call, col_band, col_mode,
+	       		col_submode, col_rst_sent, col_rst_rcvd, coalesce(col_srx, '') col_srx, coalesce(col_srx_string, '') col_srx_string,
+	       		coalesce(col_stx, '') col_stx, coalesce(col_stx_string, '') col_stx_string, coalesce(col_gridsquare, '') col_gridsquare,
+	       		coalesce(col_vucc_grids, '') col_vucc_grids", false);
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where('station_id', (int) $station_id);
+		$this->db->where('COL_TIME_ON >=', $date);
+		$this->db->where('COL_CONTEST_ID', $contestid);
+		$this->db->order_by('COL_PRIMARY_KEY', 'ASC');
 
-        $data = $this->db->query($sql);
+		$data = $this->db->get();
         return $data->result();
     }
 
@@ -37,7 +37,7 @@ class Contesting_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $contestid = $contest_id;
+		$contestid = (string) $contest_id;
 
 		// save contestid to debug
 		// Get current date and time
@@ -45,17 +45,17 @@ class Contesting_model extends CI_Model {
 		$now->modify('-1 minute');
 		$date = $now->format('Y-m-d H:i:s');
 
-        $sql = "SELECT date_format(col_time_on, '%d-%m-%Y %H:%i:%s') as col_time_on, col_call, col_band, col_mode,
-       		col_submode, col_rst_sent, col_rst_rcvd, coalesce(col_srx, '') col_srx, coalesce(col_srx_string, '') col_srx_string,
-       		coalesce(col_stx, '') col_stx, coalesce(col_stx_string, '') col_stx_string, coalesce(col_gridsquare, '') col_gridsquare,
-       		coalesce(col_vucc_grids, '') col_vucc_grids FROM " .
-            $this->config->item('table_name') .
-            " WHERE station_id = " . $station_id .
-            " AND COL_TIME_ON >= '" . $date . "'" .
-            " AND COL_CONTEST_ID = '" . $contestid . "'" .
-            " ORDER BY COL_PRIMARY_KEY ASC";
+		$this->db->select("date_format(col_time_on, '%d-%m-%Y %H:%i:%s') as col_time_on, col_call, col_band, col_mode,
+	       		col_submode, col_rst_sent, col_rst_rcvd, coalesce(col_srx, '') col_srx, coalesce(col_srx_string, '') col_srx_string,
+	       		coalesce(col_stx, '') col_stx, coalesce(col_stx_string, '') col_stx_string, coalesce(col_gridsquare, '') col_gridsquare,
+	       		coalesce(col_vucc_grids, '') col_vucc_grids", false);
+		$this->db->from($this->config->item('table_name'));
+		$this->db->where('station_id', (int) $station_id);
+		$this->db->where('COL_TIME_ON >=', $date);
+		$this->db->where('COL_CONTEST_ID', $contestid);
+		$this->db->order_by('COL_PRIMARY_KEY', 'ASC');
 
-        $data = $this->db->query($sql);
+		$data = $this->db->get();
 
         return $data->result();
     }
@@ -65,9 +65,8 @@ class Contesting_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $sql = "SELECT * from contest_session where station_id = " . $station_id;
-
-        $data = $this->db->query($sql);
+		$this->db->where('station_id', (int) $station_id);
+		$data = $this->db->get('contest_session');
 
         return $data->row();
     }
@@ -79,9 +78,8 @@ class Contesting_model extends CI_Model {
         $CI->load->model('Stations');
         $station_id = $CI->Stations->find_active();
 
-        $sql = "delete from contest_session where station_id = " . $station_id;
-
-        $this->db->query($sql);
+		$this->db->where('station_id', (int) $station_id);
+		$this->db->delete('contest_session');
 		return;
     }
 
@@ -118,9 +116,8 @@ class Contesting_model extends CI_Model {
           $data['copytodok'] = xss_clean($this->input->post('copyexchangeto'));
         }
 
-        $sql = "SELECT * from contest_session where station_id = " . $station_id;
-
-        $querydata = $this->db->query($sql);
+		$this->db->where('station_id', (int) $station_id);
+		$querydata = $this->db->get('contest_session');
 
 		if ($querydata->num_rows() == 0) {
 			$this->db->insert('contest_session', $data);
