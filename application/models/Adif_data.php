@@ -126,10 +126,10 @@ class adif_data extends CI_Model {
 
         // If date is set, we format the date and add it to the where-statement
         if ($from) {
-            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) >= '".$from."'");
+			$this->db->where('DATE('.$this->config->item('table_name').'.COL_TIME_ON) >= '.$this->db->escape($from), NULL, FALSE);
         }
         if ($to) {
-            $this->db->where("date(".$this->config->item('table_name').".COL_TIME_ON) <= '".$to."'");
+			$this->db->where('DATE('.$this->config->item('table_name').'.COL_TIME_ON) <= '.$this->db->escape($to), NULL, FALSE);
         }
         if ($exportLotw) {
             $this->db->group_start();
