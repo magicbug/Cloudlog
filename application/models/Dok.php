@@ -91,9 +91,7 @@ function get_dok_array($bands, $postdata, $location_list) {
 		$sql = "SELECT DISTINCT COL_DARC_DOK FROM " . $this->config->item('table_name') . " thcv
 			WHERE station_id IN (" . $location_list . ") AND COL_DARC_DOK <> '' AND COL_DARC_DOK <> 'NM'";
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " AND (COL_MODE = '" . $postdata['mode'] . "' OR COL_SUBMODE = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 		$sql .= $this->addDokTypeToQuery($postdata['doks']);
 		$sql .= $this->addBandToQuery($band);
 		$sql .= " AND NOT EXISTS (SELECT 1 from " . $this->config->item('table_name') .
@@ -112,9 +110,7 @@ function get_dok_array($bands, $postdata, $location_list) {
 	function getDokConfirmed($location_list, $band, $postdata) {
 		$sql = "SELECT DISTINCT COL_DARC_DOK FROM " . $this->config->item('table_name') . " thcv
 			WHERE station_id IN (" . $location_list . ") AND COL_DARC_DOK <> '' AND COL_DARC_DOK <> '' AND COL_DARC_DOK <> 'NM'";
-		if ($postdata['mode'] != 'All') {
-			$sql .= " AND (COL_MODE = '" . $postdata['mode'] . "' or COL_SUBMODE = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 		$sql .= $this->addDokTypeToQuery($postdata['doks']);
 		$sql .= $this->addBandToQuery($band);
 		$sql .= $this->addQslToQuery($postdata);
@@ -145,14 +141,23 @@ function get_dok_array($bands, $postdata, $location_list) {
 	function addBandToQuery($band) {
 		$sql = '';
 		if ($band != 'All') {
+			$safeBand = $this->db->escape_str($band);
 			if ($band == 'SAT') {
-				$sql .= " AND COL_PROP_MODE ='" . $band . "'";
+				$sql .= " AND COL_PROP_MODE ='" . $safeBand . "'";
 			} else {
 				$sql .= " AND COL_PROP_MODE !='SAT'";
-				$sql .= " AND col_BAND ='" . $band . "'";
+				$sql .= " AND col_BAND ='" . $safeBand . "'";
 			}
 		}
 		return $sql;
+	}
+
+	function addModeToQuery($mode) {
+		if ($mode == 'All') {
+			return '';
+		}
+		$safeMode = $this->db->escape_str($mode);
+		return " AND (COL_MODE = '" . $safeMode . "' OR COL_SUBMODE = '" . $safeMode . "')";
 	}
 
 	function addDokTypeToQuery($doks) {
@@ -187,15 +192,15 @@ function get_dok_array($bands, $postdata, $location_list) {
 		$sql = "SELECT count(distinct thcv.COL_DARC_DOK) AS count FROM " . $this->config->item('table_name') . " thcv";
 		$sql .= " WHERE station_id IN (" . $location_list . ') AND COL_DARC_DOK != "" AND COL_DARC_DOK <> "NM"';
 		if ($band == 'SAT') {
-			$sql .= " AND thcv.COL_PROP_MODE ='" . $band . "'";
+			$sql .= " AND thcv.COL_PROP_MODE ='" . $this->db->escape_str($band) . "'";
 		} else if ($band == 'All') {
 			$this->load->model('bands');
 			$bandslots = $this->bands->get_worked_bands('dok');
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+			$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 			$sql .= " AND thcv.COL_BAND in (" . $bandslots_list . ")";
 		} else {
 			$sql .= " AND thcv.COL_PROP_MODE !='SAT'";
-			$sql .= " AND thcv.COL_BAND ='" . $band . "'";
+			$sql .= " AND thcv.COL_BAND ='" . $this->db->escape_str($band) . "'";
 		}
 		if ($postdata['doks'] == 'dok') {
 			$sql .= " AND COL_DARC_DOK REGEXP '^[A-Z][0-9]{2}$'";
@@ -210,15 +215,15 @@ function get_dok_array($bands, $postdata, $location_list) {
 		$sql = "SELECT count(distinct thcv.COL_DARC_DOK) AS count FROM " . $this->config->item('table_name') . " thcv";
 		$sql .= " WHERE station_id IN (" . $location_list . ') AND COL_DARC_DOK != "" AND COL_DARC_DOK <> "NM"';
 		if ($band == 'SAT') {
-			$sql .= " AND thcv.COL_PROP_MODE ='" . $band . "'";
+			$sql .= " AND thcv.COL_PROP_MODE ='" . $this->db->escape_str($band) . "'";
 		} else if ($band == 'All') {
 			$this->load->model('bands');
 			$bandslots = $this->bands->get_worked_bands('dok');
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+			$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 			$sql .= " AND thcv.COL_BAND in (" . $bandslots_list . ")";
 		} else {
 			$sql .= " AND thcv.COL_PROP_MODE !='SAT'";
-			$sql .= " AND thcv.COL_BAND ='" . $band . "'";
+			$sql .= " AND thcv.COL_BAND ='" . $this->db->escape_str($band) . "'";
 		}
 		if ($postdata['doks'] == 'dok') {
 			$sql .= " AND COL_DARC_DOK REGEXP '^[A-Z][0-9]{2}$'";

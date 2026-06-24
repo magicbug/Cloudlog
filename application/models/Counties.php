@@ -31,13 +31,13 @@ class Counties extends CI_Model
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $this->load->model('bands');
 
 		$bandslots = $this->bands->get_worked_bands('uscounties');
 
-		$bandslots_list = "'".implode("','",$bandslots)."'";
+        $bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 
         // Normalize county/state values so imported variants group consistently.
         $normalizedCountyExpression = "LOWER(TRIM(SUBSTRING_INDEX(COL_CNTY, ',', -1)))";
@@ -98,13 +98,13 @@ class Counties extends CI_Model
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $this->load->model('bands');
 
 		$bandslots = $this->bands->get_worked_bands('uscounties');
 
-		$bandslots_list = "'".implode("','",$bandslots)."'";
+        $bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 
         $normalizedCountySelect = "TRIM(SUBSTRING_INDEX(COL_CNTY, ',', -1))";
         $normalizedCountyOrder = "LOWER(TRIM(SUBSTRING_INDEX(COL_CNTY, ',', -1)))";

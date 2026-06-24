@@ -84,7 +84,7 @@ class Awards extends CI_Controller
         }
 
         if ($logbooks_locations_array) {
-            $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+            $location_list = implode(',', array_map('intval', $logbooks_locations_array));
             $data['dok_array'] = $this->dok->get_dok_array($bands, $postdata, $location_list);
             $data['dok_summary'] = $this->dok->get_dok_summary($bands, $postdata, $location_list);
         } else {

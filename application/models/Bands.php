@@ -193,7 +193,7 @@ class Bands extends CI_Model {
 			return array();
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 		// get all worked slots from database
 		$data = $this->db->query(
@@ -233,7 +233,7 @@ class Bands extends CI_Model {
 		if (!$logbooks_locations_array) {
 			return array();
 		}
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         // get all worked slots from database
         $sql = "SELECT distinct LOWER(COL_BAND) as COL_BAND FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ")";
@@ -265,7 +265,7 @@ class Bands extends CI_Model {
 			return array();
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         // get all worked sats from database
         $sql = "SELECT distinct col_sat_name FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ") and coalesce(col_sat_name, '') <> '' ORDER BY col_sat_name";
@@ -289,7 +289,7 @@ class Bands extends CI_Model {
 			return array();
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 		// get all worked slots from database
 		$data = $this->db->query(
@@ -321,7 +321,7 @@ class Bands extends CI_Model {
 			return array();
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         // get all worked powers from database
         $sql = "SELECT distinct col_tx_pwr FROM ".$this->config->item('table_name')." WHERE station_id in (" . $location_list . ") ORDER BY col_tx_pwr";

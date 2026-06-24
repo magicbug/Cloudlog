@@ -73,7 +73,7 @@ class DXCC extends CI_Model {
 			return null;
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 		$qsl = "";
 		if ($postdata['confirmed'] != NULL) {
@@ -151,9 +151,7 @@ class DXCC extends CI_Model {
 
 		$sql .= $this->addBandToQuery($band);
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		$sql .= $this->addYearToQuery($postdata);
 		$sql .= $this->addQslToQuery($postdata);
@@ -181,9 +179,7 @@ class DXCC extends CI_Model {
 
 		$sql .= $this->addBandToQuery($band);
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		$sql .= $this->addYearToQuery($postdata);
 
@@ -204,15 +200,24 @@ class DXCC extends CI_Model {
 	function addBandToQuery($band) {
         $sql = '';
         if ($band != 'All') {
+			$safeBand = $this->db->escape_str($band);
             if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
+				$sql .= " and col_prop_mode ='" . $safeBand . "'";
             } else {
                 $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
+				$sql .= " and col_band ='" . $safeBand . "'";
             }
         }
         return $sql;
     }
+
+	function addModeToQuery($mode) {
+		if ($mode == 'All') {
+			return '';
+		}
+		$safeMode = $this->db->escape_str($mode);
+		return " and (col_mode = '" . $safeMode . "' or col_submode = '" . $safeMode . "')";
+	}
 
 	function addYearToQuery($postdata) {
 		$sql = '';
@@ -230,7 +235,7 @@ class DXCC extends CI_Model {
 		if (!$logbooks_locations_array) {
 			return [];
 		}
-		$location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 		$sql = "SELECT DISTINCT YEAR(col_time_on) as year FROM " . $this->config->item('table_name') .
 			" WHERE station_id IN (" . $location_list . ") AND col_dxcc > 0 AND col_time_on IS NOT NULL ORDER BY year DESC";
 		$query = $this->db->query($sql);
@@ -246,7 +251,7 @@ class DXCC extends CI_Model {
 			return null;
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 		$sql = "select adif, prefix, name, cont, date(end) Enddate, date(start) Startdate, lat, `long`
             from dxcc_entities";
@@ -254,19 +259,9 @@ class DXCC extends CI_Model {
 		if ($postdata['notworked'] == NULL) {
 			$sql .= " join (select col_dxcc from " . $this->config->item('table_name') . " where station_id in (" . $location_list . ") and col_dxcc > 0";
 
-			if ($postdata['band'] != 'All') {
-				if ($postdata['band'] == 'SAT') {
-					$sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-				}
-				else {
-					$sql .= " and col_prop_mode !='SAT'";
-					$sql .= " and col_band ='" . $postdata['band'] . "'";
-				}
-			}
+			$sql .= $this->addBandToQuery($postdata['band']);
 
-			if ($postdata['mode'] != 'All') {
-				$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-			}
+			$sql .= $this->addModeToQuery($postdata['mode']);
 
 			$sql .= ' group by col_dxcc) x on dxcc_entities.adif = x.col_dxcc';
 		}
@@ -295,9 +290,7 @@ class DXCC extends CI_Model {
 
 		$sql .= $this->addBandToQuery($postdata['band']);
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		$sql .= $this->addYearToQuery($postdata);
 
@@ -305,9 +298,7 @@ class DXCC extends CI_Model {
 
 		$sql .= $this->addBandToQuery($postdata['band']);
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		$sql .= $this->addYearToQuery($postdata);
 
@@ -340,9 +331,7 @@ class DXCC extends CI_Model {
 
 		$sql .= $this->addBandToQuery($postdata['band']);
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		$sql .= $this->addYearToQuery($postdata);
 		$sql .= $this->addQslToQuery($postdata);
@@ -429,7 +418,7 @@ class DXCC extends CI_Model {
 			return null;
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 		foreach ($bands as $band) {
 			$worked = $this->getSummaryByBand($band, $postdata, $location_list);
@@ -455,24 +444,22 @@ class DXCC extends CI_Model {
 		$sql .= " where station_id in (" . $location_list . ") and col_dxcc > 0";
 
 		if ($band == 'SAT') {
-			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
 		} else if ($band == 'All') {
 			$this->load->model('bands');
 
 			$bandslots = $this->bands->get_worked_bands('dxcc');
 	
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+			$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 			
 			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
 					" and thcv.col_prop_mode !='SAT'";
 		} else {
 			$sql .= " and thcv.col_prop_mode !='SAT'";
-			$sql .= " and thcv.col_band ='" . $band . "'";
+			$sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
 		}
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		if ($postdata['includedeleted'] == NULL) {
 			$sql .= " and d.end is null";
@@ -493,24 +480,22 @@ class DXCC extends CI_Model {
 		$sql .= " where station_id in (" . $location_list . ")";
 
 		if ($band == 'SAT') {
-			$sql .= " and thcv.col_prop_mode ='" . $band . "'";
+			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
 		} else if ($band == 'All') {
 			$this->load->model('bands');
 
 			$bandslots = $this->bands->get_worked_bands('dxcc');
 	
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+			$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 			
 			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
 					" and thcv.col_prop_mode !='SAT'";
 		} else {
 			$sql .= " and thcv.col_prop_mode !='SAT'";
-			$sql .= " and thcv.col_band ='" . $band . "'";
+			$sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
 		}
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		$sql .= $this->addQslToQuery($postdata);
 
