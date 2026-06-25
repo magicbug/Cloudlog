@@ -138,6 +138,8 @@ class Stations extends CI_Model {
 			'webadifapikey' => xss_clean($this->input->post('webadifapikey', true)),
 			'webadifapiurl' => 'https://qo100dx.club/api',
 			'webadifrealtime' => xss_clean($this->input->post('webadifrealtime', true)),
+			'qrzcallapikey' => xss_clean($this->input->post('qrzcallapikey', true)),
+			'qrzcallrealtime' => xss_clean($this->input->post('qrzcallrealtime', true)),
 		);
 
 		// Insert Records & return insert id //
@@ -189,6 +191,8 @@ class Stations extends CI_Model {
 			'webadifapikey' => xss_clean($this->input->post('webadifapikey', true)),
 			'webadifapiurl' => 'https://qo100dx.club/api',
 			'webadifrealtime' => xss_clean($this->input->post('webadifrealtime', true)),
+			'qrzcallapikey' => xss_clean($this->input->post('qrzcallapikey', true)),
+			'qrzcallrealtime' => xss_clean($this->input->post('qrzcallrealtime', true)),
 		);
 
 		$this->db->where('user_id', $this->session->userdata('user_id'));
