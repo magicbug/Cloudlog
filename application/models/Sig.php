@@ -1,6 +1,20 @@
 <?php
 
 class Sig extends CI_Model {
+	private function normalize_location_list($location_list) {
+		if (is_array($location_list)) {
+			return implode(',', array_map('intval', $location_list));
+		}
+		$parts = explode(',', (string) $location_list);
+		$ids = array();
+		foreach ($parts as $part) {
+			$trimmed = trim($part, " \t\n\r\0\x0B'\"");
+			if (is_numeric($trimmed)) {
+				$ids[] = (int) $trimmed;
+			}
+		}
+		return implode(',', array_values(array_unique($ids)));
+	}
 
 	function get_all($type, $filters = array()) {
 		$CI =& get_instance();
@@ -46,23 +60,23 @@ class Sig extends CI_Model {
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = $this->normalize_location_list($logbooks_locations_array);
 
 		$this->load->model('bands');
 
 		$bandslots = $this->bands->get_worked_bands('sig');
 
-		$bandslots_list = "'".implode("','",$bandslots)."'";
+		$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 
 		// Build dynamic WHERE clause for filters
 		$where_clause = " where col_sig <> '' and station_id in (" . $location_list . ") and col_band in (" . $bandslots_list . ")";
 
 		if (!empty($filters['band']) && strtolower($filters['band']) !== 'all') {
-			$where_clause .= " and LOWER(col_band) = '" . strtolower($filters['band']) . "'";
+			$where_clause .= " and LOWER(col_band) = '" . $this->db->escape_str(strtolower($filters['band'])) . "'";
 		}
 
 		if (!empty($filters['mode']) && strtolower($filters['mode']) !== 'all') {
-			$where_clause .= " and LOWER(col_mode) = '" . strtolower($filters['mode']) . "'";
+			$where_clause .= " and LOWER(col_mode) = '" . $this->db->escape_str(strtolower($filters['mode'])) . "'";
 		}
 
 		if (!empty($filters['confirmed_only']) && ($filters['confirmed_only'] === true || $filters['confirmed_only'] === 'true' || $filters['confirmed_only'] === 1 || $filters['confirmed_only'] === '1')) {
@@ -88,21 +102,21 @@ class Sig extends CI_Model {
 			return 0;
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = $this->normalize_location_list($logbooks_locations_array);
 
 		$this->load->model('bands');
 		$bandslots = $this->bands->get_worked_bands('sig');
-		$bandslots_list = "'".implode("','",$bandslots)."'";
+		$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 
 		$where_clause = " where col_sig = '" . $this->db->escape_str($type) . "' and station_id in (" . $location_list . ") and col_band in (" . $bandslots_list . ")";
 		$where_clause .= " and (COL_QSL_RCVD = 'Y' OR COL_EQSL_QSL_RCVD = 'Y' OR COL_LOTW_QSL_RCVD = 'Y')";
 
 		if (!empty($filters['band']) && strtolower($filters['band']) !== 'all') {
-			$where_clause .= " and LOWER(col_band) = '" . strtolower($filters['band']) . "'";
+			$where_clause .= " and LOWER(col_band) = '" . $this->db->escape_str(strtolower($filters['band'])) . "'";
 		}
 
 		if (!empty($filters['mode']) && strtolower($filters['mode']) !== 'all') {
-			$where_clause .= " and LOWER(col_mode) = '" . strtolower($filters['mode']) . "'";
+			$where_clause .= " and LOWER(col_mode) = '" . $this->db->escape_str(strtolower($filters['mode'])) . "'";
 		}
 
 		$sql = "select count(distinct col_sig_info) as confirmed_refs from " . $this->config->item('table_name') . $where_clause;
@@ -124,20 +138,20 @@ class Sig extends CI_Model {
 			return 0;
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = $this->normalize_location_list($logbooks_locations_array);
 
 		$this->load->model('bands');
 		$bandslots = $this->bands->get_worked_bands('sig');
-		$bandslots_list = "'".implode("','",$bandslots)."'";
+		$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 
 		$where_clause = " where col_sig = '" . $this->db->escape_str($type) . "' and station_id in (" . $location_list . ") and col_band in (" . $bandslots_list . ")";
 
 		if (!empty($filters['band']) && strtolower($filters['band']) !== 'all') {
-			$where_clause .= " and LOWER(col_band) = '" . strtolower($filters['band']) . "'";
+			$where_clause .= " and LOWER(col_band) = '" . $this->db->escape_str(strtolower($filters['band'])) . "'";
 		}
 
 		if (!empty($filters['mode']) && strtolower($filters['mode']) !== 'all') {
-			$where_clause .= " and LOWER(col_mode) = '" . strtolower($filters['mode']) . "'";
+			$where_clause .= " and LOWER(col_mode) = '" . $this->db->escape_str(strtolower($filters['mode'])) . "'";
 		}
 
 		$sql = "select count(distinct col_sig_info) as worked_refs from " . $this->config->item('table_name') . $where_clause;
@@ -159,7 +173,7 @@ class Sig extends CI_Model {
             return array();
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = $this->normalize_location_list($logbooks_locations_array);
 
 		// Get distinct modes from SIG QSOs
 		$sql = "SELECT DISTINCT UPPER(COL_MODE) as COL_MODE FROM " . $this->config->item('table_name') . 

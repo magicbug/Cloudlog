@@ -122,7 +122,7 @@ class Oqrs extends CI_Controller {
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
         if ($logbooks_locations_array) {
-			$location_list = "'".implode("','",$logbooks_locations_array)."'";
+			$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 		} else {
             $location_list = null;
         }

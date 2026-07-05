@@ -10,37 +10,41 @@ class Setup_model extends CI_Model {
 	}
 
 	function getLogbookCount() {
-		$userid = xss_clean($this->session->userdata('user_id'));
+		$userid = (int) $this->session->userdata('user_id');
 		// Count logbooks the user owns OR has been granted permissions to
-		$sql = "SELECT COUNT(DISTINCT sl.logbook_id) AS count
-			FROM station_logbooks sl
-			LEFT JOIN station_logbooks_permissions slp
-				ON slp.logbook_id = sl.logbook_id AND slp.user_id = {$userid}
-			WHERE sl.user_id = {$userid} OR slp.user_id = {$userid}";
-		$query = $this->db->query($sql);
+		$this->db->select('COUNT(DISTINCT sl.logbook_id) AS count', false);
+		$this->db->from('station_logbooks sl');
+		$this->db->join('station_logbooks_permissions slp', 'slp.logbook_id = sl.logbook_id AND slp.user_id = '.$this->db->escape($userid), 'left', false);
+		$this->db->group_start();
+		$this->db->where('sl.user_id', $userid);
+		$this->db->or_where('slp.user_id', $userid);
+		$this->db->group_end();
+		$query = $this->db->get();
 
 		return $query->row()->count;
 	}
 
 	function getLocationCount() {
-		$userid = xss_clean($this->session->userdata('user_id'));
-		$sql = 'select count(*) as count from station_profile where user_id =' . $userid;
-		$query = $this->db->query($sql);
+		$userid = (int) $this->session->userdata('user_id');
+		$this->db->select('count(*) as count', false);
+		$this->db->where('user_id', $userid);
+		$query = $this->db->get('station_profile');
 
 		return $query->row()->count;
 	}
 
 	// Consolidated method to get all setup counts in one query
 	function getAllSetupCounts() {
-		$userid = xss_clean($this->session->userdata('user_id'));
+		$userid = (int) $this->session->userdata('user_id');
+		$userid_escaped = $this->db->escape($userid);
 		
 		$sql = "SELECT 
 			(SELECT COUNT(*) FROM dxcc_entities) as country_count,
 			(SELECT COUNT(DISTINCT sl.logbook_id) FROM station_logbooks sl
 				LEFT JOIN station_logbooks_permissions slp
-					ON slp.logbook_id = sl.logbook_id AND slp.user_id = {$userid}
-				WHERE sl.user_id = {$userid} OR slp.user_id = {$userid}) as logbook_count,
-			(SELECT COUNT(*) FROM station_profile WHERE user_id = {$userid}) as location_count";
+					ON slp.logbook_id = sl.logbook_id AND slp.user_id = {$userid_escaped}
+				WHERE sl.user_id = {$userid_escaped} OR slp.user_id = {$userid_escaped}) as logbook_count,
+			(SELECT COUNT(*) FROM station_profile WHERE user_id = {$userid_escaped}) as location_count";
 		
 		$query = $this->db->query($sql);
 		$row = $query->row();

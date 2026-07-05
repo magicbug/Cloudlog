@@ -13,7 +13,7 @@ class Dayswithqso_model extends CI_Model
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "select year(COL_TIME_ON) Year, COUNT(DISTINCT TO_DAYS(COL_TIME_ON)) as Days from "
             .$this->config->item('table_name'). " thcv
@@ -169,7 +169,7 @@ class Dayswithqso_model extends CI_Model
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "select distinct cast(col_time_on as date) as date from "
             .$this->config->item('table_name'). " thcv
@@ -193,7 +193,7 @@ class Dayswithqso_model extends CI_Model
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "SELECT DAYNAME(col_time_off) AS weekday, COUNT(*) AS qsos FROM " . $this->config->item('table_name')
               . " WHERE WEEKDAY(col_time_off) BETWEEN 0 AND 6 AND station_id in (" . $location_list . ")"
@@ -222,7 +222,7 @@ class Dayswithqso_model extends CI_Model
         $max_date_query = $this->db->query('SELECT MAX(DATE(col_time_off)) AS max_date FROM ' . $this->config->item('table_name'));
         $max_date = $max_date_query->row()->max_date;
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "WITH RECURSIVE all_dates AS (
                     SELECT ? AS date

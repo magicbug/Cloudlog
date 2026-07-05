@@ -108,7 +108,7 @@ class VUCC extends CI_Model
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "select col_vucc_grids
             from " . $this->config->item('table_name') .
@@ -125,14 +125,7 @@ class VUCC extends CI_Model
             $sql .= " and col_lotw_qsl_rcvd='Y'";
         }
 
-        if ($band != 'All') {
-            if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
-            }
-        }
+        $sql .= $this->addBandToQuery($band, false);
 
         $query = $this->db->query($sql);
         return $query->result_array();
@@ -152,7 +145,7 @@ class VUCC extends CI_Model
 		    return null;
 	    }
 
-	    $location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 	    $sql = "select distinct upper(substring(log.col_gridsquare, 1, 4)) gridsquare
 		    from " . $this->config->item('table_name') . " log".
@@ -172,16 +165,7 @@ class VUCC extends CI_Model
 		    $sql .= " and log.col_lotw_qsl_rcvd='Y'";
 	    }
 
-	    if ($band != 'All') {
-		    if ($band == 'SAT') {
-			    $sql .= " and log.col_prop_mode ='" . $band . "'";
-		    } else {
-			    $sql .= " and log.col_prop_mode !='SAT'";
-			    $sql .= " and log.col_band ='" . $band . "'";
-		    }
-	    } else {
-		    $sql .= " and log.col_prop_mode !='SAT'";
-	    }
+        $sql .= $this->addBandToQuery($band, true);
 	    $query = $this->db->query($sql);
 
 	    return $query->result_array();
@@ -332,6 +316,18 @@ class VUCC extends CI_Model
         }
 
         return $workedGridArray;
+    }
+
+    private function addBandToQuery($band, $withLogPrefix) {
+        $prefix = $withLogPrefix ? 'log.' : '';
+        if ($band == 'All') {
+            return " and " . $prefix . "col_prop_mode !='SAT'";
+        }
+        $safeBand = $this->db->escape_str($band);
+        if ($band == 'SAT') {
+            return " and " . $prefix . "col_prop_mode ='" . $safeBand . "'";
+        }
+        return " and " . $prefix . "col_prop_mode !='SAT' and " . $prefix . "col_band ='" . $safeBand . "'";
     }
 
     /*

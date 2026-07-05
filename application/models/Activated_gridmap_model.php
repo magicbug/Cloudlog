@@ -11,7 +11,10 @@ class Activated_gridmap_model extends CI_Model {
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
+        $band = $this->db->escape_str($band);
+        $mode = $this->db->escape_str($mode);
+        $sat = $this->db->escape_str($sat);
 
         $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
@@ -48,7 +51,10 @@ class Activated_gridmap_model extends CI_Model {
             return null;
         }
 
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
+        $band = $this->db->escape_str($band);
+        $mode = $this->db->escape_str($mode);
+        $sat = $this->db->escape_str($sat);
 
         $sql = 'SELECT DISTINCT station_gridsquare AS GRID_SQUARES, COL_BAND FROM '
            . 'station_profile JOIN '.$this->config->item('table_name').' on '.$this->config->item('table_name').'.station_id = station_profile.station_id '
@@ -84,7 +90,10 @@ class Activated_gridmap_model extends CI_Model {
             return null;
         }
 
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
+        $band = $this->db->escape_str($band);
+        $mode = $this->db->escape_str($mode);
+        $sat = $this->db->escape_str($sat);
 
 		$sql = 'SELECT distinct COL_VUCC_GRIDS, COL_BAND FROM '
 			.$this->config->item('table_name')
@@ -121,7 +130,10 @@ class Activated_gridmap_model extends CI_Model {
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
+        $band = $this->db->escape_str($band);
+        $mode = $this->db->escape_str($mode);
+        $sat = $this->db->escape_str($sat);
 
 		$sql = 'SELECT distinct COL_VUCC_GRIDS, COL_BAND FROM '
 			.$this->config->item('table_name')
@@ -188,7 +200,7 @@ class Activated_gridmap_model extends CI_Model {
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 		// get all worked modes from database
 		$data = $this->db->query(

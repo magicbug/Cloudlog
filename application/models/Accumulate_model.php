@@ -12,7 +12,10 @@ class Accumulate_model extends CI_Model
             return array();
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_ids = array_map('intval', $logbooks_locations_array);
+        $location_list = implode(',', $location_ids);
+        $band = $this->db->escape_str($band);
+        $mode = $this->db->escape_str($mode);
 
         switch ($award) {
             case 'dxcc': $result = $this->get_accumulated_dxcc($band, $mode, $period, $location_list); break;

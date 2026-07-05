@@ -31,7 +31,7 @@ class Lookup extends CI_Controller {
 		$CI->load->model('logbooks_model');
 		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 		$this->load->model('lookup_model');
 		$this->load->model('bands');

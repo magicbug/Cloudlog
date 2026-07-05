@@ -75,7 +75,7 @@ class Gridmaster_model extends CI_Model {
         if (!$logbooks_locations_array) {
             return null;
         }
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = 'SELECT distinct substring(COL_GRIDSQUARE,1,4) as GRID_SQUARES FROM '
            .$this->config->item('table_name')
@@ -94,7 +94,7 @@ class Gridmaster_model extends CI_Model {
         if (!$logbooks_locations_array) {
             return null;
         }
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = 'SELECT distinct substring(COL_GRIDSQUARE,1,4) as GRID_SQUARES FROM '
            .$this->config->item('table_name')
@@ -113,7 +113,7 @@ class Gridmaster_model extends CI_Model {
         if (!$logbooks_locations_array) {
             return null;
         }
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = 'SELECT distinct substring(COL_GRIDSQUARE,1,4) as GRID_SQUARES FROM '
            .$this->config->item('table_name')
@@ -131,7 +131,7 @@ class Gridmaster_model extends CI_Model {
         if (!$logbooks_locations_array) {
             return null;
         }
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = 'SELECT distinct COL_VUCC_GRIDS as VUCC_GRIDS FROM '
            .$this->config->item('table_name')
@@ -163,7 +163,7 @@ class Gridmaster_model extends CI_Model {
         if (!$logbooks_locations_array) {
             return null;
         }
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = 'SELECT distinct COL_VUCC_GRIDS as VUCC_GRIDS FROM '
            .$this->config->item('table_name')
@@ -195,7 +195,7 @@ class Gridmaster_model extends CI_Model {
         if (!$logbooks_locations_array) {
             return null;
         }
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+      $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = 'SELECT distinct COL_VUCC_GRIDS as VUCC_GRIDS FROM '
            .$this->config->item('table_name')

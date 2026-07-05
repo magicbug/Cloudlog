@@ -4313,14 +4313,20 @@ class Logbook_model extends CI_Model
         $rx_pwr = NULL;
       }
 
-      if (isset($record['a_index'])) {
+      if (isset($record['a_index']) && $record['a_index'] !== '') {
         $input_a_index = filter_var($record['a_index'], FILTER_SANITIZE_NUMBER_INT);
+        if ($input_a_index === '' || $input_a_index === false) {
+          $input_a_index = NULL;
+        }
       } else {
         $input_a_index = NULL;
       }
 
-      if (isset($record['age'])) {
+      if (isset($record['age']) && $record['age'] !== '') {
         $input_age = filter_var($record['age'], FILTER_SANITIZE_NUMBER_INT);
+        if ($input_age === '' || $input_age === false) {
+          $input_age = NULL;
+        }
       } else {
         $input_age = NULL;
       }

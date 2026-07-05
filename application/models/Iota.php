@@ -11,7 +11,7 @@ class IOTA extends CI_Model {
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         foreach ($bands as $band) {             	// Looping through bands and iota to generate the array needed for display
             foreach ($iotaArray as $iota) {
@@ -74,9 +74,7 @@ class IOTA extends CI_Model {
             ") and thcv.col_iota is not null
             and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+        $sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addBandToQuery($band);
 
@@ -97,9 +95,7 @@ class IOTA extends CI_Model {
             where station_id in (' . $location_list .
             ') and thcv.col_iota is not null';
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+        $sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addBandToQuery($band);
 
@@ -123,7 +119,7 @@ class IOTA extends CI_Model {
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "select tag, name, prefix, dxccid, status, lat1, lat2, lon1, lon2 from iota where 1=1";
 
@@ -136,19 +132,9 @@ class IOTA extends CI_Model {
         if ($postdata['notworked'] == NULL) {
             $sql .= " and exists (select 1 from " . $this->config->item('table_name') . " where station_id in (". $location_list . ") and col_iota = iota.tag";
 
-			if ($postdata['mode'] != 'All') {
-				$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-			}
+            $sql .= $this->addModeToQuery($postdata['mode']);
 
-            if ($postdata['band'] != 'All') {
-                if ($postdata['band'] == 'SAT') {
-                    $sql .= " and col_prop_mode ='" . $postdata['band'] . "'";
-                }
-                else {
-                    $sql .= " and col_prop_mode !='SAT'";
-                    $sql .= " and col_band ='" . $postdata['band'] . "'";
-                }
-            }
+            $sql .= $this->addBandToQuery($postdata['band']);
             $sql .= ")";
         }
 
@@ -166,9 +152,7 @@ class IOTA extends CI_Model {
             and not exists (select 1 from ". $this->config->item('table_name') . " where station_id in (" . $location_list . ")
             and col_iota = thcv.col_iota";
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+        $sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addBandToQuery($postdata['band']);
 
@@ -180,9 +164,7 @@ class IOTA extends CI_Model {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
         }
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+        $sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addContinentsToQuery($postdata);
 
@@ -198,9 +180,7 @@ class IOTA extends CI_Model {
             ") and thcv.col_iota is not null
             and (col_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y')";
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+        $sql .= $this->addModeToQuery($postdata['mode']);
 
         if ($postdata['includedeleted'] == NULL) {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
@@ -261,7 +241,7 @@ class IOTA extends CI_Model {
             return null;
         }
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         foreach ($bands as $band) {
             $worked = $this->getSummaryByBand($band, $postdata, $location_list);
@@ -287,28 +267,26 @@ class IOTA extends CI_Model {
         $sql .= " where station_id in (" . $location_list . ")";
 
         if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+            $sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
         } else if ($band == 'All') {
             $this->load->model('bands');
 
 			$bandslots = $this->bands->get_worked_bands('iota');
 	
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+            $bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 			
 			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
 					" and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
+            $sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
         }
 
         if ($postdata['includedeleted'] == NULL) {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
         }
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+        $sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addContinentsToQuery($postdata);
 
@@ -325,28 +303,26 @@ class IOTA extends CI_Model {
         $sql .= " where station_id in (" . $location_list . ")";
 
         if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+            $sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
         } else if ($band == 'All') {
             $this->load->model('bands');
 
 			$bandslots = $this->bands->get_worked_bands('iota');
 	
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+            $bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 			
 			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
 					" and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
+            $sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
         }
 
         if ($postdata['includedeleted'] == NULL) {
             $sql .= " and coalesce(iota.status, '') <> 'D'";
         }
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+        $sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addContinentsToQuery($postdata);
 
@@ -360,14 +336,23 @@ class IOTA extends CI_Model {
     function addBandToQuery($band) {
         $sql = '';
         if ($band != 'All') {
+            $safeBand = $this->db->escape_str($band);
             if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
+                $sql .= " and col_prop_mode ='" . $safeBand . "'";
             } else {
                 $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
+                $sql .= " and col_band ='" . $safeBand . "'";
             }
         }
         return $sql;
+    }
+
+    function addModeToQuery($mode) {
+        if ($mode == 'All') {
+            return '';
+        }
+        $safeMode = $this->db->escape_str($mode);
+        return " and (col_mode = '" . $safeMode . "' or col_submode = '" . $safeMode . "')";
     }
 }
 ?>

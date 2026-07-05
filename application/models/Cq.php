@@ -1,6 +1,17 @@
 <?php
 
 class CQ extends CI_Model{
+    private function sanitize_location_list($location_list) {
+        $parts = explode(',', (string) $location_list);
+        $ids = array();
+        foreach ($parts as $part) {
+            $trimmed = trim($part, " \t\n\r\0\x0B'\"");
+            if (is_numeric($trimmed)) {
+                $ids[] = (int) $trimmed;
+            }
+        }
+        return implode(',', array_values(array_unique($ids)));
+    }
 
     function get_cq_array($bands, $postdata, $location_list) {
         $cqZ = array(); // Used for keeping track of which states that are not worked
@@ -79,11 +90,16 @@ class CQ extends CI_Model{
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
     function getCQWorked($location_list, $band, $postdata) {
+        $location_list = $this->sanitize_location_list($location_list);
+        if ($location_list === '') {
+            return array();
+        }
+        $mode = $this->db->escape_str($postdata['mode']);
         $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv
         where station_id in (" . $location_list . ") and col_cqz <= 40 and col_cqz <> ''";
 
 		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+            $sql .= " and (col_mode = '" . $mode . "' or col_submode = '" . $mode . "')";
 		}
 
         $sql .= $this->addBandToQuery($band);
@@ -93,7 +109,7 @@ class CQ extends CI_Model{
             ") and col_cqz = thcv.col_cqz and col_cqz <> '' ";
 
 		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+            $sql .= " and (col_mode = '" . $mode . "' or col_submode = '" . $mode . "')";
 		}
 
         $sql .= $this->addBandToQuery($band);
@@ -112,11 +128,16 @@ class CQ extends CI_Model{
      * $postdata contains data from the form, in this case Lotw or QSL are used
      */
     function getCQConfirmed($location_list, $band, $postdata) {
+        $location_list = $this->sanitize_location_list($location_list);
+        if ($location_list === '') {
+            return array();
+        }
+        $mode = $this->db->escape_str($postdata['mode']);
         $sql = "SELECT distinct col_cqz FROM " . $this->config->item('table_name') . " thcv
             where station_id in (" . $location_list . ") and col_cqz <= 40 and col_cqz <> ''";
 
 		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+            $sql .= " and (col_mode = '" . $mode . "' or col_submode = '" . $mode . "')";
 		}
 
         $sql .= $this->addBandToQuery($band);
@@ -149,6 +170,7 @@ class CQ extends CI_Model{
     }
 
     function addBandToQuery($band) {
+		$band = $this->db->escape_str($band);
         $sql = '';
         if ($band != 'All') {
             if ($band == 'SAT') {
@@ -182,28 +204,33 @@ class CQ extends CI_Model{
     }
 
     function getSummaryByBand($band, $postdata, $location_list) {
+        $location_list = $this->sanitize_location_list($location_list);
+        if ($location_list === '') {
+            return array((object) array('count' => 0));
+        }
+        $mode = $this->db->escape_str($postdata['mode']);
         $sql = "SELECT count(distinct thcv.col_cqz) as count FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id in (" . $location_list . ') and col_cqz <= 40 and col_cqz > 0';
 
         if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
         } else if ($band == 'All') {
             $this->load->model('bands');
 
 			$bandslots = $this->bands->get_worked_bands('cq');
-
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+            $bandslots_sanitized = array_map(array($this->db, 'escape_str'), $bandslots);
+            $bandslots_list = "'".implode("','",$bandslots_sanitized)."'";
 
 			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
 					" and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
+			$sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
         }
 
         if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+            $sql .= " and (col_mode = '" . $mode . "' or col_submode = '" . $mode . "')";
 		}
 
         $query = $this->db->query($sql);
@@ -212,28 +239,33 @@ class CQ extends CI_Model{
     }
 
     function getSummaryByBandConfirmed($band, $postdata, $location_list){
+        $location_list = $this->sanitize_location_list($location_list);
+        if ($location_list === '') {
+            return array((object) array('count' => 0));
+        }
+        $mode = $this->db->escape_str($postdata['mode']);
         $sql = "SELECT count(distinct thcv.col_cqz) as count FROM " . $this->config->item('table_name') . " thcv";
 
         $sql .= " where station_id in (" . $location_list . ') and col_cqz <= 40 and col_cqz > 0';
 
         if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
         } else if ($band == 'All') {
             $this->load->model('bands');
 
 			$bandslots = $this->bands->get_worked_bands('cq');
-
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+            $bandslots_sanitized = array_map(array($this->db, 'escape_str'), $bandslots);
+            $bandslots_list = "'".implode("','",$bandslots_sanitized)."'";
 
 			$sql .= " and thcv.col_band in (" . $bandslots_list . ")" .
 					" and thcv.col_prop_mode !='SAT'";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
+			$sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
         }
 
         if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
+            $sql .= " and (col_mode = '" . $mode . "' or col_submode = '" . $mode . "')";
 		}
 
         $sql .= $this->addQslToQuery($postdata);

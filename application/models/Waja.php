@@ -62,7 +62,7 @@ class WAJA extends CI_Model {
             return null;
         }
 
-        $location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $wajaArray = explode(',', $this->prefectureString);
 
@@ -150,9 +150,7 @@ class WAJA extends CI_Model {
 
 		$sql .= $this->addBandToQuery($band);
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		$sql .= $this->addQslToQuery($postdata);
 
@@ -179,9 +177,7 @@ class WAJA extends CI_Model {
 
 		$sql .= $this->addBandToQuery($band);
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
 		$sql .= " group by col_dxcc
 				) x on dxcc_entities.adif = x.col_dxcc";;
@@ -200,15 +196,24 @@ class WAJA extends CI_Model {
 	function addBandToQuery($band) {
         $sql = '';
         if ($band != 'All') {
+            $safeBand = $this->db->escape_str($band);
             if ($band == 'SAT') {
-                $sql .= " and col_prop_mode ='" . $band . "'";
+				$sql .= " and col_prop_mode ='" . $safeBand . "'";
             } else {
                 $sql .= " and col_prop_mode !='SAT'";
-                $sql .= " and col_band ='" . $band . "'";
+				$sql .= " and col_band ='" . $safeBand . "'";
             }
         }
         return $sql;
     }
+
+	function addModeToQuery($mode) {
+		if ($mode == 'All') {
+			return '';
+		}
+		$safeMode = $this->db->escape_str($mode);
+		return " and (col_mode = '" . $safeMode . "' or col_submode = '" . $safeMode . "')";
+	}
 
 	/*
      * Function returns all worked, but not confirmed states
@@ -218,9 +223,7 @@ class WAJA extends CI_Model {
         $sql = "SELECT distinct LPAD(col_state, 2, '0') AS col_state FROM " . $this->config->item('table_name') . " thcv
         where station_id in (" . $location_list . ")";
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addStateToQuery();
 
@@ -230,9 +233,7 @@ class WAJA extends CI_Model {
             " where station_id in (". $location_list . ")" .
             " and col_state = thcv.col_state";
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addBandToQuery($band);
 
@@ -255,9 +256,7 @@ class WAJA extends CI_Model {
         $sql = "SELECT distinct LPAD(col_state, 2, '0') AS col_state FROM " . $this->config->item('table_name') . " thcv
             where station_id in (" . $location_list . ")";
 
-		if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addStateToQuery();
 
@@ -305,7 +304,7 @@ class WAJA extends CI_Model {
 			return null;
 		}
 
-		$location_list = "'".implode("','",$logbooks_locations_array)."'";
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
 		foreach ($bands as $band) {
 			$worked = $this->getSummaryByBand($band, $postdata, $location_list);
@@ -330,23 +329,21 @@ class WAJA extends CI_Model {
         $sql .= " where station_id in (" . $location_list . ")";
 
         if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
         } else if ($band == 'All') {
             $this->load->model('bands');
 
 			$bandslots = $this->bands->get_worked_bands('waja');
 
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+			$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 
 			$sql .= " and (thcv.col_band in (" . $bandslots_list . ") or thcv.col_prop_mode ='SAT')";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
+			$sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
         }
 
-        if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addStateToQuery();
 
@@ -362,23 +359,21 @@ class WAJA extends CI_Model {
         $sql .= " where station_id in (" . $location_list . ")";
 
         if ($band == 'SAT') {
-            $sql .= " and thcv.col_prop_mode ='" . $band . "'";
+			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
         } else if ($band == 'All') {
             $this->load->model('bands');
 
 			$bandslots = $this->bands->get_worked_bands('waja');
 
-			$bandslots_list = "'".implode("','",$bandslots)."'";
+			$bandslots_list = "'".implode("','", array_map(array($this->db, 'escape_str'), $bandslots))."'";
 
 			$sql .= " and (thcv.col_band in (" . $bandslots_list . ") or thcv.col_prop_mode ='SAT')";
         } else {
             $sql .= " and thcv.col_prop_mode !='SAT'";
-            $sql .= " and thcv.col_band ='" . $band . "'";
+			$sql .= " and thcv.col_band ='" . $this->db->escape_str($band) . "'";
         }
 
-        if ($postdata['mode'] != 'All') {
-			$sql .= " and (col_mode = '" . $postdata['mode'] . "' or col_submode = '" . $postdata['mode'] . "')";
-		}
+		$sql .= $this->addModeToQuery($postdata['mode']);
 
         $sql .= $this->addQslToQuery($postdata);
 

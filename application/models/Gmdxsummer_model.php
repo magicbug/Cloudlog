@@ -12,15 +12,18 @@ class Gmdxsummer_model extends CI_Model
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        if (!$logbooks_locations_array) {
+            return 0;
+        }
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $query = $this->db->query("
             SELECT COUNT(DISTINCT SUBSTRING(COL_GRIDSQUARE, 1, 4)) AS count
             FROM " . $table_name . "
-            WHERE station_id in (" . $location_list . ") AND COL_MODE = '" . $mode . "' AND COL_BAND = '" . $band . "'
+            WHERE station_id in (" . $location_list . ") AND COL_MODE = ? AND COL_BAND = ?
             AND COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != ''
-            AND (COL_TIME_ON >= '" . self::START_DATE . "' AND COL_TIME_ON <= '" . $end_date . "')
-        ");
+            AND (COL_TIME_ON >= ? AND COL_TIME_ON <= ?)
+        ", array($mode, $band, self::START_DATE, $end_date));
 
         return $query->row()->count;
     }
@@ -33,15 +36,18 @@ class Gmdxsummer_model extends CI_Model
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        if (!$logbooks_locations_array) {
+            return 0;
+        }
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $query = $this->db->query("
         SELECT COUNT(DISTINCT SUBSTRING(COL_GRIDSQUARE, 1, 4)) AS count
         FROM " . $table_name . "
-        WHERE station_id in (".$location_list.") AND COL_MODE IN ('SSB', 'AM', 'FM') AND COL_BAND = '" . $band . "'
+        WHERE station_id in (".$location_list.") AND COL_MODE IN ('SSB', 'AM', 'FM') AND COL_BAND = ?
         AND COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != ''
-        AND (COL_TIME_ON >= '" . self::START_DATE . "' AND COL_TIME_ON <= '" . $end_date . "')
-        ");
+        AND (COL_TIME_ON >= ? AND COL_TIME_ON <= ?)
+        ", array($band, self::START_DATE, $end_date));
 
 
         return $query->row()->count;
@@ -55,15 +61,18 @@ class Gmdxsummer_model extends CI_Model
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        if (!$logbooks_locations_array) {
+            return 0;
+        }
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $query = $this->db->query("
         SELECT COUNT(DISTINCT SUBSTRING(COL_GRIDSQUARE, 1, 4)) AS count
         FROM " . $table_name . "
-        WHERE station_id in (".$location_list.") AND COL_MODE NOT IN ('CW', 'FM', 'SSB', 'AM') AND COL_BAND = '" . $band . "'
+        WHERE station_id in (".$location_list.") AND COL_MODE NOT IN ('CW', 'FM', 'SSB', 'AM') AND COL_BAND = ?
         AND COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != ''
-        AND (COL_TIME_ON >= '" . self::START_DATE . "' AND COL_TIME_ON <= '" . $end_date . "')
-        ");
+        AND (COL_TIME_ON >= ? AND COL_TIME_ON <= ?)
+        ", array($band, self::START_DATE, $end_date));
 
         return $query->row()->count;
     }
@@ -76,9 +85,12 @@ class Gmdxsummer_model extends CI_Model
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        if (!$logbooks_locations_array) {
+            return 0;
+        }
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
-        $query = $this->db->query("
+		$query = $this->db->query("
         SELECT COUNT(DISTINCT CONCAT(
             UPPER(SUBSTRING(COL_GRIDSQUARE, 1, 4)),
             '-',
@@ -89,10 +101,10 @@ class Gmdxsummer_model extends CI_Model
             END
         )) AS count
         FROM " . $table_name . "
-        WHERE station_id in (".$location_list.") AND COL_BAND = '" . $band . "'
+		WHERE station_id in (".$location_list.") AND COL_BAND = ?
         AND COL_GRIDSQUARE IS NOT NULL AND COL_GRIDSQUARE != ''
-        AND (COL_TIME_ON >= '" . self::START_DATE . "' AND COL_TIME_ON <= '" . $end_date . "')
-        ");
+		AND (COL_TIME_ON >= ? AND COL_TIME_ON <= ?)
+		", array($band, self::START_DATE, $end_date));
 
         return $query->row()->count;
     }

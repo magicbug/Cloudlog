@@ -16,7 +16,7 @@ class Mostworked_model extends CI_Model
             return array();
         }
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
         
         // Set defaults
         $min_qsos = isset($filters['min_qsos']) ? intval($filters['min_qsos']) : 5;
@@ -96,7 +96,7 @@ class Mostworked_model extends CI_Model
             return array();
         }
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "SELECT DISTINCT COALESCE(col_submode, col_mode) as mode 
                 FROM " . $this->config->item('table_name') . " 
@@ -123,7 +123,7 @@ class Mostworked_model extends CI_Model
             return array();
         }
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "SELECT DISTINCT col_sat_name as satellite 
                 FROM " . $this->config->item('table_name') . " 
@@ -150,7 +150,7 @@ class Mostworked_model extends CI_Model
             return array();
         }
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
         $sql = "SELECT DISTINCT col_band as band 
                 FROM " . $this->config->item('table_name') . " 
@@ -201,11 +201,11 @@ class Mostworked_model extends CI_Model
             return array();
         }
 
-        $location_list = "'" . implode("','", $logbooks_locations_array) . "'";
+        $location_ids = array_map('intval', $logbooks_locations_array);
 
         $this->db->select('col_time_on, col_band, col_mode, col_submode, col_rst_sent, col_rst_rcvd, col_country, col_qsl_sent, col_qsl_rcvd');
         $this->db->from($this->config->item('table_name'));
-        $this->db->where('station_id IN (' . $location_list . ')', NULL, FALSE);
+        $this->db->where_in('station_id', $location_ids);
         $this->db->where('col_call', $callsign);
         $this->db->order_by('col_time_on', 'DESC');
 

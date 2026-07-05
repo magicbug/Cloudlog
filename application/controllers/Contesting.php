@@ -121,7 +121,7 @@ class Contesting extends CI_Controller {
 		$this->load->model('Contesting_model');
 		$this->load->library('form_validation');
 
-		$item_id_clean = $this->security->xss_clean($id);
+		$item_id_clean = (int) $id;
 
 		$data['contest'] = $this->Contesting_model->contest($item_id_clean);
 

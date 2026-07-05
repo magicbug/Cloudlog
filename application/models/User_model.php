@@ -99,9 +99,11 @@ class User_Model extends CI_Model {
 	}
 
 	function hasQrzKey($user_id) {
+		$user_id = (int) $user_id;
 		$this->db->where('station_profile.qrzapikey is not null');
 		$this->db->where('station_profile.qrzapikey != ""');
-		$this->db->join('station_profile', 'station_profile.user_id = '.$user_id);
+		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
+		$this->db->where('station_profile.user_id', $user_id);
 		$query = $this->db->get($this->config->item('auth_table'));
 
 		$ret = $query->row();
@@ -113,7 +115,7 @@ class User_Model extends CI_Model {
 	}
 
 	function get_email_address($station_id) {
-		$this->db->where('station_id', $station_id);
+		$this->db->where('station_id', (int) $station_id);
 		$this->db->join('station_profile', 'station_profile.user_id = '.$this->config->item('auth_table').'.user_id');
 		$query = $this->db->get($this->config->item('auth_table'));
 
@@ -540,23 +542,35 @@ class User_Model extends CI_Model {
 	// If the user's session is corrupted in any way, it will clear the session
 	function validate_session() {
 
-		if($this->session->userdata('user_id'))
-		{
-			$user_id = $this->session->userdata('user_id');
-			$user_type = $this->session->userdata('user_type');
-			$user_hash = $this->session->userdata('user_hash');
-
-			if($this->_auth($user_id."-".$user_type, $user_hash)) {
-				// Freshen the session
-				$this->update_session($user_id);
-				return 1;
-			} else {
-				$this->clear_session();
-				return 0;
-			}
-		} else {
+		if (!$this->session->userdata('user_id')) {
 			return 0;
 		}
+
+		$user_id = $this->session->userdata('user_id');
+		$user_hash = $this->session->userdata('user_hash');
+
+		if (empty($user_hash)) {
+			$this->clear_session();
+			return 0;
+		}
+
+		// Re-read the user from the database and validate against persisted state.
+		$u = $this->get_by_id($user_id);
+		if ($u->num_rows() !== 1) {
+			$this->clear_session();
+			return 0;
+		}
+
+		$db_user_type = $u->row()->user_type;
+
+		if ($this->_auth($user_id."-".$db_user_type, $user_hash)) {
+			// Freshen the session
+			$this->update_session($user_id);
+			return 1;
+		}
+
+		$this->clear_session();
+		return 0;
 	}
 
 	// FUNCTION: bool authenticate($username, $password)

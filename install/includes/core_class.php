@@ -100,6 +100,7 @@ class Core {
 		$new  = str_replace("%baselocator%",$data['locator'],$database_file);
 		$new  = str_replace("%websiteurl%",$data['websiteurl'],$new);
 		$new  = str_replace("%directory%",$data['directory'],$new);
+		$new  = str_replace("%encryption_key%",$this->generate_encryption_key(),$new);
 
 		// Write the new config.php file
 		$handle = fopen($output_path,'w+');
@@ -119,6 +120,19 @@ class Core {
 
 		} else {
 			return false;
+		}
+	}
+
+	// Generate a per-install encryption key for the application config.
+	private function generate_encryption_key() {
+		try {
+			return bin2hex(random_bytes(32));
+		} catch (Exception $e) {
+			if (function_exists('openssl_random_pseudo_bytes')) {
+				return bin2hex(openssl_random_pseudo_bytes(32));
+			}
+
+			return sha1(uniqid('', true) . mt_rand());
 		}
 	}
 
