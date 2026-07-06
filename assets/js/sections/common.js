@@ -442,35 +442,81 @@ function qso_edit(id) {
     });
 }
 
+function loadLeafletAssets(callback) {
+    if (typeof L !== 'undefined' && typeof L.maidenheadqrb !== 'undefined') {
+        if (typeof callback === 'function') {
+            callback();
+        }
+        return;
+    }
+
+    // Load CSS if not already present
+    if ($('link[href*="' + base_url + 'assets/js/leaflet/leaflet.css"]').length === 0) {
+        $('head').append('<link rel="stylesheet" type="text/css" href="' + base_url + 'assets/js/leaflet/leaflet.css">');
+    }
+    if ($('link[href*="' + base_url + 'assets/js/leaflet/Control.FullScreen.css"]').length === 0) {
+        $('head').append('<link rel="stylesheet" type="text/css" href="' + base_url + 'assets/js/leaflet/Control.FullScreen.css">');
+    }
+
+    // Helper to load scripts sequentially
+    function loadScript(src, next) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = src;
+        script.onload = next;
+        script.onerror = function() {
+            console.error('Failed to load ' + src);
+            if (typeof next === 'function') {
+                next();
+            }
+        };
+        document.head.appendChild(script);
+    }
+
+    loadScript(base_url + 'assets/js/leaflet/leaflet.js', function() {
+        loadScript(base_url + 'assets/js/leaflet/Control.FullScreen.js', function() {
+            loadScript(base_url + 'assets/js/leaflet/L.Maidenhead.qrb.js', function() {
+                loadScript(base_url + 'assets/js/leaflet/leaflet.geodesic.js', function() {
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
+                });
+            });
+        });
+    });
+}
+
 function spawnQrbCalculator(locator1, locator2) {
-	$.ajax({
-		url: base_url + 'index.php/qrbcalc',
-		type: 'post',
-		success: function (html) {
-			BootstrapDialog.show({
-				title: 'Compute QRB and QTF',
-				size: BootstrapDialog.SIZE_WIDE,
-				cssClass: 'lookup-dialog',
-				nl2br: false,
-				message: html,
-				onshown: function(dialog) {
-                    if (locator1 !== undefined) {
-                        $("#qrbcalc_locator1").val(locator1);
-                    }
-                    if (locator2 !== undefined) {
-                        $("#qrbcalc_locator2").val(locator2);
-                        calculateQrb();
-                    }
-				},
-				buttons: [{
-					label: lang_admin_close,
-					action: function (dialogItself) {
-						dialogItself.close();
-					}
-				}]
-			});
-		}
-	});
+    loadLeafletAssets(function() {
+        $.ajax({
+            url: base_url + 'index.php/qrbcalc',
+            type: 'post',
+            success: function (html) {
+                BootstrapDialog.show({
+                    title: 'Compute QRB and QTF',
+                    size: BootstrapDialog.SIZE_WIDE,
+                    cssClass: 'lookup-dialog',
+                    nl2br: false,
+                    message: html,
+                    onshown: function(dialog) {
+                        if (locator1 !== undefined) {
+                            $("#qrbcalc_locator1").val(locator1);
+                        }
+                        if (locator2 !== undefined) {
+                            $("#qrbcalc_locator2").val(locator2);
+                            calculateQrb();
+                        }
+                    },
+                    buttons: [{
+                        label: lang_admin_close,
+                        action: function (dialogItself) {
+                            dialogItself.close();
+                        }
+                    }]
+                });
+            }
+        });
+    });
 }
 
 function spawnActivatorsMap(call, count, grids) {

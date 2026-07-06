@@ -43,6 +43,9 @@
 					</div>
 				<?php } ?>
 			</div>
+			<div class="small text-muted mb-2 d-none d-lg-block">
+				<span id="todays-qso-loading" class="htmx-indicator ms-2"><i class="fas fa-spinner fa-spin"></i> Updating...</span>
+			</div>
 		<?php } ?>
 
 		<?php if ($current_active == 0) { ?>
