@@ -36,6 +36,16 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery-3.3.1.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
+<?php
+// Pages that do not require Leaflet map assets (must match header.php list)
+$_no_map_pages = array('options', 'user', 'mode', 'themes', 'update', 'maintenance', 'debug', 'band', 'csv', 'cabrillo', 'backup', 'notes', 'sattimers', 'mostworked', 'dayswithqso', 'statistics', 'continents', 'accumulated', 'timeplotter', 'timeline', 'monthlyreport', 'plugins');
+$_current_page = $this->uri->segment(1);
+$_needs_maps = !isset($load_maps) || $load_maps !== false;
+if (in_array($_current_page, $_no_map_pages)) { $_needs_maps = false; }
+if ($_current_page == 'adif' && $this->uri->segment(2) != 'import_progress') { $_needs_maps = false; }
+if ($_current_page == 'api' && $this->uri->segment(2) == 'help') { $_needs_maps = false; }
+?>
+<?php if ($_needs_maps) { ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/Control.FullScreen.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.qrb.js"></script>
@@ -44,10 +54,11 @@
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.activators.js"></script>
 <?php } ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.geodesic.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/easyprint.js"></script>
+<?php } ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/easyprint.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/common.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/eqslcharcounter.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/version_dialog.js"></script>

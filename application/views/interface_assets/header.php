@@ -27,8 +27,20 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/flag-icons.min.css" />
 
 	<!-- Maps -->
+	<?php
+	// Pages that do not require Leaflet map assets
+	$_no_map_pages = array('options', 'user', 'mode', 'themes', 'update', 'maintenance', 'debug', 'band', 'csv', 'cabrillo', 'backup', 'notes', 'sattimers', 'mostworked', 'dayswithqso', 'statistics', 'continents', 'accumulated', 'timeplotter', 'timeline', 'monthlyreport', 'plugins');
+	$_current_page = $this->uri->segment(1);
+	$_needs_maps = !isset($load_maps) || $load_maps !== false;
+	if (in_array($_current_page, $_no_map_pages)) { $_needs_maps = false; }
+	// Also skip for admin-style subpages that never show maps
+	if ($_current_page == 'adif' && $this->uri->segment(2) != 'import_progress') { $_needs_maps = false; }
+	if ($_current_page == 'api' && $this->uri->segment(2) == 'help') { $_needs_maps = false; }
+	?>
+	<?php if ($_needs_maps) { ?>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/Control.FullScreen.css" />
+	<?php } ?>
 
 	<?php if ($this->uri->segment(1) == "search" && $this->uri->segment(2) == "filter") { ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/query-builder.default.min.css" />
