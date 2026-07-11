@@ -22,7 +22,59 @@
   </script>
 
   <style>
+    .qso_panel .callbook-layout {
+      display: grid;
+      grid-template-columns: minmax(200px, 280px) 1fr;
+      gap: 0.9rem;
+      align-items: start;
+    }
+
+    .qso_panel .callbook-photo {
+      width: 100%;
+      border-radius: 0.4rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      object-fit: cover;
+      max-height: 260px;
+      background: #f8f9fa;
+    }
+
+    .qso_panel .callbook-heading {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .qso_panel .callbook-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-right: 0.7rem;
+      margin-bottom: 0.35rem;
+      font-size: 0.92rem;
+    }
+
+    .qso_panel .callbook-meta {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.3rem 0.55rem;
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    .qso_panel .callbook-empty {
+      color: #6c757d;
+      font-size: 0.92rem;
+    }
+
     @media (max-width: 991.98px) {
+      .qso_panel .callbook-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .qso_panel .callbook-photo {
+        max-height: 320px;
+      }
+
       .qso_panel {
         overflow-x: hidden;
       }
@@ -1126,20 +1178,6 @@
 
         <div class="card-body callsign-suggestions"></div>
       </div>
-
-      <?php if ($this->session->userdata('user_show_profile_image')) { ?>
-        <div class="card callsign-image" id="callsign-image" style="display: none;">
-          <div class="card-header">
-            <h4 style="font-size: 16px; font-weight: bold;" class="card-title"><?php echo lang('qso_title_image'); ?></h4>
-          </div>
-
-          <div class="card-body callsign-image">
-            <div class="callsign-image-content" id="callsign-image-content">
-            </div>
-          </div>
-        </div>
-      <?php } ?>
-
       <div class="card previous-qsos">
         <div class="card-header">
           <ul class="nav nav-tabs card-header-tabs" id="qsoRightTabs" role="tablist">
@@ -1153,6 +1191,13 @@
                 DXCC Summary
               </button>
             </li>
+            <?php if ($this->session->userdata('user_show_profile_image')) { ?>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="callbook-tab" data-bs-toggle="tab" data-bs-target="#callbook-pane" type="button" role="tab" aria-controls="callbook-pane" aria-selected="false">
+                Callbook
+              </button>
+            </li>
+            <?php } ?>
             <?php if ($qso_fields['dxcluster_tab']): ?>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="dx-cluster-tab" data-bs-toggle="tab" data-bs-target="#dx-cluster-pane" type="button" role="tab" aria-controls="dx-cluster-pane" aria-selected="false">
@@ -1184,6 +1229,14 @@
                 <!-- DXCC Summary content will be loaded here -->
               </div>
             </div>
+
+            <?php if ($this->session->userdata('user_show_profile_image')) { ?>
+            <div class="tab-pane fade" id="callbook-pane" role="tabpanel" aria-labelledby="callbook-tab">
+              <div id="qso-callbook-content" class="pt-2 small text-muted">
+                Enter a callsign to load callbook details.
+              </div>
+            </div>
+            <?php } ?>
 
             <!-- DX Cluster Tab -->
             <?php if ($qso_fields['dxcluster_tab']): ?>
