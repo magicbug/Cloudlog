@@ -37,7 +37,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <?php
-$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'gridmap', 'activated_gridmap', 'qso', 'map', 'activators', 'activatorsmap'], true)
+$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'activators', 'activatorsmap'], true)
     || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'waja', 'was', 'sota', 'pota'], true));
 ?>
 <?php if ($load_leaflet) { ?>
@@ -53,7 +53,9 @@ $load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logboo
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/darkmodehelpers.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrapdialog/js/bootstrap-dialog.min.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/easyprint.js"></script>
+<?php if ($load_leaflet) { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/easyprint.js"></script>
+<?php } ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/common.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/eqslcharcounter.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/version_dialog.js"></script>
