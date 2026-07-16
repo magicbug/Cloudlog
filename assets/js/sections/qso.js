@@ -884,6 +884,53 @@ function isLookupStillCurrent(requestId, find_callsign) {
 	return currentCallsign === find_callsign;
 }
 
+function escapeCallbookHtml(value) {
+	return $('<div>').text(value == null ? '' : String(value)).html();
+}
+
+function resetCallbookPanel() {
+	if ($('#qso-callbook-content').length === 0) {
+		return;
+	}
+
+	$('#qso-callbook-content').html('<div class="callbook-empty">Enter a callsign to load callbook details.</div>').attr('class', 'pt-2');
+}
+
+function renderCallbookPanel(callsign, result) {
+	if ($('#qso-callbook-content').length === 0) {
+		return;
+	}
+
+	var safeCallsign = escapeCallbookHtml(callsign || '');
+	var safeName = escapeCallbookHtml(result.callsign_name || '');
+	var safeQth = escapeCallbookHtml(result.callsign_qth || '');
+	var safeLocator = escapeCallbookHtml(result.callsign_qra || '');
+	var safeIota = escapeCallbookHtml(result.callsign_iota || '');
+	var imageHtml = (result.image && result.image !== 'n/a')
+		? '<img class="callbook-photo" src="' + escapeCallbookHtml(result.image) + '" alt="Callbook profile image">'
+		: '<div class="callbook-empty">No profile image returned by callbook provider.</div>';
+
+	var html = ''
+		+ '<div class="callbook-layout">'
+		+ '  <div>' + imageHtml + '</div>'
+		+ '  <div>'
+		+ '    <div class="callbook-heading">' + safeCallsign + '</div>'
+		+ '    <div class="callbook-links">'
+		+ '      <a target="_blank" href="https://www.qrz.com/db/' + safeCallsign + '"><i class="fas fa-up-right-from-square"></i> QRZ profile</a>'
+		+ '      <a target="_blank" href="https://www.hamqth.com/' + safeCallsign + '"><i class="fas fa-up-right-from-square"></i> HamQTH profile</a>'
+		+ '    </div>'
+		+ '    <div class="callbook-meta">'
+		+ '      <strong>Name</strong><span>' + (safeName || '-') + '</span>'
+		+ '      <strong>QTH</strong><span>' + (safeQth || '-') + '</span>'
+		+ '      <strong>Locator</strong><span>' + (safeLocator || '-') + '</span>'
+		+ '      <strong>IOTA</strong><span>' + (safeIota || '-') + '</span>'
+		+ '    </div>'
+		+ '  </div>'
+		+ '</div>';
+
+	$('#qso-callbook-content').html(html).attr('class', 'pt-2');
+}
+
 function clearSatelliteFields() {
 	$('#sat_name').val('');
 	$('#sat_mode').val('');
@@ -961,8 +1008,7 @@ function reset_fields() {
 	$('#callsign_info').removeClass("text-bg-secondary");
 	$('#callsign_info').removeClass("text-bg-success");
 	$('#callsign_info').removeClass("text-bg-danger");
-	$('#callsign-image').attr('style', 'display: none;');
-	$('#callsign-image-content').text("");
+	resetCallbookPanel();
 	$('#qsl_via').val("");
 	$('#callsign_info').text("");
 	$('#input_usa_state').val("");
@@ -1151,6 +1197,7 @@ $("#callsign").focusout(function() {
 				$('#qrz_info').attr('title', 'Lookup '+callsign+' info on qrz.com');
 				$('#hamqth_info').html('<a target="_blank" href="https://www.hamqth.com/'+callsign+'"><img width="32" height="32" src="'+base_url+'images/icons/hamqth.com.png"></a>');
 				$('#hamqth_info').attr('title', 'Lookup '+callsign+' info on hamqth.com');
+				renderCallbookPanel(callsign, result);
 
 				var $dok_select = $('#darc_dok').selectize();
 				var dok_selectize = $dok_select[0] ? $dok_select[0].selectize : null;
@@ -1216,12 +1263,6 @@ $("#callsign").focusout(function() {
 
 				if($('#continent').val() == "") {
 					$('#continent').val(result.dxcc.cont);
-				}
-
-				/* Find link to qrz.com picture */
-				if (result.image != "n/a") {
-					$('#callsign-image-content').html('<img class="callsign-image-pic" src="'+result.image+'">');
-					$('#callsign-image').attr('style', 'display: true;');
 				}
 
 				/*
@@ -1873,8 +1914,7 @@ function resetDefaultQSOFields(preserveDxccState) {
 	$('#callsign_info').removeClass("text-bg-secondary");
 	$('#callsign_info').removeClass("text-bg-success");
 	$('#callsign_info').removeClass("text-bg-danger");
-	$('#callsign-image').attr('style', 'display: none;');
-	$('#callsign-image-content').text("");
+	resetCallbookPanel();
 	$('.dxccsummary').remove();
 	$('#timesWorked').html(lang_qso_title_previous_contacts);
 

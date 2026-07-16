@@ -1,8 +1,8 @@
-$('.labeltable').on('click', 'input[type="checkbox"]', function() {
+$(document).on('change', '.labeltable input[type="checkbox"]', function() {
 	var clickedlabelid = $(this).closest('tr').attr("class");
 	clickedlabelid = clickedlabelid.match(/\d+/)[0];
 	saveDefault(clickedlabelid);
-    $('input:checkbox').not(this).prop('checked', false);
+    $(this).closest('.labeltable').find('input:checkbox').not(this).prop('checked', false);
 });
 
 function saveDefault(id) {

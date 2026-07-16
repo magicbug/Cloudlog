@@ -15,10 +15,15 @@
 
 	   <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox.min.css" />
 
-    <!-- Maps -->
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />
+    <?php
+    $load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'activators', 'activatorsmap'], true)
+        || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'waja', 'was', 'sota', 'pota'], true));
+    ?>
 
-	<?php if (file_exists(APPPATH.'../assets/css/custom.css')) { echo '<link rel="stylesheet" href="'.base_url().'assets/css/custom.css">'; } ?>
+    <!-- Maps -->
+    <?php if ($load_leaflet) { ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/js/leaflet/leaflet.css" />
+    <?php } ?>
 
     <link rel="icon" href="<?php echo base_url(); ?>favicon.ico">
 
