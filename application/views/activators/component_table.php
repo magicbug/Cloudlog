@@ -20,7 +20,7 @@ function write_activators($activators_array, $vucc_grids, $custom_date_format, $
                 </thead>
                 <tbody>';
 
-    $activators = array();
+   $activators = array();
     foreach ($activators_array as $line) {
         $call = $line->call;
         $grids = $line->grids;
@@ -37,17 +37,29 @@ function write_activators($activators_array, $vucc_grids, $custom_date_format, $
            $count = count($grid_array);
            $grids = implode(', ', $grid_array);
         }
-        array_push($activators, array($count, $call, $grids));
+         $activators[] = (object) array(
+            'count' => $count,
+            'call' => $call,
+            'grids' => $grids,
+         );
     }
-    arsort($activators);
+
+      usort($activators, function ($left, $right) {
+         if ($left->count === $right->count) {
+            return strcmp($left->call, $right->call);
+         }
+
+         return $right->count <=> $left->count;
+      });
+
     foreach ($activators as $line) {
         echo '<tr>
                 <td>' . $i++ . '</td>
-                <td>'.$line[1].'</td>
-                <td>'.$line[0].'</td>
-                <td style="text-align: left; font-family: monospace;">'.$line[2].'</td>
-                <td><button type="button" class="btn btn-sm btn-outline-primary" onclick="displayActivatorsContacts(\'' . $line[1] . '\',\'' . $band . '\',\'' . $leogeo . '\')"><i class="fas fa-list"></i></button></td>
-                <td><button type="button" class="btn btn-sm btn-outline-primary" onclick="spawnActivatorsMap(\'' . $line[1] . '\',\'' . $line[0] . '\',\'' . str_replace(' ', '', $line[2]) . '\')"><i class="fas fa-globe"></i></button></td>
+               <td>'.$line->call.'</td>
+               <td>'.$line->count.'</td>
+               <td style="text-align: left; font-family: monospace;">'.$line->grids.'</td>
+               <td><button type="button" class="btn btn-sm btn-outline-primary" onclick="displayActivatorsContacts(\'' . $line->call . '\',\'' . $band . '\',\'' . $leogeo . '\')"><i class="fas fa-list"></i></button></td>
+               <td><button type="button" class="btn btn-sm btn-outline-primary" onclick="spawnActivatorsMap(\'' . $line->call . '\',\'' . $line->count . '\',\'' . str_replace(' ', '', $line->grids) . '\')"><i class="fas fa-globe"></i></button></td>
                </tr>';
     }
     echo '</tbody></table></div>';

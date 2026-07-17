@@ -687,10 +687,16 @@ class Logbook_model extends CI_Model
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+    if (is_array($call)) {
+      $call = array_values(array_filter(array_unique($call)));
+    } else {
+      $call = array($call);
+    }
+
     $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
     $this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $this->config->item('table_name') . '.COL_DXCC', 'left outer');
     $this->db->join('lotw_users lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left');
-    $this->db->where('COL_CALL', $call);
+    $this->db->where_in('COL_CALL', $call);
     if ($band != 'All') {
       if ($band == 'SAT') {
         $this->db->where('col_prop_mode', $band);
