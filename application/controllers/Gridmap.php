@@ -52,6 +52,7 @@ class Gridmap extends CI_Controller {
         $eqsl = $this->security->xss_clean($this->input->post('eqsl'));
         $qrz = $this->security->xss_clean($this->input->post('qrz'));
 		$sat = $this->security->xss_clean($this->input->post('sat'));
+		$sat_orbit = $this->security->xss_clean($this->input->post('sat_orbit'));
 		$this->load->model('gridmap_model');
 
 		$array_grid_2char = array();
@@ -70,7 +71,7 @@ class Gridmap extends CI_Controller {
 		$grid_4char_confirmed = "";
 		$grid_6char_confirmed = "";
 
-		$query = $this->gridmap_model->get_band_confirmed($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat);
+		$query = $this->gridmap_model->get_band_confirmed($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat, $sat_orbit);
 
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) 	{
@@ -93,7 +94,7 @@ class Gridmap extends CI_Controller {
 			}
 		}
 
-		$query = $this->gridmap_model->get_band($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat);
+		$query = $this->gridmap_model->get_band($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat, $sat_orbit);
 
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -117,7 +118,7 @@ class Gridmap extends CI_Controller {
 
 			}
 		}
-		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat);
+		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat, $sat_orbit);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) {
@@ -142,7 +143,7 @@ class Gridmap extends CI_Controller {
 		}
 
 		// // Confirmed Squares
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, $qsl, $lotw, $eqsl, $qrz, $sat, $sat_orbit);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) 			{
