@@ -8,6 +8,7 @@
         echo json_encode($sq);
     ?>;
     var qso_measurement_base = "<?php echo htmlspecialchars($measurement_base ?? 'K', ENT_QUOTES, 'UTF-8'); ?>";
+    var qso_show_profile_image = <?php echo $this->session->userdata('user_show_profile_image') ? 'true' : 'false'; ?>;
     var text_error_timeoff_less_timeon = "<?php echo lang('qso_error_timeoff_less_timeon'); ?>";
     var lang_qso_title_previous_contacts = "<?php echo lang('qso_title_previous_contacts'); ?>";
     var lang_qso_title_times_worked_before = "<?php echo lang('qso_title_times_worked_before'); ?>";
@@ -27,6 +28,10 @@
       grid-template-columns: minmax(200px, 280px) 1fr;
       gap: 0.9rem;
       align-items: start;
+    }
+
+    .qso_panel .callbook-layout-no-image {
+      grid-template-columns: 1fr;
     }
 
     .qso_panel .callbook-photo {
