@@ -44,6 +44,8 @@ class QSO extends CI_Controller {
 		$data['bands'] = $this->bands->get_user_bands_for_qso_entry();
 		$data['user_default_band'] = $this->session->userdata('user_default_band');
 		$data['sat_active'] = array_search("SAT", $this->bands->get_user_bands(), true);
+        $callbook_type = strtoupper(trim((string) $this->session->userdata('callbook_type')));
+        $data['show_callbook_tab'] = in_array($callbook_type, array('HAMQTH', 'QRZ'), true);
 
         $remote_operation_option = $this->user_options_model->get_options(
             'remote_operation',

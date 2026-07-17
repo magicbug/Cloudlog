@@ -1191,7 +1191,7 @@
                 DXCC Summary
               </button>
             </li>
-            <?php if ($this->session->userdata('user_show_profile_image')) { ?>
+            <?php if (!empty($show_callbook_tab)) { ?>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="callbook-tab" data-bs-toggle="tab" data-bs-target="#callbook-pane" type="button" role="tab" aria-controls="callbook-pane" aria-selected="false">
                 Callbook
@@ -1230,7 +1230,7 @@
               </div>
             </div>
 
-            <?php if ($this->session->userdata('user_show_profile_image')) { ?>
+            <?php if (!empty($show_callbook_tab)) { ?>
             <div class="tab-pane fade" id="callbook-pane" role="tabpanel" aria-labelledby="callbook-tab">
               <div id="qso-callbook-content" class="pt-2 small text-muted">
                 Enter a callsign to load callbook details.
