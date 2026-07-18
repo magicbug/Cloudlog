@@ -5,6 +5,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Eqsl_mappings_model extends CI_Model
 {
     private $table_name = 'eqsl_mappings';
+    private $encrypted_prefix = 'enc:';
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('encryption');
+    }
 
     public function table_exists()
     {
@@ -27,7 +34,12 @@ class Eqsl_mappings_model extends CI_Model
         $this->db->order_by('eqsl_mappings.station_id', 'asc');
         $this->db->order_by('eqsl_mappings.mapping_id', 'asc');
 
-        return $this->db->get()->result_array();
+        $mappings = $this->db->get()->result_array();
+        foreach ($mappings as &$mapping) {
+            $mapping['eqsl_password'] = $this->decrypt_eqsl_password($mapping['eqsl_password']);
+        }
+
+        return $mappings;
     }
 
     public function has_mappings_for_user($user_id)
@@ -47,7 +59,7 @@ class Eqsl_mappings_model extends CI_Model
             return array();
         }
 
-        $this->db->select('eqsl_mappings.*, station_profile.station_callsign, station_profile.station_profile_name');
+        $this->db->select('eqsl_mappings.mapping_id, eqsl_mappings.user_id, eqsl_mappings.station_id, eqsl_mappings.eqsl_username, eqsl_mappings.eqsl_qth_nickname, eqsl_mappings.enabled, eqsl_mappings.preferred_for_download, eqsl_mappings.created_at, eqsl_mappings.modified, station_profile.station_callsign, station_profile.station_profile_name');
         $this->db->from($this->table_name);
         $this->db->join('station_profile', 'station_profile.station_id = eqsl_mappings.station_id', 'inner');
         $this->db->where('eqsl_mappings.user_id', (int) $user_id);
@@ -74,7 +86,12 @@ class Eqsl_mappings_model extends CI_Model
         $this->db->order_by('eqsl_mappings.station_id', 'asc');
         $this->db->order_by('eqsl_mappings.mapping_id', 'asc');
 
-        return $this->db->get()->result_array();
+        $mappings = $this->db->get()->result_array();
+        foreach ($mappings as &$mapping) {
+            $mapping['eqsl_password'] = $this->decrypt_eqsl_password($mapping['eqsl_password']);
+        }
+
+        return $mappings;
     }
 
     public function create_mapping($user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download)
@@ -83,11 +100,16 @@ class Eqsl_mappings_model extends CI_Model
             return false;
         }
 
+        $encrypted_password = $this->encrypt_eqsl_password($eqsl_password);
+        if ($encrypted_password === null) {
+            return false;
+        }
+
         $data = array(
             'user_id' => (int) $user_id,
             'station_id' => (int) $station_id,
             'eqsl_username' => trim($eqsl_username),
-            'eqsl_password' => trim($eqsl_password),
+            'eqsl_password' => $encrypted_password,
             'eqsl_qth_nickname' => trim($eqsl_qth_nickname),
             'enabled' => (int) $enabled,
             'preferred_for_download' => (int) $preferred_for_download,
@@ -113,10 +135,15 @@ class Eqsl_mappings_model extends CI_Model
             return false;
         }
 
+        $encrypted_password = $this->encrypt_eqsl_password($eqsl_password);
+        if ($encrypted_password === null) {
+            return false;
+        }
+
         $data = array(
             'station_id' => (int) $station_id,
             'eqsl_username' => trim($eqsl_username),
-            'eqsl_password' => trim($eqsl_password),
+            'eqsl_password' => $encrypted_password,
             'eqsl_qth_nickname' => trim($eqsl_qth_nickname),
             'enabled' => (int) $enabled,
             'preferred_for_download' => (int) $preferred_for_download,
@@ -156,7 +183,12 @@ class Eqsl_mappings_model extends CI_Model
         $this->db->from($this->table_name);
         $this->db->where('mapping_id', (int) $mapping_id);
         $this->db->where('user_id', (int) $user_id);
-        return $this->db->get()->row_array();
+        $mapping = $this->db->get()->row_array();
+        if ($mapping != null) {
+            // Never expose stored password back into the form.
+            $mapping['eqsl_password'] = '';
+        }
+        return $mapping;
     }
 
     public function get_preferred_mapping_for_station($user_id, $station_id)
@@ -174,7 +206,12 @@ class Eqsl_mappings_model extends CI_Model
         $this->db->order_by('mapping_id', 'asc');
         $this->db->limit(1);
 
-        return $this->db->get()->row_array();
+        $mapping = $this->db->get()->row_array();
+        if ($mapping != null) {
+            $mapping['eqsl_password'] = $this->decrypt_eqsl_password($mapping['eqsl_password']);
+        }
+
+        return $mapping;
     }
 
     public function get_password_for_user_and_username($user_id, $eqsl_username)
@@ -196,7 +233,42 @@ class Eqsl_mappings_model extends CI_Model
             return null;
         }
 
-        return $row['eqsl_password'];
+        return $this->decrypt_eqsl_password($row['eqsl_password']);
+    }
+
+    private function encrypt_eqsl_password($password)
+    {
+        $password = trim((string) $password);
+        if ($password === '') {
+            return null;
+        }
+
+        $encrypted = $this->encryption->encrypt($password);
+        if ($encrypted === false || $encrypted === null) {
+            return null;
+        }
+
+        return $this->encrypted_prefix . $encrypted;
+    }
+
+    private function decrypt_eqsl_password($stored_password)
+    {
+        $stored_password = (string) $stored_password;
+        if ($stored_password === '') {
+            return '';
+        }
+
+        if (strpos($stored_password, $this->encrypted_prefix) === 0) {
+            $cipher = substr($stored_password, strlen($this->encrypted_prefix));
+            $decrypted = $this->encryption->decrypt($cipher);
+            if ($decrypted !== false && $decrypted !== null) {
+                return $decrypted;
+            }
+            return '';
+        }
+
+        // Backward compatibility for legacy plaintext rows.
+        return $stored_password;
     }
 
     private function clear_preferred_for_station($user_id, $station_id, $keep_mapping_id)

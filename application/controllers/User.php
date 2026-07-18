@@ -468,7 +468,7 @@ class User extends CI_Controller
 			if ($this->input->post('user_eqsl_password')) {
 				$data['user_eqsl_password'] = $this->input->post('user_eqsl_password', true);
 			} else {
-				$data['user_eqsl_password'] = $q->user_eqsl_password;
+				$data['user_eqsl_password'] = null;
 			}
 
 			if ($this->input->post('user_measurement_base')) {

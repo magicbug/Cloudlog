@@ -380,7 +380,11 @@ class User_Model extends CI_Model {
 
 				if($fields['user_eqsl_password'] != NULL)
 				{
-					$data['user_eqsl_password'] = $fields['user_eqsl_password'];
+					$this->load->library('encryption');
+					$encrypted_password = $this->encryption->encrypt($fields['user_eqsl_password']);
+					if ($encrypted_password !== false && $encrypted_password !== null) {
+						$data['user_eqsl_password'] = 'enc:' . $encrypted_password;
+					}
 				}
 
 				// Update the user

@@ -8,6 +8,7 @@ class eqsl extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
+		$this->load->library('encryption');
 	}
 
 	// Default view when loading controller.
@@ -92,7 +93,7 @@ class eqsl extends CI_Controller
 				// Get credentials for eQSL
 				$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 				$q = $query->row();
-				$eqsl_password = $q->user_eqsl_password;
+				$eqsl_password = $this->decode_eqsl_password($q->user_eqsl_password);
 
 				// Validate that eQSL credentials are not empty
 				if ($eqsl_password == '') {
@@ -235,7 +236,7 @@ class eqsl extends CI_Controller
 				$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 				$q = $query->row();
 				$credentials['user_eqsl_name'] = $q->user_eqsl_name;
-				$credentials['user_eqsl_password'] = $q->user_eqsl_password;
+				$credentials['user_eqsl_password'] = $this->decode_eqsl_password($q->user_eqsl_password);
 
 				// Validate that eQSL credentials are not empty
 				if ($credentials['user_eqsl_name'] == '' || $credentials['user_eqsl_password'] == '') {
@@ -654,7 +655,7 @@ class eqsl extends CI_Controller
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 			$q = $query->row();
 			$username = $qso->COL_STATION_CALLSIGN;
-			$password = $q->user_eqsl_password;
+			$password = $this->decode_eqsl_password($q->user_eqsl_password);
 			$this->load->model('eqsl_mappings_model');
 			$station_mapping = $this->eqsl_mappings_model->get_preferred_mapping_for_station($this->session->userdata('user_id'), $qso->station_id);
 			if ($station_mapping != null) {
@@ -716,7 +717,7 @@ class eqsl extends CI_Controller
 		$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
 		$q = $query->row();
 		$username = $qso->COL_STATION_CALLSIGN;
-		$password = $q->user_eqsl_password;
+		$password = $this->decode_eqsl_password($q->user_eqsl_password);
 		$this->load->model('eqsl_mappings_model');
 		$station_mapping = $this->eqsl_mappings_model->get_preferred_mapping_for_station($this->session->userdata('user_id'), $qso->station_id);
 		if ($station_mapping != null) {
@@ -851,8 +852,12 @@ class eqsl extends CI_Controller
 				redirect('eqsl/mappings');
 			}
 
-			$this->eqsl_mappings_model->update_mapping($mapping_id, $user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download);
-			$this->session->set_flashdata('success', 'eQSL mapping updated.');
+			$updated = $this->eqsl_mappings_model->update_mapping($mapping_id, $user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download);
+			if ($updated === false) {
+				$this->session->set_flashdata('error', 'Unable to update mapping password securely. Please check your encryption configuration.');
+			} else {
+				$this->session->set_flashdata('success', 'eQSL mapping updated.');
+			}
 		} else {
 			if (trim($eqsl_password) === '') {
 				$reused_password = $this->eqsl_mappings_model->get_password_for_user_and_username($user_id, $eqsl_username);
@@ -1025,8 +1030,9 @@ class eqsl extends CI_Controller
 		$users = $this->eqslmethods_model->get_eqsl_users();
 
 		foreach ($users as $user) {
-			$this->uploadUser($user->user_id, $user->user_eqsl_name, $user->user_eqsl_password);
-			$this->downloadUser($user->user_id, $user->user_eqsl_name, $user->user_eqsl_password);
+			$decoded_password = $this->decode_eqsl_password($user->user_eqsl_password);
+			$this->uploadUser($user->user_id, $user->user_eqsl_name, $decoded_password);
+			$this->downloadUser($user->user_id, $user->user_eqsl_name, $decoded_password);
 		}
 	}
 
@@ -1101,5 +1107,25 @@ class eqsl extends CI_Controller
 
 			$status = $this->uploadQso($adif, $qsl);
 		}
+	}
+
+	private function decode_eqsl_password($stored_password)
+	{
+		$stored_password = (string) $stored_password;
+		if ($stored_password === '') {
+			return '';
+		}
+
+		if (strpos($stored_password, 'enc:') === 0) {
+			$cipher = substr($stored_password, 4);
+			$decrypted = $this->encryption->decrypt($cipher);
+			if ($decrypted !== false && $decrypted !== null) {
+				return $decrypted;
+			}
+			return '';
+		}
+
+		// Backward compatibility for existing plaintext credentials.
+		return $stored_password;
 	}
 } // end class
