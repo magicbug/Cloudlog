@@ -1,3 +1,8 @@
+<?php
+$page_title = $page_title ?? '';
+$eqsl_mapping_mode = $eqsl_mapping_mode ?? false;
+$eqsl_mappings_count = $eqsl_mappings_count ?? 0;
+?>
 
 <div class="container eqsl">
 <h2><?php echo $page_title; ?></h2>
@@ -12,6 +17,9 @@
         <a class="nav-link active" href="<?php echo site_url('eqsl/Export');?>">Upload QSOs</a>
       </li>
 	  <li class="nav-item">
+				<a class="nav-link" href="<?php echo site_url('eqsl/mappings');?>">Mappings</a>
+			</li>
+	  <li class="nav-item">
         <a class="nav-link" href="<?php echo site_url('eqsl/tools');?>">Tools</a>
       </li>
       <li class="nav-item">
@@ -22,6 +30,16 @@
 
   <div class="card-body">
   <?php $this->load->view('layout/messages'); ?>
+
+<?php if (!empty($eqsl_mapping_mode)) { ?>
+		<div class="alert alert-info" role="alert">
+			Using mapping mode with <?php echo (int) $eqsl_mappings_count; ?> active mapping(s). Upload credentials and QTH nicknames are resolved from mappings.
+		</div>
+<?php } else { ?>
+		<div class="alert alert-warning" role="alert">
+			Using legacy fallback mode. Uploads use eQSL credentials from your user profile and station profile nicknames.
+		</div>
+<?php } ?>
 
 <?php
 	if (isset($eqsl_table))

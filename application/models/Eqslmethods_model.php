@@ -2,6 +2,8 @@
 
 class Eqslmethods_model extends CI_Model {
 
+    private $eqsl_mappings_table = 'eqsl_mappings';
+
 	function mark_all_as_sent() {
 		$data = array(
             'COL_EQSL_QSL_SENT' => 'Y',
@@ -24,6 +26,25 @@ class Eqslmethods_model extends CI_Model {
         $this->db->where('coalesce(user_eqsl_password, "") != ""');
         $query = $this->db->get($this->config->item('auth_table'));
         return $query->result();
+    }
+
+    function eqsl_mappings_table_exists() {
+        return $this->db->table_exists($this->eqsl_mappings_table);
+    }
+
+    function get_eqsl_mappings_for_sync() {
+        if (!$this->eqsl_mappings_table_exists()) {
+            return array();
+        }
+
+        $this->db->select('eqsl_mappings.mapping_id, eqsl_mappings.user_id, eqsl_mappings.station_id, eqsl_mappings.eqsl_username, eqsl_mappings.eqsl_password, eqsl_mappings.eqsl_qth_nickname, station_profile.station_callsign');
+        $this->db->from($this->eqsl_mappings_table);
+        $this->db->join('station_profile', 'station_profile.station_id = eqsl_mappings.station_id', 'inner');
+        $this->db->where('eqsl_mappings.enabled', 1);
+        $this->db->where('coalesce(eqsl_mappings.eqsl_username, "") != ""');
+        $this->db->where('coalesce(eqsl_mappings.eqsl_password, "") != ""');
+        $this->db->where('coalesce(eqsl_mappings.eqsl_qth_nickname, "") != ""');
+        return $this->db->get()->result_array();
     }
 
     /*
@@ -69,6 +90,34 @@ class Eqslmethods_model extends CI_Model {
             // Option 1: Skip the query altogether (return no results)
             return [];
         }
+
+        return $this->db->get();
+    }
+
+    // Show all QSOs for a specific station location that we need to send to eQSL
+    function eqsl_not_yet_sent_for_station($station_id, $qth_nickname = null) {
+        $station_id = (int) $station_id;
+        if ($station_id <= 0) {
+            return array();
+        }
+
+        $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
+        $this->db->from('station_profile');
+        $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->where('station_profile.station_id', $station_id);
+        if ($qth_nickname !== null && $qth_nickname !== '') {
+            $this->db->where('station_profile.eqslqthnickname', $qth_nickname);
+        } else {
+            $this->db->where("coalesce(station_profile.eqslqthnickname, '') <> ''");
+        }
+        $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
+        $this->db->group_start();
+        $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT is null');
+        $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', '');
+        $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'R');
+        $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'Q');
+        $this->db->or_where($this->config->item('table_name').'.COL_EQSL_QSL_SENT', 'N');
+        $this->db->group_end();
 
         return $this->db->get();
     }

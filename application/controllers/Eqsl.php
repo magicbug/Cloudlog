@@ -39,16 +39,29 @@ class eqsl extends CI_Controller
 		}
 
 		$this->load->model('stations');
+		$this->load->model('eqsl_mappings_model');
 		$data['station_profile'] = $this->stations->all_of_user();
 		$active_station_id = $this->stations->find_active();
 		$station_profile = $this->stations->profile($active_station_id);
 		$data['active_station_info'] = $station_profile->row();
 
-		// Check if eQSL Nicknames have been defined
 		$this->load->model('eqslmethods_model');
-		$eqsl_locations = $this->eqslmethods_model->all_of_user_with_eqsl_nick_defined();
-		if ($eqsl_locations->num_rows() == 0) {
-			$this->session->set_flashdata('error', 'eQSL Nicknames in Station Profiles aren\'t defined!');
+		$user_id = (int) $this->session->userdata('user_id');
+		$active_mappings = $this->eqsl_mappings_model->get_active_mappings_for_user($user_id);
+		$use_mapping_mode = !empty($active_mappings);
+		$data['mapped_station_ids'] = array_map(function ($mapping) {
+			return (int) $mapping['station_id'];
+		}, $active_mappings);
+		$data['eqsl_mapping_mode'] = $use_mapping_mode;
+		$data['eqsl_legacy_fallback'] = !$use_mapping_mode;
+		$data['eqsl_mappings_count'] = count($active_mappings);
+
+		$eqsl_locations = null;
+		if (!$use_mapping_mode) {
+			$eqsl_locations = $this->eqslmethods_model->all_of_user_with_eqsl_nick_defined();
+			if ($eqsl_locations->num_rows() == 0) {
+				$this->session->set_flashdata('error', 'eQSL Nicknames in Station Profiles aren\'t defined!');
+			}
 		}
 
 		ini_set('memory_limit', '-1');
@@ -63,27 +76,40 @@ class eqsl extends CI_Controller
 		if ($this->input->post('eqslimport') == 'fetch') {
 			$this->load->library('EqslImporter');
 
-			// Get credentials for eQSL
-			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
-			$q = $query->row();
-			$eqsl_password = $q->user_eqsl_password;
-
-			// Validate that eQSL credentials are not empty
-			if ($eqsl_password == '') {
-				$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!');
-				redirect('eqsl/import');
-			}
-
 			$eqsl_force_from_date = (!$this->input->post('eqsl_force_from_date') == "") ? $this->input->post('eqsl_force_from_date') : "";
-			foreach ($eqsl_locations->result_array() as $eqsl_location) {
-				$this->eqslimporter->from_callsign_and_QTH(
-					$eqsl_location['station_callsign'],
-					$eqsl_location['eqslqthnickname'],
-					$config['upload_path'],
-					$eqsl_location['station_id']
-				);
+			if ($use_mapping_mode) {
+				foreach ($active_mappings as $mapping) {
+					$this->eqslimporter->from_callsign_and_QTH(
+						$mapping['station_callsign'],
+						$mapping['eqsl_qth_nickname'],
+						$config['upload_path'],
+						$mapping['station_id']
+					);
 
-				$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password, $eqsl_force_from_date);
+					$eqsl_results[] = $this->eqslimporter->fetch($mapping['eqsl_password'], $eqsl_force_from_date);
+				}
+			} else {
+				// Get credentials for eQSL
+				$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+				$q = $query->row();
+				$eqsl_password = $q->user_eqsl_password;
+
+				// Validate that eQSL credentials are not empty
+				if ($eqsl_password == '') {
+					$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!');
+					redirect('eqsl/import');
+				}
+
+				foreach ($eqsl_locations->result_array() as $eqsl_location) {
+					$this->eqslimporter->from_callsign_and_QTH(
+						$eqsl_location['station_callsign'],
+						$eqsl_location['eqslqthnickname'],
+						$config['upload_path'],
+						$eqsl_location['station_id']
+					);
+
+					$eqsl_results[] = $this->eqslimporter->fetch($eqsl_password, $eqsl_force_from_date);
+				}
 			}
 		} elseif ($this->input->post('eqslimport') == 'upload') {
 			$station_id4upload = $this->input->post('station_profile');
@@ -135,73 +161,148 @@ class eqsl extends CI_Controller
 			redirect('dashboard');
 		}
 
-		// Check if eQSL Nicknames have been defined
 		$this->load->model('stations');
-		if ($this->stations->are_eqsl_nicks_defined() == 0) {
-			$this->session->set_flashdata('error', 'eQSL Nicknames in Station Profiles aren\'t defined!');
-		}
+		$this->load->model('eqsl_mappings_model');
+		$this->load->model('logbooks_model');
 
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 		$this->load->model('eqslmethods_model');
 
+		$user_id = (int) $this->session->userdata('user_id');
+		$active_mappings = $this->eqsl_mappings_model->get_active_mappings_for_user($user_id);
+		$use_mapping_mode = !empty($active_mappings);
+		$data['eqsl_mapping_mode'] = $use_mapping_mode;
+		$data['eqsl_legacy_fallback'] = !$use_mapping_mode;
+		$data['eqsl_mappings_count'] = count($active_mappings);
+
+		if (!$use_mapping_mode && $this->stations->are_eqsl_nicks_defined() == 0) {
+			$this->session->set_flashdata('error', 'eQSL Nicknames in Station Profiles aren\'t defined!');
+		}
+
 		$data['page_title'] = "eQSL QSO Upload";
 		$custom_date_format = $this->session->userdata('user_date_format');
+		$active_logbook_station_ids = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		if (!is_array($active_logbook_station_ids)) {
+			$active_logbook_station_ids = array();
+		}
 
 		if ($this->input->post('eqslexport') == "export") {
-			// Get credentials for eQSL
-			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
-			$q = $query->row();
-			$data['user_eqsl_name'] = $q->user_eqsl_name;
-			$data['user_eqsl_password'] = $q->user_eqsl_password;
-
-			// Validate that eQSL credentials are not empty
-			if ($data['user_eqsl_name'] == '' || $data['user_eqsl_password'] == '') {
-				$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!');
-				redirect('eqsl/import');
-			}
-
 			$rows = '';
 			$successful_uploads = array(); // Collect successful QSO primary keys for batch update
+			$processed_qso_ids = array();
 			
-			// Grab the list of QSOs to send information about
-			// perform an HTTP get on each one, and grab the status back
-			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
+			if ($use_mapping_mode) {
+				foreach ($active_mappings as $mapping) {
+					if (!in_array((int) $mapping['station_id'], $active_logbook_station_ids, true)) {
+						continue;
+					}
 
-			foreach ($qslsnotsent->result_array() as $qsl) {
-				$rows .= "<tr>";
-				// Note: eQSL authentication uses the user's actual eQSL credentials
-				// The station callsign is handled in the ADIF data via eqslqthnickname
-				$adif = $this->generateAdif($qsl, $data);
+					$credentials = array(
+						'user_eqsl_name' => $mapping['eqsl_username'],
+						'user_eqsl_password' => $mapping['eqsl_password'],
+					);
 
-				$status = $this->uploadQso($adif, $qsl, $successful_uploads);
+					$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent_for_station($mapping['station_id'], $mapping['eqsl_qth_nickname']);
+					foreach ($qslsnotsent->result_array() as $qsl) {
+						$qso_id = (int) $qsl['COL_PRIMARY_KEY'];
+						if (isset($processed_qso_ids[$qso_id])) {
+							continue;
+						}
+						$processed_qso_ids[$qso_id] = true;
 
-				$timestamp = strtotime($qsl['COL_TIME_ON']);
-				$rows .= "<td>" . date($custom_date_format, $timestamp) . "</td>";
-				$rows .= "<td>" . date('H:i', $timestamp) . "</td>";
-				$rows .= "<td>" . str_replace("0", "&Oslash;", $qsl['COL_CALL']) . "</td>";
-				$rows .= "<td>" . $qsl['COL_MODE'] . "</td>";
-				if (isset($qsl['COL_SUBMODE'])) {
-					$rows .= "<td>" . $qsl['COL_SUBMODE'] . "</td>";
-				} else {
-					$rows .= "<td></td>";
+						$qsl['eqslqthnickname'] = $mapping['eqsl_qth_nickname'];
+						$rows .= "<tr>";
+						$adif = $this->generateAdif($qsl, $credentials);
+						$status = $this->uploadQso($adif, $qsl, $successful_uploads);
+
+						$timestamp = strtotime($qsl['COL_TIME_ON']);
+						$rows .= "<td>" . date($custom_date_format, $timestamp) . "</td>";
+						$rows .= "<td>" . date('H:i', $timestamp) . "</td>";
+						$rows .= "<td>" . str_replace("0", "&Oslash;", $qsl['COL_CALL']) . "</td>";
+						$rows .= "<td>" . $qsl['COL_MODE'] . "</td>";
+						if (isset($qsl['COL_SUBMODE'])) {
+							$rows .= "<td>" . $qsl['COL_SUBMODE'] . "</td>";
+						} else {
+							$rows .= "<td></td>";
+						}
+						$rows .= "<td>" . $qsl['COL_BAND'] . "</td>";
+						$rows .= "<td>" . $status . "</td>";
+						$rows .= "</tr>";
+					}
 				}
-				$rows .= "<td>" . $qsl['COL_BAND'] . "</td>";
-				$rows .= "<td>" . $status . "</td>";
+			} else {
+				// Get credentials for eQSL
+				$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
+				$q = $query->row();
+				$credentials['user_eqsl_name'] = $q->user_eqsl_name;
+				$credentials['user_eqsl_password'] = $q->user_eqsl_password;
+
+				// Validate that eQSL credentials are not empty
+				if ($credentials['user_eqsl_name'] == '' || $credentials['user_eqsl_password'] == '') {
+					$this->session->set_flashdata('warning', 'You have not defined your eQSL.cc credentials!');
+					redirect('eqsl/import');
+				}
+
+				$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
+				foreach ($qslsnotsent->result_array() as $qsl) {
+					$rows .= "<tr>";
+					$adif = $this->generateAdif($qsl, $credentials);
+					$status = $this->uploadQso($adif, $qsl, $successful_uploads);
+
+					$timestamp = strtotime($qsl['COL_TIME_ON']);
+					$rows .= "<td>" . date($custom_date_format, $timestamp) . "</td>";
+					$rows .= "<td>" . date('H:i', $timestamp) . "</td>";
+					$rows .= "<td>" . str_replace("0", "&Oslash;", $qsl['COL_CALL']) . "</td>";
+					$rows .= "<td>" . $qsl['COL_MODE'] . "</td>";
+					if (isset($qsl['COL_SUBMODE'])) {
+						$rows .= "<td>" . $qsl['COL_SUBMODE'] . "</td>";
+					} else {
+						$rows .= "<td></td>";
+					}
+					$rows .= "<td>" . $qsl['COL_BAND'] . "</td>";
+					$rows .= "<td>" . $status . "</td>";
+					$rows .= "</tr>";
+				}
 			}
-			$rows .= "</tr>";
 			
 			// Batch update all successful uploads at the end for better performance
 			if (!empty($successful_uploads)) {
 				$affected_rows = $this->eqslmethods_model->eqsl_mark_sent_batch($successful_uploads);
 				log_message('info', 'eQSL export: Marked ' . $affected_rows . ' QSOs as sent to eQSL');
 			}
-			
-			$data['eqsl_table'] = $this->generateResultTable($custom_date_format, $rows);
+
+			if ($rows != '') {
+				$data['eqsl_table'] = $this->generateResultTable($custom_date_format, $rows);
+			}
 		} else {
-			$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
-			if ($qslsnotsent->num_rows() > 0) {
-				$data['eqsl_table'] = $this->writeEqslNotSent($qslsnotsent->result_array(), $custom_date_format);
+			if ($use_mapping_mode) {
+				$processed_qso_ids = array();
+				$pending_qsos = array();
+				foreach ($active_mappings as $mapping) {
+					if (!in_array((int) $mapping['station_id'], $active_logbook_station_ids, true)) {
+						continue;
+					}
+					$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent_for_station($mapping['station_id'], $mapping['eqsl_qth_nickname']);
+					foreach ($qslsnotsent->result_array() as $qsl) {
+						$qso_id = (int) $qsl['COL_PRIMARY_KEY'];
+						if (isset($processed_qso_ids[$qso_id])) {
+							continue;
+						}
+						$processed_qso_ids[$qso_id] = true;
+						$qsl['eqslqthnickname'] = $mapping['eqsl_qth_nickname'];
+						$pending_qsos[] = $qsl;
+					}
+				}
+
+				if (!empty($pending_qsos)) {
+					$data['eqsl_table'] = $this->writeEqslNotSent($pending_qsos, $custom_date_format);
+				}
+			} else {
+				$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent();
+				if ($qslsnotsent->num_rows() > 0) {
+					$data['eqsl_table'] = $this->writeEqslNotSent($qslsnotsent->result_array(), $custom_date_format);
+				}
 			}
 		}
 
@@ -558,6 +659,11 @@ class eqsl extends CI_Controller
 			$q = $query->row();
 			$username = $qso->COL_STATION_CALLSIGN;
 			$password = $q->user_eqsl_password;
+			$this->load->model('eqsl_mappings_model');
+			$station_mapping = $this->eqsl_mappings_model->get_preferred_mapping_for_station($this->session->userdata('user_id'), $qso->station_id);
+			if ($station_mapping != null) {
+				$password = $station_mapping['eqsl_password'];
+			}
 
 			$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
 			$file = file_get_contents($image_url, true);
@@ -615,6 +721,11 @@ class eqsl extends CI_Controller
 		$q = $query->row();
 		$username = $qso->COL_STATION_CALLSIGN;
 		$password = $q->user_eqsl_password;
+		$this->load->model('eqsl_mappings_model');
+		$station_mapping = $this->eqsl_mappings_model->get_preferred_mapping_for_station($this->session->userdata('user_id'), $qso->station_id);
+		if ($station_mapping != null) {
+			$password = $station_mapping['eqsl_password'];
+		}
 		$error = '';
 
 		$image_url = $this->electronicqsl->card_image($username, urlencode($password), $callsign, $band, $mode, $year, $month, $day, $hour, $minute);
@@ -663,6 +774,111 @@ class eqsl extends CI_Controller
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('eqsl/tools');
 		$this->load->view('interface_assets/footer');
+	}
+
+	public function mappings()
+	{
+		$this->load->model('user_model');
+		if (!$this->user_model->authorize(2)) {
+			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
+			redirect('dashboard');
+		}
+
+		$this->load->model('eqsl_mappings_model');
+		$this->load->model('stations');
+
+		$data['page_title'] = 'eQSL Mappings';
+		$data['station_profile'] = $this->stations->all_of_user();
+		$data['mappings'] = $this->eqsl_mappings_model->get_user_mappings($this->session->userdata('user_id'));
+
+		$editing_mapping_id = (int) $this->input->get('edit');
+		$data['editing_mapping'] = null;
+		if ($editing_mapping_id > 0) {
+			$data['editing_mapping'] = $this->eqsl_mappings_model->get_mapping_by_id_for_user($editing_mapping_id, $this->session->userdata('user_id'));
+		}
+
+		$this->load->view('interface_assets/header', $data);
+		$this->load->view('eqsl/mappings');
+		$this->load->view('interface_assets/footer');
+	}
+
+	public function save_mapping()
+	{
+		$this->load->model('user_model');
+		if (!$this->user_model->authorize(2)) {
+			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
+			redirect('dashboard');
+		}
+
+		$this->load->model('eqsl_mappings_model');
+		$this->load->model('stations');
+
+		$user_id = (int) $this->session->userdata('user_id');
+		$mapping_id = (int) $this->input->post('mapping_id');
+		$station_id = (int) $this->input->post('station_id');
+		$eqsl_username = $this->security->xss_clean((string) $this->input->post('eqsl_username', true));
+		$eqsl_password = $this->security->xss_clean((string) $this->input->post('eqsl_password', true));
+		$eqsl_qth_nickname = $this->security->xss_clean((string) $this->input->post('eqsl_qth_nickname', true));
+		$enabled = $this->input->post('enabled') ? 1 : 0;
+		$preferred_for_download = $this->input->post('preferred_for_download') ? 1 : 0;
+
+		if (!$this->stations->check_station_is_accessible($station_id)) {
+			$this->session->set_flashdata('error', 'Selected station location is not accessible.');
+			redirect('eqsl/mappings');
+		}
+
+		if (trim($eqsl_username) === '' || trim($eqsl_password) === '' || trim($eqsl_qth_nickname) === '') {
+			$this->session->set_flashdata('error', 'Username, password and QTH nickname are required.');
+			redirect('eqsl/mappings');
+		}
+
+		if ($mapping_id > 0) {
+			$mapping = $this->eqsl_mappings_model->get_mapping_by_id_for_user($mapping_id, $user_id);
+			if ($mapping == null) {
+				$this->session->set_flashdata('error', 'Mapping not found.');
+				redirect('eqsl/mappings');
+			}
+
+			$this->eqsl_mappings_model->update_mapping($mapping_id, $user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download);
+			$this->session->set_flashdata('success', 'eQSL mapping updated.');
+		} else {
+			$created = $this->eqsl_mappings_model->create_mapping($user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download);
+			if ($created === false) {
+				$this->session->set_flashdata('error', 'Unable to create mapping. Please verify it is unique for this station/account/nickname.');
+			} else {
+				$this->session->set_flashdata('success', 'eQSL mapping created.');
+			}
+		}
+
+		$this->user_model->update_session($user_id);
+		redirect('eqsl/mappings');
+	}
+
+	public function delete_mapping()
+	{
+		$this->load->model('user_model');
+		if (!$this->user_model->authorize(2)) {
+			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
+			redirect('dashboard');
+		}
+
+		$this->load->model('eqsl_mappings_model');
+
+		$user_id = (int) $this->session->userdata('user_id');
+		$mapping_id = (int) $this->input->post('mapping_id');
+		if ($mapping_id <= 0) {
+			$this->session->set_flashdata('error', 'Invalid mapping selected.');
+			redirect('eqsl/mappings');
+		}
+
+		if ($this->eqsl_mappings_model->delete_mapping($mapping_id, $user_id)) {
+			$this->session->set_flashdata('success', 'eQSL mapping deleted.');
+		} else {
+			$this->session->set_flashdata('error', 'Unable to delete mapping.');
+		}
+
+		$this->user_model->update_session($user_id);
+		redirect('eqsl/mappings');
 	}
 
 	public function download()
@@ -751,6 +967,18 @@ class eqsl extends CI_Controller
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 		$this->load->model('eqslmethods_model');
+		$this->load->model('eqsl_mappings_model');
+
+		$eqsl_mappings = $this->eqsl_mappings_model->get_active_mappings_for_sync();
+		if (!empty($eqsl_mappings)) {
+			foreach ($eqsl_mappings as $mapping) {
+				$this->uploadMapping($mapping);
+				if ((int) $mapping['preferred_for_download'] === 1) {
+					$this->downloadMapping($mapping);
+				}
+			}
+			return;
+		}
 
 		$users = $this->eqslmethods_model->get_eqsl_users();
 
@@ -782,6 +1010,42 @@ class eqsl extends CI_Controller
 		}
 	}
 
+	private function downloadMapping($mapping)
+	{
+		$this->load->library('EqslImporter');
+
+		$config['upload_path'] = './uploads/';
+		$this->eqslimporter->from_callsign_and_QTH(
+			$mapping['station_callsign'],
+			$mapping['eqsl_qth_nickname'],
+			$config['upload_path'],
+			$mapping['station_id']
+		);
+
+		$this->eqslimporter->fetch($mapping['eqsl_password']);
+	}
+
+	private function uploadMapping($mapping)
+	{
+		$this->load->model('eqslmethods_model');
+
+		$data['user_eqsl_name'] = $mapping['eqsl_username'];
+		$data['user_eqsl_password'] = $mapping['eqsl_password'];
+
+		$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent_for_station($mapping['station_id'], $mapping['eqsl_qth_nickname']);
+		$successful_uploads = array();
+
+		foreach ($qslsnotsent->result_array() as $qsl) {
+			$qsl['eqslqthnickname'] = $mapping['eqsl_qth_nickname'];
+			$adif = $this->generateAdif($qsl, $data);
+			$this->uploadQso($adif, $qsl, $successful_uploads);
+		}
+
+		if (!empty($successful_uploads)) {
+			$this->eqslmethods_model->eqsl_mark_sent_batch($successful_uploads);
+		}
+	}
+
 	function uploadUser($userid, $username, $password)
 	{
 		$data['user_eqsl_name'] = $this->security->xss_clean($username);
@@ -791,7 +1055,6 @@ class eqsl extends CI_Controller
 		$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent($clean_userid);
 
 		foreach ($qslsnotsent->result_array() as $qsl) {
-			$data['user_eqsl_name'] = $qsl['station_callsign'];
 			$adif = $this->generateAdif($qsl, $data);
 
 			$status = $this->uploadQso($adif, $qsl);

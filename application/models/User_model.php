@@ -476,6 +476,10 @@ class User_Model extends CI_Model {
 
 		$u = $this->get_by_id($id);
 		$has_eqsl_credentials = ($u->row()->user_eqsl_name != '' && $u->row()->user_eqsl_password != '');
+		if (!$has_eqsl_credentials) {
+			$this->load->model('eqsl_mappings_model');
+			$has_eqsl_credentials = $this->eqsl_mappings_model->has_mappings_for_user($id);
+		}
 		$show_qsl_cards = true;
 		if (isset($show_qsl_cards_option->option_value)) {
 			$show_qsl_cards = ($show_qsl_cards_option->option_value == 'true');
