@@ -6,6 +6,8 @@ class Eqsl_mappings_model extends CI_Model
 {
     private $table_name = 'eqsl_mappings';
     private $encrypted_prefix = 'enc:';
+    private $last_failure_reason = '';
+    private $last_db_error = array('code' => 0, 'message' => '');
 
     public function __construct()
     {
@@ -95,12 +97,16 @@ class Eqsl_mappings_model extends CI_Model
 
     public function create_mapping($user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download)
     {
+        $this->reset_last_failure();
+
         if (!$this->table_exists()) {
+            $this->last_failure_reason = 'table_missing';
             return false;
         }
 
         $encrypted_password = $this->encrypt_eqsl_password($eqsl_password);
         if ($encrypted_password === null) {
+            $this->last_failure_reason = 'encryption_failed';
             return false;
         }
 
@@ -115,8 +121,16 @@ class Eqsl_mappings_model extends CI_Model
             'created_at' => date('Y-m-d H:i:s'),
         );
 
-        $this->db->insert($this->table_name, $data);
+        $inserted = $this->db->insert($this->table_name, $data);
+        if ($inserted === false) {
+            $this->last_failure_reason = 'insert_failed';
+            $this->last_db_error = $this->db->error();
+            return false;
+        }
+
         if (!$this->db->affected_rows()) {
+            $this->last_failure_reason = 'insert_no_rows';
+            $this->last_db_error = $this->db->error();
             return false;
         }
 
@@ -130,12 +144,16 @@ class Eqsl_mappings_model extends CI_Model
 
     public function update_mapping($mapping_id, $user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download)
     {
+        $this->reset_last_failure();
+
         if (!$this->table_exists()) {
+            $this->last_failure_reason = 'table_missing';
             return false;
         }
 
         $encrypted_password = $this->encrypt_eqsl_password($eqsl_password);
         if ($encrypted_password === null) {
+            $this->last_failure_reason = 'encryption_failed';
             return false;
         }
 
@@ -151,13 +169,28 @@ class Eqsl_mappings_model extends CI_Model
 
         $this->db->where('mapping_id', (int) $mapping_id);
         $this->db->where('user_id', (int) $user_id);
-        $this->db->update($this->table_name, $data);
+        $updated = $this->db->update($this->table_name, $data);
+        if ($updated === false) {
+            $this->last_failure_reason = 'update_failed';
+            $this->last_db_error = $this->db->error();
+            return false;
+        }
 
         if ((int) $preferred_for_download === 1) {
             $this->clear_preferred_for_station($user_id, $station_id, $mapping_id);
         }
 
         return true;
+    }
+
+    public function get_last_failure_reason()
+    {
+        return $this->last_failure_reason;
+    }
+
+    public function get_last_db_error()
+    {
+        return $this->last_db_error;
     }
 
     public function delete_mapping($mapping_id, $user_id)
@@ -285,6 +318,12 @@ class Eqsl_mappings_model extends CI_Model
         }
 
         return $this->encrypted_prefix . $encrypted;
+    }
+
+    private function reset_last_failure()
+    {
+        $this->last_failure_reason = '';
+        $this->last_db_error = array('code' => 0, 'message' => '');
     }
 
     private function decrypt_eqsl_password($stored_password)

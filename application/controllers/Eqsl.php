@@ -854,7 +854,18 @@ class eqsl extends CI_Controller
 
 			$updated = $this->eqsl_mappings_model->update_mapping($mapping_id, $user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download);
 			if ($updated === false) {
-				$this->session->set_flashdata('error', 'Unable to update mapping password securely. Please check your encryption configuration.');
+				$reason = $this->eqsl_mappings_model->get_last_failure_reason();
+				$db_error = $this->eqsl_mappings_model->get_last_db_error();
+
+				if ($reason === 'encryption_failed') {
+					$this->session->set_flashdata('error', 'Unable to secure the eQSL password. Please ask your administrator to check encryption configuration.');
+				} elseif ((int) ($db_error['code'] ?? 0) === 1406) {
+					$this->session->set_flashdata('error', 'Unable to save mapping because the database schema is out of date. Please run database migration 275 (encrypt eQSL passwords).');
+				} else {
+					$this->session->set_flashdata('error', 'Unable to update mapping due to a database error. Please check logs and try again.');
+				}
+
+				log_message('error', 'eQSL mapping update failed for user ' . (int) $user_id . ': reason=' . $reason . ', db_code=' . (int) ($db_error['code'] ?? 0) . ', db_message=' . ($db_error['message'] ?? ''));
 			} else {
 				$this->session->set_flashdata('success', 'eQSL mapping updated.');
 			}
@@ -922,12 +933,31 @@ class eqsl extends CI_Controller
 					);
 
 					if ($updated === false) {
-						$this->session->set_flashdata('error', 'Mapping exists but updating it failed. Please verify encryption configuration and try again.');
+						$reason = $this->eqsl_mappings_model->get_last_failure_reason();
+						$db_error = $this->eqsl_mappings_model->get_last_db_error();
+						if ($reason === 'encryption_failed') {
+							$this->session->set_flashdata('error', 'Mapping exists, but password encryption failed. Please ask your administrator to check encryption configuration.');
+						} elseif ((int) ($db_error['code'] ?? 0) === 1406) {
+							$this->session->set_flashdata('error', 'Mapping exists, but the database schema is out of date. Please run database migration 275 (encrypt eQSL passwords).');
+						} else {
+							$this->session->set_flashdata('error', 'Mapping exists, but updating it failed due to a database error. Please check logs and try again.');
+						}
+						log_message('error', 'eQSL duplicate mapping auto-update failed for user ' . (int) $user_id . ': reason=' . $reason . ', db_code=' . (int) ($db_error['code'] ?? 0) . ', db_message=' . ($db_error['message'] ?? ''));
 					} else {
 						$this->session->set_flashdata('success', 'Mapping already existed. Existing mapping was updated instead.');
 					}
 				} else {
-					$this->session->set_flashdata('error', 'Unable to create mapping. Please verify encryption configuration and try again.');
+					$reason = $this->eqsl_mappings_model->get_last_failure_reason();
+					$db_error = $this->eqsl_mappings_model->get_last_db_error();
+					if ($reason === 'encryption_failed') {
+						$this->session->set_flashdata('error', 'Unable to secure the eQSL password. Please ask your administrator to check encryption configuration.');
+					} elseif ((int) ($db_error['code'] ?? 0) === 1406) {
+						$this->session->set_flashdata('error', 'Unable to create mapping because the database schema is out of date. Please run database migration 275 (encrypt eQSL passwords).');
+					} else {
+						$this->session->set_flashdata('error', 'Unable to create mapping due to a database error. Please check logs and try again.');
+					}
+
+					log_message('error', 'eQSL mapping create failed for user ' . (int) $user_id . ': reason=' . $reason . ', db_code=' . (int) ($db_error['code'] ?? 0) . ', db_message=' . ($db_error['message'] ?? ''));
 				}
 			} else {
 				$this->session->set_flashdata('success', 'eQSL mapping created.');
