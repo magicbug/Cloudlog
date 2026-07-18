@@ -204,6 +204,29 @@ class Eqsl_mappings_model extends CI_Model
         return $this->db->get()->row_array();
     }
 
+    public function find_duplicate_mapping_fuzzy($user_id, $station_id, $eqsl_username, $eqsl_qth_nickname)
+    {
+        if (!$this->table_exists()) {
+            return null;
+        }
+
+        $sql = 'SELECT * FROM ' . $this->table_name
+            . ' WHERE user_id = ?'
+            . ' AND station_id = ?'
+            . ' AND LOWER(TRIM(eqsl_username)) = LOWER(TRIM(?))'
+            . ' AND LOWER(TRIM(eqsl_qth_nickname)) = LOWER(TRIM(?))'
+            . ' LIMIT 1';
+
+        $query = $this->db->query($sql, array(
+            (int) $user_id,
+            (int) $station_id,
+            (string) $eqsl_username,
+            (string) $eqsl_qth_nickname,
+        ));
+
+        return $query->row_array();
+    }
+
     public function get_preferred_mapping_for_station($user_id, $station_id)
     {
         if (!$this->table_exists()) {

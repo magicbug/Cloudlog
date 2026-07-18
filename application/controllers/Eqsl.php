@@ -902,7 +902,33 @@ class eqsl extends CI_Controller
 
 			$created = $this->eqsl_mappings_model->create_mapping($user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download);
 			if ($created === false) {
-				$this->session->set_flashdata('error', 'Unable to create mapping. If this combination already exists, edit it instead. If not, please verify encryption configuration and try again.');
+				$fuzzy_duplicate_mapping = $this->eqsl_mappings_model->find_duplicate_mapping_fuzzy(
+					$user_id,
+					$station_id,
+					$eqsl_username,
+					$eqsl_qth_nickname
+				);
+
+				if ($fuzzy_duplicate_mapping != null) {
+					$updated = $this->eqsl_mappings_model->update_mapping(
+						$fuzzy_duplicate_mapping['mapping_id'],
+						$user_id,
+						$station_id,
+						$eqsl_username,
+						$eqsl_password,
+						$eqsl_qth_nickname,
+						$enabled,
+						$preferred_for_download
+					);
+
+					if ($updated === false) {
+						$this->session->set_flashdata('error', 'Mapping exists but updating it failed. Please verify encryption configuration and try again.');
+					} else {
+						$this->session->set_flashdata('success', 'Mapping already existed. Existing mapping was updated instead.');
+					}
+				} else {
+					$this->session->set_flashdata('error', 'Unable to create mapping. Please verify encryption configuration and try again.');
+				}
 			} else {
 				$this->session->set_flashdata('success', 'eQSL mapping created.');
 			}
