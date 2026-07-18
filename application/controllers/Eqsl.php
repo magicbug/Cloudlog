@@ -194,9 +194,8 @@ class eqsl extends CI_Controller
 			
 			if ($use_mapping_mode) {
 				foreach ($active_mappings as $mapping) {
-					if (!in_array((int) $mapping['station_id'], $active_logbook_station_ids, true)) {
-						continue;
-					}
+					// Mapping mode intentionally processes all active mappings.
+					// This avoids missing QSOs when station-logbook relationships are incomplete.
 
 					$credentials = array(
 						'user_eqsl_name' => $mapping['eqsl_username'],
@@ -280,9 +279,6 @@ class eqsl extends CI_Controller
 				$processed_qso_ids = array();
 				$pending_qsos = array();
 				foreach ($active_mappings as $mapping) {
-					if (!in_array((int) $mapping['station_id'], $active_logbook_station_ids, true)) {
-						continue;
-					}
 					$qslsnotsent = $this->eqslmethods_model->eqsl_not_yet_sent_for_station($mapping['station_id'], $mapping['eqsl_qth_nickname']);
 					foreach ($qslsnotsent->result_array() as $qsl) {
 						$qso_id = (int) $qsl['COL_PRIMARY_KEY'];
