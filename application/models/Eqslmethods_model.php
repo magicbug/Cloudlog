@@ -153,6 +153,34 @@ class Eqslmethods_model extends CI_Model {
         return $this->db->get();
     }
 
+    // Show all QSOs with received eQSL for mapped stations whose card images are not downloaded yet
+    function eqsl_not_yet_downloaded_for_station_ids($station_ids) {
+        if (!is_array($station_ids) || empty($station_ids)) {
+            return array();
+        }
+
+        $station_ids = array_map('intval', $station_ids);
+        $station_ids = array_values(array_unique(array_filter($station_ids, function($id) {
+            return $id > 0;
+        })));
+
+        if (empty($station_ids)) {
+            return array();
+        }
+
+        $this->db->select('station_profile.station_id, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG, eQSL_images.qso_id');
+        $this->db->from('station_profile');
+        $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
+        $this->db->join('eQSL_images','eQSL_images.qso_id = '.$this->config->item('table_name').'.COL_PRIMARY_KEY','left outer');
+        $this->db->where_in('station_profile.station_id', $station_ids);
+        $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
+        $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_RCVD', 'Y');
+        $this->db->where('qso_id', NULL);
+        $this->db->order_by("COL_TIME_ON", "desc");
+
+        return $this->db->get();
+    }
+
     // Mark the QSO as sent to eQSL
     function eqsl_mark_sent($primarykey) {
         $data = array(

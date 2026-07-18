@@ -914,11 +914,25 @@ class eqsl extends CI_Controller
 			redirect('dashboard');
 		}
 		$errors = 0;
+		$this->load->model('eqsl_mappings_model');
+		$user_id = (int) $this->session->userdata('user_id');
+		$active_mappings = $this->eqsl_mappings_model->get_active_mappings_for_user($user_id);
+		$use_mapping_mode = !empty($active_mappings);
+		$mapped_station_ids = array_map(function ($mapping) {
+			return (int) $mapping['station_id'];
+		}, $active_mappings);
+		$data['eqsl_mapping_mode'] = $use_mapping_mode;
+		$data['eqsl_legacy_fallback'] = !$use_mapping_mode;
+		$data['eqsl_mappings_count'] = count($active_mappings);
 
 		if ($this->input->post('eqsldownload') == 'download') {
 			$i = 0;
 			$this->load->model('eqslmethods_model');
-			$qslsnotdownloaded = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+			if ($use_mapping_mode) {
+				$qslsnotdownloaded = $this->eqslmethods_model->eqsl_not_yet_downloaded_for_station_ids($mapped_station_ids);
+			} else {
+				$qslsnotdownloaded = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+			}
 			$eqsl_results = array();
 			foreach ($qslsnotdownloaded->result_array() as $qsl) {
 				$result = $this->bulk_download_image($qsl['COL_PRIMARY_KEY']);
@@ -957,7 +971,11 @@ class eqsl extends CI_Controller
 			$this->load->model('eqslmethods_model');
 
 			$data['custom_date_format'] = $this->session->userdata('user_date_format');
-			$data['qslsnotdownloaded'] = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+			if ($use_mapping_mode) {
+				$data['qslsnotdownloaded'] = $this->eqslmethods_model->eqsl_not_yet_downloaded_for_station_ids($mapped_station_ids);
+			} else {
+				$data['qslsnotdownloaded'] = $this->eqslmethods_model->eqsl_not_yet_downloaded();
+			}
 
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('eqsl/download');
