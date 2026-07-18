@@ -2,6 +2,16 @@
 $page_title = $page_title ?? '';
 $editing_mapping = $editing_mapping ?? null;
 $mappings = $mappings ?? array();
+
+$existing_usernames = array();
+foreach ($mappings as $mapping_row) {
+  $username = trim((string) ($mapping_row['eqsl_username'] ?? ''));
+  if ($username !== '') {
+    $existing_usernames[strtolower($username)] = $username;
+  }
+}
+
+$existing_username_values = array_values($existing_usernames);
 ?>
 <div class="container eqsl">
 <h2><?php echo $page_title; ?></h2>
@@ -39,7 +49,7 @@ $mappings = $mappings ?? array();
     </div>
 
     <h5><?php echo $editing_mapping ? 'Edit Mapping' : 'Add Mapping'; ?></h5>
-    <?php echo form_open('eqsl/save_mapping'); ?>
+    <?php echo form_open('eqsl/save_mapping', array('autocomplete' => 'off')); ?>
       <input type="hidden" name="mapping_id" value="<?php echo $editing_mapping ? (int) $editing_mapping['mapping_id'] : 0; ?>" />
       <div class="row">
         <div class="mb-3 col-md-4">
@@ -56,12 +66,18 @@ $mappings = $mappings ?? array();
         </div>
         <div class="mb-3 col-md-4">
           <label class="form-label" for="mapping_eqsl_username">eQSL username</label>
-          <input class="form-control" type="text" name="eqsl_username" id="mapping_eqsl_username" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_username'] : ''; ?>" required />
+          <input class="form-control" type="text" name="eqsl_username" id="mapping_eqsl_username" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_username'] : ''; ?>" required autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+          <small class="form-text text-muted" id="eqslUsernameHint">If you already used this username in another mapping, Cloudlog can reuse the saved password.</small>
+          <small class="form-text text-success d-none" id="eqslUsernameKnown">Known username detected. Password can be reused.</small>
         </div>
         <div class="mb-3 col-md-4">
           <label class="form-label" for="mapping_eqsl_password">eQSL password (leave blank to reuse)</label>
-          <input class="form-control" type="password" name="eqsl_password" id="mapping_eqsl_password" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_password'] : ''; ?>" placeholder="Leave blank to reuse saved password for this username" />
+          <input class="form-control" type="password" name="eqsl_password" id="mapping_eqsl_password" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_password'] : ''; ?>" placeholder="Leave blank to reuse saved password for this username" autocomplete="new-password" />
           <small class="form-text text-muted">Only required the first time you use a new eQSL username.</small>
+          <div class="form-check mt-2 d-none" id="forcePasswordWrap">
+            <input class="form-check-input" type="checkbox" id="forcePasswordEntry" name="force_password_entry" value="1" />
+            <label class="form-check-label" for="forcePasswordEntry">Enter a new password for this username</label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -109,7 +125,10 @@ $mappings = $mappings ?? array();
               <tr>
                 <td><?php echo $mapping['station_callsign']; ?> (<?php echo $mapping['station_profile_name']; ?>)</td>
                 <td><?php echo $mapping['eqsl_qth_nickname']; ?></td>
-                <td><?php echo $mapping['eqsl_username']; ?></td>
+                <td>
+                  <?php echo $mapping['eqsl_username']; ?>
+                  <span class="badge text-bg-success ms-1" title="Password can be reused for this username">Reusable password</span>
+                </td>
                 <td><?php echo ((int) $mapping['enabled'] === 1) ? 'Yes' : 'No'; ?></td>
                 <td><?php echo ((int) $mapping['preferred_for_download'] === 1) ? 'Yes' : 'No'; ?></td>
                 <td>
@@ -130,3 +149,60 @@ $mappings = $mappings ?? array();
   </div>
 </div>
 </div>
+
+<script>
+  (function () {
+    var existingUsernames = <?php echo json_encode($existing_username_values); ?>;
+    var knownLookup = {};
+    existingUsernames.forEach(function (value) {
+      knownLookup[String(value).toLowerCase()] = true;
+    });
+
+    var usernameInput = document.getElementById('mapping_eqsl_username');
+    var passwordInput = document.getElementById('mapping_eqsl_password');
+    var knownHint = document.getElementById('eqslUsernameKnown');
+    var defaultHint = document.getElementById('eqslUsernameHint');
+    var forceWrap = document.getElementById('forcePasswordWrap');
+    var forceCheckbox = document.getElementById('forcePasswordEntry');
+
+    if (!usernameInput || !passwordInput || !knownHint || !defaultHint || !forceWrap || !forceCheckbox) {
+      return;
+    }
+
+    var applyState = function () {
+      var username = String(usernameInput.value || '').trim().toLowerCase();
+      var isKnown = username !== '' && !!knownLookup[username];
+      var forcePassword = !!forceCheckbox.checked;
+
+      usernameInput.classList.remove('border-success', 'bg-success-subtle');
+      knownHint.classList.add('d-none');
+      defaultHint.classList.remove('d-none');
+      forceWrap.classList.add('d-none');
+
+      if (isKnown) {
+        usernameInput.classList.add('border-success', 'bg-success-subtle');
+        knownHint.classList.remove('d-none');
+        defaultHint.classList.add('d-none');
+        forceWrap.classList.remove('d-none');
+
+        if (!forcePassword) {
+          passwordInput.value = '';
+          passwordInput.disabled = true;
+          passwordInput.required = false;
+          passwordInput.placeholder = 'Password reuse enabled for known username';
+          return;
+        }
+      }
+
+      passwordInput.disabled = false;
+      passwordInput.required = !isKnown;
+      passwordInput.placeholder = isKnown
+        ? 'Enter only if you want to replace the saved password'
+        : 'Required for a new eQSL username';
+    };
+
+    usernameInput.addEventListener('input', applyState);
+    forceCheckbox.addEventListener('change', applyState);
+    applyState();
+  })();
+</script>
