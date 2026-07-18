@@ -827,8 +827,8 @@ class eqsl extends CI_Controller
 			redirect('eqsl/mappings');
 		}
 
-		if (trim($eqsl_username) === '' || trim($eqsl_password) === '' || trim($eqsl_qth_nickname) === '') {
-			$this->session->set_flashdata('error', 'Username, password and QTH nickname are required.');
+		if (trim($eqsl_username) === '' || trim($eqsl_qth_nickname) === '') {
+			$this->session->set_flashdata('error', 'Username and QTH nickname are required.');
 			redirect('eqsl/mappings');
 		}
 
@@ -839,9 +839,37 @@ class eqsl extends CI_Controller
 				redirect('eqsl/mappings');
 			}
 
+			if (trim($eqsl_password) === '') {
+				$eqsl_password = $mapping['eqsl_password'];
+			}
+
+			if (trim($eqsl_password) === '') {
+				$reused_password = $this->eqsl_mappings_model->get_password_for_user_and_username($user_id, $eqsl_username);
+				if ($reused_password !== null) {
+					$eqsl_password = $reused_password;
+				}
+			}
+
+			if (trim($eqsl_password) === '') {
+				$this->session->set_flashdata('error', 'Password is required for a new eQSL username.');
+				redirect('eqsl/mappings');
+			}
+
 			$this->eqsl_mappings_model->update_mapping($mapping_id, $user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download);
 			$this->session->set_flashdata('success', 'eQSL mapping updated.');
 		} else {
+			if (trim($eqsl_password) === '') {
+				$reused_password = $this->eqsl_mappings_model->get_password_for_user_and_username($user_id, $eqsl_username);
+				if ($reused_password !== null) {
+					$eqsl_password = $reused_password;
+				}
+			}
+
+			if (trim($eqsl_password) === '') {
+				$this->session->set_flashdata('error', 'Password is required the first time you use an eQSL username.');
+				redirect('eqsl/mappings');
+			}
+
 			$created = $this->eqsl_mappings_model->create_mapping($user_id, $station_id, $eqsl_username, $eqsl_password, $eqsl_qth_nickname, $enabled, $preferred_for_download);
 			if ($created === false) {
 				$this->session->set_flashdata('error', 'Unable to create mapping. Please verify it is unique for this station/account/nickname.');

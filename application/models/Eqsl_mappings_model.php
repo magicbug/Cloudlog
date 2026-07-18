@@ -177,6 +177,28 @@ class Eqsl_mappings_model extends CI_Model
         return $this->db->get()->row_array();
     }
 
+    public function get_password_for_user_and_username($user_id, $eqsl_username)
+    {
+        if (!$this->table_exists()) {
+            return null;
+        }
+
+        $this->db->select('eqsl_password');
+        $this->db->from($this->table_name);
+        $this->db->where('user_id', (int) $user_id);
+        $this->db->where('eqsl_username', trim($eqsl_username));
+        $this->db->where('coalesce(eqsl_password, "") != ""');
+        $this->db->order_by('mapping_id', 'desc');
+        $this->db->limit(1);
+
+        $row = $this->db->get()->row_array();
+        if (!$row) {
+            return null;
+        }
+
+        return $row['eqsl_password'];
+    }
+
     private function clear_preferred_for_station($user_id, $station_id, $keep_mapping_id)
     {
         $this->db->set('preferred_for_download', 0);

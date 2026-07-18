@@ -1,129 +1,134 @@
-# eQSL in Cloudlog (User Guide)
+# eQSL
 
-This guide is for radio amateurs using Cloudlog with eQSL.cc. It explains how to set things up, how uploads and downloads work, and what to check if something does not look right.
+The eQSL functions synchronise your log with the state in eQSL.cc, so Cloudlog can handle your eQSL tasks without you having to keep logging in to eQSL manually.
 
-## What has changed
+This page keeps the original workflow and adds the new mapping setup.
 
-Cloudlog now uses eQSL mappings.
+## Basic Setup
 
-A mapping links:
+### Legacy setup (still supported)
 
-- your station location
-- your eQSL username and password
-- your eQSL QTH nickname
+- Add your eQSL login details in your Cloudlog user profile.
+- Add an eQSL QTH nickname in each station profile you use.
 
-This helps if you run more than one station profile, more than one callsign, or more than one eQSL identity.
+### Recommended setup (new)
 
-## What you need before you start
+Use **eQSL > Mappings** and add one mapping per station location.
 
-1. A working eQSL.cc account.
-2. QTH nickname(s) created in eQSL.cc.
-3. Station location(s) already created in Cloudlog.
+Each mapping contains:
 
-## Recommended setup
+- station location
+- eQSL username
+- eQSL password
+- eQSL QTH nickname
+- enabled flag
+- preferred download flag
 
-1. Open eQSL > Mappings in Cloudlog.
-2. Add one mapping per station location.
-3. Enter the eQSL username and password for that mapping.
-4. Enter the exact QTH nickname from eQSL.cc.
-5. Tick Enabled.
-6. Tick Use for inbox download on the mapping you want used for downloads.
+### How Cloudlog decides what to use
 
-Tip: Match the nickname text exactly, including spaces and capital letters.
+1. If at least one active mapping exists, Cloudlog uses mappings first.
+2. If no active mappings exist, Cloudlog falls back to legacy profile fields.
 
-## How Upload QSOs works
+Tip: Keep nickname text exactly the same as eQSL.cc, including spaces and capitals.
 
-When you use Upload QSOs:
+## Upload QSOs
 
-1. Cloudlog checks for active mappings.
-2. If mappings exist, Cloudlog uses them first.
-3. Cloudlog uploads each QSO with the matching mapping credentials and QTH nickname.
+When you open **Upload QSOs**, Cloudlog shows QSOs not yet sent to eQSL.
 
-If no active mappings exist, Cloudlog falls back to legacy settings in your user profile and station profile.
+Press **Upload QSOs** and successful records are marked as sent.
 
-## How Download QSOs works
+### In mapping mode
 
-When you use Download QSOs:
+- Cloudlog uploads using credentials from the mapping.
+- Cloudlog sends the mapping QTH nickname with each QSO.
 
-1. Cloudlog checks for active mappings.
-2. In mapping mode, it connects to eQSL using each active mapping.
-3. It downloads confirmations and matches them to your logged QSOs.
+### In legacy mode
 
-If no active mappings exist, Cloudlog uses legacy settings.
+- Cloudlog uploads using user profile eQSL credentials.
+- Cloudlog uses station profile eQSL nickname.
 
-## How cron sync works
+### Debugging issues
 
-If you run scheduled sync:
+If uploads fail, enable debugging in `application/config/config.php` and check logs in `application/logs`.
 
-1. Cloudlog uses mappings when they exist.
-2. Upload runs for active mappings.
-3. Download runs for mappings marked Use for inbox download.
-4. If no mappings exist, Cloudlog uses legacy behaviour.
+Also check:
 
-## Legacy fallback
+1. Username and password are correct.
+2. Mapping is enabled.
+3. QTH nickname matches eQSL.cc exactly.
 
-Cloudlog still supports the older setup for compatibility.
+## Importing
 
-Fallback is used only when no active mappings are available.
+Import can work in two ways:
 
-Legacy fields are:
+1. Upload an exported Inbox ADIF file from eQSL.cc.
+2. Pull directly from eQSL (automatic fetch).
 
-- eQSL username and password in your user profile
-- eQSL nickname in station location profile
+### Direct fetch in mapping mode
 
-## Common problems and fixes
+- Cloudlog fetches confirmations per active mapping.
+- It uses mapping password and mapping QTH nickname.
 
-### Upload says auth failed
+### Direct fetch in legacy mode
 
-Check:
+- Cloudlog uses your user profile eQSL password.
+- It uses station profile nickname.
 
-1. Mapping username is correct.
-2. Mapping password is correct.
-3. Mapping is Enabled.
+## View Digital Cards
 
-### QSOs not routed to the correct QTH nickname
+Cloudlog lets you open received eQSL cards from the logbook and caches card images locally for faster viewing.
 
-Check:
+For card image retrieval by station:
 
-1. QTH nickname in mapping matches eQSL exactly.
-2. You are uploading from the expected station location.
+1. Cloudlog tries the preferred mapping for that station.
+2. If no mapping is available, it falls back to legacy password.
 
-### Download does not find expected confirmations
+## Tools
 
-Check:
+### Mark All QSOs as Sent to eQSL
 
-1. The mapping is marked Use for inbox download.
-2. The mapping nickname and callsign match what is on eQSL.
+Use this when you have uploaded ADIF manually outside Cloudlog and want Cloudlog to mark records as sent.
 
-### eQSL menu not visible
+This is helpful on fresh installs with large historical logs.
 
-Check:
+### Mappings page
 
-1. You have at least one mapping, or legacy eQSL credentials.
-2. Log out and back in after major profile changes.
+Use **eQSL > Mappings** to:
 
-## Good operating practice
+- add a mapping
+- edit a mapping
+- disable a mapping
+- choose preferred mapping for inbox download
 
-1. Keep one active mapping per station identity unless you have a clear reason not to.
+Good practice:
+
+1. Keep one active mapping per station identity unless you need more.
 2. Keep one preferred download mapping per station.
-3. Review mappings after changing callsign, QTH nickname, or station profile.
 
-## Security notes
+## Cron Job
 
-1. Your eQSL password is sensitive.
-2. Limit access to your Cloudlog host and database backups.
-3. Use HTTPS on your Cloudlog site.
+Example scheduled job:
 
-## Quick checklist
+```bash
+# Upload/download QSOs to/from eQSL
+9 */6 * * * curl --silent https://<URL-To-Cloudlog>/index.php/eqsl/sync &>/dev/null
+```
 
-1. Add mappings for each station location.
-2. Confirm upload works.
-3. Confirm download works.
-4. Enable cron sync if you use scheduled automation.
-5. Keep legacy fields only as backup while migrating.
+Cron behaviour:
 
-## Terms used in this guide
+1. Uses mapping mode when mappings exist.
+2. Upload runs for active mappings.
+3. Download runs for mappings marked preferred for download.
+4. Uses legacy mode only if no mappings exist.
 
-- QSO: a contact record in your log
-- QTH nickname: the nickname configured in your eQSL profile
-- Mapping: the Cloudlog link between station location and eQSL identity
+## See More
+
+- [LoTW Import & Export Documentation](https://github.com/magicbug/Cloudlog/wiki/LoTW-Import-&-Export-Documentation)
+
+## Quick Troubleshooting Checklist
+
+1. Mapping enabled?
+2. Username and password correct?
+3. QTH nickname exact match with eQSL.cc?
+4. Preferred download flag set where needed?
+5. Still in fallback mode because no active mappings?

@@ -56,7 +56,8 @@ $mappings = $mappings ?? array();
         </div>
         <div class="mb-3 col-md-4">
           <label class="form-label" for="mapping_eqsl_password">eQSL password</label>
-          <input class="form-control" type="password" name="eqsl_password" id="mapping_eqsl_password" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_password'] : ''; ?>" required />
+          <input class="form-control" type="password" name="eqsl_password" id="mapping_eqsl_password" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_password'] : ''; ?>" />
+          <small class="form-text text-muted">Leave blank to reuse an existing saved password for this eQSL username.</small>
         </div>
       </div>
       <div class="row">
