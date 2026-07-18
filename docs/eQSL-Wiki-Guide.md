@@ -24,6 +24,8 @@ Each mapping contains:
 - enabled flag
 - preferred download flag
 
+If you use the same eQSL account for several station locations, enter the same username and leave password blank on additional mappings. Cloudlog will reuse the saved password for that username.
+
 ### How Cloudlog decides what to use
 
 1. If at least one active mapping exists, Cloudlog uses mappings first.
@@ -132,3 +134,4 @@ Cron behaviour:
 3. QTH nickname exact match with eQSL.cc?
 4. Preferred download flag set where needed?
 5. Still in fallback mode because no active mappings?
+6. Using same eQSL username on a new mapping but left password blank before saving the first mapping for that username?

@@ -105,11 +105,8 @@ class Eqslmethods_model extends CI_Model {
         $this->db->from('station_profile');
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id');
         $this->db->where('station_profile.station_id', $station_id);
-        if ($qth_nickname !== null && $qth_nickname !== '') {
-            $this->db->where('station_profile.eqslqthnickname', $qth_nickname);
-        } else {
-            $this->db->where("coalesce(station_profile.eqslqthnickname, '') <> ''");
-        }
+        // Mapping mode resolves QTH nickname from eqsl_mappings, not station_profile.
+        // Do not filter by station_profile.eqslqthnickname here.
         $this->db->where($this->config->item('table_name').'.COL_CALL !=', '');
         $this->db->group_start();
         $this->db->where($this->config->item('table_name').'.COL_EQSL_QSL_SENT is null');

@@ -34,6 +34,10 @@ $mappings = $mappings ?? array();
       Add one mapping per station and eQSL identity. Cloudlog uses mappings first for manual import/export and cron sync. Legacy user-level credentials are only used when no active mappings exist.
     </div>
 
+    <div class="alert alert-secondary" role="alert">
+      <strong>Tip for shared accounts:</strong> If you are adding another station location on the same eQSL account, enter the same eQSL username and leave the password blank. Cloudlog will reuse the saved password for that username.
+    </div>
+
     <h5><?php echo $editing_mapping ? 'Edit Mapping' : 'Add Mapping'; ?></h5>
     <?php echo form_open('eqsl/save_mapping'); ?>
       <input type="hidden" name="mapping_id" value="<?php echo $editing_mapping ? (int) $editing_mapping['mapping_id'] : 0; ?>" />
@@ -55,9 +59,9 @@ $mappings = $mappings ?? array();
           <input class="form-control" type="text" name="eqsl_username" id="mapping_eqsl_username" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_username'] : ''; ?>" required />
         </div>
         <div class="mb-3 col-md-4">
-          <label class="form-label" for="mapping_eqsl_password">eQSL password</label>
-          <input class="form-control" type="password" name="eqsl_password" id="mapping_eqsl_password" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_password'] : ''; ?>" />
-          <small class="form-text text-muted">Leave blank to reuse an existing saved password for this eQSL username.</small>
+          <label class="form-label" for="mapping_eqsl_password">eQSL password (leave blank to reuse)</label>
+          <input class="form-control" type="password" name="eqsl_password" id="mapping_eqsl_password" value="<?php echo $editing_mapping ? $editing_mapping['eqsl_password'] : ''; ?>" placeholder="Leave blank to reuse saved password for this username" />
+          <small class="form-text text-muted">Only required the first time you use a new eQSL username.</small>
         </div>
       </div>
       <div class="row">
