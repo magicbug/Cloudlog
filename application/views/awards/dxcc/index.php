@@ -263,16 +263,16 @@
                     </div>
 
                     <div class="mb-3 row">
-                        <label class="col-md-2 control-label" for="band">Band</label>
-                        <div class="col-md-2">
-                            <select id="band2" name="band" class="form-select form-select-sm">
-                                <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
-                                <?php foreach($worked_bands as $band) {
-                                    echo '<option value="' . $band . '"';
-                                    if ($this->input->post('band') == $band) echo ' selected';
-                                    echo '>' . $band . '</option>'."\n";
-                                } ?>
-                            </select>
+                        <label class="col-md-2 control-label">Bands</label>
+                        <div class="col-md-10">
+                            <?php foreach($worked_bands as $band) {
+                                $bandId = 'band_' . preg_replace('/[^A-Za-z0-9]+/', '_', $band);
+                            ?>
+                            <div class="form-check form-check-inline mb-1">
+                                <input class="form-check-input" type="checkbox" name="bands[]" id="<?php echo $bandId; ?>" value="<?php echo $band; ?>" <?php if ($this->input->method() !== 'post' || in_array($band, $bands)) echo ' checked="checked"'; ?> >
+                                <label class="form-check-label" for="<?php echo $bandId; ?>"><?php echo $band; ?></label>
+                            </div>
+                            <?php } ?>
                         </div>
                     </div>
 
@@ -682,7 +682,9 @@ function applyPreset(preset) {
 }
 
 function resetFilters() {
-    document.getElementById('dxccForm').reset();
+    const form = document.getElementById('dxccForm');
+    form.reset();
+    form.querySelectorAll('input[name="bands[]"]').forEach(cb => cb.checked = true);
 }
 
 // View QSOs for specific DXCC filtered by status

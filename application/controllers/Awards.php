@@ -110,12 +110,8 @@ class Awards extends CI_Controller
         $data['modes'] = $this->modes->active(); // Used in the view for mode select
         $data['worked_years'] = $this->dxcc->get_worked_years(); // Used in the view for year select
 
-        if ($this->input->post('band') != NULL) {   // Band is not set when page first loads.
-            if ($this->input->post('band') == 'All') {         // Did the user specify a band? If not, use all bands
-                $bands = $data['worked_bands'];
-            } else {
-                $bands[] = $this->security->xss_clean($this->input->post('band'));
-            }
+        if ($this->input->method() === 'post' && $this->input->post('bands') != NULL) {
+            $bands = array_values(array_unique(array_map(array($this->security, 'xss_clean'), $this->input->post('bands'))));
         } else {
             $bands = $data['worked_bands'];
         }
@@ -137,7 +133,7 @@ class Awards extends CI_Controller
             $postdata['SouthAmerica'] = $this->security->xss_clean($this->input->post('SouthAmerica'));
             $postdata['Oceania'] = $this->security->xss_clean($this->input->post('Oceania'));
             $postdata['Antarctica'] = $this->security->xss_clean($this->input->post('Antarctica'));
-            $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
+            $postdata['band'] = $bands;
             $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
             $postdata['year'] = $this->security->xss_clean($this->input->post('year'));
         } else { // Setting default values at first load of page
@@ -155,7 +151,7 @@ class Awards extends CI_Controller
             $postdata['SouthAmerica'] = 1;
             $postdata['Oceania'] = 1;
             $postdata['Antarctica'] = 1;
-            $postdata['band'] = 'All';
+            $postdata['band'] = $bands;
             $postdata['mode'] = 'All';
             $postdata['year'] = 'All';
         }
@@ -1599,7 +1595,11 @@ class Awards extends CI_Controller
         $this->load->model('dxcc');
         $this->load->model('bands');
 
-        $bands[] = $this->security->xss_clean($this->input->post('band'));
+        if ($this->input->post('bands') != NULL) {
+            $bands = array_values(array_unique(array_map(array($this->security, 'xss_clean'), $this->input->post('bands'))));
+        } else {
+            $bands = $this->bands->get_worked_bands('dxcc');
+        }
 
         $postdata['qsl'] = $this->input->post('qsl') == 0 ? NULL : 1;
         $postdata['lotw'] = $this->input->post('lotw') == 0 ? NULL : 1;
@@ -1607,7 +1607,7 @@ class Awards extends CI_Controller
         $postdata['worked'] = $this->input->post('worked') == 0 ? NULL : 1;
         $postdata['confirmed'] = $this->input->post('confirmed')  == 0 ? NULL : 1;
         $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL : 1;
-        $postdata['band'] = $this->security->xss_clean($this->input->post('band'));
+        $postdata['band'] = $bands;
         $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
         $postdata['includedeleted'] = $this->input->post('includedeleted') == 0 ? NULL : 1;
         $postdata['Africa'] = $this->input->post('Africa') == 0 ? NULL : 1;
@@ -1623,6 +1623,7 @@ class Awards extends CI_Controller
         $dxcc_array = $this->dxcc->get_dxcc_array($dxcclist, $bands, $postdata);
 
         $i = 0;
+        $newdxcc = array();
 
         foreach ($dxcclist as $dxcc) {
             $newdxcc[$i]['adif'] = $dxcc->adif;
@@ -1672,6 +1673,7 @@ class Awards extends CI_Controller
         $iota_array = $this->iota->get_iota_array($iotalist, $bands, $postdata);
 
         $i = 0;
+        $newiota = array();
 
         foreach ($iotalist as $iota) {
             $newiota[$i]['tag'] = $iota->tag;
@@ -1693,19 +1695,23 @@ class Awards extends CI_Controller
 
     function returnStatus($string)
     {
+        $hasNotWorked = false;
+
         foreach ($string  as $key) {
             if ($key != "") {
-                if (strpos($key, '>W<') !== false) {
-                    return 'W';
-                }
                 if (strpos($key, '>C<') !== false) {
                     return 'C';
                 }
+                if (strpos($key, '>W<') !== false) {
+                    return 'W';
+                }
                 if ($key == '-') {
-                    return '-';
+                    $hasNotWorked = true;
                 }
             }
         }
+
+        return $hasNotWorked ? '-' : 'x';
     }
 
     /*
