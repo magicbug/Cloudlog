@@ -1609,6 +1609,7 @@ class Awards extends CI_Controller
         $postdata['notworked'] = $this->input->post('notworked')  == 0 ? NULL : 1;
         $postdata['band'] = $bands;
         $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
+        $postdata['year'] = $this->security->xss_clean($this->input->post('year'));
         $postdata['includedeleted'] = $this->input->post('includedeleted') == 0 ? NULL : 1;
         $postdata['Africa'] = $this->input->post('Africa') == 0 ? NULL : 1;
         $postdata['Asia'] = $this->input->post('Asia') == 0 ? NULL : 1;

@@ -29,11 +29,13 @@ function load_dxcc_map() {
         data: {
             bands: getSelectedDxccBands(),
             mode: $('#mode').val(),
+            year: $('#year').val(),
             worked: +worked,
             confirmed: +confirmed,
             notworked: +notworked,
             qsl: +$('#qsl').prop('checked'),
             lotw: +$('#lotw').prop('checked'),
+            eqsl: +$('#eqsl').prop('checked'),
             includedeleted: +$('#includedeleted').prop('checked'),
             Africa: +$('#Africa').prop('checked'),
             Asia: +$('#Asia').prop('checked'),
