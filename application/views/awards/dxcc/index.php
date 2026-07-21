@@ -265,6 +265,13 @@
                     <div class="mb-3 row">
                         <label class="col-md-2 control-label">Bands</label>
                         <div class="col-md-10">
+                            <div class="mb-2">
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('hf')">HF Only</button>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('vhfuhf')">VHF/UHF+</button>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('sat')">SAT Only</button>
+                                <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="setBandGroup('all')">All Bands</button>
+                                <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="setBandGroup('none')">Clear Bands</button>
+                            </div>
                             <?php foreach($worked_bands as $band) {
                                 $bandId = 'band_' . preg_replace('/[^A-Za-z0-9]+/', '_', $band);
                             ?>
@@ -678,6 +685,41 @@ function applyPreset(preset) {
                 if (el) el.checked = true;
             });
             break;
+    }
+}
+
+function setBandGroup(group) {
+    const hfBands = ['160m', '80m', '60m', '40m', '30m', '20m', '17m', '15m', '12m', '10m'];
+    const bandCheckboxes = document.querySelectorAll('input[name="bands[]"]');
+
+    if (group === 'all') {
+        bandCheckboxes.forEach(cb => cb.checked = true);
+        return;
+    }
+
+    if (group === 'none') {
+        bandCheckboxes.forEach(cb => cb.checked = false);
+        return;
+    }
+
+    if (group === 'hf') {
+        bandCheckboxes.forEach(cb => {
+            cb.checked = hfBands.includes(cb.value);
+        });
+        return;
+    }
+
+    if (group === 'vhfuhf') {
+        bandCheckboxes.forEach(cb => {
+            cb.checked = !hfBands.includes(cb.value);
+        });
+        return;
+    }
+
+    if (group === 'sat') {
+        bandCheckboxes.forEach(cb => {
+            cb.checked = cb.value === 'SAT';
+        });
     }
 }
 

@@ -1696,20 +1696,30 @@ class Awards extends CI_Controller
 
     function returnStatus($string)
     {
+        $hasConfirmed = false;
+        $hasWorked = false;
         $hasNotWorked = false;
 
         foreach ($string  as $key) {
             if ($key != "") {
                 if (strpos($key, '>C<') !== false) {
-                    return 'C';
+                    $hasConfirmed = true;
                 }
                 if (strpos($key, '>W<') !== false) {
-                    return 'W';
+                    $hasWorked = true;
                 }
                 if ($key == '-') {
                     $hasNotWorked = true;
                 }
             }
+        }
+
+        if ($hasConfirmed) {
+            return 'C';
+        }
+
+        if ($hasWorked) {
+            return 'W';
         }
 
         return $hasNotWorked ? '-' : 'x';

@@ -124,10 +124,11 @@ function load_dxcc_map2(data, worked, confirmed, notworked) {
     }
 
     legend.onAdd = function(map) {
+        var workedtotalcount = confirmedcount + workednotconfirmedcount;
         var div = L.DomUtil.create("div", "legend");
         div.innerHTML += "<h4>Contacts Status</h4>";
         div.innerHTML += '<i style="background: green; width: 24px; height: 24px; border-radius: 50%;"></i><span><strong>Confirmed (' + confirmedcount + ')</strong></span><br>';
-        div.innerHTML += '<i style="background: orange; width: 24px; height: 24px; border-radius: 50%;"></i><span>Worked - Unconfirmed (' + workednotconfirmedcount + ')</span><br>';
+        div.innerHTML += '<i style="background: orange; width: 24px; height: 24px; border-radius: 50%;"></i><span><strong>Worked (' + workedtotalcount + ')</strong> <small>(Unconfirmed ' + workednotconfirmedcount + ')</small></span><br>';
         div.innerHTML += '<i style="background: red; width: 24px; height: 24px; border-radius: 50%;"></i><span>Not Worked (' + notworkedcount + ')</span><br>';
         div.innerHTML += '<hr style="margin: 8px 0;"><strong>Total: ' + data.length + '</strong>';
         return div;
