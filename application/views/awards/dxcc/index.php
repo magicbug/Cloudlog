@@ -266,9 +266,14 @@
                         <label class="col-md-2 control-label">Bands</label>
                         <div class="col-md-10">
                             <div class="mb-2">
-                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('hf')">HF Only</button>
-                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('vhfuhf')">VHF/UHF+</button>
-                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('sat')">SAT Only</button>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('hf')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects HF bands only (160m to 10m)">HF Only</button>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('vhfuhf')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects all non-HF bands (VHF/UHF and above)">VHF/UHF+</button>
+                                <?php if (in_array('SAT', $worked_bands, true)) { ?>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('sat')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects SAT entries only">SAT Only</button>
+                                <?php } ?>
+                                <?php if (in_array('EME', $worked_bands, true)) { ?>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('eme')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects EME entries only">EME Only</button>
+                                <?php } ?>
                                 <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="setBandGroup('all')">All Bands</button>
                                 <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="setBandGroup('none')">Clear Bands</button>
                             </div>
@@ -287,7 +292,7 @@
                         <label class="col-md-2 control-label" for="mode">Mode</label>
                         <div class="col-md-2">
                         <select id="mode" name="mode" class="form-select form-select-sm">
-                            <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'mode') echo ' selected'; ?>>All</option>
+                            <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>>All</option>
                             <?php
                             foreach($modes->result() as $mode){
                                 if ($mode->submode == null) {
@@ -573,6 +578,10 @@
 let currentSort = { column: null, direction: 'asc' };
 let currentModalType = 'qso'; // 'qso' or 'continent'
 
+document.querySelectorAll('[data-dxcc-band-tooltip="1"]').forEach(el => {
+    new bootstrap.Tooltip(el);
+});
+
 // Table sorting functionality
 document.querySelectorAll('.sortable').forEach(header => {
     header.addEventListener('click', function() {
@@ -719,6 +728,13 @@ function setBandGroup(group) {
     if (group === 'sat') {
         bandCheckboxes.forEach(cb => {
             cb.checked = cb.value === 'SAT';
+        });
+        return;
+    }
+
+    if (group === 'eme') {
+        bandCheckboxes.forEach(cb => {
+            cb.checked = cb.value === 'EME';
         });
     }
 }

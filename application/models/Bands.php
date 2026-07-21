@@ -212,6 +212,14 @@ class Bands extends CI_Model {
 			array_push($worked_slots, strtoupper($row->COL_PROP_MODE));
 		}
 
+		$EME_data = $this->db->query(
+			"SELECT distinct LOWER(`COL_PROP_MODE`) as `COL_PROP_MODE` FROM `".$this->config->item('table_name')."` WHERE station_id in (" . $location_list . ") AND COL_PROP_MODE = \"EME\""
+		);
+
+		foreach($EME_data->result() as $row){
+			array_push($worked_slots, strtoupper($row->COL_PROP_MODE));
+		}
+
 		// bring worked-slots in order of defined $bandslots
 		$bandslots = $this->get_user_bands($award);
 
@@ -220,6 +228,14 @@ class Bands extends CI_Model {
 			if(in_array($slot, $worked_slots)) {
 				array_push($results, $slot);
 			}
+		}
+
+		if (in_array('SAT', $worked_slots) && !in_array('SAT', $results)) {
+			array_push($results, 'SAT');
+		}
+
+		if (in_array('EME', $worked_slots) && !in_array('EME', $results)) {
+			array_push($results, 'EME');
 		}
 
 		return $results;

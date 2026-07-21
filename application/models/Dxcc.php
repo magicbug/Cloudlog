@@ -199,6 +199,7 @@ class DXCC extends CI_Model {
 
 	function addBandToQuery($band) {
 		$sql = '';
+		$propModeBands = array('SAT', 'EME');
 
 		if (is_array($band)) {
 			$selectedBands = array_values(array_unique(array_filter($band, function ($value) {
@@ -209,17 +210,19 @@ class DXCC extends CI_Model {
 				return ' and 1 = 0';
 			}
 
-			$hasSat = in_array('SAT', $selectedBands, true);
-			$terrestrialBands = array_values(array_diff($selectedBands, array('SAT')));
+			$selectedPropModes = array_values(array_intersect($selectedBands, $propModeBands));
+			$terrestrialBands = array_values(array_diff($selectedBands, $propModeBands));
+			$hasPropModes = count($selectedPropModes) > 0;
+			$propModesList = "'" . implode("','", array_map(array($this->db, 'escape_str'), $selectedPropModes)) . "'";
 
-			if ($hasSat && count($terrestrialBands) > 0) {
+			if ($hasPropModes && count($terrestrialBands) > 0) {
 				$bandslots_list = "'" . implode("','", array_map(array($this->db, 'escape_str'), $terrestrialBands)) . "'";
-				$sql .= " and ((col_prop_mode = 'SAT') or (col_prop_mode != 'SAT' and col_band in (" . $bandslots_list . ")))";
-			} else if ($hasSat) {
-				$sql .= " and col_prop_mode = 'SAT'";
+				$sql .= " and ((col_prop_mode in (" . $propModesList . ")) or (col_prop_mode not in ('SAT', 'EME') and col_band in (" . $bandslots_list . ")))";
+			} else if ($hasPropModes) {
+				$sql .= " and col_prop_mode in (" . $propModesList . ")";
 			} else if (count($terrestrialBands) > 0) {
 				$bandslots_list = "'" . implode("','", array_map(array($this->db, 'escape_str'), $terrestrialBands)) . "'";
-				$sql .= " and col_prop_mode != 'SAT'";
+				$sql .= " and col_prop_mode not in ('SAT', 'EME')";
 				$sql .= " and col_band in (" . $bandslots_list . ")";
 			} else {
 				$sql .= ' and 1 = 0';
@@ -230,10 +233,10 @@ class DXCC extends CI_Model {
 
 		if ($band != 'All') {
 			$safeBand = $this->db->escape_str($band);
-			if ($band == 'SAT') {
+			if (in_array($band, $propModeBands, true)) {
 				$sql .= " and col_prop_mode ='" . $safeBand . "'";
 			} else {
-				$sql .= " and col_prop_mode !='SAT'";
+				$sql .= " and col_prop_mode not in ('SAT', 'EME')";
 				$sql .= " and col_band ='" . $safeBand . "'";
 			}
 		}
