@@ -38,6 +38,40 @@
 
 /*
  *---------------------------------------------------------------
+ * Optional .env next to this file (existing getenv/$_SERVER values are not overwritten — Docker/OS wins)
+ *---------------------------------------------------------------
+ */
+	$cloudlogEnvFile = __DIR__ . DIRECTORY_SEPARATOR . '.env';
+	if (is_readable($cloudlogEnvFile)) {
+		foreach (file($cloudlogEnvFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
+			$line = trim($line);
+			if ($line === '' || (isset($line[0]) && $line[0] === '#')) {
+				continue;
+			}
+			$eq = strpos($line, '=');
+			if ($eq === false) {
+				continue;
+			}
+			$name = trim(substr($line, 0, $eq));
+			$value = trim(substr($line, $eq + 1));
+			if ($name === '') {
+				continue;
+			}
+			if (strlen($value) >= 2
+				&& (($value[0] === '"' && substr($value, -1) === '"')
+					|| ($value[0] === "'" && substr($value, -1) === "'"))) {
+				$value = substr($value, 1, -1);
+			}
+			if (getenv($name) === false) {
+				putenv($name . '=' . $value);
+				$_ENV[$name] = $value;
+				$_SERVER[$name] = $value;
+			}
+		}
+	}
+
+/*
+ *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
  *---------------------------------------------------------------
  *
@@ -51,10 +85,18 @@
  *     testing
  *     production
  *
+ * Set CLOUDLOG_ENV or CI_ENV in .env (or in the server environment). Defaults to development.
+ *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	#define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
-	define('ENVIRONMENT', 'development');
+	$cloudlog_environment = getenv('CLOUDLOG_ENV');
+	if ($cloudlog_environment === false || $cloudlog_environment === '') {
+		$cloudlog_environment = getenv('CI_ENV');
+	}
+	if ($cloudlog_environment === false || $cloudlog_environment === '') {
+		$cloudlog_environment = 'development';
+	}
+	define('ENVIRONMENT', $cloudlog_environment);
 
 /*
  *---------------------------------------------------------------

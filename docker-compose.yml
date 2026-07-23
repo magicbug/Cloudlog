@@ -1,15 +1,19 @@
+
 networks:
   mynet:
 
 services:
   web:
-    build: .
+    image: ghcr.io/magicbug/cloudlog-web:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     env_file:
       - .env
     ports:
       - "80:80"
     volumes:
-      - ./:/var/www/html:rw
+      - ./web:/var/www/html
     command: ["/usr/local/bin/startup.sh"]
     depends_on:
       db:
@@ -19,13 +23,14 @@ services:
     restart: on-failure
 
   db:
+    image: ghcr.io/magicbug/cloudlog-db:latest
     build:
       context: .
       dockerfile: Dockerfile-db
     env_file:
       - .env
     volumes:
-      - db_data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
     networks:
       - mynet
     healthcheck:
@@ -35,5 +40,3 @@ services:
       interval: 10s
       start_period: 40s
 
-volumes:
-  db_data: {}
