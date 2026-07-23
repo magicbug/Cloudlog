@@ -1005,9 +1005,24 @@ class Logbook extends CI_Controller
 				if (isset($callsign['callsign']['error'])) {
 					$callsign['error'] = $callsign['callsign']['error'];
 				}
+			} elseif ($this->session->userdata('callbook_type') == "QRZCALL") {
+				// Lookup using QRZCALL.EU — stateless PAT auth, no session-key dance
+				$this->load->library('qrzcall');
+				$this->load->library('encryption');
+
+				$token = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+				$callsign['callsign'] = $this->qrzcall->search($id, $token, $this->config->item('use_fullname'));
+
+				if (isset($callsign['callsign']['dxcc'])) {
+					$this->load->model('logbook_model');
+					$entity = $this->logbook_model->get_entity($callsign['callsign']['dxcc']);
+					if (is_array($entity) && isset($entity['name'])) {
+						$callsign['callsign']['dxcc_name'] = $entity['name'];
+					}
+				}
 			} else {
 				// No callbook type set, return error message
-				$callsign['error'] = 'Online callbook not configured. Go to <a href="' . site_url('user/edit/' . $this->session->userdata('user_id')) . '" class="alert-link">Account Settings</a> and select either QRZ or HamQTH in the "Callbook" section.';
+				$callsign['error'] = 'Online callbook not configured. Go to <a href="' . site_url('user/edit/' . $this->session->userdata('user_id')) . '" class="alert-link">Account Settings</a> and select QRZ, HamQTH or QRZCALL.EU in the "Callbook" section.';
 			}
 
 			if (isset($callsign['callsign']['gridsquare'])) {
@@ -1116,6 +1131,28 @@ class Logbook extends CI_Controller
 							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
 							$data['callsign'] = $this->hamqth->search($fixedid, $this->session->userdata('hamqth_session_key'));
 						}
+						if (isset($data['callsign']['gridsquare'])) {
+							$this->load->model('logbook_model');
+							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
+						}
+						if (isset($data['callsign']['dxcc'])) {
+							$this->load->model('logbook_model');
+							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
+							if (is_array($entity) && isset($entity['name'])) {
+								$data['callsign']['dxcc_name'] = $entity['name'];
+							}
+						}
+						if (isset($data['callsign']['error'])) {
+							$data['error'] = $data['callsign']['error'];
+						}
+					} elseif ($this->session->userdata('callbook_type') == "QRZCALL") {
+						// Lookup using QRZCALL.EU — stateless PAT auth, no session-key dance
+						$this->load->library('qrzcall');
+						$this->load->library('encryption');
+
+						$token = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+						$data['callsign'] = $this->qrzcall->search($fixedid, $token, $this->config->item('use_fullname'));
+
 						if (isset($data['callsign']['gridsquare'])) {
 							$this->load->model('logbook_model');
 							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
