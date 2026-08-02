@@ -52,14 +52,89 @@ class Clublog_model extends CI_Model {
 	}
 
 	// function to reset clublog fields for the user in the auth table
-	function reset_clublog_user_fields($user_id) {
+	function reset_clublog_user_fields($user_id, $notify_user = false, $reset_context = '', $set_flash_warning = false) {
 		$data = array(
 			'user_clublog_name' => null,
 			'user_clublog_password' => null,
 		);
 
 		$this->db->where('user_id', $user_id);
-		$this->db->update($this->config->item('auth_table'), $data);
+		$updated = $this->db->update($this->config->item('auth_table'), $data);
+
+		if ($updated && $notify_user) {
+			$this->send_clublog_credentials_reset_email($user_id, $reset_context);
+		}
+
+		if ($updated && $set_flash_warning && isset($this->session) && method_exists($this->session, 'userdata') && method_exists($this->session, 'set_flashdata')) {
+			if ((int) $this->session->userdata('user_id') === (int) $user_id) {
+				$this->session->set_flashdata('warning', 'Your Clublog credentials were cleared after an authorization failure. Please update your Clublog email and password in your account settings.');
+			}
+		}
+
+		return $updated;
+	}
+
+	private function send_clublog_credentials_reset_email($user_id, $reset_context = '') {
+		if ($this->optionslib->get_option('emailProtocol') == '') {
+			log_message('info', 'Email not configured - skipping Clublog credentials reset notification for user ID: ' . $user_id);
+			return false;
+		}
+
+		$this->db->select('user_email, user_callsign, user_firstname, user_lastname, user_name');
+		$this->db->from($this->config->item('auth_table'));
+		$this->db->where('user_id', $user_id);
+		$query = $this->db->get();
+
+		if ($query->num_rows() === 0) {
+			log_message('error', 'Clublog credentials reset notification failed: user not found for user ID: ' . $user_id);
+			return false;
+		}
+
+		$user = $query->row();
+		if (empty($user->user_email) || !filter_var($user->user_email, FILTER_VALIDATE_EMAIL)) {
+			log_message('error', 'Clublog credentials reset notification skipped: invalid or missing email for user ID: ' . $user_id);
+			return false;
+		}
+
+		$this->load->library('email');
+
+		if ($this->optionslib->get_option('emailProtocol') == 'smtp') {
+			$config = array(
+				'protocol' => $this->optionslib->get_option('emailProtocol'),
+				'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
+				'smtp_host' => $this->optionslib->get_option('smtpHost'),
+				'smtp_port' => $this->optionslib->get_option('smtpPort'),
+				'smtp_user' => $this->optionslib->get_option('smtpUsername'),
+				'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
+				'crlf' => "\r\n",
+				'newline' => "\r\n"
+			);
+			$this->email->initialize($config);
+		}
+
+		$email_data = array(
+			'user_firstname' => $user->user_firstname,
+			'user_lastname' => $user->user_lastname,
+			'user_callsign' => $user->user_callsign,
+			'user_name' => $user->user_name,
+			'base_url' => base_url(),
+			'reset_context' => $reset_context,
+		);
+
+		$message = $this->load->view('email/clublog_credentials_reset', $email_data, true);
+
+		$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
+		$this->email->to($user->user_email);
+		$this->email->subject('Cloudlog - Clublog Credentials Reset');
+		$this->email->message($message);
+
+		if (!$this->email->send()) {
+			log_message('error', 'Failed to send Clublog credentials reset email to ' . $user->user_email . '. Error: ' . $this->email->print_debugger());
+			return false;
+		}
+
+		log_message('info', 'Clublog credentials reset notification sent to ' . $user->user_email);
+		return true;
 	}
 
 	function mark_qsos_sent($station_id) {

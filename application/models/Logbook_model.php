@@ -800,7 +800,7 @@ class Logbook_model extends CI_Model
             // If Clublog responds with a 403, reset the user's credentials
             if (isset($clublog_result['http_code']) && $clublog_result['http_code'] == 403) {
               $CI->load->model('clublog_model');
-              $CI->clublog_model->reset_clublog_user_fields($clublog_creds->user_id);
+              $CI->clublog_model->reset_clublog_user_fields($clublog_creds->user_id, true, 'Clublog realtime upload failed with HTTP 403 for station ' . $data['COL_STATION_CALLSIGN'] . ' (QSO ID ' . $last_id . ').', true);
               log_message('error', 'Clublog API access denied - credentials reset for user ID: ' . $clublog_creds->user_id);
             }
           }
