@@ -50,7 +50,7 @@ class Clublog extends CI_Controller {
 
 		$this->load->model('clublog_model');
 
-		// Retrieve all station profiles for the user with their QSO counts
+		// Retrieve all station profiles for the user with Clublog upload enabled and their QSO counts
 		$station_profiles = $this->clublog_model->all_with_count($clean_userid);
 
 		if($station_profiles->num_rows()){
@@ -153,11 +153,12 @@ class Clublog extends CI_Controller {
 					}
 				}
 
-					return $uploaded_for_user;
 			}
 
-				return false;
+			return $uploaded_for_user;
 		}
+
+		return false;
 	}
 
 	function markqso($station_id) {

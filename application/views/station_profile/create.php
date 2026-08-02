@@ -277,6 +277,15 @@
 				</div>
 
 				<div class="mb-3">
+					<label for="clublogcron">Upload to Clublog</label>
+					<select class="form-select" id="clublogcron" name="clublogcron">
+						<option value="1"><?php echo lang("general_word_yes"); ?></option>
+						<option value="0" selected><?php echo lang("general_word_no"); ?></option>
+					</select>
+					<small class="form-text text-muted">Enable this station location for uploads via /clublog/upload.</small>
+				</div>
+
+				<div class="mb-3">
 					<label for="clublogrealtime"><?php echo lang("station_location_clublog_realtime_upload"); ?></label>
 					<select class="form-select" id="clublogrealtime" name="clublogrealtime">
 						<option value="1"><?php echo lang("general_word_yes"); ?></option>

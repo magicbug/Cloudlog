@@ -17,6 +17,40 @@ class Clublog_model extends CI_Model {
 		return $row = $query->row_array();
 	}
 
+	function user_has_clublog_credentials($user_id) {
+		$this->db->select('user_id');
+		$this->db->from($this->config->item('auth_table'));
+		$this->db->where('user_id', $user_id);
+		$this->db->where('coalesce(user_clublog_name, "") != ""');
+		$this->db->where('coalesce(user_clublog_password, "") != ""');
+
+		return $this->db->count_all_results() > 0;
+	}
+
+	function user_needs_clublogcron_station_warning($user_id) {
+		if (!$this->user_has_clublog_credentials($user_id)) {
+			return false;
+		}
+
+		$this->db->from('station_profile');
+		$this->db->where('user_id', $user_id);
+		$total_stations = $this->db->count_all_results();
+
+		if ($total_stations == 0) {
+			return false;
+		}
+
+		$this->db->from('station_profile');
+		$this->db->where('user_id', $user_id);
+		if ($this->db->field_exists('clublogcron', 'station_profile')) {
+			$this->db->where('clublogcron', 1);
+		} else {
+			$this->db->where('clublogrealtime', 1);
+		}
+
+		return $this->db->count_all_results() == 0;
+	}
+
 	// function to reset clublog fields for the user in the auth table
 	function reset_clublog_user_fields($user_id) {
 		$data = array(
@@ -35,10 +69,12 @@ class Clublog_model extends CI_Model {
 		);
 
 		$this->db->where("station_id", $station_id);
+		$this->db->group_start();
 		$this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", null);
 		$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "");
-    		$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
-    		$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "M");
+	    		$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
+	    		$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "M");
+		$this->db->group_end();
 		$this->db->update($this->config->item('table_name'), $data);
 	}
 
@@ -54,9 +90,11 @@ class Clublog_model extends CI_Model {
 
 	function get_last_five($station_id) {
 		$this->db->where('station_id', $station_id);
+		$this->db->group_start();
 	    $this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", null);
 	    $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "");
 	    $this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "N");
+		$this->db->group_end();
 	    $this->db->limit(5); 
 	    $query = $this->db->get($this->config->item('table_name'));
 
@@ -98,6 +136,11 @@ class Clublog_model extends CI_Model {
         $this->db->join($this->config->item('table_name'),'station_profile.station_id = '.$this->config->item('table_name').'.station_id','left');
        	$this->db->group_by('station_profile.station_id');
 		$this->db->where('station_profile.user_id', $userid);
+		if ($this->db->field_exists('clublogcron', 'station_profile')) {
+			$this->db->where('station_profile.clublogcron', 1);
+		} else {
+			$this->db->where('station_profile.clublogrealtime', 1);
+		}
 		$this->db->group_start();
 		$this->db->where("COL_CLUBLOG_QSO_UPLOAD_STATUS", null);
 		$this->db->or_where("COL_CLUBLOG_QSO_UPLOAD_STATUS", "");
