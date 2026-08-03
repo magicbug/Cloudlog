@@ -187,6 +187,7 @@ class User extends CI_Controller
 				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
 				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
+				$data['user_oscarwatch_token'] = $this->input->post('user_oscarwatch_token');
 				$data['user_winkey'] = $this->input->post('user_winkey');
 				$data['user_winkey_websocket'] = $this->input->post('user_winkey_websocket');
 				$data['user_remote_operation'] = $this->input->post('user_remote_operation');
@@ -673,7 +674,9 @@ class User extends CI_Controller
 
 
 			$this->load->model('user_options_model');
-			$hamsat_user_object = $this->user_options_model->get_options('hamsat')->result();
+			$edited_user_id = $q->user_id ?? $this->session->userdata('user_id');
+			$hamsat_user_object = $this->user_options_model->get_options('hamsat', null, $edited_user_id)->result();
+			$oscarwatch_token_object = $this->user_options_model->get_options('oscarwatch', array('option_name' => 'api_token', 'option_key' => 'value'), $edited_user_id)->result();
 
 			if ($this->input->post('user_hamsat_key', true)) {
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key', true);
@@ -693,6 +696,16 @@ class User extends CI_Controller
 					$data['user_hamsat_workable_only'] = $hamsat_user_object[1]->option_value;
 				} else {
 					$data['user_hamsat_workable_only'] = "";
+				}
+			}
+
+			if ($this->input->post('user_oscarwatch_token', true)) {
+				$data['user_oscarwatch_token'] = $this->input->post('user_oscarwatch_token', true);
+			} else {
+				if (isset($oscarwatch_token_object[0]->option_value)) {
+					$data['user_oscarwatch_token'] = $oscarwatch_token_object[0]->option_value;
+				} else {
+					$data['user_oscarwatch_token'] = "";
 				}
 			}
 
@@ -1070,6 +1083,7 @@ class User extends CI_Controller
 			$data['user_winkey_websocket'] = $this->input->post('user_winkey_websocket');
 			$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
 			$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
+			$data['user_oscarwatch_token'] = $this->input->post('user_oscarwatch_token');
 
 
 

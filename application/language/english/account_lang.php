@@ -69,7 +69,7 @@ $lang['account_qrzcom_hamqthcom_images'] = 'qrz.com/hamqth.com Images';
 $lang['account_show_profile_picture_of_qso_partner_from_qrzcom_hamqthcom_profile_in_the_log_qso_section'] = 'Show profile picture of QSO partner from qrz.com/hamqth.com profile in the log QSO section.';
 $lang['account_please_set_your_qrzcom_hamqthcom_credentials_in_the_general_config_file'] = 'Please set your qrz.com/hamqth.com credentials in the general config file.';
 
-$lang['account_amsat_status_upload'] = 'AMSAT Status Upload';
+$lang['account_amsat_status_upload'] = 'Satellite Status Upload';
 $lang['account_upload_status_of_sat_qsos_to'] = 'Upload status of SAT QSOs to';
 
 $lang['account_logbook_of_the_world'] = 'Logbook of the World';

@@ -1300,6 +1300,13 @@
 													} ?>><?php echo lang('general_word_no'); ?></option>
 												</select>
 											</div>
+											<div class="mb-3">
+												<label>OscarWatch API Token</label>
+												<input class="form-control" type="password" name="user_oscarwatch_token" value="<?php if (isset($user_oscarwatch_token)) {
+													echo $user_oscarwatch_token;
+												} ?>" />
+												<small class="form-text text-muted">Optional. If set, SAT QSO status is also reported to <a href="https://oscarwatch.org" target="_blank">oscarwatch.org</a> using your token.</small>
+											</div>
 										</div>
 									</div>
 								</div>
