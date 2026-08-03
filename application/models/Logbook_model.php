@@ -760,9 +760,13 @@ class Logbook_model extends CI_Model
       $this->clear_dashboard_cache($data['station_id']);
     }
 
-    if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
+    if ($data['COL_PROP_MODE'] == "SAT") {
+      if ($this->session->userdata('user_amsat_status_upload')) {
       $this->upload_amsat_status($data);
+      }
+      if ($this->session->userdata('user_oscarwatch_status_upload')) {
       $this->upload_oscarwatch_status($data);
+      }
     }
 
     $this->load->library('cloudlog_hooks');
