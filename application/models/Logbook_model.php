@@ -1423,30 +1423,62 @@ class Logbook_model extends CI_Model
       }
     }
 
+    if ($satellite_normalized === 'CSS' && $sat_mode_normalized === 'FM') {
+      if ($band_normalized === '70cm' && $band_rx_normalized === '2m') {
+        return 'Cross Band Repeater U/V';
+      }
+      if ($band_normalized === '2m' && $band_rx_normalized === '70cm') {
+        return 'Cross Band Repeater V/U';
+      }
+    }
+
     $explicit_mode_map = array(
       'AO-73' => array('U/V' => 'Voice U/V'),
       'AO-91' => array('U/V' => 'Voice U/V'),
       'RADFXSAT (FOX-1B)' => array('U/V' => 'Voice U/V'),
-      'SO-50' => array('FM' => 'FM VOICE'),
-      'SO-124' => array('FM' => 'FM Voice'),
-      'SO-125' => array('FM' => 'FM Voice'),
-      'PO-101' => array('FM' => 'FM'),
+      'SO-50' => array(
+        'FM' => 'FM VOICE',
+        'V/U' => 'FM VOICE',
+        'U/V' => 'FM VOICE',
+      ),
+      'SO-124' => array(
+        'FM' => 'FM Voice',
+        'V/U' => 'FM Voice',
+        'U/V' => 'FM Voice',
+      ),
+      'SO-125' => array(
+        'FM' => 'FM Voice',
+        'V/U' => 'FM Voice',
+        'U/V' => 'FM Voice',
+      ),
+      'PO-101' => array(
+        'FM' => 'FM',
+        'V/U' => 'FM',
+        'U/V' => 'FM',
+      ),
       'FO-29' => array('V/U' => 'SSB Transponder'),
       'RS-44' => array('V/U' => 'SSB Transponder'),
       'JO-97' => array('U/V' => 'SSB Transponder'),
       'MO-122' => array('V/U' => 'SSB Transponder'),
       'TEN-KOH2' => array('V/U' => 'SSB Transponder'),
       'CSS' => array(
+        'FM' => 'Cross Band Repeater V/U',
         'V/U' => 'Cross Band Repeater V/U',
         'U/V' => 'Cross Band Repeater U/V',
       ),
       'ISS' => array(
         'FM' => 'Cross band repeater',
+        'V/U' => 'Cross band repeater',
+        'U/V' => 'Cross band repeater',
+        'V' => 'Packet',
         'PKT' => 'Packet',
         'APRS' => 'Packet',
       ),
       'ARISS' => array(
         'FM' => 'Cross band repeater',
+        'V/U' => 'Cross band repeater',
+        'U/V' => 'Cross band repeater',
+        'V' => 'Packet',
         'PKT' => 'Packet',
         'APRS' => 'Packet',
       ),
