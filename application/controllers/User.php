@@ -679,6 +679,7 @@ class User extends CI_Controller
 			$hamsat_user_object = $this->user_options_model->get_options('hamsat', null, $edited_user_id)->result();
 			$oscarwatch_token_object = $this->user_options_model->get_options('oscarwatch', array('option_name' => 'api_token', 'option_key' => 'value'), $edited_user_id)->result();
 			$oscarwatch_status_option = $this->user_options_model->get_options('oscarwatch', array('option_name' => 'status_upload', 'option_key' => 'enabled'), $edited_user_id)->row();
+			$oscarwatch_force_amsat_option = $this->user_options_model->get_options('oscarwatch', array('option_name' => 'force_amsat', 'option_key' => 'enabled'), $edited_user_id)->row();
 
 			if ($this->input->post('user_hamsat_key', true)) {
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key', true);
@@ -715,6 +716,12 @@ class User extends CI_Controller
 				$data['user_oscarwatch_status_upload'] = $this->input->post('user_oscarwatch_status_upload', false);
 			} else {
 				$data['user_oscarwatch_status_upload'] = isset($oscarwatch_status_option->option_value) ? $oscarwatch_status_option->option_value : '0';
+			}
+
+			if ($this->input->post('user_force_amsat_status_upload') !== null) {
+				$data['user_force_amsat_status_upload'] = $this->input->post('user_force_amsat_status_upload', false);
+			} else {
+				$data['user_force_amsat_status_upload'] = isset($oscarwatch_force_amsat_option->option_value) ? $oscarwatch_force_amsat_option->option_value : '0';
 			}
 
 			// Set defaults
@@ -869,6 +876,27 @@ class User extends CI_Controller
 			}
 			if (!isset($post_data['user_remote_operation'])) {
 				$post_data['user_remote_operation'] = '0';
+			}
+			if (!isset($post_data['user_amsat_status_upload'])) {
+				$post_data['user_amsat_status_upload'] = '0';
+			}
+			if (!isset($post_data['user_oscarwatch_status_upload'])) {
+				$post_data['user_oscarwatch_status_upload'] = '0';
+			}
+			if (!isset($post_data['user_force_amsat_status_upload'])) {
+				$post_data['user_force_amsat_status_upload'] = '0';
+			}
+
+			$oscarwatch_enabled = ((string)$post_data['user_oscarwatch_status_upload'] === '1');
+			$force_amsat_enabled = ((string)$post_data['user_force_amsat_status_upload'] === '1');
+			$oscarwatch_notice_message = '';
+			if ($oscarwatch_enabled) {
+				if (!$force_amsat_enabled) {
+					$post_data['user_amsat_status_upload'] = '0';
+					$oscarwatch_notice_message = 'AMSAT Status Upload in Cloudlog was disabled because OscarWatch Status Upload is enabled. OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+				} else {
+					$oscarwatch_notice_message = 'OscarWatch Status Upload is enabled and AMSAT Status Upload remains enabled by your override. OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+				}
 			}
 			switch ($this->user_model->edit($post_data)) {
 				// Check for errors
@@ -1044,12 +1072,18 @@ class User extends CI_Controller
 							? 'Remote Operation enabled.'
 							: 'Remote Operation disabled.';
 						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited') . ' ' . $remote_operation_status_message);
+						if ($oscarwatch_notice_message !== '') {
+							$this->session->set_flashdata('notice', $oscarwatch_notice_message);
+						}
 						if ($this->session->userdata('user_id') == $this->input->post('id', true)) {
 							$this->user_model->update_session($this->input->post('id', true));
 						}
 						redirect('user/edit/' . $this->uri->segment(3));
 					} else {
 						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited'));
+						if ($oscarwatch_notice_message !== '') {
+							$this->session->set_flashdata('notice', $oscarwatch_notice_message);
+						}
 						redirect('user');
 					}
 					return;
@@ -1081,6 +1115,7 @@ class User extends CI_Controller
 			$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 			$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
 			$data['user_oscarwatch_status_upload'] = $this->input->post('user_oscarwatch_status_upload');
+			$data['user_force_amsat_status_upload'] = $this->input->post('user_force_amsat_status_upload');
 			$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
 			$data['user_default_band'] = $this->input->post('user_default_band');
 			$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '') . ($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '') . ($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '') . ($this->input->post('user_default_confirmation_qrz') !== null ? 'Z' : '');

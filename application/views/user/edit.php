@@ -1314,6 +1314,21 @@
 													} ?>><?php echo lang('general_word_no'); ?></option>
 												</select>
 											</div>
+											<div class="mb-3" id="oscarwatchAmsatOverrideWrapper" style="display:none;">
+												<?php if (!isset($user_force_amsat_status_upload)) {
+													$user_force_amsat_status_upload = '0';
+												} ?>
+												<div class="form-check form-switch">
+													<input class="form-check-input" type="checkbox" role="switch" id="forceAmsatWithOscarwatch" name="user_force_amsat_status_upload" value="1" <?php if ((string)$user_force_amsat_status_upload === '1') {
+														echo 'checked';
+													} ?>>
+													<label class="form-check-label" for="forceAmsatWithOscarwatch">Force enable AMSAT Status in Cloudlog</label>
+												</div>
+												<small class="form-text text-muted">When enabled, Cloudlog keeps direct AMSAT uploads on even with OscarWatch enabled.</small>
+											</div>
+											<div class="alert alert-warning" id="oscarwatchAmsatNotice" role="alert" style="display:none;">
+												OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.
+											</div>
 											<div class="mb-3">
 												<label>OscarWatch API Token</label>
 												<div class="input-group">
@@ -1635,6 +1650,57 @@
 		})();
 	</script>
 	<script>
+		var oscarwatchStatusSelect = document.getElementById('oscarwatchstatusupload');
+		var amsatStatusSelect = document.getElementById('amsatstatusupload');
+		var forceAmsatToggle = document.getElementById('forceAmsatWithOscarwatch');
+		var oscarwatchAmsatNotice = document.getElementById('oscarwatchAmsatNotice');
+		var oscarwatchAmsatOverrideWrapper = document.getElementById('oscarwatchAmsatOverrideWrapper');
+
+		function syncOscarwatchAmsatState(triggeredByOscarwatchToggle) {
+			if (!oscarwatchStatusSelect || !amsatStatusSelect || !oscarwatchAmsatNotice || !oscarwatchAmsatOverrideWrapper || !forceAmsatToggle) {
+				return;
+			}
+
+			var oscarwatchEnabled = oscarwatchStatusSelect.value === '1';
+			var forceAmsatEnabled = forceAmsatToggle.checked;
+
+			if (!oscarwatchEnabled) {
+				oscarwatchAmsatOverrideWrapper.style.display = 'none';
+				oscarwatchAmsatNotice.style.display = 'none';
+				amsatStatusSelect.disabled = false;
+				return;
+			}
+
+			oscarwatchAmsatOverrideWrapper.style.display = '';
+			oscarwatchAmsatNotice.style.display = '';
+
+			if (forceAmsatEnabled) {
+				amsatStatusSelect.disabled = false;
+				amsatStatusSelect.value = '1';
+				oscarwatchAmsatNotice.textContent = 'OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+				return;
+			}
+
+			if (triggeredByOscarwatchToggle && amsatStatusSelect.value === '1') {
+				amsatStatusSelect.value = '0';
+				oscarwatchAmsatNotice.textContent = 'AMSAT Status Upload was turned off in Cloudlog because OscarWatch Status Upload is enabled. OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+			} else {
+				oscarwatchAmsatNotice.textContent = 'OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+			}
+
+			amsatStatusSelect.disabled = true;
+		}
+
+		if (oscarwatchStatusSelect && amsatStatusSelect && forceAmsatToggle) {
+			oscarwatchStatusSelect.addEventListener('change', function() {
+				syncOscarwatchAmsatState(true);
+			});
+			forceAmsatToggle.addEventListener('change', function() {
+				syncOscarwatchAmsatState(false);
+			});
+			syncOscarwatchAmsatState(false);
+		}
+
 		var oscarwatchTestBtn = document.getElementById('testOscarwatchTokenBtn');
 		if (oscarwatchTestBtn) {
 			oscarwatchTestBtn.addEventListener('click', function() {
