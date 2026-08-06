@@ -22,7 +22,21 @@ class Search extends CI_Controller {
 
 	public function index()
 	{
+		$postedCallsign = trim((string) $this->security->xss_clean($this->input->post('callsign')));
+		if ($postedCallsign !== '') {
+			redirect('search?callsign=' . rawurlencode($postedCallsign));
+			return;
+		}
+
+		$queryCallsign = trim((string) $this->security->xss_clean($this->input->get('callsign')));
+		if ($queryCallsign === '') {
+			$queryCallsign = trim((string) $this->security->xss_clean($this->input->get('q')));
+		}
+		$queryExact = $this->input->get('exact') === '1';
+
 		$data['page_title'] = "Search";
+		$data['initial_search'] = $queryCallsign;
+		$data['initial_exact'] = $queryExact;
 
         $this->load->view('interface_assets/header', $data);
 		$this->load->view('search/main');

@@ -1031,6 +1031,8 @@ class Logbook extends CI_Controller
 			return;
 		}
 
+		$exactMatch = $this->input->get('exact') === '1';
+
 		$fixedid = $id;
 
 		if ($id2 != "") {
@@ -1041,10 +1043,29 @@ class Logbook extends CI_Controller
 			}
 		}
 
-		$query = $this->querydb($fixedid);
+		$fixedid = $this->normalize_search_term($fixedid);
+		$id = $this->normalize_search_term($id);
+
+		if ($fixedid === '' && $id === '') {
+			return;
+		}
+
+		if ($fixedid === '') {
+			$fixedid = $id;
+		}
+
+		$query = $this->querydb($fixedid, array('exact' => $exactMatch));
+
+		if ($query->num_rows() == 0 && !$exactMatch) {
+			$query = $this->querydb($fixedid, array('broad' => true));
+		}
 
 		if ($query->num_rows() == 0) {
-			$query = $this->querydb($id);
+			$query = $this->querydb($id, array('exact' => $exactMatch));
+
+			if ($query->num_rows() == 0 && !$exactMatch) {
+				$query = $this->querydb($id, array('broad' => true));
+			}
 
 			if ($query->num_rows() > 0) {
 				$data['results'] = $query;
@@ -1134,7 +1155,7 @@ class Logbook extends CI_Controller
 						$data['error'] = 'Lookup not configured. Please review configuration.';
 					}
 
-					$data['id'] = strtoupper($id);
+					$data['id'] = strtoupper($fixedid);
 
 					$this->load->view('search/result', $data);
 				}
@@ -1146,16 +1167,47 @@ class Logbook extends CI_Controller
 		}
 	}
 
-	function querydb($id)
+	private function normalize_search_term($value)
 	{
+		$normalized = strtoupper(trim((string)$value));
+		$normalized = str_replace("Ø", "0", $normalized);
+		$normalized = str_replace("-", "/", $normalized);
+		return $normalized;
+	}
+
+	function querydb($id, $options = array())
+	{
+		$id = $this->normalize_search_term($id);
+		$exactMatch = isset($options['exact']) && $options['exact'] === true;
+		$broadSearch = isset($options['broad']) && $options['broad'] === true;
+
+		if ($id === '') {
+			$this->db->from($this->config->item('table_name'));
+			$this->db->where('1 = 0');
+			return $this->db->get();
+		}
+
 		$this->db->from($this->config->item('table_name'));
 		$this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
 		$this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $this->config->item('table_name') . '.COL_DXCC', 'left outer');
 		$this->db->join('lotw_users', 'lotw_users.callsign = ' . $this->config->item('table_name') . '.col_call', 'left outer');
 		$this->db->group_start();
-		$this->db->like('' . $this->config->item('table_name') . '.COL_CALL', $id);
-		$this->db->or_like('' . $this->config->item('table_name') . '.COL_GRIDSQUARE', $id);
-		$this->db->or_like('' . $this->config->item('table_name') . '.COL_VUCC_GRIDS', $id);
+
+		if ($exactMatch) {
+			$this->db->where('' . $this->config->item('table_name') . '.COL_CALL', $id);
+			$this->db->or_where('' . $this->config->item('table_name') . '.COL_GRIDSQUARE', $id);
+			$this->db->or_like('' . $this->config->item('table_name') . '.COL_VUCC_GRIDS', $id, 'both');
+		} else {
+			$this->db->like('' . $this->config->item('table_name') . '.COL_CALL', $id, 'after');
+			$this->db->or_like('' . $this->config->item('table_name') . '.COL_GRIDSQUARE', $id, 'after');
+			$this->db->or_like('' . $this->config->item('table_name') . '.COL_VUCC_GRIDS', $id, 'both');
+
+			if ($broadSearch) {
+				$this->db->or_like('' . $this->config->item('table_name') . '.COL_CALL', $id, 'both');
+				$this->db->or_like('' . $this->config->item('table_name') . '.COL_GRIDSQUARE', $id, 'both');
+			}
+		}
+
 		$this->db->group_end();
 		$this->db->where('station_profile.user_id', $this->session->userdata('user_id'));
 		$this->db->order_by('' . $this->config->item('table_name') . '.COL_TIME_ON', 'desc');

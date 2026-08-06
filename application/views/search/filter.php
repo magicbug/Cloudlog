@@ -78,11 +78,19 @@
 
 	<!-- Search Results here -->
 	<div class="card search-results-box">
-	  <div class="card-header">
-	    Search Results:  <div class="exportbutton"><button class="btn btn-sm btn-primary" id="btn-export">Export to ADIF</button></div>
+	  <div class="card-header d-flex justify-content-between align-items-center">
+	    <div>
+			<span>Search Results</span>
+			<span class="badge text-bg-light ms-2" id="advanced-results-count">0 QSOs</span>
+			<span class="badge text-bg-secondary" id="advanced-results-mode">Filtered query</span>
+		</div>
+		<div>
+			<div class="exportbutton d-inline-block"><button class="btn btn-sm btn-primary" id="btn-export" onclick="export_search_result();">Export to ADIF</button></div>
+			<button class="btn btn-sm btn-outline-secondary ms-2" id="btn-clear-advanced-results">Clear results</button>
+		</div>
 	  </div>
 	  <div class="card-body result">
-
+		<div class="text-muted p-2" id="advanced-results-empty">Run a query to see matching QSOs.</div>
 	  </div>
 	</div>
 
