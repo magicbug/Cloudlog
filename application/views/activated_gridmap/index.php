@@ -46,9 +46,12 @@
 
 	<h2><?php echo lang('gridsquares_activated_gridsquare_map'); ?></h2>
 
-<form class="d-flex align-items-center">
+    <div id="activated-grid-summary" class="row g-3 mb-3"></div>
+
+    <div class="border rounded-3 bg-light-subtle px-3 py-2 mb-3 shadow-sm">
+        <form class="d-flex flex-wrap align-items-center gap-2">
             <label class="my-1 me-2" for="band"><?php echo lang('gridsquares_band'); ?></label>
-            <select class="form-select my-1 me-sm-2 w-auto"  id="band">
+            <select class="form-select form-select-sm my-1 me-sm-2 w-auto" id="band">
                 <option value="All"><?php echo lang('general_word_all')?></option>
                 <?php foreach($bands as $band) {
                     echo '<option value="'.$band.'"';
@@ -60,7 +63,7 @@
             </select>
             <?php if (count($sats_available) != 0) { ?>
                 <label class="my-1 me-2" for="distplot_sats"><?php echo lang('gridsquares_sat'); ?></label>
-                <select class="form-select my-1 me-sm-2 w-auto"  id="sats" <?php if ($user_default_band != "SAT") { ?>disabled<?php } ?>>
+                <select class="form-select form-select-sm my-1 me-sm-2 w-auto" id="sats" <?php if ($user_default_band != "SAT") { ?>disabled<?php } ?>>
                     <option value="All"><?php echo lang('general_word_all')?></option>
                     <?php foreach($sats_available as $sat) {
                         echo '<option value="' . $sat . '"' . '>' . $sat . '</option>'."\n";
@@ -69,8 +72,17 @@
             <?php } else { ?>
                 <input id="sats" type="hidden" value="All"></input>
             <?php } ?>
+            <div id="satellite-filter-group" class="d-none align-items-center flex-wrap gap-2">
+                <label class="my-1 me-2" for="sat_orbit">Orbit</label>
+                <select class="form-select form-select-sm my-1 me-sm-2 w-auto" id="sat_orbit">
+                    <option value="All">All</option>
+                    <option value="LEO">LEO</option>
+                    <option value="MEO">MEO</option>
+                    <option value="GEO">GEO</option>
+                </select>
+            </div>
 			<label class="my-1 me-2" for="mode"><?php echo lang('gridsquares_mode'); ?></label>
-            <select class="form-select my-1 me-sm-2 w-auto"  id="mode">
+            <select class="form-select form-select-sm my-1 me-sm-2 w-auto" id="mode">
 			<option value="All"><?php echo lang('general_word_all')?></option>
                     <?php
                     foreach($modes as $mode){
@@ -81,44 +93,47 @@
                     ?>
             </select>
 			<label class="my-1 me-2"><?php echo lang('gridsquares_confirmation'); ?></label>
-                <div>
-                    <div class="form-check-inline">
-                    <?php echo '<input class="form-check-input" type="checkbox" name="qsl" id="qsl"';
-                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
-                            echo ' checked' ;
-                        }
-                        echo '>'; ?>
-                        <label class="form-check-label" for="qsl">QSL</label>
-                    </div>
-                    <div class="form-check-inline">
-                    <?php echo '<input class="form-check-input" type="checkbox" name="lotw" id="lotw"';
-                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
-                            echo ' checked' ;
-                        }
-                        echo '>'; ?>
-                        <label class="form-check-label" for="lotw">LoTW</label>
-                    </div>
-                    <div class="form-check-inline">
-                    <?php echo '<input class="form-check-input" type="checkbox" name="eqsl" id="eqsl"';
-                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
-                            echo ' checked' ;
-                        }
-                        echo '>'; ?>
-                        <label class="form-check-label" for="eqsl">eQSL</label>
-                    </div>
-                    <div class="form-check-inline">
-                    <?php echo '<input class="form-check-input" type="checkbox" name="qrz" id="qrz"';
-                        if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
-                            echo ' checked' ;
-                        }
-                        echo '>'; ?>
-                        <label class="form-check-label" for="qrz">QRZ.com</label>
-                    </div>
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <div class="form-check form-check-inline mb-0">
+                <?php echo '<input class="form-check-input" type="checkbox" name="qsl" id="qsl"';
+                    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Q') !== false) {
+                        echo ' checked' ;
+                    }
+                    echo '>'; ?>
+                    <label class="form-check-label" for="qsl">QSL</label>
                 </div>
+                <div class="form-check form-check-inline mb-0">
+                <?php echo '<input class="form-check-input" type="checkbox" name="lotw" id="lotw"';
+                    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'L') !== false) {
+                        echo ' checked' ;
+                    }
+                    echo '>'; ?>
+                    <label class="form-check-label" for="lotw">LoTW</label>
+                </div>
+                <div class="form-check form-check-inline mb-0">
+                <?php echo '<input class="form-check-input" type="checkbox" name="eqsl" id="eqsl"';
+                    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'E') !== false) {
+                        echo ' checked' ;
+                    }
+                    echo '>'; ?>
+                    <label class="form-check-label" for="eqsl">eQSL</label>
+                </div>
+                <div class="form-check form-check-inline mb-0">
+                <?php echo '<input class="form-check-input" type="checkbox" name="qrz" id="qrz"';
+                    if (isset($user_default_confirmation) && strpos($user_default_confirmation, 'Z') !== false) {
+                        echo ' checked' ;
+                    }
+                    echo '>'; ?>
+                    <label class="form-check-label" for="qrz">QRZ.com</label>
+                </div>
+            </div>
 
-            <button id="plot" type="button" name="plot" class="btn btn-primary me-1 ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form,<?php echo $visitor == true ? "true" : "false"; ?>)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
-			<button id="clear" type="button" name="clear" class="btn btn-primary me-1 ld-ext-right ld-ext-right-clear" onclick="clearMarkers()"><?php echo lang('gridsquares_button_clear_markers'); ?><div class="ld ld-ring ld-spin"></div></button>
-</form>
+            <div class="ms-auto d-flex gap-2">
+                <button id="plot" type="button" name="plot" class="btn btn-primary btn-sm ld-ext-right ld-ext-right-plot" onclick="gridPlot(this.form,<?php echo $visitor == true ? "true" : "false"; ?>)"><?php echo lang('gridsquares_button_plot'); ?><div class="ld ld-ring ld-spin"></div></button>
+			        <button id="clear" type="button" name="clear" class="btn btn-outline-secondary btn-sm ld-ext-right ld-ext-right-clear" onclick="clearMarkers()"><?php echo lang('gridsquares_button_clear_markers'); ?><div class="ld ld-ring ld-spin"></div></button>
+            </div>
+        </form>
+    </div>
 
 		<?php if($this->session->flashdata('message')) { ?>
 			<!-- Display Message -->

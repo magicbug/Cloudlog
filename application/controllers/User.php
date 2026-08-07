@@ -179,6 +179,7 @@ class User extends CI_Controller
 				$data['user_show_profile_image'] = $this->input->post('user_show_profile_image');
 				$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 				$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
+				$data['user_oscarwatch_status_upload'] = $this->input->post('user_oscarwatch_status_upload');
 				$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
 				$data['user_default_band'] = $this->input->post('user_default_band');
 				$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '') . ($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '') . ($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '') . ($this->input->post('user_default_confirmation_qrz') !== null ? 'Z' : '');
@@ -187,6 +188,7 @@ class User extends CI_Controller
 				$data['user_quicklog_enter'] = $this->input->post('user_quicklog_enter');
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
 				$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
+				$data['user_oscarwatch_token'] = $this->input->post('user_oscarwatch_token');
 				$data['user_winkey'] = $this->input->post('user_winkey');
 				$data['user_winkey_websocket'] = $this->input->post('user_winkey_websocket');
 				$data['user_remote_operation'] = $this->input->post('user_remote_operation');
@@ -468,7 +470,7 @@ class User extends CI_Controller
 			if ($this->input->post('user_eqsl_password')) {
 				$data['user_eqsl_password'] = $this->input->post('user_eqsl_password', true);
 			} else {
-				$data['user_eqsl_password'] = $q->user_eqsl_password;
+				$data['user_eqsl_password'] = null;
 			}
 
 			if ($this->input->post('user_measurement_base')) {
@@ -673,7 +675,11 @@ class User extends CI_Controller
 
 
 			$this->load->model('user_options_model');
-			$hamsat_user_object = $this->user_options_model->get_options('hamsat')->result();
+			$edited_user_id = $q->user_id ?? $this->session->userdata('user_id');
+			$hamsat_user_object = $this->user_options_model->get_options('hamsat', null, $edited_user_id)->result();
+			$oscarwatch_token_object = $this->user_options_model->get_options('oscarwatch', array('option_name' => 'api_token', 'option_key' => 'value'), $edited_user_id)->result();
+			$oscarwatch_status_option = $this->user_options_model->get_options('oscarwatch', array('option_name' => 'status_upload', 'option_key' => 'enabled'), $edited_user_id)->row();
+			$oscarwatch_force_amsat_option = $this->user_options_model->get_options('oscarwatch', array('option_name' => 'force_amsat', 'option_key' => 'enabled'), $edited_user_id)->row();
 
 			if ($this->input->post('user_hamsat_key', true)) {
 				$data['user_hamsat_key'] = $this->input->post('user_hamsat_key', true);
@@ -694,6 +700,28 @@ class User extends CI_Controller
 				} else {
 					$data['user_hamsat_workable_only'] = "";
 				}
+			}
+
+			if ($this->input->post('user_oscarwatch_token', true)) {
+				$data['user_oscarwatch_token'] = $this->input->post('user_oscarwatch_token', true);
+			} else {
+				if (isset($oscarwatch_token_object[0]->option_value)) {
+					$data['user_oscarwatch_token'] = $oscarwatch_token_object[0]->option_value;
+				} else {
+					$data['user_oscarwatch_token'] = "";
+				}
+			}
+
+			if ($this->input->post('user_oscarwatch_status_upload') !== null) {
+				$data['user_oscarwatch_status_upload'] = $this->input->post('user_oscarwatch_status_upload', false);
+			} else {
+				$data['user_oscarwatch_status_upload'] = isset($oscarwatch_status_option->option_value) ? $oscarwatch_status_option->option_value : '0';
+			}
+
+			if ($this->input->post('user_force_amsat_status_upload') !== null) {
+				$data['user_force_amsat_status_upload'] = $this->input->post('user_force_amsat_status_upload', false);
+			} else {
+				$data['user_force_amsat_status_upload'] = isset($oscarwatch_force_amsat_option->option_value) ? $oscarwatch_force_amsat_option->option_value : '0';
 			}
 
 			// Set defaults
@@ -848,6 +876,27 @@ class User extends CI_Controller
 			}
 			if (!isset($post_data['user_remote_operation'])) {
 				$post_data['user_remote_operation'] = '0';
+			}
+			if (!isset($post_data['user_amsat_status_upload'])) {
+				$post_data['user_amsat_status_upload'] = '0';
+			}
+			if (!isset($post_data['user_oscarwatch_status_upload'])) {
+				$post_data['user_oscarwatch_status_upload'] = '0';
+			}
+			if (!isset($post_data['user_force_amsat_status_upload'])) {
+				$post_data['user_force_amsat_status_upload'] = '0';
+			}
+
+			$oscarwatch_enabled = ((string)$post_data['user_oscarwatch_status_upload'] === '1');
+			$force_amsat_enabled = ((string)$post_data['user_force_amsat_status_upload'] === '1');
+			$oscarwatch_notice_message = '';
+			if ($oscarwatch_enabled) {
+				if (!$force_amsat_enabled) {
+					$post_data['user_amsat_status_upload'] = '0';
+					$oscarwatch_notice_message = 'AMSAT Status Upload in Cloudlog was disabled because OscarWatch Status Upload is enabled. OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+				} else {
+					$oscarwatch_notice_message = 'OscarWatch Status Upload is enabled and AMSAT Status Upload remains enabled by your override. OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+				}
 			}
 			switch ($this->user_model->edit($post_data)) {
 				// Check for errors
@@ -1023,12 +1072,18 @@ class User extends CI_Controller
 							? 'Remote Operation enabled.'
 							: 'Remote Operation disabled.';
 						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited') . ' ' . $remote_operation_status_message);
+						if ($oscarwatch_notice_message !== '') {
+							$this->session->set_flashdata('notice', $oscarwatch_notice_message);
+						}
 						if ($this->session->userdata('user_id') == $this->input->post('id', true)) {
 							$this->user_model->update_session($this->input->post('id', true));
 						}
 						redirect('user/edit/' . $this->uri->segment(3));
 					} else {
 						$this->session->set_flashdata('success', lang('account_user') . ' ' . $this->input->post('user_name', true) . ' ' . lang('account_word_edited'));
+						if ($oscarwatch_notice_message !== '') {
+							$this->session->set_flashdata('notice', $oscarwatch_notice_message);
+						}
 						redirect('user');
 					}
 					return;
@@ -1059,6 +1114,8 @@ class User extends CI_Controller
 			$data['user_show_profile_image'] = $this->input->post('user_show_profile_image');
 			$data['user_previous_qsl_type'] = $this->input->post('user_previous_qsl_type');
 			$data['user_amsat_status_upload'] = $this->input->post('user_amsat_status_upload');
+			$data['user_oscarwatch_status_upload'] = $this->input->post('user_oscarwatch_status_upload');
+			$data['user_force_amsat_status_upload'] = $this->input->post('user_force_amsat_status_upload');
 			$data['user_mastodon_url'] = $this->input->post('user_mastodon_url');
 			$data['user_default_band'] = $this->input->post('user_default_band');
 			$data['user_default_confirmation'] = ($this->input->post('user_default_confirmation_qsl') !== null ? 'Q' : '') . ($this->input->post('user_default_confirmation_lotw') !== null ? 'L' : '') . ($this->input->post('user_default_confirmation_eqsl') !== null ? 'E' : '') . ($this->input->post('user_default_confirmation_qrz') !== null ? 'Z' : '');
@@ -1070,12 +1127,77 @@ class User extends CI_Controller
 			$data['user_winkey_websocket'] = $this->input->post('user_winkey_websocket');
 			$data['user_hamsat_key'] = $this->input->post('user_hamsat_key');
 			$data['user_hamsat_workable_only'] = $this->input->post('user_hamsat_workable_only');
+			$data['user_oscarwatch_token'] = $this->input->post('user_oscarwatch_token');
 
 
 
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
 		}
+	}
+
+	public function validate_oscarwatch_token()
+	{
+		$this->load->model('user_model');
+		if (!$this->user_model->authorize(2)) {
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(403)
+				->set_output(json_encode(array('ok' => false, 'message' => 'Not authorized')));
+		}
+
+		$token = trim((string)$this->input->post('token', true));
+		if ($token === '') {
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(400)
+				->set_output(json_encode(array('ok' => false, 'message' => 'Please enter an OscarWatch API token first.')));
+		}
+
+		if (!function_exists('curl_init')) {
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(500)
+				->set_output(json_encode(array('ok' => false, 'message' => 'Token validation is unavailable because cURL is not installed.')));
+		}
+
+		$request = curl_init('https://oscarwatch.org/api/v1/me');
+		curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($request, CURLOPT_TIMEOUT, 10);
+		curl_setopt($request, CURLOPT_HTTPHEADER, array(
+			'Authorization: Bearer ' . $token,
+			'Accept: application/json',
+		));
+
+		$response = curl_exec($request);
+		$http_code = curl_getinfo($request, CURLINFO_HTTP_CODE);
+		$curl_error = curl_errno($request) ? curl_error($request) : '';
+		curl_close($request);
+
+		if ($curl_error !== '') {
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(502)
+				->set_output(json_encode(array('ok' => false, 'message' => 'Could not reach OscarWatch: ' . $curl_error)));
+		}
+
+		if ($http_code === 200) {
+			return $this->output
+				->set_content_type('application/json')
+				->set_output(json_encode(array('ok' => true, 'message' => 'OscarWatch token is valid.')));
+		}
+
+		if ($http_code === 401) {
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(401)
+				->set_output(json_encode(array('ok' => false, 'message' => 'OscarWatch token is invalid.')));
+		}
+
+		return $this->output
+			->set_content_type('application/json')
+			->set_status_header(400)
+			->set_output(json_encode(array('ok' => false, 'message' => 'OscarWatch validation failed (HTTP ' . $http_code . ').')));
 	}
 
 	function profile()

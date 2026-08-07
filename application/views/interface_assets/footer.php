@@ -37,7 +37,7 @@
 <script src="<?php echo base_url(); ?>assets/js/jquery.fancybox.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <?php
-$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'activators', 'activatorsmap'], true)
+$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'search', 'activators', 'activatorsmap'], true)
     || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'waja', 'was', 'sota', 'pota'], true));
 ?>
 <?php if ($load_leaflet) { ?>
@@ -290,7 +290,92 @@ $(document).ready(function() {
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/query-builder.standalone.min.js"></script>
 
     <script type="text/javascript">
+        var ADVANCED_SEARCH_RULES_KEY = 'cloudlog.advancedSearch.rules';
         $(".search-results-box").hide();
+
+        function getSavedAdvancedRules() {
+            try {
+                var saved = localStorage.getItem(ADVANCED_SEARCH_RULES_KEY);
+                if (!saved) {
+                    return null;
+                }
+
+                var parsed = JSON.parse(saved);
+                return $.isEmptyObject(parsed) ? null : parsed;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function saveAdvancedRules(rules) {
+            if ($.isEmptyObject(rules)) {
+                localStorage.removeItem(ADVANCED_SEARCH_RULES_KEY);
+                return;
+            }
+            localStorage.setItem(ADVANCED_SEARCH_RULES_KEY, JSON.stringify(rules));
+        }
+
+        function clearAdvancedResults() {
+            $('.card-body.result').html('<div class="text-muted p-2" id="advanced-results-empty">Run a query to see matching QSOs.</div>');
+            $('.search-results-box').hide();
+            $('#advanced-results-count').text('0 QSOs');
+            $('#advanced-results-mode').text('Filtered query');
+            $('.exportbutton').html('<button class="btn btn-sm btn-primary" id="btn-export" onclick="export_search_result();">Export to ADIF</button>');
+        }
+
+        function initAdvancedSearchDataTable() {
+            var table = $('.card-body.result table').first();
+            if (table.length === 0 || !$.fn.DataTable) {
+                return;
+            }
+
+            var hasTimeColumn = table.find('thead th').length > 1;
+            var defaultOrder = hasTimeColumn ? [[0, 'desc'], [1, 'desc']] : [[0, 'desc']];
+
+            table.DataTable({
+                destroy: true,
+                paging: true,
+                pageLength: 25,
+                lengthChange: true,
+                info: true,
+                responsive: false,
+                ordering: true,
+                order: defaultOrder,
+                scrollX: true,
+                searching: false,
+                language: {
+                    url: getDataTablesLanguageUrl(),
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv'
+                ]
+            });
+
+            if (isDarkModeTheme()) {
+                $('.buttons-csv').css('color', 'white');
+            }
+        }
+
+        function renderAdvancedSearchResults(html, modeLabel) {
+            $('.card-body.result').empty().append(html);
+            $('.search-results-box').show();
+
+            initAdvancedSearchDataTable();
+            $('[data-bs-toggle="tooltip"]').tooltip();
+
+            var rows = $('.card-body.result tbody tr').length;
+            $('#advanced-results-count').text(rows + ' QSO' + (rows === 1 ? '' : 's'));
+            $('#advanced-results-mode').text(modeLabel || 'Filtered query');
+
+            if (rows === 0) {
+                $('.card-body.result').prepend('<div class="alert alert-info m-2">No QSOs matched your current filter.</div>');
+            }
+
+            $('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function() {
+                showQsoActionsMenu($(this).closest('.dropdown'));
+            });
+        }
 
         $('#builder').queryBuilder({
             filters: [
@@ -316,6 +401,27 @@ $(document).ready(function() {
                     <?php } ?>
                 <?php } ?>
             ]
+        });
+
+        var savedRules = getSavedAdvancedRules();
+        if (savedRules !== null) {
+            try {
+                $('#builder').queryBuilder('setRules', savedRules);
+                $('#btn-save').show();
+            } catch (e) {
+                localStorage.removeItem(ADVANCED_SEARCH_RULES_KEY);
+            }
+        }
+
+        $('#btn-reset').on('click', function() {
+            $('#builder').queryBuilder('reset');
+            localStorage.removeItem(ADVANCED_SEARCH_RULES_KEY);
+            clearAdvancedResults();
+            $('#btn-save').hide();
+        });
+
+        $('#btn-clear-advanced-results').on('click', function() {
+            clearAdvancedResults();
         });
 
 
@@ -438,31 +544,14 @@ $(document).ready(function() {
                 .done(function(data) {
 
                     $('.exportbutton').html('<button class="btn btn-sm btn-primary" onclick="export_stored_query(' + id + ')">Export to ADIF</button>');
-                    $('.card-body.result').empty();
-                    $(".search-results-box").show();
-
-                    $('.card-body.result').append(data);
-                    $('.table').DataTable({
-                        "pageLength": 25,
-                        responsive: false,
-                        ordering: false,
-                        "scrollY": "400px",
-                        "scrollCollapse": true,
-                        "paging": false,
-                        "scrollX": true,
-                        "language": {
-                            url: getDataTablesLanguageUrl(),
-                        },
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'csv'
-                        ]
-                    });
-                    // change color of csv-button if dark mode is chosen
-                    if (isDarkModeTheme()) {
-                        $(".buttons-csv").css("color", "white");
-                    }
-                    $('[data-bs-toggle="tooltip"]').tooltip();
+                    renderAdvancedSearchResults(data, 'Stored query');
+                })
+                .fail(function() {
+                    $('.card-body.result').html('<div class="alert alert-danger m-2">Unable to run stored query. Please try again.</div>');
+                    $('.search-results-box').show();
+                    $('#advanced-results-count').text('0 QSOs');
+                })
+                .always(function() {
                     $(".runbutton").removeClass('running');
                     $(".runbutton").prop('disabled', false);
                 });
@@ -565,38 +654,19 @@ $(document).ready(function() {
                     })
                     .done(function(data) {
                         $('.exportbutton').html('<button class="btn btn-sm btn-primary" onclick="export_search_result();">Export to ADIF</button>');
+                        saveAdvancedRules(result);
 
-                        $('.card-body.result').empty();
-                        $(".search-results-box").show();
-
-                        $('.card-body.result').append(data);
-                        $('.table').DataTable({
-                            "pageLength": 25,
-                            responsive: false,
-                            ordering: false,
-                            "scrollY": "400px",
-                            "scrollCollapse": true,
-                            "paging": false,
-                            "scrollX": true,
-                            "language": {
-                                url: getDataTablesLanguageUrl(),
-                            },
-                            dom: 'Bfrtip',
-                            buttons: [
-                                'csv'
-                            ]
-                        });
-                        // change color of csv-button if dark mode is chosen
-                        if (isDarkModeTheme()) {
-                            $(".buttons-csv").css("color", "white");
-                        }
-                        $('[data-bs-toggle="tooltip"]').tooltip();
+                        renderAdvancedSearchResults(data, 'Filtered query');
+                        $("#btn-save").show();
+                    })
+                    .fail(function() {
+                        $('.card-body.result').html('<div class="alert alert-danger m-2">Search failed. Please try again.</div>');
+                        $('.search-results-box').show();
+                        $('#advanced-results-count').text('0 QSOs');
+                    })
+                    .always(function() {
                         $(".searchbutton").removeClass('running');
                         $(".searchbutton").prop('disabled', false);
-                        $("#btn-save").show();
-                        $('.table-responsive .dropdown-toggle').off('mouseenter').on('mouseenter', function() {
-                            showQsoActionsMenu($(this).closest('.dropdown'));
-                        });
                     });
             } else {
                 BootstrapDialog.show({
@@ -1097,10 +1167,196 @@ $(document).ready(function() {
 
 <?php if ($this->uri->segment(1) == "search") { ?>
     <script type="text/javascript">
-        i = 0;
+        var RECENT_SEARCHES_KEY = 'cloudlog.recentSearches';
+        var MAX_RECENT_SEARCHES = 8;
 
-        function findduplicates() {
-            event.preventDefault();
+        function preventEvent(eventObj) {
+            if (eventObj && typeof eventObj.preventDefault === 'function') {
+                eventObj.preventDefault();
+                return;
+            }
+
+            if (typeof window !== 'undefined' && window.event) {
+                window.event.preventDefault();
+            }
+        }
+
+        function normalizeSearchInput(value) {
+            return String(value || '').trim().toUpperCase();
+        }
+
+        function isExactMatchEnabled() {
+            return $('#exact_match').length > 0 && $('#exact_match').is(':checked');
+        }
+
+        function buildSearchResultUrl(callsign, exactMatch) {
+            var url = "logbook/search_result/" + encodeURI(callsign.replace(/Ø/g, '0'));
+            if (exactMatch) {
+                url += '?exact=1';
+            }
+            return url;
+        }
+
+        function updateSearchUrl(callsign, exactMatch) {
+            if (!window.history || typeof window.history.replaceState !== 'function') {
+                return;
+            }
+
+            var searchUrl = base_url + 'index.php/search';
+            if (callsign !== '') {
+                searchUrl += '?callsign=' + encodeURIComponent(callsign);
+                if (exactMatch) {
+                    searchUrl += '&exact=1';
+                }
+            }
+            window.history.replaceState({}, document.title, searchUrl);
+        }
+
+        function getRecentSearches() {
+            try {
+                var parsed = JSON.parse(localStorage.getItem(RECENT_SEARCHES_KEY) || '[]');
+                if (!Array.isArray(parsed)) {
+                    return [];
+                }
+                return parsed;
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function setRecentSearches(items) {
+            localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(items));
+        }
+
+        function rememberSearch(callsign, exactMatch) {
+            var normalizedCallsign = normalizeSearchInput(callsign);
+            if (normalizedCallsign === '') {
+                return;
+            }
+
+            var recent = getRecentSearches();
+            var entryKey = normalizedCallsign + '|' + (exactMatch ? '1' : '0');
+            var filtered = recent.filter(function(item) {
+                return item.key !== entryKey;
+            });
+
+            filtered.unshift({
+                key: entryKey,
+                callsign: normalizedCallsign,
+                exact: exactMatch
+            });
+
+            setRecentSearches(filtered.slice(0, MAX_RECENT_SEARCHES));
+            renderRecentSearches();
+        }
+
+        function renderRecentSearches() {
+            var wrapper = $('#recent_searches_wrapper');
+            var container = $('#recent_searches');
+
+            if (wrapper.length === 0 || container.length === 0) {
+                return;
+            }
+
+            var recent = getRecentSearches();
+            if (recent.length === 0) {
+                wrapper.hide();
+                container.empty();
+                return;
+            }
+
+            wrapper.show();
+            container.empty();
+
+            recent.forEach(function(item) {
+                var label = item.callsign + (item.exact ? ' (exact)' : '');
+                var chip = $('<button type="button" class="btn btn-sm btn-outline-secondary me-1 mb-1"></button>')
+                    .text(label)
+                    .attr('data-callsign', item.callsign)
+                    .attr('data-exact', item.exact ? '1' : '0');
+                container.append(chip);
+            });
+        }
+
+        function initSearchResultsDataTable() {
+            var table = $('#partial_view table.contacttable, #partial_view #search-results-table').first();
+            if (table.length === 0) {
+                return;
+            }
+
+            if (!$.fn.DataTable) {
+                return;
+            }
+
+            try {
+                table.DataTable({
+                    destroy: true,
+                    paging: true,
+                    pageLength: 25,
+                    lengthChange: true,
+                    info: true,
+                    responsive: false,
+                    ordering: true,
+                    order: [],
+                    scrollX: true,
+                    searching: false,
+                    language: {
+                        url: getDataTablesLanguageUrl(),
+                    }
+                });
+            } catch (error) {
+                console.error('Search results DataTable failed to initialize:', error);
+            }
+        }
+
+        function loadSearchResult(callsign, syncUrl) {
+            var normalizedCallsign = normalizeSearchInput(callsign);
+            var exactMatch = isExactMatchEnabled();
+
+            $('#results_mode').text(exactMatch ? 'Exact match' : 'Partial match');
+
+            if (normalizedCallsign === '') {
+                $('#partial_view').empty();
+                $('#results_count').text('0 QSOs');
+                $('#results_card').hide();
+                if (syncUrl) {
+                    updateSearchUrl('', exactMatch);
+                }
+                return;
+            }
+
+            if (!exactMatch && normalizedCallsign.length < 2) {
+                $('#partial_view').html('<div class="alert alert-warning mt-2">Please enter at least 2 characters, or enable exact callsign match.</div>');
+                $('#results_count').text('0 QSOs');
+                $('#results_card').show();
+                if (syncUrl) {
+                    updateSearchUrl(normalizedCallsign, exactMatch);
+                }
+                return;
+            }
+
+            $('#callsign').val(normalizedCallsign);
+            $('#results_card').show();
+            $('#results_count').text('Searching...');
+            $('#partial_view').html('<div class="p-3 text-muted">Searching...</div>');
+            $('#partial_view').load(buildSearchResultUrl(normalizedCallsign, exactMatch), function() {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+
+                initSearchResultsDataTable();
+
+                var rows = $('#partial_view tbody tr').length;
+                $('#results_count').text(rows + ' QSO' + (rows === 1 ? '' : 's'));
+            });
+
+            rememberSearch(normalizedCallsign, exactMatch);
+
+            if (syncUrl) {
+                updateSearchUrl(normalizedCallsign, exactMatch);
+            }
+        }
+
+        function findduplicates(eventObj) {
+            preventEvent(eventObj);
             $('#partial_view').load(base_url + "index.php/logbook/search_duplicates/" + $("#station_id").val(), function() {
                 $('.qsolist').DataTable({
                     "pageLength": 25,
@@ -1125,8 +1381,8 @@ $(document).ready(function() {
             });
         }
 
-        function findlotwunconfirmed() {
-            event.preventDefault();
+        function findlotwunconfirmed(eventObj) {
+            preventEvent(eventObj);
             $('#partial_view').load(base_url + "index.php/logbook/search_lotw_unconfirmed/" + $("#station_id").val(), function() {
                 $('.qsolist').DataTable({
                     "pageLength": 25,
@@ -1151,8 +1407,8 @@ $(document).ready(function() {
             });
         }
 
-        function findincorrectcqzones() {
-            event.preventDefault();
+        function findincorrectcqzones(eventObj) {
+            preventEvent(eventObj);
             $('#partial_view').load(base_url + "index.php/logbook/search_incorrect_cq_zones/" + $("#station_id").val(), function() {
                 $('.qsolist').DataTable({
                     "pageLength": 25,
@@ -1177,40 +1433,42 @@ $(document).ready(function() {
             });
         }
 
-        function searchButtonPress() {
-            event.preventDefault()
-            if ($('#callsign').val()) {
-                let fixedcall = $('#callsign').val();
-                $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {
-                    $('[data-bs-toggle="tooltip"]').tooltip()
-                });
-            }
+        function searchButtonPress(eventObj) {
+            preventEvent(eventObj);
+            loadSearchResult($('#callsign').val(), true);
         }
 
         $(document).ready(function() {
+            if ($('#callsign').length) {
+                renderRecentSearches();
 
-            <?php if ($this->input->post('callsign') != "") { ?>
-                $('#partial_view').load("logbook/search_result/<?php echo str_replace("Ø", "0", $this->input->post('callsign')); ?>", function() {
-                    $('[data-bs-toggle="tooltip"]').tooltip()
+                $('#search_box').on('submit', function(e) {
+                    searchButtonPress(e);
                 });
-            <?php } ?>
 
-            $($('#callsign')).on('keypress', function(e) {
-                if (e.which == 13) {
+                $('#recent_searches').on('click', 'button[data-callsign]', function() {
+                    var callsign = $(this).attr('data-callsign') || '';
+                    var exact = $(this).attr('data-exact') === '1';
 
-                    if ($('#callsign').val()) {
-                        let fixedcall = $('#callsign').val();
-                        $('#partial_view').load("logbook/search_result/" + fixedcall.replace('Ø', '0'), function() {
-                            $('[data-bs-toggle="tooltip"]').tooltip()
-                        });
+                    $('#callsign').val(callsign);
+                    if ($('#exact_match').length) {
+                        $('#exact_match').prop('checked', exact);
                     }
+                    loadSearchResult(callsign, true);
+                });
 
-                    event.preventDefault();
-                    return false;
+                $('#exact_match').on('change', function() {
+                    var currentCallsign = normalizeSearchInput($('#callsign').val());
+                    if (currentCallsign !== '') {
+                        loadSearchResult(currentCallsign, true);
+                    }
+                });
+
+                var initialSearch = normalizeSearchInput($('#callsign').val());
+                if (initialSearch !== '') {
+                    loadSearchResult(initialSearch, false);
                 }
-            });
-
-
+            }
         });
     </script>
 <?php } ?>

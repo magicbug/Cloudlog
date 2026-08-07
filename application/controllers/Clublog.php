@@ -50,7 +50,7 @@ class Clublog extends CI_Controller {
 
 		$this->load->model('clublog_model');
 
-		// Retrieve all station profiles for the user with their QSO counts
+		// Retrieve all station profiles for the user with Clublog upload enabled and their QSO counts
 		$station_profiles = $this->clublog_model->all_with_count($clean_userid);
 
 		if($station_profiles->num_rows()){
@@ -137,7 +137,7 @@ class Clublog extends CI_Controller {
 									$this->load->model('clublog_model');
 									echo "Clublog API access denied for ".$station_row->station_callsign."<br>";
 									log_message('error', 'Clublog API access denied for '.$station_row->station_callsign);
-									$this->clublog_model->reset_clublog_user_fields($station_row->user_id);
+									$this->clublog_model->reset_clublog_user_fields($station_row->user_id, true, 'Clublog batch upload failed with HTTP 403 for station ' . $station_row->station_callsign . '.');
 								}
 							}
 
@@ -153,11 +153,12 @@ class Clublog extends CI_Controller {
 					}
 				}
 
-					return $uploaded_for_user;
 			}
 
-				return false;
+			return $uploaded_for_user;
 		}
+
+		return false;
 	}
 
 	function markqso($station_id) {

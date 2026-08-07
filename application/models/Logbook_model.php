@@ -687,10 +687,16 @@ class Logbook_model extends CI_Model
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
+    if (is_array($call)) {
+      $call = array_values(array_filter(array_unique($call)));
+    } else {
+      $call = array($call);
+    }
+
     $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id');
     $this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $this->config->item('table_name') . '.COL_DXCC', 'left outer');
     $this->db->join('lotw_users lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left');
-    $this->db->where('COL_CALL', $call);
+    $this->db->where_in('COL_CALL', $call);
     if ($band != 'All') {
       if ($band == 'SAT') {
         $this->db->where('col_prop_mode', $band);
@@ -754,8 +760,13 @@ class Logbook_model extends CI_Model
       $this->clear_dashboard_cache($data['station_id']);
     }
 
-    if ($this->session->userdata('user_amsat_status_upload') && $data['COL_PROP_MODE'] == "SAT") {
+    if ($data['COL_PROP_MODE'] == "SAT") {
+      if ($this->session->userdata('user_amsat_status_upload')) {
       $this->upload_amsat_status($data);
+      }
+      if ($this->session->userdata('user_oscarwatch_status_upload')) {
+      $this->upload_oscarwatch_status($data);
+      }
     }
 
     $this->load->library('cloudlog_hooks');
@@ -794,7 +805,7 @@ class Logbook_model extends CI_Model
             // If Clublog responds with a 403, reset the user's credentials
             if (isset($clublog_result['http_code']) && $clublog_result['http_code'] == 403) {
               $CI->load->model('clublog_model');
-              $CI->clublog_model->reset_clublog_user_fields($clublog_creds->user_id);
+              $CI->clublog_model->reset_clublog_user_fields($clublog_creds->user_id, true, 'Clublog realtime upload failed with HTTP 403 for station ' . $data['COL_STATION_CALLSIGN'] . ' (QSO ID ' . $last_id . ').', true);
               log_message('error', 'Clublog API access denied - credentials reset for user ID: ' . $clublog_creds->user_id);
             }
           }
@@ -1302,6 +1313,191 @@ class Logbook_model extends CI_Model
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_exec($ch);
+  }
+
+  function upload_oscarwatch_status($data)
+  {
+    $this->load->model('user_options_model');
+    $token_option = $this->user_options_model->get_options('oscarwatch', array('option_name' => 'api_token', 'option_key' => 'value'))->row();
+    $token = trim((string)($token_option->option_value ?? ''));
+
+    if ($token === '') {
+      return;
+    }
+
+    $satellite = trim((string)($data['COL_SAT_NAME'] ?? ''));
+    if ($satellite === '') {
+      return;
+    }
+
+    $sat_mode = trim((string)($data['COL_SAT_MODE'] ?? ''));
+    if ($sat_mode === '') {
+      log_message('error', 'OscarWatch upload skipped: missing SAT mode for SAT QSO on ' . $satellite);
+      return;
+    }
+
+    $mode = $this->remap_oscarwatch_mode(
+      $satellite,
+      $sat_mode,
+      trim((string)($data['COL_BAND'] ?? '')),
+      trim((string)($data['COL_BAND_RX'] ?? ''))
+    );
+
+    if ($mode === '') {
+      log_message('error', 'OscarWatch upload skipped: could not map SAT mode "' . $sat_mode . '" for ' . $satellite);
+      return;
+    }
+
+    $observed_at = (string)($data['COL_TIME_ON'] ?? '');
+    if ($observed_at === '') {
+      return;
+    }
+
+    try {
+      $observed_dt = new DateTime($observed_at, new DateTimeZone('UTC'));
+      $observed_at_utc = $observed_dt->format('Y-m-d\\TH:i:s\\Z');
+    } catch (Exception $e) {
+      log_message('error', 'OscarWatch upload skipped: invalid observed time for SAT QSO - ' . $e->getMessage());
+      return;
+    }
+
+    $gridsquare = trim((string)($data['COL_MY_GRIDSQUARE'] ?? ''));
+    if ($gridsquare === '' && !empty($data['COL_MY_VUCC_GRIDS'])) {
+      $gridsquare_parts = explode(',', (string)$data['COL_MY_VUCC_GRIDS']);
+      $gridsquare = strtoupper(trim((string)($gridsquare_parts[0] ?? '')));
+    }
+
+    $payload = array(
+      'satellite' => $satellite,
+      'mode' => $mode,
+      'status' => 'on',
+      'observed_at' => $observed_at_utc,
+      'client' => 'Cloudlog/' . ($this->optionslib->get_option('version') ?? 'unknown'),
+    );
+
+    if ($gridsquare !== '') {
+      $payload['gridsquare'] = $gridsquare;
+    }
+
+    $request = curl_init('https://oscarwatch.org/api/v1/satellite-status/reports');
+    curl_setopt($request, CURLOPT_POST, true);
+    curl_setopt($request, CURLOPT_POSTFIELDS, json_encode($payload));
+    curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($request, CURLOPT_TIMEOUT, 10);
+    curl_setopt($request, CURLOPT_HTTPHEADER, array(
+      'Authorization: Bearer ' . $token,
+      'Accept: application/json',
+      'Content-Type: application/json',
+    ));
+
+    $response = curl_exec($request);
+    $http_code = curl_getinfo($request, CURLINFO_HTTP_CODE);
+
+    if (curl_errno($request)) {
+      log_message('error', 'OscarWatch upload failed (curl): ' . curl_error($request));
+      curl_close($request);
+      return;
+    }
+
+    curl_close($request);
+
+    if ($http_code !== 200 && $http_code !== 201) {
+      log_message('error', 'OscarWatch upload failed (HTTP ' . $http_code . '): ' . $response);
+    }
+  }
+
+  private function remap_oscarwatch_mode($satellite, $sat_mode, $band, $band_rx)
+  {
+    $satellite_normalized = strtoupper(trim((string)$satellite));
+    $sat_mode_normalized = strtoupper(trim((string)$sat_mode));
+    $band_normalized = strtolower(trim((string)$band));
+    $band_rx_normalized = strtolower(trim((string)$band_rx));
+
+    // AO-07 is commonly logged as direction shorthand; map to catalog Mode A/B.
+    if ($satellite_normalized === 'AO-07' || $satellite_normalized === 'AO-7') {
+      if ($band_normalized === '70cm' && $band_rx_normalized === '2m') {
+        return 'Mode B';
+      }
+      if ($band_normalized === '2m' && $band_rx_normalized === '10m') {
+        return 'Mode A';
+      }
+    }
+
+    if ($satellite_normalized === 'CSS' && $sat_mode_normalized === 'FM') {
+      if ($band_normalized === '70cm' && $band_rx_normalized === '2m') {
+        return 'Cross Band Repeater U/V';
+      }
+      if ($band_normalized === '2m' && $band_rx_normalized === '70cm') {
+        return 'Cross Band Repeater V/U';
+      }
+    }
+
+    $explicit_mode_map = array(
+      'AO-73' => array('U/V' => 'Voice U/V'),
+      'AO-91' => array('U/V' => 'Voice U/V'),
+      'RADFXSAT (FOX-1B)' => array('U/V' => 'Voice U/V'),
+      'SO-50' => array(
+        'FM' => 'FM VOICE',
+        'V/U' => 'FM VOICE',
+        'U/V' => 'FM VOICE',
+      ),
+      'SO-124' => array(
+        'FM' => 'FM Voice',
+        'V/U' => 'FM Voice',
+        'U/V' => 'FM Voice',
+      ),
+      'SO-125' => array(
+        'FM' => 'FM Voice',
+        'V/U' => 'FM Voice',
+        'U/V' => 'FM Voice',
+      ),
+      'PO-101' => array(
+        'FM' => 'FM',
+        'V/U' => 'FM',
+        'U/V' => 'FM',
+      ),
+      'FO-29' => array('V/U' => 'SSB Transponder'),
+      'RS-44' => array('V/U' => 'SSB Transponder'),
+      'JO-97' => array('U/V' => 'SSB Transponder'),
+      'MO-122' => array('V/U' => 'SSB Transponder'),
+      'TEN-KOH2' => array('V/U' => 'SSB Transponder'),
+      'CSS' => array(
+        'FM' => 'Cross Band Repeater V/U',
+        'V/U' => 'Cross Band Repeater V/U',
+        'U/V' => 'Cross Band Repeater U/V',
+      ),
+      'ISS' => array(
+        'FM' => 'Cross band repeater',
+        'V/U' => 'Cross band repeater',
+        'U/V' => 'Cross band repeater',
+        'V' => 'Packet',
+        'PKT' => 'Packet',
+        'APRS' => 'Packet',
+      ),
+      'ARISS' => array(
+        'FM' => 'Cross band repeater',
+        'V/U' => 'Cross band repeater',
+        'U/V' => 'Cross band repeater',
+        'V' => 'Packet',
+        'PKT' => 'Packet',
+        'APRS' => 'Packet',
+      ),
+    );
+
+    if (isset($explicit_mode_map[$satellite_normalized][$sat_mode_normalized])) {
+      return $explicit_mode_map[$satellite_normalized][$sat_mode_normalized];
+    }
+
+    // Common shorthand direction-only values.
+    if ($sat_mode_normalized === 'U/V') {
+      return 'Voice U/V';
+    }
+    if ($sat_mode_normalized === 'V/U') {
+      return 'Voice V/U';
+    }
+
+    // Keep known OscarWatch catalog labels intact.
+    return trim((string)$sat_mode);
   }
 
   /* Edit QSO */

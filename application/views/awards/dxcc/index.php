@@ -263,16 +263,28 @@
                     </div>
 
                     <div class="mb-3 row">
-                        <label class="col-md-2 control-label" for="band">Band</label>
-                        <div class="col-md-2">
-                            <select id="band2" name="band" class="form-select form-select-sm">
-                                <option value="All" <?php if ($this->input->post('band') == "All" || $this->input->method() !== 'post') echo ' selected'; ?> >Every band</option>
-                                <?php foreach($worked_bands as $band) {
-                                    echo '<option value="' . $band . '"';
-                                    if ($this->input->post('band') == $band) echo ' selected';
-                                    echo '>' . $band . '</option>'."\n";
-                                } ?>
-                            </select>
+                        <label class="col-md-2 control-label">Bands</label>
+                        <div class="col-md-10">
+                            <div class="mb-2">
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('hf')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects HF bands only (160m to 10m)">HF Only</button>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('vhfuhf')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects all non-HF bands (VHF/UHF and above)">VHF/UHF+</button>
+                                <?php if (in_array('SAT', $worked_bands, true)) { ?>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('sat')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects SAT entries only">SAT Only</button>
+                                <?php } ?>
+                                <?php if (in_array('EME', $worked_bands, true)) { ?>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('eme')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects EME entries only">EME Only</button>
+                                <?php } ?>
+                                <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="setBandGroup('all')">All Bands</button>
+                                <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="setBandGroup('none')">Clear Bands</button>
+                            </div>
+                            <?php foreach($worked_bands as $band) {
+                                $bandId = 'band_' . preg_replace('/[^A-Za-z0-9]+/', '_', $band);
+                            ?>
+                            <div class="form-check form-check-inline mb-1">
+                                <input class="form-check-input" type="checkbox" name="bands[]" id="<?php echo $bandId; ?>" value="<?php echo $band; ?>" <?php if ($this->input->method() !== 'post' || in_array($band, $bands)) echo ' checked="checked"'; ?> >
+                                <label class="form-check-label" for="<?php echo $bandId; ?>"><?php echo $band; ?></label>
+                            </div>
+                            <?php } ?>
                         </div>
                     </div>
 
@@ -280,7 +292,7 @@
                         <label class="col-md-2 control-label" for="mode">Mode</label>
                         <div class="col-md-2">
                         <select id="mode" name="mode" class="form-select form-select-sm">
-                            <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'mode') echo ' selected'; ?>>All</option>
+                            <option value="All" <?php if ($this->input->post('mode') == "All" || $this->input->method() !== 'post') echo ' selected'; ?>>All</option>
                             <?php
                             foreach($modes->result() as $mode){
                                 if ($mode->submode == null) {
@@ -566,6 +578,10 @@
 let currentSort = { column: null, direction: 'asc' };
 let currentModalType = 'qso'; // 'qso' or 'continent'
 
+document.querySelectorAll('[data-dxcc-band-tooltip="1"]').forEach(el => {
+    new bootstrap.Tooltip(el);
+});
+
 // Table sorting functionality
 document.querySelectorAll('.sortable').forEach(header => {
     header.addEventListener('click', function() {
@@ -681,8 +697,52 @@ function applyPreset(preset) {
     }
 }
 
+function setBandGroup(group) {
+    const hfBands = ['160m', '80m', '60m', '40m', '30m', '20m', '17m', '15m', '12m', '10m'];
+    const bandCheckboxes = document.querySelectorAll('input[name="bands[]"]');
+
+    if (group === 'all') {
+        bandCheckboxes.forEach(cb => cb.checked = true);
+        return;
+    }
+
+    if (group === 'none') {
+        bandCheckboxes.forEach(cb => cb.checked = false);
+        return;
+    }
+
+    if (group === 'hf') {
+        bandCheckboxes.forEach(cb => {
+            cb.checked = hfBands.includes(cb.value);
+        });
+        return;
+    }
+
+    if (group === 'vhfuhf') {
+        bandCheckboxes.forEach(cb => {
+            cb.checked = !hfBands.includes(cb.value);
+        });
+        return;
+    }
+
+    if (group === 'sat') {
+        bandCheckboxes.forEach(cb => {
+            cb.checked = cb.value === 'SAT';
+        });
+        return;
+    }
+
+    if (group === 'eme') {
+        bandCheckboxes.forEach(cb => {
+            cb.checked = cb.value === 'EME';
+        });
+    }
+}
+
 function resetFilters() {
-    document.getElementById('dxccForm').reset();
+    const form = document.getElementById('dxccForm');
+    form.reset();
+    form.querySelectorAll('input[name="bands[]"]').forEach(cb => cb.checked = true);
 }
 
 // View QSOs for specific DXCC filtered by status

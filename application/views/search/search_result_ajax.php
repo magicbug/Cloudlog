@@ -160,7 +160,7 @@ function echo_table_col($row, $name)
 }
 ?>
 <div class="table-responsive">
-    <table style="width:100%" class="table table-sm tablewas table-bordered table-hover table-striped table-condensed text-center">
+    <table id="search-results-table" style="width:100%" class="table table-sm tablewas table-bordered table-hover table-striped table-condensed text-center">
         <thead>
             <tr class="titles">
                 <th><?php echo lang('general_word_date'); ?></th>

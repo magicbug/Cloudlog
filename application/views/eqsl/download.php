@@ -12,6 +12,9 @@
         <a class="nav-link" href="<?php echo site_url('eqsl/Export');?>">Upload QSOs</a>
       </li>
 	  <li class="nav-item">
+				<a class="nav-link" href="<?php echo site_url('eqsl/mappings');?>">Mappings</a>
+			</li>
+	  <li class="nav-item">
         <a class="nav-link" href="<?php echo site_url('eqsl/tools');?>">Tools</a>
       </li>
       <li class="nav-item">
@@ -22,6 +25,16 @@
 
   <div class="card-body">
   <?php $this->load->view('layout/messages'); ?>
+
+<?php if (!empty($eqsl_mapping_mode)) { ?>
+		<div class="alert alert-info" role="alert">
+			Using mapping mode with <?php echo (int) ($eqsl_mappings_count ?? 0); ?> active mapping(s). Card downloads are filtered by mapped stations.
+		</div>
+<?php } else { ?>
+		<div class="alert alert-warning" role="alert">
+			Using legacy fallback mode. Card downloads are filtered by your active logbook station links.
+		</div>
+<?php } ?>
 
 <?php
    if (! empty($qslsnotdownloaded->result())) {

@@ -198,18 +198,50 @@ class DXCC extends CI_Model {
 	}
 
 	function addBandToQuery($band) {
-        $sql = '';
-        if ($band != 'All') {
+		$sql = '';
+		$propModeBands = array('SAT', 'EME');
+
+		if (is_array($band)) {
+			$selectedBands = array_values(array_unique(array_filter($band, function ($value) {
+				return $value !== NULL && $value !== '';
+			})));
+
+			if (count($selectedBands) === 0) {
+				return ' and 1 = 0';
+			}
+
+			$selectedPropModes = array_values(array_intersect($selectedBands, $propModeBands));
+			$terrestrialBands = array_values(array_diff($selectedBands, $propModeBands));
+			$hasPropModes = count($selectedPropModes) > 0;
+			$propModesList = "'" . implode("','", array_map(array($this->db, 'escape_str'), $selectedPropModes)) . "'";
+
+			if ($hasPropModes && count($terrestrialBands) > 0) {
+				$bandslots_list = "'" . implode("','", array_map(array($this->db, 'escape_str'), $terrestrialBands)) . "'";
+				$sql .= " and ((col_prop_mode in (" . $propModesList . ")) or (col_prop_mode not in ('SAT', 'EME') and col_band in (" . $bandslots_list . ")))";
+			} else if ($hasPropModes) {
+				$sql .= " and col_prop_mode in (" . $propModesList . ")";
+			} else if (count($terrestrialBands) > 0) {
+				$bandslots_list = "'" . implode("','", array_map(array($this->db, 'escape_str'), $terrestrialBands)) . "'";
+				$sql .= " and col_prop_mode not in ('SAT', 'EME')";
+				$sql .= " and col_band in (" . $bandslots_list . ")";
+			} else {
+				$sql .= ' and 1 = 0';
+			}
+
+			return $sql;
+		}
+
+		if ($band != 'All') {
 			$safeBand = $this->db->escape_str($band);
-            if ($band == 'SAT') {
+			if (in_array($band, $propModeBands, true)) {
 				$sql .= " and col_prop_mode ='" . $safeBand . "'";
-            } else {
-                $sql .= " and col_prop_mode !='SAT'";
+			} else {
+				$sql .= " and col_prop_mode not in ('SAT', 'EME')";
 				$sql .= " and col_band ='" . $safeBand . "'";
-            }
-        }
-        return $sql;
-    }
+			}
+		}
+		return $sql;
+	}
 
 	function addModeToQuery($mode) {
 		if ($mode == 'All') {
@@ -443,7 +475,9 @@ class DXCC extends CI_Model {
 
 		$sql .= " where station_id in (" . $location_list . ") and col_dxcc > 0";
 
-		if ($band == 'SAT') {
+		if (is_array($band)) {
+			$sql .= $this->addBandToQuery($band);
+		} else if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
 		} else if ($band == 'All') {
 			$this->load->model('bands');
@@ -479,7 +513,9 @@ class DXCC extends CI_Model {
 
 		$sql .= " where station_id in (" . $location_list . ")";
 
-		if ($band == 'SAT') {
+		if (is_array($band)) {
+			$sql .= $this->addBandToQuery($band);
+		} else if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
 		} else if ($band == 'All') {
 			$this->load->model('bands');

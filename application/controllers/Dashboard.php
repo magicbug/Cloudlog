@@ -76,6 +76,12 @@ class Dashboard extends CI_Controller
 		$data['locationCount'] = $setup_counts['location_count'];
 
 		$data['current_active'] = $this->stations->find_active();
+		$data['clublog_cron_station_warning'] = false;
+		$this->load->model('clublog_model');
+		$user_id = $this->session->userdata('user_id');
+		if (!empty($user_id)) {
+			$data['clublog_cron_station_warning'] = $this->clublog_model->user_needs_clublogcron_station_warning($user_id);
+		}
 
 		$setup_required = false;
 

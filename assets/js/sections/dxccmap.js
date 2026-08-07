@@ -1,18 +1,41 @@
 var osmUrl = $('#dxccmapjs').attr("tileUrl");
 
+function getSelectedDxccBands() {
+    const selectedBands = [];
+    $('input[name="bands[]"]:checked').each(function() {
+        selectedBands.push($(this).val());
+    });
+    return selectedBands;
+}
+
+function getPrimaryDxccBand() {
+    const selectedBands = getSelectedDxccBands();
+    if (selectedBands.length === 1) {
+        return selectedBands[0];
+    }
+    return 'All';
+}
+
 function load_dxcc_map() {
     $('.nav-tabs a[href="#dxccmaptab"]').tab('show');
+
+    const worked = $('#worked').prop('checked');
+    const confirmed = $('#confirmed').prop('checked');
+    const notworked = $('#notworked').prop('checked');
+
     $.ajax({
         url: base_url + 'index.php/awards/dxcc_map',
         type: 'post',
         data: {
-            band: $('#band2').val(),
+            bands: getSelectedDxccBands(),
             mode: $('#mode').val(),
-            worked: +$('#worked').prop('checked'),
-            confirmed: +$('#confirmed').prop('checked'),
-            notworked: +$('#notworked').prop('checked'),
+            year: $('#year').val(),
+            worked: +worked,
+            confirmed: +confirmed,
+            notworked: +notworked,
             qsl: +$('#qsl').prop('checked'),
             lotw: +$('#lotw').prop('checked'),
+            eqsl: +$('#eqsl').prop('checked'),
             includedeleted: +$('#includedeleted').prop('checked'),
             Africa: +$('#Africa').prop('checked'),
             Asia: +$('#Asia').prop('checked'),
@@ -68,7 +91,7 @@ function load_dxcc_map2(data, worked, confirmed, notworked) {
     
             if (D['status'] == 'C') {
                 mapColor = 'green';
-                if (confirmed != '0') {
+                if (confirmed) {
                     addMarker(L, D, mapColor, map);
                     confirmedcount++;
                     notworkedcount--;
@@ -76,7 +99,7 @@ function load_dxcc_map2(data, worked, confirmed, notworked) {
             }
             if (D['status'] == 'W') {
                 mapColor = 'orange';
-                if (worked != '0') {
+                if (worked) {
                     addMarker(L, D, mapColor, map);
                     workednotconfirmedcount++;
                     notworkedcount--;
@@ -85,7 +108,7 @@ function load_dxcc_map2(data, worked, confirmed, notworked) {
     
             
         // Make a check here and hide what I don't want to show
-            if (notworked != '0') {
+            if (notworked) {
                 if (mapColor == 'red') {
                     addMarker(L, D, mapColor, map);
                 }
@@ -96,15 +119,16 @@ function load_dxcc_map2(data, worked, confirmed, notworked) {
     /*Legend specific*/
     var legend = L.control({ position: "topright" });
 
-    if (notworked.checked == false) {
+    if (!notworked) {
         notworkedcount = 0;
     }
 
     legend.onAdd = function(map) {
+        var workedtotalcount = confirmedcount + workednotconfirmedcount;
         var div = L.DomUtil.create("div", "legend");
         div.innerHTML += "<h4>Contacts Status</h4>";
         div.innerHTML += '<i style="background: green; width: 24px; height: 24px; border-radius: 50%;"></i><span><strong>Confirmed (' + confirmedcount + ')</strong></span><br>';
-        div.innerHTML += '<i style="background: orange; width: 24px; height: 24px; border-radius: 50%;"></i><span>Worked - Unconfirmed (' + workednotconfirmedcount + ')</span><br>';
+        div.innerHTML += '<i style="background: orange; width: 24px; height: 24px; border-radius: 50%;"></i><span><strong>Worked (' + workedtotalcount + ')</strong> <small>(Unconfirmed ' + workednotconfirmedcount + ')</small></span><br>';
         div.innerHTML += '<i style="background: red; width: 24px; height: 24px; border-radius: 50%;"></i><span>Not Worked (' + notworkedcount + ')</span><br>';
         div.innerHTML += '<hr style="margin: 8px 0;"><strong>Total: ' + data.length + '</strong>';
         return div;
@@ -156,5 +180,5 @@ function addMarker(L, D, mapColor, map) {
 
 function onClick(e) {
     var marker = e.target;
-    displayContactsOnMap($("#dxccmap"),marker.options.adif, $('#band2').val(), $('#mode').val(), 'DXCC2');
+    displayContactsOnMap($("#dxccmap"), marker.options.adif, getPrimaryDxccBand(), $('#mode').val(), 'DXCC2');
 }

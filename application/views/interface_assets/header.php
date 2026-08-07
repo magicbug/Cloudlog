@@ -27,7 +27,7 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/flag-icons.min.css" />
 
 	<?php
-	$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'activators', 'activatorsmap'], true)
+	$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'search', 'activators', 'activatorsmap'], true)
 		|| ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'waja', 'was', 'sota', 'pota'], true));
 	?>
 
@@ -365,7 +365,7 @@
 							var input = document.getElementById('quicklog-input');
 							if (action === 'search') {
 								form.action = "<?php echo site_url('search'); ?>";
-								form.method = "post";
+								form.method = "get";
 							}
 							form.submit();
 						}
@@ -404,7 +404,7 @@
 						</button>
 					</form>
 				<?php } else { ?>
-					<form method="post" class="d-flex align-items-center" action="<?php echo site_url('search'); ?>">
+					<form method="get" class="d-flex align-items-center" action="<?php echo site_url('search'); ?>">
 						<input class="form-control me-2" id="nav-bar-search-input" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" aria-label="Search">
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i>
 						</button>

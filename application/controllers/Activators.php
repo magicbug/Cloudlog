@@ -40,12 +40,25 @@ class Activators extends CI_Controller {
 
     public function details() {
         $this->load->model('logbook_model');
+        $this->load->model('Activators_model');
 
         $call = str_replace('"', "", $this->input->post("Callsign"));
         $band = str_replace('"', "", $this->input->post("Band"));
         $leogeo = str_replace('"', "", $this->input->post("LeoGeo"));
-        $data['results'] = $this->logbook_model->activator_details($call, $band, $leogeo);
-        $data['filter'] = "Call ".$call;
+        $canonical_call = $this->Activators_model->canonicalize_callsign($call);
+        $matched_calls = $this->logbook_model->get_callsigns($canonical_call);
+        $call_variants = array();
+        if ($matched_calls) {
+            foreach ($matched_calls->result() as $row) {
+                $call_variants[] = $row->COL_CALL;
+            }
+        }
+        if (empty($call_variants)) {
+            $call_variants[] = $canonical_call;
+        }
+
+        $data['results'] = $this->logbook_model->activator_details($call_variants, $band, $leogeo);
+        $data['filter'] = "Call ".$canonical_call;
         switch($band) {
         case 'All':     $data['page_title'] = "Log View All Bands";
                         $data['filter'] .= " and Band All";

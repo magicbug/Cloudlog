@@ -8,6 +8,7 @@
         echo json_encode($sq);
     ?>;
     var qso_measurement_base = "<?php echo htmlspecialchars($measurement_base ?? 'K', ENT_QUOTES, 'UTF-8'); ?>";
+    var qso_show_profile_image = <?php echo $this->session->userdata('user_show_profile_image') ? 'true' : 'false'; ?>;
     var text_error_timeoff_less_timeon = "<?php echo lang('qso_error_timeoff_less_timeon'); ?>";
     var lang_qso_title_previous_contacts = "<?php echo lang('qso_title_previous_contacts'); ?>";
     var lang_qso_title_times_worked_before = "<?php echo lang('qso_title_times_worked_before'); ?>";
@@ -27,6 +28,10 @@
       grid-template-columns: minmax(200px, 280px) 1fr;
       gap: 0.9rem;
       align-items: start;
+    }
+
+    .qso_panel .callbook-layout-no-image {
+      grid-template-columns: 1fr;
     }
 
     .qso_panel .callbook-photo {
@@ -1191,7 +1196,7 @@
                 DXCC Summary
               </button>
             </li>
-            <?php if ($this->session->userdata('user_show_profile_image')) { ?>
+            <?php if (!empty($show_callbook_tab)) { ?>
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="callbook-tab" data-bs-toggle="tab" data-bs-target="#callbook-pane" type="button" role="tab" aria-controls="callbook-pane" aria-selected="false">
                 Callbook
@@ -1230,7 +1235,7 @@
               </div>
             </div>
 
-            <?php if ($this->session->userdata('user_show_profile_image')) { ?>
+            <?php if (!empty($show_callbook_tab)) { ?>
             <div class="tab-pane fade" id="callbook-pane" role="tabpanel" aria-labelledby="callbook-tab">
               <div id="qso-callbook-content" class="pt-2 small text-muted">
                 Enter a callsign to load callbook details.

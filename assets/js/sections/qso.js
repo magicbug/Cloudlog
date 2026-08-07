@@ -901,18 +901,24 @@ function renderCallbookPanel(callsign, result) {
 		return;
 	}
 
+	var showProfileImage = (typeof qso_show_profile_image === 'undefined') ? true : !!qso_show_profile_image;
 	var safeCallsign = escapeCallbookHtml(callsign || '');
 	var safeName = escapeCallbookHtml(result.callsign_name || '');
 	var safeQth = escapeCallbookHtml(result.callsign_qth || '');
 	var safeLocator = escapeCallbookHtml(result.callsign_qra || '');
 	var safeIota = escapeCallbookHtml(result.callsign_iota || '');
-	var imageHtml = (result.image && result.image !== 'n/a')
-		? '<img class="callbook-photo" src="' + escapeCallbookHtml(result.image) + '" alt="Callbook profile image">'
-		: '<div class="callbook-empty">No profile image returned by callbook provider.</div>';
+	var hasImage = showProfileImage && result.image && result.image !== 'n/a';
+	var imageColumnHtml = '';
+	if (hasImage) {
+		imageColumnHtml = '  <div><img class="callbook-photo" src="' + escapeCallbookHtml(result.image) + '" alt="Callbook profile image"></div>';
+	} else if (showProfileImage) {
+		imageColumnHtml = '  <div><div class="callbook-empty">No profile image returned by callbook provider.</div></div>';
+	}
+	var layoutClass = imageColumnHtml ? 'callbook-layout' : 'callbook-layout callbook-layout-no-image';
 
 	var html = ''
-		+ '<div class="callbook-layout">'
-		+ '  <div>' + imageHtml + '</div>'
+		+ '<div class="' + layoutClass + '">'
+		+ imageColumnHtml
 		+ '  <div>'
 		+ '    <div class="callbook-heading">' + safeCallsign + '</div>'
 		+ '    <div class="callbook-links">'

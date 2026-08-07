@@ -1300,6 +1300,46 @@
 													} ?>><?php echo lang('general_word_no'); ?></option>
 												</select>
 											</div>
+											<div class="mb-3">
+												<label for="oscarwatchstatusupload">Upload SAT QSO status to <a href="https://oscarwatch.org" target="_blank">https://oscarwatch.org</a>.</label>
+												<?php if (!isset($user_oscarwatch_status_upload)) {
+													$user_oscarwatch_status_upload = '0';
+												} ?>
+												<select class="form-select" id="oscarwatchstatusupload" name="user_oscarwatch_status_upload">
+													<option value="1" <?php if ($user_oscarwatch_status_upload == 1) {
+														echo " selected =\"selected\"";
+													} ?>><?php echo lang('general_word_yes'); ?></option>
+													<option value="0" <?php if ($user_oscarwatch_status_upload == 0) {
+														echo " selected =\"selected\"";
+													} ?>><?php echo lang('general_word_no'); ?></option>
+												</select>
+											</div>
+											<div class="mb-3" id="oscarwatchAmsatOverrideWrapper" style="display:none;">
+												<?php if (!isset($user_force_amsat_status_upload)) {
+													$user_force_amsat_status_upload = '0';
+												} ?>
+												<div class="form-check form-switch">
+													<input class="form-check-input" type="checkbox" role="switch" id="forceAmsatWithOscarwatch" name="user_force_amsat_status_upload" value="1" <?php if ((string)$user_force_amsat_status_upload === '1') {
+														echo 'checked';
+													} ?>>
+													<label class="form-check-label" for="forceAmsatWithOscarwatch">Force enable AMSAT Status in Cloudlog</label>
+												</div>
+												<small class="form-text text-muted">When enabled, Cloudlog keeps direct AMSAT uploads on even with OscarWatch enabled.</small>
+											</div>
+											<div class="alert alert-warning" id="oscarwatchAmsatNotice" role="alert" style="display:none;">
+												OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.
+											</div>
+											<div class="mb-3">
+												<label>OscarWatch API Token</label>
+												<div class="input-group">
+													<input class="form-control" id="user_oscarwatch_token" type="password" name="user_oscarwatch_token" value="<?php if (isset($user_oscarwatch_token)) {
+													echo $user_oscarwatch_token;
+													} ?>" />
+													<button class="btn btn-outline-secondary" type="button" id="testOscarwatchTokenBtn">Test Token</button>
+												</div>
+												<small id="oscarwatchTokenTestResult" class="form-text text-muted"></small>
+												<small class="form-text text-muted">Optional. If set, SAT QSO status is also reported to <a href="https://oscarwatch.org" target="_blank">oscarwatch.org</a> using your token.</small>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -1609,4 +1649,111 @@
 			}
 		})();
 	</script>
+	<script>
+		var oscarwatchStatusSelect = document.getElementById('oscarwatchstatusupload');
+		var amsatStatusSelect = document.getElementById('amsatstatusupload');
+		var forceAmsatToggle = document.getElementById('forceAmsatWithOscarwatch');
+		var oscarwatchAmsatNotice = document.getElementById('oscarwatchAmsatNotice');
+		var oscarwatchAmsatOverrideWrapper = document.getElementById('oscarwatchAmsatOverrideWrapper');
+
+		function syncOscarwatchAmsatState(triggeredByOscarwatchToggle) {
+			if (!oscarwatchStatusSelect || !amsatStatusSelect || !oscarwatchAmsatNotice || !oscarwatchAmsatOverrideWrapper || !forceAmsatToggle) {
+				return;
+			}
+
+			var oscarwatchEnabled = oscarwatchStatusSelect.value === '1';
+			var forceAmsatEnabled = forceAmsatToggle.checked;
+
+			if (!oscarwatchEnabled) {
+				oscarwatchAmsatOverrideWrapper.style.display = 'none';
+				oscarwatchAmsatNotice.style.display = 'none';
+				amsatStatusSelect.disabled = false;
+				return;
+			}
+
+			oscarwatchAmsatOverrideWrapper.style.display = '';
+			oscarwatchAmsatNotice.style.display = '';
+
+			if (forceAmsatEnabled) {
+				amsatStatusSelect.disabled = false;
+				amsatStatusSelect.value = '1';
+				oscarwatchAmsatNotice.textContent = 'OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+				return;
+			}
+
+			if (triggeredByOscarwatchToggle && amsatStatusSelect.value === '1') {
+				amsatStatusSelect.value = '0';
+				oscarwatchAmsatNotice.textContent = 'AMSAT Status Upload was turned off in Cloudlog because OscarWatch Status Upload is enabled. OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+			} else {
+				oscarwatchAmsatNotice.textContent = 'OscarWatch also forwards to AMSAT Status unless you disable forwarding in your OscarWatch account.';
+			}
+
+			amsatStatusSelect.disabled = true;
+		}
+
+		if (oscarwatchStatusSelect && amsatStatusSelect && forceAmsatToggle) {
+			oscarwatchStatusSelect.addEventListener('change', function() {
+				syncOscarwatchAmsatState(true);
+			});
+			forceAmsatToggle.addEventListener('change', function() {
+				syncOscarwatchAmsatState(false);
+			});
+			syncOscarwatchAmsatState(false);
+		}
+
+		var oscarwatchTestBtn = document.getElementById('testOscarwatchTokenBtn');
+		if (oscarwatchTestBtn) {
+			oscarwatchTestBtn.addEventListener('click', function() {
+				const tokenInput = document.getElementById('user_oscarwatch_token');
+				const result = document.getElementById('oscarwatchTokenTestResult');
+				const btn = document.getElementById('testOscarwatchTokenBtn');
+
+				if (!tokenInput || !result || !btn) {
+					return;
+				}
+
+				const token = tokenInput.value.trim();
+				if (token === '') {
+					result.className = 'form-text text-danger';
+					result.textContent = 'Please enter a token first.';
+					return;
+				}
+
+				btn.disabled = true;
+				result.className = 'form-text text-muted';
+				result.textContent = 'Testing token...';
+
+				const body = new URLSearchParams();
+				body.append('token', token);
+
+				fetch('<?php echo site_url('user/validate_oscarwatch_token'); ?>', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+					},
+					body: body.toString(),
+				})
+					.then(async function(response) {
+						const payload = await response.json().catch(function() {
+							return null;
+						});
+						if (payload && payload.ok) {
+							result.className = 'form-text text-success';
+							result.textContent = payload.message || 'OscarWatch token is valid.';
+						} else {
+							result.className = 'form-text text-danger';
+							result.textContent = (payload && payload.message) ? payload.message : 'Token validation failed.';
+						}
+					})
+					.catch(function() {
+						result.className = 'form-text text-danger';
+						result.textContent = 'Unable to validate token right now.';
+					})
+					.finally(function() {
+						btn.disabled = false;
+					});
+			});
+		}
+	</script>
+
 </div>
