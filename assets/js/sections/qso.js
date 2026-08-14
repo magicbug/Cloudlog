@@ -1518,7 +1518,8 @@ $('#callsign').on('input keyup', function() {
 });
 
 // Only set the frequency when not set by userdata/PHP.
-if ($('#frequency').val() == "")
+// Satellite QSOs keep uplink/downlink freqs; band_to_freq would wipe Frequency (RX).
+if ($('#frequency').val() == "" && typeof isSatelliteLookupContext === 'function' && !isSatelliteLookupContext())
 {
 	$.get(base_url + 'index.php/qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
 		$('#frequency').val(result);
@@ -1559,6 +1560,9 @@ $('#start_date').change(function() {
 
 /* on mode change */
 $('.mode').change(function() {
+	if (typeof isSatelliteLookupContext === 'function' && isSatelliteLookupContext()) {
+		return;
+	}
 	$.get(base_url + 'index.php/qso/band_to_freq/' + $('#band').val() + '/' + $('.mode').val(), function(result) {
 		$('#frequency').val(result);
 		$('#frequency_rx').val("");
@@ -1568,6 +1572,9 @@ $('.mode').change(function() {
 /* Calculate Frequency */
 /* on band change */
 $('#band').change(function() {
+	if (typeof isSatelliteLookupContext === 'function' && isSatelliteLookupContext()) {
+		return;
+	}
 	$.get(base_url + 'index.php/qso/band_to_freq/' + $(this).val() + '/' + $('.mode').val(), function(result) {
 		$('#frequency').val(result);
 		$('#frequency_rx').val("");
