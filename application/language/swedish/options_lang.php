@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = 'Offentlig stationslogg';
 $lang['options_public_station_diary_enabled'] = 'Offentlig stationslogg';
 $lang['options_public_station_diary_enabled_hint'] = 'Aktivera eller inaktivera möjligheten för användare att skapa offentliga stationsloggposter. Om det är inaktiverat förblir alla loggposter privata oavsett individuella inställningar.';
 $lang['options_public_station_diary_settings_saved'] = 'Inställningarna för offentlig stationslogg har sparats framgångsrikt.';
+$lang['options_public_map_show_confirmations'] = 'Bekräftelser på offentliga kartor';
+$lang['options_public_map_show_confirmations_enabled'] = 'Visa bekräftelser på offentliga kartor';
+$lang['options_public_map_show_confirmations_hint'] = 'Aktivera eller inaktivera visning av vilka QSO:er som är bekräftade (LoTW, eQSL, pappers-QSL eller QRZ.com) på offentliga besökarkartor.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'Inställningarna för bekräftelser på offentliga kartor har sparats framgångsrikt.';
 $lang['options_enabled'] = 'Aktiverad';
 $lang['options_disabled'] = 'Inaktiverad';
 

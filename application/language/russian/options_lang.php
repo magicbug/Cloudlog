@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = 'Общедоступный дневни
 $lang['options_public_station_diary_enabled'] = 'Общедоступный дневник станции';
 $lang['options_public_station_diary_enabled_hint'] = 'Включить или отключить возможность для пользователей создавать общедоступные записи дневника станции. После отключения все записи дневника остаются приватными независимо от индивидуальных настроек.';
 $lang['options_public_station_diary_settings_saved'] = 'Параметры общедоступного дневника станции успешно сохранены.';
+$lang['options_public_map_show_confirmations'] = 'Подтверждения на публичных картах';
+$lang['options_public_map_show_confirmations_enabled'] = 'Показывать подтверждения на публичных картах';
+$lang['options_public_map_show_confirmations_hint'] = 'Включить или отключить отображение подтверждённых QSO (LoTW, eQSL, бумажная QSL или QRZ.com) на публичных картах для посетителей.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'Параметры подтверждений на публичных картах успешно сохранены.';
 $lang['options_enabled'] = 'Включено';
 $lang['options_disabled'] = 'Отключено';
 

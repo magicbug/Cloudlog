@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = 'Diário de estação pública';
 $lang['options_public_station_diary_enabled'] = 'Diário de estação pública';
 $lang['options_public_station_diary_enabled_hint'] = 'Ativar ou desativar a capacidade dos usuários criarem entradas públicas de diário da estação. Quando desativado, todas as entradas do diário permanecem privadas independentemente das configurações individuais.';
 $lang['options_public_station_diary_settings_saved'] = 'As configurações do diário de estação pública foram salvas com sucesso.';
+$lang['options_public_map_show_confirmations'] = 'Confirmações em mapas públicos';
+$lang['options_public_map_show_confirmations_enabled'] = 'Mostrar confirmações em mapas públicos';
+$lang['options_public_map_show_confirmations_hint'] = 'Ative ou desative a exibição de quais QSOs estão confirmados (LoTW, eQSL, QSL em papel ou QRZ.com) nos mapas públicos para visitantes.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'As configurações de confirmações em mapas públicos foram salvas com sucesso.';
 $lang['options_enabled'] = 'Ativado';
 $lang['options_disabled'] = 'Desativado';
 
