@@ -257,22 +257,22 @@ var favs={};
 	get_fav();
 
 	$('#fav_add').click(function (event) {
+		event.preventDefault();
 		save_fav();
 	});
 
-	$(document).on("click", "#fav_del", function (event) {
-		del_fav($(this).attr('name'));
+	$(document).on("click", ".fav-del", function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		del_fav($(this).attr('data-fav-name'));
 	});
 
-	$(document).on("click", "#fav_recall", function (event) {
-		$('#sat_name').val(favs[this.innerText].sat_name);
-		$('#sat_mode').val(favs[this.innerText].sat_mode);
-		$('#band_rx').val(favs[this.innerText].band_rx);
-		$('#band').val(favs[this.innerText].band);
-		$('#frequency_rx').val(favs[this.innerText].frequency_rx);
-		$('#frequency').val(favs[this.innerText].frequency);
-		$('#selectPropagation').val(favs[this.innerText].prop_mode);
-		$('#mode').val(favs[this.innerText].mode);
+	$(document).on("click", "#fav_menu .dropdown-item", function (event) {
+		if ($(event.target).closest('.fav-del').length) {
+			return;
+		}
+		event.preventDefault();
+		apply_fav($(this).find('.fav-recall').attr('data-fav-name'));
 	});
 
 
@@ -300,9 +300,40 @@ var favs={};
 			success: function(result) {
 				$("#fav_menu").empty();
 				for (const key in result) {
-					$("#fav_menu").append('<label class="dropdown-item" style="display: flex; justify-content: space-between;"><span id="fav_recall">' + key + '</span><span class="badge bg-danger" id="fav_del" name="' + key + '"><i class="fas fa-trash-alt"></i></span></label>');
+					var safeName = escapeNoticeValue(key);
+					$("#fav_menu").append('<label class="dropdown-item" style="display: flex; justify-content: space-between; align-items: center;"><span class="fav-recall" data-fav-name="' + safeName + '">' + safeName + '</span><span class="badge bg-danger fav-del" data-fav-name="' + safeName + '" role="button" title="Delete"><i class="fas fa-trash-alt"></i></span></label>');
 				}
 				favs=result;
+			}
+		});
+	}
+
+	function apply_fav(name) {
+		var fav = favs[name];
+		if (!fav) {
+			return;
+		}
+
+		$('#sat_name').val(fav.sat_name || '');
+		$('#sat_mode').val(fav.sat_mode || '');
+		$('#band_rx').val(fav.band_rx || '');
+		$('#band').val(fav.band || '');
+		$('#frequency_rx').val(fav.frequency_rx || '');
+		$('#frequency').val(fav.frequency || '');
+		$('#selectPropagation').val(fav.prop_mode || '');
+		$('#mode').val(fav.mode || '');
+		selected_sat = fav.sat_name || '';
+		selected_sat_mode = fav.sat_mode || '';
+
+		if (!hasFieldValue(fav.sat_name)) {
+			return;
+		}
+
+		var rxWasEmpty = !hasFieldValue(fav.frequency_rx);
+		populateSatelliteModes(fav.sat_name, function (data) {
+			$('#sat_mode').val(fav.sat_mode || $('#sat_mode').val());
+			if (rxWasEmpty) {
+				fillMissingSatelliteFrequencies(fav.sat_name, fav.sat_mode, data);
 			}
 		});
 	}
@@ -325,6 +356,10 @@ var favs={};
 			data: JSON.stringify(payload),
 			success: function(result) {
 				get_fav();
+				showQsoFavToast('Favourite saved');
+			},
+			error: function() {
+				showQsoFavToast('Failed to save favourite', 'danger');
 			}
 		});
 	}
@@ -728,8 +763,96 @@ var favs={};
 var selected_sat;
 var selected_sat_mode;
 
-$(document).on('change', 'input', function(){
-	var optionslist = $('.satellite_modes_list')[0].options;
+function populateSatelliteModes(satName, done) {
+	selected_sat = satName || '';
+	var $list = $('.satellite_modes_list');
+	if (!hasFieldValue(satName)) {
+		if ($list.length) {
+			$list.find('option').remove();
+		}
+		if (typeof done === 'function') {
+			done(null);
+		}
+		return;
+	}
+	$.getJSON(base_url + "assets/json/satellite_data.json", function (data) {
+		if ($list.length) {
+			$list.find('option').remove();
+			var sat_modes = [];
+			if (data[satName] && data[satName].Modes) {
+				$.each(data[satName].Modes, function (key1) {
+					sat_modes.push('<option value="' + escapeNoticeValue(key1) + '">' + escapeNoticeValue(key1) + '</option>');
+				});
+			}
+			$list.append(sat_modes.join(""));
+		}
+		if (typeof done === 'function') {
+			done(data);
+		}
+	}).fail(function () {
+		if (typeof done === 'function') {
+			done(null);
+		}
+	});
+}
+
+function fillMissingSatelliteFrequencies(satName, satMode, data) {
+	if (!hasFieldValue(satName) || !data || !data[satName] || !data[satName].Modes) {
+		return;
+	}
+	var modes = data[satName].Modes;
+	var modeKey = satMode;
+	if (!hasFieldValue(modeKey) || !modes[modeKey]) {
+		var modeKeys = Object.keys(modes);
+		if (modeKeys.length !== 1) {
+			return;
+		}
+		modeKey = modeKeys[0];
+		if (!hasFieldValue($('#sat_mode').val())) {
+			$('#sat_mode').val(modeKey);
+		}
+	}
+	var info = modes[modeKey] && modes[modeKey][0];
+	if (!info) {
+		return;
+	}
+	selected_sat_mode = modeKey;
+	if (info.Downlink_Freq) {
+		$('#frequency_rx').val(info.Downlink_Freq);
+		if (typeof frequencyToBand === 'function') {
+			$('#band_rx').val(frequencyToBand(info.Downlink_Freq));
+		}
+	}
+	if (info.Uplink_Freq) {
+		$('#frequency').val(info.Uplink_Freq);
+		if (typeof frequencyToBand === 'function') {
+			$('#band').val(frequencyToBand(info.Uplink_Freq));
+		}
+	}
+	if (!hasFieldValue($('#selectPropagation').val())) {
+		$('#selectPropagation').val('SAT');
+	}
+}
+
+function showQsoFavToast(message, type) {
+	type = type || 'success';
+	var $toast = $('<div class="toast align-items-center text-white bg-' + type + ' border-0" role="alert" aria-live="assertive" aria-atomic="true" style="position: fixed; top: 20px; right: 20px; z-index: 9999;">' +
+		'<div class="d-flex"><div class="toast-body">' + escapeNoticeValue(message) + '</div>' +
+		'<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div></div>');
+	$toast.appendTo('body');
+	var toast = new bootstrap.Toast($toast[0], { delay: 2500 });
+	toast.show();
+	$toast.on('hidden.bs.toast', function () {
+		$toast.remove();
+	});
+}
+
+$(document).on('change', '#sat_mode', function(){
+	var $list = $('.satellite_modes_list');
+	if (!$list.length) {
+		return;
+	}
+	var optionslist = $list[0].options;
 	var value = $(this).val();
 	for (var x=0;x<optionslist.length;x++){
 		if (optionslist[x].value === value) {
@@ -740,8 +863,6 @@ $(document).on('change', 'input', function(){
 			// get Json file
 			$.getJSON(base_url + "assets/json/satellite_data.json", function( data ) {
 
-				// Build the options array
-				var sat_modes = [];
 				$.each( data, function( key, val ) {
 					if (key == selected_sat) {
 						$.each( val.Modes, function( key1, val2 ) {
@@ -767,32 +888,18 @@ $(document).on('change', 'input', function(){
 	}
 });
 
-$(document).on('change', 'input', function(){
-	var optionslist = $('.satellite_names_list')[0].options;
+$(document).on('change', '#sat_name', function(){
+	var $names = $('.satellite_names_list');
+	if (!$names.length) {
+		return;
+	}
+	var optionslist = $names[0].options;
 	var value = $(this).val();
 	for (var x=0;x<optionslist.length;x++){
 		if (optionslist[x].value === value) {
 			$("#sat_mode").val("");
-			$('.satellite_modes_list').find('option').remove().end();
-			selected_sat = value;
-			// get Json file
-			$.getJSON( base_url+"assets/json/satellite_data.json", function( data ) {
-
-				// Build the options array
-				var sat_modes = [];
-				$.each( data, function( key, val ) {
-					if (key == value) {
-						$.each( val.Modes, function( key1, val2 ) {
-							//console.log (key1);
-							sat_modes.push('<option value="' + key1 + '">' + key1 + '</option>');
-						});
-					}
-				});
-
-				// Add to the datalist
-				$('.satellite_modes_list').append(sat_modes.join( "" ));
-
-			});
+			populateSatelliteModes(value);
+			return;
 		}
 	}
 });
