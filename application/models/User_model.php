@@ -205,7 +205,7 @@ class User_Model extends CI_Model {
 		$user_show_profile_image, $user_previous_qsl_type, $user_amsat_status_upload, $user_mastodon_url,
 		$user_default_band, $user_default_confirmation, $user_qso_end_times, $user_quicklog, $user_quicklog_enter,
 		$language, $user_hamsat_key, $user_hamsat_workable_only, $callbook_type, $callbook_username, $callbook_password,
-		$user_winkey, $user_winkey_websocket, $user_remote_operation) {
+		$user_winkey = 0, $user_winkey_websocket = 0, $user_remote_operation = 0) {
 		// Check that the user isn't already used
 		if(!$this->exists($username)) {
 			$data = array(
