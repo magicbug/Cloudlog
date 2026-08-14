@@ -187,7 +187,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="fav_item" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-star"></i></a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#" id="fav_add"><?php echo lang('fav_add'); ?></a>
+                  <button type="button" class="dropdown-item" id="fav_add"><?php echo lang('fav_add'); ?></button>
                   <div class="dropdown-divider"></div>
                   <div id="fav_menu"></div>
                 </div>
