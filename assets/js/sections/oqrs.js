@@ -49,7 +49,10 @@ function searchOqrsGrouped() {
     $.ajax({
         url: base_url+'index.php/oqrs/get_qsos_grouped',
         type: 'post',
-        data: {'callsign': $("#oqrssearch").val().toUpperCase()},
+        data: {
+            'callsign': $("#oqrssearch").val().toUpperCase(),
+            'slug': typeof oqrs_public_slug !== 'undefined' ? oqrs_public_slug : ''
+        },
         success: function (data) {
             $(".searchinfo").append(data);
             $('.qsotime').change(function() {
@@ -584,7 +587,9 @@ $(document).ready(function () {
 		}
 	});
 
-	$('#searchForm').submit();
+	if ($('#searchForm').find('[name="oqrsResults"]').length) {
+		$('#searchForm').submit();
+	}
 
     $('#searchForm').on('reset', function(e) {
         setTimeout(function() {

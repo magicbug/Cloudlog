@@ -16,17 +16,68 @@ class Oqrs extends CI_Controller {
 		// if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
-    public function index() {
-		$this->load->model('oqrs_model');
+	function _remap($method, $params = array()) {
+		$reserved = array(
+			'get_station_info',
+			'get_qsos',
+			'get_qsos_grouped',
+			'not_in_log',
+			'save_not_in_log',
+			'request_form',
+			'requests',
+			'save_oqrs_request',
+			'save_oqrs_request_grouped',
+			'delete_oqrs_line',
+			'search_log',
+			'search_log_time_date',
+			'alert_oqrs_request',
+			'mark_oqrs_line_as_done',
+			'search'
+		);
 
-		$data['stations'] = $this->oqrs_model->get_oqrs_stations();
-		$data['page_title'] = "Log Search & OQRS";
+		if (in_array($method, $reserved) && method_exists($this, $method)) {
+			return call_user_func_array(array($this, $method), $params);
+		}
+
+		$slug = ($method === 'index') ? (isset($params[0]) ? $params[0] : null) : $method;
+		$this->index($slug);
+	}
+
+    public function index($slug = NULL) {
+		$this->load->model('oqrs_model');
+		$this->load->model('logbooks_model');
+
+		$data = array(
+			'slug' => '',
+			'brand_name' => 'Cloudlog',
+			'public_search_enabled' => false,
+			'oqrs_enabled' => false,
+		);
+
+		if (!empty($slug) && $slug !== 'index') {
+			$identity = $this->logbooks_model->public_identity_data($slug);
+			if ($identity === false) {
+				show_404('Unknown Public Page.');
+				return;
+			}
+			$data = array_merge($data, $identity);
+			$data['oqrs_enabled'] = true;
+			$data['stations'] = $this->oqrs_model->get_oqrs_stations_for_logbook($identity['logbook_id']);
+			if ($data['stations']->num_rows() === 0) {
+				show_404('Unknown Public Page.');
+				return;
+			}
+		} else {
+			$data['stations'] = $this->oqrs_model->get_oqrs_stations();
+		}
+
+		$data['page_title'] = lang('visitor_request_qsl');
 		$data['global_oqrs_text'] = $this->optionslib->get_option('global_oqrs_text');
 		$data['groupedSearch'] = $this->optionslib->get_option('groupedSearch');
 
 		$this->load->view('visitor/layout/header', $data);
 		$this->load->view('oqrs/index');
-		$this->load->view('interface_assets/footer');
+		$this->load->view('visitor/layout/footer');
     }
 
 	public function get_station_info() {
@@ -61,7 +112,22 @@ class Oqrs extends CI_Controller {
 		}
 		
 		$this->load->model('oqrs_model');
-		$data['result'] = $this->oqrs_model->getQueryDataGrouped(strtoupper($callsign));
+		$slug = $this->security->xss_clean($this->input->post('slug'));
+		$station_ids = null;
+		if (!empty($slug)) {
+			$this->load->model('logbooks_model');
+			$identity = $this->logbooks_model->public_identity_data($slug);
+			if ($identity === false) {
+				show_error('Invalid public logbook.', 400);
+				return;
+			}
+			$stations = $this->oqrs_model->get_oqrs_stations_for_logbook($identity['logbook_id']);
+			$station_ids = array();
+			foreach ($stations->result() as $station) {
+				$station_ids[] = $station->station_id;
+			}
+		}
+		$data['result'] = $this->oqrs_model->getQueryDataGrouped(strtoupper($callsign), $station_ids);
 		$data['callsign'] = strtoupper($callsign);
 
 		$this->load->view('oqrs/request_grouped', $data);

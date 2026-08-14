@@ -265,6 +265,82 @@ class Logbooks_model extends CI_Model {
 		}
 	}
 
+	/**
+	 * Session-free lookup of a public logbook by slug.
+	 */
+	function public_logbook_by_slug($slug) {
+		$clean_slug = $this->security->xss_clean($slug);
+		if ($clean_slug === '' || $clean_slug === FALSE) {
+			return false;
+		}
+
+		$this->db->select('logbook_id, logbook_name, user_id, public_slug, public_search, public_radio_status');
+		$this->db->where('public_slug', $clean_slug);
+		$query = $this->db->get('station_logbooks');
+
+		if ($query->num_rows() > 0) {
+			return $query->row();
+		}
+
+		return false;
+	}
+
+	function public_station_callsigns($logbook_id) {
+		$locations = $this->list_logbook_relationships($logbook_id);
+		if (empty($locations)) {
+			return array();
+		}
+
+		$this->db->distinct();
+		$this->db->select('station_callsign');
+		$this->db->from('station_profile');
+		$this->db->where_in('station_id', $locations);
+		$this->db->order_by('station_callsign', 'ASC');
+		$query = $this->db->get();
+
+		$callsigns = array();
+		foreach ($query->result() as $row) {
+			if (!empty($row->station_callsign)) {
+				$callsigns[] = strtoupper($row->station_callsign);
+			}
+		}
+
+		return $callsigns;
+	}
+
+	/**
+	 * Identity payload for public visitor/OQRS pages (no session required).
+	 */
+	function public_identity_data($slug) {
+		$logbook = $this->public_logbook_by_slug($slug);
+		if (!$logbook) {
+			return false;
+		}
+
+		$locations = $this->list_logbook_relationships($logbook->logbook_id);
+		if (empty($locations)) {
+			return false;
+		}
+
+		$callsigns = $this->public_station_callsigns($logbook->logbook_id);
+		$primary = (count($callsigns) === 1) ? $callsigns[0] : '';
+		$brand = $primary !== '' ? $primary : $logbook->logbook_name;
+
+		return array(
+			'slug' => $logbook->public_slug,
+			'logbook_id' => $logbook->logbook_id,
+			'logbook_name' => $logbook->logbook_name,
+			'logbook_settings' => $logbook,
+			'logbooks_locations_array' => $locations,
+			'station_callsigns' => $callsigns,
+			'primary_callsign' => $primary,
+			'brand_name' => $brand,
+			'public_search_enabled' => (isset($logbook->public_search) && (int) $logbook->public_search === 1),
+			'public_radio_status' => (isset($logbook->public_radio_status) && (int) $logbook->public_radio_status === 1),
+			'owner_user_id' => $logbook->user_id,
+		);
+	}
+
 	function public_slugs_by_user($user_id) {
 		$clean_user_id = $this->security->xss_clean($user_id);
 

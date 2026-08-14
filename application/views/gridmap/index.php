@@ -45,6 +45,9 @@
 	<br>
 
 	<h2><?php echo $page_title; ?></h2>
+	<?php if (!empty($visitor) && !empty($visitor_intro)) { ?>
+		<p class="text-muted"><?php echo htmlspecialchars($visitor_intro, ENT_QUOTES, 'UTF-8'); ?></p>
+	<?php } ?>
 
     <div class="border rounded-3 bg-light-subtle px-3 py-2 mb-3 shadow-sm">
         <form class="d-flex flex-wrap align-items-center gap-2">

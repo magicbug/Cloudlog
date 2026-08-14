@@ -1,3 +1,127 @@
 #searchcall:focus {
 	text-transform: uppercase;
 }
+
+.visitor-body {
+	min-height: 100vh;
+}
+
+.visitor-nav .navbar-brand {
+	font-weight: 700;
+	letter-spacing: 0.02em;
+}
+
+.visitor-page {
+	padding-top: 1rem;
+	padding-bottom: 2rem;
+}
+
+.visitor-showcase {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.125));
+	border-radius: 0.5rem;
+	overflow: hidden;
+	margin-bottom: 1.5rem;
+	background-color: var(--bs-body-bg, #fff);
+}
+
+.visitor-hero {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1.25rem 2rem;
+	padding: 1.15rem 1.35rem;
+	background: var(--bs-tertiary-bg, var(--bs-secondary-bg, #f8f9fa));
+	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.125));
+}
+
+.visitor-hero-identity {
+	min-width: 12rem;
+}
+
+.visitor-kicker {
+	display: inline-block;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	font-size: 0.7rem;
+	font-weight: 600;
+	color: var(--bs-secondary-color, #6c757d);
+	margin-bottom: 0.2rem;
+}
+
+.visitor-callsign {
+	font-size: 2rem;
+	font-weight: 700;
+	margin: 0;
+	line-height: 1.15;
+	letter-spacing: 0.03em;
+}
+
+.visitor-logbook-name {
+	font-size: 0.95rem;
+	color: var(--bs-secondary-color, #6c757d);
+	margin: 0.2rem 0 0;
+}
+
+.visitor-callsigns {
+	font-size: 0.9rem;
+	color: var(--bs-secondary-color, #6c757d);
+	margin: 0.25rem 0 0;
+}
+
+.visitor-onair {
+	margin-top: 0.5rem;
+}
+
+.visitor-find-form {
+	flex: 1 1 18rem;
+	max-width: 26rem;
+	margin: 0;
+}
+
+.visitor-find-label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 0.15rem;
+}
+
+.visitor-find-hint {
+	font-size: 0.8rem;
+	color: var(--bs-secondary-color, #6c757d);
+	margin-bottom: 0.45rem;
+}
+
+.visitor-find-input {
+	text-transform: uppercase;
+}
+
+@media (max-width: 767.98px) {
+	.visitor-find-form {
+		max-width: 100%;
+		flex-basis: 100%;
+	}
+}
+
+.visitor-map-card {
+	overflow: hidden;
+	border: 0;
+	border-radius: 0;
+}
+
+.visitor-section-title {
+	font-size: 1.15rem;
+	font-weight: 600;
+	margin-bottom: 0.75rem;
+}
+
+.visitor-stats-card .card-header {
+	font-weight: 600;
+}
+
+.visitor-site-footer {
+	padding: 1.5rem 0 2rem;
+	border-top: 1px solid rgba(0, 0, 0, 0.08);
+	margin-top: 1rem;
+	text-align: center;
+	font-size: 0.85rem;
+}
