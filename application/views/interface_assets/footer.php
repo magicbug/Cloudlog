@@ -1474,6 +1474,7 @@ $(document).ready(function() {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "logbook" && $this->uri->segment(2) != "view") { ?>
+    <script src="<?php echo base_url(); ?>assets/js/sections/logbook_quick_switch.js"></script>
     <!-- Quill editor for Station Diary modal -->
     <script src="<?php echo base_url(); ?>assets/plugins/quill/quill.min.js"></script>
     

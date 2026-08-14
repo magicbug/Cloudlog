@@ -122,7 +122,11 @@
 <div class="container">
 	<?php if ($results) { ?>
 		<div class="logbook-info-bar d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
-			<p class="mb-0 small d-flex flex-wrap align-items-center gap-1"><?php echo lang('gen_hamradio_logbook'); ?>: <span class="badge text-bg-info"><?php echo $this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?></span> <?php echo lang('general_word_location'); ?>: <span class="badge text-bg-info"><?php echo $this->stations->find_name(); ?></span></p>
+			<p class="mb-0 small d-flex flex-wrap align-items-center gap-1"><?php echo lang('gen_hamradio_logbook'); ?>: <span class="badge text-bg-info"><?php echo $this->logbooks_model->find_name($this->session->userdata('active_station_logbook')); ?></span> <?php echo lang('general_word_location'); ?>: <span class="badge text-bg-info"><?php echo $this->stations->find_name(); ?></span>
+				<button type="button" class="btn btn-sm btn-outline-secondary ms-1" data-bs-toggle="modal" data-bs-target="#logbookQuickSwitchModal">
+					<i class="fas fa-exchange-alt me-1"></i><?php echo lang('station_logbooks_change'); ?>
+				</button>
+			</p>
 			<?php if ($this->session->userdata('user_show_notes') == 1) { ?>
 				<div class="logbook-diary-action w-100">
 					<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#stationDiaryModal">
@@ -134,6 +138,10 @@
 	<?php } ?>
 </div>
 </div>
+
+<?php if ($results) {
+	$this->load->view('logbooks/components/quick_switch_modal');
+} ?>
 
 <div class="container logbook">
 

@@ -645,5 +645,159 @@ class Logbooks_model extends CI_Model {
 
       return $query->result_array()[0]['public_search'];
 	}
+
+	/**
+	 * Persist the last-used station location for a logbook (per user).
+	 */
+	public function save_last_location($logbook_id, $station_id) {
+		$clean_logbook_id = $this->security->xss_clean($logbook_id);
+		$clean_station_id = $this->security->xss_clean($station_id);
+
+		if (empty($clean_logbook_id) || empty($clean_station_id) || $clean_station_id === '0') {
+			return false;
+		}
+
+		if (!$this->check_logbook_is_accessible($clean_logbook_id)) {
+			return false;
+		}
+
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+		if (!$CI->Stations->check_station_is_accessible($clean_station_id)) {
+			return false;
+		}
+
+		$CI->load->model('user_options_model');
+		$CI->user_options_model->set_option(
+			'logbook',
+			'last_location',
+			array((string) $clean_logbook_id => (string) $clean_station_id)
+		);
+
+		return true;
+	}
+
+	/**
+	 * Read the last-used station location for a logbook (per user).
+	 */
+	public function get_last_location($logbook_id) {
+		$clean_logbook_id = $this->security->xss_clean($logbook_id);
+
+		if (empty($clean_logbook_id)) {
+			return null;
+		}
+
+		$CI =& get_instance();
+		$CI->load->model('user_options_model');
+		$query = $CI->user_options_model->get_options(
+			'logbook',
+			array(
+				'option_name' => 'last_location',
+				'option_key' => (string) $clean_logbook_id,
+			)
+		);
+
+		if ($query->num_rows() > 0) {
+			return $query->row()->option_value;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Activate a stored location for the given logbook when valid.
+	 */
+	public function restore_last_location($logbook_id) {
+		$last_location = $this->get_last_location($logbook_id);
+
+		if ($last_location === null || $last_location === '' || $last_location === '0') {
+			return array('changed' => false);
+		}
+
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+
+		if (!$CI->Stations->check_station_is_accessible($last_location)) {
+			return array('changed' => false);
+		}
+
+		$current_active = $CI->Stations->find_active();
+		if ((string) $current_active === (string) $last_location) {
+			return array(
+				'changed' => false,
+				'station_id' => $last_location,
+			);
+		}
+
+		$CI->Stations->set_active($current_active, $last_location);
+
+		$station = $CI->Stations->profile_clean($last_location);
+		$station_name = ($station && isset($station->station_profile_name))
+			? $station->station_profile_name
+			: '';
+
+		return array(
+			'changed' => true,
+			'station_id' => $last_location,
+			'station_name' => $station_name,
+		);
+	}
+
+	/**
+	 * Switch logbook and restore or seed the last-used location.
+	 */
+	public function switch_logbook($new_logbook_id) {
+		$clean_new = xss_clean($new_logbook_id);
+
+		if (!$this->check_logbook_is_accessible($clean_new)) {
+			return array('success' => false);
+		}
+
+		$CI =& get_instance();
+		$CI->load->model('Stations');
+
+		$old_logbook_id = $CI->session->userdata('active_station_logbook');
+		$current_station_id = $CI->Stations->find_active();
+
+		if ($old_logbook_id && $current_station_id && $current_station_id !== '0') {
+			$this->save_last_location($old_logbook_id, $current_station_id);
+		}
+
+		$this->set_logbook_active($clean_new);
+
+		$had_stored_location = $this->get_last_location($clean_new) !== null;
+		$restore_result = $this->restore_last_location($clean_new);
+
+		if (!$had_stored_location) {
+			$current_station_id = $CI->Stations->find_active();
+			if ($current_station_id && $current_station_id !== '0') {
+				$this->save_last_location($clean_new, $current_station_id);
+			}
+		}
+
+		return array(
+			'success' => true,
+			'location_changed' => !empty($restore_result['changed']),
+			'station_name' => $restore_result['station_name'] ?? null,
+		);
+	}
+
+	/**
+	 * Remove last-location preferences pointing at a deleted station.
+	 */
+	public function clear_last_location_for_station($station_id) {
+		$clean_station_id = $this->security->xss_clean($station_id);
+		$user_id = $this->session->userdata('user_id');
+
+		if (empty($clean_station_id) || empty($user_id)) {
+			return;
+		}
+
+		$this->db->where('user_id', $user_id);
+		$this->db->where('option_type', 'logbook');
+		$this->db->where('option_name', 'last_location');
+		$this->db->where('option_value', (string) $clean_station_id);
+		$this->db->delete('user_options');
+	}
 }
 ?>
