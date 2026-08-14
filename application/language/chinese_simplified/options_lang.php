@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = '公开电台日志';
 $lang['options_public_station_diary_enabled'] = '公开电台日志';
 $lang['options_public_station_diary_enabled_hint'] = '启用或禁用用户创建公开电台日志条目的功能。 禁用时，无论个人设置如何，所有日志条目都保持私密。';
 $lang['options_public_station_diary_settings_saved'] = '公开电台日志设置已成功保存。';
+$lang['options_public_map_show_confirmations'] = '公开地图确认';
+$lang['options_public_map_show_confirmations_enabled'] = '在公开地图上显示确认';
+$lang['options_public_map_show_confirmations_hint'] = '启用或禁用在公开访客地图上显示哪些 QSO 已确认（LoTW、eQSL、纸质 QSL 或 QRZ.com）。';
+$lang['options_public_map_show_confirmations_settings_saved'] = '公开地图确认设置已成功保存。';
 $lang['options_enabled'] = '启用';
 $lang['options_disabled'] = '禁用';
 

@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = 'Openbaar stationsdagboek';
 $lang['options_public_station_diary_enabled'] = 'Openbaar stationsdagboek';
 $lang['options_public_station_diary_enabled_hint'] = 'Schakel de mogelijkheid voor gebruikers in of uit om openbare stationsdagboekitems te maken. Wanneer uitgeschakeld, blijven alle dagboekitems privé, ongeacht de individuele instellingen.';
 $lang['options_public_station_diary_settings_saved'] = 'Instellingen voor openbaar stationsdagboek zijn succesvol opgeslagen.';
+$lang['options_public_map_show_confirmations'] = 'Bevestigingen op openbare kaarten';
+$lang['options_public_map_show_confirmations_enabled'] = 'Bevestigingen op openbare kaarten tonen';
+$lang['options_public_map_show_confirmations_hint'] = 'Schakel het tonen van bevestigde QSO\'s (LoTW, eQSL, papieren QSL of QRZ.com) op openbare bezoekerskaarten in of uit.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'Instellingen voor bevestigingen op openbare kaarten zijn succesvol opgeslagen.';
 $lang['options_enabled'] = 'Ingeschakeld';
 $lang['options_disabled'] = 'Uitgeschakeld';
 

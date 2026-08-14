@@ -112,6 +112,10 @@ $lang['options_public_station_diary'] = 'Genel istasyon günlüğü';
 $lang['options_public_station_diary_enabled'] = 'Genel istasyon günlüğü';
 $lang['options_public_station_diary_enabled_hint'] = 'Kullanıcıların genel istasyon günlüğü giriş oluşturma yeteneğini etkinleştirin veya devre dışı bırakın. Devre dışı bırakıldığında, bireysel ayarlardan bağımsız olarak tüm günlük giriş leri özel kalır.';
 $lang['options_public_station_diary_settings_saved'] = 'Genel istasyon günlüğü ayarları başarıyla kaydedildi.';
+$lang['options_public_map_show_confirmations'] = 'Genel haritalarda onaylar';
+$lang['options_public_map_show_confirmations_enabled'] = 'Genel haritalarda onayları göster';
+$lang['options_public_map_show_confirmations_hint'] = 'Genel ziyaretçi haritalarında hangi QSO\'ların onaylandığını (LoTW, eQSL, kâğıt QSL veya QRZ.com) göstermeyi etkinleştirin veya devre dışı bırakın.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'Genel harita onay ayarları başarıyla kaydedildi.';
 $lang['options_enabled'] = 'Etkinleştirildi';
 $lang['options_disabled'] = 'Devre dışı';
 

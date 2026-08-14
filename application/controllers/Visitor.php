@@ -203,7 +203,8 @@ class Visitor extends CI_Controller {
 
 		$qsos = $this->logbook_model->get_qsos('18', $offset, $logbooks_locations_array);
 		// [PLOT] ADD plot //
-		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result());
+		$hide_conf = !$this->visitor_show_confirmations();
+		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result(), $hide_conf);
 	
 		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode($plot_array);
@@ -309,8 +310,10 @@ class Visitor extends CI_Controller {
 		$array_confirmed_grid_4char = array();
 		$array_confirmed_grid_6char = array();
 
+		$show_conf = $this->visitor_show_confirmations() ? 'true' : 'false';
+
 		// Get initial data for "All" bands
-		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, $show_conf, $show_conf, $show_conf, $show_conf, $default_sat, 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0)
 		{
@@ -340,7 +343,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// Get worked squares (all bands by default)
-		$query = $this->gridmap_model->get_band($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0)
 		{
@@ -370,7 +373,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// Get VUCC squares (worked)
-		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, 'All', $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0)
 		{
@@ -395,7 +398,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// Confirmed VUCC Squares  
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($default_band, $default_mode, $show_conf, $show_conf, $show_conf, $show_conf, $default_sat, 'All', $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0)
 		{
@@ -544,8 +547,9 @@ class Visitor extends CI_Controller {
 		$array_grid_4char_confirmed = array();
 		$array_grid_6char_confirmed = array();
 
-		// For public visitor, we don't show QSL confirmations, so set all to false
-		$query = $this->gridmap_model->get_band_confirmed($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$show_conf = $this->visitor_show_confirmations() ? 'true' : 'false';
+
+		$query = $this->gridmap_model->get_band_confirmed($band, $mode, $show_conf, $show_conf, $show_conf, $show_conf, $sat, 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) 	{
@@ -568,7 +572,7 @@ class Visitor extends CI_Controller {
 			}
 		}
 
-		$query = $this->gridmap_model->get_band($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band($band, $mode, 'false', 'false', 'false', 'false', $sat, 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -592,7 +596,7 @@ class Visitor extends CI_Controller {
 
 			}
 		}
-		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($band, $mode, 'false', 'false', 'false', 'false', $sat, 'All', $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) {
@@ -617,7 +621,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// // Confirmed Squares
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, $show_conf, $show_conf, $show_conf, $show_conf, $sat, 'All', $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) 			{
@@ -651,6 +655,10 @@ class Visitor extends CI_Controller {
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
+	}
+
+	private function visitor_show_confirmations() {
+		return $this->optionslib->get_option('public_map_show_confirmations') == '1';
 	}
 
 }

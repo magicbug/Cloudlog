@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = 'Julkinen asemapäiväkirja';
 $lang['options_public_station_diary_enabled'] = 'Julkinen asemapäiväkirja';
 $lang['options_public_station_diary_enabled_hint'] = 'Ota käyttöön tai poista käytöstä käyttäjien kyky luoda julkisia asemapäiväkirjamerkintöjä. Kun poistetaan käytöstä, kaikki päiväkirjamerkinnät pysyvät yksityisinä yksittäisistä asetuksista riippumatta.';
 $lang['options_public_station_diary_settings_saved'] = 'Julkisen asemapäiväkirjan asetukset on tallennettu onnistuneesti.';
+$lang['options_public_map_show_confirmations'] = 'Vahvistukset julkisilla kartoilla';
+$lang['options_public_map_show_confirmations_enabled'] = 'Näytä vahvistukset julkisilla kartoilla';
+$lang['options_public_map_show_confirmations_hint'] = 'Ota käyttöön tai poista käytöstä vahvistettujen QSO:iden (LoTW, eQSL, paperinen QSL tai QRZ.com) näyttäminen julkisilla vierailijakartoilla.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'Julkisten karttojen vahvistusasetukset on tallennettu onnistuneesti.';
 $lang['options_enabled'] = 'Käytössä';
 $lang['options_disabled'] = 'Poissa käytöstä';
 
