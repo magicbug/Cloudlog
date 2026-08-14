@@ -258,7 +258,7 @@ var favs={};
 
 	$('#fav_add').click(function (event) {
 		event.preventDefault();
-		save_fav();
+		open_fav_name_modal(default_fav_name(), '');
 	});
 
 	$(document).on("click", ".fav-del", function (event) {
@@ -267,12 +267,33 @@ var favs={};
 		del_fav($(this).attr('data-fav-name'));
 	});
 
+	$(document).on("click", ".fav-rename", function (event) {
+		event.preventDefault();
+		event.stopPropagation();
+		open_fav_name_modal($(this).attr('data-fav-name'), $(this).attr('data-fav-name'));
+	});
+
 	$(document).on("click", "#fav_menu .dropdown-item", function (event) {
-		if ($(event.target).closest('.fav-del').length) {
+		if ($(event.target).closest('.fav-del, .fav-rename').length) {
 			return;
 		}
 		event.preventDefault();
 		apply_fav($(this).find('.fav-recall').attr('data-fav-name'));
+	});
+
+	$('#qsoFavNameSave').click(function () {
+		submit_fav_name_modal();
+	});
+
+	$('#qsoFavNameInput').on('keydown', function (event) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			submit_fav_name_modal();
+		}
+	});
+
+	$('#qsoFavNameModal').on('shown.bs.modal', function () {
+		$('#qsoFavNameInput').trigger('focus').trigger('select');
 	});
 
 
@@ -300,8 +321,21 @@ var favs={};
 			success: function(result) {
 				$("#fav_menu").empty();
 				for (const key in result) {
-					var safeName = escapeNoticeValue(key);
-					$("#fav_menu").append('<label class="dropdown-item" style="display: flex; justify-content: space-between; align-items: center;"><span class="fav-recall" data-fav-name="' + safeName + '">' + safeName + '</span><span class="badge bg-danger fav-del" data-fav-name="' + safeName + '" role="button" title="Delete"><i class="fas fa-trash-alt"></i></span></label>');
+					var hint = fav_hint(result[key]);
+					var $item = $('<label class="dropdown-item" style="display: flex; justify-content: space-between; align-items: center; gap: 0.35rem;"></label>');
+					var $name = $('<span class="fav-recall" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1;"></span>')
+						.attr('data-fav-name', key)
+						.attr('title', hint)
+						.text(key);
+					var $rename = $('<span class="badge bg-secondary fav-rename" role="button"></span>')
+						.attr('data-fav-name', key)
+						.attr('title', typeof lang_fav_rename !== 'undefined' ? lang_fav_rename : 'Rename')
+						.html('<i class="fas fa-pen"></i>');
+					var $del = $('<span class="badge bg-danger fav-del" role="button" title="Delete"></span>')
+						.attr('data-fav-name', key)
+						.html('<i class="fas fa-trash-alt"></i>');
+					$item.append($name, $rename, $del);
+					$("#fav_menu").append($item);
 				}
 				favs=result;
 			}
@@ -338,16 +372,68 @@ var favs={};
 		});
 	}
 
-	function save_fav() {
-		var payload={};
-		payload.sat_name=$('#sat_name').val();
-		payload.sat_mode=$('#sat_mode').val();
-		payload.band_rx=$('#band_rx').val();
-		payload.band=$('#band').val();
-		payload.frequency_rx=$('#frequency_rx').val();
-		payload.frequency=$('#frequency').val();
-		payload.prop_mode=$('#selectPropagation').val();
-		payload.mode=$('#mode').val();
+	function default_fav_name() {
+		var sat = ($('#sat_name').val() || '').trim();
+		var mode = ($('#mode').val() || '').trim();
+		if (sat !== '') {
+			return (sat + '/' + mode).substring(0, 45);
+		}
+		return (($('#band').val() || '').trim() + '/' + mode).substring(0, 45);
+	}
+
+	function fav_hint(fav) {
+		if (!fav) {
+			return '';
+		}
+		if (hasFieldValue(fav.sat_name)) {
+			return [fav.sat_name, fav.sat_mode || fav.mode].filter(Boolean).join(' / ');
+		}
+		return [fav.band, fav.mode].filter(Boolean).join(' / ');
+	}
+
+	function open_fav_name_modal(name, oldName) {
+		$('#qsoFavNameInput').val(name || '');
+		$('#qsoFavOldName').val(oldName || '');
+		var modalElement = document.getElementById('qsoFavNameModal');
+		if (!modalElement || typeof bootstrap === 'undefined') {
+			var fallback = window.prompt(typeof lang_fav_rename !== 'undefined' ? lang_fav_rename : 'Favourite name', name || '');
+			if (fallback === null) {
+				return;
+			}
+			save_fav(fallback, oldName);
+			return;
+		}
+		bootstrap.Modal.getOrCreateInstance(modalElement).show();
+	}
+
+	function submit_fav_name_modal() {
+		var name = ($('#qsoFavNameInput').val() || '').trim();
+		var oldName = ($('#qsoFavOldName').val() || '').trim();
+		var modalElement = document.getElementById('qsoFavNameModal');
+		if (modalElement && typeof bootstrap !== 'undefined') {
+			bootstrap.Modal.getOrCreateInstance(modalElement).hide();
+		}
+		save_fav(name, oldName);
+	}
+
+	function save_fav(name, oldName) {
+		var payload = {};
+		if (oldName && favs[oldName]) {
+			payload = $.extend({}, favs[oldName]);
+		} else {
+			payload.sat_name=$('#sat_name').val();
+			payload.sat_mode=$('#sat_mode').val();
+			payload.band_rx=$('#band_rx').val();
+			payload.band=$('#band').val();
+			payload.frequency_rx=$('#frequency_rx').val();
+			payload.frequency=$('#frequency').val();
+			payload.prop_mode=$('#selectPropagation').val();
+			payload.mode=$('#mode').val();
+		}
+		payload.option_name = (name || '').trim().substring(0, 45);
+		if (oldName) {
+			payload.old_option_name = oldName;
+		}
 		$.ajax({
 			url: base_url+'index.php/user_options/add_edit_fav',
 			method: 'POST',
