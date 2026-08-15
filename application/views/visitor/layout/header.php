@@ -34,59 +34,54 @@
 
     <link rel="icon" href="<?php echo base_url(); ?>favicon.ico">
 
-    <title><?php if(isset($page_title)) { echo $page_title; } ?> - Cloudlog</title>
+    <title><?php if(isset($page_title)) { echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); } ?></title>
   </head>
-  <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light main-nav">
+  <body class="visitor-body">
+<?php
+	$slug = isset($slug) ? $slug : '';
+	$brand_name = isset($brand_name) && $brand_name !== '' ? $brand_name : 'Cloudlog';
+	$public_search_enabled = !empty($public_search_enabled);
+	$oqrs_enabled = !empty($oqrs_enabled);
+	$seg1 = $this->uri->segment(1);
+	$seg2 = $this->uri->segment(2);
+	$reserved = array('search', 'satellites', 'gridsquares');
+	$is_home = ($seg1 == 'visitor' && !in_array($seg2, $reserved));
+	$is_grids = ($seg1 == 'visitor' && in_array($seg2, array('satellites', 'gridsquares')));
+	$is_oqrs = ($seg1 == 'oqrs');
+	$brand_href = !empty($slug) ? site_url('visitor/'.$slug) : site_url();
+	$brand_display = str_replace('0', '&Oslash;', htmlspecialchars($brand_name, ENT_QUOTES, 'UTF-8'));
+?>
+<nav class="navbar navbar-expand-lg navbar-light bg-light main-nav visitor-nav">
 <div class="container">
-
-		<?php
-		if (!empty($slug)) {
-			echo '<a class="navbar-brand" href="' . site_url('visitor/'.$slug) .'">Cloudlog</a>';
-		} else {
-			echo '<a class="navbar-brand" href="' . site_url() .'">Cloudlog</a>';
-		}
-		?>
+		<a class="navbar-brand" href="<?php echo $brand_href; ?>"><?php echo $brand_display; ?></a>
 	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
 	<div class="collapse navbar-collapse" id="navbarNav">
 
-		<ul class="navbar-nav">
-		<?php
-		if (!empty($slug)) { ?>
+		<ul class="navbar-nav me-auto">
+		<?php if (!empty($slug)) { ?>
 		<li class="nav-item">
-			<a class="nav-link" href="<?php echo site_url('visitor/satellites/'.$slug);?>">Gridsquares</a>
+			<a class="nav-link<?php echo $is_home ? ' active' : ''; ?>" href="<?php echo site_url('visitor/'.$slug); ?>"><?php echo lang('visitor_logbook'); ?></a>
 		</li>
-		<?php
-			$this->CI =& get_instance();
-			if ($this->CI->oqrs_enabled($slug)) {
-			?>
+		<li class="nav-item">
+			<a class="nav-link<?php echo $is_grids ? ' active' : ''; ?>" href="<?php echo site_url('visitor/gridsquares/'.$slug); ?>"><?php echo lang('menu_gridsquares'); ?></a>
+		</li>
+		<?php if ($oqrs_enabled) { ?>
 			<li class="nav-item">
-				<a class="nav-link" href="<?php echo site_url('oqrs');?>">OQRS</a>
+				<a class="nav-link<?php echo $is_oqrs ? ' active' : ''; ?>" href="<?php echo site_url('oqrs/'.$slug); ?>"><?php echo lang('visitor_request_qsl'); ?></a>
 			</li>
-			<?php } 
-		}
-		if ($this->uri->segment(1) != "oqrs") { ?>
-		<li class="nav-item">
-			 <a class="btn btn-outline-primary" href="<?php echo site_url('user/login');?>">Login</a>
-		</li>
+		<?php } ?>
 		<?php } ?>
 		</ul>
-		<div class="m-2">
-			<?php if (!empty($slug)) {
-				$this->CI =& get_instance();
-				if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
+		<?php if (!empty($slug) && $public_search_enabled && !$is_home && !$is_oqrs) { ?>
 					<form method="post" name="searchForm" action="<?php echo site_url('visitor/search'); ?>" onsubmit="return validateForm()" class="d-flex align-items-center">
-						<input class="form-control me-sm-2" id="searchcall" type="search" name="callsign" placeholder="<?php echo lang('menu_search_text'); ?>" <?php if (isset($callsign) && $callsign != '') { echo 'value="'.strtoupper($callsign).'"'; } ?> aria-label="Search" data-toogle="tooltip" data-bs-placement="bottom" title="Please enter a callsign!">
-						<input type="hidden" name="public_slug" value="<?php echo $slug; ?>">
+						<input class="form-control me-sm-2" id="searchcall" type="search" name="callsign" placeholder="<?php echo lang('visitor_search_callsign'); ?>" <?php if (isset($callsign) && $callsign != '') { echo 'value="'.htmlspecialchars(strtoupper($callsign), ENT_QUOTES, 'UTF-8').'"'; } ?> aria-label="Search" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo lang('visitor_search_callsign'); ?>">
+						<input type="hidden" name="public_slug" value="<?php echo htmlspecialchars($slug, ENT_QUOTES, 'UTF-8'); ?>">
 						<button title="<?php echo lang('menu_search_button'); ?>" class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i>
 							<div class="d-inline d-lg-none" style="padding-left: 10px"><?php echo lang('menu_search_button'); ?></div>
 						</button>
 					</form>
-				<?php }
-			} ?>
-		</div>
+		<?php } ?>
 	</div>
 </div>
 </nav>

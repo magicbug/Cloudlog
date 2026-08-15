@@ -11,15 +11,32 @@ class User_Options extends CI_Controller {
 
 	public function add_edit_fav() {
 		$obj = json_decode(file_get_contents("php://input"), true);
+		if (!is_array($obj)) {
+			$obj = array();
+		}
 		foreach($obj as $option_key => $option_value) {
 			$obj[$option_key]=$this->security->xss_clean($option_value);
 		}
-		if ($obj['sat_name'] ?? '' != '') {
-			$option_name=$obj['sat_name'].'/'.$obj['mode'];
+		$custom_name = trim((string)($obj['option_name'] ?? ''));
+		$old_option_name = trim((string)($obj['old_option_name'] ?? ''));
+		unset($obj['option_name'], $obj['old_option_name']);
+
+		$sat_name = trim((string)($obj['sat_name'] ?? ''));
+		$mode = trim((string)($obj['mode'] ?? ''));
+		$band = trim((string)($obj['band'] ?? ''));
+		if ($custom_name !== '') {
+			$option_name = $custom_name;
+		} elseif ($sat_name !== '') {
+			$option_name = $sat_name.'/'.$mode;
 		} else {
-			$option_name=$obj['band'].'/'.$obj['mode'];
+			$option_name = $band.'/'.$mode;
 		}
+		$option_name = mb_substr($option_name, 0, 45);
+
 		$this->user_options_model->set_option('Favourite',$option_name, $obj);
+		if ($old_option_name !== '' && $old_option_name !== $option_name) {
+			$this->user_options_model->del_option('Favourite', $old_option_name);
+		}
 		$jsonout['success']=1;
 		header('Content-Type: application/json');
 		echo json_encode($jsonout);

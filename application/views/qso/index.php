@@ -12,6 +12,7 @@
     var text_error_timeoff_less_timeon = "<?php echo lang('qso_error_timeoff_less_timeon'); ?>";
     var lang_qso_title_previous_contacts = "<?php echo lang('qso_title_previous_contacts'); ?>";
     var lang_qso_title_times_worked_before = "<?php echo lang('qso_title_times_worked_before'); ?>";
+    var lang_fav_rename = <?php echo json_encode(lang('fav_rename') ?: 'Rename'); ?>;
     
     // Function to switch between LIVE and POST mode without the beforeunload warning
     function switchMode(url) {
@@ -186,7 +187,7 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="fav_item" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-star"></i></a>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#" id="fav_add"><?php echo lang('fav_add'); ?></a>
+                  <button type="button" class="dropdown-item" id="fav_add"><?php echo lang('fav_add'); ?></button>
                   <div class="dropdown-divider"></div>
                   <div id="fav_menu"></div>
                 </div>
@@ -1332,6 +1333,30 @@
         <button type="button" class="btn btn-warning" id="confirmLeaveQso">
           <i class="fas fa-sign-out-alt me-1"></i>Leave Page
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QSO Favourite Name Modal -->
+<div class="modal fade" id="qsoFavNameModal" tabindex="-1" aria-labelledby="qsoFavNameModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="qsoFavNameModalLabel">
+          <i class="fa fa-star me-2"></i><?php echo lang('fav_name') ?: 'Favourite name'; ?>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="qsoFavNameInput" class="form-label"><?php echo lang('fav_name') ?: 'Favourite name'; ?></label>
+        <input type="text" class="form-control" id="qsoFavNameInput" maxlength="45" autocomplete="off">
+        <div class="form-text"><?php echo lang('fav_name_help') ?: 'Give this favourite a custom name, or keep the default band/mode.'; ?></div>
+        <input type="hidden" id="qsoFavOldName" value="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo lang('general_word_cancel'); ?></button>
+        <button type="button" class="btn btn-primary" id="qsoFavNameSave"><?php echo lang('fav_save') ?: 'Save Favourite'; ?></button>
       </div>
     </div>
   </div>

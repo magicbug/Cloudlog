@@ -39,6 +39,16 @@ $lang['station_logbooks_link_loc'] = "Vincular Local";
 $lang['station_logbooks_linked_loc'] = "Locais Vinculados";
 $lang['station_logbooks_no_linked_loc'] = "Nenhum local vinculado";
 $lang['station_logbooks_unlink_station_location'] = "Desvincular Local de Estação";
+$lang['station_logbooks_change'] = "Change";
+$lang['station_logbooks_quick_switch_title'] = "Change Logbook & Location";
+$lang['station_logbooks_quick_switch_step_logbook'] = "Choose Logbook";
+$lang['station_logbooks_quick_switch_step_location'] = "Choose Location";
+$lang['station_logbooks_quick_switch_next'] = "Next";
+$lang['station_logbooks_quick_switch_back'] = "Back";
+$lang['station_logbooks_quick_switch_set_active'] = "Set Active";
+$lang['station_logbooks_quick_switch_search'] = "Search...";
+$lang['station_logbooks_quick_switch_invalid_location'] = "Invalid station location selected.";
+$lang['station_logbooks_location_restored'] = "Active location set to %s";
 
 $lang['station_location'] = 'Local de Estação';
 $lang['station_location_plural'] = "Locais de Estação";

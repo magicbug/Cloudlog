@@ -1,248 +1,142 @@
 <?php
-function echo_table_header_col($ctx, $name) {
-	switch($name) {
-		case 'Mode': echo '<th>'.$ctx->lang->line('gen_hamradio_mode').'</th>'; break;
-		case 'RSTS': echo '<th class="d-none d-sm-table-cell">'.$ctx->lang->line('gen_hamradio_rsts').'</th>'; break;
-		case 'RSTR': echo '<th class="d-none d-sm-table-cell">'.$ctx->lang->line('gen_hamradio_rstr').'</th>'; break;
-		case 'Country': echo '<th>'.$ctx->lang->line('general_word_country').'</th>'; break;
-		case 'IOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_iota').'</th>'; break;
-		case 'SOTA': echo '<th>'.$ctx->lang->line('gen_hamradio_sota').'</th>'; break;
-		case 'State': echo '<th>'.$ctx->lang->line('gen_hamradio_state').'</th>'; break;
-		case 'Grid': echo '<th>'.$ctx->lang->line('gen_hamradio_gridsquare').'</th>'; break;
-		case 'Distance': echo '<th>'.$ctx->lang->line('gen_hamradio_distance').'</th>'; break;
-		case 'Band': echo '<th>'.$ctx->lang->line('gen_hamradio_band').'</th>'; break;
-		case 'Frequency': echo '<th>'.$ctx->lang->line('gen_hamradio_frequency').'</th>'; break;
-		case 'Operator': echo '<th>'.$ctx->lang->line('gen_hamradio_operator').'</th>'; break;
-	}
+function visitor_display_callsign($call) {
+	return str_replace('0', '&Oslash;', htmlspecialchars(strtoupper((string) $call), ENT_QUOTES, 'UTF-8'));
 }
 
-function echo_table_col($row, $name) {
-	$ci = &get_instance();
-	switch($name) {
-		case 'Mode':    echo '<td>'; echo $row->COL_SUBMODE==null?$row->COL_MODE:$row->COL_SUBMODE . '</td>'; break;
-		case 'RSTS':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_SENT; if ($row->COL_STX) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; printf("%03d", $row->COL_STX); echo '</span>';} if ($row->COL_STX_STRING) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_STX_STRING . '</span>';} echo '</td>'; break;
-		case 'RSTR':    echo '<td class="d-none d-sm-table-cell">' . $row->COL_RST_RCVD; if ($row->COL_SRX) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">'; printf("%03d", $row->COL_SRX); echo '</span>';} if ($row->COL_SRX_STRING) { echo ' <span data-bs-toggle="tooltip" title="'.($row->COL_CONTEST_ID!=""?$row->COL_CONTEST_ID:"n/a").'" class="badge text-bg-light">' . $row->COL_SRX_STRING . '</span>';} echo '</td>'; break;
-		case 'Country': echo '<td>' . ucwords(strtolower(($row->COL_COUNTRY))) . '</td>'; break;
-		case 'IOTA':    echo '<td>' . ($row->COL_IOTA) . '</td>'; break;
-		case 'SOTA':    echo '<td>' . ($row->COL_SOTA_REF) . '</td>'; break;
-		case 'WWFF':    echo '<td>' . ($row->COL_WWFF_REF) . '</td>'; break;
-		case 'POTA':    echo '<td>' . ($row->COL_POTA_REF) . '</td>'; break;
-		case 'Grid':    echo '<td>'; echoQrbCalcLink($row->station_gridsquare, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE); echo '</td>'; break;
-		case 'Distance':echo '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</td>'; break;
-		case 'Band':    echo '<td>'; if($row->COL_SAT_NAME != null) { echo '<a href="https://db.satnogs.org/search/?q='.$row->COL_SAT_NAME.'" target="_blank">'.$row->COL_SAT_NAME.'</a></td>'; } else { echo strtolower($row->COL_BAND); } echo '</td>'; break;
-		case 'Frequency':    echo '<td>'; if($row->COL_FREQ != null) { echo $ci->frequency->hz_to_mhz($row->COL_FREQ); } else { echo strtolower($row->COL_BAND); } echo '</td>'; break;
-		case 'State':   echo '<td>' . ($row->COL_STATE) . '</td>'; break;
-		case 'Operator': echo '<td>' . ($row->COL_OPERATOR) . '</td>'; break;
-	}
-}
-
-function echoQrbCalcLink($mygrid, $grid, $vucc) {
-	if (!empty($grid)) {
-		echo $grid . ' <a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $grid . '\')"><i class="fas fa-globe"></i></a>';
-	} else if (!empty($vucc)) {
-		echo $vucc .' <a href="javascript:spawnQrbCalculator(\'' . $mygrid . '\',\'' . $vucc . '\')"><i class="fas fa-globe"></i></a>';
-	}
-}
+$brand_name = isset($brand_name) ? $brand_name : '';
+$public_name = isset($public_name) ? trim((string) $public_name) : '';
+$station_callsigns = isset($station_callsigns) && is_array($station_callsigns) ? $station_callsigns : array();
+$slug = isset($slug) ? $slug : '';
+$date_format = isset($date_format) && $date_format !== '' ? $date_format : 'Y-m-d';
+$on_air = !empty($public_radio_status) && isset($radio_status) && is_object($radio_status) && method_exists($radio_status, 'num_rows') && $radio_status->num_rows();
+$public_search_enabled = !empty($public_search_enabled);
+$show_public_subtitle = ($public_name !== '' && strtoupper($public_name) !== strtoupper($brand_name));
 ?>
-<div class="container dashboard">
-</div>
-
-<!-- Map -->
-<!-- qrz.com blocks JavaScript when embedding Cloudlog. Map display doesn't work without JS. -->
 <noscript><style> #map { display: none } </style></noscript>
-<div id="map" class="map-leaflet" style="width: 100%; height: 350px"></div>
-
-<div id="container" style="padding-top: 0px; margin-top: 5px;" class="container dashboard">
-
-<!-- Log Data -->
-<div class="row logdata">
-  <div class="col-sm-8">
-
-  	<div class="table-responsive">
-    	<table class="table table-striped table-hover">
-
-    		<thead>
-				<tr class="titles">
-					<th><?php echo lang('general_word_date'); ?></th>
-
-					<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-					<th><?php echo lang('general_word_time'); ?></th>
-					<?php } ?>
-					<th>&nbsp;</th>
-					<th><?php echo lang('gen_hamradio_call'); ?></th>
-					<?php
-					echo_table_header_col($this, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
-					echo_table_header_col($this, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
-					echo_table_header_col($this, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
-					echo_table_header_col($this, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-				?>
-				</tr>
-			</thead>
-
-			<?php
-			$i = 0;
-			if(!empty($results)) {
-			foreach ($results->result() as $row) { ?>
-				<?php  echo '<tr class="tr'.($i & 1).'">'; ?>
-
-					<?php
-					// Get Date format
-					if($this->session->userdata('user_date_format')) {
-						// If Logged in and session exists
-						$custom_date_format = $this->session->userdata('user_date_format');
-					} else {
-						// Get Default date format from /config/cloudlog.php
-						$custom_date_format = $this->config->item('qso_date_format');
-					}
-
-					?>
-
-					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date($custom_date_format, $timestamp); ?></td>
-					<?php if(($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE || ($this->config->item('show_time'))) { ?>
-					<td><?php $timestamp = strtotime($row->COL_TIME_ON); echo date('H:i', $timestamp); ?></td>
-
-					<?php } ?>
-					<?php
-					$ci = &get_instance();
-					$ci->load->library('DxccFlag');	
-					$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
-					echo '<td><span data-bs-toggle="tooltip" title="' . ucwords(strtolower(($row->name==null?"- NONE -":$row->name))) . '"><span class="fi fi-' . $flag .'"></span></span></td>'; 
-					?>
-					<td>
-                        <?php echo str_replace("0","&Oslash;",strtoupper($row->COL_CALL)); ?>
-					</td>
-					<?php
-						echo_table_col($row, $this->session->userdata('user_column1')==""?'Mode':$this->session->userdata('user_column1'));
-						echo_table_col($row, $this->session->userdata('user_column2')==""?'RSTS':$this->session->userdata('user_column2'));
-						echo_table_col($row, $this->session->userdata('user_column3')==""?'RSTR':$this->session->userdata('user_column3'));
-						echo_table_col($row, $this->session->userdata('user_column4')==""?'Band':$this->session->userdata('user_column4'));
-					?>
-				</tr>
-			<?php $i++; } } ?>
-		</table>
-		<div class="pagination-links">
-			<?php echo $this->pagination->create_links(); ?>
+<div class="container visitor-page">
+	<div class="visitor-showcase">
+		<div class="visitor-hero">
+			<div class="visitor-hero-identity">
+				<span class="visitor-kicker"><?php echo lang('visitor_public_logbook'); ?></span>
+				<h1 class="visitor-callsign"><?php echo visitor_display_callsign($brand_name); ?></h1>
+				<?php if ($show_public_subtitle) { ?>
+					<p class="visitor-logbook-name"><?php echo htmlspecialchars($public_name, ENT_QUOTES, 'UTF-8'); ?></p>
+				<?php } ?>
+				<?php if (count($station_callsigns) > 1) { ?>
+					<p class="visitor-callsigns">
+						<?php
+						$shown = array();
+						foreach ($station_callsigns as $cs) {
+							$shown[] = visitor_display_callsign($cs);
+						}
+						echo implode(' · ', $shown);
+						?>
+					</p>
+				<?php } ?>
+				<?php if ($on_air) { ?>
+					<span class="badge text-bg-success visitor-onair"><i class="fas fa-broadcast-tower"></i> <?php echo lang('visitor_on_air'); ?></span>
+				<?php } ?>
+			</div>
+			<?php if ($public_search_enabled) { ?>
+			<form method="post" name="searchForm" action="<?php echo site_url('visitor/search'); ?>" onsubmit="return validateForm()" class="visitor-find-form">
+				<label class="visitor-find-label" for="searchcall"><?php echo lang('visitor_find_in_log'); ?></label>
+				<p class="visitor-find-hint"><?php echo lang('visitor_find_in_log_hint'); ?></p>
+				<div class="input-group visitor-find-group">
+					<input class="form-control visitor-find-input" id="searchcall" type="search" name="callsign" placeholder="<?php echo lang('visitor_search_callsign'); ?>" aria-label="<?php echo lang('visitor_search_callsign'); ?>" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<?php echo lang('visitor_search_callsign'); ?>">
+					<input type="hidden" name="public_slug" value="<?php echo htmlspecialchars($slug, ENT_QUOTES, 'UTF-8'); ?>">
+					<button class="btn btn-primary" type="submit"><i class="fas fa-search"></i> <?php echo lang('menu_search_button'); ?></button>
+				</div>
+			</form>
+			<?php } ?>
+		</div>
+		<div class="visitor-map-card">
+			<div id="map" class="map-leaflet visitor-map" style="width: 100%; height: 380px"></div>
 		</div>
 	</div>
-  </div>
 
-  <div class="col-sm-4">
-  	<div class="table-responsive">
+	<div class="row logdata">
+		<div class="col-lg-8">
+			<h2 class="visitor-section-title"><?php echo lang('visitor_recent_contacts'); ?></h2>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover visitor-log-table">
+					<thead>
+						<tr class="titles">
+							<th><?php echo lang('general_word_date'); ?></th>
+							<th><?php echo lang('general_word_time'); ?></th>
+							<th>&nbsp;</th>
+							<th><?php echo lang('gen_hamradio_call'); ?></th>
+							<th><?php echo lang('general_word_country'); ?></th>
+							<th><?php echo lang('gen_hamradio_mode'); ?></th>
+							<th><?php echo lang('gen_hamradio_band'); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php
+					$i = 0;
+					if (!empty($results)) {
+						$ci = &get_instance();
+						$ci->load->library('DxccFlag');
+						foreach ($results->result() as $row) {
+							$timestamp = strtotime($row->COL_TIME_ON);
+							$flag = strtolower($ci->dxccflag->getISO($row->COL_DXCC));
+							$country = !empty($row->name) ? $row->name : $row->COL_COUNTRY;
+							$country_label = ucwords(strtolower($country == null ? '- NONE -' : $country));
+							$mode = $row->COL_SUBMODE == null ? $row->COL_MODE : $row->COL_SUBMODE;
+							echo '<tr class="tr'.($i & 1).'">';
+					?>
+							<td><?php echo date($date_format, $timestamp); ?></td>
+							<td><?php echo date('H:i', $timestamp); ?></td>
+							<td><span data-bs-toggle="tooltip" title="<?php echo htmlspecialchars($country_label, ENT_QUOTES, 'UTF-8'); ?>"><span class="fi fi-<?php echo htmlspecialchars($flag, ENT_QUOTES, 'UTF-8'); ?>"></span></span></td>
+							<td><?php echo visitor_display_callsign($row->COL_CALL); ?></td>
+							<td><?php echo htmlspecialchars($country_label, ENT_QUOTES, 'UTF-8'); ?></td>
+							<td><?php echo htmlspecialchars($mode, ENT_QUOTES, 'UTF-8'); ?></td>
+							<td><?php
+								if ($row->COL_SAT_NAME != null) {
+									echo '<a href="https://db.satnogs.org/search/?q='.urlencode($row->COL_SAT_NAME).'" target="_blank" rel="noopener">'.htmlspecialchars($row->COL_SAT_NAME, ENT_QUOTES, 'UTF-8').'</a>';
+								} else {
+									echo htmlspecialchars(strtolower($row->COL_BAND), ENT_QUOTES, 'UTF-8');
+								}
+							?></td>
+						</tr>
+					<?php
+							$i++;
+						}
+					}
+					?>
+					</tbody>
+				</table>
+				<div class="pagination-links">
+					<?php echo $this->pagination->create_links(); ?>
+				</div>
+			</div>
+		</div>
 
-	  	<?php if (isset($logbook_settings->public_radio_status) && $logbook_settings->public_radio_status == 1) { ?>
-	  	<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component'); ?>" hx-trigger="load, every 30s"></div>
-	  	<?php } ?>
+		<div class="col-lg-4">
+			<?php if (!empty($public_radio_status)) { ?>
+			<div id="radio_display" hx-get="<?php echo site_url('visitor/radio_display_component/'.$slug); ?>" hx-trigger="load, every 30s"></div>
+			<?php } ?>
 
+			<div class="card visitor-stats-card mb-3">
+				<div class="card-header"><i class="fas fa-chart-bar"></i> <?php echo lang('visitor_activity'); ?></div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item d-flex justify-content-between"><span><?php echo lang('general_word_total'); ?></span><strong><?php echo (int) $total_qsos; ?></strong></li>
+					<li class="list-group-item d-flex justify-content-between"><span><?php echo lang('general_word_year'); ?></span><strong><?php echo (int) $year_qsos; ?></strong></li>
+					<li class="list-group-item d-flex justify-content-between"><span><?php echo lang('general_word_month'); ?></span><strong><?php echo (int) $month_qsos; ?></strong></li>
+				</ul>
+			</div>
 
-    	<table class="table table-striped">
-			<tr class="titles">
-				<td colspan="2"><i class="fas fa-chart-bar"></i> <?php echo lang('dashboard_qso_breakdown'); ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_total'); ?></td>
-				<td width="50%"><?php echo $total_qsos; ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_year'); ?></td>
-				<td width="50%"><?php echo $year_qsos; ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_month'); ?></td>
-				<td width="50%"><?php echo $month_qsos; ?></td>
-			</tr>
-		</table>
-
-
-
-		<table class="table table-striped">
-			<tr class="titles">
-				<td colspan="2"><i class="fas fa-globe-europe"></i> <?php echo lang('dashboard_countries_breakdown'); ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_worked'); ?></td>
-				<td width="50%"><?php echo $total_countries; ?></td>
-			</tr>
-			<tr>
-				<td width="50%"><a href="#" onclick="return false" title="QSL Cards / eQSL / LoTW" data-bs-toggle="tooltip"><?php echo lang('general_word_confirmed'); ?></a></td>
-				<td width="50%">
-					<?php echo $total_countries_confirmed_paper; ?> /
-					<?php echo $total_countries_confirmed_eqsl; ?> /
-					<?php echo $total_countries_confirmed_lotw; ?>
-				</td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_needed'); ?></td>
-				<td width="50%"><?php echo $total_countries_needed; ?></td>
-			</tr>
-		</table>
-
-		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_qsl_sent != 0 || $total_qsl_rcvd != 0 || $total_qsl_requested != 0)) { ?>
-		<table class="table table-striped">
-			<tr class="titles">
-				<td colspan="2"><i class="fas fa-envelope"></i> <?php echo lang('general_word_qslcards'); ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-				<td width="50%"><?php echo $total_qsl_sent; ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_received'); ?></td>
-				<td width="50%"><?php echo $total_qsl_rcvd; ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_requested'); ?></td>
-				<td width="50%"><?php echo $total_qsl_requested; ?></td>
-			</tr>
-		</table>
-		<?php } ?>
-
-		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_eqsl_sent != 0 || $total_eqsl_rcvd != 0)) { ?>
-		<table class="table table-striped">
-			<tr class="titles">
-				<td colspan="2"><i class="fas fa-address-card"></i> <?php echo lang('general_word_eqslcards'); ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-				<td width="50%"><?php echo $total_eqsl_sent; ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_received'); ?></td>
-				<td width="50%"><?php echo $total_eqsl_rcvd; ?></td>
-			</tr>
-		</table>
-		<?php } ?>
-
-		<?php if((($this->config->item('use_auth') && ($this->session->userdata('user_type') >= 2)) || $this->config->item('use_auth') === FALSE) && ($total_lotw_sent != 0 || $total_lotw_rcvd != 0)) { ?>
-		<table class="table table-striped">
-			<tr class="titles">
-				<td colspan="2"><i class="fas fa-list"></i> <?php echo lang('general_word_lotw'); ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_sent'); ?></td>
-				<td width="50%"><?php echo $total_lotw_sent; ?></td>
-			</tr>
-
-			<tr>
-				<td width="50%"><?php echo lang('general_word_received'); ?></td>
-				<td width="50%"><?php echo $total_lotw_rcvd; ?></td>
-			</tr>
-		</table>
-		<?php } ?>
+			<div class="card visitor-stats-card mb-3">
+				<div class="card-header"><i class="fas fa-globe-europe"></i> <?php echo lang('dashboard_countries_breakdown'); ?></div>
+				<ul class="list-group list-group-flush">
+					<li class="list-group-item d-flex justify-content-between"><span><?php echo lang('general_word_worked'); ?></span><strong><?php echo (int) $total_countries; ?></strong></li>
+					<li class="list-group-item d-flex justify-content-between align-items-start">
+						<span><a href="#" onclick="return false" title="<?php echo lang('visitor_confirmed_via'); ?>" data-bs-toggle="tooltip"><?php echo lang('general_word_confirmed'); ?></a></span>
+						<strong><?php echo (int) $total_countries_confirmed_paper; ?> / <?php echo (int) $total_countries_confirmed_eqsl; ?> / <?php echo (int) $total_countries_confirmed_lotw; ?></strong>
+					</li>
+				</ul>
+			</div>
+		</div>
 	</div>
-  </div>
-</div>
-
 </div>
 
 <div id="partial_view"></div>

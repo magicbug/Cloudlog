@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = 'Δημόσιο ημερολόγιο σ�
 $lang['options_public_station_diary_enabled'] = 'Δημόσιο ημερολόγιο σταθμού';
 $lang['options_public_station_diary_enabled_hint'] = 'Ενεργοποιήστε ή απενεργοποιήστε τη δυνατότητα των χρηστών να δημιουργούν δημόσιες εγγραφές ημερολογίου σταθμού. Όταν απενεργοποιηθεί, όλες οι εγγραφές του ημερολογίου παραμένουν ιδιωτικές ανεξάρτητα από τις ατομικές ρυθμίσεις.';
 $lang['options_public_station_diary_settings_saved'] = 'Οι ρυθμίσεις δημόσιου ημερολογίου σταθμού έχουν αποθηκευθεί με επιτυχία.';
+$lang['options_public_map_show_confirmations'] = 'Επιβεβαιώσεις σε δημόσιους χάρτες';
+$lang['options_public_map_show_confirmations_enabled'] = 'Εμφάνιση επιβεβαιώσεων σε δημόσιους χάρτες';
+$lang['options_public_map_show_confirmations_hint'] = 'Ενεργοποιήστε ή απενεργοποιήστε την εμφάνιση των επιβεβαιωμένων QSO (LoTW, eQSL, έντυπο QSL ή QRZ.com) στους δημόσιους χάρτες επισκεπτών.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'Οι ρυθμίσεις επιβεβαιώσεων σε δημόσιους χάρτες έχουν αποθηκευθεί με επιτυχία.';
 $lang['options_enabled'] = 'Ενεργοποιημένο';
 $lang['options_disabled'] = 'Απενεργοποιημένο';
 

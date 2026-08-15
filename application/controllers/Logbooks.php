@@ -108,10 +108,82 @@ class Logbooks extends CI_Controller {
 
 	public function set_active($id) {
 		$this->load->model('logbooks_model');
-		$this->logbooks_model->set_logbook_active($id);
+		$result = $this->logbooks_model->switch_logbook($id);
+
+		if (!empty($result['success']) && !empty($result['location_changed']) && !empty($result['station_name'])) {
+			$this->session->set_flashdata(
+				'message',
+				sprintf(lang('station_logbooks_location_restored'), $result['station_name'])
+			);
+		}
+
 		$this->user_model->update_session($this->session->userdata('user_id'));
 
 		redirect('logbooks');
+	}
+
+	public function quick_switch() {
+		$this->load->model('logbooks_model');
+		$this->load->model('stations');
+
+		$logbook_id = $this->security->xss_clean($this->input->post('logbook_id'));
+		$station_id = $this->security->xss_clean($this->input->post('station_id'));
+
+		if (!$this->logbooks_model->check_logbook_is_accessible($logbook_id)) {
+			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
+			redirect('logbook');
+			return;
+		}
+
+		if (!$this->stations->check_station_is_accessible($station_id)) {
+			$this->session->set_flashdata('notice', lang('station_logbooks_quick_switch_invalid_location'));
+			redirect('logbook');
+			return;
+		}
+
+		$old_logbook_id = $this->session->userdata('active_station_logbook');
+		$current_station_id = $this->stations->find_active();
+
+		if ($old_logbook_id && $current_station_id && $current_station_id !== '0') {
+			$this->logbooks_model->save_last_location($old_logbook_id, $current_station_id);
+		}
+
+		$this->logbooks_model->set_logbook_active($logbook_id);
+
+		$current_active = $this->stations->find_active();
+		$this->stations->set_active($current_active, $station_id);
+		$this->logbooks_model->save_last_location($logbook_id, $station_id);
+
+		$this->user_model->update_session($this->session->userdata('user_id'));
+
+		redirect('logbook');
+	}
+
+	public function last_location($logbook_id) {
+		$this->load->model('logbooks_model');
+		$this->load->model('stations');
+
+		$clean_id = $this->security->xss_clean($logbook_id);
+
+		if (!$this->logbooks_model->check_logbook_is_accessible($clean_id)) {
+			$this->output->set_status_header(403);
+			header('Content-Type: application/json');
+			echo json_encode(array('station_id' => null));
+			return;
+		}
+
+		$last_location = $this->logbooks_model->get_last_location($clean_id);
+		$current_active = $this->stations->find_active();
+		$station_id = ($last_location !== null && $last_location !== '')
+			? $last_location
+			: $current_active;
+
+		if ($station_id && !$this->stations->check_station_is_accessible($station_id)) {
+			$station_id = $current_active;
+		}
+
+		header('Content-Type: application/json');
+		echo json_encode(array('station_id' => $station_id));
 	}
 
     public function delete($id) {
@@ -179,6 +251,25 @@ class Logbooks extends CI_Controller {
 		$public_search = $this->input->post('public_search') ? 1 : 0;
 		$returndata = $this->logbooks_model->save_public_search($public_search, $logbook_id);
 		echo "<div class=\"alert alert-success\" role=\"alert\">Public Search Settings Saved</div>";
+	}
+
+	public function save_publicname() {
+		$this->load->model('logbooks_model');
+
+		$logbook_id = $this->input->post('logbook_id');
+
+		if (!$this->logbooks_model->is_logbook_owner($logbook_id)) {
+			echo "<div class=\"alert alert-danger\" role=\"alert\">Only the owner can modify public settings</div>";
+			return;
+		}
+
+		$public_name = $this->input->post('public_name', true);
+		$saved = $this->logbooks_model->save_public_name($public_name, $logbook_id);
+		if ($saved === false) {
+			echo "<div class=\"alert alert-warning\" role=\"alert\">Run database migrations to enable public name.</div>";
+			return;
+		}
+		echo "<div class=\"alert alert-success\" role=\"alert\">" . lang('station_logbooks_public_name_saved') . "</div>";
 	}
 
 	public function save_publicradiostatus() {

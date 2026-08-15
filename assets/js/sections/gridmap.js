@@ -48,9 +48,11 @@ function gridPlot(form, visitor=true) {
     // If visitor context, get the slug from the URL and use visitor endpoint
     if (visitor === true) {
         var pathParts = window.location.pathname.split('/');
-        var slugIndex = pathParts.indexOf('satellites');
+        var slugIndex = pathParts.indexOf('gridsquares');
+        if (slugIndex === -1) {
+            slugIndex = pathParts.indexOf('satellites');
+        }
         if (slugIndex !== -1 && pathParts[slugIndex + 1]) {
-            var slug = pathParts[slugIndex + 1];
             ajax_url = site_url + '/visitor/getGridsjs';
         }
     }
@@ -97,7 +99,10 @@ function gridPlot(form, visitor=true) {
    } else {
        // Visitor context - use AJAX to get filtered data
        var pathParts = window.location.pathname.split('/');
-       var slugIndex = pathParts.indexOf('satellites');
+       var slugIndex = pathParts.indexOf('gridsquares');
+       if (slugIndex === -1) {
+           slugIndex = pathParts.indexOf('satellites');
+       }
        if (slugIndex !== -1 && pathParts[slugIndex + 1]) {
            var slug = pathParts[slugIndex + 1];
            $.ajax({

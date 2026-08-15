@@ -1,6 +1,6 @@
-<div class="container publicsearch">
-<h1>Results <small class="text-muted">Searching for <?php echo str_replace("0","&Oslash;",strtoupper($callsign)); ?></small></h1>
-<div class="card text-center">
+<div class="container publicsearch visitor-page">
+<h1><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></h1>
+<div class="card">
 <div class="card-body">
 <?php
 
@@ -14,7 +14,7 @@ if ($results) { ?>
                 <th><?php echo lang('gen_hamradio_call'); ?></th>
                 <th><?php echo lang('gen_hamradio_mode'); ?></th>
                 <th><?php echo lang('gen_hamradio_band'); ?></th>
-                <th>Station Callsign</th>
+                <th><?php echo lang('gen_hamradio_station'); ?> <?php echo lang('gen_hamradio_callsign'); ?></th>
             </tr>
         </thead>
         <tbody>
@@ -69,8 +69,6 @@ if ($results) { ?>
 
     <?php } ?>
 
-</div>
-</div>
 </div>
 </div>
 </div>

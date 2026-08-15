@@ -45,6 +45,11 @@ $current_page = $this->uri->segment(2) ?: 'index';
 					<i class="fas fa-book"></i> <?php echo lang('options_public_station_diary'); ?>
 				</a>
 			</li>
+			<li class="list-group-item <?php echo ($current_page == 'public_map_show_confirmations') ? 'active' : ''; ?>">
+				<a class="nav-link" href="<?php echo site_url('options/public_map_show_confirmations'); ?>">
+					<i class="fas fa-map"></i> <?php echo lang('options_public_map_show_confirmations'); ?>
+				</a>
+			</li>
 		</ul>
 	</div>
 </div>

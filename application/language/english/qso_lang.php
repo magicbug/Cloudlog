@@ -45,6 +45,10 @@ $lang['qso_delete_warning'] = "Warning! Are you sure you want delete QSO with ";
 $lang['qso_details'] = 'QSO Details';
 
 $lang['fav_add'] = 'Add Band/Mode to Favs';
+$lang['fav_name'] = 'Favourite name';
+$lang['fav_name_help'] = 'Give this favourite a custom name, or keep the default band/mode.';
+$lang['fav_save'] = 'Save Favourite';
+$lang['fav_rename'] = 'Rename';
 $lang['qso_operator_callsign'] = 'Operator Callsign';
 
 // Simple FLE (FastLogEntry)

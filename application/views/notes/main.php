@@ -30,6 +30,12 @@
 				</div>
 
 				<div class="card-body">
+					<?php if ($this->session->flashdata('notice')) { ?>
+						<div class="alert alert-warning alert-dismissible fade show" role="alert">
+							<?php echo $this->session->flashdata('notice'); ?>
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					<?php } ?>
 					<?php
 					$defaultCategories = array('General', 'Antennas', 'Satellites');
 					$existingCategories = isset($categories) && is_array($categories) ? $categories : array();

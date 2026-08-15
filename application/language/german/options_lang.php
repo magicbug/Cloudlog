@@ -114,6 +114,10 @@ $lang['options_public_station_diary'] = 'Öffentliches Stationstagebuch';
 $lang['options_public_station_diary_enabled'] = 'Öffentliches Stationstagebuch';
 $lang['options_public_station_diary_enabled_hint'] = 'Aktivieren oder deaktivieren Sie die Möglichkeit für Benutzer, öffentliche Stationstagebuche zu erstellen. Wenn deaktiviert, bleiben alle Tagebucheinträge privat, unabhängig von den einzelnen Einstellungen.';
 $lang['options_public_station_diary_settings_saved'] = 'Einstellungen für öffentliches Stationstagebuch wurden erfolgreich gespeichert.';
+$lang['options_public_map_show_confirmations'] = 'Bestätigungen auf öffentlichen Karten';
+$lang['options_public_map_show_confirmations_enabled'] = 'Bestätigungen auf öffentlichen Karten anzeigen';
+$lang['options_public_map_show_confirmations_hint'] = 'Aktivieren oder deaktivieren Sie die Anzeige, welche QSOs bestätigt sind (LoTW, eQSL, Papier-QSL oder QRZ.com) auf öffentlichen Besucherkarten.';
+$lang['options_public_map_show_confirmations_settings_saved'] = 'Einstellungen für Bestätigungen auf öffentlichen Karten wurden erfolgreich gespeichert.';
 $lang['options_enabled'] = 'Aktiviert';
 $lang['options_disabled'] = 'Deaktiviert';
 

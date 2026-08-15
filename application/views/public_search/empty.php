@@ -1,4 +1,4 @@
-<div class="container publicsearch">
-<h1>Results <small class="text-muted">Searching for <?php echo str_replace("0","&Oslash;",strtoupper($callsign)); ?></small></h1>
-	<div class="alert alert-danger" role="alert">Nothing found!</div>
+<div class="container publicsearch visitor-page">
+<h1><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></h1>
+	<div class="alert alert-secondary" role="alert"><?php echo lang('visitor_search_nothing'); ?></div>
 </div>

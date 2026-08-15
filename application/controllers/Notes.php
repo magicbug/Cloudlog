@@ -28,13 +28,31 @@ class Notes extends CI_Controller {
 	}
 
 	private function handle_diary_images_upload($note_id) {
-		if (!isset($_FILES['diary_images']) || !isset($_FILES['diary_images']['name']) || !is_array($_FILES['diary_images']['name'])) {
+		$hasFilesKey = isset($_FILES['diary_images']) && isset($_FILES['diary_images']['name']) && is_array($_FILES['diary_images']['name']);
+		$contentType = isset($_SERVER['CONTENT_TYPE']) ? (string)$_SERVER['CONTENT_TYPE'] : '';
+		$contentLength = isset($_SERVER['CONTENT_LENGTH']) ? (int)$_SERVER['CONTENT_LENGTH'] : 0;
+
+		if (!$hasFilesKey) {
+			// Classic PHP behaviour: request larger than post_max_size arrives with empty POST/FILES
+			if ($contentLength > 0 && stripos($contentType, 'multipart/form-data') !== FALSE && empty($_POST) && empty($_FILES)) {
+				log_message('error', 'Diary image upload: empty POST/FILES with CONTENT_LENGTH=' . $contentLength . '. Increase PHP post_max_size / upload_max_filesize on production.');
+				return 'Server rejected the upload (request too large for PHP post_max_size). Ask hosting to raise post_max_size and upload_max_filesize.';
+			}
+			log_message('info', 'Diary image upload: no diary_images in request for note ' . (int)$note_id . ' (content-type=' . $contentType . ', content-length=' . $contentLength . ')');
 			return null;
 		}
 
 		$names = array_filter($_FILES['diary_images']['name']);
 		if (empty($names)) {
+			log_message('info', 'Diary image upload: diary_images present but empty for note ' . (int)$note_id);
 			return null;
+		}
+
+		log_message('info', 'Diary image upload starting for note ' . (int)$note_id . ' with ' . count($names) . ' file(s)');
+
+		if (!$this->db->table_exists('diary_images')) {
+			log_message('error', 'Diary image upload failed: diary_images table missing. Run migrations.');
+			return 'Image uploads require a database update (diary_images table). Please run Cloudlog migrations on this server.';
 		}
 
 		$noteResult = $this->note->view($note_id);
@@ -48,15 +66,28 @@ class Notes extends CI_Controller {
 		}
 
 		$user_id = (int)$this->session->userdata('user_id');
-		$uploadDir = FCPATH . 'uploads/diary/' . $user_id . '/';
+		$uploadDir = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'diary' . DIRECTORY_SEPARATOR . $user_id . DIRECTORY_SEPARATOR;
 		if (!is_dir($uploadDir)) {
 			if (!@mkdir($uploadDir, 0755, TRUE)) {
-				return 'Unable to create upload directory.';
+				$parent = FCPATH . 'uploads' . DIRECTORY_SEPARATOR . 'diary';
+				$parentWritable = is_dir(dirname($parent)) && is_writable(FCPATH . 'uploads');
+				log_message('error', 'Diary image upload failed: cannot create ' . $uploadDir . ' (uploads writable: ' . ($parentWritable ? 'yes' : 'no') . ')');
+				return 'Unable to create upload directory. On the server, ensure uploads/ (and uploads/diary/) is writable by the web server user.';
 			}
 		}
 
+		if (!is_writable($uploadDir)) {
+			log_message('error', 'Diary image upload failed: directory not writable ' . $uploadDir);
+			return 'Upload directory is not writable. On the server, fix permissions for uploads/diary/' . $user_id . '/.';
+		}
+
 		$this->load->library('upload');
-		$this->load->library('image_lib');
+		$hasImageLib = function_exists('imagecreatefromstring') || extension_loaded('gd');
+		if ($hasImageLib) {
+			$this->load->library('image_lib');
+		} else {
+			log_message('error', 'Diary image upload: PHP GD extension missing; images will be stored without resize.');
+		}
 
 		$errors = array();
 		$savedImages = array();
@@ -64,6 +95,12 @@ class Notes extends CI_Controller {
 
 		for ($i = 0; $i < $totalFiles; $i++) {
 			if (empty($_FILES['diary_images']['name'][$i])) {
+				continue;
+			}
+
+			$phpError = isset($_FILES['diary_images']['error'][$i]) ? (int)$_FILES['diary_images']['error'][$i] : UPLOAD_ERR_OK;
+			if ($phpError !== UPLOAD_ERR_OK) {
+				$errors[] = $this->diary_upload_php_error_message($phpError, $_FILES['diary_images']['name'][$i]);
 				continue;
 			}
 
@@ -76,7 +113,7 @@ class Notes extends CI_Controller {
 			$uploadConfig = array(
 				'upload_path' => $uploadDir,
 				'allowed_types' => 'jpg|jpeg|png|gif|webp',
-				'max_size' => 2048,
+				'max_size' => 8192,
 				'encrypt_name' => TRUE,
 				'detect_mime' => TRUE,
 				'mod_mime_fix' => TRUE,
@@ -85,40 +122,45 @@ class Notes extends CI_Controller {
 			$this->upload->initialize($uploadConfig);
 
 			if (!$this->upload->do_upload('single_diary_image')) {
-				$errors[] = trim(strip_tags($this->upload->display_errors('', '')));
+				$uploadError = trim(strip_tags($this->upload->display_errors('', '')));
+				log_message('error', 'Diary image upload rejected: ' . $uploadError . ' file=' . $_FILES['diary_images']['name'][$i]);
+				$errors[] = $uploadError;
 				continue;
 			}
 
 			$uploadData = $this->upload->data();
-		
-		// Optimize image: resize to max 1080px and compress
-		$imageConfig = array(
-			'image_library' => 'gd2',
-			'source_image' => $uploadData['full_path'],
-			'maintain_ratio' => TRUE,
-			'quality' => '70%',  // Better compression
-			'master_dim' => 'auto',  // Auto-detect longest side
-			'width' => 1080,
-			'height' => 1080,
-		);
 
-		$this->image_lib->clear();
-		$this->image_lib->initialize($imageConfig);
-		
-		// Resize if image is larger than 1080px on any side
-		if ($uploadData['image_width'] > 1080 || $uploadData['image_height'] > 1080) {
-			$this->image_lib->resize();
-		} else {
-			// Still reprocess for compression even if size is OK
-			$this->image_lib->resize();
-		}
+			if ($hasImageLib) {
+				$imageConfig = array(
+					'image_library' => 'gd2',
+					'source_image' => $uploadData['full_path'],
+					'maintain_ratio' => TRUE,
+					'quality' => '70%',
+					'master_dim' => 'auto',
+					'width' => 1080,
+					'height' => 1080,
+				);
+
+				$this->image_lib->clear();
+				$this->image_lib->initialize($imageConfig);
+				if (!$this->image_lib->resize()) {
+					log_message('error', 'Diary image resize failed: ' . strip_tags($this->image_lib->display_errors('', '')) . ' file=' . $uploadData['file_name']);
+				}
+			}
+
 			$savedImages[] = array(
 				'filename' => 'uploads/diary/' . $user_id . '/' . $uploadData['file_name'],
 			);
 		}
 
 		if (!empty($savedImages)) {
-			$this->note->add_diary_images($note_id, $savedImages);
+			try {
+				$this->note->add_diary_images($note_id, $savedImages);
+				log_message('info', 'Diary image upload saved ' . count($savedImages) . ' image(s) for note ' . (int)$note_id);
+			} catch (Exception $e) {
+				log_message('error', 'Diary image DB insert failed: ' . $e->getMessage());
+				return 'Images uploaded but could not be saved to the database. Check that migrations have been run.';
+			}
 		}
 
 		if (!empty($errors)) {
@@ -126,6 +168,27 @@ class Notes extends CI_Controller {
 		}
 
 		return null;
+	}
+
+	private function diary_upload_php_error_message($errorCode, $filename = '') {
+		$label = $filename !== '' ? ' (' . $filename . ')' : '';
+		switch ($errorCode) {
+			case UPLOAD_ERR_INI_SIZE:
+			case UPLOAD_ERR_FORM_SIZE:
+				return 'Image' . $label . ' exceeds the server upload size limit (check PHP upload_max_filesize / post_max_size).';
+			case UPLOAD_ERR_PARTIAL:
+				return 'Image' . $label . ' was only partially uploaded.';
+			case UPLOAD_ERR_NO_FILE:
+				return 'No image file was uploaded' . $label . '.';
+			case UPLOAD_ERR_NO_TMP_DIR:
+				return 'Server missing a temporary folder for uploads.';
+			case UPLOAD_ERR_CANT_WRITE:
+				return 'Server failed to write the uploaded image to disk.';
+			case UPLOAD_ERR_EXTENSION:
+				return 'A PHP extension blocked the image upload' . $label . '.';
+			default:
+				return 'Image upload failed' . $label . ' (error code ' . $errorCode . ').';
+		}
 	}
 
 
@@ -205,12 +268,11 @@ class Notes extends CI_Controller {
 			$note_id = $this->note->add();
 			$upload_error = $this->handle_diary_images_upload($note_id);
 			
-			$message = 'Note saved successfully! <a href="' . site_url('notes') . '">View all notes</a>';
 			if (!empty($upload_error)) {
-				$message .= '<br><small>' . $upload_error . '</small>';
+				echo '<div class="alert alert-warning">Note saved, but image upload failed: ' . htmlspecialchars($upload_error, ENT_QUOTES, 'UTF-8') . ' <a href="' . site_url('notes') . '">View notes</a></div>';
+			} else {
+				echo '<div class="alert alert-success">Note saved successfully! <a href="' . site_url('notes') . '">View all notes</a></div>';
 			}
-			
-			echo '<div class="alert alert-success">' . $message . '</div>';
 			// Reset form via JavaScript
 			echo '<script>setTimeout(function(){ document.getElementById("stationDiaryForm").reset(); if (typeof htmx !== "undefined") { htmx.trigger("#stationDiaryForm", "reset"); } }, 1500);</script>';
 		}

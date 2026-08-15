@@ -177,6 +177,12 @@ class Station extends CI_Controller {
 		$this->load->model('stations');
 		$this->stations->set_active($current, $new);
 
+		$this->load->model('logbooks_model');
+		$active_logbook = $this->session->userdata('active_station_logbook');
+		if ($active_logbook) {
+			$this->logbooks_model->save_last_location($active_logbook, $new);
+		}
+
 		//$this->stations->logbook_session_data();
 		redirect('station');
 	}
@@ -188,6 +194,8 @@ class Station extends CI_Controller {
 			// [eQSL default msg] DELETE user options //
 			$this->load->model('user_options_model');
 			$this->user_options_model->del_option('eqsl_default_qslmsg','key_station_id',array('option_key'=>$id));
+			$this->load->model('logbooks_model');
+			$this->logbooks_model->clear_last_location_for_station($id);
 		}
 		redirect('station');
 	}

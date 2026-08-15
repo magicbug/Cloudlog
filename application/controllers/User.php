@@ -1431,6 +1431,9 @@ class User extends CI_Controller
 		$callbook_type = '';
 		$callbook_username = '';
 		$callbook_password = '';
+		$user_winkey = 0;
+		$user_winkey_websocket = 0;
+		$user_remote_operation = 0;
 
 		// Attempt to create user
 		switch ($this->user_model->add(
@@ -1470,7 +1473,10 @@ class User extends CI_Controller
 			$user_hamsat_workable_only,
 			$callbook_type,
 			$callbook_username,
-			$callbook_password
+			$callbook_password,
+			$user_winkey,
+			$user_winkey_websocket,
+			$user_remote_operation
 		)) {
 			case EUSERNAMEEXISTS:
 				$data['username_error'] = 'Username <b>' . $this->input->post('user_name', true) . '</b> already in use!';

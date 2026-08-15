@@ -11,15 +11,27 @@
 <script src="https://unpkg.com/htmx.org@1.6.1"></script>
 
 <script type="text/javascript">
-  /*
-  *
-  * Define global javascript variables
-  *
-  */
-  var base_url = "<?php echo base_url(); ?>"; // Base URL
-  var site_url = "<?php echo site_url(); ?>"; // Site URL
+  var base_url = "<?php echo base_url(); ?>";
+  var site_url = "<?php echo site_url(); ?>";
   var icon_dot_url = "<?php echo base_url();?>assets/images/dot.png";
+  var visitor = true;
+  function getDataTablesLanguageUrl() {
+    var language = (typeof lang_datatables_language !== 'undefined') ? lang_datatables_language : 'english';
+    return base_url + "/assets/json/datatables_languages/" + language + ".json";
+  }
 </script>
+
+<?php
+	$slug = isset($slug) ? $slug : '';
+	$public_search_enabled = !empty($public_search_enabled);
+	$seg1 = $this->uri->segment(1);
+	$seg2 = $this->uri->segment(2);
+	$reserved = array('search', 'satellites', 'gridsquares');
+	$is_visitor_home = ($seg1 == 'visitor' && !in_array($seg2, $reserved));
+	$is_gridmap = ($seg1 == 'visitor' && in_array($seg2, array('satellites', 'gridsquares')));
+	$is_oqrs = ($seg1 == 'oqrs');
+	$is_search = ($seg1 == 'visitor' && $seg2 == 'search');
+?>
 
     <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.Maidenhead.js"></script>
     <script id="leafembed" type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/leafembed.js" tileUrl="<?php echo $this->optionslib->get_option('map_tile_server');?>"></script>
@@ -36,11 +48,9 @@
         var q_lng = -32.695312;
         <?php } ?>
 
-        <?php if(isset($slug)) { 
+        <?php if ($is_visitor_home && $slug !== '') {
           $offset = $this->uri->segment(4);
         ?>
-
-
         var qso_loc = '<?php echo site_url('visitor/map/'.$slug.'/'.$offset);?>';
         <?php } ?>
         var q_zoom = 3;
@@ -51,7 +61,7 @@
             <?php } else { ?>
               var grid = "No";
             <?php } ?>
-            <?php if ($this->uri->segment(2) != "search" && $this->uri->segment(2) != "satellites") { ?>
+            <?php if ($is_visitor_home) { ?>
             initmap(grid);
             <?php } ?>
 
@@ -59,7 +69,7 @@
 
       </script>
 
-<?php if ($this->uri->segment(2) == "satellites") { ?>
+<?php if ($is_gridmap) { ?>
 
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/geocoding.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/leaflet/L.MaidenheadColouredGridMap.js"></script>
@@ -67,7 +77,6 @@
 
 <script>
 
-  // Set up global variables for gridmap functionality
   var grid_two = <?php echo $grid_2char; ?>;
   var grid_four = <?php echo $grid_4char; ?>;
   var grid_six = <?php echo $grid_6char; ?>;
@@ -76,7 +85,6 @@
   var grid_four_confirmed = <?php echo $grid_4char_confirmed; ?>;
   var grid_six_confirmed = <?php echo $grid_6char_confirmed; ?>;
 
-  // Set up other required global variables
   var jslayer = '<?php echo $this->optionslib->get_option('option_map_tile_server');?>';
   var jsattribution = '<?php echo $this->optionslib->get_option('option_map_tile_server_copyright');?>';
   var gridsquares_gridsquares = "<?php echo lang('gridsquares_gridsquares'); ?>";
@@ -87,44 +95,13 @@
   var visitor = true;
   var type = "worked";
 
-  // Initialize the map when document is ready
   $(document).ready(function() {
-    // Use the plot function from gridmap.js to render the initial map
     plot(visitor, grid_two, grid_four, grid_six, grid_two_confirmed, grid_four_confirmed, grid_six_confirmed);
   });
-
-<?php if ($this->uri->segment(1) == "gridsquares" && $this->uri->segment(2) == "band") { ?>
-
-  var bands_available = <?php echo $bands_available; ?>;
-  $('#gridsquare_bands').append('<option value="All">All</option>')
-  $.each(bands_available, function(key, value) {
-     $('#gridsquare_bands')
-         .append($("<option></option>")
-                    .attr("value",value)
-                    .text(value));
-  });
-
-  var num = "<?php echo $this->uri->segment(3);?>";
-    $("#gridsquare_bands option").each(function(){
-        if($(this).val()==num){ // EDITED THIS LINE
-            $(this).attr("selected","selected");
-        }
-    });
-
-  $(function(){
-      // bind change event to select
-      $('#gridsquare_bands').on('change', function () {
-          var url = $(this).val(); // get selected value
-          if (url) { // require a URL
-              window.location = "<?php echo site_url('gridsquares/band/');?>" + url
-          }
-          return false;
-      });
-    });
-<?php } ?>
-<?php } ?>
     </script>
-    <?php if ($this->CI->public_search_enabled($slug) || $this->session->userdata('user_type') >= 2) { ?>
+<?php } ?>
+
+    <?php if ($public_search_enabled && $is_search) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/buttons.html5.min.js"></script>
@@ -151,6 +128,7 @@
                    dt.search('').draw();
                 }
             };
+            if ($('#publicsearchtable').length) {
             $('#publicsearchtable').DataTable({
                 "pageLength": 25,
                 responsive: false,
@@ -175,11 +153,12 @@
                    }
                 ]
             });
-            // change color of csv-button if dark mode is chosen
-            if (isDarkModeTheme()) {
+            }
+            if (typeof isDarkModeTheme === 'function' && isDarkModeTheme()) {
                $('[class*="buttons"]').css("color", "white");
             }
         </script>
+    <?php } ?>
         <script type="text/javascript">
             $(function () {
                 $(document).on('shown.bs.tooltip', function (e) {
@@ -189,18 +168,28 @@
                 });
             });
             function validateForm() {
-                let x = document.forms["searchForm"]["callsign"].value;
+                var form = document.forms["searchForm"];
+                if (!form) { return true; }
+                let x = form["callsign"].value;
                 if (x.trim() == "") {
                     $('#searchcall').tooltip('show')
                     return false;
                 }
             }
         </script>
+    <?php if ($is_oqrs) { ?>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/datatables.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/oqrs.js"></script>
     <?php } ?>
     <script>
       <?php
       echo "var lang_datatables_language = '" . lang("datatables_language") . "';"
       ?>
     </script>
+    <footer class="visitor-site-footer">
+      <div class="container">
+        <p class="mb-0 text-muted"><?php echo lang('visitor_powered_by'); ?></p>
+      </div>
+    </footer>
   </body>
 </html>

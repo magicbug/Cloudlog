@@ -1474,6 +1474,7 @@ $(document).ready(function() {
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "logbook" && $this->uri->segment(2) != "view") { ?>
+    <script src="<?php echo base_url(); ?>assets/js/sections/logbook_quick_switch.js"></script>
     <!-- Quill editor for Station Diary modal -->
     <script src="<?php echo base_url(); ?>assets/plugins/quill/quill.min.js"></script>
     
@@ -1513,7 +1514,7 @@ $(document).ready(function() {
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
     <script src="<?php echo base_url(); ?>assets/js/qra-utils.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/sections/qso.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/sections/qso.js?<?php echo filemtime(FCPATH . 'assets/js/sections/qso.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/cw-sidetone.js"></script>
     <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
         <script src="<?php echo base_url(); ?>assets/js/remote-operation.js"></script>

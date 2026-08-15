@@ -15,7 +15,8 @@
 /uploads/*.tq8
 /uploads/*.TQ8
 /uploads/callhistory/
-/uploads/diary/
+/uploads/diary/*
+!/uploads/diary/index.html
 /uploads/lotw/
 /install/*
 /updates/*.xml

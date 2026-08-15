@@ -279,12 +279,21 @@ class Note extends CI_Model {
 		}
 
 		if (!empty($batch)) {
+			if (!$this->db->table_exists('diary_images')) {
+				log_message('error', 'add_diary_images: diary_images table does not exist');
+				return false;
+			}
 			$this->db->insert_batch('diary_images', $batch);
 		}
+		return true;
 	}
 
 	public function get_diary_images($diary_ids = array()) {
 		if (empty($diary_ids)) {
+			return array();
+		}
+
+		if (!$this->db->table_exists('diary_images')) {
 			return array();
 		}
 

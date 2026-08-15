@@ -17,7 +17,7 @@ class Visitor extends CI_Controller {
         elseif($method == "radio_display_component") {
             $this->radio_display_component($method);
         }
-        elseif($method == "satellites") {
+        elseif($method == "satellites" || $method == "gridsquares") {
             $this->satellites($method);
         }
         elseif($method == "getGridsjs") {
@@ -57,28 +57,16 @@ class Visitor extends CI_Controller {
             // Checked slug passed and clean
             log_message('info', '[Visitor] public_slug '. $public_slug .' loaded');
 
-            // Check if the slug is contained in the station_logbooks table
             $this->load->model('logbooks_model');
-            if($this->logbooks_model->public_slug_exists($public_slug)) {
-                // Load the public view
+			$identity = $this->logbooks_model->public_identity_data($public_slug);
+			if ($identity === false) {
+				log_message('error', '[Visitor] Unknown or empty public slug '.$public_slug);
+				show_404('Unknown Public Page.');
+				return;
+			}
 
-				$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($public_slug);
-                if($logbook_id != false)
-                {
-                    // Get associated station locations for mysql queries
-                    $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
-                    
-                    // Get logbook details to check public settings
-                    $logbook_details = $this->logbooks_model->logbook($logbook_id);
-                    $data['logbook_settings'] = $logbook_details->row();
-
-					if (!$logbooks_locations_array) {
-						show_404('Empty Logbook');
-					}
-                } else {
-                    log_message('error', $public_slug.' has no associated station locations');
-                    show_404('Unknown Public Page.');
-                }
+			$data = $identity;
+			$logbooks_locations_array = $identity['logbooks_locations_array'];
 
                 $this->load->model('logbook_model');
 
@@ -117,8 +105,10 @@ class Visitor extends CI_Controller {
                 $data['qra'] = "none";
 
                 $this->load->model('cat');
-
-                $data['radio_status'] = $this->cat->recent_status();
+				$data['radio_status'] = null;
+				if (!empty($identity['public_radio_status'])) {
+					$data['radio_status'] = $this->cat->recent_status_by_user_id($identity['owner_user_id']);
+				}
 
                 // Store info
                 $data['todays_qsos'] = $this->logbook_model->todays_qsos($logbooks_locations_array);
@@ -134,47 +124,29 @@ class Visitor extends CI_Controller {
                 $data['total_countries_confirmed_eqsl'] = $CountriesBreakdown['Countries_Worked_EQSL'];
                 $data['total_countries_confirmed_lotw'] = $CountriesBreakdown['Countries_Worked_LOTW'];
 
-                $QSLStatsBreakdownArray =$this->logbook_model->get_QSLStats($logbooks_locations_array);
-
-                $data['total_qsl_sent'] = $QSLStatsBreakdownArray['QSL_Sent'];
-                $data['total_qsl_rcvd'] = $QSLStatsBreakdownArray['QSL_Received'];
-                $data['total_qsl_requested'] = $QSLStatsBreakdownArray['QSL_Requested'];
-
-                $data['total_eqsl_sent'] = $QSLStatsBreakdownArray['eQSL_Sent'];
-                $data['total_eqsl_rcvd'] = $QSLStatsBreakdownArray['eQSL_Received'];
-
-                $data['total_lotw_sent'] = $QSLStatsBreakdownArray['LoTW_Sent'];
-                $data['total_lotw_rcvd'] = $QSLStatsBreakdownArray['LoTW_Received'];
-				
 				// Show paginated results
 				$data['results'] = $this->logbook_model->get_qsos($config['per_page'], $this->uri->segment(4), $logbooks_locations_array);
 
-                $data['page_title'] = "Dashboard";
-                $data['slug'] = $public_slug;
-
-                $this->load->model('dxcc');
-                $dxcc = $this->dxcc->list_current();
-
-                $current = $this->logbook_model->total_countries_current($logbooks_locations_array);
-
-                $data['total_countries_needed'] = count($dxcc->result()) - $current;
+				$data['oqrs_enabled'] = $this->oqrs_enabled($public_slug);
+				$data['page_title'] = $identity['brand_name'] . ' — ' . lang('visitor_page_title_suffix');
+				$data['date_format'] = $this->config->item('qso_date_format') ? $this->config->item('qso_date_format') : 'Y-m-d';
 
                 $this->load->view('visitor/layout/header', $data);
                 $this->load->view('visitor/index');
                 $this->load->view('visitor/layout/footer');
-            } else {
-                // Show 404
-                log_message('error', '[Visitor] XSS Attack detected on public_slug '. $public_slug);
-                show_404('Unknown Public Page.');
-            }
-
         }
 	}
 
 	public function radio_display_component() {
-		$this->load->model('cat');
+		$slug = $this->security->xss_clean($this->uri->segment(3));
+		$this->load->model('logbooks_model');
+		$identity = $this->logbooks_model->public_identity_data($slug);
+		if ($identity === false || empty($identity['public_radio_status'])) {
+			return;
+		}
 
-		$data['radio_status'] = $this->cat->recent_status();
+		$this->load->model('cat');
+		$data['radio_status'] = $this->cat->recent_status_by_user_id($identity['owner_user_id']);
 		$this->load->view('components/radio_display_table', $data);
 	}
 
@@ -203,7 +175,8 @@ class Visitor extends CI_Controller {
 
 		$qsos = $this->logbook_model->get_qsos('18', $offset, $logbooks_locations_array);
 		// [PLOT] ADD plot //
-		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result());
+		$hide_conf = !$this->visitor_show_confirmations();
+		$plot_array = $this->logbook_model->get_plot_array_for_map($qsos->result(), $hide_conf);
 	
 		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode($plot_array);
@@ -213,28 +186,22 @@ class Visitor extends CI_Controller {
 	{
 
         $slug = $this->security->xss_clean($this->uri->segment(3));
-        $data['slug'] = $slug;
         $this->load->model('logbooks_model');
-        if($this->logbooks_model->public_slug_exists($slug)) {
-            // Load the public view
-			$logbook_id = $this->logbooks_model->public_slug_exists_logbook_id($slug);
-			if($logbook_id != false)
-			{
-				// Get associated station locations for mysql queries
-				$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($logbook_id);
+		$identity = $this->logbooks_model->public_identity_data($slug);
+		if ($identity === false) {
+			log_message('error', $slug.' has no associated station locations');
+			show_404('Unknown Public Page.');
+			return;
+		}
 
-				if (!$logbooks_locations_array) {
-					show_404('Empty Logbook');
-				}
-			} else {
-				log_message('error', $slug.' has no associated station locations');
-				show_404('Unknown Public Page.');
-			}
-        }
+		$data = $identity;
+		$logbooks_locations_array = $identity['logbooks_locations_array'];
+		$data['oqrs_enabled'] = $this->oqrs_enabled($slug);
 
 		$this->load->model('gridmap_model');
 
-		$data['page_title'] = "Public Gridsquare Map";
+		$data['page_title'] = $identity['brand_name'] . ' ' . lang('menu_gridsquares');
+		$data['visitor_intro'] = lang('visitor_gridsquares_intro');
 
 		// Get available bands for this logbook
 		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
@@ -309,8 +276,10 @@ class Visitor extends CI_Controller {
 		$array_confirmed_grid_4char = array();
 		$array_confirmed_grid_6char = array();
 
+		$show_conf = $this->visitor_show_confirmations() ? 'true' : 'false';
+
 		// Get initial data for "All" bands
-		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band_confirmed($default_band, $default_mode, $show_conf, $show_conf, $show_conf, $show_conf, $default_sat, 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0)
 		{
@@ -340,7 +309,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// Get worked squares (all bands by default)
-		$query = $this->gridmap_model->get_band($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0)
 		{
@@ -370,7 +339,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// Get VUCC squares (worked)
-		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, 'All', $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0)
 		{
@@ -395,7 +364,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// Confirmed VUCC Squares  
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($default_band, $default_mode, 'false', 'false', 'false', 'false', $default_sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($default_band, $default_mode, $show_conf, $show_conf, $show_conf, $show_conf, $default_sat, 'All', $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0)
 		{
@@ -479,10 +448,19 @@ class Visitor extends CI_Controller {
 	public function search() {
 		$callsign = trim($this->security->xss_clean($this->input->post('callsign')));
 		$public_slug = $this->security->xss_clean($this->input->post('public_slug'));
+		$this->load->model('logbooks_model');
+		$identity = $this->logbooks_model->public_identity_data($public_slug);
+		if ($identity === false || empty($identity['public_search_enabled'])) {
+			show_404('Unknown Public Page.');
+			return;
+		}
+
 		$this->load->model('publicsearch');
-		$data['page_title'] = "Public Search";
+		$data = $identity;
+		$data['oqrs_enabled'] = $this->oqrs_enabled($public_slug);
+		$data['page_title'] = sprintf(lang('visitor_search_looking'), strtoupper($callsign), $identity['brand_name']);
 		$data['callsign'] = $callsign;
-		$data['slug'] = $public_slug;
+		$result = null;
 		if ($callsign != '') {
 			$result = $this->publicsearch->search($public_slug, $callsign);
 		}
@@ -544,8 +522,9 @@ class Visitor extends CI_Controller {
 		$array_grid_4char_confirmed = array();
 		$array_grid_6char_confirmed = array();
 
-		// For public visitor, we don't show QSL confirmations, so set all to false
-		$query = $this->gridmap_model->get_band_confirmed($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$show_conf = $this->visitor_show_confirmations() ? 'true' : 'false';
+
+		$query = $this->gridmap_model->get_band_confirmed($band, $mode, $show_conf, $show_conf, $show_conf, $show_conf, $sat, 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) 	{
@@ -568,7 +547,7 @@ class Visitor extends CI_Controller {
 			}
 		}
 
-		$query = $this->gridmap_model->get_band($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query = $this->gridmap_model->get_band($band, $mode, 'false', 'false', 'false', 'false', $sat, 'All', $logbooks_locations_array);
 
 		if ($query && $query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -592,7 +571,7 @@ class Visitor extends CI_Controller {
 
 			}
 		}
-		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_worked_vucc_squares($band, $mode, 'false', 'false', 'false', 'false', $sat, 'All', $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) {
@@ -617,7 +596,7 @@ class Visitor extends CI_Controller {
 		}
 
 		// // Confirmed Squares
-		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, 'false', 'false', 'false', 'false', $sat, $logbooks_locations_array);
+		$query_vucc = $this->gridmap_model->get_band_confirmed_vucc_squares($band, $mode, $show_conf, $show_conf, $show_conf, $show_conf, $sat, 'All', $logbooks_locations_array);
 
 		if ($query_vucc && $query_vucc->num_rows() > 0) {
 			foreach ($query_vucc->result() as $row) 			{
@@ -651,6 +630,10 @@ class Visitor extends CI_Controller {
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
+	}
+
+	private function visitor_show_confirmations() {
+		return $this->optionslib->get_option('public_map_show_confirmations') == '1';
 	}
 
 }

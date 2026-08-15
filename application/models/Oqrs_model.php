@@ -23,6 +23,15 @@ class Oqrs_model extends CI_Model {
 		return $this->db->get('station_profile');
 	}
 
+	function get_oqrs_stations_for_logbook($logbook_id) {
+		$this->db->select('station_profile.*');
+		$this->db->from('station_logbooks_relationship');
+		$this->db->join('station_profile', 'station_logbooks_relationship.station_location_id = station_profile.station_id');
+		$this->db->where('station_profile.oqrs', 1);
+		$this->db->where('station_logbook_id', (int) $logbook_id);
+		return $this->db->get();
+	}
+
     function get_station_info($station_id) {
 		$station_id = (int) $station_id;
 
@@ -87,16 +96,25 @@ class Oqrs_model extends CI_Model {
 	/*
 	 * Builds query depending on what we are searching for
 	 */
-	function getQueryDataGrouped($callsign) {
+	function getQueryDataGrouped($callsign, $station_ids = null) {
         // Properly escape the callsign to prevent SQL injection
         $callsign = $this->db->escape_str($callsign);
-        
-        // Use parameterized query to prevent SQL injection
-        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band, station_callsign, station_profile_name, l.station_id from ' . $this->config->item('table_name') . ' as l join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and l.col_call = ? and l.col_prop_mode != "SAT"';
 
-		$sql .= ' union all select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, "SAT" col_band, station_callsign, station_profile_name, l.station_id from ' . 
-			$this->config->item('table_name') . ' l' . 
-			' join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and col_call = ? and col_prop_mode = "SAT"';
+		$station_filter = '';
+		if (is_array($station_ids)) {
+			$ids = array_values(array_filter(array_map('intval', $station_ids)));
+			if (empty($ids)) {
+				return array();
+			}
+			$station_filter = ' and l.station_id in (' . implode(',', $ids) . ')';
+		}
+
+        // Use parameterized query to prevent SQL injection
+        $sql = 'select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, col_band, station_callsign, station_profile_name, l.station_id from ' . $this->config->item('table_name') . ' as l join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and l.col_call = ? and l.col_prop_mode != "SAT"' . $station_filter;
+
+		$sql .= ' union all select lower(col_mode) col_mode, coalesce(col_submode, "") col_submode, "SAT" col_band, station_callsign, station_profile_name, l.station_id from ' .
+			$this->config->item('table_name') . ' l' .
+			' join station_profile on l.station_id = station_profile.station_id where station_profile.oqrs = "1" and col_call = ? and col_prop_mode = "SAT"' . $station_filter;
 
         $query = $this->db->query($sql, [$callsign, $callsign]);
 
