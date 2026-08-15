@@ -274,7 +274,12 @@ class Logbooks_model extends CI_Model {
 			return false;
 		}
 
-		$this->db->select('logbook_id, logbook_name, user_id, public_slug, public_search, public_radio_status');
+		$select = 'logbook_id, logbook_name, user_id, public_slug, public_search, public_radio_status';
+		if ($this->db->field_exists('public_name', 'station_logbooks')) {
+			$select .= ', public_name';
+		}
+
+		$this->db->select($select);
 		$this->db->where('public_slug', $clean_slug);
 		$query = $this->db->get('station_logbooks');
 
@@ -324,12 +329,21 @@ class Logbooks_model extends CI_Model {
 
 		$callsigns = $this->public_station_callsigns($logbook->logbook_id);
 		$primary = (count($callsigns) === 1) ? $callsigns[0] : '';
-		$brand = $primary !== '' ? $primary : $logbook->logbook_name;
+		$public_name = isset($logbook->public_name) ? trim((string) $logbook->public_name) : '';
+		// Prefer callsign branding; fall back to public name, then internal logbook name
+		if ($primary !== '') {
+			$brand = $primary;
+		} elseif ($public_name !== '') {
+			$brand = $public_name;
+		} else {
+			$brand = $logbook->logbook_name;
+		}
 
 		return array(
 			'slug' => $logbook->public_slug,
 			'logbook_id' => $logbook->logbook_id,
 			'logbook_name' => $logbook->logbook_name,
+			'public_name' => $public_name,
 			'logbook_settings' => $logbook,
 			'logbooks_locations_array' => $locations,
 			'station_callsigns' => $callsigns,
@@ -400,6 +414,28 @@ class Logbooks_model extends CI_Model {
 		$this->db->where('user_id', $this->session->userdata('user_id'));
 		$this->db->where('logbook_id', xss_clean($logbook_id));
 		$this->db->update('station_logbooks', $data);
+	}
+
+	function save_public_name($public_name, $logbook_id) {
+		if (!$this->db->field_exists('public_name', 'station_logbooks')) {
+			return false;
+		}
+
+		$clean_name = trim(xss_clean($public_name));
+		if ($clean_name === '') {
+			$clean_name = null;
+		} else {
+			$clean_name = mb_substr($clean_name, 0, 100);
+		}
+
+		$data = array(
+			'public_name' => $clean_name,
+		);
+
+		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->where('logbook_id', xss_clean($logbook_id));
+		$this->db->update('station_logbooks', $data);
+		return true;
 	}
 
 	function save_public_radio_status($public_radio_status, $logbook_id) {

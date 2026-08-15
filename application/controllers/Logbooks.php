@@ -253,6 +253,25 @@ class Logbooks extends CI_Controller {
 		echo "<div class=\"alert alert-success\" role=\"alert\">Public Search Settings Saved</div>";
 	}
 
+	public function save_publicname() {
+		$this->load->model('logbooks_model');
+
+		$logbook_id = $this->input->post('logbook_id');
+
+		if (!$this->logbooks_model->is_logbook_owner($logbook_id)) {
+			echo "<div class=\"alert alert-danger\" role=\"alert\">Only the owner can modify public settings</div>";
+			return;
+		}
+
+		$public_name = $this->input->post('public_name', true);
+		$saved = $this->logbooks_model->save_public_name($public_name, $logbook_id);
+		if ($saved === false) {
+			echo "<div class=\"alert alert-warning\" role=\"alert\">Run database migrations to enable public name.</div>";
+			return;
+		}
+		echo "<div class=\"alert alert-success\" role=\"alert\">" . lang('station_logbooks_public_name_saved') . "</div>";
+	}
+
 	public function save_publicradiostatus() {
 		$this->load->model('logbooks_model');
 		

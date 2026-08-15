@@ -75,6 +75,16 @@
 						<p><a href="<?php echo site_url('visitor'); ?>/<?php echo $station_logbook_details->public_slug; ?>" target="_blank"><?php echo site_url('visitor'); ?>/<?php echo $station_logbook_details->public_slug; ?></a></p>
 					</div>
 					<?php } ?>
+
+					<form hx-post="<?php echo site_url('logbooks/save_publicname/'); ?>" hx-target="#publicNameForm" class="mt-3">
+						<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
+						<label for="publicNameInput"><?php echo lang('station_logbooks_public_name_input'); ?></label>
+						<input class="form-control" type="text" name="public_name" id="publicNameInput" maxlength="100" value="<?php echo isset($station_logbook_details->public_name) ? htmlspecialchars($station_logbook_details->public_name, ENT_QUOTES, 'UTF-8') : ''; ?>" placeholder="<?php echo lang('station_logbooks_public_name'); ?>">
+						<small class="form-text text-muted"><?php echo lang('station_logbooks_public_name_hint'); ?></small>
+						<div id="publicNameForm" class="mt-2"></div>
+						<button type="submit" class="btn btn-primary mt-2"><i class="fas fa-plus-square"></i> <?php echo lang('admin_save'); ?></button>
+					</form>
+
 					<form style="display: inline;">
 					<input type="hidden" name="logbook_id" value="<?php echo $station_logbook_details->logbook_id; ?>">
 					<p style="margin-top: 15px;"><?php echo lang('station_logbooks_public_search_hint'); ?></p>

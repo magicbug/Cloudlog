@@ -4,12 +4,13 @@ function visitor_display_callsign($call) {
 }
 
 $brand_name = isset($brand_name) ? $brand_name : '';
-$logbook_name = isset($logbook_name) ? $logbook_name : '';
+$public_name = isset($public_name) ? trim((string) $public_name) : '';
 $station_callsigns = isset($station_callsigns) && is_array($station_callsigns) ? $station_callsigns : array();
 $slug = isset($slug) ? $slug : '';
 $date_format = isset($date_format) && $date_format !== '' ? $date_format : 'Y-m-d';
 $on_air = !empty($public_radio_status) && isset($radio_status) && is_object($radio_status) && method_exists($radio_status, 'num_rows') && $radio_status->num_rows();
 $public_search_enabled = !empty($public_search_enabled);
+$show_public_subtitle = ($public_name !== '' && strtoupper($public_name) !== strtoupper($brand_name));
 ?>
 <noscript><style> #map { display: none } </style></noscript>
 <div class="container visitor-page">
@@ -18,8 +19,8 @@ $public_search_enabled = !empty($public_search_enabled);
 			<div class="visitor-hero-identity">
 				<span class="visitor-kicker"><?php echo lang('visitor_public_logbook'); ?></span>
 				<h1 class="visitor-callsign"><?php echo visitor_display_callsign($brand_name); ?></h1>
-				<?php if ($logbook_name !== '' && strtoupper($logbook_name) !== strtoupper($brand_name)) { ?>
-					<p class="visitor-logbook-name"><?php echo htmlspecialchars($logbook_name, ENT_QUOTES, 'UTF-8'); ?></p>
+				<?php if ($show_public_subtitle) { ?>
+					<p class="visitor-logbook-name"><?php echo htmlspecialchars($public_name, ENT_QUOTES, 'UTF-8'); ?></p>
 				<?php } ?>
 				<?php if (count($station_callsigns) > 1) { ?>
 					<p class="visitor-callsigns">
