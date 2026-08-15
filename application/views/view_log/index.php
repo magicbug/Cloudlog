@@ -274,7 +274,7 @@
 								<div class="accordion-body">
 									<label for="quickDiaryImages" class="form-label fw-semibold">Add images</label>
 									<input type="file" class="form-control" id="quickDiaryImages" name="diary_images[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple>
-									<small class="text-muted d-block">Max 2 MB per image. Auto-resized and compressed.</small>
+									<small class="text-muted d-block">Max 8 MB per image. Auto-resized and compressed.</small>
 									<div class="alert alert-info mt-3 small mb-0">
 										<strong>💡 Tip:</strong> After saving, edit the note to see image IDs and add captions. Then use shortcodes like <code>[image:ID]</code> to display images inline.
 									</div>

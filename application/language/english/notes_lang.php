@@ -17,6 +17,8 @@ $lang['notes_input_btn_save_note'] = 'Save Note';
 $lang['notes_input_btn_edit_note'] = 'Edit Note';
 $lang['notes_input_btn_delete_note'] = 'Delete Note';
 
+$lang['notes_manage_categories'] = 'Manage categories';
+
 $lang['notes_selection_general'] = 'General';
 $lang['notes_selection_antennas'] = 'Antennas';
 $lang['notes_selection_satellites'] = 'Satellites';

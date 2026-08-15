@@ -264,6 +264,7 @@ $selectedCategory = set_value('category', $row->cat);
 		</div>
 
 		<!-- Images -->
+		<?php $entryImages = isset($diary_images[$row->id]) ? $diary_images[$row->id] : array(); ?>
 		<div class="accordion-item">
 			<h2 class="accordion-header" id="headingImages">
 				<button class="accordion-button <?php echo !empty($entryImages) ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImages" aria-expanded="<?php echo !empty($entryImages) ? 'true' : 'false'; ?>" aria-controls="collapseImages">
@@ -272,7 +273,6 @@ $selectedCategory = set_value('category', $row->cat);
 			</h2>
 			<div id="collapseImages" class="accordion-collapse collapse <?php echo !empty($entryImages) ? 'show' : ''; ?>" aria-labelledby="headingImages" data-bs-parent="#noteSettingsAccordion">
 				<div class="accordion-body">
-					<?php $entryImages = isset($diary_images[$row->id]) ? $diary_images[$row->id] : array(); ?>
 					<?php if (!empty($entryImages)) { ?>
 						<div class="alert alert-info small mb-3">
 							<strong>💡 Inline Shortcodes:</strong> Use <code>[image:<?php echo $entryImages[0]->id; ?>]</code> or <code>[image:caption]</code> in your note text. 
@@ -318,7 +318,7 @@ $selectedCategory = set_value('category', $row->cat);
 					<div>
 						<label for="diaryImages" class="form-label fw-semibold">Add new images</label>
 						<input type="file" class="form-control" id="diaryImages" name="diary_images[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple>
-						<small class="text-muted">Max 2 MB per image. Auto-resized and compressed.</small>
+						<small class="text-muted">Max 8 MB per image. Auto-resized and compressed.</small>
 					</div>
 				</div>
 			</div>
