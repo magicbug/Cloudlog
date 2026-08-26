@@ -31,6 +31,6 @@ $lang['gridsquares_gridsquares_worked'] = 'Grids trabalhadas';
 $lang['gridsquares_gridsquares_confirmed'] = 'Grids confirmados';
 $lang['gridsquares_gridsquares_lotw'] = 'Grids confirmados no LoTW';
 $lang['gridsquares_gridsquares_paper'] = 'Grids confirmados por QSL em papel';
-$lang['gridsquares_gridsquares_not_confirmed'] = 'Grids não confirmadas';
+$lang['gridsquares_gridsquares_not_confirmed'] = 'Grids não confirmados';
 $lang['gridsquares_gridsquares_total_worked'] = 'Total de Grids trabalhados';
 $lang['gridsquares_gridsquares_total_activated'] = 'Total de Grids ativados';
