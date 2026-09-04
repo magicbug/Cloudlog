@@ -2758,7 +2758,12 @@ $(document).ready(function() {
                 }
 
                 if (propModeFromCat === '') {
-                    $('#selectPropagation').val('').removeData('catValue');
+                    const currentPropMode = String($('#selectPropagation').val() || '').trim().toUpperCase();
+                    // CAT with no propagation should only clear leftover SAT, not
+                    // user-selected modes such as EME that should persist across QSOs.
+                    if (currentPropMode === 'SAT') {
+                        $('#selectPropagation').val('').removeData('catValue');
+                    }
                 } else {
                     cat2UI($('#selectPropagation'), propModeFromCat, false, false);
                 }
@@ -2856,7 +2861,7 @@ $(document).ready(function() {
                 const satName = String($('#sat_name').val() || '').trim();
                 const satMode = String($('#sat_mode').val() || '').trim();
                 const propMode = String($('#selectPropagation').val() || '').trim().toUpperCase();
-                lockSatelliteFieldsToUserInput = satName !== '' || satMode !== '' || propMode === 'SAT';
+                lockSatelliteFieldsToUserInput = satName !== '' || satMode !== '' || propMode !== '';
             });
 
             // Trigger updateFromCAT when any <select> with class 'radios' changes

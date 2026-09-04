@@ -772,6 +772,7 @@ var favs={};
 						var savedMode = normalizeFieldValue($('#mode').val());
 						var savedSatName = normalizeFieldValue($('#sat_name').val());
 						var savedSatMode = normalizeFieldValue($('#sat_mode').val());
+						var savedPropMode = $('#selectPropagation').val();
 						var savedRadio = normalizeFieldValue($('#qso_input select[name="radio"]').val());
 						var postSaveDefaults = {
 							start_date: savedStartDate,
@@ -779,6 +780,7 @@ var favs={};
 							mode: savedMode,
 							sat_name: savedSatName,
 							sat_mode: savedSatMode,
+							prop_mode: savedPropMode,
 							radio: savedRadio
 						};
 						var saveMessage = (response && response.message) ? response.message : 'QSO Added';
@@ -804,6 +806,10 @@ var favs={};
 						syncFromSelectedRadioAfterReset();
 						setTimeout(function() {
 							syncFromSelectedRadioAfterReset();
+							var savedProp = String(postSaveDefaults.prop_mode || '').toUpperCase();
+							if (savedProp && savedProp !== 'SAT') {
+								$('#selectPropagation').val(postSaveDefaults.prop_mode).trigger('change');
+							}
 						}, 250);
 						showQsoNotice(saveMessage, 'info');
 
@@ -1308,9 +1314,17 @@ function reapplyPostSaveDefaults(defaults) {
 		// Prefer selected radio CAT values after save; avoid restoring stale sat fields.
 		$('#sat_name').val('').removeData('catValue');
 		$('#sat_mode').val('').removeData('catValue');
-		$('#selectPropagation').val('').removeData('catValue');
 	} else if ((defaults.sat_name && defaults.sat_name !== '') || (defaults.sat_mode && defaults.sat_mode !== '')) {
 		$('#sat_name').trigger('input');
+	}
+
+	if (typeof defaults.prop_mode !== 'undefined') {
+		var savedPropMode = String(defaults.prop_mode || '').toUpperCase();
+		if (hasSelectedRadioForReset && savedPropMode === 'SAT') {
+			$('#selectPropagation').val('').removeData('catValue');
+		} else {
+			$('#selectPropagation').val(defaults.prop_mode);
+		}
 	}
 
 	if (typeof setRst === 'function') {
@@ -1691,10 +1705,17 @@ function resetQsoEntryOnEscape() {
 			$('#sat_mode').val(preSatMode);
 			$('#selectPropagation').val(prePropMode || 'SAT');
 		} else if (hasSelectedRadio) {
-			// Keep satellite fields clear until fresh CAT data is applied.
+			// Keep satellite fields clear until fresh CAT data is applied,
+			// but keep non-SAT propagation (e.g. EME) until the user changes it.
 			$('#sat_name').val('').removeData('catValue');
 			$('#sat_mode').val('').removeData('catValue');
-			$('#selectPropagation').val('').removeData('catValue');
+			if (String(prePropMode || '').toUpperCase() === 'SAT') {
+				$('#selectPropagation').val('').removeData('catValue');
+			} else {
+				$('#selectPropagation').val(prePropMode).trigger('change');
+			}
+		} else {
+			$('#selectPropagation').val(prePropMode).trigger('change');
 		}
 		if (typeof setRst === 'function') {
 			setRst($('#mode').val());

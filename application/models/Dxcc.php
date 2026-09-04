@@ -217,12 +217,13 @@ class DXCC extends CI_Model {
 
 			if ($hasPropModes && count($terrestrialBands) > 0) {
 				$bandslots_list = "'" . implode("','", array_map(array($this->db, 'escape_str'), $terrestrialBands)) . "'";
-				$sql .= " and ((col_prop_mode in (" . $propModesList . ")) or (col_prop_mode not in ('SAT', 'EME') and col_band in (" . $bandslots_list . ")))";
+				// EME QSOs count on their RF band; SAT remains a separate slot.
+				$sql .= " and ((col_prop_mode in (" . $propModesList . ")) or (col_prop_mode != 'SAT' and col_band in (" . $bandslots_list . ")))";
 			} else if ($hasPropModes) {
 				$sql .= " and col_prop_mode in (" . $propModesList . ")";
 			} else if (count($terrestrialBands) > 0) {
 				$bandslots_list = "'" . implode("','", array_map(array($this->db, 'escape_str'), $terrestrialBands)) . "'";
-				$sql .= " and col_prop_mode not in ('SAT', 'EME')";
+				$sql .= " and col_prop_mode != 'SAT'";
 				$sql .= " and col_band in (" . $bandslots_list . ")";
 			} else {
 				$sql .= ' and 1 = 0';
@@ -236,7 +237,7 @@ class DXCC extends CI_Model {
 			if (in_array($band, $propModeBands, true)) {
 				$sql .= " and col_prop_mode ='" . $safeBand . "'";
 			} else {
-				$sql .= " and col_prop_mode not in ('SAT', 'EME')";
+				$sql .= " and col_prop_mode != 'SAT'";
 				$sql .= " and col_band ='" . $safeBand . "'";
 			}
 		}
