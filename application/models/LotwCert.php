@@ -120,28 +120,43 @@ class LotwCert extends CI_Model {
 		$this->db->empty_table($table);
 	}
 
-   function lotw_cert_expired($user_id, $date) {
-      $array = array('user_id' => $user_id, 'date_expires <' => $date, 'archived' => 0);
-      $this->db->where($array);
-      $query = $this->db->get('lotw_certs');
+   private $lotw_cert_status_cache = array();
 
-      if ($query->num_rows() > 0) {
-         return true;
-      } else {
-         return false;
+   function lotw_cert_status($user_id, $date) {
+      $cache_key = $user_id . '|' . $date;
+      if (isset($this->lotw_cert_status_cache[$cache_key])) {
+         return $this->lotw_cert_status_cache[$cache_key];
       }
+
+      $this->db->where('user_id', $user_id);
+      $this->db->where('archived', 0);
+      $certs = $this->db->get('lotw_certs')->result();
+
+      $expired = false;
+      $expiring = false;
+      $now = strtotime($date);
+      $soon = $now + (30 * 86400);
+
+      foreach ($certs as $cert) {
+         $expires = strtotime($cert->date_expires);
+         if ($expires < $now) {
+            $expired = true;
+         } elseif ($expires > $now && $expires < $soon) {
+            $expiring = true;
+         }
+      }
+
+      $status = array('expired' => $expired, 'expiring' => $expiring);
+      $this->lotw_cert_status_cache[$cache_key] = $status;
+      return $status;
+   }
+
+   function lotw_cert_expired($user_id, $date) {
+      return $this->lotw_cert_status($user_id, $date)['expired'];
    }
 
    function lotw_cert_expiring($user_id, $date) {
-      $array = array('user_id' => $user_id, 'DATE_SUB(date_expires, INTERVAL 30 DAY) <' => $date, 'date_expires >' => $date, 'archived' => 0);
-      $this->db->where($array);
-      $query = $this->db->get('lotw_certs');
-
-      if ($query->num_rows() > 0) {
-         return true;
-      } else {
-         return false;
-      }
+      return $this->lotw_cert_status($user_id, $date)['expiring'];
    }
 
 }
