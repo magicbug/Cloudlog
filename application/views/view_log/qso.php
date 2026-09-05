@@ -787,5 +787,6 @@ var callsign = "<?php echo $row->COL_CALL; ?>";
     <div hidden id ='long'><?php echo $lng; ?></div>
     <div hidden id ='callsign'><?php echo $row->COL_CALL; ?></div>
     <div hidden id ='qsoid'><?php echo $row->COL_PRIMARY_KEY; ?></div>
+    <div hidden id ='qso_map_grids'><?php echo !empty($row->COL_GRIDSQUARE) ? $row->COL_GRIDSQUARE : ($row->COL_VUCC_GRIDS ?? ''); ?></div>
 
 <?php } } ?>

@@ -49,6 +49,7 @@ $load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logboo
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.activators.js"></script>
     <?php } ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.geodesic.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/qra-utils.js?<?php echo filemtime(FCPATH . 'assets/js/qra-utils.js'); ?>"></script>
 <?php } ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/darkmodehelpers.js"></script>
@@ -1513,7 +1514,6 @@ $(document).ready(function() {
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
-    <script src="<?php echo base_url(); ?>assets/js/qra-utils.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/qso.js?<?php echo filemtime(FCPATH . 'assets/js/sections/qso.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/cw-sidetone.js"></script>
     <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
@@ -3367,6 +3367,18 @@ $(document).ready(function() {
                                 icon: redIcon
                             }).addTo(mymap)
                             .bindPopup(callsign);
+
+                        if (typeof QraUtils !== 'undefined' && typeof QraUtils.drawLocatorGrids === 'function') {
+                            var qsoGrids = $("#qso_map_grids").text();
+                            var gridLayer = QraUtils.drawLocatorGrids(mymap, qsoGrids);
+                            if (gridLayer && gridLayer.getLayers().length > 0) {
+                                var gridBounds = gridLayer.getBounds();
+                                if (lat && long) {
+                                    gridBounds.extend([lat, long]);
+                                }
+                                mymap.fitBounds(gridBounds.pad(0.2), { maxZoom: 8 });
+                            }
+                        }
 
                     },
                 });

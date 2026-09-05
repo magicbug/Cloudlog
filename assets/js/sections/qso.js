@@ -211,6 +211,8 @@ function applyLookupLocator(result, approval) {
 		$('#locator').removeClass("newGrid");
 		$('#locator').attr('title', '');
 	}
+
+	updateQsoLocatorGridOverlays(result.callsign_qra);
 }
 
 $( document ).ready(function() {
@@ -1262,6 +1264,7 @@ function reset_fields() {
 
 	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
+	updateQsoLocatorGridOverlays('');
 	$('.callsign-suggest').hide();
 	$('.dxccsummary').remove();
 	$('#timesWorked').html(lang_qso_title_previous_contacts);
@@ -1819,7 +1822,20 @@ $('#band').change(function() {
 
 /* On Key up Calculate Bearing and Distance */
 var locatorDebounceTimer = null;
-$("#locator").keyup(function(){
+var qsoLocatorGridLayer = null;
+
+function updateQsoLocatorGridOverlays(locatorValue, fitIfMultiple) {
+	if (typeof mymap === 'undefined' || !mymap || typeof QraUtils === 'undefined' || typeof QraUtils.drawLocatorGrids !== 'function') {
+		return;
+	}
+
+	qsoLocatorGridLayer = QraUtils.drawLocatorGrids(mymap, locatorValue, qsoLocatorGridLayer);
+	if (fitIfMultiple && qsoLocatorGridLayer && qsoLocatorGridLayer.getLayers().length > 1) {
+		mymap.fitBounds(qsoLocatorGridLayer.getBounds().pad(0.2), { maxZoom: 8 });
+	}
+}
+
+$("#locator").on('keyup input', function(){
 	clearTimeout(locatorDebounceTimer);
 	var $locator = $(this);
 	locatorDebounceTimer = setTimeout(function(){
@@ -1894,6 +1910,8 @@ $("#locator").keyup(function(){
 				markers.addLayer(marker).addTo(mymap);
 			}
 
+			updateQsoLocatorGridOverlays(qra_input, true);
+
 			// Bearing and distance — pure frontend math using injected station gridsquares
 			var myGrid = station_gridsquares[$('#stationProfile').val()];
 			if (myGrid) {
@@ -1905,7 +1923,11 @@ $("#locator").keyup(function(){
 				var dist = QraUtils.distanceKm(myGrid, qra_input);
 				document.getElementById("distance").value = dist !== null ? dist : '';
 			}
+		} else {
+			updateQsoLocatorGridOverlays('');
 		}
+	} else {
+		updateQsoLocatorGridOverlays('');
 	}
 	}, 300);
 });
@@ -2045,6 +2067,7 @@ $('#dxcc_id').on('change', function() {
 				mymap.setZoom(8);
 				mymap.panTo([result.dxcc.lat, result.dxcc.long]);
 				markers.addLayer(marker).addTo(mymap);
+				updateQsoLocatorGridOverlays('');
 			}
 		}
 	});

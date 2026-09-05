@@ -142,10 +142,112 @@
         return calcDistance(my[0], my[1], stn[0], stn[1], 'K');
     }
 
+    /**
+     * Southwest/northeast bounds of a single Maidenhead locator.
+     * Supports 4-, 6-, 8- and 10-character grids.
+     * Returns [[south, west], [north, east]] or false on invalid input.
+     */
+    function qra2bounds(strQRA) {
+        if (!strQRA || typeof strQRA !== 'string') return false;
+        strQRA = strQRA.replace(/\s+/g, '').toUpperCase();
+        if (strQRA.length < 4 || strQRA.length % 2 !== 0 || strQRA.length > 10) return false;
+        if (!/^[A-R]{2}[0-9]{2}([A-X]{2}([0-9]{2}([A-X]{2})?)?)?$/.test(strQRA)) return false;
+
+        var A = 'A'.charCodeAt(0);
+        var Z = '0'.charCodeAt(0);
+        var ch = strQRA.split('');
+
+        var lon = (ch[0].charCodeAt(0) - A) * 20 - 180;
+        var lat = (ch[1].charCodeAt(0) - A) * 10 - 90;
+        lon += (ch[2].charCodeAt(0) - Z) * 2;
+        lat += (ch[3].charCodeAt(0) - Z);
+        var lonSize = 2;
+        var latSize = 1;
+
+        if (strQRA.length >= 6) {
+            lon += (ch[4].charCodeAt(0) - A) / 12;
+            lat += (ch[5].charCodeAt(0) - A) / 24;
+            lonSize = 1 / 12;
+            latSize = 1 / 24;
+        }
+        if (strQRA.length >= 8) {
+            lon += (ch[6].charCodeAt(0) - Z) / 120;
+            lat += (ch[7].charCodeAt(0) - Z) / 240;
+            lonSize = 1 / 120;
+            latSize = 1 / 240;
+        }
+        if (strQRA.length >= 10) {
+            lon += (ch[8].charCodeAt(0) - A) / 2880;
+            lat += (ch[9].charCodeAt(0) - A) / 5760;
+            lonSize = 1 / 2880;
+            latSize = 1 / 5760;
+        }
+
+        return [[lat, lon], [lat + latSize, lon + lonSize]];
+    }
+
+    /**
+     * Split a locator field into individual Maidenhead grids.
+     * Accepts comma/semicolon separated VUCC values such as "IO77, IO87".
+     */
+    function splitLocators(strQRA) {
+        if (!strQRA || typeof strQRA !== 'string') return [];
+        var seen = {};
+        var locators = [];
+        strQRA.split(/[,;]+/).forEach(function (part) {
+            var locator = part.replace(/\s+/g, '').toUpperCase();
+            if (!locator || seen[locator] || !qra2bounds(locator)) return;
+            seen[locator] = true;
+            locators.push(locator);
+        });
+        return locators;
+    }
+
+    var locatorGridStyle = {
+        color: '#2ecc71',
+        weight: 2,
+        opacity: 1,
+        dashArray: '6, 4',
+        fill: false,
+        interactive: false,
+        className: 'qso-locator-grid'
+    };
+
+    /**
+     * Draw dashed, unfilled Maidenhead square outlines on a Leaflet map.
+     * Always uses the 4-character field square (EM13QC → EM13) so VUCC and
+     * 6-character locators stay visible at QSO-map zoom levels.
+     * Returns the layer group (created if not supplied).
+     */
+    function drawLocatorGrids(map, locatorString, existingLayer) {
+        var layer = existingLayer || L.layerGroup();
+        layer.clearLayers();
+        if (!map || typeof L === 'undefined') return layer;
+        if (!map.hasLayer(layer)) {
+            layer.addTo(map);
+        }
+
+        var seenSquares = {};
+        splitLocators(locatorString).forEach(function (locator) {
+            var square = locator.substring(0, 4);
+            if (seenSquares[square]) return;
+            seenSquares[square] = true;
+            var bounds = qra2bounds(square);
+            if (bounds) {
+                L.rectangle(bounds, locatorGridStyle).addTo(layer);
+            }
+        });
+
+        return layer;
+    }
+
     global.QraUtils = {
-        qra2latlong:   qra2latlong,
-        bearingString: bearingString,
-        distanceKm:    distanceKm,
+        qra2latlong:      qra2latlong,
+        qra2bounds:       qra2bounds,
+        splitLocators:    splitLocators,
+        drawLocatorGrids: drawLocatorGrids,
+        bearingString:    bearingString,
+        distanceKm:       distanceKm,
     };
 
 }(window));
