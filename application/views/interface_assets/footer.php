@@ -235,11 +235,79 @@ $(document).ready(function() {
     <script type="text/javascript">
         function copyURL(url) {
             var urlField = $('#baseUrl');
-            navigator.clipboard.writeText(url).then(function() {});
-            urlField.addClass('flash-copy')
-                .delay('1000').queue(function() {
-                    urlField.removeClass('flash-copy').dequeue();
+            copyTextToClipboard(url).then(function() {
+                urlField.addClass('flash-copy')
+                    .delay('1000').queue(function() {
+                        urlField.removeClass('flash-copy').dequeue();
+                    });
+            });
+        }
+
+        function copyTextToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+
+            return new Promise(function(resolve, reject) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.setAttribute('readonly', '');
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+                document.body.removeChild(textarea);
+            });
+        }
+
+        function markdownTableCell(value) {
+            return String(value || '').replace(/\s+/g, ' ').replace(/\|/g, '\\|').trim();
+        }
+
+        function buildDebugMarkdown() {
+            var lines = [
+                '## Cloudlog Debug Information',
+                ''
+            ];
+
+            $('.debug_main .card').each(function() {
+                var title = $(this).find('.card-header').first().text().replace(/\s+/g, ' ').trim();
+                if (!title) {
+                    return;
+                }
+
+                var rows = [];
+                $(this).find('table tr').each(function() {
+                    var cells = $(this).children('td');
+                    if (cells.length < 2) {
+                        return;
+                    }
+                    var key = markdownTableCell($(cells[0]).text());
+                    var value = markdownTableCell($(cells[1]).text());
+                    if (!key) {
+                        return;
+                    }
+                    rows.push('| ' + key + ' | ' + value + ' |');
                 });
+
+                if (!rows.length) {
+                    return;
+                }
+
+                lines.push('### ' + title, '');
+                lines.push('| Item | Value |');
+                lines.push('| --- | --- |');
+                lines = lines.concat(rows);
+                lines.push('');
+            });
+
+            return lines.join('\n').trim() + '\n';
         }
 
         $(function() {
@@ -249,6 +317,22 @@ $(document).ready(function() {
                     hide: 0
                 },
                 'placement': 'right'
+            });
+
+            $('#copyDebugMarkdown').on('click', function() {
+                var $button = $(this);
+                var originalHtml = $button.html();
+                copyTextToClipboard(buildDebugMarkdown()).then(function() {
+                    $button.addClass('flash-copy').html('<i class="fas fa-check me-1"></i>Copied');
+                    setTimeout(function() {
+                        $button.removeClass('flash-copy').html(originalHtml);
+                    }, 1500);
+                }).catch(function() {
+                    $button.html('<i class="fas fa-times me-1"></i>Copy failed');
+                    setTimeout(function() {
+                        $button.html(originalHtml);
+                    }, 1500);
+                });
             });
         });
     </script>
