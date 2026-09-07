@@ -4,6 +4,8 @@ $(function () {
 		return;
 	}
 
+	var initialHtml = $note.val();
+
 	$note.summernote({
 		placeholder: 'Compose an epic...',
 		height: Math.max(480, Math.round(window.innerHeight * 0.55)),
@@ -23,6 +25,10 @@ $(function () {
 			}
 		}
 	});
+
+	if (initialHtml) {
+		$note.summernote('code', initialHtml);
+	}
 
 	$('#notes_add').on('submit', function () {
 		$note.val($note.summernote('code'));

@@ -64,7 +64,7 @@
 	<!-- Note Content -->
 	<div class="mb-4">
 		<label for="noteContent" class="form-label fw-semibold"><?php echo lang('notes_input_notes_content'); ?></label>
-		<textarea name="content" id="noteContent" class="form-control"><?php echo htmlspecialchars(set_value('content'), ENT_QUOTES, 'UTF-8'); ?></textarea>
+		<textarea name="content" id="noteContent" class="form-control"><?php echo set_value('content'); ?></textarea>
 	</div>
 
 	<!-- Accordion for Optional Settings -->
