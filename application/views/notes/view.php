@@ -1,6 +1,6 @@
-<div class="container notes">
+<div class="container-fluid notes px-3 px-lg-4">
 	<div class="row">
-		<div class="col-12 col-xl-10">
+		<div class="col-12">
 		<?php foreach ($note->result() as $row) { ?>
 			<div class="card shadow-sm">
 				<div class="card-header">

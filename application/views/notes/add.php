@@ -1,116 +1,7 @@
 
-<style>
-#quillArea .ql-editor {
-	min-height: 300px;
-	padding: 1.5rem;
-	font-size: 1rem;
-	line-height: 1.6;
-}
-
-#quillArea .ql-editor p {
-	margin-bottom: 1rem;
-}
-
-#quillArea .ql-editor h1,
-#quillArea .ql-editor h2,
-#quillArea .ql-editor h3,
-#quillArea .ql-editor h4,
-#quillArea .ql-editor h5,
-#quillArea .ql-editor h6 {
-	margin-top: 1.5rem;
-	margin-bottom: 0.75rem;
-	line-height: 1.3;
-	font-weight: 600;
-}
-
-#quillArea .ql-editor h1:first-child,
-#quillArea .ql-editor h2:first-child,
-#quillArea .ql-editor h3:first-child,
-#quillArea .ql-editor h4:first-child,
-#quillArea .ql-editor h5:first-child,
-#quillArea .ql-editor h6:first-child {
-	margin-top: 0;
-}
-
-#quillArea .ql-editor ul,
-#quillArea .ql-editor ol {
-	margin-bottom: 1rem;
-	padding-left: 2rem;
-}
-
-#quillArea .ql-editor li {
-	margin-bottom: 0.5rem;
-}
-
-#quillArea .ql-editor li p {
-	margin-bottom: 0.25rem;
-}
-
-#quillArea .ql-editor blockquote {
-	border-left: 4px solid #ddd;
-	margin: 1.5rem 0;
-	padding: 0.75rem 1rem;
-	background-color: #f9f9f9;
-	font-style: italic;
-	color: #666;
-}
-
-#quillArea .ql-editor pre {
-	background-color: #f5f5f5;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	padding: 1rem;
-	margin: 1rem 0;
-	overflow-x: auto;
-}
-
-#quillArea .ql-editor code {
-	background-color: #f5f5f5;
-	padding: 0.2rem 0.4rem;
-	border-radius: 3px;
-	font-family: 'Courier New', monospace;
-	font-size: 0.9em;
-}
-
-#quillArea .ql-editor hr {
-	margin: 1.5rem 0;
-	border: none;
-	border-top: 2px solid #e0e0e0;
-}
-
-#quillArea .ql-editor table {
-	width: 100%;
-	border-collapse: collapse;
-	margin: 1rem 0;
-}
-
-#quillArea .ql-editor table th,
-#quillArea .ql-editor table td {
-	border: 1px solid #ddd;
-	padding: 0.75rem;
-}
-
-#quillArea .ql-editor table th {
-	background-color: #f5f5f5;
-	font-weight: 600;
-}
-
-#quillArea .ql-editor img {
-	max-width: 100%;
-	height: auto;
-	margin: 1rem 0;
-	border-radius: 4px;
-}
-
-#quillArea .ql-editor a {
-	color: #0d6efd;
-	text-decoration: underline;
-}
-</style>
-
-<div class="container notes">
+<div class="container-fluid notes px-3 px-lg-4">
 	<div class="row">
-		<div class="col-12 col-xl-10">
+		<div class="col-12">
 			<div class="card shadow-sm">
 			  <div class="card-header">
 			    <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
@@ -172,9 +63,8 @@
 
 	<!-- Note Content -->
 	<div class="mb-4">
-		<label for="hiddenArea" class="form-label fw-semibold"><?php echo lang('notes_input_notes_content'); ?></label>
-		<div id="quillArea"></div>
-		<textarea name="content" style="display:none" id="hiddenArea"></textarea>
+		<label for="noteContent" class="form-label fw-semibold"><?php echo lang('notes_input_notes_content'); ?></label>
+		<textarea name="content" id="noteContent" class="form-control"><?php echo htmlspecialchars(set_value('content'), ENT_QUOTES, 'UTF-8'); ?></textarea>
 	</div>
 
 	<!-- Accordion for Optional Settings -->
