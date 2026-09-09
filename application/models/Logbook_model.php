@@ -1504,6 +1504,35 @@ class Logbook_model extends CI_Model
     return trim((string)$sat_mode);
   }
 
+  /**
+   * Fields LoTW uses to match a QSO. If any of these change on edit, the QSO
+   * must be re-uploaded (sent status reset to N). Comment-only edits should not.
+   */
+  private function qso_requires_qsl_reupload($qso, $data)
+  {
+    $norm = static function ($value) {
+      return strtoupper(trim((string)$value));
+    };
+    $norm_grid = static function ($value) use ($norm) {
+      return $norm(preg_replace('/\s+/', '', (string)$value));
+    };
+
+    return $norm($qso->COL_CALL) !== $norm($data['COL_CALL'])
+      || $norm($qso->COL_BAND) !== $norm($data['COL_BAND'])
+      || $norm($qso->COL_MODE) !== $norm($data['COL_MODE'])
+      || $norm($qso->COL_SUBMODE) !== $norm($data['COL_SUBMODE'])
+      || (int)$this->parse_frequency($qso->COL_FREQ) !== (int)$data['COL_FREQ']
+      || (int)$qso->COL_DXCC !== (int)$data['COL_DXCC']
+      || $norm($qso->COL_SAT_NAME) !== $norm($data['COL_SAT_NAME'])
+      || $norm($qso->COL_SAT_MODE) !== $norm($data['COL_SAT_MODE'])
+      || $norm($qso->COL_PROP_MODE) !== $norm($data['COL_PROP_MODE'])
+      || $norm($qso->COL_BAND_RX) !== $norm($data['COL_BAND_RX'])
+      || (int)$this->parse_frequency($qso->COL_FREQ_RX) !== (int)$data['COL_FREQ_RX']
+      || $norm($qso->COL_GRIDSQUARE) !== $norm($data['COL_GRIDSQUARE'])
+      || $norm_grid($qso->COL_VUCC_GRIDS) !== $norm_grid($data['COL_VUCC_GRIDS'])
+      || strtotime((string)$qso->COL_TIME_ON) !== strtotime((string)$data['COL_TIME_ON']);
+  }
+
   /* Edit QSO */
   function edit()
   {
@@ -1735,16 +1764,18 @@ class Logbook_model extends CI_Model
       $data['COL_CLUBLOG_QSO_UPLOAD_STATUS'] = 'M';
     }
 
-    // Reset LoTW and eQSL sent status to 'N' if they were previously sent
-    // This ensures edited QSOs get re-uploaded to these services
-    if ($qso->COL_LOTW_QSL_SENT == 'Y' && $data['COL_LOTW_QSL_SENT'] == 'Y') {
-      $data['COL_LOTW_QSL_SENT'] = 'N';
-      $data['COL_LOTW_QSLSDATE'] = null;
-    }
+    // Reset LoTW/eQSL sent status only when LoTW-identity fields changed
+    // (call, band, mode, freq, DXCC, satellite, grid/VUCC, QSO time)
+    if ($this->qso_requires_qsl_reupload($qso, $data)) {
+      if ($qso->COL_LOTW_QSL_SENT == 'Y' && $lotw_sent == 'Y') {
+        $data['COL_LOTW_QSL_SENT'] = 'N';
+        $data['COL_LOTW_QSLSDATE'] = null;
+      }
 
-    if ($qso->COL_EQSL_QSL_SENT == 'Y' && $data['COL_EQSL_QSL_SENT'] == 'Y') {
-      $data['COL_EQSL_QSL_SENT'] = 'N';
-      $data['COL_EQSL_QSLSDATE'] = null;
+      if ($qso->COL_EQSL_QSL_SENT == 'Y' && $eqsl_sent == 'Y') {
+        $data['COL_EQSL_QSL_SENT'] = 'N';
+        $data['COL_EQSL_QSLSDATE'] = null;
+      }
     }
 
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));

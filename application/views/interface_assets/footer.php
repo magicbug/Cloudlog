@@ -4174,8 +4174,15 @@ $(document).ready(function() {
             contentType: false,
             type: 'POST',
             success: function(dataofconfirm) {
-                $(".edit-dialog").modal('hide');
-                $(".qso-dialog").modal('hide');
+                if (typeof restoreQsoActionsMenus === 'function') {
+                    restoreQsoActionsMenus();
+                }
+                if (typeof BootstrapDialog !== 'undefined') {
+                    BootstrapDialog.closeAll();
+                } else {
+                    $(".edit-dialog").modal('hide');
+                    $(".qso-dialog").modal('hide');
+                }
                 <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter" && $this->uri->segment(1) != "qso" && $this->uri->segment(1) != "logbookadvanced") { ?>location.reload();
             <?php } ?>
             },
