@@ -190,9 +190,7 @@ function applyLookupLocator(result, approval) {
 	$('#locator').val(result.callsign_qra);
 	$('#locator_info').html(result.bearing);
 
-	if (result.callsign_distance != "" && result.callsign_distance != 0) {
-		document.getElementById("distance").value = result.callsign_distance;
-	}
+	updateQsoDistanceFromLocator(result.callsign_qra);
 
 	if (result.callsign_qra != "") {
 		if (result.confirmed) {
@@ -743,6 +741,8 @@ var favs={};
 		}
 		
 		if (_submit) {
+			updateQsoDistanceFromLocator($('#locator').val());
+
 			// Mark as submitting and disable the submit button
 			isSubmitting = true;
 			$('#qso_input .warningOnSubmit').hide();
@@ -1208,6 +1208,10 @@ function reset_fields() {
 	resetCallsignLookupState();
 
 	$('#locator_info').text("");
+	var distanceEl = document.getElementById("distance");
+	if (distanceEl) {
+		distanceEl.value = '0';
+	}
 	$('#country').val("");
 	$('#continent').val("");
 	$('#lotw_info').text("");
@@ -1824,6 +1828,23 @@ $('#band').change(function() {
 var locatorDebounceTimer = null;
 var qsoLocatorGridLayer = null;
 
+function updateQsoDistanceFromLocator(locatorValue) {
+	var distanceEl = document.getElementById("distance");
+	if (!distanceEl) {
+		return;
+	}
+
+	var qra_input = (locatorValue || '').trim();
+	var myGrid = (typeof station_gridsquares !== 'undefined') ? station_gridsquares[$('#stationProfile').val()] : null;
+	if (!qra_input || qra_input.length < 4 || !myGrid || typeof QraUtils === 'undefined' || typeof QraUtils.distanceKm !== 'function') {
+		distanceEl.value = '0';
+		return;
+	}
+
+	var dist = QraUtils.distanceKm(myGrid, qra_input);
+	distanceEl.value = dist !== null ? dist : '0';
+}
+
 function updateQsoLocatorGridOverlays(locatorValue, fitIfMultiple) {
 	if (typeof mymap === 'undefined' || !mymap || typeof QraUtils === 'undefined' || typeof QraUtils.drawLocatorGrids !== 'function') {
 		return;
@@ -1919,10 +1940,8 @@ $("#locator").on('keyup input', function(){
 				if (bearingStr) {
 					$('#locator_info').html(bearingStr).fadeIn("slow");
 				}
-
-				var dist = QraUtils.distanceKm(myGrid, qra_input);
-				document.getElementById("distance").value = dist !== null ? dist : '';
 			}
+			updateQsoDistanceFromLocator(qra_input);
 		} else {
 			updateQsoLocatorGridOverlays('');
 		}

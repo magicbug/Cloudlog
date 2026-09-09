@@ -106,9 +106,11 @@ class Qsl_model extends CI_Model
         $CI->load->model('logbooks_model');
         $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-        $this->db->select('*');
+        $this->db->select($this->config->item('table_name') . '.*, station_profile.station_gridsquare, dxcc_entities.lat, dxcc_entities.`long`, dxcc_entities.name', false);
         $this->db->from($this->config->item('table_name'));
-        $this->db->where_in('station_id', $logbooks_locations_array);
+        $this->db->join('station_profile', 'station_profile.station_id = ' . $this->config->item('table_name') . '.station_id', 'left');
+        $this->db->join('dxcc_entities', $this->config->item('table_name') . '.col_dxcc = dxcc_entities.adif', 'left');
+        $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
         $this->db->where('col_call', $callsign);
 
         return $this->db->get();

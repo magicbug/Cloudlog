@@ -113,7 +113,7 @@ if (!function_exists('echo_table_col')) {
                 echo '</td>';
                 break;
             case 'Distance':
-                echo '<td>' . ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</td>';
+                echo '<td>' . qso_format_distance($row) . '</td>';
                 break;
             case 'Band':
                 echo '<td>';

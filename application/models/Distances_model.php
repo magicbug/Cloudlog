@@ -211,7 +211,7 @@ class Distances_model extends CI_Model
 				$qrb['Qsos']++;                                                        // Counts up number of qsos
 				// Use stored distance if available, otherwise calculate
 				if (!empty($qso['COL_DISTANCE']) && $qso['COL_DISTANCE'] > 0) {
-					$bearingdistance = $qso['COL_DISTANCE'];
+					$bearingdistance = $this->qra->convert_from_km($qso['COL_DISTANCE'], $measurement_base);
 				} else {
 					$bearingdistance = $this->qra->distance($stationgrid, $qso['grid'], $measurement_base);
 				}

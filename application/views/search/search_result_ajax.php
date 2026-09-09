@@ -110,7 +110,7 @@ function echo_table_col($row, $name)
             echo ($grid === '' ? $vucc : $grid);
             break;
         case 'Distance':
-            echo ($row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '');
+            echo qso_format_distance($row);
             break;
         case 'Band':
             if ($row->COL_SAT_NAME != null) {

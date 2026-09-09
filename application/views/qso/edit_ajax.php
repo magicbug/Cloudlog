@@ -155,7 +155,7 @@
                                     <div class="mb-3 col-sm-6">
                                         <label for="locator">Gridsquare</label>
                                         <input type="text" class="form-control" id="locator" name="locator" value="<?php echo $qso->COL_GRIDSQUARE; ?>">
-                                        <small id="locator_info" class="form-text text-muted"><?php if ($qso->COL_DISTANCE != "") echo $qso->COL_DISTANCE." km"; ?></small>
+                                        <small id="locator_info" class="form-text text-muted"><?php echo qso_format_distance($qso); ?></small>
                                     </div>
 
                                     <input type="hidden" name="distance" id="distance" value="<?php print ($qso->COL_DISTANCE != "") ? $qso->COL_DISTANCE : "0"; ?>">
