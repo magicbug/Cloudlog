@@ -9,7 +9,7 @@ ________________________________________________________________________________
 
 $lang['export_kml_header'] = "Exportação KML";
 $lang['export_kml_description'] = "Exporte seu logbook para um arquivo KML para uso no Google Earth.";
-$lang['export_kml_grisquare_warning'] = "Apenas QSOs com Grid (gridsquare) definida serão exportados!";
+$lang['export_kml_grisquare_warning'] = "Apenas QSOs com GRID definido serão exportados!";
 
 
 /*

@@ -69,33 +69,24 @@ class OptionsLib {
                 return $managed_value;
             }
         }
-        
-        if (strpos($option_name, 'option_') !== false) { 
-            if(!$CI->config->item($option_name)) {
-                 //Load the options model
-                $CI->load->model('options_model');
-                $removed_options_tag = trim($option_name, 'option_');
-                // call library function to get options value
-                $options_result = $CI->options_model->item($removed_options_tag);
-                    
-                // return option_value as a string
-                return $options_result;
-            } else {
-                return $CI->config->item($option_name);
+
+        $bare_name = (strpos($option_name, 'option_') === 0) ? substr($option_name, 7) : $option_name;
+        $prefixed_name = 'option_' . $bare_name;
+
+        foreach (array($option_name, $prefixed_name, $bare_name) as $key) {
+            if (array_key_exists($key, $CI->config->config)) {
+                return $CI->config->item($key);
             }
-        } else {
-            if(!$CI->config->item($option_name)) {
-                //Load the options model
-               $CI->load->model('options_model');
-               // call library function to get options value
-               $options_result = $CI->options_model->item($option_name);
-                   
-               // return option_value as a string
-               return $options_result;
-           } else {
-                return $CI->config->item($option_name);
-           }
         }
+
+        $CI->load->model('options_model');
+        $options_result = $CI->options_model->item($bare_name);
+        $CI->config->set_item($prefixed_name, $options_result);
+        if ($bare_name !== 'language' && !array_key_exists($bare_name, $CI->config->config)) {
+            $CI->config->set_item($bare_name, $options_result);
+        }
+
+        return $options_result;
     }
 
     // Function to save new option to options table

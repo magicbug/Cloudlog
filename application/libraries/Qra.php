@@ -65,6 +65,165 @@ class Qra {
       }
    }
 
+	function measurement_unit() {
+		$CI =& get_instance();
+		$unit = $CI->session->userdata('user_measurement_base');
+		if ($unit == NULL || $unit == '') {
+			$unit = $CI->config->item('measurement_base');
+		}
+		if (!in_array($unit, array('K', 'M', 'N'), true)) {
+			$unit = 'K';
+		}
+		return $unit;
+	}
+
+	function unit_suffix($unit = null, $html = true) {
+		if ($unit === null) {
+			$unit = $this->measurement_unit();
+		}
+		$sep = $html ? '&nbsp;' : ' ';
+		switch ($unit) {
+			case 'M':
+				return $sep . 'mi';
+			case 'N':
+				return $sep . 'nmi';
+			default:
+				return $sep . 'km';
+		}
+	}
+
+	/**
+	 * Convert a kilometre value (ADIF COL_DISTANCE) into the requested unit.
+	 * Uses the inverse of distance() so table display matches QRB calculations.
+	 */
+	function convert_from_km($km, $unit = 'K') {
+		$km = (float)$km;
+		if ($unit == 'M') {
+			return round($km / 1.609344, 1);
+		} else if ($unit == 'N') {
+			return round(($km / 1.609344) * 0.8684, 1);
+		}
+		return round($km, 1);
+	}
+
+	function format_distance_km($km, $unit = null, $html = true) {
+		if ($km === null || $km === '' || (float)$km <= 0) {
+			return '';
+		}
+		if ($unit === null) {
+			$unit = $this->measurement_unit();
+		}
+		$converted = $this->convert_from_km($km, $unit);
+		if ($converted <= 0) {
+			return '';
+		}
+		return $converted . $this->unit_suffix($unit, $html);
+	}
+
+	function qso_station_grid($row) {
+		$mine = $this->qso_field($row, 'station_gridsquare');
+		if ($mine === null || $mine === '') {
+			$mine = $this->qso_field($row, 'COL_MY_GRIDSQUARE');
+		}
+		if ($mine === null || $mine === '') {
+			$mine = $this->qso_field($row, 'COL_MY_VUCC_GRIDS');
+		}
+		return is_string($mine) ? trim($mine) : '';
+	}
+
+	function qso_worked_grid($row) {
+		$theirs = $this->qso_field($row, 'COL_GRIDSQUARE');
+		if ($theirs === null || $theirs === '') {
+			$theirs = $this->qso_field($row, 'COL_VUCC_GRIDS');
+		}
+		return is_string($theirs) ? trim($theirs) : '';
+	}
+
+	function qso_dxcc_latlng($row) {
+		$lat = $this->qso_field($row, 'dxcc_lat');
+		if ($lat === null || $lat === '') {
+			$lat = $this->qso_field($row, 'lat');
+		}
+		$lng = $this->qso_field($row, 'dxcc_long');
+		if ($lng === null || $lng === '') {
+			$lng = $this->qso_field($row, 'long');
+		}
+		if (!is_numeric($lat) || !is_numeric($lng)) {
+			return null;
+		}
+		$lat = (float)$lat;
+		$lng = (float)$lng;
+		if ($lat == 0.0 && $lng == 0.0) {
+			return null;
+		}
+		return array($lat, $lng);
+	}
+
+	function qso_distance_km($row) {
+		$stored = $this->qso_field($row, 'COL_DISTANCE');
+		if ($stored !== null && $stored !== '' && (float)$stored > 0) {
+			return (float)$stored;
+		}
+
+		$mine = $this->qso_station_grid($row);
+		if ($mine === '') {
+			return 0;
+		}
+
+		$theirs = $this->qso_worked_grid($row);
+		if ($theirs !== '' && strlen(preg_replace('/\s+/', '', $theirs)) >= 4) {
+			return (float)$this->distance($mine, $theirs, 'K');
+		}
+
+		$dxcc = $this->qso_dxcc_latlng($row);
+		if ($dxcc === null) {
+			return 0;
+		}
+
+		$stationCoords = qra2latlong($mine);
+		if (!$stationCoords || !isset($stationCoords[0], $stationCoords[1])) {
+			return 0;
+		}
+
+		return (float)distance((float)$stationCoords[0], (float)$stationCoords[1], $dxcc[0], $dxcc[1], 'K');
+	}
+
+	function qso_distance_tooltip($row) {
+		$grid = $this->qso_worked_grid($row);
+		if ($grid !== '') {
+			return $grid;
+		}
+		$stored = $this->qso_field($row, 'COL_DISTANCE');
+		if ($stored !== null && $stored !== '' && (float)$stored > 0) {
+			return '';
+		}
+		if ($this->qso_dxcc_latlng($row) === null) {
+			return '';
+		}
+		$name = $this->qso_field($row, 'name');
+		if ($name === null || $name === '') {
+			$name = $this->qso_field($row, 'COL_COUNTRY');
+		}
+		if ($name === null || $name === '') {
+			return 'DXCC';
+		}
+		return 'DXCC: ' . $name;
+	}
+
+	function format_qso_distance($row, $html = true) {
+		return $this->format_distance_km($this->qso_distance_km($row), null, $html);
+	}
+
+	private function qso_field($row, $key) {
+		if (is_object($row)) {
+			return property_exists($row, $key) ? $row->$key : null;
+		}
+		if (is_array($row)) {
+			return $row[$key] ?? null;
+		}
+		return null;
+	}
+
 	/*
 	* Function returns just the bearing
 	*  Input locator1 and locator2

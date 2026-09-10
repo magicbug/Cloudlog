@@ -272,7 +272,7 @@
                                 <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('sat')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects SAT entries only">SAT Only</button>
                                 <?php } ?>
                                 <?php if (in_array('EME', $worked_bands, true)) { ?>
-                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('eme')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects EME entries only">EME Only</button>
+                                <button type="button" class="btn preset-btn btn-outline-primary btn-sm" onclick="setBandGroup('eme')" data-bs-toggle="tooltip" data-bs-placement="top" data-dxcc-band-tooltip="1" title="Selects EME QSOs on all bands. EME also counts on the RF band checkboxes (for example 23cm includes 23cm EME).">EME Only</button>
                                 <?php } ?>
                                 <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="setBandGroup('all')">All Bands</button>
                                 <button type="button" class="btn preset-btn btn-outline-secondary btn-sm" onclick="setBandGroup('none')">Clear Bands</button>

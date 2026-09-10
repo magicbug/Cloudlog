@@ -38,7 +38,7 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <?php
 $load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'search', 'activators', 'activatorsmap'], true)
-    || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'waja', 'was', 'sota', 'pota'], true));
+    || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota'], true));
 ?>
 <?php if ($load_leaflet) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
@@ -49,6 +49,7 @@ $load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logboo
         <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/L.Maidenhead.activators.js"></script>
     <?php } ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.geodesic.js"></script>
+    <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/qra-utils.js?<?php echo filemtime(FCPATH . 'assets/js/qra-utils.js'); ?>"></script>
 <?php } ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/radiohelpers.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/darkmodehelpers.js"></script>
@@ -154,8 +155,8 @@ if ($this->session->userdata('user_id') != null) {
 
 <?php if ($this->uri->segment(1) == "notes" && ($this->uri->segment(2) == "add" || $this->uri->segment(2) == "edit")) { ?>
     <!-- Javascript used for Notes Area -->
-    <script src="<?php echo base_url(); ?>assets/plugins/quill/quill.min.js"></script>
-    <script src="<?php echo base_url(); ?>assets/js/sections/notes.js"></script>
+    <script src="<?php echo base_url(); ?>assets/plugins/summernote/summernote-bs5.min.js"></script>
+    <script src="<?php echo base_url(); ?>assets/js/sections/notes.js?<?php echo filemtime(FCPATH . 'assets/js/sections/notes.js'); ?>"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "notes" && ($this->uri->segment(2) == "" || $this->uri->segment(2) == NULL || $this->uri->segment(2) == "view")) { ?>
@@ -234,11 +235,79 @@ $(document).ready(function() {
     <script type="text/javascript">
         function copyURL(url) {
             var urlField = $('#baseUrl');
-            navigator.clipboard.writeText(url).then(function() {});
-            urlField.addClass('flash-copy')
-                .delay('1000').queue(function() {
-                    urlField.removeClass('flash-copy').dequeue();
+            copyTextToClipboard(url).then(function() {
+                urlField.addClass('flash-copy')
+                    .delay('1000').queue(function() {
+                        urlField.removeClass('flash-copy').dequeue();
+                    });
+            });
+        }
+
+        function copyTextToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                return navigator.clipboard.writeText(text);
+            }
+
+            return new Promise(function(resolve, reject) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.setAttribute('readonly', '');
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+                document.body.removeChild(textarea);
+            });
+        }
+
+        function markdownTableCell(value) {
+            return String(value || '').replace(/\s+/g, ' ').replace(/\|/g, '\\|').trim();
+        }
+
+        function buildDebugMarkdown() {
+            var lines = [
+                '## Cloudlog Debug Information',
+                ''
+            ];
+
+            $('.debug_main .card').each(function() {
+                var title = $(this).find('.card-header').first().text().replace(/\s+/g, ' ').trim();
+                if (!title) {
+                    return;
+                }
+
+                var rows = [];
+                $(this).find('table tr').each(function() {
+                    var cells = $(this).children('td');
+                    if (cells.length < 2) {
+                        return;
+                    }
+                    var key = markdownTableCell($(cells[0]).text());
+                    var value = markdownTableCell($(cells[1]).text());
+                    if (!key) {
+                        return;
+                    }
+                    rows.push('| ' + key + ' | ' + value + ' |');
                 });
+
+                if (!rows.length) {
+                    return;
+                }
+
+                lines.push('### ' + title, '');
+                lines.push('| Item | Value |');
+                lines.push('| --- | --- |');
+                lines = lines.concat(rows);
+                lines.push('');
+            });
+
+            return lines.join('\n').trim() + '\n';
         }
 
         $(function() {
@@ -248,6 +317,22 @@ $(document).ready(function() {
                     hide: 0
                 },
                 'placement': 'right'
+            });
+
+            $('#copyDebugMarkdown').on('click', function() {
+                var $button = $(this);
+                var originalHtml = $button.html();
+                copyTextToClipboard(buildDebugMarkdown()).then(function() {
+                    $button.addClass('flash-copy').html('<i class="fas fa-check me-1"></i>Copied');
+                    setTimeout(function() {
+                        $button.removeClass('flash-copy').html(originalHtml);
+                    }, 1500);
+                }).catch(function() {
+                    $button.html('<i class="fas fa-times me-1"></i>Copy failed');
+                    setTimeout(function() {
+                        $button.html(originalHtml);
+                    }, 1500);
+                });
             });
         });
     </script>
@@ -1513,7 +1598,6 @@ $(document).ready(function() {
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
-    <script src="<?php echo base_url(); ?>assets/js/qra-utils.js"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/qso.js?<?php echo filemtime(FCPATH . 'assets/js/sections/qso.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/cw-sidetone.js"></script>
     <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
@@ -2758,7 +2842,12 @@ $(document).ready(function() {
                 }
 
                 if (propModeFromCat === '') {
-                    $('#selectPropagation').val('').removeData('catValue');
+                    const currentPropMode = String($('#selectPropagation').val() || '').trim().toUpperCase();
+                    // CAT with no propagation should only clear leftover SAT, not
+                    // user-selected modes such as EME that should persist across QSOs.
+                    if (currentPropMode === 'SAT') {
+                        $('#selectPropagation').val('').removeData('catValue');
+                    }
                 } else {
                     cat2UI($('#selectPropagation'), propModeFromCat, false, false);
                 }
@@ -2856,7 +2945,7 @@ $(document).ready(function() {
                 const satName = String($('#sat_name').val() || '').trim();
                 const satMode = String($('#sat_mode').val() || '').trim();
                 const propMode = String($('#selectPropagation').val() || '').trim().toUpperCase();
-                lockSatelliteFieldsToUserInput = satName !== '' || satMode !== '' || propMode === 'SAT';
+                lockSatelliteFieldsToUserInput = satName !== '' || satMode !== '' || propMode !== '';
             });
 
             // Trigger updateFromCAT when any <select> with class 'radios' changes
@@ -3362,6 +3451,18 @@ $(document).ready(function() {
                                 icon: redIcon
                             }).addTo(mymap)
                             .bindPopup(callsign);
+
+                        if (typeof QraUtils !== 'undefined' && typeof QraUtils.drawLocatorGrids === 'function') {
+                            var qsoGrids = $("#qso_map_grids").text();
+                            var gridLayer = QraUtils.drawLocatorGrids(mymap, qsoGrids);
+                            if (gridLayer && gridLayer.getLayers().length > 0) {
+                                var gridBounds = gridLayer.getBounds();
+                                if (lat && long) {
+                                    gridBounds.extend([lat, long]);
+                                }
+                                mymap.fitBounds(gridBounds.pad(0.2), { maxZoom: 8 });
+                            }
+                        }
 
                     },
                 });
@@ -4073,8 +4174,15 @@ $(document).ready(function() {
             contentType: false,
             type: 'POST',
             success: function(dataofconfirm) {
-                $(".edit-dialog").modal('hide');
-                $(".qso-dialog").modal('hide');
+                if (typeof restoreQsoActionsMenus === 'function') {
+                    restoreQsoActionsMenus();
+                }
+                if (typeof BootstrapDialog !== 'undefined') {
+                    BootstrapDialog.closeAll();
+                } else {
+                    $(".edit-dialog").modal('hide');
+                    $(".qso-dialog").modal('hide');
+                }
                 <?php if ($this->uri->segment(1) != "search" && $this->uri->segment(2) != "filter" && $this->uri->segment(1) != "qso" && $this->uri->segment(1) != "logbookadvanced") { ?>location.reload();
             <?php } ?>
             },

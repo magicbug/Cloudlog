@@ -194,8 +194,8 @@ $lang['awards_wab_description_ln4'] = "Mais informações: <a href='https://wab.
 $lang['awards_wab_filter_band'] = "Banda";
 $lang['awards_wab_filter_mode'] = "Modo";
 $lang['awards_wab_filter_confirmed_only'] = "Mostrar apenas confirmados";
-$lang['awards_wab_stat_worked'] = "Quadrados trabalhados (filtrado)";
-$lang['awards_wab_stat_confirmed'] = "Quadrados confirmados (filtrado)";
+$lang['awards_wab_stat_worked'] = "Grids trabalhados (filtrado)";
+$lang['awards_wab_stat_confirmed'] = "Grids confirmados (filtrado)";
 $lang['awards_wab_tab_map'] = "Mapa";
 $lang['awards_wab_tab_table'] = "Tabela";
 $lang['awards_wab_table_heading'] = "QSOs na visualização";

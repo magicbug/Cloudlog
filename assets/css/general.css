@@ -49,6 +49,87 @@ thead>tr>td {
 	padding-top: 15px;
 }
 
+.notes .note-editor.note-frame {
+	width: 100%;
+	border-color: var(--bs-border-color, #dee2e6);
+	background-color: var(--bs-body-bg, #fff);
+}
+
+.notes .note-toolbar {
+	background-color: var(--bs-tertiary-bg, #f8f9fa);
+	border-bottom-color: var(--bs-border-color, #dee2e6);
+}
+
+.notes .note-editing-area .note-editable {
+	min-height: 55vh;
+	padding: 1.5rem;
+	font-size: 1rem;
+	line-height: 1.6;
+	background-color: var(--bs-body-bg, #fff);
+	color: var(--bs-body-color, inherit);
+}
+
+.notes .note-editing-area .note-editable table,
+.note-content table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1rem 0;
+}
+
+.notes .note-editing-area .note-editable table th,
+.notes .note-editing-area .note-editable table td,
+.note-content table th,
+.note-content table td {
+	border: 1px solid var(--bs-border-color, #dee2e6);
+	padding: 0.55rem 0.75rem;
+	min-width: 4rem;
+	vertical-align: top;
+}
+
+.notes .note-editing-area .note-editable table th,
+.note-content table th {
+	background-color: rgba(127, 127, 127, 0.12);
+	font-weight: 600;
+}
+
+.notes .note-editing-area .note-editable p,
+.note-content p {
+	margin-bottom: 1rem;
+}
+
+.notes .note-editing-area .note-editable h1,
+.notes .note-editing-area .note-editable h2,
+.notes .note-editing-area .note-editable h3,
+.notes .note-editing-area .note-editable h4,
+.notes .note-editing-area .note-editable h5,
+.notes .note-editing-area .note-editable h6,
+.note-content h1,
+.note-content h2,
+.note-content h3,
+.note-content h4,
+.note-content h5,
+.note-content h6 {
+	margin-top: 1.5rem;
+	margin-bottom: 0.75rem;
+	line-height: 1.3;
+	font-weight: 600;
+}
+
+.notes .note-editing-area .note-editable h1:first-child,
+.notes .note-editing-area .note-editable h2:first-child,
+.notes .note-editing-area .note-editable h3:first-child,
+.notes .note-editing-area .note-editable h4:first-child,
+.notes .note-editing-area .note-editable h5:first-child,
+.notes .note-editing-area .note-editable h6:first-child,
+.note-content h1:first-child,
+.note-content h2:first-child,
+.note-content h3:first-child,
+.note-content h4:first-child,
+.note-content h5:first-child,
+.note-content h6:first-child {
+	margin-top: 0;
+}
+
 .eqsl {
 	padding-top: 15px;
 }

@@ -116,6 +116,13 @@ function qso_delete(id, call) {
     });
 }
 
+function restoreQsoActionsMenus() {
+    $('.menuOnBody').remove();
+    $('.menuOnResultTab').each(function () {
+        this.style.removeProperty('display');
+    });
+}
+
 function qso_edit(id) {
     $.ajax({
         url: base_url + 'index.php/qso/edit_ajax',
@@ -123,8 +130,7 @@ function qso_edit(id) {
         data: {'id': id
         },
         success: function(html) {
-            // remove actions QSO menu //
-            $('.menuOnResultTab').hide();
+            // Hide cloned action menus so they do not sit above the dialog
             $('.menuOnBody').remove();
             BootstrapDialog.show({
                 title: lang_general_word_qso_data,
@@ -132,6 +138,9 @@ function qso_edit(id) {
                 size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,
                 message: html,
+                onhidden: function() {
+                    restoreQsoActionsMenus();
+                },
                 onshown: function(dialog) {
                     var state = $("#input_usa_state_edit option:selected").text();
                     if (state != "") {

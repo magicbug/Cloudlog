@@ -442,7 +442,7 @@ class User_Model extends CI_Model {
 	// FUNCTION: void update_session()
 	// Updates a user's login session after they've logged in
 	// TODO: This should return bool TRUE/FALSE or 0/1
-	function update_session($id) {
+	function update_session($id, $u = null) {
 
 		$CI =& get_instance();
         $CI->load->model('user_options_model');
@@ -489,7 +489,9 @@ class User_Model extends CI_Model {
             $callbook_password =  "";
         }
 
-		$u = $this->get_by_id($id);
+		if ($u === null) {
+			$u = $this->get_by_id($id);
+		}
 		$has_eqsl_credentials = ($u->row()->user_eqsl_name != '' && $u->row()->user_eqsl_password != '');
 		if (!$has_eqsl_credentials) {
 			$this->load->model('eqsl_mappings_model');
@@ -589,7 +591,7 @@ class User_Model extends CI_Model {
 
 		if ($this->_auth($user_id."-".$db_user_type, $user_hash)) {
 			// Freshen the session
-			$this->update_session($user_id);
+			$this->update_session($user_id, $u);
 			return 1;
 		}
 

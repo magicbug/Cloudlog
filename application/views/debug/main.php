@@ -1,6 +1,12 @@
 <div class="container debug_main">
 
-<h2><?php echo $page_title; ?></h2>
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+    <h2 class="mb-0"><?php echo $page_title; ?></h2>
+    <button type="button" class="btn btn-sm btn-primary" id="copyDebugMarkdown">
+        <i class="fas fa-copy me-1"></i>Copy as Markdown
+    </button>
+</div>
+<p class="text-muted">Copy a Markdown report to paste into a GitHub issue or when asking for help.</p>
 
 <div class="row">
     <div class="col">

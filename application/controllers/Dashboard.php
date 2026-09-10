@@ -93,14 +93,10 @@ class Dashboard extends CI_Controller
 			$this->load->view('interface_assets/footer');
 		} else {
 
-			//
-			$this->load->model('cat');
 			$this->load->model('vucc');
-			
+
 			// Load cache driver for dashboard statistics caching (15 minutes)
 			$this->load->driver('cache', array('adapter' => 'file'));
-
-			$data['radio_status'] = $this->cat->recent_status();
 
 			// Create cache key based on user and active logbook
 			$cache_key = 'dashboard_stats_' . $this->session->userdata('user_id') . '_' . $this->session->userdata('active_station_logbook');
@@ -200,8 +196,6 @@ class Dashboard extends CI_Controller
 			$data['total_qrz_rcvd'] = $QSLStatsBreakdownArray['QRZ_Received'];
 			$data['qrz_sent_today'] = $QSLStatsBreakdownArray['QRZ_Sent_today'];
 			$data['qrz_rcvd_today'] = $QSLStatsBreakdownArray['QRZ_Received_today'];
-
-			$data['last_five_qsos'] = $this->logbook_model->get_last_qsos('18', $logbooks_locations_array);
 
 			$data['page_title'] = "Dashboard";
 

@@ -188,7 +188,7 @@ class Logbook extends CI_Controller
 
 		$return['callsign_name'] 		= $this->nval($callbook['name'] ?? '', $recent_details['name']);
 		$return['callsign_qra'] 		= $this->nval($callbook['gridsquare'] ?? '',  $recent_details['gridsquare']);
-		$return['callsign_distance'] 	= $this->distance($return['callsign_qra']);
+		$return['callsign_distance'] 	= $this->distance($return['callsign_qra'], $station_id);
 		$return['callsign_qth'] 		= $this->nval($callbook['city'] ?? '', $recent_details['qth']);
 		$return['callsign_iota'] 		= $this->nval($callbook['iota'] ?? '', $recent_details['iota']);
 		$return['qsl_manager'] 			= $this->nval($callbook['qslmgr'] ?? '', $recent_details['qsl_via']);
@@ -1730,7 +1730,7 @@ class Logbook extends CI_Controller
 				$ret .= '<td>' . $this->part_QrbCalcLink($row->COL_MY_GRIDSQUARE, $row->COL_VUCC_GRIDS, $row->COL_GRIDSQUARE) . '</td>';
 				break;
 			case 'Distance':
-				$ret .= '<td>' . (property_exists($row, 'COL_DISTANCE') && $row->COL_DISTANCE ? $row->COL_DISTANCE . '&nbsp;km' : '') . '</td>';
+				$ret .= '<td>' . qso_format_distance($row) . '</td>';
 				break;
 			case 'Band':
 				$ret .= '<td>';

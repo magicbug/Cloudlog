@@ -190,9 +190,7 @@ function applyLookupLocator(result, approval) {
 	$('#locator').val(result.callsign_qra);
 	$('#locator_info').html(result.bearing);
 
-	if (result.callsign_distance != "" && result.callsign_distance != 0) {
-		document.getElementById("distance").value = result.callsign_distance;
-	}
+	updateQsoDistanceFromLocator(result.callsign_qra);
 
 	if (result.callsign_qra != "") {
 		if (result.confirmed) {
@@ -211,6 +209,8 @@ function applyLookupLocator(result, approval) {
 		$('#locator').removeClass("newGrid");
 		$('#locator').attr('title', '');
 	}
+
+	updateQsoLocatorGridOverlays(result.callsign_qra);
 }
 
 $( document ).ready(function() {
@@ -741,6 +741,8 @@ var favs={};
 		}
 		
 		if (_submit) {
+			updateQsoDistanceFromLocator($('#locator').val());
+
 			// Mark as submitting and disable the submit button
 			isSubmitting = true;
 			$('#qso_input .warningOnSubmit').hide();
@@ -772,6 +774,7 @@ var favs={};
 						var savedMode = normalizeFieldValue($('#mode').val());
 						var savedSatName = normalizeFieldValue($('#sat_name').val());
 						var savedSatMode = normalizeFieldValue($('#sat_mode').val());
+						var savedPropMode = $('#selectPropagation').val();
 						var savedRadio = normalizeFieldValue($('#qso_input select[name="radio"]').val());
 						var postSaveDefaults = {
 							start_date: savedStartDate,
@@ -779,6 +782,7 @@ var favs={};
 							mode: savedMode,
 							sat_name: savedSatName,
 							sat_mode: savedSatMode,
+							prop_mode: savedPropMode,
 							radio: savedRadio
 						};
 						var saveMessage = (response && response.message) ? response.message : 'QSO Added';
@@ -804,6 +808,10 @@ var favs={};
 						syncFromSelectedRadioAfterReset();
 						setTimeout(function() {
 							syncFromSelectedRadioAfterReset();
+							var savedProp = String(postSaveDefaults.prop_mode || '').toUpperCase();
+							if (savedProp && savedProp !== 'SAT') {
+								$('#selectPropagation').val(postSaveDefaults.prop_mode).trigger('change');
+							}
 						}, 250);
 						showQsoNotice(saveMessage, 'info');
 
@@ -1200,6 +1208,10 @@ function reset_fields() {
 	resetCallsignLookupState();
 
 	$('#locator_info').text("");
+	var distanceEl = document.getElementById("distance");
+	if (distanceEl) {
+		distanceEl.value = '0';
+	}
 	$('#country').val("");
 	$('#continent').val("");
 	$('#lotw_info').text("");
@@ -1256,6 +1268,7 @@ function reset_fields() {
 
 	mymap.setView(pos, 12);
 	mymap.removeLayer(markers);
+	updateQsoLocatorGridOverlays('');
 	$('.callsign-suggest').hide();
 	$('.dxccsummary').remove();
 	$('#timesWorked').html(lang_qso_title_previous_contacts);
@@ -1308,9 +1321,17 @@ function reapplyPostSaveDefaults(defaults) {
 		// Prefer selected radio CAT values after save; avoid restoring stale sat fields.
 		$('#sat_name').val('').removeData('catValue');
 		$('#sat_mode').val('').removeData('catValue');
-		$('#selectPropagation').val('').removeData('catValue');
 	} else if ((defaults.sat_name && defaults.sat_name !== '') || (defaults.sat_mode && defaults.sat_mode !== '')) {
 		$('#sat_name').trigger('input');
+	}
+
+	if (typeof defaults.prop_mode !== 'undefined') {
+		var savedPropMode = String(defaults.prop_mode || '').toUpperCase();
+		if (hasSelectedRadioForReset && savedPropMode === 'SAT') {
+			$('#selectPropagation').val('').removeData('catValue');
+		} else {
+			$('#selectPropagation').val(defaults.prop_mode);
+		}
 	}
 
 	if (typeof setRst === 'function') {
@@ -1691,10 +1712,17 @@ function resetQsoEntryOnEscape() {
 			$('#sat_mode').val(preSatMode);
 			$('#selectPropagation').val(prePropMode || 'SAT');
 		} else if (hasSelectedRadio) {
-			// Keep satellite fields clear until fresh CAT data is applied.
+			// Keep satellite fields clear until fresh CAT data is applied,
+			// but keep non-SAT propagation (e.g. EME) until the user changes it.
 			$('#sat_name').val('').removeData('catValue');
 			$('#sat_mode').val('').removeData('catValue');
-			$('#selectPropagation').val('').removeData('catValue');
+			if (String(prePropMode || '').toUpperCase() === 'SAT') {
+				$('#selectPropagation').val('').removeData('catValue');
+			} else {
+				$('#selectPropagation').val(prePropMode).trigger('change');
+			}
+		} else {
+			$('#selectPropagation').val(prePropMode).trigger('change');
 		}
 		if (typeof setRst === 'function') {
 			setRst($('#mode').val());
@@ -1798,7 +1826,37 @@ $('#band').change(function() {
 
 /* On Key up Calculate Bearing and Distance */
 var locatorDebounceTimer = null;
-$("#locator").keyup(function(){
+var qsoLocatorGridLayer = null;
+
+function updateQsoDistanceFromLocator(locatorValue) {
+	var distanceEl = document.getElementById("distance");
+	if (!distanceEl) {
+		return;
+	}
+
+	var qra_input = (locatorValue || '').trim();
+	var myGrid = (typeof station_gridsquares !== 'undefined') ? station_gridsquares[$('#stationProfile').val()] : null;
+	if (!qra_input || qra_input.length < 4 || !myGrid || typeof QraUtils === 'undefined' || typeof QraUtils.distanceKm !== 'function') {
+		distanceEl.value = '0';
+		return;
+	}
+
+	var dist = QraUtils.distanceKm(myGrid, qra_input);
+	distanceEl.value = dist !== null ? dist : '0';
+}
+
+function updateQsoLocatorGridOverlays(locatorValue, fitIfMultiple) {
+	if (typeof mymap === 'undefined' || !mymap || typeof QraUtils === 'undefined' || typeof QraUtils.drawLocatorGrids !== 'function') {
+		return;
+	}
+
+	qsoLocatorGridLayer = QraUtils.drawLocatorGrids(mymap, locatorValue, qsoLocatorGridLayer);
+	if (fitIfMultiple && qsoLocatorGridLayer && qsoLocatorGridLayer.getLayers().length > 1) {
+		mymap.fitBounds(qsoLocatorGridLayer.getBounds().pad(0.2), { maxZoom: 8 });
+	}
+}
+
+$("#locator").on('keyup input', function(){
 	clearTimeout(locatorDebounceTimer);
 	var $locator = $(this);
 	locatorDebounceTimer = setTimeout(function(){
@@ -1873,6 +1931,8 @@ $("#locator").keyup(function(){
 				markers.addLayer(marker).addTo(mymap);
 			}
 
+			updateQsoLocatorGridOverlays(qra_input, true);
+
 			// Bearing and distance — pure frontend math using injected station gridsquares
 			var myGrid = station_gridsquares[$('#stationProfile').val()];
 			if (myGrid) {
@@ -1880,11 +1940,13 @@ $("#locator").keyup(function(){
 				if (bearingStr) {
 					$('#locator_info').html(bearingStr).fadeIn("slow");
 				}
-
-				var dist = QraUtils.distanceKm(myGrid, qra_input);
-				document.getElementById("distance").value = dist !== null ? dist : '';
 			}
+			updateQsoDistanceFromLocator(qra_input);
+		} else {
+			updateQsoLocatorGridOverlays('');
 		}
+	} else {
+		updateQsoLocatorGridOverlays('');
 	}
 	}, 300);
 });
@@ -2024,6 +2086,7 @@ $('#dxcc_id').on('change', function() {
 				mymap.setZoom(8);
 				mymap.panTo([result.dxcc.lat, result.dxcc.long]);
 				markers.addLayer(marker).addTo(mymap);
+				updateQsoLocatorGridOverlays('');
 			}
 		}
 	});
