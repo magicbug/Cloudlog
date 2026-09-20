@@ -1033,139 +1033,146 @@ class Logbook extends CI_Controller
 		}
 
 		$exactMatch = $this->input->get('exact') === '1';
+		$searchTerm = $this->resolve_search_term($id, $id2);
 
-		$fixedid = $id;
-
-		if ($id2 != "") {
-			if (strlen($id2) > 3) {	// Last Element longer than 3 chars? Take that as call
-				$fixedid = $id2;
-			} else {		// Last Element up to 3 Chars? Take first element as Call
-				$fixedid = $id;
-			}
-		}
-
-		$fixedid = $this->normalize_search_term($fixedid);
-		$id = $this->normalize_search_term($id);
-
-		if ($fixedid === '' && $id === '') {
+		if ($searchTerm === '') {
 			return;
 		}
 
-		if ($fixedid === '') {
-			$fixedid = $id;
+		$plainCall = $this->get_plaincall($searchTerm);
+		if ($plainCall === '') {
+			$plainCall = $searchTerm;
 		}
 
-		$query = $this->querydb($fixedid, array('exact' => $exactMatch));
+		$query = $this->querydb($searchTerm, array('exact' => $exactMatch));
 
 		if ($query->num_rows() == 0 && !$exactMatch) {
-			$query = $this->querydb($fixedid, array('broad' => true));
+			$query = $this->querydb($searchTerm, array('broad' => true));
 		}
 
-		if ($query->num_rows() == 0) {
-			$query = $this->querydb($id, array('exact' => $exactMatch));
-
-			if ($query->num_rows() == 0 && !$exactMatch) {
-				$query = $this->querydb($id, array('broad' => true));
-			}
-
-			if ($query->num_rows() > 0) {
-				$data['results'] = $query;
-				$this->load->view('view_log/partial/log_ajax.php', $data);
-			} else {
-				$this->load->model('search');
-
-				$iota_search = $this->search->callsign_iota($id);
-
-				if ($iota_search->num_rows() > 0) {
-					$data['results'] = $iota_search;
-
-					$this->load->view('view_log/partial/log_ajax.php', $data);
-				} else {
-					// if session data callbook_type  is qrz
-					if ($this->session->userdata('callbook_type') == "QRZ") {
-						// Lookup using QRZ
-						$this->load->library('qrz');
-
-						// Load the encryption library
-						$this->load->library('encryption');
-
-						// Decrypt the password
-						$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-
-						if (!$this->session->userdata('qrz_session_key')) {
-							$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-							$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-						}
-						$data['callsign'] = $this->qrz->search($fixedid, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-
-						if (empty($data['callsign']['callsign'])) {
-							$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-							$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-							$data['callsign'] = $this->qrz->search($fixedid, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-						}
-						if (isset($data['callsign']['dxcc'])) {
-							$this->load->model('logbook_model');
-							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
-							if (is_array($entity) && isset($entity['name'])) {
-								$data['callsign']['dxcc_name'] = $entity['name'];
-							}
-						}
-						if (isset($data['callsign']['gridsquare'])) {
-							$this->load->model('logbook_model');
-							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
-						}
-					} elseif ($this->session->userdata('callbook_type') == "HamQTH") {
-						// Load the HamQTH library
-						$this->load->library('hamqth');
-
-						// Load the encryption library
-						$this->load->library('encryption');
-
-						// Decrypt the password
-						$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
-
-
-						if (!$this->session->userdata('hamqth_session_key')) {
-							$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-						}
-
-						$data['callsign'] = $this->hamqth->search($fixedid, $this->session->userdata('hamqth_session_key'));
-
-						// If HamQTH session has expired, start a new session and retry the search.
-						if ($data['callsign']['error'] == "Session does not exist or expired") {
-							$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-							$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-							$data['callsign'] = $this->hamqth->search($fixedid, $this->session->userdata('hamqth_session_key'));
-						}
-						if (isset($data['callsign']['gridsquare'])) {
-							$this->load->model('logbook_model');
-							$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
-						}
-						if (isset($data['callsign']['dxcc'])) {
-							$this->load->model('logbook_model');
-							$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
-							if (is_array($entity) && isset($entity['name'])) {
-								$data['callsign']['dxcc_name'] = $entity['name'];
-							}
-						}
-						if (isset($data['callsign']['error'])) {
-							$data['error'] = $data['callsign']['error'];
-						}
-					} else {
-						$data['error'] = 'Lookup not configured. Please review configuration.';
-					}
-
-					$data['id'] = strtoupper($fixedid);
-
-					$this->load->view('search/result', $data);
-				}
-			}
-		} else {
+		if ($query->num_rows() > 0) {
 			$data['results'] = $query;
+			$this->load->view('view_log/partial/log_ajax.php', $data);
+			return;
+		}
+
+		$this->load->model('search');
+
+		$iota_search = $this->search->callsign_iota($searchTerm);
+
+		if ($iota_search->num_rows() > 0) {
+			$data['results'] = $iota_search;
 
 			$this->load->view('view_log/partial/log_ajax.php', $data);
+			return;
 		}
+
+		// if session data callbook_type  is qrz
+		if ($this->session->userdata('callbook_type') == "QRZ") {
+			// Lookup using QRZ
+			$this->load->library('qrz');
+
+			// Load the encryption library
+			$this->load->library('encryption');
+
+			// Decrypt the password
+			$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+
+			if (!$this->session->userdata('qrz_session_key')) {
+				$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
+				$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+			}
+			$data['callsign'] = $this->qrz->search($plainCall, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+
+			if (empty($data['callsign']['callsign'])) {
+				$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
+				$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+				$data['callsign'] = $this->qrz->search($plainCall, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+			}
+			if (isset($data['callsign']['dxcc'])) {
+				$this->load->model('logbook_model');
+				$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
+				if (is_array($entity) && isset($entity['name'])) {
+					$data['callsign']['dxcc_name'] = $entity['name'];
+				}
+			}
+			if (isset($data['callsign']['gridsquare'])) {
+				$this->load->model('logbook_model');
+				$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
+			}
+		} elseif ($this->session->userdata('callbook_type') == "HamQTH") {
+			// Load the HamQTH library
+			$this->load->library('hamqth');
+
+			// Load the encryption library
+			$this->load->library('encryption');
+
+			// Decrypt the password
+			$decrypted_password = $this->encryption->decrypt($this->session->userdata('callbook_password'));
+
+
+			if (!$this->session->userdata('hamqth_session_key')) {
+				$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
+				$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+			}
+
+			$data['callsign'] = $this->hamqth->search($plainCall, $this->session->userdata('hamqth_session_key'));
+
+			// If HamQTH session has expired, start a new session and retry the search.
+			if ($data['callsign']['error'] == "Session does not exist or expired") {
+				$hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
+				$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+				$data['callsign'] = $this->hamqth->search($plainCall, $this->session->userdata('hamqth_session_key'));
+			}
+			if (isset($data['callsign']['gridsquare'])) {
+				$this->load->model('logbook_model');
+				$data['grid_worked'] = $this->logbook_model->check_if_grid_worked_in_logbook(strtoupper(substr($data['callsign']['gridsquare'], 0, 4)), 0, $this->session->userdata('user_default_band'));
+			}
+			if (isset($data['callsign']['dxcc'])) {
+				$this->load->model('logbook_model');
+				$entity = $this->logbook_model->get_entity($data['callsign']['dxcc']);
+				if (is_array($entity) && isset($entity['name'])) {
+					$data['callsign']['dxcc_name'] = $entity['name'];
+				}
+			}
+			if (isset($data['callsign']['error'])) {
+				$data['error'] = $data['callsign']['error'];
+			}
+		} else {
+			$data['error'] = 'Lookup not configured. Please review configuration.';
+		}
+
+		$data['id'] = strtoupper($searchTerm);
+
+		$this->load->view('search/result', $data);
+	}
+
+	private function resolve_search_term($id = "", $id2 = "")
+	{
+		$queryCallsign = trim((string) $this->security->xss_clean((string) $this->input->get('callsign')));
+		if ($queryCallsign !== '') {
+			return $this->normalize_search_term($queryCallsign);
+		}
+
+		$parts = array();
+		for ($segmentIndex = 3; $segmentIndex <= 8; $segmentIndex++) {
+			$segment = $this->uri->segment($segmentIndex);
+			if ($segment === null || $segment === false || $segment === '') {
+				break;
+			}
+			$parts[] = $segment;
+		}
+
+		if (empty($parts)) {
+			if ($id !== '') {
+				$parts[] = $id;
+			}
+			if ($id2 !== '') {
+				$parts[] = $id2;
+			}
+		}
+
+		return $this->normalize_search_term(implode('/', $parts));
 	}
 
 	private function normalize_search_term($value)

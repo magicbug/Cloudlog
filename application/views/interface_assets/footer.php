@@ -1275,9 +1275,9 @@ $(document).ready(function() {
         }
 
         function buildSearchResultUrl(callsign, exactMatch) {
-            var url = "logbook/search_result/" + encodeURI(callsign.replace(/Ø/g, '0'));
+            var url = "<?php echo site_url('logbook/search_result'); ?>?callsign=" + encodeURIComponent(callsign.replace(/Ø/g, '0'));
             if (exactMatch) {
-                url += '?exact=1';
+                url += '&exact=1';
             }
             return url;
         }
