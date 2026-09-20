@@ -992,12 +992,14 @@ class QSO extends CI_Controller {
     $limit = 5;
     $page = $this->input->get('page') ? (int)$this->input->get('page') : 0;
     $offset = $page * $limit;
+    $extra_station_id = $this->input->get('station_id');
 
-    $data['query'] = $this->logbook_model->last_custom_paginated($limit, $offset);
-    $data['total_rows'] = $this->logbook_model->last_custom_count();
+    $data['query'] = $this->logbook_model->last_custom_paginated($limit, $offset, $extra_station_id);
+    $data['total_rows'] = $this->logbook_model->last_custom_count($extra_station_id);
     $data['total_pages'] = ceil($data['total_rows'] / $limit);
     $data['current_page'] = $page;
     $data['limit'] = $limit;
+    $data['station_id'] = $extra_station_id;
 
         // This endpoint is polled by HTMX and must not be cached.
         $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');

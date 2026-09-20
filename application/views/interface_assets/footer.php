@@ -2470,6 +2470,17 @@ $(document).ready(function() {
             });
             // [eQSL default msg] change value on change station profle //
             qso_set_eqsl_qslmsg(stationProfile, false, '.qso_panel');
+
+            if (typeof htmx !== 'undefined' && document.getElementById('qso-last-table')) {
+                var pastContactsUrl = base_url + 'index.php/qso/component_past_contacts';
+                if (stationProfile) {
+                    pastContactsUrl += '?station_id=' + encodeURIComponent(stationProfile);
+                }
+                htmx.ajax('GET', pastContactsUrl, {
+                    target: '#qso-last-table',
+                    swap: 'innerHTML'
+                });
+            }
         });
         // [eQSL default msg] change value on clic //
         $('.qso_panel .qso_eqsl_qslmsg_update').off('click').on('click', function() {

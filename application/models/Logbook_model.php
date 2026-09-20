@@ -1841,11 +1841,55 @@ class Logbook_model extends CI_Model
     }
   }
 
-  function last_custom_paginated($limit = 6, $offset = 0)
+  /**
+   * Station locations for dashboard / previous-contacts lists.
+   * Active logbook relationships, plus the active station and any extra
+   * station currently selected for logging (so SOTA/portable QSOs still appear
+   * even if that location was not linked to the logbook yet).
+   */
+  private function locations_for_recent_qsos($extra_station_id = null)
   {
     $CI = &get_instance();
     $CI->load->model('logbooks_model');
-    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    $CI->load->model('stations');
+
+    $locations = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    if (!is_array($locations)) {
+      $locations = array();
+    }
+
+    $candidates = array();
+    $active = $CI->stations->find_active();
+    if (!empty($active) && $active !== '0') {
+      $candidates[] = $active;
+    }
+    if (!empty($extra_station_id) && $extra_station_id !== '0') {
+      $candidates[] = $extra_station_id;
+    }
+
+    foreach ($candidates as $station_id) {
+      $station_id = (int) $station_id;
+      if ($station_id <= 0) {
+        continue;
+      }
+      $already_included = false;
+      foreach ($locations as $existing) {
+        if ((int) $existing === $station_id) {
+          $already_included = true;
+          break;
+        }
+      }
+      if (!$already_included && $CI->stations->check_station_is_accessible($station_id)) {
+        $locations[] = $station_id;
+      }
+    }
+
+    return $locations;
+  }
+
+  function last_custom_paginated($limit = 6, $offset = 0, $extra_station_id = null)
+  {
+    $logbooks_locations_array = $this->locations_for_recent_qsos($extra_station_id);
 
     if (!empty($logbooks_locations_array)) {
       $this->db->select('COL_CALL, COL_BAND, COL_FREQ, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_DXCC, COL_PRIMARY_KEY, COL_SAT_NAME, COL_SRX, COL_SRX_STRING, COL_STX, COL_STX_STRING, COL_VUCC_GRIDS, COL_GRIDSQUARE, COL_MY_GRIDSQUARE, COL_MY_VUCC_GRIDS, COL_OPERATOR, COL_IOTA, COL_WWFF_REF, COL_POTA_REF, COL_STATE, COL_CNTY, COL_DISTANCE, COL_SOTA_REF, COL_CONTEST_ID, dxcc_entities.end AS end, dxcc_entities.lat AS dxcc_lat, dxcc_entities.`long` AS dxcc_long', false);
@@ -1860,11 +1904,9 @@ class Logbook_model extends CI_Model
     }
   }
 
-  function last_custom_count()
+  function last_custom_count($extra_station_id = null)
   {
-    $CI = &get_instance();
-    $CI->load->model('logbooks_model');
-    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    $logbooks_locations_array = $this->locations_for_recent_qsos($extra_station_id);
 
     if (!empty($logbooks_locations_array)) {
       $this->db->select('COUNT(*) as count');
@@ -2530,9 +2572,7 @@ class Logbook_model extends CI_Model
     $num = intval($num);
     
     if ($StationLocationsArray == null) {
-      $CI = &get_instance();
-      $CI->load->model('logbooks_model');
-      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      $logbooks_locations_array = $this->locations_for_recent_qsos();
     } else {
       $logbooks_locations_array = $StationLocationsArray;
     }
