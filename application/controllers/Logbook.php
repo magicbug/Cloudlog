@@ -111,7 +111,7 @@ class Logbook extends CI_Controller
 			"dxcc" => false,
 		];
 
-		$return['dxcc'] = $this->cached_dxcc_lookup($callsign);
+		$return['dxcc'] = $this->cached_dxcc_lookup($callsign, $this->request_qso_date());
 
 		header('Content-Type: application/json');
 		echo json_encode($return, JSON_PRETTY_PRINT);
@@ -167,7 +167,7 @@ class Logbook extends CI_Controller
 			"image" => "",
 		];
 
-		$return['dxcc'] = $this->cached_dxcc_lookup($callsign);
+		$return['dxcc'] = $this->cached_dxcc_lookup($callsign, $this->request_qso_date());
 
 		$lookupcall = $this->get_plaincall($callsign);
 
@@ -537,7 +537,7 @@ class Logbook extends CI_Controller
 			}
 
 			$this->db->where_in('station_id', $logbooks_locations_array);
-			$this->db->where('COL_COUNTRY', urldecode($country));
+			$this->where_lookup_dxcc($country);
 
 			$query = $this->db->get($this->config->item('table_name'), 1, 0);
 			foreach ($query->result() as $workedBeforeRow) {
@@ -589,7 +589,7 @@ class Logbook extends CI_Controller
 			}
 
 			$this->db->where_in('station_id', $logbooks_locations_array);
-			$this->db->where('COL_COUNTRY', urldecode($country));
+			$this->where_lookup_dxcc($country);
 
 			$query = $this->db->get($this->config->item('table_name'), 1, 0);
 			foreach ($query->result() as $workedBeforeRow) {
@@ -609,6 +609,17 @@ class Logbook extends CI_Controller
 			echo json_encode($return, JSON_PRETTY_PRINT);
 			return;
 		}
+	}
+
+	private function where_lookup_dxcc($country)
+	{
+		// A numeric segment is the ADIF id. Entity names such as "People's Dem Rep of Yemen"
+		// contain characters the URI filter rejects, so the badge lookup must not rely on the name.
+		if (ctype_digit((string)$country)) {
+			$this->db->where('COL_DXCC', (int)$country);
+			return;
+		}
+		$this->db->where('COL_COUNTRY', urldecode($country));
 	}
 
 	function jsonlookupcallsign($callsign, $type, $band, $mode)
@@ -1352,14 +1363,30 @@ class Logbook extends CI_Controller
 		return $ans;
 	}
 
-	private function cached_dxcc_lookup($call)
+	private function request_qso_date()
+	{
+		$raw = trim((string)$this->input->get('qso_date', TRUE));
+		if ($raw === '') {
+			return '';
+		}
+
+		$this->load->model('logbook_model');
+		return $this->logbook_model->normalize_qso_date($raw);
+	}
+
+	private function cached_dxcc_lookup($call, $date = '')
 	{
 		$normalized_call = strtoupper(trim((string)$call));
 		if ($normalized_call === '') {
 			return false;
 		}
 
-		$cache_key = 'dxcc_lookup_' . md5($normalized_call . '|' . date('Y-m-d'));
+		$lookup_date = trim((string)$date);
+		if ($lookup_date === '') {
+			$lookup_date = date('Y-m-d');
+		}
+
+		$cache_key = 'dxcc_lookup_' . md5($normalized_call . '|' . $lookup_date);
 		$cache_ttl = 3600; // 1 hour
 
 		$this->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
@@ -1368,7 +1395,7 @@ class Logbook extends CI_Controller
 			return $cached;
 		}
 
-		$dxcc = $this->dxcheck($normalized_call);
+		$dxcc = $this->dxcheck($normalized_call, $lookup_date);
 		if ($dxcc !== false && $dxcc !== null) {
 			$this->cache->save($cache_key, $dxcc, $cache_ttl);
 		}

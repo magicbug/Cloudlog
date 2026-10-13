@@ -6329,20 +6329,67 @@ class Logbook_model extends CI_Model
       }
     }
 
-    // Try to parse with the user's format first
+    // Try to parse with the user's format first.
+    // A 2-digit year cannot represent 1967: PHP reads 67 as 2067. A typed
+    // 4-digit year is honoured even when the account format uses `y`.
     $date = DateTime::createFromFormat($user_format, $date_input);
+    $two_digit_year = false;
     if ($date !== false) {
+      $two_digit_year = strpos($user_format, 'y') !== false;
+    } elseif (strpos($user_format, 'y') !== false && preg_match('/\d{4}/', $date_input)) {
+      $date = DateTime::createFromFormat(str_replace('y', 'Y', $user_format), $date_input);
+    }
+
+    if ($date === false) {
+      // Fallback to strtotime for formats it can handle (mostly Y-m-d, m/d/Y, etc.)
+      $timestamp = strtotime($date_input);
+      if ($timestamp === false) {
+        return $date_input;
+      }
+      $normalized = date('Y-m-d', $timestamp);
+      if (!preg_match('/\d{4}/', $date_input)) {
+        $normalized = $this->roll_back_implausible_future_year($normalized);
+      }
+      return $normalized;
+    }
+
+    $normalized = $date->format('Y-m-d');
+    if ($two_digit_year) {
+      $normalized = $this->roll_back_implausible_future_year($normalized);
+    }
+    return $normalized;
+  }
+
+  /**
+   * Two-digit years 00-69 parse as 2000-2069. A log date more than a year
+   * ahead is the previous century (07/05/67 is 1967, not 2067).
+   */
+  private function roll_back_implausible_future_year($ymd)
+  {
+    $date = DateTime::createFromFormat('Y-m-d', $ymd);
+    if ($date === false) {
+      return $ymd;
+    }
+    $limit = new DateTime('today');
+    $limit->modify('+1 year');
+    if ($date > $limit) {
+      $date->modify('-100 years');
       return $date->format('Y-m-d');
     }
+    return $ymd;
+  }
 
-    // Fallback to strtotime for formats it can handle (mostly Y-m-d, m/d/Y, etc.)
-    $timestamp = strtotime($date_input);
-    if ($timestamp !== false) {
-      return date('Y-m-d', $timestamp);
+  /**
+   * QSO date from the logging form, normalised to Y-m-d for DXCC lookups.
+   * Falls back to today when the input cannot be parsed.
+   */
+  public function normalize_qso_date($date_input)
+  {
+    $parsed = $this->parse_user_date($date_input);
+    if (is_string($parsed) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $parsed)) {
+      return $parsed;
     }
-
-    // If all parsing fails, return the original input and let the database handle it
-    return $date_input;
+    return date('Y-m-d');
   }
 
   /* Consolidated QSO Statistics - Get all basic counts in a single query */
