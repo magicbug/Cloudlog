@@ -3920,12 +3920,21 @@ class Logbook_model extends CI_Model
   {
     if ($this->check_qso_is_accessible($id)) {
       // Get station_id before deleting for cache clearing
-      $this->db->select('station_id');
+      $this->db->select('station_id, COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SUBMODE');
       $this->db->where('COL_PRIMARY_KEY', $id);
       $qso_query = $this->db->get($this->config->item('table_name'));
       $station_id = null;
       if ($qso_query->num_rows() > 0) {
-        $station_id = $qso_query->row()->station_id;
+        $qso_row = $qso_query->row_array();
+        $station_id = $qso_row['station_id'];
+
+        $this->load->library('cloudlog_hooks');
+        $this->cloudlog_hooks->do_action('qso.action.before_delete', array(
+          'qso_id' => (int)$id,
+          'qso' => $qso_row,
+        ), array(
+          'station_id' => $station_id,
+        ));
       }
       
       // Delete the QSO

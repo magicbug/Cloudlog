@@ -11,6 +11,10 @@ class Plugins extends CI_Controller {
     {
         parent::__construct();
 
+        if ($this->router->method === 'cron') {
+            return;
+        }
+
         $this->load->model('user_model');
         if ($this->user_model->validate_session() == 0) {
             redirect('user/login');
@@ -144,6 +148,20 @@ class Plugins extends CI_Controller {
         $this->session->set_flashdata('notice', $result['message']);
 
         redirect('plugins');
+    }
+
+    // Called from the operator's crontab; runs with no logged-in session.
+    public function cron()
+    {
+        $this->load->library('cloudlog_hooks');
+        $this->cloudlog_hooks->do_action('cron.action.run', array(
+            'started_at' => date('Y-m-d H:i:s'),
+        ), array(
+            'source' => 'cron',
+        ));
+
+        header('Content-Type: text/plain');
+        echo 'Plugin cron hooks run.';
     }
 
     private function get_plugins_csrf_token()
