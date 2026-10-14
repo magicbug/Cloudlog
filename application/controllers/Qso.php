@@ -693,9 +693,11 @@ class QSO extends CI_Controller {
         }
         else {
             // Update Logbook to Mark Paper Card Received
-            $this->logbook_model->paperqsl_update($id, $method);
-
-            echo json_encode(array('message' => 'OK'));
+            if ($this->logbook_model->paperqsl_update($id, $method)) {
+                echo json_encode(array('message' => 'OK'));
+            } else {
+                echo json_encode(array('message' => 'Error'));
+            }
         }
     }
 
@@ -714,9 +716,11 @@ class QSO extends CI_Controller {
         }
         else {
             // Update Logbook to Mark Paper Card Sent
-            $this->logbook_model->paperqsl_update_sent($id, $method);
-            
-            echo json_encode(array('message' => 'OK'));
+            if ($this->logbook_model->paperqsl_update_sent($id, $method)) {
+                echo json_encode(array('message' => 'OK'));
+            } else {
+                echo json_encode(array('message' => 'Error'));
+            }
         }
     }
 
