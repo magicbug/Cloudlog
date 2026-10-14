@@ -63,6 +63,7 @@ class Stations extends CI_Model {
 	 */
 	function user_owns_station($user_id, $station_id) {
 		$this->db->where('station_id', $station_id);
+		$this->db->where('user_id', $user_id);
 		return $this->db->count_all_results('station_profile') > 0;
 	}
 
