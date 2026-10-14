@@ -770,20 +770,32 @@ var favs={};
 					if (response && response.status === 'ok') {
 						var savedCallsign = normalizeFieldValue($('#callsign').val()).toUpperCase();
 						var savedStartDate = normalizeFieldValue($('#qso_input [name="start_date"]').first().val());
+						var savedStartTime = normalizeFieldValue($('#qso_input [name="start_time"]').first().val());
+						var savedEndTime = normalizeFieldValue($('#qso_input [name="end_time"]').first().val());
 						var savedBand = normalizeFieldValue($('#band').val());
+						var savedBandRx = normalizeFieldValue($('#band_rx').val());
+						var savedFrequency = normalizeFieldValue($('#frequency').val());
+						var savedFrequencyRx = normalizeFieldValue($('#frequency_rx').val());
 						var savedMode = normalizeFieldValue($('#mode').val());
 						var savedSatName = normalizeFieldValue($('#sat_name').val());
 						var savedSatMode = normalizeFieldValue($('#sat_mode').val());
 						var savedPropMode = $('#selectPropagation').val();
 						var savedRadio = normalizeFieldValue($('#qso_input select[name="radio"]').val());
+						var savedStationProfile = normalizeFieldValue($('#stationProfile').val());
 						var postSaveDefaults = {
 							start_date: savedStartDate,
+							start_time: savedStartTime,
+							end_time: savedEndTime,
 							band: savedBand,
+							band_rx: savedBandRx,
+							frequency: savedFrequency,
+							frequency_rx: savedFrequencyRx,
 							mode: savedMode,
 							sat_name: savedSatName,
 							sat_mode: savedSatMode,
 							prop_mode: savedPropMode,
-							radio: savedRadio
+							radio: savedRadio,
+							station_profile: savedStationProfile
 						};
 						var saveMessage = (response && response.message) ? response.message : 'QSO Added';
 						if (savedCallsign && savedBand) {
@@ -816,7 +828,11 @@ var favs={};
 						showQsoNotice(saveMessage, 'info');
 
 						if (typeof htmx !== 'undefined' && document.getElementById('qso-last-table')) {
-							htmx.ajax('GET', base_url + 'index.php/qso/component_past_contacts', {
+							var pastContactsUrl = base_url + 'index.php/qso/component_past_contacts';
+							if (savedStationProfile) {
+								pastContactsUrl += '?station_id=' + encodeURIComponent(savedStationProfile);
+							}
+							htmx.ajax('GET', pastContactsUrl, {
 								target: '#qso-last-table',
 								swap: 'innerHTML'
 							});
@@ -1020,52 +1036,39 @@ $(document).on('change', '#sat_name', function(){
 	}
 });
 
-function changebadge(entityname) {
-	if (isSatelliteLookupContext()) {
-		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/SAT/0/0', function(result)
-		{
+function applyCallsignInfoBadge(result) {
+	var $info = $('#callsign_info');
+	$info.removeClass("lotw_info_orange text-bg-secondary text-bg-success text-bg-danger");
+	$info.attr('title', '');
 
-			$('#callsign_info').removeClass("lotw_info_orange");
-			$('#callsign_info').removeClass("text-bg-secondary");
-			$('#callsign_info').removeClass("text-bg-success");
-			$('#callsign_info').removeClass("text-bg-danger");
-			$('#callsign_info').attr('title', '');
-
-			if (result.confirmed) {
-				$('#callsign_info').addClass("text-bg-success");
-				$('#callsign_info').attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
-			} else if (result.workedBefore) {
-				$('#callsign_info').addClass("text-bg-success");
-				$('#callsign_info').addClass("lotw_info_orange");
-				$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-			} else {
-				$('#callsign_info').addClass("text-bg-danger");
-				$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
-			}
-		})
+	if (result && result.confirmed) {
+		$info.addClass("text-bg-success");
+		$info.attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
+	} else if (result && result.workedBefore) {
+		$info.addClass("text-bg-success lotw_info_orange");
+		$info.attr('title', 'DXCC was already worked in the past on this band and mode!');
 	} else {
-		$.getJSON(base_url + 'index.php/logbook/jsonlookupdxcc/' + convert_case(entityname) + '/0/' + $("#band").val() +'/' + $("#mode").val(), function(result)
-		{
-			// Reset CSS values before updating
-			$('#callsign_info').removeClass("lotw_info_orange");
-			$('#callsign_info').removeClass("text-bg-secondary");
-			$('#callsign_info').removeClass("text-bg-success");
-			$('#callsign_info').removeClass("text-bg-danger");
-			$('#callsign_info').attr('title', '');
-
-			if (result.confirmed) {
-				$('#callsign_info').addClass("text-bg-success");
-				$('#callsign_info').attr('title', 'DXCC was already worked and confirmed in the past on this band and mode!');
-			} else if (result.workedBefore) {
-				$('#callsign_info').addClass("text-bg-success");
-				$('#callsign_info').addClass("lotw_info_orange");
-				$('#callsign_info').attr('title', 'DXCC was already worked in the past on this band and mode!');
-			} else {
-				$('#callsign_info').addClass("text-bg-danger");
-				$('#callsign_info').attr('title', 'New DXCC, not worked on this band and mode!');
-			}
-		})
+		$info.addClass("text-bg-danger");
+		$info.attr('title', 'New DXCC, not worked on this band and mode!');
 	}
+}
+
+function changebadge(entityname, adif) {
+	var dxccKey = (adif !== undefined && adif !== null && String(adif) !== '' && String(adif) !== '0')
+		? String(adif)
+		: encodeURIComponent(entityname || '');
+	var lookupUrl = isSatelliteLookupContext()
+		? base_url + 'index.php/logbook/jsonlookupdxcc/' + dxccKey + '/SAT/0/0'
+		: base_url + 'index.php/logbook/jsonlookupdxcc/' + dxccKey + '/0/' + $("#band").val() + '/' + $("#mode").val();
+
+	$.getJSON(lookupUrl, function(result) {
+		applyCallsignInfoBadge(result);
+	}).fail(function() {
+		var $info = $('#callsign_info');
+		if (!$info.hasClass("text-bg-secondary") && !$info.hasClass("text-bg-success") && !$info.hasClass("text-bg-danger")) {
+			$info.addClass("text-bg-secondary");
+		}
+	});
 }
 
 /* Function: resetSubmissionState resets the form submission state */
@@ -1223,7 +1226,7 @@ function reset_fields() {
 	$('#sota_info').text("");
 	$('#wwff_info').html('').attr('title', '');
 	$('#pota_info').html('').attr('title', '');
-	$('#dxcc_id').val("").trigger('change');
+	$('#dxcc_id').val("0").trigger('change');
 	$('#cqz').val("");
 	$('#name').val("");
 	$('#qth').val("");
@@ -1287,9 +1290,20 @@ function reapplyPostSaveDefaults(defaults) {
 
 	var selectedRadioForReset = normalizeFieldValue(defaults.radio || $('select.radios').first().val());
 	var hasSelectedRadioForReset = selectedRadioForReset !== '' && selectedRadioForReset !== '0';
+	var isPostMode = (typeof qso_manual !== 'undefined') && (String(qso_manual) === '1');
 
 	if (typeof defaults.start_date !== 'undefined') {
 		$('#qso_input [name="start_date"]').val(defaults.start_date);
+	}
+
+	// POST mode: keep the entered time between consecutive QSOs (matches pre-AJAX session restore).
+	if (isPostMode) {
+		if (typeof defaults.start_time !== 'undefined') {
+			$('#qso_input [name="start_time"]').val(defaults.start_time);
+		}
+		if (typeof defaults.end_time !== 'undefined' && $('#qso_input [name="end_time"]').length) {
+			$('#qso_input [name="end_time"]').val(defaults.end_time);
+		}
 	}
 
 	if (typeof defaults.band !== 'undefined') {
@@ -1300,12 +1314,29 @@ function reapplyPostSaveDefaults(defaults) {
 		$('#mode').val(defaults.mode);
 	}
 
+	if (typeof defaults.station_profile !== 'undefined' && defaults.station_profile !== '') {
+		$('#stationProfile').val(defaults.station_profile);
+	}
+
 	if (!hasSelectedRadioForReset && typeof defaults.sat_name !== 'undefined') {
 		$('#sat_name').val(defaults.sat_name);
 	}
 
 	if (!hasSelectedRadioForReset && typeof defaults.sat_mode !== 'undefined') {
 		$('#sat_mode').val(defaults.sat_mode);
+	}
+
+	// Without CAT, keep frequency/RX band between entries like the old full-page reload did.
+	if (!hasSelectedRadioForReset) {
+		if (typeof defaults.frequency !== 'undefined') {
+			$('#frequency').val(defaults.frequency);
+		}
+		if (typeof defaults.frequency_rx !== 'undefined') {
+			$('#frequency_rx').val(defaults.frequency_rx);
+		}
+		if (typeof defaults.band_rx !== 'undefined') {
+			$('#band_rx').val(defaults.band_rx);
+		}
 	}
 
 	if (typeof defaults.radio !== 'undefined' && defaults.radio !== '') {
@@ -1378,7 +1409,7 @@ $("#callsign").focusout(function() {
 		find_callsign=find_callsign.replace('Ø', '0');
 
 		// Replace / in a callsign with - to stop urls breaking
-		$.getJSON(base_url + 'index.php/logbook/json/' + find_callsign + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val(), function(result)
+		$.getJSON(base_url + 'index.php/logbook/json/' + find_callsign + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val() + qsoLookupDateQuery(), function(result)
 		{
 			if (!isLookupStillCurrent(requestId, find_callsign)) {
 				return;
@@ -1416,7 +1447,7 @@ $("#callsign").focusout(function() {
 					$('#callsign').attr('title', 'New Callsign!');
 				}
 
-				changebadge(result.dxcc.entity);
+				changebadge(result.dxcc.entity, result.dxcc.adif);
 			}
 
 				if(result.lotw_member == "active") {
@@ -1443,7 +1474,7 @@ $("#callsign").focusout(function() {
 
 				var $dok_select = $('#darc_dok').selectize();
 				var dok_selectize = $dok_select[0] ? $dok_select[0].selectize : null;
-				if (result.dxcc.adif == '230') {
+				if (result.dxcc && result.dxcc.adif == '230') {
 					$.get(base_url + 'index.php/lookup/dok/' + $('#callsign').val().toUpperCase(), function(result) {
 						if (!isLookupStillCurrent(requestId, find_callsign)) {
 							return;
@@ -1457,9 +1488,15 @@ $("#callsign").focusout(function() {
 					if (dok_selectize) dok_selectize.clear();
 				}
 
-				$('#dxcc_id').val(result.dxcc.adif);
-				$('#cqz').val(result.dxcc.cqz);
-				$('#ituz').val(result.dxcc.ituz);
+				if (lookupDxccResolved(result.dxcc)) {
+					$('#dxcc_id').val(result.dxcc.adif);
+					$('#cqz').val(result.dxcc.cqz);
+					$('#ituz').val(result.dxcc.ituz);
+				} else {
+					$('#dxcc_id').val('0');
+					$('#cqz').val('');
+					$('#ituz').val('');
+				}
 
 				var redIcon = L.icon({
 					iconUrl: icon_dot_url,
@@ -1469,17 +1506,20 @@ $("#callsign").focusout(function() {
 				// Set Map to Lat/Long
 				markers.clearLayers();
 				mymap.setZoom(8);
+				var marker = null;
 				if (typeof result.latlng !== "undefined" && result.latlng !== false) {
-					var marker = L.marker([result.latlng[0], result.latlng[1]], {icon: redIcon});
+					marker = L.marker([result.latlng[0], result.latlng[1]], {icon: redIcon});
 					mymap.panTo([result.latlng[0], result.latlng[1]]);
 					mymap.setView([result.latlng[0], result.latlng[1]], 8);
-				} else {
-					var marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
+				} else if (result.dxcc && result.dxcc.lat != null && result.dxcc.long != null) {
+					marker = L.marker([result.dxcc.lat, result.dxcc.long], {icon: redIcon});
 					mymap.panTo([result.dxcc.lat, result.dxcc.long]);
 					mymap.setView([result.dxcc.lat, result.dxcc.long], 8);
 				}
 
-				markers.addLayer(marker).addTo(mymap);
+				if (marker) {
+					markers.addLayer(marker).addTo(mymap);
+				}
 
 
 				var overwriteConflicts = getLookupOverwriteConflicts(result);
@@ -1799,6 +1839,9 @@ $('#start_date').change(function() {
 		raw_date = raw_date.substring(0,4)+"-"+raw_date.substring(4,6)+"-"+raw_date.substring(6,8);
 		$('#start_date').val(raw_date);
 	}
+	if ($('#callsign').val().length >= 3) {
+		quickLookupDxcc($('#callsign').val());
+	}
 });
 
 /* on mode change */
@@ -2060,19 +2103,16 @@ function lookupQsoCallhistory(callsign) {
 $('#dxcc_id').on('change', function() {
 	if (typeof toggleDokField === 'function') toggleDokField();
 	if (typeof toggleUsaFields === 'function') toggleUsaFields();
-	$.getJSON(base_url + 'index.php/logbook/jsonentity/' + $(this).val(), function (result) {
+	var dxccId = $(this).val();
+	$.getJSON(base_url + 'index.php/logbook/jsonentity/' + dxccId, function (result) {
 		if (result.dxcc.name != undefined) {
 
 			$('#country').val(convert_case(result.dxcc.name));
 			$('#cqz').val(convert_case(result.dxcc.cqz));
 
-			$('#callsign_info').removeClass("text-bg-secondary");
-			$('#callsign_info').removeClass("text-bg-success");
-			$('#callsign_info').removeClass("text-bg-danger");
-			$('#callsign_info').attr('title', '');
 			$('#callsign_info').text(convert_case(result.dxcc.name));
 
-			changebadge(result.dxcc.name);
+			changebadge(result.dxcc.name, dxccId);
 
 			// Set Map to Lat/Long it locator is not empty
 			if($('#locator').val() == "") {
@@ -2101,6 +2141,19 @@ $("#callsign").on("keypress", function(e) {
 	}
 });
 
+function qsoLookupDateQuery() {
+	var dateField = document.getElementById('start_date');
+	var raw = dateField && dateField.value ? dateField.value : '';
+	if (!raw) {
+		return '';
+	}
+	return '?qso_date=' + encodeURIComponent(raw);
+}
+
+function lookupDxccResolved(dxcc) {
+	return !!(dxcc && dxcc.entity !== undefined && dxcc.entity !== 'Not Found' && dxcc.adif !== undefined && dxcc.adif !== null && dxcc.adif !== '');
+}
+
 function quickLookupDxcc(callsign) {
 	if (!callsign || callsign.length < 3) {
 		return;
@@ -2109,7 +2162,7 @@ function quickLookupDxcc(callsign) {
 	var requestId = ++callsignDxccQuickRequestId;
 	var find_callsign = callsign.toUpperCase().replace(/\//g, "-").replace('Ø', '0');
 
-	$.getJSON(base_url + 'index.php/logbook/jsondxcc/' + find_callsign, function(result) {
+	$.getJSON(base_url + 'index.php/logbook/jsondxcc/' + find_callsign + qsoLookupDateQuery(), function(result) {
 		if (requestId !== callsignDxccQuickRequestId) {
 			return;
 		}
@@ -2119,13 +2172,15 @@ function quickLookupDxcc(callsign) {
 			return;
 		}
 
-		if (result.dxcc && result.dxcc.entity !== undefined) {
+		if (lookupDxccResolved(result.dxcc)) {
 			$('#country').val(convert_case(result.dxcc.entity));
 			$('#callsign_info').text(convert_case(result.dxcc.entity));
-			changebadge(result.dxcc.entity);
+			changebadge(result.dxcc.entity, result.dxcc.adif);
 			$('#dxcc_id').val(result.dxcc.adif);
 			$('#cqz').val(result.dxcc.cqz);
 			$('#ituz').val(result.dxcc.ituz);
+		} else {
+			$('#dxcc_id').val('0');
 		}
 	});
 }
@@ -2193,7 +2248,7 @@ function resetDefaultQSOFields(preserveDxccState) {
 	$('#lotw_info').removeClass("lotw_info_orange");
 	$('#qrz_info').text("");
 	$('#hamqth_info').text("");
-	$('#dxcc_id').val("").trigger('change');
+	$('#dxcc_id').val("0").trigger('change');
 	$('#cqz').val("");
 	$('#ituz').val("");
 	$("#locator").removeClass("workedGrid");

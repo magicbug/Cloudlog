@@ -1802,6 +1802,7 @@ class Logbook_model extends CI_Model
       'COL_QSL_RCVD' => "Y"
     );
 
+    $this->scopeQsosToUser($this->session->userdata('user_id'));
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
     $this->db->update($this->config->item('table_name'), $data);
   }
@@ -1841,11 +1842,55 @@ class Logbook_model extends CI_Model
     }
   }
 
-  function last_custom_paginated($limit = 6, $offset = 0)
+  /**
+   * Station locations for dashboard / previous-contacts lists.
+   * Active logbook relationships, plus the active station and any extra
+   * station currently selected for logging (so SOTA/portable QSOs still appear
+   * even if that location was not linked to the logbook yet).
+   */
+  private function locations_for_recent_qsos($extra_station_id = null)
   {
     $CI = &get_instance();
     $CI->load->model('logbooks_model');
-    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    $CI->load->model('stations');
+
+    $locations = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    if (!is_array($locations)) {
+      $locations = array();
+    }
+
+    $candidates = array();
+    $active = $CI->stations->find_active();
+    if (!empty($active) && $active !== '0') {
+      $candidates[] = $active;
+    }
+    if (!empty($extra_station_id) && $extra_station_id !== '0') {
+      $candidates[] = $extra_station_id;
+    }
+
+    foreach ($candidates as $station_id) {
+      $station_id = (int) $station_id;
+      if ($station_id <= 0) {
+        continue;
+      }
+      $already_included = false;
+      foreach ($locations as $existing) {
+        if ((int) $existing === $station_id) {
+          $already_included = true;
+          break;
+        }
+      }
+      if (!$already_included && $CI->stations->check_station_is_accessible($station_id)) {
+        $locations[] = $station_id;
+      }
+    }
+
+    return $locations;
+  }
+
+  function last_custom_paginated($limit = 6, $offset = 0, $extra_station_id = null)
+  {
+    $logbooks_locations_array = $this->locations_for_recent_qsos($extra_station_id);
 
     if (!empty($logbooks_locations_array)) {
       $this->db->select('COL_CALL, COL_BAND, COL_FREQ, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_DXCC, COL_PRIMARY_KEY, COL_SAT_NAME, COL_SRX, COL_SRX_STRING, COL_STX, COL_STX_STRING, COL_VUCC_GRIDS, COL_GRIDSQUARE, COL_MY_GRIDSQUARE, COL_MY_VUCC_GRIDS, COL_OPERATOR, COL_IOTA, COL_WWFF_REF, COL_POTA_REF, COL_STATE, COL_CNTY, COL_DISTANCE, COL_SOTA_REF, COL_CONTEST_ID, dxcc_entities.end AS end, dxcc_entities.lat AS dxcc_lat, dxcc_entities.`long` AS dxcc_long', false);
@@ -1860,11 +1905,9 @@ class Logbook_model extends CI_Model
     }
   }
 
-  function last_custom_count()
+  function last_custom_count($extra_station_id = null)
   {
-    $CI = &get_instance();
-    $CI->load->model('logbooks_model');
-    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+    $logbooks_locations_array = $this->locations_for_recent_qsos($extra_station_id);
 
     if (!empty($logbooks_locations_array)) {
       $this->db->select('COUNT(*) as count');
@@ -2161,49 +2204,50 @@ class Logbook_model extends CI_Model
   }
 
 
+  // Owner-only write scope; matches Logbookadvanced_model::scopeQsosToUser() and bulk QSL updates in #3477.
+  private function scopeQsosToUser($user_id)
+  {
+    $this->db->where("station_id IN (SELECT station_id FROM station_profile WHERE user_id = " . $this->db->escape($user_id) . ")", null, false);
+  }
+
   // Set Paper to received
   function paperqsl_update($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
+    $data = array(
+      'COL_QSLRDATE' => date('Y-m-d H:i:s'),
+      'COL_QSL_RCVD' => 'Y',
+      'COL_QSL_RCVD_VIA' => $method
+    );
 
-      $data = array(
-        'COL_QSLRDATE' => date('Y-m-d H:i:s'),
-        'COL_QSL_RCVD' => 'Y',
-        'COL_QSL_RCVD_VIA' => $method
-      );
+    $this->scopeQsosToUser($this->session->userdata('user_id'));
+    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+    $this->db->update($this->config->item('table_name'), $data);
 
-      $this->db->where('COL_PRIMARY_KEY', $qso_id);
-
-      $this->db->update($this->config->item('table_name'), $data);
-    } else {
-      return;
-    }
+    return $this->db->affected_rows() > 0;
   }
 
 
   // Set Paper to sent
   function paperqsl_update_sent($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
-      if ($method != '') {
-        $data = array(
-          'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-          'COL_QSL_SENT' => 'Y',
-          'COL_QSL_SENT_VIA' => $method
-        );
-      } else {
-        $data = array(
-          'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-          'COL_QSL_SENT' => 'Y'
-        );
-      }
-
-      $this->db->where('COL_PRIMARY_KEY', $qso_id);
-
-      $this->db->update($this->config->item('table_name'), $data);
+    if ($method != '') {
+      $data = array(
+        'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+        'COL_QSL_SENT' => 'Y',
+        'COL_QSL_SENT_VIA' => $method
+      );
     } else {
-      return;
+      $data = array(
+        'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+        'COL_QSL_SENT' => 'Y'
+      );
     }
+
+    $this->scopeQsosToUser($this->session->userdata('user_id'));
+    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+    $this->db->update($this->config->item('table_name'), $data);
+
+    return $this->db->affected_rows() > 0;
   }
 
 
@@ -2530,9 +2574,7 @@ class Logbook_model extends CI_Model
     $num = intval($num);
     
     if ($StationLocationsArray == null) {
-      $CI = &get_instance();
-      $CI->load->model('logbooks_model');
-      $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+      $logbooks_locations_array = $this->locations_for_recent_qsos();
     } else {
       $logbooks_locations_array = $StationLocationsArray;
     }
@@ -2743,6 +2785,10 @@ class Logbook_model extends CI_Model
     $CI = &get_instance();
     $CI->load->model('logbooks_model');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+    if (!$logbooks_locations_array) {
+      return null;
+    }
 
     $this->db->select('COL_CALL, COL_BAND, COL_TIME_ON, COL_RST_RCVD, COL_RST_SENT, COL_MODE, COL_SUBMODE, COL_NAME, COL_COUNTRY, COL_PRIMARY_KEY, COL_SAT_NAME, COL_GRIDSQUARE');
     $this->db->where_in('station_id', $logbooks_locations_array);
@@ -3876,12 +3922,21 @@ class Logbook_model extends CI_Model
   {
     if ($this->check_qso_is_accessible($id)) {
       // Get station_id before deleting for cache clearing
-      $this->db->select('station_id');
+      $this->db->select('station_id, COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SUBMODE');
       $this->db->where('COL_PRIMARY_KEY', $id);
       $qso_query = $this->db->get($this->config->item('table_name'));
       $station_id = null;
       if ($qso_query->num_rows() > 0) {
-        $station_id = $qso_query->row()->station_id;
+        $qso_row = $qso_query->row_array();
+        $station_id = $qso_row['station_id'];
+
+        $this->load->library('cloudlog_hooks');
+        $this->cloudlog_hooks->do_action('qso.action.before_delete', array(
+          'qso_id' => (int)$id,
+          'qso' => $qso_row,
+        ), array(
+          'station_id' => $station_id,
+        ));
       }
       
       // Delete the QSO
@@ -6285,20 +6340,67 @@ class Logbook_model extends CI_Model
       }
     }
 
-    // Try to parse with the user's format first
+    // Try to parse with the user's format first.
+    // A 2-digit year cannot represent 1967: PHP reads 67 as 2067. A typed
+    // 4-digit year is honoured even when the account format uses `y`.
     $date = DateTime::createFromFormat($user_format, $date_input);
+    $two_digit_year = false;
     if ($date !== false) {
+      $two_digit_year = strpos($user_format, 'y') !== false;
+    } elseif (strpos($user_format, 'y') !== false && preg_match('/\d{4}/', $date_input)) {
+      $date = DateTime::createFromFormat(str_replace('y', 'Y', $user_format), $date_input);
+    }
+
+    if ($date === false) {
+      // Fallback to strtotime for formats it can handle (mostly Y-m-d, m/d/Y, etc.)
+      $timestamp = strtotime($date_input);
+      if ($timestamp === false) {
+        return $date_input;
+      }
+      $normalized = date('Y-m-d', $timestamp);
+      if (!preg_match('/\d{4}/', $date_input)) {
+        $normalized = $this->roll_back_implausible_future_year($normalized);
+      }
+      return $normalized;
+    }
+
+    $normalized = $date->format('Y-m-d');
+    if ($two_digit_year) {
+      $normalized = $this->roll_back_implausible_future_year($normalized);
+    }
+    return $normalized;
+  }
+
+  /**
+   * Two-digit years 00-69 parse as 2000-2069. A log date more than a year
+   * ahead is the previous century (07/05/67 is 1967, not 2067).
+   */
+  private function roll_back_implausible_future_year($ymd)
+  {
+    $date = DateTime::createFromFormat('Y-m-d', $ymd);
+    if ($date === false) {
+      return $ymd;
+    }
+    $limit = new DateTime('today');
+    $limit->modify('+1 year');
+    if ($date > $limit) {
+      $date->modify('-100 years');
       return $date->format('Y-m-d');
     }
+    return $ymd;
+  }
 
-    // Fallback to strtotime for formats it can handle (mostly Y-m-d, m/d/Y, etc.)
-    $timestamp = strtotime($date_input);
-    if ($timestamp !== false) {
-      return date('Y-m-d', $timestamp);
+  /**
+   * QSO date from the logging form, normalised to Y-m-d for DXCC lookups.
+   * Falls back to today when the input cannot be parsed.
+   */
+  public function normalize_qso_date($date_input)
+  {
+    $parsed = $this->parse_user_date($date_input);
+    if (is_string($parsed) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $parsed)) {
+      return $parsed;
     }
-
-    // If all parsing fails, return the original input and let the database handle it
-    return $date_input;
+    return date('Y-m-d');
   }
 
   /* Consolidated QSO Statistics - Get all basic counts in a single query */

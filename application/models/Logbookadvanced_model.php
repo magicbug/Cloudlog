@@ -349,6 +349,16 @@ class Logbookadvanced_model extends CI_Model {
 		}
 	}
 
+	// authorize(2) only proves a user is logged in, but bulk actions here address QSOs by
+	// primary key, and a primary key says nothing about ownership. Scopes the pending query
+	// to the station profiles that user owns, reusing the owner rule the read side already
+	// applies in getQsosForAdif().
+	// shortcut: owner-only, matching the read side, so shared-logbook writes stay out of scope.
+	private function scopeQsosToUser($user_id)
+	{
+		$this->db->where("station_id IN (SELECT station_id FROM station_profile WHERE user_id = " . $this->db->escape($user_id) . ")", null, false);
+	}
+
 	public function updateQsl($ids, $user_id, $method, $sent) {
 		$this->load->model('user_model');
 
@@ -367,6 +377,7 @@ class Logbookadvanced_model extends CI_Model {
 					'COL_QSL_SENT' => $sent,
 				);
 			}
+			$this->scopeQsosToUser($user_id);
 			$this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
 			$this->db->update($this->config->item('table_name'), $data);
 
@@ -385,6 +396,7 @@ class Logbookadvanced_model extends CI_Model {
                 'COL_QSL_RCVD' => $sent,
                 'COL_QSL_RCVD_VIA' => $method
             );
+            $this->scopeQsosToUser($user_id);
             $this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
             $this->db->update($this->config->item('table_name'), $data);
 
@@ -407,6 +419,7 @@ class Logbookadvanced_model extends CI_Model {
 			$data = array(
 				'station_id' => $station_id
 			);
+			$this->scopeQsosToUser($user_id);
 			$this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
 			$this->db->update($this->config->item('table_name'), $data);
 
@@ -443,6 +456,7 @@ class Logbookadvanced_model extends CI_Model {
 				'COL_PROP_MODE' => 'SAT'
 			);
 			
+			$this->scopeQsosToUser($user_id);
 			$this->db->where_in('COL_PRIMARY_KEY', json_decode($ids, true));
 			$this->db->update($this->config->item('table_name'), $data);
 

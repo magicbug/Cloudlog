@@ -412,9 +412,23 @@
                   <select id="stationProfile" class="form-select" name="station_profile">
                     <?php
                     $power = '';
+                    $selected_station_profile = $this->session->userdata('station_profile_id');
+                    if (empty($selected_station_profile)) {
+                      $selected_station_profile = $active_station_profile;
+                    }
+                    $selected_station_found = false;
+                    foreach ($stations->result() as $stationrow) {
+                      if ((string)$stationrow->station_id === (string)$selected_station_profile) {
+                        $selected_station_found = true;
+                        break;
+                      }
+                    }
+                    if (!$selected_station_found) {
+                      $selected_station_profile = $active_station_profile;
+                    }
                     foreach ($stations->result() as $stationrow) {
                     ?>
-                      <option value="<?php echo $stationrow->station_id; ?>" <?php if ($active_station_profile == $stationrow->station_id) {
+                      <option value="<?php echo $stationrow->station_id; ?>" <?php if ((string)$selected_station_profile === (string)$stationrow->station_id) {
                                                                                 echo "selected=\"selected\"";
                                                                                 $power = $stationrow->station_power;
                                                                               } ?>><?php echo $stationrow->station_profile_name; ?></option>
@@ -1224,7 +1238,7 @@
 
               <div id="partial_view" style="display: none; font-size: 0.95rem;"></div>
 
-              <div id="qso-last-table" hx-get="<?php echo site_url('/qso/component_past_contacts'); ?>" hx-trigger="load">
+              <div id="qso-last-table" hx-get="<?php echo site_url('/qso/component_past_contacts'); ?>" hx-trigger="load" hx-vals='js:{station_id: (document.getElementById("stationProfile") || {}).value || ""}'>
 
               </div>
             </div>
