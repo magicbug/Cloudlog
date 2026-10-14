@@ -6,7 +6,7 @@ class Backup extends CI_Controller {
 		parent::__construct();
 	}
 
-	/* ===== User-level JSON+ZIP backup (Stations, Logbooks, QSOs) ===== */
+	/* ===== User-level JSON+ZIP backup with attached images ===== */
 	public function user_export() {
 		$this->load->model('user_model');
 		if ($this->user_model->validate_session() == 0) { redirect('user/login'); }
@@ -17,14 +17,18 @@ class Backup extends CI_Controller {
 		ini_set('memory_limit', '256M'); // Reduced since we're streaming
 		$this->load->model('Stations');
 		$this->load->model('Logbook_model');
+		$this->load->model('Backup_files');
 		$this->load->dbutil();
 
-		$tmp_json = tempnam(sys_get_temp_dir(), 'cloudlog_backup_') . '.json';
-		$tmp_zip = tempnam(sys_get_temp_dir(), 'cloudlog_backup_') . '.zip';
+		$tmp_json = tempnam(sys_get_temp_dir(), 'cloudlog_backup_');
+		$tmp_zip = tempnam(sys_get_temp_dir(), 'cloudlog_backup_');
+		$zip = new ZipArchive();
 
 		try {
 			$user_id = $this->session->userdata('user_id');
 			if (!$user_id) { show_error('User not authenticated.', 401); return; }
+			if ($zip->open($tmp_zip, ZipArchive::OVERWRITE) !== TRUE) { throw new Exception('Could not create ZIP file'); }
+			$attachments = $this->Backup_files->export($zip, $user_id);
 
 			while (ob_get_level()) { ob_end_clean(); }
 
@@ -34,7 +38,11 @@ class Backup extends CI_Controller {
 
 			// Start JSON object
 			fwrite($fp, "{\n");
-			fwrite($fp, '  "schema_version": "1.0",'."\n");
+			fwrite($fp, '  "schema_version": "1.1",'."\n");
+			fwrite($fp, '  "attachments": '.json_encode($attachments, JSON_UNESCAPED_SLASHES).",\n");
+			$logbook_ids = array_column($this->db->where('user_id', $user_id)->get('station_logbooks')->result_array(), 'logbook_id');
+			$relationships = empty($logbook_ids) ? array() : $this->db->where_in('station_logbook_id', $logbook_ids)->get('station_logbooks_relationship')->result_array();
+			fwrite($fp, '  "logbook_relationships": '.json_encode($relationships, JSON_UNESCAPED_SLASHES).",\n");
 			fwrite($fp, '  "exported_at": "'.date('c').'",'."\n");
 
 			// Stations for user
@@ -148,10 +156,7 @@ class Backup extends CI_Controller {
 			fclose($fp);
 
 			// Create ZIP
-			$zip = new ZipArchive();
-			if ($zip->open($tmp_zip, ZipArchive::CREATE) !== TRUE) { throw new Exception('Could not create ZIP file'); }
-			$zip->addFile($tmp_json, 'cloudlog_backup.json');
-			$zip->close();
+			if (!$zip->addFile($tmp_json, 'cloudlog_backup.json') || !$zip->close()) { throw new Exception('Could not finish ZIP file'); }
 
 			// Send to browser
 			header('Content-Type: application/zip');
@@ -163,6 +168,8 @@ class Backup extends CI_Controller {
 			// Cleanup
 			@unlink($tmp_json); @unlink($tmp_zip); exit;
 		} catch (Exception $e) {
+			if (isset($fp) && is_resource($fp)) fclose($fp);
+			@unlink($tmp_json); @unlink($tmp_zip);
 			log_message('error', 'User export error: '.$e->getMessage());
 			show_error('Export failed: '.$e->getMessage(), 500);
 		}
@@ -181,23 +188,43 @@ class Backup extends CI_Controller {
 		if (!isset($_FILES['backup_file']) || $_FILES['backup_file']['error'] !== UPLOAD_ERR_OK) { $this->session->set_flashdata('notice', 'No file uploaded or upload error.'); redirect('backup'); return; }
 
 		$uploaded_file = $_FILES['backup_file']['tmp_name'];
-		$temp_json = tempnam(sys_get_temp_dir(), 'cloudlog_import_') . '.json';
+		$temp_json = tempnam(sys_get_temp_dir(), 'cloudlog_import_');
+		$temp_archive = null;
 
 		$finfo = finfo_open(FILEINFO_MIME_TYPE); $mime_type = finfo_file($finfo, $uploaded_file); finfo_close($finfo);
 		if ($mime_type === 'application/zip') {
 			$zip = new ZipArchive();
 			if ($zip->open($uploaded_file) === TRUE) {
+				$stat = $zip->statName('cloudlog_backup.json');
+				if (!$stat || $stat['size'] > 256 * 1024 * 1024) { $zip->close(); @unlink($temp_json); $this->session->set_flashdata('notice', 'Missing or oversized backup JSON.'); redirect('backup'); return; }
 				$json_content = $zip->getFromName('cloudlog_backup.json'); $zip->close();
 				if ($json_content === false) { $this->session->set_flashdata('notice', 'Invalid backup file: JSON not found in ZIP.'); redirect('backup'); return; }
 				file_put_contents($temp_json, $json_content); unset($json_content);
+				$temp_archive = tempnam(sys_get_temp_dir(), 'cloudlog_import_zip_');
+				if (!copy($uploaded_file, $temp_archive)) { @unlink($temp_json); @unlink($temp_archive); show_error('Could not stage backup archive.'); return; }
 			} else { $this->session->set_flashdata('notice', 'Could not open ZIP file.'); redirect('backup'); return; }
 		} else { copy($uploaded_file, $temp_json); }
 
 		$json = file_get_contents($temp_json); $data = json_decode($json, true); unset($json);
-		if (!$data || !isset($data['stations']) || !isset($data['logbooks'])) { @unlink($temp_json); $this->session->set_flashdata('notice', 'Invalid backup file.'); redirect('backup'); return; }
+		if (!$data || !isset($data['stations']) || !isset($data['logbooks'])) { @unlink($temp_json); if ($temp_archive) @unlink($temp_archive); $this->session->set_flashdata('notice', 'Invalid backup file.'); redirect('backup'); return; }
+		$this->load->model('Backup_files');
+		if (isset($data['attachments'])) {
+			$archive = new ZipArchive();
+			try {
+				if (!$temp_archive || $archive->open($temp_archive) !== true) throw new RuntimeException('Image backups must be uploaded as ZIP files.');
+				$this->Backup_files->validate($archive, $data['attachments']);
+				$archive->close();
+			} catch (Exception $e) {
+				@unlink($temp_json); if ($temp_archive) @unlink($temp_archive);
+				$this->session->set_flashdata('notice', $e->getMessage()); redirect('backup'); return;
+			}
+		}
 
 		$station_qsos = isset($data['station_qsos']) ? $data['station_qsos'] : array();
 		$import_preview = array(
+			'images_count' => isset($data['attachments']['files']) ? count($data['attachments']['files']) : 0,
+			'diary_count' => isset($data['attachments']['diary_entries']) ? count($data['attachments']['diary_entries']) : 0,
+			'file_notices' => isset($data['attachments']['notices']) ? $data['attachments']['notices'] : array(),
 			'stations' => array_map(function($station) use ($station_qsos) {
 				$station_id = isset($station['station_id']) ? $station['station_id'] : null;
 				$qso_count = ($station_id && isset($station_qsos[$station_id])) ? count($station_qsos[$station_id]) : 0;
@@ -219,7 +246,12 @@ class Backup extends CI_Controller {
 			}, $data['logbooks']),
 		);
 
+		foreach (array('import_backup_file', 'import_backup_zip') as $key) {
+			$old_file = $this->session->userdata($key);
+			if ($old_file && is_file($old_file)) @unlink($old_file);
+		}
 		$this->session->set_userdata('import_backup_file', $temp_json);
+		$this->session->set_userdata('import_backup_zip', $temp_archive);
 		// HTMX partial
 		$this->load->view('backup/import_preview', $import_preview);
 	}
@@ -241,9 +273,10 @@ class Backup extends CI_Controller {
 
 		$import_stations = $this->input->post('import_stations');
 		$import_logbooks = $this->input->post('import_logbooks');
+		$include_diary = $this->input->post('import_diary') === '1';
 		if (!is_array($import_stations)) $import_stations = array();
 		if (!is_array($import_logbooks)) $import_logbooks = array();
-		if (empty($import_stations) && empty($import_logbooks)) { echo '<div class="alert alert-warning">Please select at least one station or logbook to import.</div>'; return; }
+		if (empty($import_stations) && empty($import_logbooks) && !$include_diary) { echo '<div class="alert alert-warning">Please select at least one station, logbook or diary to import.</div>'; return; }
 
 		$current_user_id = $this->session->userdata('user_id');
 		if (!$current_user_id) { echo '<div class="alert alert-danger">User not authenticated.</div>'; return; }
@@ -254,18 +287,41 @@ class Backup extends CI_Controller {
 
 		$imported = array('stations'=>0,'logbooks'=>0,'qsos'=>0,'conflicts'=>array(),'step'=>'','total_stations'=>$total_stations,'total_logbooks'=>$total_logbooks,'total_qsos'=>$total_qsos);
 		$station_id_map = array();
+		$qso_id_map = array();
+		$logbook_id_map = array();
+		$imported['images'] = 0;
+		$this->load->model('Backup_files');
+		$archive = null;
+		$transaction_started = false;
+		$created = array('stations' => array(), 'logbooks' => array(), 'relationships' => array(), 'qsos' => array());
+		$previous_debug = $this->db->db_debug;
+		$this->db->db_debug = false;
+		try {
+		if (isset($data['attachments'])) {
+			$archive = new ZipArchive();
+			$archive_file = $this->session->userdata('import_backup_zip');
+			if (!$archive_file || $archive->open($archive_file) !== true) throw new RuntimeException('Backup archive is no longer available. Please upload it again.');
+			$this->Backup_files->validate($archive, $data['attachments']);
+		}
+		if (!$this->db->trans_begin()) throw new RuntimeException('Could not start the restore transaction.');
+		$transaction_started = true;
 
 		// Stations
 		$imported['step'] = 'Importing stations';
 		foreach ($data['stations'] as $station) {
-			if (!in_array($station['station_id'], $import_stations)) continue; $old_station_id = $station['station_id'];
+			if (!in_array($station['station_id'], $import_stations)) continue;
+			$old_station_id = $this->backup_id($station['station_id']);
+			if ($old_station_id === null) throw new RuntimeException('Invalid station identifier in backup.');
 			$this->db->where('station_callsign', $station['station_callsign']);
 			$this->db->where('station_profile_name', $station['station_profile_name']);
 			$this->db->where('user_id', $current_user_id);
 			$conflict = $this->db->get('station_profile')->row_array();
 			if ($conflict) { $imported['conflicts'][] = 'Station exists (reusing): '.$station['station_callsign'].' - '.$station['station_profile_name'].' (ID '.$conflict['station_id'].')'; $station_id_map[$old_station_id] = $conflict['station_id']; continue; }
 			unset($station['station_id']); $station['user_id'] = $current_user_id; $station['station_active'] = 0; // never active on import
-			$this->db->insert('station_profile', $station); $new_station_id = $this->db->insert_id(); if (!$new_station_id) { $imported['conflicts'][] = 'Failed to create station: '.$station['station_callsign'].' - '.$station['station_profile_name']; continue; }
+			if ($this->db->insert('station_profile', $station) === false) throw new RuntimeException('Could not restore a station.');
+			$new_station_id = $this->db->insert_id();
+			if (!$new_station_id) throw new RuntimeException('Could not restore a station.');
+			$created['stations'][] = $new_station_id;
 			$station_id_map[$old_station_id] = $new_station_id; $imported['stations']++;
 		}
 
@@ -273,41 +329,106 @@ class Backup extends CI_Controller {
 		$imported['step'] = 'Importing logbooks';
 		foreach ($data['logbooks'] as $logbook) {
 			if (!in_array($logbook['logbook_id'], $import_logbooks)) continue;
+			$old_logbook_id = $this->backup_id($logbook['logbook_id']);
+			if ($old_logbook_id === null) throw new RuntimeException('Invalid logbook identifier in backup.');
 			$this->db->where('logbook_name', $logbook['logbook_name']); $this->db->where('user_id', $current_user_id); $conflict = $this->db->get('station_logbooks')->row_array();
-			if ($conflict) { $imported['conflicts'][] = 'Logbook exists (skipping): '.$logbook['logbook_name']; continue; }
-			$logbook_copy = $logbook; unset($logbook_copy['qsos']); unset($logbook_copy['logbook_id']); if (isset($logbook_copy['active_logbook'])) unset($logbook_copy['active_logbook']); $logbook_copy['user_id'] = $current_user_id; if (isset($logbook_copy['station_id']) && isset($station_id_map[$logbook_copy['station_id']])) { $logbook_copy['station_id'] = $station_id_map[$logbook_copy['station_id']]; }
-			$this->db->insert('station_logbooks', $logbook_copy); $imported['logbooks']++;
+			if ($conflict) { $imported['conflicts'][] = 'Logbook exists (reusing): '.$logbook['logbook_name']; $logbook_id_map[$old_logbook_id] = $conflict['logbook_id']; continue; }
+			$logbook_copy = $logbook; unset($logbook_copy['qsos']); unset($logbook_copy['logbook_id']); if (isset($logbook_copy['active_logbook'])) unset($logbook_copy['active_logbook']); $logbook_copy['user_id'] = $current_user_id;
+			$logbook_station = isset($logbook_copy['station_id']) ? $logbook_copy['station_id'] : null;
+			if ($this->backup_id($logbook_station) !== null && isset($station_id_map[$logbook_station])) $logbook_copy['station_id'] = $station_id_map[$logbook_station];
+			if ($this->db->insert('station_logbooks', $logbook_copy) === false) throw new RuntimeException('Could not restore a logbook.');
+			$new_logbook_id = $this->db->insert_id();
+			if (!$new_logbook_id) throw new RuntimeException('Could not restore a logbook.');
+			$created['logbooks'][] = $new_logbook_id;
+			$logbook_id_map[$old_logbook_id] = $new_logbook_id; $imported['logbooks']++;
+		}
+		foreach (isset($data['logbook_relationships']) ? $data['logbook_relationships'] : array() as $relation) {
+			if (!is_array($relation)) throw new RuntimeException('Invalid logbook relationship.');
+			$logbook_key = $this->backup_id(isset($relation['station_logbook_id']) ? $relation['station_logbook_id'] : null);
+			$station_key = $this->backup_id(isset($relation['station_location_id']) ? $relation['station_location_id'] : null);
+			if ($logbook_key === null || $station_key === null) throw new RuntimeException('Invalid logbook relationship.');
+			if (!isset($logbook_id_map[$logbook_key], $station_id_map[$station_key])) continue;
+			$record = array('station_logbook_id' => $logbook_id_map[$logbook_key], 'station_location_id' => $station_id_map[$station_key]);
+			$existing_relations = $this->db->where($record)->count_all_results('station_logbooks_relationship');
+			if ($existing_relations === false) throw new RuntimeException('Could not read logbook relationships.');
+			if ($existing_relations > 0) continue;
+			if ($this->db->insert('station_logbooks_relationship', $record) === false) throw new RuntimeException('Could not restore a logbook relationship.');
+			$relation_id = $this->db->insert_id();
+			if ($relation_id) $created['relationships'][] = $relation_id;
 		}
 
 		// QSOs from station_qsos
 		$imported['step'] = 'Importing QSOs';
+		$qso_table = $this->config->item('table_name');
 		if (isset($data['station_qsos'])) {
 			foreach ($data['station_qsos'] as $old_station_id => $qsos) {
 				if (!in_array($old_station_id, $import_stations)) continue; if (!isset($station_id_map[$old_station_id])) continue; $new_station_id = $station_id_map[$old_station_id];
 				foreach (array_chunk($qsos, 1000) as $qso_chunk) {
 					foreach ($qso_chunk as $qso) {
+						$old_qso_id = $this->backup_id(isset($qso['COL_PRIMARY_KEY']) ? $qso['COL_PRIMARY_KEY'] : null);
+						if ($old_qso_id === null) throw new RuntimeException('Invalid QSO identifier in backup.');
 						unset($qso['COL_PRIMARY_KEY']); $qso['station_id'] = $new_station_id;
 						$this->db->where('COL_TIME_ON', $qso['COL_TIME_ON']); $this->db->where('COL_CALL', $qso['COL_CALL']); $this->db->where('station_id', $qso['station_id']);
-						$conflict = $this->db->get($this->config->item('table_name'))->row_array(); if ($conflict) { $imported['conflicts'][] = 'QSO conflict: '.$qso['COL_CALL'].' @ '.$qso['COL_TIME_ON']; continue; }
-						$this->db->insert($this->config->item('table_name'), $qso); $imported['qsos']++;
+						foreach (array('COL_BAND', 'COL_MODE', 'COL_SUBMODE', 'COL_SAT_NAME') as $field) {
+							if (array_key_exists($field, $qso)) $this->db->where($field, $qso[$field]);
+						}
+						$conflict = $this->db->get($qso_table)->row_array(); if ($conflict) { $qso_id_map[$old_qso_id] = $conflict['COL_PRIMARY_KEY']; $imported['conflicts'][] = 'QSO conflict: '.$qso['COL_CALL'].' @ '.$qso['COL_TIME_ON']; continue; }
+						if ($this->db->insert($qso_table, $qso) === false) throw new RuntimeException('Could not restore a QSO.');
+						$new_qso_id = $this->db->insert_id();
+						if (!$new_qso_id) throw new RuntimeException('Could not restore a QSO.');
+						$created['qsos'][] = $new_qso_id;
+						$qso_id_map[$old_qso_id] = $new_qso_id; $imported['qsos']++;
 					}
 				}
 			}
 		}
 		// QSOs from logbooks (legacy)
+		$skipped_qsos = 0;
 		foreach ($data['logbooks'] as $logbook) {
 			if (!in_array($logbook['logbook_id'], $import_logbooks)) continue; if (!isset($logbook['qsos'])) continue;
 			foreach (array_chunk($logbook['qsos'], 1000) as $qso_chunk) {
 				foreach ($qso_chunk as $qso) {
-					unset($qso['COL_PRIMARY_KEY']); if (isset($qso['station_id']) && isset($station_id_map[$qso['station_id']])) { $qso['station_id'] = $station_id_map[$qso['station_id']]; }
+					$station_key = $this->backup_id(isset($qso['station_id']) ? $qso['station_id'] : null);
+					if ($station_key === null) throw new RuntimeException('Invalid QSO station in backup.');
+					if (!isset($station_id_map[$station_key])) { $skipped_qsos++; continue; }
+					$old_qso_id = $this->backup_id(isset($qso['COL_PRIMARY_KEY']) ? $qso['COL_PRIMARY_KEY'] : null);
+					if ($old_qso_id === null) throw new RuntimeException('Invalid QSO identifier in backup.');
+					unset($qso['COL_PRIMARY_KEY']); $qso['station_id'] = $station_id_map[$station_key];
 					$this->db->where('COL_TIME_ON', $qso['COL_TIME_ON']); $this->db->where('COL_CALL', $qso['COL_CALL']); $this->db->where('station_id', $qso['station_id']);
-					$conflict = $this->db->get($this->config->item('table_name'))->row_array(); if ($conflict) { $imported['conflicts'][] = 'QSO conflict: '.$qso['COL_CALL'].' @ '.$qso['COL_TIME_ON']; continue; }
-					$this->db->insert($this->config->item('table_name'), $qso); $imported['qsos']++;
+					foreach (array('COL_BAND', 'COL_MODE', 'COL_SUBMODE', 'COL_SAT_NAME') as $field) {
+						if (array_key_exists($field, $qso)) $this->db->where($field, $qso[$field]);
+					}
+					$conflict = $this->db->get($qso_table)->row_array(); if ($conflict) { $qso_id_map[$old_qso_id] = $conflict['COL_PRIMARY_KEY']; $imported['conflicts'][] = 'QSO conflict: '.$qso['COL_CALL'].' @ '.$qso['COL_TIME_ON']; continue; }
+					if ($this->db->insert($qso_table, $qso) === false) throw new RuntimeException('Could not restore a QSO.');
+					$new_qso_id = $this->db->insert_id();
+					if (!$new_qso_id) throw new RuntimeException('Could not restore a QSO.');
+					$created['qsos'][] = $new_qso_id;
+					$qso_id_map[$old_qso_id] = $new_qso_id; $imported['qsos']++;
 				}
 			}
 		}
+		if ($skipped_qsos > 0) $imported['conflicts'][] = 'Skipped '.$skipped_qsos.' QSO(s) because their station was not selected. Select the related station to restore those QSOs and images.';
+
+		if ($archive) {
+			$imported['images'] = $this->Backup_files->restore($archive, $data['attachments'], $qso_id_map, $current_user_id, $logbook_id_map, $include_diary);
+		}
+		if ($this->db->trans_status() === false) throw new RuntimeException('Could not save restored backup data.');
+		if (!$this->db->trans_commit()) throw new RuntimeException('Could not commit restored backup data.');
+		} catch (Throwable $e) {
+			$this->Backup_files->rollback_files();
+			$this->undo_created($created);
+			if ($transaction_started) $this->db->trans_rollback();
+			log_message('error', 'Backup restore failed: '.$e->getMessage());
+			echo '<div class="alert alert-danger">Import failed: '.htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8').'</div>';
+			return;
+		} finally {
+			if ($archive instanceof ZipArchive) $archive->close();
+			$this->db->db_debug = $previous_debug;
+		}
 
 		$temp_file = $this->session->userdata('import_backup_file'); if ($temp_file && file_exists($temp_file)) { @unlink($temp_file); }
+		$archive_file = $this->session->userdata('import_backup_zip'); if ($archive_file && file_exists($archive_file)) { @unlink($archive_file); }
+		$this->session->unset_userdata('import_backup_zip');
 		$this->session->unset_userdata('import_backup_file');
 
 		$this->load->view('backup/import_progress', $imported);
@@ -392,6 +513,22 @@ class Backup extends CI_Controller {
 		$this->load->view('backup/notes_view');
 		$this->load->view('interface_assets/footer');
 
+	}
+
+	private function backup_id($value) {
+		if (is_bool($value) || is_array($value) || is_object($value) || !is_scalar($value)) return null;
+		if (!preg_match('/^[0-9]+$/D', (string)$value)) return null;
+		$id = (int)$value;
+		return $id > 0 ? $id : null;
+	}
+
+	// QSO and qsl_images tables are MyISAM on existing installs, so a transaction rollback does not remove them.
+	private function undo_created($created) {
+		$qso_table = $this->config->item('table_name');
+		if (!empty($created['qsos'])) $this->db->where_in('COL_PRIMARY_KEY', $created['qsos'])->delete($qso_table);
+		if (!empty($created['relationships'])) $this->db->where_in('logbook_relation_id', $created['relationships'])->delete('station_logbooks_relationship');
+		if (!empty($created['logbooks'])) $this->db->where_in('logbook_id', $created['logbooks'])->delete('station_logbooks');
+		if (!empty($created['stations'])) $this->db->where_in('station_id', $created['stations'])->delete('station_profile');
 	}
 }
 
