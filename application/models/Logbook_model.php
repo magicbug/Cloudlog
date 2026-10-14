@@ -1802,6 +1802,7 @@ class Logbook_model extends CI_Model
       'COL_QSL_RCVD' => "Y"
     );
 
+    $this->scopeQsosToUser($this->session->userdata('user_id'));
     $this->db->where('COL_PRIMARY_KEY', $this->input->post('id'));
     $this->db->update($this->config->item('table_name'), $data);
   }
@@ -2203,49 +2204,50 @@ class Logbook_model extends CI_Model
   }
 
 
+  // Owner-only write scope; matches Logbookadvanced_model::scopeQsosToUser() and bulk QSL updates in #3477.
+  private function scopeQsosToUser($user_id)
+  {
+    $this->db->where("station_id IN (SELECT station_id FROM station_profile WHERE user_id = " . $this->db->escape($user_id) . ")", null, false);
+  }
+
   // Set Paper to received
   function paperqsl_update($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
+    $data = array(
+      'COL_QSLRDATE' => date('Y-m-d H:i:s'),
+      'COL_QSL_RCVD' => 'Y',
+      'COL_QSL_RCVD_VIA' => $method
+    );
 
-      $data = array(
-        'COL_QSLRDATE' => date('Y-m-d H:i:s'),
-        'COL_QSL_RCVD' => 'Y',
-        'COL_QSL_RCVD_VIA' => $method
-      );
+    $this->scopeQsosToUser($this->session->userdata('user_id'));
+    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+    $this->db->update($this->config->item('table_name'), $data);
 
-      $this->db->where('COL_PRIMARY_KEY', $qso_id);
-
-      $this->db->update($this->config->item('table_name'), $data);
-    } else {
-      return;
-    }
+    return $this->db->affected_rows() > 0;
   }
 
 
   // Set Paper to sent
   function paperqsl_update_sent($qso_id, $method)
   {
-    if ($this->logbook_model->check_qso_is_writable($qso_id)) {
-      if ($method != '') {
-        $data = array(
-          'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-          'COL_QSL_SENT' => 'Y',
-          'COL_QSL_SENT_VIA' => $method
-        );
-      } else {
-        $data = array(
-          'COL_QSLSDATE' => date('Y-m-d H:i:s'),
-          'COL_QSL_SENT' => 'Y'
-        );
-      }
-
-      $this->db->where('COL_PRIMARY_KEY', $qso_id);
-
-      $this->db->update($this->config->item('table_name'), $data);
+    if ($method != '') {
+      $data = array(
+        'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+        'COL_QSL_SENT' => 'Y',
+        'COL_QSL_SENT_VIA' => $method
+      );
     } else {
-      return;
+      $data = array(
+        'COL_QSLSDATE' => date('Y-m-d H:i:s'),
+        'COL_QSL_SENT' => 'Y'
+      );
     }
+
+    $this->scopeQsosToUser($this->session->userdata('user_id'));
+    $this->db->where('COL_PRIMARY_KEY', $qso_id);
+    $this->db->update($this->config->item('table_name'), $data);
+
+    return $this->db->affected_rows() > 0;
   }
 
 
