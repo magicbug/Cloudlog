@@ -13,7 +13,7 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 
 - Linux based Operating System
 - Apache (Nginx should work)
-- PHP Version 7.4 (PHP 8.2 works)
+- PHP 8.5 (current stable release)
 - MySQL (MySQL 5.7 or higher)
 
 Notes
