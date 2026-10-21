@@ -5740,19 +5740,27 @@ class Logbook_model extends CI_Model
 
         if (!$this->session->userdata('qrz_session_key')) {
           $qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+          if ($qrz_session_key !== '') {
+            $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+          }
         }
 
-        $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+        if ($this->session->userdata('qrz_session_key')) {
+          $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+        } else {
+          $callbook = array('error' => 'request_failed');
+        }
 
         // if we got nothing, it's probably because our session key is invalid, try again
-        if (($callbook['callsign'] ?? '') == '') {
+        if (!$this->qrz->request_failed($callbook) && ($callbook['callsign'] ?? '') == '') {
           $qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-          $this->session->set_userdata('qrz_session_key', $qrz_session_key);
-          $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
-          // if we still got nothing, and it's a compound callsign, then try a search for the base call
-          if (($callbook['callsign'] ?? '') == '' && strpos($callsign, "/") !== false) {
-            $callbook = $this->qrz->search($this->get_plaincall($callsign), $this->session->userdata('qrz_session_key'), $use_fullname);
+          if ($qrz_session_key !== '') {
+            $this->session->set_userdata('qrz_session_key', $qrz_session_key);
+            $callbook = $this->qrz->search($callsign, $this->session->userdata('qrz_session_key'), $use_fullname);
+            // if we still got nothing, and it's a compound callsign, then try a search for the base call
+            if (!$this->qrz->request_failed($callbook) && ($callbook['callsign'] ?? '') == '' && strpos($callsign, "/") !== false) {
+              $callbook = $this->qrz->search($this->get_plaincall($callsign), $this->session->userdata('qrz_session_key'), $use_fullname);
+            }
           }
         }
       }
@@ -5769,16 +5777,24 @@ class Logbook_model extends CI_Model
 
         if (!$this->session->userdata('hamqth_session_key')) {
           $hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+          if ($hamqth_session_key !== '') {
+            $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+          }
         }
 
-        $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+        if ($this->session->userdata('hamqth_session_key')) {
+          $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+        } else {
+          $callbook = array('error' => 'request_failed');
+        }
 
         // If HamQTH session has expired, start a new session and retry the search.
-        if ($callbook['error'] == "Session does not exist or expired") {
+        if (is_array($callbook) && ($callbook['error'] ?? '') == "Session does not exist or expired") {
           $hamqth_session_key = $this->hamqth->session($this->session->userdata('callbook_username'), $decrypted_password);
-          $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-          $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+          if ($hamqth_session_key !== '') {
+            $this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
+            $callbook = $this->hamqth->search($callsign, $this->session->userdata('hamqth_session_key'));
+          }
         }
       }
     } finally {

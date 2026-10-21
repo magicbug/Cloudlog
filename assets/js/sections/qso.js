@@ -1,5 +1,6 @@
 var lastCallsignUpdated=""
 var callsignLookupRequestId = 0;
+var callsignLookupXhr = null;
 var callsignDxccQuickRequestId = 0;
 var callsignDxccQuickTimer = null;
 var isSubmitting = false;
@@ -1094,6 +1095,9 @@ function resetCallsignLookupState() {
 	lastCallsignUpdated = '';
 	// Invalidate in-flight responses from older callsign lookups.
 	callsignLookupRequestId++;
+	if (callsignLookupXhr && callsignLookupXhr.readyState !== 4) {
+		callsignLookupXhr.abort();
+	}
 	callsignDxccQuickRequestId++;
 	if (callsignDxccQuickTimer) {
 		clearTimeout(callsignDxccQuickTimer);
@@ -1409,7 +1413,14 @@ $("#callsign").focusout(function() {
 		find_callsign=find_callsign.replace('Ø', '0');
 
 		// Replace / in a callsign with - to stop urls breaking
-		$.getJSON(base_url + 'index.php/logbook/json/' + find_callsign + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val() + qsoLookupDateQuery(), function(result)
+		if (callsignLookupXhr && callsignLookupXhr.readyState !== 4) {
+			callsignLookupXhr.abort();
+		}
+		callsignLookupXhr = $.ajax({
+			url: base_url + 'index.php/logbook/json/' + find_callsign + '/' + sat_type + '/' + json_band + '/' + json_mode + '/' + $('#stationProfile').val() + qsoLookupDateQuery(),
+			dataType: 'json',
+			timeout: 12000,
+			success: function(result)
 		{
 			if (!isLookupStillCurrent(requestId, find_callsign)) {
 				return;
@@ -1594,6 +1605,7 @@ $("#callsign").focusout(function() {
 				// Get DXX Summary
 				getDxccResult(result.dxcc.adif, convert_case(result.dxcc.entity));
 			}
+		}
 		});
 	} else {
 		// Reset QSO fields
