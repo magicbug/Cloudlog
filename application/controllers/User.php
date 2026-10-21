@@ -638,15 +638,18 @@ class User extends CI_Controller
 			}
 			
 			$this->load->model('user_options_model');
-			$callbook_type_object = $this->user_options_model->get_options('callbook')->result();
+			$callbook_rows = $this->user_options_model->get_options('callbook', null, $q->user_id)->result();
+			$callbook_options = array();
+			foreach ($callbook_rows as $callbook_row) {
+				$callbook_options[$callbook_row->option_name] = $callbook_row->option_value;
+			}
 
 			if ($this->input->post('user_callbook_type', true)) {
 				$data['user_callbook_type'] = $this->input->post('user_callbook_type', true);
 			} else {
-				if (isset($callbook_type_object[1]->option_value)) {
-					$data['user_callbook_type'] = $callbook_type_object[1]->option_value;
-				} else {
-					$data['user_callbook_type'] = "";
+				$data['user_callbook_type'] = $callbook_options['callbook_type'] ?? 'None';
+				if ($data['user_callbook_type'] === '') {
+					$data['user_callbook_type'] = 'None';
 				}
 			}
 
@@ -655,22 +658,14 @@ class User extends CI_Controller
 			if ($this->input->post('user_callbook_username', true)) {
 				$data['user_callbook_username'] = $this->input->post('user_callbook_username', true);
 			} else {
-				if (isset($callbook_type_object[2]->option_value)) {
-					$data['user_callbook_username'] = $callbook_type_object[2]->option_value;
-				} else {
-					$data['user_callbook_username'] = "";
-				}
+				$data['user_callbook_username'] = $callbook_options['callbook_username'] ?? '';
 			}
 
 			// Handle user_callbook_password
 			if ($this->input->post('user_callbook_password', true)) {
 				$data['user_callbook_password'] = $this->input->post('user_callbook_password', true);
 			} else {
-				if (isset($callbook_type_object[0]->option_value)) {
-					$data['user_callbook_password'] = $callbook_type_object[0]->option_value;
-				} else {
-					$data['user_callbook_password'] = "";
-				}
+				$data['user_callbook_password'] = $callbook_options['callbook_password'] ?? '';
 			}
 
 
@@ -917,6 +912,7 @@ class User extends CI_Controller
 					break;
 				// All okay, return to user screen
 				case OK:
+					$this->save_user_callbook($this->input->post('id', true));
 					if ($this->session->userdata('user_id') == $this->uri->segment(3)) { // Editing own User? Set cookie!
 						$cookie = array(
 
@@ -929,52 +925,6 @@ class User extends CI_Controller
 						$this->input->set_cookie($cookie);
 					}
 					if ($this->session->userdata('user_id') == $this->input->post('id', true)) {
-
-						// Handle user_callbook_password
-
-						if (isset($_POST['user_callbook_password']) && !empty($_POST['user_callbook_password'])) {
-
-							// Handle user_callbook_type
-							if (isset($_POST['user_callbook_type'])) {
-								$this->user_options_model->set_option('callbook', 'callbook_type', array('value' => $_POST['user_callbook_type']));
-							} else {
-								$this->user_options_model->set_option('callbook', 'callbook_type', array('value' => ''));
-							}
-
-							// Handle user_callbook_username
-							if (isset($_POST['user_callbook_username'])) {
-								$this->user_options_model->set_option('callbook', 'callbook_username', array('value' => $_POST['user_callbook_username']));
-							} else {
-								$this->user_options_model->set_option('callbook', 'callbook_username', array('value' => ''));
-							}
-
-							// Load the encryption library
-							$this->load->library('encryption');
-
-							// Encrypt the password
-							$encrypted_password = $this->encryption->encrypt($_POST['user_callbook_password']);
-
-							// Save the encrypted password
-							$this->user_options_model->set_option('callbook', 'callbook_password', array('value' => $encrypted_password));
-
-							// if callbook type is QRZ
-							if ($_POST['user_callbook_type'] == 'QRZ') {
-								// Lookup using QRZ
-								$this->load->library('qrz');
-
-								$qrz_session_key = $this->qrz->session($_POST['user_callbook_username'], $_POST['user_callbook_password']);
-								$this->session->set_userdata('qrz_session_key', $qrz_session_key);
-							} elseif ($_POST['user_callbook_type'] == "HamQTH") {
-								$this->load->library('hamqth');
-								$hamqth_session_key = $this->hamqth->session($_POST['user_callbook_username'], $_POST['user_callbook_password']);
-								$this->session->set_userdata('hamqth_session_key', $hamqth_session_key);
-							}
-
-							// Update Session data
-							$this->session->set_userdata('callbook_type', $_POST['user_callbook_type']);
-							$this->session->set_userdata('callbook_username', $_POST['user_callbook_username']);
-							$this->session->set_userdata('callbook_password', $encrypted_password);
-						}
 
 						if (isset($_POST['user_dashboard_enable_dxpedition_card'])) {
 							$this->user_options_model->set_option('dashboard', 'dashboard_upcoming_dx_card', array('enabled' => 'true'));
@@ -1133,6 +1083,60 @@ class User extends CI_Controller
 
 			$this->load->view('user/edit');
 			$this->load->view('interface_assets/footer');
+		}
+	}
+
+	/**
+	 * Persist callbook provider settings for the user being edited.
+	 * Type and username are saved even when the password field is left blank.
+	 */
+	private function save_user_callbook($user_id) {
+		if ($user_id === null || $user_id === '') {
+			return;
+		}
+
+		$callbook_type = $this->input->post('user_callbook_type', true);
+		if ($callbook_type === null || $callbook_type === false) {
+			return;
+		}
+		if (!in_array($callbook_type, array('None', 'QRZ', 'HamQTH'), true)) {
+			$callbook_type = 'None';
+		}
+
+		$callbook_username = $this->input->post('user_callbook_username', true);
+		if ($callbook_username === null || $callbook_username === false) {
+			$callbook_username = '';
+		}
+
+		$this->user_options_model->set_option('callbook', 'callbook_type', array('value' => $callbook_type), $user_id);
+		$this->user_options_model->set_option('callbook', 'callbook_username', array('value' => $callbook_username), $user_id);
+
+		$password = isset($_POST['user_callbook_password']) ? $_POST['user_callbook_password'] : '';
+		$editing_self = ((string) $this->session->userdata('user_id') === (string) $user_id);
+
+		if ($password !== '') {
+			$this->load->library('encryption');
+			$encrypted_password = $this->encryption->encrypt($password);
+			$this->user_options_model->set_option('callbook', 'callbook_password', array('value' => $encrypted_password), $user_id);
+
+			if ($editing_self) {
+				if ($callbook_type === 'QRZ') {
+					$this->load->library('qrz');
+					$this->session->set_userdata('qrz_session_key', $this->qrz->session($callbook_username, $password));
+				} elseif ($callbook_type === 'HamQTH') {
+					$this->load->library('hamqth');
+					$this->session->set_userdata('hamqth_session_key', $this->hamqth->session($callbook_username, $password));
+				}
+				$this->session->set_userdata('callbook_password', $encrypted_password);
+			}
+		}
+
+		if ($editing_self) {
+			$this->session->set_userdata('callbook_type', $callbook_type);
+			$this->session->set_userdata('callbook_username', $callbook_username);
+			if ($callbook_type === 'None') {
+				$this->session->unset_userdata(array('qrz_session_key', 'hamqth_session_key'));
+			}
 		}
 	}
 

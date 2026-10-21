@@ -963,14 +963,22 @@ class Logbook extends CI_Controller
 
 				if (!$this->session->userdata('qrz_session_key')) {
 					$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-					$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+					if ($qrz_session_key !== '') {
+						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+					}
 				}
-				$callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-
-				if (empty($callsign['callsign']['callsign'])) {
-					$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-					$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+				if ($this->session->userdata('qrz_session_key')) {
 					$callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+				} else {
+					$callsign['callsign'] = array('error' => 'request_failed');
+				}
+
+				if (!$this->qrz->request_failed($callsign['callsign']) && empty($callsign['callsign']['callsign'])) {
+					$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
+					if ($qrz_session_key !== '') {
+						$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+						$callsign['callsign'] = $this->qrz->search($id, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+					}
 				}
 				if (isset($callsign['callsign']['dxcc'])) {
 					$this->load->model('logbook_model');
@@ -1091,14 +1099,22 @@ class Logbook extends CI_Controller
 
 			if (!$this->session->userdata('qrz_session_key')) {
 				$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-				$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+				if ($qrz_session_key !== '') {
+					$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+				}
 			}
-			$data['callsign'] = $this->qrz->search($plainCall, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
-
-			if (empty($data['callsign']['callsign'])) {
-				$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
-				$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+			if ($this->session->userdata('qrz_session_key')) {
 				$data['callsign'] = $this->qrz->search($plainCall, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+			} else {
+				$data['callsign'] = array('error' => 'request_failed');
+			}
+
+			if (!$this->qrz->request_failed($data['callsign']) && empty($data['callsign']['callsign'])) {
+				$qrz_session_key = $this->qrz->session($this->session->userdata('callbook_username'), $decrypted_password);
+				if ($qrz_session_key !== '') {
+					$this->session->set_userdata('qrz_session_key', $qrz_session_key);
+					$data['callsign'] = $this->qrz->search($plainCall, $this->session->userdata('qrz_session_key'), $this->config->item('use_fullname'));
+				}
 			}
 			if (isset($data['callsign']['dxcc'])) {
 				$this->load->model('logbook_model');
