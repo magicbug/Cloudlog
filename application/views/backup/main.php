@@ -1,5 +1,8 @@
 <div class="container">
 <br>
+	<?php if ($this->session->flashdata('notice')) { ?>
+		<div class="alert alert-warning" role="alert"><?php echo htmlspecialchars($this->session->flashdata('notice'), ENT_QUOTES, 'UTF-8'); ?></div>
+	<?php } ?>
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
 		<div class="alert-message error">
@@ -20,10 +23,10 @@
 <div class="card mt-4">
 	<div class="card-header d-flex justify-content-between align-items-center">
 		<span>User Data Backup & Restore</span>
-		<a href="<?php echo site_url('backup/user_export'); ?>" class="btn btn-sm btn-outline-primary" title="Download ZIP backup of your stations, logbooks & QSOs">Download ZIP Backup</a>
+		<a href="<?php echo site_url('backup/user_export'); ?>" class="btn btn-sm btn-outline-primary" title="Download ZIP backup of your stations, logbooks, QSOs and images">Download ZIP Backup</a>
 	</div>
 	<div class="card-body">
-		<p class="card-text">Export and restore only your own Stations, Logbooks and QSOs. Imported stations/logbooks are never set active automatically; duplicates reuse existing records; QSOs skip conflicts.</p>
+		<p class="card-text">Export and restore your own stations, logbooks, QSOs and attached QSL, eQSL, SSTV and diary images. Diary entries with images are included and restored as private entries. Imported stations/logbooks are never set active automatically; existing QSOs are reused when restoring their images. Older backups without images are also supported.</p>
 		<form method="post" enctype="multipart/form-data" hx-post="<?php echo site_url('backup/user_import'); ?>" hx-target="#user-import-preview" hx-swap="innerHTML" class="mb-3">
 			<div class="mb-2">
 				<input type="file" name="backup_file" accept=".zip,application/zip,application/json" required class="form-control" />
@@ -36,4 +39,3 @@
 
 
 </div>
-
