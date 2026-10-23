@@ -19,83 +19,34 @@ Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
 Notes
 
 - If you want to log microwave QSOs you will need to use a 64bit operating system.
-- We do not provide Docker support, however you are free to use it if you wish but we will not handle support.
 
 ## Setup
 
-Installation information can be found on the [wiki](https://github.com/magicbug/Cloudlog/wiki).
+Installation and the operator guide are at [docs.cloudlog.org](https://docs.cloudlog.org/). The [wiki](https://github.com/magicbug/Cloudlog/wiki) is the older set of pages.
 
-# Docker Development Environment
+## Docker
 
-This guide provides instructions for setting up a local development environment using Docker and Docker Compose. Please note that this setup is not recommended for production use.
+Cloudlog ships a Docker setup, and it is the one used for development. Development is on the `dev` branch. The full notes are in [Installing Cloudlog with Docker](https://docs.cloudlog.org/Installing-Cloudlog-with-Docker/).
 
-## Prerequisites
-
-Before you begin, you need to install Docker and Docker Compose. You can download them using the following links:
-
-- [Docker](https://docs.docker.com/get-docker/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-
-## Configuration
-
-1. Copy the `.env.sample` file to `.env`:
-
-   ```bash
-   cp .env.sample .env
-   ```
-
-2. Open the `.env` file and update the values to match your setup. The values from the `.env` file will be used to populate the database connection details on the install page. You should not need to change these unless your setup requires different values.
-
-   **Note:** Docker Compose creates a network for your application, and each service (container) in the Docker Compose file can reach each other via the service name. This is why the `DB_HOST` value in the `.env` file and on the install page should match the service name of the database in the `docker-compose.yml` file. For example, if the database service in `docker-compose.yml` is defined as `db`, then `DB_HOST` should be set as 'db'. This allows the application to communicate with the database service on its internal docker network.
-
-## Starting the Development Environment
-
-To start the development environment, run the following command in your terminal:
+Install [Docker](https://docs.docker.com/get-docker/) with Compose, then:
 
 ```bash
-docker-compose up
+git clone -b dev https://github.com/magicbug/Cloudlog.git
+cd Cloudlog
+cp .env.sample .env
+docker compose up
 ```
 
-# Running Cypress Tests Locally
+Open [http://localhost](http://localhost) and log in with `m0abc` / `demo`. Set `BASE_LOCATOR` in `.env` to your own grid before the first start. Leave `MYSQL_HOST` as `db`, which is the database container's name.
 
-Follow these steps to run the Cypress tests locally on your machine:
+## Running Cypress Tests Locally
 
-1. **Clone the repository**
+Start the Docker setup above, then from the same folder:
 
-   If you haven't already, clone the repository to your local machine
-
-2. **Setup .env file**
-
-   Copy the sample `.env` file and adjust it to your local environment:
-
-   ```bash
-   cd your-repo
-   cp .env.sample .env
-   ```
-
-3. **Build Docker services**
-
-   Build and start the Docker services:
-
-   ```bash
-   docker-compose up -d
-   ```
-
-4. **Install Cypress**
-
-   Navigate into the project directory and install Cypress:
-
-   ```bash
-   npm install cypress
-   ```
-
-5. **Run the Cypress tests**
-
-   After the installation is complete, you can run the Cypress tests:
-
-   ```bash
-   npx cypress run
-   ```
+```bash
+npm install cypress
+npx cypress run
+```
 
 ## Support
 

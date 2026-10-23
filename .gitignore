@@ -37,6 +37,7 @@ sync.sh
 .env
 /node_modules
 /.vs
+/site/
 .vscode/sftp.json
 /assets/json/pota.txt
 /assets/json/pota_parks.csv
