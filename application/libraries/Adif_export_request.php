@@ -6,9 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * Request parsing and validation for POST /api/get_contacts_adif.
  *
  * This class is deliberately free of any CodeIgniter / database dependency so
- * that it can be unit tested in isolation (see tests/unit). It never touches
- * the API key beyond checking its type and length: key validation is done by
- * Api_model in the controller.
+ * that it can be unit tested in isolation. It never touches the API key beyond
+ * checking its type and length: key validation is done by Api_model in the controller.
  */
 class Adif_export_request
 {
