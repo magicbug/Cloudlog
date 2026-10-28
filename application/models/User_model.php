@@ -446,7 +446,7 @@ class User_Model extends CI_Model {
 
 		$CI =& get_instance();
         $CI->load->model('user_options_model');
-        $callbook_type_object = $CI->user_options_model->get_options('callbook')->result();
+        $callbook_type_object = $CI->user_options_model->get_options('callbook', null, $id)->result();
 		$remote_operation_option = $CI->user_options_model->get_options(
 			'remote_operation',
 			array('option_name' => 'enabled', 'option_key' => 'value'),
@@ -468,26 +468,17 @@ class User_Model extends CI_Model {
 			$id
 		)->row();
 
-        // Get the callbook type
-        if (isset($callbook_type_object[1]->option_value)) {
-            $callbook_type = $callbook_type_object[1]->option_value;
-        } else {
-            $callbook_type =  "None";
+        $callbook_options = array();
+        foreach ($callbook_type_object as $callbook_row) {
+            $callbook_options[$callbook_row->option_name] = $callbook_row->option_value;
         }
 
-		// Get the callbook type
-		if (isset($callbook_type_object[2]->option_value)) {
-            $callbook_username = $callbook_type_object[2]->option_value;
-        } else {
-            $callbook_username =  "";
+        $callbook_type = $callbook_options['callbook_type'] ?? 'None';
+        if ($callbook_type === '') {
+            $callbook_type = 'None';
         }
-
-		// Get the callbook type
-		if (isset($callbook_type_object[0]->option_value)) {
-            $callbook_password = $callbook_type_object[0]->option_value;
-        } else {
-            $callbook_password =  "";
-        }
+        $callbook_username = $callbook_options['callbook_username'] ?? '';
+        $callbook_password = $callbook_options['callbook_password'] ?? '';
 
 		if ($u === null) {
 			$u = $this->get_by_id($id);

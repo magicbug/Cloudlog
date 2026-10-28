@@ -89,6 +89,9 @@
             <br>
             # Update WWFF File for autocomplete <br>
             @monthly curl --silent <?php echo site_url();?>/update/update_wwff &>/dev/null <br>
+            <br>
+            # Run enabled plugin cron hooks (ignore cron job if no plugin needs it) <br>
+            0 * * * * curl --silent <?php echo site_url();?>/plugins/cron &>/dev/null <br>
             </code>
         </div>
     </div>

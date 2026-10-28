@@ -170,7 +170,9 @@ function qso_edit(id) {
                             find_callsign = find_callsign.replace(/\//g, "-");
                             find_callsign = find_callsign.replace('Ø', '0');
 
-                            $.getJSON(base_url + 'index.php/logbook/json/' + find_callsign + '/0/0/0/' + $('.modal-content #stationProfile').val(), function(result) {
+                            var qsoDate = $('.modal-content #time_on').val() || '';
+                            var dateQuery = qsoDate ? ('?qso_date=' + encodeURIComponent(qsoDate)) : '';
+                            $.getJSON(base_url + 'index.php/logbook/json/' + find_callsign + '/0/0/0/' + $('.modal-content #stationProfile').val() + dateQuery, function(result) {
                                 if (result.dxcc && result.dxcc.entity !== undefined && result.dxcc.entity !== 'Not Found') {
                                     // Update country field
                                     $('.modal-content #country').val(result.dxcc.entity);

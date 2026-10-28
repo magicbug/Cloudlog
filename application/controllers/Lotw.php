@@ -1166,6 +1166,7 @@ class Lotw extends CI_Controller {
 			'TEV2-7'	=> "TEVEL2-7",
 			'TEV2-8'	=> "TEVEL2-8",
 			'TEV2-9'	=> "TEVEL2-9",
+			'RS95S'		=> "QMR-KWT-2",
 		);
 
 		return array_search(strtoupper($satname),$arr,true);
