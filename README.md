@@ -7,7 +7,7 @@ Cloudlog is a self-hosted PHP application that allows you to log your amateur ra
 
 While Cloudlog as started by Peter Goodhall, MM9SQL, although since has received a lot of community code contributions. If you would like to contribute to Cloudlog please see the [Contributing](#contributing) section below.
 
-Website: [http://www.cloudlog.co.uk](http://www.cloudlog.co.uk)
+Website: [https://cloudlog.org](https://cloudlog.org)
 
 ## Requirements
 
@@ -22,7 +22,7 @@ Notes
 
 ## Setup
 
-Installation and the operator guide are at [docs.cloudlog.org](https://docs.cloudlog.org/). The [wiki](https://github.com/magicbug/Cloudlog/wiki) is the older set of pages.
+Installation and the operator guide are at [docs.cloudlog.org](https://docs.cloudlog.org/).
 
 ## Docker
 

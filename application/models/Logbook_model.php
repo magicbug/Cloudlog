@@ -4356,7 +4356,7 @@ class Logbook_model extends CI_Model
 
     if ((!$skipStationCheck) && ($station_id != 0) && (strtoupper($record['station_callsign']) != strtoupper($station_profile_call))) {     // Check if station_call from import matches profile ONLY when submitting via GUI.
       return "Wrong station callsign <b>\"" . htmlentities($record['station_callsign']) . "\"</b> while importing QSO with " . $record['call'] . " for <b>" . $station_profile_call . "</b> : SKIPPED" .
-        "<br>See the <a target=\"_blank\" href=\"https://github.com/magicbug/Cloudlog/wiki/ADIF-file-can't-be-imported\">Cloudlog Wiki</a> for hints about errors in ADIF files.";
+        "<br>See the <a target=\"_blank\" href=\"https://docs.cloudlog.org/guide/adif/\">Cloudlog documentation</a> for hints about errors in ADIF files.";
     }
 
     $this->load->library('frequency');

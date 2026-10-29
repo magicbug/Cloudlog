@@ -69,7 +69,7 @@
 		  }
 		  ?>
 
-	    	<div style="display:none;"><span  class="badge text-bg-info">Info</span> You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Search----Filter" target="_blank">search filter functions</a> in the wiki.</a></div>
+	    	<div style="display:none;"><span  class="badge text-bg-info">Info</span> You can find out how to use the <a href="https://docs.cloudlog.org/guide/search/" target="_blank">search filter functions</a> in the documentation.</a></div>
 
 	  </div>
 	</div>

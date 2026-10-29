@@ -114,7 +114,7 @@ $lang['account_gridmap_default_band'] = 'Varsayılan Bant';
 $lang['account_qsl_settings'] = 'Varsayılan QSL Yöntemleri';
 
 $lang['account_winkeyer'] = 'Winkeyer';
-$lang['account_winkeyer_hint'] = "Cloudlog'daki Winkeyer desteği oldukça deneyseldir, Etkinleştirmeden önce <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https adresindeki wiki'yi okuyun: //github.com/magicbug/Cloudlog/wiki/Winkey</a>.";
+$lang['account_winkeyer_hint'] = "Cloudlog'daki Winkeyer desteği oldukça deneyseldir, Etkinleştirmeden önce <a href='https://docs.cloudlog.org/guide/winkey/' target='_blank'>https adresindeki wiki'yi okuyun: //github.com/magicbug/Cloudlog/wiki/Winkey</a>.";
 $lang['account_winkeyer_enabled'] = "Winkeyer Özellikleri Etkin";
 
 $lang['account_map_params'] = "Harita Ayarları";
