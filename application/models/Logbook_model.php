@@ -5964,18 +5964,18 @@ class Logbook_model extends CI_Model
     return $affected_rows;
   }
 
-  function county_qso_details($state, $county)
+  /*
+   * QSOs in a state whose logged county (text after the state prefix, lower case) is one of $county_names.
+   */
+  function county_qso_details($state, $county_names)
   {
     $CI = &get_instance();
     $CI->load->model('logbooks_model');
+    $CI->load->model('counties');
     $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
-    $normalizedCounty = strtolower(trim((string)$county));
     $normalizedState = strtoupper(trim((string)$state));
-    $normalizedStateExpression = "UPPER(TRIM(CASE WHEN COALESCE(COL_STATE, '') <> '' THEN COL_STATE WHEN COL_CNTY REGEXP '^[A-Za-z]{2},' THEN SUBSTRING_INDEX(COL_CNTY, ',', 1) ELSE '' END))";
-    if (preg_match('/^[A-Za-z]{2},\s*/', $normalizedCounty)) {
-      $normalizedCounty = preg_replace('/^[A-Za-z]{2},\s*/', '', $normalizedCounty);
-    }
+    $countyList = empty($county_names) ? "''" : implode(',', array_map(array($this->db, 'escape'), $county_names));
 
     $this->db->select($this->config->item('table_name') . '.*');
     $this->db->select('station_profile.*');
@@ -5985,9 +5985,11 @@ class Logbook_model extends CI_Model
     $this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $this->config->item('table_name') . '.COL_DXCC', 'left outer');
     $this->db->join('lotw_users lotw', 'lotw.callsign = ' . $this->config->item('table_name') . '.col_call', 'left');
     $this->db->where_in($this->config->item('table_name') . '.station_id', $logbooks_locations_array);
-    $this->db->where($normalizedStateExpression . ' = ' . $this->db->escape($normalizedState), null, false);
-    $this->db->where("LOWER(TRIM(SUBSTRING_INDEX(COL_CNTY, ',', -1))) = " . $this->db->escape($normalizedCounty), null, false);
+    $this->db->where(Counties::STATE_EXPRESSION . ' = ' . $this->db->escape($normalizedState), null, false);
+    $this->db->where('LOWER(' . Counties::COUNTY_EXPRESSION . ') IN (' . $countyList . ')', null, false);
+    $this->db->where_in('COL_DXCC', array('291', '6', '110'));
     $this->db->where('COL_BAND !=', 'SAT');
+    $this->db->where("COALESCE(COL_PROP_MODE, '') != 'SAT'", null, false);
 
     return $this->db->get($this->config->item('table_name'));
   }

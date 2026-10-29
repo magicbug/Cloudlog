@@ -1,0 +1,86 @@
+{
+    "source": "MARAC USA-CA rules (revised 2025-04-14) and MARAC general award rules; Alaska from ADIF 3.1.7 III.B.22.a and KL7J",
+    "alaska": {
+        "First Judicial District": [
+            "Angoon", "Haines", "Hoonah-Angoon", "Juneau", "Ketchikan", "Ketchikan Gateway",
+            "Lynn Canal-Icy Straits", "Outer Ketchikan", "Petersburg", "Prince of Wales",
+            "Prince of Wales-Hyder", "Prince of Wales-Outer Ketchikan", "Prince of Wales-Outer-Ketichikan",
+            "Prince Wales Ketchikan", "Sitka", "Skagway", "Skagway-Hoonah-Angoon", "Skagway-Yakutat",
+            "Skagway-Yakutat-Angoon", "Wales-Hyder", "Wrangell", "Wrangell-Petersburg", "Yakutat",
+            "First Judicial District", "First District"
+        ],
+        "Second Judicial District": [
+            "Barrow", "Kobuk", "Nome", "North Slope", "Northwest Arctic",
+            "Second Judicial District", "Second District"
+        ],
+        "Third Judicial District": [
+            "Aleutians East", "Aleutians Islands", "Aleutians West", "Anchorage", "Bristol Bay",
+            "Chugach", "Copper River", "Cordova-McCarthy", "Dillingham", "Kenai Peninsula",
+            "Kenai-Cook Inlet", "Kodiak Island", "Lake and Peninsula", "Matanuska-Susitna",
+            "Palmer-Wasilla-Talkeetna", "Pribilof Islands", "Seward", "Valdez-Chitina-Whittier",
+            "Valdez-Cordova", "Third Judicial District", "Third District"
+        ],
+        "Fourth Judicial District": [
+            "Bethel", "Denali", "Fairbanks", "Fairbanks North Star", "Kusilvak", "Kuskokwim",
+            "Saint Matthew Island", "Southeast Fairbanks", "Upper Yukon", "Wade Hampton",
+            "Yukon-Koyukuk", "Fourth Judicial District", "Fourth District"
+        ]
+    },
+    "renamed": {
+        "SD": {
+            "Shannon": "Oglala Lakota"
+        }
+    },
+    "city_names_shared_with_county": {
+        "VA": ["Bedford", "Fairfax", "Franklin", "Richmond", "Roanoke"]
+    },
+    "independent_cities": {
+        "VA": {
+            "Alexandria": ["Arlington", "Fairfax"],
+            "Bedford": ["Bedford"],
+            "Bristol": ["Washington"],
+            "Buena Vista": ["Rockbridge"],
+            "Charlottesville": ["Albemarle"],
+            "Chesapeake": ["Isle of Wight"],
+            "Clifton Forge": ["Alleghany"],
+            "Colonial Heights": ["Chesterfield", "Prince George"],
+            "Covington": ["Alleghany"],
+            "Danville": ["Pittsylvania"],
+            "Emporia": ["Greensville"],
+            "Fairfax": ["Fairfax"],
+            "Falls Church": ["Fairfax"],
+            "Fort Monroe": ["York"],
+            "Franklin": ["Southampton"],
+            "Fredericksburg": ["Spotsylvania"],
+            "Galax": ["Carroll", "Grayson"],
+            "Hampton": ["York"],
+            "Harrisonburg": ["Rockingham"],
+            "Hopewell": ["Prince George"],
+            "Lexington": ["Rockbridge"],
+            "Lynchburg": ["Amherst", "Bedford", "Campbell"],
+            "Manassas": ["Prince William"],
+            "Manassas Park": ["Prince William"],
+            "Martinsville": ["Henry"],
+            "Newport News": ["York"],
+            "Norfolk": ["Isle of Wight"],
+            "Norton": ["Wise"],
+            "Petersburg": ["Chesterfield", "Dinwiddie", "Prince George"],
+            "Poquoson": ["York"],
+            "Portsmouth": ["Isle of Wight"],
+            "Radford": ["Montgomery"],
+            "Richmond": ["Chesterfield", "Henrico"],
+            "Roanoke": ["Roanoke"],
+            "Salem": ["Roanoke"],
+            "South Boston": ["Halifax"],
+            "Staunton": ["Augusta"],
+            "Suffolk": ["Isle of Wight", "Southampton"],
+            "Virginia Beach": ["Isle of Wight"],
+            "Waynesboro": ["Augusta"],
+            "Williamsburg": ["James City"],
+            "Winchester": ["Frederick"]
+        },
+        "NV": {
+            "Carson": ["Douglas", "Lyon", "Storey", "Washoe"]
+        }
+    }
+}

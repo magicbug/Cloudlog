@@ -111,7 +111,7 @@ ________________________________________________________________________________
 */
 
 $lang['awards_counties_description_ln1'] = "Prêmio Condados dos EUA";
-$lang['awards_counties_description_ln2'] = "Emitido pela CQ Magazine para contatos confirmados com condados dos EUA. Regras <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>aqui</a>.";
+$lang['awards_counties_description_ln2'] = "Emitido pela CQ Magazine para contatos confirmados com condados dos EUA. Regras <a href='https://marac.org/documents/usa-ca-rules.pdf' target='_blank'>aqui</a>.";
 $lang['awards_counties_description_ln3'] = "Válido para qualquer operador licenciado mundialmente, independente de indicativo ou local de operação.";
 $lang['awards_counties_description_ln4'] = "SWLs também podem obter o prêmio com base em escutas.";
 

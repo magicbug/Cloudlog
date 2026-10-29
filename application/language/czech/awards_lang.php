@@ -122,7 +122,7 @@ ________________________________________________________________________________
 */
 
 $lang['awards_counties_description_ln1'] = "US County Award";
-$lang['awards_counties_description_ln2'] = "The United States of America Counties Award (USA-CA), sponsored by CQ magazine, is issued for confirmed two-way radio contacts with specified numbers of U.S. counties under rules and conditions you can find <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>here</a>.";
+$lang['awards_counties_description_ln2'] = "The United States of America Counties Award (USA-CA), sponsored by CQ magazine, is issued for confirmed two-way radio contacts with specified numbers of U.S. counties under rules and conditions you can find <a href='https://marac.org/documents/usa-ca-rules.pdf' target='_blank'>here</a>.";
 $lang['awards_counties_description_ln3'] = "USA-CA is available to all licensed amateurs worldwide and is issued to individuals for all county contacts made, regardless of callsigns used, operating locations, or dates.";
 $lang['awards_counties_description_ln4'] = "Special USA-CA awards are also available to SWLs on a heard basis.";
 
