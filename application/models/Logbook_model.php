@@ -1226,97 +1226,290 @@ class Logbook_model extends CI_Model
 
   function upload_amsat_status($data)
   {
-    $sat_name = '';
-    if ($data['COL_SAT_NAME'] == 'AO-7') {
-      if ($data['COL_BAND'] == '2m' && $data['COL_BAND_RX'] == '10m') {
-        $sat_name = 'AO-7_[V/a]';
-      }
-      if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
-        $sat_name = 'AO-7_[U/v]';
-      }
-    } else if ($data['COL_SAT_NAME'] == 'SO-50') {
-      $sat_name = 'SO-50_[FM]';
-    } else if ($data['COL_SAT_NAME'] == 'SO-125') {
-      $sat_name = 'SO-125_[FM]';
-    } else if ($data['COL_SAT_NAME'] == 'RS-44') {
-      $sat_name = 'RS-44_[V/u]';
-    } else if ($data['COL_SAT_NAME'] == 'NO-44') {
-      $sat_name = 'NO-44_[APRS]';
-    } else if ($data['COL_SAT_NAME'] == 'JO-97') {
-      $sat_name = 'JO-97_[U/v]';
-    } else if ($data['COL_SAT_NAME'] == 'FO-29') {
-      $sat_name = 'FO-29_[V/u]';
-    } else if( $data['COL_SAT_NAME'] == 'AO-91') {
-        $sat_name = 'AO-91_[FM]';
-    } else if ($data['COL_SAT_NAME'] == 'AO-123') {
-        $sat_name = 'AO-123_[FM]';
-    } else if ($data['COL_SAT_NAME'] == 'AO-73') {
-        $sat_name = 'AO-73_[U/v]';
-    } else if ($data['COL_SAT_NAME'] == 'MESAT-1') {
-      $sat_name = 'MESAT1';
-    } else if ($data['COL_SAT_NAME'] == 'SONATE-2') {
-      $sat_name = 'SONATE-2 APRS';
-    } else if ($data['COL_SAT_NAME'] == 'QMR-KWT-2') {
-      $sat_name = 'RS95S_[FM]';
-    } else if ($data['COL_SAT_NAME'] == 'Lobachevsky') {
-      $sat_name = 'RS83S_[FM]';
-    } else if ($data['COL_SAT_NAME'] == 'BOTAN') {
-      if ($data['COL_MODE'] == 'PKT') {
-        $sat_name = 'BOTAN APRS';
-      }
-    } else if ($data['COL_SAT_NAME'] == 'SONATE-2') {
-      if ($data['COL_MODE'] == 'PKT') {
-        $sat_name = 'SONATE-2_[APRS]';
-      }
-    } else if ($data['COL_SAT_NAME'] == 'QO-100') {
-      $sat_name = 'QO-100_[NB]';
-    } else if ($data['COL_SAT_NAME'] == 'AO-92') {
-      if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
-        $sat_name = 'AO-92_U/v';
-      }
-      if ($data['COL_BAND'] == '23cm' && $data['COL_BAND_RX'] == '2m') {
-        $sat_name = 'AO-92_L/v';
-      }
-    } else if ($data['COL_SAT_NAME'] == 'AO-95') {
-      if ($data['COL_BAND'] == '70cm' && $data['COL_BAND_RX'] == '2m') {
-        $sat_name = 'AO-95_U/v';
-      }
-      if ($data['COL_BAND'] == '23cm' && $data['COL_BAND_RX'] == '2m') {
-        $sat_name = 'AO-95_L/v';
-      }
-    } else if ($data['COL_SAT_NAME'] == 'PO-101') {
-      if ($data['COL_MODE'] == 'PKT') {
-        $sat_name = 'PO-101_[APRS]';
-      } else {
-        $sat_name = 'PO-101_[FM]';
-      }
-    } else if ($data['COL_SAT_NAME'] == 'FO-118') {
-      if ($data['COL_BAND'] == '2m') {
-        if ($data['COL_MODE'] == 'FM') {
-          $sat_name = 'FO-118[V/u FM]';
-        } else if ($data['COL_MODE'] == 'SSB') {
-          $sat_name = 'FO-118[V/u]';
-        }
-      } else if ($data['COL_BAND'] == '15m') {
-        $sat_name = 'FO-118[H/u]';
-      }
-    } else if ($data['COL_SAT_NAME'] == 'ARISS' || $data['COL_SAT_NAME'] == 'ISS') {
-      if ($data['COL_MODE'] == 'FM') {
-        $sat_name = 'ISS_[FM]';
-      } else if ($data['COL_MODE'] == 'PKT') {
-        $sat_name = 'ISS_[APRS]';
-      }
-    } else if ($data['COL_SAT_NAME'] == 'CAS-3H') {
-      $sat_name = 'CAS-3H_[FM]';
-    } else {
-      $sat_name = $data['COL_SAT_NAME'];
+    $satellite = trim((string)($data['COL_SAT_NAME'] ?? ''));
+    if ($satellite === '') {
+      return;
     }
-    $datearray = date_parse_from_format("Y-m-d H:i:s", $data['COL_TIME_ON']);
-    $url = 'https://amsat.org/status/submit.php?SatSubmit=yes&Confirm=yes&SatName=' . $sat_name . '&SatYear=' . $datearray['year'] . '&SatMonth=' . str_pad($datearray['month'], 2, '0', STR_PAD_LEFT) . '&SatDay=' . str_pad($datearray['day'], 2, '0', STR_PAD_LEFT) . '&SatHour=' . str_pad($datearray['hour'], 2, '0', STR_PAD_LEFT) . '&SatPeriod=' . (intdiv(($datearray['minute'] - 1), 15)) . '&SatCall=' . $data['COL_STATION_CALLSIGN'] . '&SatReport=Heard&SatGridSquare=' . $data['COL_MY_GRIDSQUARE'];
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
+
+    // POST /api/v1/reports.php stores this value as the report name and the
+    // status grid joins it to satellite_name.html_element_name.
+    $sat_name = $this->amsat_status_api_name($data);
+    if ($sat_name === '') {
+      log_message('info', 'AMSAT status upload skipped: ' . $satellite . ' has no status-page name');
+      return;
+    }
+
+    $callsign = strtoupper(trim((string)($data['COL_STATION_CALLSIGN'] ?? '')));
+    if ($callsign === '') {
+      log_message('error', 'AMSAT status upload skipped: missing station callsign for ' . $satellite);
+      return;
+    }
+
+    $observed_at = (string)($data['COL_TIME_ON'] ?? '');
+    if ($observed_at === '') {
+      return;
+    }
+
+    try {
+      $observed_dt = new DateTime($observed_at, new DateTimeZone('UTC'));
+      $reported_at = $observed_dt->format('Y-m-d\\TH:i:s\\Z');
+    } catch (Exception $e) {
+      log_message('error', 'AMSAT status upload skipped: invalid time for ' . $satellite . ' - ' . $e->getMessage());
+      return;
+    }
+
+    $payload = array(
+      'name' => $sat_name,
+      'report' => 'Heard',
+      'callsign' => $callsign,
+      'reported_at' => $reported_at,
+    );
+
+    $gridsquare = $this->amsat_status_grid($data);
+    if ($gridsquare !== '') {
+      $payload['grid_square'] = $gridsquare;
+    }
+
+    $this->load->helper('useragent');
+    $user_agent = cloudlog_user_agent() . ' (+https://github.com/magicbug/Cloudlog)';
+    $body = json_encode($payload);
+    $errors = array();
+
+    foreach ($this->amsat_status_endpoints() as $url) {
+      $result = $this->amsat_status_post($url, $body, $user_agent);
+      if ($result['ok']) {
+        return;
+      }
+      $errors[] = $result['error'];
+      if (empty($result['retry'])) {
+        break;
+      }
+    }
+
+    log_message('error', 'AMSAT status upload failed for ' . $sat_name . ': ' . implode(' | ', $errors));
+  }
+
+  /**
+   * Current host until the announced cutover, then https://status.amsat.org.
+   * The other host is only a fallback while the catalog is moving.
+   *
+   * @return array<int, string>
+   */
+  private function amsat_status_endpoints()
+  {
+    $new_api = 'https://status.amsat.org/api/v1/reports.php';
+    $current_api = 'https://www.amsat.org/status/api/v1/reports.php';
+
+    try {
+      $now = new DateTime('now', new DateTimeZone('UTC'));
+      $cutover = new DateTime('2026-11-04 14:00:00', new DateTimeZone('UTC'));
+    } catch (Exception $e) {
+      return array($new_api);
+    }
+
+    if ($now >= $cutover) {
+      return array($new_api, $current_api);
+    }
+
+    return array($current_api, $new_api);
+  }
+
+  /**
+   * @return array{ok: bool, retry: bool, error: string}
+   */
+  private function amsat_status_post($url, $body, $user_agent)
+  {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_exec($ch);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+    curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      'Accept: application/json',
+      'Content-Type: application/json',
+    ));
+
+    $response = curl_exec($ch);
+    if (curl_errno($ch)) {
+      $error = curl_error($ch);
+      curl_close($ch);
+      return array('ok' => false, 'retry' => true, 'error' => $url . ' curl: ' . $error);
+    }
+
+    $http_code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($http_code === 200 || $http_code === 201) {
+      return array('ok' => true, 'retry' => false, 'error' => '');
+    }
+
+    $retry = ($http_code === 404 || $http_code === 408 || $http_code === 429 || $http_code >= 500 || ($http_code >= 300 && $http_code < 400));
+    $error_code = '';
+    $decoded = json_decode((string)$response, true);
+    if (is_array($decoded) && isset($decoded['error']['code'])) {
+      $error_code = (string)$decoded['error']['code'];
+      if ($error_code === 'unknown_satellite') {
+        // Empty catalog during the host move, or a name the other host still lists.
+        $retry = true;
+      }
+    }
+
+    $detail = 'HTTP ' . $http_code;
+    if ($error_code !== '') {
+      $detail .= ' ' . $error_code;
+    }
+    if (is_string($response) && $response !== '') {
+      $detail .= ' ' . substr($response, 0, 300);
+    }
+
+    return array('ok' => false, 'retry' => $retry, 'error' => $url . ' ' . $detail);
+  }
+
+  private function amsat_status_grid($data)
+  {
+    $gridsquare = strtoupper(trim((string)($data['COL_MY_GRIDSQUARE'] ?? '')));
+    if ($gridsquare === '' && !empty($data['COL_MY_VUCC_GRIDS'])) {
+      $parts = explode(',', (string)$data['COL_MY_VUCC_GRIDS']);
+      $gridsquare = strtoupper(trim((string)($parts[0] ?? '')));
+    }
+
+    $gridsquare = preg_replace('/[^A-Z0-9]/', '', $gridsquare);
+    if (!is_string($gridsquare) || preg_match('/^[A-R]{2}[0-9]{2}([A-X]{2})?$/', $gridsquare) !== 1) {
+      return '';
+    }
+
+    return $gridsquare;
+  }
+
+  /**
+   * AMSAT API name (satellite_name.html_element_name), not the LoTW name.
+   */
+  private function amsat_status_api_name($data)
+  {
+    $satellite = strtoupper(trim((string)($data['COL_SAT_NAME'] ?? '')));
+    $mode = strtoupper(trim((string)($data['COL_MODE'] ?? '')));
+    $sat_mode = strtoupper(str_replace(' ', '', (string)($data['COL_SAT_MODE'] ?? '')));
+    $band = strtolower(trim((string)($data['COL_BAND'] ?? '')));
+    $band_rx = strtolower(trim((string)($data['COL_BAND_RX'] ?? '')));
+
+    if ($satellite === '') {
+      return '';
+    }
+
+    $raw = trim((string)($data['COL_SAT_NAME'] ?? ''));
+    if (preg_match('/_\[[^]]+\]$/', $raw) === 1) {
+      return $raw;
+    }
+
+    if ($satellite === 'AO-7' || $satellite === 'AO-07') {
+      if (($band === '2m' && $band_rx === '10m') || $sat_mode === 'V/A' || $sat_mode === 'VA') {
+        return 'AO-7_[V/a]';
+      }
+      if (($band === '70cm' && $band_rx === '2m') || $sat_mode === 'U/V' || $sat_mode === 'UV') {
+        return 'AO-7_[U/v]';
+      }
+      return '';
+    }
+
+    if ($satellite === 'ISS' || $satellite === 'ARISS') {
+      if ($mode === 'SSTV' || $sat_mode === 'SSTV') {
+        return 'ISS_[SSTV]';
+      }
+      if ($mode === 'DATV' || $sat_mode === 'DATV') {
+        return 'ISS_[DATV]';
+      }
+      if ($mode === 'PKT' || $mode === 'APRS' || $sat_mode === 'PKT' || $sat_mode === 'APRS') {
+        if ($band === '70cm' || $band_rx === '70cm' || $sat_mode === 'U') {
+          return 'ISS_[UHF_Digi]';
+        }
+        return 'ISS_[VHF_Digi]';
+      }
+      if ($mode === 'FM' || $sat_mode === 'FM' || $sat_mode === 'V/U' || $sat_mode === 'U/V') {
+        return 'ISS_[FM]';
+      }
+      return '';
+    }
+
+    if ($satellite === 'AO-123') {
+      if ($mode === 'SSTV' || $mode === 'SSDV' || $sat_mode === 'SSDV' || $sat_mode === 'SSTV') {
+        return 'AO-123_[SSDV]';
+      }
+      return 'AO-123_[FM]';
+    }
+
+    if ($satellite === 'IO-86') {
+      if ($mode === 'SSTV' || $sat_mode === 'SSTV') {
+        return 'IO-86_[SSTV]';
+      }
+      if ($mode === 'SSDV' || $sat_mode === 'SSDV') {
+        return 'IO-86_[SSDV]';
+      }
+      if ($mode === 'PKT' || $sat_mode === 'PKT' || $sat_mode === 'APRS') {
+        return 'IO-86_[VHF_Digi]';
+      }
+      return 'IO-86_[FM]';
+    }
+
+    if ($satellite === 'QO-100') {
+      if ($mode === 'DATV' || $sat_mode === 'WB' || $sat_mode === 'DATV') {
+        return 'QO-100_[WB]';
+      }
+      return 'QO-100_[NB]';
+    }
+
+    if ($satellite === 'SONATE-2') {
+      if ($mode === 'SSTV' || $sat_mode === 'SSTV') {
+        return 'SONATE-2_[SSTV]';
+      }
+      if ($mode === 'PKT' || $sat_mode === 'PKT' || $sat_mode === 'APRS') {
+        return 'SONATE-2_[VHF_Digi]';
+      }
+      return '';
+    }
+
+    if ($satellite === 'QMR-KWT-2' || $satellite === 'RS95S') {
+      if ($mode === 'SSTV' || $sat_mode === 'SSTV') {
+        return 'RS95S_[SSTV]';
+      }
+      return 'RS95S_[FM]';
+    }
+
+    if ($satellite === 'LOBACHEVSKY' || $satellite === 'RS83S') {
+      if ($mode === 'SSTV' || $sat_mode === 'SSTV') {
+        return 'RS83S_[SSTV]';
+      }
+      if ($mode === 'SSDV' || $sat_mode === 'SSDV') {
+        return 'RS83S_[SSDV]';
+      }
+      return 'RS83S_[FM]';
+    }
+
+    if ($satellite === 'PO-101') {
+      if ($mode === 'PKT' || $mode === 'APRS' || $sat_mode === 'PKT' || $sat_mode === 'APRS') {
+        return '';
+      }
+      return 'PO-101_[FM]';
+    }
+
+    $single = array(
+      'SO-50' => 'SO-50_[FM]',
+      'RS-44' => 'RS-44_[V/u]',
+      'NO-44' => 'NO-44_[VHF_Digi]',
+      'JO-97' => 'JO-97_[U/v]',
+      'FO-29' => 'FO-29_[V/u]',
+      'AO-91' => 'AO-91_[FM]',
+      'AO-73' => 'AO-73_[U/v]',
+      'CAS-3H' => 'CAS-3H_[FM]',
+      'TO-108' => 'TO-108_[U/v]',
+    );
+
+    if (isset($single[$satellite])) {
+      return $single[$satellite];
+    }
+
+    return '';
   }
 
   function upload_oscarwatch_status($data)
