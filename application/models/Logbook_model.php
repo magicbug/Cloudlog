@@ -1235,8 +1235,7 @@ class Logbook_model extends CI_Model
     // status grid joins it to satellite_name.html_element_name.
     $sat_name = $this->amsat_status_api_name($data);
     if ($sat_name === '') {
-      log_message('info', 'AMSAT status upload skipped: ' . $satellite . ' has no status-page name');
-      return;
+      $sat_name = $satellite;
     }
 
     $callsign = strtoupper(trim((string)($data['COL_STATION_CALLSIGN'] ?? '')));
@@ -1324,6 +1323,7 @@ class Logbook_model extends CI_Model
     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
     curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -1488,13 +1488,60 @@ class Logbook_model extends CI_Model
 
     if ($satellite === 'PO-101') {
       if ($mode === 'PKT' || $mode === 'APRS' || $sat_mode === 'PKT' || $sat_mode === 'APRS') {
-        return '';
+        return 'PO-101_[APRS]';
       }
       return 'PO-101_[FM]';
     }
 
+    if ($satellite === 'MESAT-1' || $satellite === 'MESAT1') {
+      return 'MESAT1';
+    }
+
+    if ($satellite === 'BOTAN') {
+      if ($mode === 'PKT' || $sat_mode === 'PKT' || $sat_mode === 'APRS') {
+        return 'BOTAN APRS';
+      }
+      return '';
+    }
+
+    if ($satellite === 'FO-118') {
+      if ($band === '2m') {
+        if ($mode === 'FM') {
+          return 'FO-118[V/u FM]';
+        }
+        if ($mode === 'SSB') {
+          return 'FO-118[V/u]';
+        }
+      }
+      if ($band === '15m') {
+        return 'FO-118[H/u]';
+      }
+      return '';
+    }
+
+    if ($satellite === 'AO-92') {
+      if ($band === '70cm' && $band_rx === '2m') {
+        return 'AO-92_U/v';
+      }
+      if ($band === '23cm' && $band_rx === '2m') {
+        return 'AO-92_L/v';
+      }
+      return '';
+    }
+
+    if ($satellite === 'AO-95') {
+      if ($band === '70cm' && $band_rx === '2m') {
+        return 'AO-95_U/v';
+      }
+      if ($band === '23cm' && $band_rx === '2m') {
+        return 'AO-95_L/v';
+      }
+      return '';
+    }
+
     $single = array(
       'SO-50' => 'SO-50_[FM]',
+      'SO-125' => 'SO-125_[FM]',
       'RS-44' => 'RS-44_[V/u]',
       'NO-44' => 'NO-44_[VHF_Digi]',
       'JO-97' => 'JO-97_[U/v]',
