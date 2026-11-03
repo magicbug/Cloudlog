@@ -1233,10 +1233,9 @@ class Logbook_model extends CI_Model
 
     // POST /api/v1/reports.php stores this value as the report name and the
     // status grid joins it to satellite_name.html_element_name.
-    $sat_name = $this->amsat_status_api_name($data);
-    if ($sat_name === '') {
-      $sat_name = $satellite;
-    }
+    $api_name = $this->amsat_status_api_name($data);
+    $used_raw_satellite_name = ($api_name === '');
+    $sat_name = $used_raw_satellite_name ? $satellite : $api_name;
 
     $callsign = strtoupper(trim((string)($data['COL_STATION_CALLSIGN'] ?? '')));
     if ($callsign === '') {
@@ -1274,13 +1273,26 @@ class Logbook_model extends CI_Model
     $body = json_encode($payload);
     $errors = array();
 
-    foreach ($this->amsat_status_endpoints() as $url) {
+    $endpoints = $this->amsat_status_endpoints();
+    foreach ($endpoints as $index => $url) {
+      $started_at = microtime(true);
       $result = $this->amsat_status_post($url, $body, $user_agent);
       if ($result['ok']) {
         return;
       }
       $errors[] = $result['error'];
       if (empty($result['retry'])) {
+        break;
+      }
+      if ($used_raw_satellite_name && ($result['error_code'] ?? '') === 'unknown_satellite') {
+        log_message('info', 'AMSAT status upload stopped: unknown satellite for raw name ' . $sat_name);
+        return;
+      }
+      if ($index >= count($endpoints) - 1) {
+        break;
+      }
+      $elapsed = microtime(true) - $started_at;
+      if ($elapsed >= 2.0 && empty($result['connect_failed'])) {
         break;
       }
     }
@@ -1314,7 +1326,7 @@ class Logbook_model extends CI_Model
   }
 
   /**
-   * @return array{ok: bool, retry: bool, error: string}
+   * @return array{ok: bool, retry: bool, connect_failed: bool, error_code: string, error: string}
    */
   private function amsat_status_post($url, $body, $user_agent)
   {
@@ -1322,7 +1334,7 @@ class Logbook_model extends CI_Model
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 4);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
     curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
@@ -1333,16 +1345,24 @@ class Logbook_model extends CI_Model
 
     $response = curl_exec($ch);
     if (curl_errno($ch)) {
+      $errno = curl_errno($ch);
       $error = curl_error($ch);
       curl_close($ch);
-      return array('ok' => false, 'retry' => true, 'error' => $url . ' curl: ' . $error);
+      $connect_failed = in_array($errno, array(CURLE_COULDNT_CONNECT, CURLE_COULDNT_RESOLVE_HOST, CURLE_COULDNT_RESOLVE_PROXY), true);
+      return array(
+        'ok' => false,
+        'retry' => true,
+        'connect_failed' => $connect_failed,
+        'error_code' => '',
+        'error' => $url . ' curl: ' . $error,
+      );
     }
 
     $http_code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
     if ($http_code === 200 || $http_code === 201) {
-      return array('ok' => true, 'retry' => false, 'error' => '');
+      return array('ok' => true, 'retry' => false, 'connect_failed' => false, 'error_code' => '', 'error' => '');
     }
 
     $retry = ($http_code === 404 || $http_code === 408 || $http_code === 429 || $http_code >= 500 || ($http_code >= 300 && $http_code < 400));
@@ -1364,7 +1384,13 @@ class Logbook_model extends CI_Model
       $detail .= ' ' . substr($response, 0, 300);
     }
 
-    return array('ok' => false, 'retry' => $retry, 'error' => $url . ' ' . $detail);
+    return array(
+      'ok' => false,
+      'retry' => $retry,
+      'connect_failed' => false,
+      'error_code' => $error_code,
+      'error' => $url . ' ' . $detail,
+    );
   }
 
   private function amsat_status_grid($data)
