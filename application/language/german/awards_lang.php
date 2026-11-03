@@ -122,7 +122,7 @@ ________________________________________________________________________________
 */
 
 $lang['awards_counties_description_ln1'] = "US County Diplom";
-$lang['awards_counties_description_ln2'] = "Das US Counties Diplom (USA-CA) der Vereinigten Staaten von Amerika, gesponsert von CQ Magazine, wird für bestätigte Funkkontakte mit einer festgelegten Anzahl von US-Counties unter Regeln und Bedingungen verliehen, die Sie <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>hier</a> finden können.";
+$lang['awards_counties_description_ln2'] = "Das US Counties Diplom (USA-CA) der Vereinigten Staaten von Amerika, gesponsert von CQ Magazine, wird für bestätigte Funkkontakte mit einer festgelegten Anzahl von US-Counties unter Regeln und Bedingungen verliehen, die Sie <a href='https://marac.org/documents/usa-ca-rules.pdf' target='_blank'>hier</a> finden können.";
 $lang['awards_counties_description_ln3'] = "USA-CA steht allen lizenzierten Funkamateuren weltweit zur Verfügung und wird an Einzelpersonen für alle gemachten County-Kontakte verliehen, unabhängig von den verwendeten Rufzeichen, Stationsorten oder Daten.";
 $lang['awards_counties_description_ln4'] = "Spezielle USA-CA-Diplome stehen auch für SWLs auf der Grundlage des Gehörten zur Verfügung.";
 

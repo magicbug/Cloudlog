@@ -115,7 +115,7 @@ $lang['account_gridmap_default_band'] = 'Banda Predefinita';
 $lang['account_qsl_settings'] = 'Metodo QSL Predefinito';
 
 $lang['account_winkeyer'] = 'Winkeyer';
-$lang['account_winkeyer_hint'] = "Il supporto di Winkeyer in Cloudlog è sperimentale, leggi prima la wiki su <a href='https://github.com/magicbug/Cloudlog/wiki/Winkey' target='_blank'>https://github.com/magicbug/Cloudlog/wiki/Winkey</a> prima di abilitarlo.";
+$lang['account_winkeyer_hint'] = "Il supporto di Winkeyer in Cloudlog è sperimentale, leggi prima la wiki su <a href='https://docs.cloudlog.org/guide/winkey/' target='_blank'>https://docs.cloudlog.org/guide/winkey/</a> prima di abilitarlo.";
 $lang['account_winkeyer_enabled'] = "Funzionalità Winkeyer abilitate";
 
 $lang['account_map_params'] = "Impostazioni della mappa";

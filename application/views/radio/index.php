@@ -43,7 +43,7 @@
 
 			<p class="card-text mt-3">
 				<span class="badge text-bg-info"><i class="fas fa-book me-1"></i>Info</span> 
-				You can find out how to use the <a href="https://github.com/magicbug/Cloudlog/wiki/Radio-Interface" target="_blank">radio functions <i class="fas fa-external-link-alt ms-1"></i></a> in the wiki.
+				You can find out how to use the <a href="https://docs.cloudlog.org/guide/radios/" target="_blank">radio functions <i class="fas fa-external-link-alt ms-1"></i></a> in the documentation.
 			</p>
 		</div>
 	</div>

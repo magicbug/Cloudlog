@@ -119,7 +119,7 @@ ________________________________________________________________________________
 */
 
 $lang['awards_counties_description_ln1'] = "ABD Eyalet Ödülü";
-$lang['awards_counties_description_ln2'] = "CQ dergisi sponsorluğunda Amerika Birleşik Devletleri Eyaletleri Ödülü (USA-CA), bulabileceğiniz kurallar ve koşullar altında belirli sayıda ABD eyaletiyle onaylanmış iki yönlü telsiz bağlantıları için verilir < a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>buraya</a>.";
+$lang['awards_counties_description_ln2'] = "CQ dergisi sponsorluğunda Amerika Birleşik Devletleri Eyaletleri Ödülü (USA-CA), bulabileceğiniz kurallar ve koşullar altında belirli sayıda ABD eyaletiyle onaylanmış iki yönlü telsiz bağlantıları için verilir < a href='https://marac.org/documents/usa-ca-rules.pdf' target='_blank'>buraya</a>.";
 $lang['awards_counties_description_ln3'] = "USA-CA, dünya çapındaki tüm lisanslı amatörlerin kullanımına açıktır ve kullanılan çağrı işaretlerine, çalışma yerlerine veya tarihlere bakılmaksızın, ilçede kurulan tüm bağlantılar için bireylere verilir.";
 $lang['awards_counties_description_ln4'] = "Özel ABD-CA ödülleri ayrıca SWL'ler için de dinlenme esasına göre mevcuttur.";
 

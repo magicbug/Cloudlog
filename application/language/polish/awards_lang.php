@@ -112,7 +112,7 @@ ________________________________________________________________________________
 */
 
 $lang['awards_counties_description_ln1'] = "Nagroda hrabstwa USA";
-$lang['awards_counties_description_ln2'] = "Nagroda hrabstwa Stanów Zjednoczonych Ameryki (USA-CA), sponsorowana przez magazyn CQ, przyznawana jest za potwierdzone dwukierunkowe kontakty radiowe z określoną liczbą hrabstw USA zgodnie z zasadami i warunkami, które można znaleźć <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>tutaj</a>.";
+$lang['awards_counties_description_ln2'] = "Nagroda hrabstwa Stanów Zjednoczonych Ameryki (USA-CA), sponsorowana przez magazyn CQ, przyznawana jest za potwierdzone dwukierunkowe kontakty radiowe z określoną liczbą hrabstw USA zgodnie z zasadami i warunkami, które można znaleźć <a href='https://marac.org/documents/usa-ca-rules.pdf' target='_blank'>tutaj</a>.";
 $lang['awards_counties_description_ln3'] = "USA-CA jest dostępna dla wszystkich licencjonowanych amatorów na całym świecie i przyznawana jest osobom fizycznym za wszystkie nawiązane kontakty hrabstw, niezależnie od używanych znaków wywoławczych, lokalizacji działania lub dat.";
 $lang['awards_counties_description_ln4'] = "Specjalne nagrody USA-CA są również dostępne dla SWL na zasadzie heared.";
 

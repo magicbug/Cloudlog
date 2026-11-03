@@ -112,7 +112,7 @@ ________________________________________________________________________________
 */
 
 $lang['awards_counties_description_ln1'] = "US County Award";
-$lang['awards_counties_description_ln2'] = "Il premio delle contee degli Stati Uniti d'America (USA-CA), sponsorizzato dalla rivista CQ, viene assegnato per contatti radio bidirezionali confermati con numeri specifici di contee degli Stati Uniti secondo le regole e le condizioni che puoi trovare <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>qui</a>.";
+$lang['awards_counties_description_ln2'] = "Il premio delle contee degli Stati Uniti d'America (USA-CA), sponsorizzato dalla rivista CQ, viene assegnato per contatti radio bidirezionali confermati con numeri specifici di contee degli Stati Uniti secondo le regole e le condizioni che puoi trovare <a href='https://marac.org/documents/usa-ca-rules.pdf' target='_blank'>qui</a>.";
 $lang['awards_counties_description_ln3'] = "USA-CA è disponibile per tutti i dilettanti autorizzati in tutto il mondo e viene rilasciato a individui per tutti i contatti di contea effettuati, indipendentemente dai nominativi utilizzati, dai luoghi operativi o dalle date.";
 $lang['awards_counties_description_ln4'] = "Premi speciali USA-CA sono disponibili anche per gli SWL su base ascoltata.";
 

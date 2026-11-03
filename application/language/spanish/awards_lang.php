@@ -122,7 +122,7 @@ ________________________________________________________________________________
 */
 
 $lang['awards_counties_description_ln1'] = "Diploma de Condados de USA";
-$lang['awards_counties_description_ln2'] = "El Diploma de los Condados de los Estados Unidos de América (USA-CA), es patrocinado por la CQ Magazine, y se otorga a quienes hayan realizado contactos de radio de dos vías con números específicos de condados de los Estados Unidos bajo reglas y condiciones que podrá encontrar <a href='https://cq-amateur-radio.com/cq_awards/cq_usa_ca_awards/cq_usa_ca_awards.html' target='_blank'>aquí</a> (en inglés).";
+$lang['awards_counties_description_ln2'] = "El Diploma de los Condados de los Estados Unidos de América (USA-CA), es patrocinado por la CQ Magazine, y se otorga a quienes hayan realizado contactos de radio de dos vías con números específicos de condados de los Estados Unidos bajo reglas y condiciones que podrá encontrar <a href='https://marac.org/documents/usa-ca-rules.pdf' target='_blank'>aquí</a> (en inglés).";
 $lang['awards_counties_description_ln3'] = "El USA-CA está disponible para todos los radioaficionados licenciados alrededor del mundo y se otorga a individuos por todos los contactos realizados en los condados, sin importar que indicativos fueron usados, localizaciones o fechas de operación.";
 $lang['awards_counties_description_ln4'] = "Existen diplomas especiales USA-CA disponibles para SWLs con base en reportes de escucha.";
 
