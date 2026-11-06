@@ -2222,7 +2222,7 @@ $(document).ready(function() {
     </script>
 
     <script type="text/javascript">
-        var manual = <?php echo $_GET['manual']; ?>;
+        var manual = <?php echo (int) ($_GET['manual'] ?? 0); ?>;
 
         $(document).ready(function() {
 
@@ -4958,7 +4958,7 @@ $(document).ready(function() {
 </script>
 <?php if ($this->uri->segment(1) == "contesting" && ($this->uri->segment(2) != "add" && $this->uri->segment(2) != "edit")) { ?>
     <script>
-        var manual = <?php echo $_GET['manual']; ?>;
+        var manual = <?php echo (int) ($_GET['manual'] ?? 0); ?>;
     </script>
     <script src="<?php echo base_url(); ?>assets/js/sections/contesting.js?v2"></script>
 <?php } ?>
