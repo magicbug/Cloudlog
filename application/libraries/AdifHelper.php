@@ -298,6 +298,27 @@ class AdifHelper {
         return $line;
     }
 
+    /**
+     * Generates the ADIF header (up to and including <EOH>), matching the
+     * header written by the "export all" ADIF download.
+     *
+     * @param string $program_id      Value for PROGRAMID (e.g. the app name).
+     * @param string $program_version Value for PROGRAMVERSION.
+     * @return string The ADIF header.
+     */
+    public function getAdifHeader($program_id, $program_version) {
+        $program_id = (string)$program_id;
+        $program_version = (string)$program_version;
+
+        $header  = "Cloudlog ADIF export\r\n";
+        $header .= "<ADIF_VER:5>3.1.4\r\n";
+        $header .= "<PROGRAMID:" . mb_strlen($program_id, "UTF-8") . ">" . $program_id . "\r\n";
+        $header .= "<PROGRAMVERSION:" . mb_strlen($program_version, "UTF-8") . ">" . $program_version . "\r\n";
+        $header .= "<EOH>\r\n\r\n";
+
+        return $header;
+    }
+
     function getAdifFieldLine($adifcolumn, $dbvalue) {
         if ($dbvalue !== "" && $dbvalue !== null && $dbvalue !== 0) {
             return "<" . $adifcolumn . ":" . mb_strlen($dbvalue, "UTF-8") . ">" . $dbvalue . "\r\n";

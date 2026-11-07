@@ -147,6 +147,38 @@ class adif_data extends CI_Model {
         return $this->db->get();
     }
 
+    /**
+     * QSOs of ONE station location owned by ONE user, with an internal QSO ID
+     * strictly greater than $after_id, oldest ID first. Used by the incremental
+     * api/get_contacts_adif endpoint.
+     *
+     * Ownership is enforced in the query itself (station_profile.user_id), so a
+     * station_id belonging to another user can never match, regardless of what
+     * the caller checked beforehand.
+     *
+     * @param int $station_id Station location ID (station_profile.station_id)
+     * @param int $user_id    Owner of the station (the API key owner)
+     * @param int $after_id   Return only COL_PRIMARY_KEY > $after_id
+     * @param int $limit      Maximum number of rows
+     */
+    function export_station_after_id($station_id, $user_id, $after_id, $limit) {
+        $table = $this->config->item('table_name');
+
+        $this->db->select($table.'.*, station_profile.*, dxcc_entities.name as station_country');
+        $this->db->select("TRIM(COALESCE(NULLIF(CONCAT_WS(' ', users.user_firstname, users.user_lastname), ''), users.user_name, '')) as export_my_name", false);
+        $this->db->from($table);
+        $this->db->join('station_profile', 'station_profile.station_id = '.$table.'.station_id');
+        $this->db->join($this->config->item('auth_table').' users', 'station_profile.user_id = users.user_id', 'left');
+        $this->db->join('dxcc_entities', 'station_profile.station_dxcc = dxcc_entities.adif', 'left outer');
+        $this->db->where($table.'.station_id', (int)$station_id);
+        $this->db->where('station_profile.user_id', (int)$user_id);
+        $this->db->where($table.'.COL_PRIMARY_KEY >', (int)$after_id);
+        $this->db->order_by($table.'.COL_PRIMARY_KEY', 'ASC');
+        $this->db->limit((int)$limit);
+
+        return $this->db->get();
+    }
+
     function export_lotw() {
         $this->load->model('stations');
         $active_station_id = $this->stations->find_active();
