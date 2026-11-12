@@ -76,18 +76,18 @@ class Qso_merge_field_chooser
    */
     public function mergeable_fields(array $qsos): array
     {
-        $first = reset($qsos);
-        if (!is_array($first)) {
-            return [];
-        }
-
         $fields = [];
-        foreach (array_keys($first) as $key) {
-            if ($key === 'COL_PRIMARY_KEY') {
+        foreach ($qsos as $row) {
+            if (!is_array($row)) {
                 continue;
             }
-            if (strpos($key, 'COL_') === 0 || $key === 'station_id') {
-                $fields[] = $key;
+            foreach (array_keys($row) as $key) {
+                if ($key === 'COL_PRIMARY_KEY' || in_array($key, $fields, true)) {
+                    continue;
+                }
+                if (strpos($key, 'COL_') === 0 || $key === 'station_id') {
+                    $fields[] = $key;
+                }
             }
         }
 
