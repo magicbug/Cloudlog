@@ -57,14 +57,17 @@
     <div class="card">
         <div class="card-header">Cronjob Refresher</div>
         <div class="card-body">
-            <p class="card-text">Theres some new cronjobs to add with version 2.0.</p>
+            <p class="card-text">Theres some new cronjobs to add with version 2.0. You can use individual lines below (still fully supported) or enable the optional unified scheduler under Maintenance and use a single line instead.</p>
 
             <code>
+            # Optional: unified scheduler (off by default; configure under Maintenance &gt; Background job scheduler) <br>
+            * * * * * php <?php echo FCPATH; ?>index.php cron run <br>
+            <br>
             # Update the Cloudlog installation every day at midnight <br>
-            0 0 * * * /bin/bash -c "Full-Path-To-Bash-Script/cloudlog.sh" <br>
+            0 0 * * * /bin/bash -c "Full-Path-To-Bash-Script/update_cloudlog.sh" <br>
             <br>
             # Upload QSOs to Club Log (ignore cron job if this integration is not required) <br>
-            0 */6 * * * curl --silent <?php echo site_url();?>/clublog/upload/username-with-clublog-login &>/dev/null <br>
+            0 */6 * * * curl --silent <?php echo site_url('clublog/upload'); ?> &>/dev/null <br>
             <br>
             # Upload QSOs to LoTW if certs have been provided every hour. <br>
             0 */1 * * * curl --silent <?php echo site_url();?>/lotw/lotw_upload &>/dev/null <br>

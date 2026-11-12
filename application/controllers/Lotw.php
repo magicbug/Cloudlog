@@ -230,6 +230,10 @@ class Lotw extends CI_Controller {
 	|
 	*/
 	public function lotw_upload() {
+		$this->load->library('cron_runner');
+		if (!$this->cron_runner->begin('lotw_sync')) {
+			return;
+		}
 
 		$this->load->model('user_model');
 		$this->user_model->authorize(2);
@@ -406,6 +410,7 @@ class Lotw extends CI_Controller {
 			$sync_user_id=null;
 		}
 		echo $this->lotw_download($sync_user_id);
+		$this->cron_runner->finish('lotw_sync', 'ok');
 	}
 
 	/*
@@ -1072,6 +1077,8 @@ class Lotw extends CI_Controller {
 		Load the ARRL LoTW User Activity CSV and saves into uploads/lotw_users.csv
 	*/
 	public function load_users() {
+		$this->load->library('cron_runner');
+		$this->cron_runner->run_guarded('lotw_load_users', function () {
 		$contents = file_get_contents('https://lotw.arrl.org/lotw-user-activity.csv', true);
 
         if($contents === FALSE) {
@@ -1085,6 +1092,7 @@ class Lotw extends CI_Controller {
                 echo "FAILED: Could not write to LoTW users file";
             }
         }
+		});
 	}
 
 	/*

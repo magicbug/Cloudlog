@@ -12,6 +12,8 @@ class Hrdlog extends CI_Controller {
      * All QSOs not previously uploaded, will then be uploaded, one at a time
      */
     public function upload() {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('hrdlog_upload', function () {
         $this->setOptions();
 
         $this->load->model('logbook_model');
@@ -35,6 +37,7 @@ class Hrdlog extends CI_Controller {
             log_message('error', "No station profiles with a hrdlog Code found.");
         }
 
+        });
     }
 
     function setOptions() {

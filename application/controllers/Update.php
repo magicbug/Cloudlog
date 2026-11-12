@@ -163,6 +163,8 @@ class Update extends CI_Controller {
 
 	// Updates the DXCC & Exceptions from the Club Log Cty.xml file.
 	public function dxcc() {
+		$this->load->library('cron_runner');
+		$this->cron_runner->run_guarded('update_dxcc', function () {
 	    $this->update_status("Downloading file");
 
 	    // give it 10 minutes...
@@ -217,6 +219,7 @@ class Update extends CI_Controller {
 		$this->db->trans_complete();
 
 		$this->update_status("DONE");
+		});
 	}
 
 	public function get_status() {
@@ -291,6 +294,8 @@ class Update extends CI_Controller {
 	}
 
     public function update_clublog_scp() {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('update_clublog_scp', function () {
         $strFile = $this->make_update_path("clublog_scp.txt");
         $url = "https://cdn.clublog.org/clublog.scp.gz";
         set_time_limit(300);
@@ -318,6 +323,7 @@ class Update extends CI_Controller {
         } else {
             echo "FAILED: Could not connect to Club Log";
         }
+        });
     }
 
     public function download_lotw_users() {
@@ -338,6 +344,8 @@ class Update extends CI_Controller {
     }
 
     public function lotw_users() {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('update_lotw_users', function () {
         $mtime = microtime(); 
         $mtime = explode(" ",$mtime); 
         $mtime = $mtime[1] + $mtime[0]; 
@@ -463,6 +471,7 @@ class Update extends CI_Controller {
         echo "This page was created in ".$totaltime." seconds <br />"; 
         echo "Records read: " . $i . " <br/>";
         echo "Unique callsigns inserted: " . $final_count . " <br/>";
+        });
     }
 
     public function lotw_check() {
@@ -482,6 +491,8 @@ class Update extends CI_Controller {
      * Used for autoupdating the DOK file which is used in the QSO entry dialog for autocompletion.
      */
     public function update_dok() {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('update_dok', function () {
         $contents = file_get_contents('https://www.df2et.de/cqrlog/dok_and_sdok.txt', true);
 
         if($contents === FALSE) {
@@ -501,12 +512,15 @@ class Update extends CI_Controller {
                 echo"FAILED: Could not write to dok.txt file";
             }
         }
+        });
     }
 
     /*
      * Used for autoupdating the SOTA file which is used in the QSO entry dialog for autocompletion.
      */
     public function update_sota() {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('update_sota', function () {
         $this->load->library('sota');
         $result = $this->sota->refreshFiles(true);
 
@@ -522,12 +536,15 @@ class Update extends CI_Controller {
         }
 
         echo "DONE: " . implode('; ', $details);
+        });
     }
 
     /*
      * Pulls the WWFF directory for autocompletion in QSO dialogs
      */
     public function update_wwff() {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('update_wwff', function () {
         $csvfile = 'https://wwff.co/wwff-data/wwff_directory.csv';
         $wwfffile = './assets/json/wwff.txt';
 
@@ -576,9 +593,12 @@ class Update extends CI_Controller {
         } else {
             echo "FAILED: Empty file";
         }
+        });
     }
 
     public function update_pota() {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('update_pota', function () {
         $csvfile = 'https://pota.app/all_parks.csv';
 
         // Text file used for autocomplete in QSO entry
@@ -630,6 +650,7 @@ class Update extends CI_Controller {
         } else {
             echo"FAILED: Empty file";
         }
+        });
     }
 
     // UI-friendly wrapper methods with authorization for use from maintenance page

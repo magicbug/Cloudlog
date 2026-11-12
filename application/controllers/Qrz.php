@@ -17,6 +17,8 @@ class Qrz extends CI_Controller {
 	 * All QSOs not previously uploaded, will then be uploaded, one at a time
 	 */
 	public function upload() {
+		$this->load->library('cron_runner');
+		$this->cron_runner->run_guarded('qrz_upload', function () {
 		$this->setOptions();
 
 		$this->load->model('logbook_model');
@@ -39,6 +41,7 @@ class Qrz extends CI_Controller {
 			log_message('error', "No station profiles with a QRZ API Key found.");
 		}
 
+		});
 	}
 
 	function setOptions() {

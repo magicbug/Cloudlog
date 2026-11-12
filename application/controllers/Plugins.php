@@ -153,6 +153,8 @@ class Plugins extends CI_Controller {
     // Called from the operator's crontab; runs with no logged-in session.
     public function cron()
     {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('plugins_cron', function () {
         $this->load->library('cloudlog_hooks');
         $this->cloudlog_hooks->do_action('cron.action.run', array(
             'started_at' => date('Y-m-d H:i:s'),
@@ -162,6 +164,7 @@ class Plugins extends CI_Controller {
 
         header('Content-Type: text/plain');
         echo 'Plugin cron hooks run.';
+        });
     }
 
     private function get_plugins_csrf_token()

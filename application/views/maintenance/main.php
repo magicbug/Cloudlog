@@ -120,6 +120,16 @@
 		<?php } ?>
 	  </div>
 
+	  <div class="card" style="margin-bottom: 15px;">
+		  <div class="card-header">
+			Background job scheduler
+		  </div>
+		  <div class="card-body">
+		  	<p class="card-text">Optional single crontab entry for integrations and reference data updates. Legacy URLs remain valid.</p>
+		  	<a class="btn btn-sm btn-primary" href="<?php echo site_url('cronmanager'); ?>">Open scheduler settings</a>
+		  </div>
+	  </div>
+
 	  <div class="card">
 		  <div class="card-header">
 			Data File Updates

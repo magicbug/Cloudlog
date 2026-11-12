@@ -13,6 +13,8 @@ class Clublog extends CI_Controller {
 
 	// Upload ADIF to Clublog
 	public function upload() {
+		$this->load->library('cron_runner');
+		$this->cron_runner->run_guarded('clublog_upload', function () {
 		$this->load->model('clublog_model');
 
 		$users = $this->clublog_model->get_clublog_users();
@@ -26,6 +28,7 @@ class Clublog extends CI_Controller {
 			echo 'Nothing awaiting upload to Clublog.' . "<br>";
 			log_message('info', 'Nothing awaiting upload to Clublog.');
 		}
+		});
 	}
 
 	function uploadUser($userid, $username, $password) {
