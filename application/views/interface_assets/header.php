@@ -350,6 +350,10 @@
 
 									<div class="dropdown-divider"></div>
 
+									<a class="dropdown-item" href="<?php echo site_url('cronmanager'); ?>" title="<?php echo lang('menu_cron_scheduler'); ?>"><i class="fas fa-clock"></i> <?php echo lang('menu_cron_scheduler'); ?></a>
+
+									<div class="dropdown-divider"></div>
+
 									<a class="dropdown-item" href="<?php echo site_url('plugins'); ?>" title="Plugin Manager"><i class="fas fa-puzzle-piece"></i> Plugin Manager</a>
 
 									<div class="dropdown-divider"></div>

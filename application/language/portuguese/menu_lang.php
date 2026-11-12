@@ -96,4 +96,5 @@ $lang['menu_forum'] = 'Fórum';
 $lang['menu_logout'] = 'Sair';
 
 $lang['menu_maintenance'] = 'Manutenção';
+$lang['menu_cron_scheduler'] = 'Agendador de tarefas';
 $lang['menu_uk_gridmaster'] = 'Gridmaster UK & Dependências da Coroa';

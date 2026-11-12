@@ -97,4 +97,5 @@ $lang['menu_logout'] = 'Çıkış';
 $lang['menu_ffma'] = "Fred Fish Anma Ödülü";
 $lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Bakım';
+$lang['menu_cron_scheduler']='Arka plan zamanlayıcı';
 $lang['menu_uk_gridmaster'] = 'UK Gridmaster';

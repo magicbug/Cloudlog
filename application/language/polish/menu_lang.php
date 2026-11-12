@@ -97,4 +97,5 @@ $lang['menu_logout'] = 'Wyloguj';
 $lang['menu_ffma'] = "Nagroda im. Freda Fisha";
 $lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Konserwacja';
+$lang['menu_cron_scheduler']='Harmonogram zadań';
 $lang['menu_uk_gridmaster'] = 'UK Gridmaster';

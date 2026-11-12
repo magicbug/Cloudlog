@@ -97,4 +97,5 @@ $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
 
 $lang['menu_maintenance']='Maintenance';
+$lang['menu_cron_scheduler']='Background job scheduler';
 $lang['menu_uk_gridmaster'] = 'UK Gridmaster';
