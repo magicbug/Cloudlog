@@ -34,6 +34,9 @@ class Cron_runner {
     /** @var string|null */
     private $active_lock_name = null;
 
+    /** @var string|null */
+    private $last_skip_reason = null;
+
     public function set_execution_source($source)
     {
         $this->execution_source = $source;
@@ -159,7 +162,7 @@ class Cron_runner {
         $this->execution_source = 'scheduler';
         $started = microtime(true);
         $ran = 0;
-        $skipped = 0;
+        $skipped = array();
 
         $jobs = $CI->cron_jobs_model->get_due_jobs();
 
@@ -170,6 +173,7 @@ class Cron_runner {
             }
 
             $this->execution_source = 'scheduler';
+            $this->last_skip_reason = null;
 
             ob_start();
             try {
@@ -180,13 +184,16 @@ class Cron_runner {
             $output = ob_get_clean();
 
             if ($output === 'skipped') {
-                $skipped++;
+                $skipped[] = $job->job_key.': '.($this->last_skip_reason ?: 'skipped');
             } else {
                 $ran++;
             }
         }
 
-        $summary = 'Cron scheduler: ran '.$ran.', skipped '.$skipped;
+        $summary = 'Cron scheduler: ran '.$ran.', skipped '.count($skipped);
+        if ($skipped) {
+            $summary .= ' ('.implode('; ', $skipped).')';
+        }
         log_message('info', $summary);
 
         if (!is_cli()) {
@@ -359,6 +366,7 @@ class Cron_runner {
     private function respond_skipped($job_key, $reason)
     {
         log_message('info', 'Cron job '.$job_key.' skipped: '.$reason);
+        $this->last_skip_reason = $reason;
 
         if (!headers_sent()) {
             header('HTTP/1.1 200 OK');
