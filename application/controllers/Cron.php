@@ -10,13 +10,13 @@ class Cron extends CI_Controller {
 
     public function run()
     {
-        if (!$this->input->is_cli_request()) {
+        if (!is_cli()) {
             $this->require_web_key();
         }
 
         $enabled = $this->optionslib->get_option('cron_scheduler_enabled');
         if ($enabled !== 'true' && $enabled !== '1') {
-            if (!$this->input->is_cli_request()) {
+            if (!is_cli()) {
                 header('Content-Type: text/plain; charset=UTF-8');
             }
             echo "disabled\n";

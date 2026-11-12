@@ -189,7 +189,7 @@ class Cron_runner {
         $summary = 'Cron scheduler: ran '.$ran.', skipped '.$skipped;
         log_message('info', $summary);
 
-        if (!$CI->input->is_cli_request()) {
+        if (!is_cli()) {
             header('Content-Type: text/plain; charset=UTF-8');
         }
 
