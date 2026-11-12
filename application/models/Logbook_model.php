@@ -305,7 +305,7 @@ class Logbook_model extends CI_Model
     $qso_locator = strtoupper(trim(xss_clean($this->input->post('vucc_grids') ?? '') ?: xss_clean($this->input->post('locator') ?? '')));
     $qso_name = $this->input->post('name');
     $qso_age = null;
-    $qso_usa_state = $this->input->post('usa_state') == null ? '' : $this->input->post('usa_state');
+    $qso_usa_state = $this->input->post('usa_state') ?: ($this->input->post('ca_province') ?: '');
     $qso_rx_power = null;
 
     if ($this->input->post('copyexchangeto')) {
@@ -2097,7 +2097,7 @@ class Logbook_model extends CI_Model
       'COL_MY_WWFF_REF' => $wwffRef,
       'COL_MY_POTA_REF' => $potaRef,
       'COL_OPERATOR' => $this->input->post('operator_callsign'),
-      'COL_STATE' => $this->input->post('usa_state'),
+      'COL_STATE' => $this->input->post('usa_state') ?: ($this->input->post('ca_province') ?: ''),
       'COL_CNTY' => $uscounty
     );
 

@@ -343,6 +343,24 @@
                                     </select>
                                 </div>
 
+                                <?php
+                                $ca_provinces = array(
+                                    'AB' => 'Alberta', 'BC' => 'British Columbia', 'MB' => 'Manitoba', 'NB' => 'New Brunswick',
+                                    'NL' => 'Newfoundland and Labrador', 'NS' => 'Nova Scotia', 'NT' => 'Northwest Territories', 'NU' => 'Nunavut',
+                                    'ON' => 'Ontario', 'PE' => 'Prince Edward Island', 'QC' => 'Quebec', 'SK' => 'Saskatchewan', 'YT' => 'Yukon',
+                                );
+                                if ((string) $qso->COL_DXCC === '1' || isset($ca_provinces[$qso->COL_STATE])) { ?>
+                                <div class="mb-3">
+                                    <label for="input_ca_province_edit">Province or territory</label>
+                                    <select class="form-select" id="input_ca_province_edit" name="ca_province">
+                                        <option value=""></option>
+                                        <?php foreach ($ca_provinces as $code => $name) { ?>
+                                        <option value="<?php echo $code; ?>" <?php if ($qso->COL_STATE == $code) { echo 'selected="selected"'; } ?>><?php echo $name . ' (' . $code . ')'; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <?php } ?>
+
                                 <?php $rda_value = preg_match('/^[A-Z]{2}[\s-]?\d{1,3}$/i', trim((string) $qso->COL_CNTY)) ? strtoupper(trim($qso->COL_CNTY)) : ''; ?>
                                 <div class="mb-3">
                                     <label for="stationCntyInput">USA County</label>

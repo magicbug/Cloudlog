@@ -1320,6 +1320,7 @@ function reset_fields() {
 	$('#qsl_via').val("");
 	$('#callsign_info').text("");
 	$('#input_usa_state').val("");
+	$('#input_ca_province').val("");
 	$('#qso-last-table').show();
 	$('#partial_view').html('');
 	$('#partial_view').hide();
@@ -1635,6 +1636,12 @@ $("#callsign").focusout(function() {
 				*/
 				if($("#input_usa_state").val() == "") {
 					$("#input_usa_state").val(result.callsign_state).trigger('change');
+				}
+				if (typeof toggleUsaFields === 'function') toggleUsaFields();
+				var $province = $('#input_ca_province');
+				if ($province.length && $province.val() == "" && result.dxcc && result.dxcc.adif == '1'
+					&& $province.find('option').filter(function () { return this.value !== '' && this.value === result.callsign_state; }).length) {
+					$province.val(result.callsign_state);
 				}
 
 				/*

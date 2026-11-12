@@ -674,6 +674,26 @@
                   </select>
                 </div>
 
+                <div class="mb-3" id="ca_province_field_wrapper" style="display:none">
+                  <label for="input_ca_province">Province or territory</label>
+                  <select class="form-select" id="input_ca_province" name="ca_province">
+                    <option value=""></option>
+                    <option value="AB">Alberta (AB)</option>
+                    <option value="BC">British Columbia (BC)</option>
+                    <option value="MB">Manitoba (MB)</option>
+                    <option value="NB">New Brunswick (NB)</option>
+                    <option value="NL">Newfoundland and Labrador (NL)</option>
+                    <option value="NS">Nova Scotia (NS)</option>
+                    <option value="NT">Northwest Territories (NT)</option>
+                    <option value="NU">Nunavut (NU)</option>
+                    <option value="ON">Ontario (ON)</option>
+                    <option value="PE">Prince Edward Island (PE)</option>
+                    <option value="QC">Quebec (QC)</option>
+                    <option value="SK">Saskatchewan (SK)</option>
+                    <option value="YT">Yukon (YT)</option>
+                  </select>
+                </div>
+
                 <div class="mb-3" id="usa_county_field_wrapper" style="display:none">
                   <label for="stationCntyInput"><?php echo lang('gen_hamradio_county_reference'); ?></label>
                   <input disabled="disabled" class="form-control" id="stationCntyInput" type="text" name="county" value="" />
@@ -1420,6 +1440,16 @@
     if (!isUsa) {
       var stateSelect = document.getElementById('input_usa_state');
       if (stateSelect) stateSelect.value = '';
+    }
+
+    // Canada (1) gets the province box instead
+    var provinceWrapper = document.getElementById('ca_province_field_wrapper');
+    if (provinceWrapper) {
+      var isCanada = dxcc && dxcc.value == '1';
+      provinceWrapper.style.display = isCanada ? '' : 'none';
+      if (!isCanada) {
+        document.getElementById('input_ca_province').value = '';
+      }
     }
   }
 
