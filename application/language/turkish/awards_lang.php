@@ -168,6 +168,17 @@ $lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is f
 $lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
 $lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
 
+/*
+___________________________________________________________________________________________
+SKCC
+___________________________________________________________________________________________
+*/
+
+$lang['awards_skcc_description_ln1'] = "SKCC Awards";
+$lang['awards_skcc_description_ln2'] = "The Straight Key Century Club awards count unique SKCC members by membership number. Centurion is 100 members. Tribune, after Centurion, is 50 members who are C, T, or S. Senator, after Tribune x8 (400), is 200 members who are T or S.";
+$lang['awards_skcc_description_ln3'] = "Cloudlog reads the SKCC field on each QSO in the active logbook, or SIG Info when SIG is SKCC. Log the suffix that was sent, such as 14086T, because a number on its own only counts toward Centurion. Contacts with K9SKC and K3Y do not count.";
+$lang['awards_skcc_description_ln4'] = "Rules for the <a href='https://www.skccgroup.com/operating_awards/centurion/' target='_blank'>Centurion</a>, <a href='https://www.skccgroup.com/operating_awards/tribune/' target='_blank'>Tribune</a>, and <a href='https://www.skccgroup.com/operating_awards/senator/' target='_blank'>Senator</a> awards are on the SKCC website.";
+
 $lang['awards_was_description_ln1'] = "WAS Ödülü";
 $lang['awards_was_description_ln2'] = "ARRL'nin en popüler ödülü, Çalışılan Tüm Eyaletler Ödülü'dür. Dünya çapında amatörlere binlerce ve binlerce ödül verilmiştir. ARRL'nin 101. yılında, sertifikaları ve programı yeniden tasarladılar. ödül programının düzenlenmesi ve iyileştirilmesi.";
 $lang['awards_was_description_ln3'] = "WAS (Tüm Eyaletlerde Çalışıldı) Ödülü, Amerika Birleşik Devletleri'nin 50 eyaletinin her biriyle iletişimlerinin yazılı onayını içeren kanıt sunan dünya çapındaki tüm amatörlere açıktır. ABD'deki ve ABD'deki amatörler ABD dışından başvuranlar bu şarttan muaftır.";

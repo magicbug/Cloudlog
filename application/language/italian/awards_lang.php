@@ -161,6 +161,17 @@ $lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is f
 $lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
 $lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
 
+/*
+___________________________________________________________________________________________
+SKCC
+___________________________________________________________________________________________
+*/
+
+$lang['awards_skcc_description_ln1'] = "SKCC Awards";
+$lang['awards_skcc_description_ln2'] = "The Straight Key Century Club awards count unique SKCC members by membership number. Centurion is 100 members. Tribune, after Centurion, is 50 members who are C, T, or S. Senator, after Tribune x8 (400), is 200 members who are T or S.";
+$lang['awards_skcc_description_ln3'] = "Cloudlog reads the SKCC field on each QSO in the active logbook, or SIG Info when SIG is SKCC. Log the suffix that was sent, such as 14086T, because a number on its own only counts toward Centurion. Contacts with K9SKC and K3Y do not count.";
+$lang['awards_skcc_description_ln4'] = "Rules for the <a href='https://www.skccgroup.com/operating_awards/centurion/' target='_blank'>Centurion</a>, <a href='https://www.skccgroup.com/operating_awards/tribune/' target='_blank'>Tribune</a>, and <a href='https://www.skccgroup.com/operating_awards/senator/' target='_blank'>Senator</a> awards are on the SKCC website.";
+
 $lang['awards_was_description_ln1'] = "WAS Award";
 $lang['awards_was_description_ln2'] = "Il premio più popolare dell\'ARRL è il Worked All States Award. Migliaia e migliaia di premi sono stati assegnati ai radioamatori di tutto il mondo. Nel 101° anno dell\'ARRL, hanno ridisegnato i certificati e il programma nella speranza di razionalizzare e migliorare il programma del premio.";
 $lang['awards_was_description_ln3'] = "Il premio WAS (Worked All States) è disponibile per tutti i dilettanti di tutto il mondo che presentano prova con conferma scritta dei contatti con ciascuno dei 50 stati degli Stati Uniti d\'America. Dilettanti negli Stati Uniti e nei suoi i beni devono essere membri dell\'ARRL per richiedere un WAS. I richiedenti al di fuori degli Stati Uniti sono esenti da questo requisito.";

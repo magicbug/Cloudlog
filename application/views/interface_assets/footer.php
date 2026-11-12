@@ -5364,6 +5364,25 @@ $(document).ready(function() {
                 $('[class*="buttons"]').css("color", "white");
             }
         </script>
+    <?php } else if ($this->uri->segment(2) == "skcc") { ?>
+        <script>
+            $('#skcctable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                order: [[0, 'asc']],
+                "scrollX": true,
+                "language": {
+                    url: getDataTablesLanguageUrl(),
+                },
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'csv'
+                }]
+            });
+            if (isDarkModeTheme()) {
+                $('[class*="buttons"]').css("color", "white");
+            }
+        </script>
     <?php } ?>
 <?php } ?>
 

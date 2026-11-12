@@ -173,6 +173,13 @@
 						<td class="award-description">Special Interest Group</td>
 					</tr>
 					<tr>
+						<td class='award-checkbox-cell award_skcc'>
+							<input type="checkbox" data-award="skcc" <?php if (!empty($user_awards->skcc)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">SKCC</td>
+						<td class="award-description">Straight Key Century Club (Centurion, Tribune, Senator)</td>
+					</tr>
+					<tr>
 						<td class='award-checkbox-cell award_sota'>
 							<input type="checkbox" data-award="sota" <?php if ($user_awards->sota == 1) echo 'checked'; ?>>
 						</td>

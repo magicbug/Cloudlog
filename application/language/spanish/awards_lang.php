@@ -174,6 +174,17 @@ $lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is f
 $lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
 $lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
 
+/*
+___________________________________________________________________________________________
+SKCC
+___________________________________________________________________________________________
+*/
+
+$lang['awards_skcc_description_ln1'] = "SKCC Awards";
+$lang['awards_skcc_description_ln2'] = "The Straight Key Century Club awards count unique SKCC members by membership number. Centurion is 100 members. Tribune, after Centurion, is 50 members who are C, T, or S. Senator, after Tribune x8 (400), is 200 members who are T or S.";
+$lang['awards_skcc_description_ln3'] = "Cloudlog reads the SKCC field on each QSO in the active logbook, or SIG Info when SIG is SKCC. Log the suffix that was sent, such as 14086T, because a number on its own only counts toward Centurion. Contacts with K9SKC and K3Y do not count.";
+$lang['awards_skcc_description_ln4'] = "Rules for the <a href='https://www.skccgroup.com/operating_awards/centurion/' target='_blank'>Centurion</a>, <a href='https://www.skccgroup.com/operating_awards/tribune/' target='_blank'>Tribune</a>, and <a href='https://www.skccgroup.com/operating_awards/senator/' target='_blank'>Senator</a> awards are on the SKCC website.";
+
 $lang['awards_was_description_ln1'] = "Diploma WAS";
 $lang['awards_was_description_ln2'] = "El diploma más popular de la ARRL es el diploma Worked All States (Trabajados todos los Estados). Miles y miles de diplomas se han otorgado a radioaficionados alrededor del mundo. En el aniversario 101 de la ARRL, se ha rediseñado el certificado y las reglas del programa con la esperanza de facilitar y mejorar el programa de diplomas.";
 $lang['awards_was_description_ln3'] = "El diploma WAS (Worked All States) está disponible para todos los radioaficionados alrededor del mundo que demuestren confirmaciones escritas de contactos en cada uno de los 50 estados de los Estados Unidos de América. Los radioaficionados en los Estados Unidos y sus posesiones deberán ser miembros de la ARRL para aplicar para un diploma WAS. Los aplicantes fuera de los Estados Unidos están exentos de este requerimiento.";

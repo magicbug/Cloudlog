@@ -52,6 +52,7 @@ $lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_waja'] = 'WAJA';
 $lang['menu_wac'] = 'WAC';
+$lang['menu_skcc'] = 'SKCC';
 $lang['menu_was'] = 'BYŁ';
 $lang['menu_wwff'] = 'WWFF';
 

@@ -244,6 +244,10 @@
 							<a class="dropdown-item" href="<?php echo site_url('awards/sig'); ?>"><i class="fas fa-certificate"></i> <?php echo lang('menu_sig'); ?></a>
 							<div class="dropdown-divider"></div>
 								<?php } ?>
+								<?php if (!empty($user_awards->skcc)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/skcc'); ?>"><i class="fas fa-key"></i> <?php echo lang('menu_skcc'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
 								<?php if ($user_awards->sota == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/sota'); ?>"><i class="fas fa-mountain"></i> <?php echo lang('menu_sota'); ?></a>
 							<div class="dropdown-divider"></div>

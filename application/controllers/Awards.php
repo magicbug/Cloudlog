@@ -830,6 +830,38 @@ class Awards extends CI_Controller
         $this->load->view('awards/wac/index');
         $this->load->view('interface_assets/footer');
     }
+
+    public function skcc()
+    {
+        $this->load->model('skcc');
+        $this->load->model('modes');
+        $this->load->model('bands');
+        $this->load->library('skcc_award');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands();
+        $data['modes'] = $this->modes->active();
+
+        if ($this->input->method() === 'post') {
+            $filters = array(
+                'band' => $this->security->xss_clean($this->input->post('band')) ?: 'All',
+                'mode' => $this->security->xss_clean($this->input->post('mode')) ?: 'All',
+                'qsl' => (bool) $this->input->post('qsl'),
+                'lotw' => (bool) $this->input->post('lotw'),
+                'eqsl' => (bool) $this->input->post('eqsl'),
+            );
+        } else {
+            $filters = array('band' => 'All', 'mode' => 'All', 'qsl' => false, 'lotw' => false, 'eqsl' => false);
+        }
+        $data['filters'] = $filters;
+
+        $data['skcc'] = $this->skcc_award->evaluate($this->skcc->get_qsos($filters));
+
+        $data['page_title'] = "Awards - SKCC";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/skcc/index');
+        $this->load->view('interface_assets/footer');
+    }
+
     public function wab()
     {
         $footerData = [];

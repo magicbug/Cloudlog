@@ -174,6 +174,17 @@ $lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is f
 $lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
 $lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
 
+/*
+___________________________________________________________________________________________
+SKCC
+___________________________________________________________________________________________
+*/
+
+$lang['awards_skcc_description_ln1'] = "SKCC Awards";
+$lang['awards_skcc_description_ln2'] = "The Straight Key Century Club awards count unique SKCC members by membership number. Centurion is 100 members. Tribune, after Centurion, is 50 members who are C, T, or S. Senator, after Tribune x8 (400), is 200 members who are T or S.";
+$lang['awards_skcc_description_ln3'] = "Cloudlog reads the SKCC field on each QSO in the active logbook, or SIG Info when SIG is SKCC. Log the suffix that was sent, such as 14086T, because a number on its own only counts toward Centurion. Contacts with K9SKC and K3Y do not count.";
+$lang['awards_skcc_description_ln4'] = "Rules for the <a href='https://www.skccgroup.com/operating_awards/centurion/' target='_blank'>Centurion</a>, <a href='https://www.skccgroup.com/operating_awards/tribune/' target='_blank'>Tribune</a>, and <a href='https://www.skccgroup.com/operating_awards/senator/' target='_blank'>Senator</a> awards are on the SKCC website.";
+
 $lang['awards_was_description_ln1'] = "WAS 奖状";
 $lang['awards_was_description_ln2'] = "ARRL 最受欢迎的奖项是“Worked All States Award” 已向世界各地的HAM颁发了数以千计的奖项 在ARRL成立101周年之际，他们重新设计了证书和项目，希望能够精简和完善奖励项目";
 $lang['awards_was_description_ln3'] = "WAS（在所有州通联过）奖面向全世界所有提交证明并书面确认与美利坚合众国 50 个州联系的业余爱好者 美国及其属地的业余爱好者必须是 ARRL 的成员才能申请 WAS 来自美国境外的申请人不受此要求的约束";
