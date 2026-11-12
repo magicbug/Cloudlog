@@ -218,8 +218,38 @@ class Cron_runner {
             throw new RuntimeException('Cannot dispatch URI: '.$legacy_uri);
         }
 
-        $controller = new $class();
+        $controller = $this->make_controller($class, $method);
         call_user_func_array(array($controller, $method), $params);
+    }
+
+    /**
+     * CI_Controller::__construct() re-runs load_class() on every loaded library, which
+     * cannot find libraries in sub-folders (Session) and leaves the new instance without
+     * the models the shared Loader thinks are loaded. Give the job controller the current
+     * instance's objects first and hide the library list while its constructor runs.
+     */
+    private function make_controller($class, $method)
+    {
+        $CI =& get_instance();
+        $CI->router->set_class(strtolower($class));
+        $CI->router->set_method($method);
+
+        $reflection = new ReflectionClass($class);
+        $controller = $reflection->newInstanceWithoutConstructor();
+        foreach (get_object_vars($CI) as $name => $value) {
+            $controller->$name = $value;
+        }
+
+        $loaded =& is_loaded();
+        $saved = $loaded;
+        $loaded = array();
+        try {
+            $reflection->getConstructor()->invoke($controller);
+        } finally {
+            $loaded = array_merge($saved, $loaded);
+        }
+
+        return $controller;
     }
 
     public function run_job_now($job_key)
