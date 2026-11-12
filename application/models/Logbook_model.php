@@ -17,6 +17,28 @@ class Logbook_model extends CI_Model
     return implode(',', $parts);
   }
 
+  private function rda_code($value)
+  {
+    $this->load->library('rda_award');
+    return $this->rda_award->normalize($value);
+  }
+
+  /*
+   * ADIF keeps the RDA district in CNTY. Some Russian loggers write a separate RDA tag,
+   * or SIG RDA with the code in SIG_INFO; those fill CNTY only when it is empty.
+   */
+  private function import_cnty($record)
+  {
+    if (!empty($record['cnty'])) {
+      return $record['cnty'];
+    }
+    $code = $this->rda_code($record['rda'] ?? '');
+    if ($code === null && strtoupper(trim((string)($record['sig'] ?? ''))) === 'RDA') {
+      $code = $this->rda_code($record['sig_info'] ?? '');
+    }
+    return $code ?? '';
+  }
+
   /**
    * Clear dashboard cache for all users with access to a station
    * This should be called whenever QSOs are added, edited, or deleted
@@ -269,7 +291,7 @@ class Logbook_model extends CI_Model
     if ($this->input->post('county') && $this->input->post('usa_state')) {
       $clean_county_input = trim($this->input->post('usa_state')) . "," . trim($this->input->post('county'));
     } else {
-      $clean_county_input = null;
+      $clean_county_input = $this->rda_code($this->input->post('rda'));
     }
 
     if ($this->input->post('copyexchangetodok')) {
@@ -569,6 +591,9 @@ class Logbook_model extends CI_Model
         break;
       case 'DOK':
         $this->db->where('COL_DARC_DOK', $searchphrase);
+        break;
+      case 'RDA':
+        $this->db->where("UPPER(REPLACE(REPLACE(COL_CNTY, ' ', ''), '-', '')) =", strtoupper(str_replace(array(' ', '-'), '', $searchphrase)));
         break;
       case 'WAJA':
         $state = str_pad($searchphrase, 2, '0', STR_PAD_LEFT);
@@ -1916,9 +1941,14 @@ class Logbook_model extends CI_Model
     }
 
     if ($this->input->post('usa_county') && $this->input->post('usa_state')) {
-      $uscounty = trim($this->input->post('usa_state') . "," . $this->input->post('usa_county'));
+      $edit_state = trim($this->input->post('usa_state'));
+      $edit_county = trim($this->input->post('usa_county'));
+      if (stripos($edit_county, $edit_state . ',') === 0) {
+        $edit_county = trim(substr($edit_county, strlen($edit_state) + 1));
+      }
+      $uscounty = $edit_state . "," . $edit_county;
     } else {
-      $uscounty = null;
+      $uscounty = $this->rda_code($this->input->post('rda'));
     }
 
     if ($this->input->post('qsl_sent')) {
@@ -5250,7 +5280,7 @@ class Logbook_model extends CI_Model
         'COL_CLASS' => (!empty($record['class'])) ? $record['class'] : '',
         'COL_CLUBLOG_QSO_UPLOAD_DATE' => $input_clublog_qslsdate,
         'COL_CLUBLOG_QSO_UPLOAD_STATUS' => $input_clublog_qsl_sent,
-        'COL_CNTY' => (!empty($record['cnty'])) ? $record['cnty'] : '',
+        'COL_CNTY' => $this->import_cnty($record),
         'COL_COMMENT' => (!empty($record['comment'])) ? $record['comment'] : '',
         'COL_COMMENT_INTL' => (!empty($record['comment_intl'])) ? $record['comment_intl'] : '',
         'COL_CONT' => (!empty($record['cont'])) ? $record['cont'] : '',

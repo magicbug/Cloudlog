@@ -710,6 +710,39 @@ var favs={};
 		}
 	});
 
+	$('#rda_district').selectize({
+		maxItems: 1,
+		closeAfterSelect: true,
+		loadThrottle: 250,
+		valueField: 'name',
+		labelField: 'name',
+		searchField: ['name', 'description'],
+		options: [],
+		create: true,
+		render: {
+			option: function(item, escape) {
+				return '<div><strong>' + escape(item.name) + '</strong>' + (item.description ? ' <span class="text-muted small">' + escape(item.description) + '</span>' : '') + '</div>';
+			}
+		},
+		load: function(query, callback) {
+			if (!query) return callback();
+			$.ajax({
+				url: base_url+'index.php/qso/get_rda',
+				type: 'GET',
+				dataType: 'json',
+				data: {
+					query: query,
+				},
+				error: function() {
+					callback();
+				},
+				success: function(res) {
+					callback(res);
+				}
+			});
+		}
+	});
+
 	/*
 	  Populate the Satellite Names Field on the QSO Panel
 	*/
@@ -1304,6 +1337,9 @@ function reset_fields() {
 	$select = $('#stationCntyInput').selectize();
 	selectize = $select[0] ? $select[0].selectize : null;
 	if (selectize) selectize.clear();
+	selectize = $('#rda_district')[0] ? $('#rda_district')[0].selectize : null;
+	if (selectize) selectize.clear();
+	if (typeof toggleRdaField === 'function') toggleRdaField();
 
 	clearSatelliteFields();
 	clearCatTrackedFieldState();
@@ -1543,6 +1579,7 @@ $("#callsign").focusout(function() {
 					$('#cqz').val('');
 					$('#ituz').val('');
 				}
+				if (typeof toggleRdaField === 'function') toggleRdaField();
 
 				var redIcon = L.icon({
 					iconUrl: icon_dot_url,
@@ -2150,6 +2187,7 @@ function lookupQsoCallhistory(callsign) {
 $('#dxcc_id').on('change', function() {
 	if (typeof toggleDokField === 'function') toggleDokField();
 	if (typeof toggleUsaFields === 'function') toggleUsaFields();
+	if (typeof toggleRdaField === 'function') toggleRdaField();
 	var dxccId = $(this).val();
 	$.getJSON(base_url + 'index.php/logbook/jsonentity/' + dxccId, function (result) {
 		if (result.dxcc.name != undefined) {
@@ -2229,6 +2267,7 @@ function quickLookupDxcc(callsign) {
 		} else {
 			$('#dxcc_id').val('0');
 		}
+		if (typeof toggleRdaField === 'function') toggleRdaField();
 	});
 }
 

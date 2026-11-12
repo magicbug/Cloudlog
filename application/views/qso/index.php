@@ -680,6 +680,11 @@
                 </div>
                 <?php endif; // usa_state ?>
 
+                <div class="mb-3" id="rda_field_wrapper" style="display:none">
+                  <label for="rda_district">RDA district</label>
+                  <input class="form-control" id="rda_district" type="text" name="rda" value="" placeholder="TB-02" autocomplete="off" />
+                </div>
+
                 <?php if ($qso_fields['iota']): ?>
                 <div class="mb-3">
                   <label for="iota_ref"><?php echo lang('gen_hamradio_iota_reference'); ?></label>
@@ -1432,10 +1437,21 @@
     }
   }
 
+  // Show the RDA district box for European Russia (54), Asiatic Russia (15), and Kaliningrad (126)
+  function toggleRdaField() {
+    var wrapper = document.getElementById('rda_field_wrapper');
+    if (!wrapper) return;
+    var dxcc = document.getElementById('dxcc_id');
+    var isRussia = dxcc && (dxcc.value == '54' || dxcc.value == '15' || dxcc.value == '126');
+    var input = document.getElementById('rda_district');
+    wrapper.style.display = (isRussia || (input && input.value !== '')) ? '' : 'none';
+  }
+
   // Initialise on page load once DOM is ready
   document.addEventListener('DOMContentLoaded', function() {
     toggleDokField();
     toggleUsaFields();
+    toggleRdaField();
   });
 
 

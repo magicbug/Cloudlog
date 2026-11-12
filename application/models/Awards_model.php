@@ -38,6 +38,7 @@ class Awards_model extends CI_Model {
 			'gridmaster_uk' => 1,
 			'gmdxsummer' => 1,
 			'pota' => 1,
+			'rda' => 1,
 			'sig' => 1,
 			'skcc' => 1,
 			'sota' => 1,
@@ -63,7 +64,7 @@ class Awards_model extends CI_Model {
 		$valid_awards = array(
 			'cq', 'dok', 'dxcc', 'ffma', 'iota',
 			'gridmaster_dl', 'gridmaster_lx', 'gridmaster_ja', 'gridmaster_us', 'gridmaster_uk',
-			'gmdxsummer', 'pota', 'sig', 'skcc', 'sota', 'uscounties', 'vucc', 'wab', 'waja', 'wac', 'was', 'wwff'
+			'gmdxsummer', 'pota', 'rda', 'sig', 'skcc', 'sota', 'uscounties', 'vucc', 'wab', 'waja', 'wac', 'was', 'wwff'
 		);
 		
 		if (!in_array($award_type, $valid_awards)) {
@@ -98,6 +99,7 @@ class Awards_model extends CI_Model {
 			'gridmaster_uk' => $awards['gridmaster_uk'] == "true" ? '1' : '0',
 			'gmdxsummer' 	=> $awards['gmdxsummer'] 	== "true" ? '1' : '0',
 			'pota' 			=> $awards['pota'] 			== "true" ? '1' : '0',
+			'rda' 			=> ($awards['rda'] ?? '') 	== "true" ? '1' : '0',
 			'sig' 			=> $awards['sig'] 			== "true" ? '1' : '0',
 			'skcc' 			=> ($awards['skcc'] ?? '') 	== "true" ? '1' : '0',
 			'sota' 			=> $awards['sota'] 			== "true" ? '1' : '0',
@@ -133,6 +135,7 @@ class Awards_model extends CI_Model {
 			'gridmaster_uk' => 1,
 			'gmdxsummer' => 1,
 			'pota' => 1,
+			'rda' => 1,
 			'sig' => 1,
 			'skcc' => 1,
 			'sota' => 1,
@@ -168,6 +171,7 @@ class Awards_model extends CI_Model {
 			'gridmaster_uk' => 0,
 			'gmdxsummer' => 0,
 			'pota' => 0,
+			'rda' => 0,
 			'sig' => 0,
 			'skcc' => 0,
 			'sota' => 0,

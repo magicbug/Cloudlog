@@ -185,6 +185,11 @@ $lang['awards_skcc_description_ln2'] = "The Straight Key Century Club awards cou
 $lang['awards_skcc_description_ln3'] = "Cloudlog reads the SKCC field on each QSO in the active logbook, or SIG Info when SIG is SKCC. Log the suffix that was sent, such as 14086T, because a number on its own only counts toward Centurion. Contacts with K9SKC and K3Y do not count.";
 $lang['awards_skcc_description_ln4'] = "Rules for the <a href='https://www.skccgroup.com/operating_awards/centurion/' target='_blank'>Centurion</a>, <a href='https://www.skccgroup.com/operating_awards/tribune/' target='_blank'>Tribune</a>, and <a href='https://www.skccgroup.com/operating_awards/senator/' target='_blank'>Senator</a> awards are on the SKCC website.";
 
+$lang['awards_rda_description_ln1'] = "RDA Award";
+$lang['awards_rda_description_ln2'] = "The Russian Districts Award, from the Tambov Award Group, counts districts of the Russian Federation from the RDA list. Each district counts once, on any band. Certificates are RDA-100, 250, 500, 1000, 1500, and 2000, then the Honor Roll plaque at 2500 and Honor Roll #1 for every current district.";
+$lang['awards_rda_description_ln3'] = "Cloudlog reads the county field on each QSO in the active logbook, where ADIF keeps the district as a code such as TB-02. Deleted codes and contacts made before a district existed are listed but do not count.";
+$lang['awards_rda_description_ln4'] = "The <a href='https://www.rdaward.org/rda_rules_eng.htm' target='_blank'>RDA rules</a> and the <a href='https://www.rdaward.org/rda_eng.txt' target='_blank'>district list</a> are on rdaward.org. Credit is granted by the <a href='https://rdaward.ru' target='_blank'>RDA Autocfm</a> site, not by Cloudlog.";
+
 $lang['awards_was_description_ln1'] = "WAS 奖状";
 $lang['awards_was_description_ln2'] = "ARRL 最受欢迎的奖项是“Worked All States Award” 已向世界各地的HAM颁发了数以千计的奖项 在ARRL成立101周年之际，他们重新设计了证书和项目，希望能够精简和完善奖励项目";
 $lang['awards_was_description_ln3'] = "WAS（在所有州通联过）奖面向全世界所有提交证明并书面确认与美利坚合众国 50 个州联系的业余爱好者 美国及其属地的业余爱好者必须是 ARRL 的成员才能申请 WAS 来自美国境外的申请人不受此要求的约束";

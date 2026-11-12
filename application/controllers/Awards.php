@@ -862,6 +862,66 @@ class Awards extends CI_Controller
         $this->load->view('interface_assets/footer');
     }
 
+    private function rda_filters()
+    {
+        if ($this->input->method() === 'post') {
+            return array(
+                'band' => $this->security->xss_clean($this->input->post('band')) ?: 'All',
+                'mode' => $this->security->xss_clean($this->input->post('mode')) ?: 'All',
+                'qsl' => (bool) $this->input->post('qsl'),
+                'lotw' => (bool) $this->input->post('lotw'),
+                'eqsl' => (bool) $this->input->post('eqsl'),
+            );
+        }
+        return array('band' => 'All', 'mode' => 'All', 'qsl' => true, 'lotw' => true, 'eqsl' => false);
+    }
+
+    public function rda()
+    {
+        $this->load->model('rda');
+        $this->load->model('modes');
+        $this->load->model('bands');
+        $this->load->library('rda_award');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands();
+        $data['modes'] = $this->modes->active();
+        $data['filters'] = $this->rda_filters();
+        $data['rda'] = $this->rda_award->evaluate($this->rda->get_qsos($data['filters']));
+
+        $footerData = [];
+        $footerData['scripts'] = [
+            'assets/js/sections/rdamap.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/rdamap.js")),
+        ];
+
+        $data['page_title'] = "Awards - RDA (Russian Districts Award)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/rda/index');
+        $this->load->view('interface_assets/footer', $footerData);
+    }
+
+    /*
+        Oblast progress for the RDA map: worked, confirmed, and current districts per oblast code.
+    */
+    public function rda_map()
+    {
+        $this->load->model('rda');
+        $this->load->library('rda_award');
+
+        $result = $this->rda_award->evaluate($this->rda->get_qsos($this->rda_filters()));
+        $map = array();
+        foreach ($result['oblasts'] as $code => $oblast) {
+            $map[$code] = array(
+                'name' => $oblast['name'],
+                'worked' => $oblast['worked'],
+                'confirmed' => $oblast['confirmed'],
+                'total' => $oblast['total'],
+            );
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($map);
+    }
+
     public function wab()
     {
         $footerData = [];

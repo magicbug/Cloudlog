@@ -516,6 +516,36 @@ class Update extends CI_Controller {
     }
 
     /*
+     * Refreshes assets/json/rda.json, the Russian Districts Award list used by the RDA award page.
+     */
+    public function update_rda() {
+        $this->load->library('cron_runner');
+        $this->cron_runner->run_guarded('update_rda', function () {
+        $this->load->library('rda_award');
+        $contents = @file_get_contents(Rda_award::LIST_URL);
+
+        if ($contents === FALSE) {
+            echo "Something went wrong with fetching the RDA list.";
+            return;
+        }
+
+        $reference = $this->rda_award->parse_list($contents);
+        $current = $this->rda_award->current_count($reference);
+        if ($current < Rda_award::MIN_CURRENT_DISTRICTS) {
+            echo "FAILED: Only " . number_format($current) . " districts found, kept the existing list";
+            return;
+        }
+
+        $json = json_encode($reference, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
+        if (file_put_contents('./assets/json/rda.json', $json) !== FALSE) {
+            echo "DONE: " . number_format($current) . " RDA districts saved (list of " . $reference['updated'] . ")";
+        } else {
+            echo "FAILED: Could not write to rda.json file";
+        }
+        });
+    }
+
+    /*
      * Used for autoupdating the SOTA file which is used in the QSO entry dialog for autocompletion.
      */
     public function update_sota() {
@@ -688,6 +718,18 @@ class Update extends CI_Controller {
         
         echo '<div class="alert alert-info">';
         $this->update_dok();
+        echo '</div>';
+    }
+
+    public function update_rda_ui() {
+        $this->load->model('user_model');
+        if(!$this->user_model->authorize(99)) {
+            echo '<div class="alert alert-danger">You are not authorized to perform this action.</div>';
+            return;
+        }
+
+        echo '<div class="alert alert-info">';
+        $this->update_rda();
         echo '</div>';
     }
 

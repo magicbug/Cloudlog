@@ -941,6 +941,33 @@ class QSO extends CI_Controller {
     }
 
     /*
+	 * Function is used for autocompletion of RDA districts in the county box of the QSO entry form
+	 */
+    public function get_rda() {
+        $json = [];
+        $query = strtoupper(trim((string) $this->input->get("query")));
+
+        if ($query !== '') {
+            $this->load->library('rda_award');
+            $reference = $this->rda_award->load_reference();
+            foreach ($reference['districts'] as $district) {
+                if (!empty($district['deleted'])) {
+                    continue;
+                }
+                if (strpos($district['code'], $query) === 0 || stripos($district['name'], $query) !== false) {
+                    $json[] = ["name" => $district['code'], "description" => $district['name'] . ', ' . $district['oblast_name']];
+                    if (count($json) >= 100) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
+
+    /*
 	 * Function is used for autocompletion of Counties in the station profile form
 	 */
     public function get_county() {

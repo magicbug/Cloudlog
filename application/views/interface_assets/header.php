@@ -28,7 +28,7 @@
 
 	<?php
 	$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'search', 'activators', 'activatorsmap'], true)
-		|| ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota'], true));
+		|| ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota', 'rda'], true));
 	?>
 
 	<!-- Maps -->
@@ -238,6 +238,10 @@
 								<?php } ?>
 								<?php if ($user_awards->pota == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/pota'); ?>"><i class="fas fa-tree"></i> <?php echo lang('menu_pota'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if (!empty($user_awards->rda)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/rda'); ?>"><i class="fas fa-map-marked-alt"></i> <?php echo lang('menu_rda'); ?></a>
 							<div class="dropdown-divider"></div>
 								<?php } ?>
 								<?php if ($user_awards->sig == 1) { ?>

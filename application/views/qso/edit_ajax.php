@@ -343,10 +343,18 @@
                                     </select>
                                 </div>
 
+                                <?php $rda_value = preg_match('/^[A-Z]{2}[\s-]?\d{1,3}$/i', trim((string) $qso->COL_CNTY)) ? strtoupper(trim($qso->COL_CNTY)) : ''; ?>
                                 <div class="mb-3">
                                     <label for="stationCntyInput">USA County</label>
-                                    <input disabled="disabled" class="form-control" id="stationCntyInputEdit" type="text" name="usa_county" value="<?php echo $qso->COL_CNTY; ?>" />
+                                    <input disabled="disabled" class="form-control" id="stationCntyInputEdit" type="text" name="usa_county" value="<?php echo $rda_value === '' ? $qso->COL_CNTY : ''; ?>" />
                                 </div>
+
+                                <?php if ($rda_value !== '' || in_array((string) $qso->COL_DXCC, array('54', '15', '126'), true)) { ?>
+                                <div class="mb-3">
+                                    <label for="rda_district_edit">RDA district</label>
+                                    <input type="text" class="form-control" id="rda_district_edit" name="rda" value="<?php echo htmlspecialchars($rda_value); ?>" placeholder="TB-02">
+                                </div>
+                                <?php } ?>
 
                                 <div class="mb-3">
                                     <label for="iota_ref">IOTA</label>

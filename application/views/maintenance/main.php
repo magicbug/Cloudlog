@@ -190,6 +190,20 @@
 							</td>
 						</tr>
 						<tr>
+							<td><strong>RDA</strong></td>
+							<td>Russian Districts Award district list</td>
+							<td>
+								<button class="btn btn-sm btn-primary" 
+										hx-get="<?php echo site_url('update/update_rda_ui'); ?>" 
+										hx-target="#update-result-rda"
+										hx-indicator="#spinner-rda">
+									<i class="fas fa-sync"></i> Update RDA
+								</button>
+								<span id="spinner-rda" class="htmx-indicator spinner-border spinner-border-sm ms-2" role="status"></span>
+								<div id="update-result-rda" class="mt-2"></div>
+							</td>
+						</tr>
+						<tr>
 							<td><strong>SOTA</strong></td>
 							<td>Summits on the Air reference data</td>
 							<td>

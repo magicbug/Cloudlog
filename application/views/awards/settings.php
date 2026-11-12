@@ -166,6 +166,13 @@
 						<td class="award-description">Parks on the Air</td>
 					</tr>
 					<tr>
+						<td class='award-checkbox-cell award_rda'>
+							<input type="checkbox" data-award="rda" <?php if (!empty($user_awards->rda)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">RDA</td>
+						<td class="award-description">Russian Districts Award</td>
+					</tr>
+					<tr>
 						<td class='award-checkbox-cell award_sig'>
 							<input type="checkbox" data-award="sig" <?php if ($user_awards->sig == 1) echo 'checked'; ?>>
 						</td>

@@ -179,6 +179,11 @@ $lang['awards_skcc_description_ln2'] = "The Straight Key Century Club awards cou
 $lang['awards_skcc_description_ln3'] = "Cloudlog reads the SKCC field on each QSO in the active logbook, or SIG Info when SIG is SKCC. Log the suffix that was sent, such as 14086T, because a number on its own only counts toward Centurion. Contacts with K9SKC and K3Y do not count.";
 $lang['awards_skcc_description_ln4'] = "Rules for the <a href='https://www.skccgroup.com/operating_awards/centurion/' target='_blank'>Centurion</a>, <a href='https://www.skccgroup.com/operating_awards/tribune/' target='_blank'>Tribune</a>, and <a href='https://www.skccgroup.com/operating_awards/senator/' target='_blank'>Senator</a> awards are on the SKCC website.";
 
+$lang['awards_rda_description_ln1'] = "RDA Award";
+$lang['awards_rda_description_ln2'] = "The Russian Districts Award, from the Tambov Award Group, counts districts of the Russian Federation from the RDA list. Each district counts once, on any band. Certificates are RDA-100, 250, 500, 1000, 1500, and 2000, then the Honor Roll plaque at 2500 and Honor Roll #1 for every current district.";
+$lang['awards_rda_description_ln3'] = "Cloudlog reads the county field on each QSO in the active logbook, where ADIF keeps the district as a code such as TB-02. Deleted codes and contacts made before a district existed are listed but do not count.";
+$lang['awards_rda_description_ln4'] = "The <a href='https://www.rdaward.org/rda_rules_eng.htm' target='_blank'>RDA rules</a> and the <a href='https://www.rdaward.org/rda_eng.txt' target='_blank'>district list</a> are on rdaward.org. Credit is granted by the <a href='https://rdaward.ru' target='_blank'>RDA Autocfm</a> site, not by Cloudlog.";
+
 $lang['awards_was_description_ln1'] = "WAS Ödülü";
 $lang['awards_was_description_ln2'] = "ARRL'nin en popüler ödülü, Çalışılan Tüm Eyaletler Ödülü'dür. Dünya çapında amatörlere binlerce ve binlerce ödül verilmiştir. ARRL'nin 101. yılında, sertifikaları ve programı yeniden tasarladılar. ödül programının düzenlenmesi ve iyileştirilmesi.";
 $lang['awards_was_description_ln3'] = "WAS (Tüm Eyaletlerde Çalışıldı) Ödülü, Amerika Birleşik Devletleri'nin 50 eyaletinin her biriyle iletişimlerinin yazılı onayını içeren kanıt sunan dünya çapındaki tüm amatörlere açıktır. ABD'deki ve ABD'deki amatörler ABD dışından başvuranlar bu şarttan muaftır.";
