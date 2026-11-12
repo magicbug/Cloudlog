@@ -6,11 +6,12 @@
  * Anti-double-run rule:
  * - A MySQL GET_LOCK per job_key must be acquired before the job body runs.
  * - If the lock is not available, the invocation is skipped (HTTP 200, body "skipped").
- * - Unless $force is true (Run now), skip when the previous run finished less than
- *   (interval_seconds - margin) ago. Margin is min(300, max(60, 5% of interval)) so
- *   normal crontab jitter does not suppress a legitimate legacy tick.
- * - If a run appears stuck (started but not finished within STALE_RUN_SECONDS), the
- *   stale state is cleared and a new run may proceed once the lock is acquired.
+ * - When cron_scheduler_enabled is off, legacy URL calls use the lock only (no interval
+ *   guard), so custom crontab intervals behave as before migration 288.
+ * - When the scheduler is enabled, legacy URLs and scheduler ticks also skip if the
+ *   previous run finished less than (interval_seconds - margin) ago unless $force is
+ *   true (Run now). Margin is min(300, max(60, 5% of interval)).
+ * - Stuck runs (started, not finished within STALE_RUN_SECONDS) are reset before retry.
  */
 class Cron_runner {
 
@@ -86,7 +87,7 @@ class Cron_runner {
             $job = $CI->cron_jobs_model->get_by_key($job_key);
         }
 
-        if (!$force && $this->is_within_interval($job)) {
+        if (!$force && $this->should_apply_interval_guard() && $this->is_within_interval($job)) {
             $this->respond_skipped($job_key, 'Interval not elapsed');
             return false;
         }
@@ -277,6 +278,26 @@ class Cron_runner {
         $scheduled = $CI->db->count_all_results();
 
         return ($legacy > 0 && $scheduled > 0);
+    }
+
+    private function should_apply_interval_guard()
+    {
+        if ($this->execution_source === 'scheduler') {
+            return $this->is_scheduler_enabled();
+        }
+
+        if ($this->execution_source === 'legacy') {
+            return $this->is_scheduler_enabled();
+        }
+
+        return false;
+    }
+
+    private function is_scheduler_enabled()
+    {
+        $CI =& get_instance();
+        $enabled = $CI->optionslib->get_option('cron_scheduler_enabled');
+        return ($enabled === 'true' || $enabled === '1');
     }
 
     private function is_stale_in_progress($job)

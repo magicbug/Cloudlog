@@ -22,4 +22,4 @@ $lang['cron_scheduler_col_actions'] = 'Actions';
 $lang['cron_scheduler_run_now'] = 'Run now';
 $lang['cron_scheduler_back_maintenance'] = 'Back to Maintenance';
 $lang['cron_scheduler_key_empty'] = 'No key set. Enable the scheduler or regenerate a key for the web trigger.';
-$lang['cron_scheduler_antidouble_note'] = 'Each job uses a shared MySQL lock and interval guard so legacy URLs and the scheduler cannot run the same job twice in parallel. A skipped run returns HTTP 200 with body "skipped".';
+$lang['cron_scheduler_antidouble_note'] = 'Each job always uses a shared MySQL lock. When the scheduler is enabled, an interval guard also applies to legacy URLs so duplicate crontab lines do not double-run jobs. With the scheduler off, legacy URLs are only protected by the lock. A skipped run returns HTTP 200 with body "skipped".';
