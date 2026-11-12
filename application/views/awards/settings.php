@@ -173,6 +173,13 @@
 						<td class="award-description">Russian Districts Award</td>
 					</tr>
 					<tr>
+						<td class='award-checkbox-cell award_rsgb'>
+							<input type="checkbox" data-award="rsgb" <?php if (!empty($user_awards->rsgb)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">RSGB</td>
+						<td class="award-description">RSGB HF, VHF/UHF, Foundation, and Intermediate awards</td>
+					</tr>
+					<tr>
 						<td class='award-checkbox-cell award_sig'>
 							<input type="checkbox" data-award="sig" <?php if ($user_awards->sig == 1) echo 'checked'; ?>>
 						</td>

@@ -190,6 +190,11 @@ $lang['awards_rda_description_ln2'] = "The Russian Districts Award, from the Tam
 $lang['awards_rda_description_ln3'] = "Cloudlog reads the county field on each QSO in the active logbook, where ADIF keeps the district as a code such as TB-02. Deleted codes and contacts made before a district existed are listed but do not count.";
 $lang['awards_rda_description_ln4'] = "The <a href='https://www.rdaward.org/rda_rules_eng.htm' target='_blank'>RDA rules</a> and the <a href='https://www.rdaward.org/rda_eng.txt' target='_blank'>district list</a> are on rdaward.org. Credit is granted by the <a href='https://rdaward.ru' target='_blank'>RDA Autocfm</a> site, not by Cloudlog.";
 
+$lang['awards_rsgb_description_ln1'] = "RSGB Awards";
+$lang['awards_rsgb_description_ln2'] = "The Radio Society of Great Britain runs HF and VHF/UHF awards open to everyone, and Foundation and Intermediate awards for UK licence holders. This page scores IARU Region 1, the Commonwealth Century Award, Worked ITU Zones, the 50 MHz awards, the VHF squares and countries awards, and the V/UHF Activity Award.";
+$lang['awards_rsgb_description_ln3'] = "Cloudlog reads the active logbook. The Foundation and Intermediate 100 awards appear when a station location in the logbook has a Foundation (M3, M6, M7) or Intermediate (2E0, 2E1, M8, M9) callsign, and count only the contacts made from it. Awards that ask for every contact from one country assume the logbook holds one country.";
+$lang['awards_rsgb_description_ln4'] = "Rules, application forms, and check sheets are on the <a href='https://rsgb.org/main/operating/amateur-radio-awards/' target='_blank'>RSGB awards page</a>. Send claims to the RSGB Awards Manager.";
+
 $lang['awards_was_description_ln1'] = "WAS 奖状";
 $lang['awards_was_description_ln2'] = "ARRL 最受欢迎的奖项是“Worked All States Award” 已向世界各地的HAM颁发了数以千计的奖项 在ARRL成立101周年之际，他们重新设计了证书和项目，希望能够精简和完善奖励项目";
 $lang['awards_was_description_ln3'] = "WAS（在所有州通联过）奖面向全世界所有提交证明并书面确认与美利坚合众国 50 个州联系的业余爱好者 美国及其属地的业余爱好者必须是 ARRL 的成员才能申请 WAS 来自美国境外的申请人不受此要求的约束";

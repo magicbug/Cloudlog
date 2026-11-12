@@ -922,6 +922,112 @@ class Awards extends CI_Controller
         echo json_encode($map);
     }
 
+    /*
+        The RSGB award groups this logbook can use, the one picked, and the QSL filters.
+        Foundation and Intermediate 100 need a station callsign of that licence class.
+        Awards that need cards start with QSL and LoTW ticked. The others start with nothing ticked.
+    */
+    private function rsgb_setup()
+    {
+        $this->load->model('rsgb');
+        $this->load->library('rsgb_awards');
+
+        $classes = array();
+        foreach ($this->rsgb->station_callsigns() as $call) {
+            $class = $this->rsgb_awards->licence_class($call);
+            if ($class !== null) {
+                $classes[$class] = true;
+            }
+        }
+
+        $groups = array();
+        foreach ($this->rsgb_awards->groups as $key => $group) {
+            if ($group['licence'] === null || isset($classes[$group['licence']])) {
+                $groups[$key] = $group;
+            }
+        }
+
+        $award = (string) $this->security->xss_clean($this->input->get_post('award'));
+        if (!isset($groups[$award])) {
+            reset($groups);
+            $award = key($groups);
+        }
+
+        if ($this->input->get_post('filtered')) {
+            $filters = array(
+                'qsl' => (bool) $this->input->get_post('qsl'),
+                'lotw' => (bool) $this->input->get_post('lotw'),
+                'eqsl' => (bool) $this->input->get_post('eqsl'),
+            );
+        } else {
+            $cards = $groups[$award]['cards'];
+            $filters = array('qsl' => $cards, 'lotw' => $cards, 'eqsl' => false);
+        }
+
+        return array($groups, $award, $filters);
+    }
+
+    public function rsgb()
+    {
+        list($groups, $award, $filters) = $this->rsgb_setup();
+
+        $data['rsgb_groups'] = $groups;
+        $data['rsgb_award'] = $award;
+        $data['filters'] = $filters;
+        $data['rsgb'] = $this->rsgb_awards->evaluate($award, $this->rsgb->get_qsos($groups[$award], $filters));
+
+        $data['page_title'] = "Awards - RSGB";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/rsgb/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    /*
+        The contacts that count toward the selected RSGB award, for the RSGB check sheet.
+    */
+    public function rsgb_csv()
+    {
+        list($groups, $award, $filters) = $this->rsgb_setup();
+        $qsos = $this->rsgb->get_qsos($groups[$award], $filters);
+        $result = $this->rsgb_awards->evaluate($award, $qsos);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=RSGB_' . $award . '_' . date('Y-m-d') . '.csv');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, array('Callsign', 'Date', 'Time', 'Frequency (MHz)', 'Band', 'Mode', 'RST sent', 'RST received', 'Country', 'DXCC', 'ITU zone', 'Locator', 'Station callsign', 'Confirmed by'));
+        foreach ($result['eligible'] as $i) {
+            $q = $qsos[$i];
+            $confirmed_by = array();
+            if ($q['qsl']) {
+                $confirmed_by[] = 'QSL';
+            }
+            if ($q['lotw']) {
+                $confirmed_by[] = 'LoTW';
+            }
+            if ($q['eqsl']) {
+                $confirmed_by[] = 'eQSL';
+            }
+            fputcsv($output, array(
+                $q['call'],
+                date('Y-m-d', strtotime($q['time'])),
+                date('H:i', strtotime($q['time'])),
+                $q['freq'] > 0 ? number_format($q['freq'] / 1000000, 6, '.', '') : '',
+                $q['band'],
+                $q['submode'] ? $q['submode'] : $q['mode'],
+                $q['rst_sent'],
+                $q['rst_rcvd'],
+                $q['country'],
+                $q['dxcc'],
+                $q['ituz'],
+                $q['vucc'] ? $q['vucc'] : $q['grid'],
+                $q['station_call'],
+                implode(' ', $confirmed_by),
+            ));
+        }
+        fclose($output);
+    }
+
     public function wab()
     {
         $footerData = [];

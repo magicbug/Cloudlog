@@ -244,6 +244,10 @@
 							<a class="dropdown-item" href="<?php echo site_url('awards/rda'); ?>"><i class="fas fa-map-marked-alt"></i> <?php echo lang('menu_rda'); ?></a>
 							<div class="dropdown-divider"></div>
 								<?php } ?>
+								<?php if (!empty($user_awards->rsgb)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/rsgb'); ?>"><i class="fas fa-award"></i> <?php echo lang('menu_rsgb'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
 								<?php if ($user_awards->sig == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/sig'); ?>"><i class="fas fa-certificate"></i> <?php echo lang('menu_sig'); ?></a>
 							<div class="dropdown-divider"></div>
