@@ -225,6 +225,77 @@ class Clublog_model extends CI_Model {
 		
         return $this->db->get();
 	}
+
+	// Station callsigns the user sends to Club Log, each with the station ids that use it.
+	function download_callsigns($userid) {
+		$this->db->select('UPPER(TRIM(station_callsign)) AS callsign, GROUP_CONCAT(station_id) AS station_ids', FALSE);
+		$this->db->from('station_profile');
+		$this->db->where('user_id', $userid);
+		$this->db->where('COALESCE(station_callsign, "") != ""', NULL, FALSE);
+		if ($this->db->field_exists('clublogcron', 'station_profile')) {
+			$this->db->group_start();
+			$this->db->where('clublogcron', 1);
+			$this->db->or_where('clublogrealtime', 1);
+			$this->db->group_end();
+		} else {
+			$this->db->where('clublogrealtime', 1);
+		}
+		$this->db->group_by('UPPER(TRIM(station_callsign))');
+		$rows = array();
+		foreach ($this->db->get()->result() as $row) {
+			$rows[] = array('callsign' => $row->callsign, 'station_ids' => array_map('intval', explode(',', $row->station_ids)));
+		}
+		return $rows;
+	}
+
+	// Day of the newest match already stored for these stations, or null for a first download.
+	function last_download_date($station_ids) {
+		$this->db->select_max('COL_CLUBLOG_QSO_DOWNLOAD_DATE', 'last');
+		$this->db->where_in('station_id', $station_ids);
+		$this->db->where('COL_CLUBLOG_QSO_DOWNLOAD_STATUS', 'Y');
+		$row = $this->db->get($this->config->item('table_name'))->row();
+		return ($row && $row->last) ? $row->last : null;
+	}
+
+	// QSOs with this callsign within the match window, as ['id', 'time', 'band', 'status'].
+	function match_candidates($callsign, $time, $station_ids, $window_seconds) {
+		$at = strtotime($time . ' UTC');
+		$this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_BAND, COL_CLUBLOG_QSO_DOWNLOAD_STATUS');
+		$this->db->where('COL_CALL', $callsign);
+		$this->db->where_in('station_id', $station_ids);
+		$this->db->where('COL_TIME_ON >=', gmdate('Y-m-d H:i:s', $at - $window_seconds));
+		$this->db->where('COL_TIME_ON <=', gmdate('Y-m-d H:i:s', $at + $window_seconds));
+		$rows = array();
+		foreach ($this->db->get($this->config->item('table_name'))->result() as $row) {
+			$rows[] = array('id' => (int) $row->COL_PRIMARY_KEY, 'time' => $row->COL_TIME_ON, 'band' => $row->COL_BAND, 'status' => $row->COL_CLUBLOG_QSO_DOWNLOAD_STATUS);
+		}
+		return $rows;
+	}
+
+	// Marks the QSO each match belongs to. Returns how many were newly confirmed.
+	function apply_matches($matches, $station_ids) {
+		$this->load->library('clublog_matches');
+		$marked = 0;
+		foreach ($matches as $match) {
+			$candidates = $this->match_candidates($match['call'], $match['time'], $station_ids, Clublog_matches::WINDOW_SECONDS);
+			$id = $this->clublog_matches->pick($match, $candidates);
+			foreach ($candidates as $c) {
+				if ($id !== null && $c['id'] === $id && $c['status'] !== 'Y') {
+					$this->mark_qso_matched($id);
+					$marked++;
+				}
+			}
+		}
+		return $marked;
+	}
+
+	function mark_qso_matched($qso_id) {
+		$this->db->where('COL_PRIMARY_KEY', $qso_id);
+		$this->db->update($this->config->item('table_name'), array(
+			'COL_CLUBLOG_QSO_DOWNLOAD_STATUS' => 'Y',
+			'COL_CLUBLOG_QSO_DOWNLOAD_DATE' => gmdate('Y-m-d H:i:s'),
+		));
+	}
 }
 
 ?>

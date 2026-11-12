@@ -164,6 +164,78 @@ class Clublog extends CI_Controller {
 		return false;
 	}
 
+	// Download Club Log log matches and mark the QSOs they confirm
+	public function download() {
+		$this->load->library('cron_runner');
+		$this->cron_runner->run_guarded('clublog_download', function () {
+			$this->load->model('clublog_model');
+			$this->load->library('clublog_matches');
+
+			$requests = 0;
+			foreach ($this->clublog_model->get_clublog_users() as $user) {
+				if (!filter_var($user->user_clublog_name, FILTER_VALIDATE_EMAIL)) {
+					continue;
+				}
+				foreach ($this->clublog_model->download_callsigns($user->user_id) as $station) {
+					if ($requests++ > 0) {
+						sleep(11); // Club Log answers 403 after about ten quick requests
+					}
+					if (!$this->download_callsign($user, $station)) {
+						break;
+					}
+				}
+			}
+			if ($requests === 0) {
+				echo 'No Club Log accounts with an enabled station location.' . "<br>";
+			}
+		});
+	}
+
+	// Returns false when the user's credentials were refused, so no more requests are sent for them.
+	private function download_callsign($user, $station) {
+		$callsign = $station['callsign'];
+		$since = $this->clublog_model->last_download_date($station['station_ids']);
+		$url = $this->clublog_matches->url('a11c3235cd74b88212ce726857056939d52372bd', $user->user_clublog_name, $user->user_clublog_password, $callsign, $since);
+
+		$request = curl_init($url);
+		curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($request, CURLOPT_TIMEOUT, 120);
+		curl_setopt($request, CURLOPT_USERAGENT, 'Cloudlog');
+		$response = curl_exec($request);
+		$http_code = curl_getinfo($request, CURLINFO_HTTP_CODE);
+		$curl_error = curl_errno($request) ? curl_error($request) : '';
+		curl_close($request);
+
+		if ($curl_error !== '') {
+			echo 'Club Log download for ' . $callsign . ' failed: ' . $curl_error . "<br>";
+			log_message('error', 'Club Log download for ' . $callsign . ' failed: ' . $curl_error);
+			return true;
+		}
+
+		$result = $this->clublog_matches->parse($response);
+		if ($result['error'] === 'login' || $http_code == 403) {
+			echo 'Club Log refused the login for ' . $callsign . "<br>";
+			log_message('error', 'Club Log download for ' . $callsign . ' refused (HTTP ' . $http_code . ')');
+			$this->clublog_model->reset_clublog_user_fields($user->user_id, true, 'Club Log match download was refused for ' . $callsign . '.');
+			return false;
+		}
+		if ($result['error'] === 'callsign') {
+			echo 'Club Log has no log for ' . $callsign . ' on this account' . "<br>";
+			log_message('info', 'Club Log download: ' . $callsign . ' is not on the Club Log account of user ' . $user->user_id);
+			return true;
+		}
+		if ($result['error'] !== null) {
+			echo 'Club Log sent an unexpected reply for ' . $callsign . ' (HTTP ' . $http_code . ')' . "<br>";
+			log_message('error', 'Club Log download for ' . $callsign . ': unexpected reply, HTTP ' . $http_code);
+			return true;
+		}
+
+		$marked = $this->clublog_model->apply_matches($result['matches'], $station['station_ids']);
+		echo 'Club Log matches for ' . $callsign . ': ' . count($result['matches']) . ' downloaded, ' . $marked . ' newly confirmed' . "<br>";
+		log_message('info', 'Club Log matches for ' . $callsign . ': ' . count($result['matches']) . ' downloaded, ' . $marked . ' newly confirmed');
+		return true;
+	}
+
 	function markqso($station_id) {
 		$clean_station_id = $this->security->xss_clean($station_id);
 		$this->load->model('clublog_model');

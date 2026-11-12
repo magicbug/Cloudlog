@@ -10,6 +10,7 @@ $csv_query = http_build_query(array(
     'qsl' => $filters['qsl'] ? 1 : 0,
     'lotw' => $filters['lotw'] ? 1 : 0,
     'eqsl' => $filters['eqsl'] ? 1 : 0,
+    'clublog' => $filters['clublog'] ? 1 : 0,
 ));
 ?>
 <div class="container">
@@ -55,12 +56,16 @@ $csv_query = http_build_query(array(
                         <label class="form-check-label" for="lotw">LoTW</label>
                     </div>
                     <div class="form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="clublog" value="1" id="clublog" <?php if ($filters['clublog']) echo ' checked="checked"'; ?> >
+                        <label class="form-check-label" for="clublog">Club Log</label>
+                    </div>
+                    <div class="form-check-inline">
                         <input class="form-check-input" type="checkbox" name="eqsl" value="1" id="eqsl" <?php if ($filters['eqsl']) echo ' checked="checked"'; ?> >
                         <label class="form-check-label" for="eqsl">eQSL</label>
                     </div>
                     <div class="form-text">
                         <?php if ($cards) { ?>
-                            The RSGB accepts QSL cards, LoTW, and Club Log. Leave all unticked to count every logged contact as confirmed.
+                            The RSGB accepts QSL cards, LoTW, and Club Log log matches, and does not accept eQSL. Leave all unticked to count every logged contact as confirmed.
                         <?php } else { ?>
                             This award does not need QSLs, so every logged contact counts. Tick a type to count only contacts confirmed that way.
                         <?php } ?>

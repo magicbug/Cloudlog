@@ -15,6 +15,7 @@ class Qso_merge_field_chooser
         'COL_EQSL_QSL_SENT',
         'COL_EQSL_QSL_RCVD',
         'COL_CLUBLOG_QSO_UPLOAD_STATUS',
+        'COL_CLUBLOG_QSO_DOWNLOAD_STATUS',
         'COL_QRZCOM_QSO_UPLOAD_STATUS',
         'COL_QRZCOM_QSO_DOWNLOAD_STATUS',
     ];
@@ -27,6 +28,7 @@ class Qso_merge_field_chooser
         'COL_EQSL_QSLSDATE',
         'COL_EQSL_QSLRDATE',
         'COL_CLUBLOG_QSO_UPLOAD_DATE',
+        'COL_CLUBLOG_QSO_DOWNLOAD_DATE',
         'COL_QRZCOM_QSO_UPLOAD_DATE',
         'COL_QRZCOM_QSO_DOWNLOAD_DATE',
     ];

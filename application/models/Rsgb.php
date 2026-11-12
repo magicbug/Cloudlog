@@ -41,7 +41,7 @@ class Rsgb extends CI_Model {
 			return array();
 		}
 		$table = $this->config->item('table_name');
-		$this->db->select($table . '.COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_BAND, COL_FREQ, COL_MODE, COL_SUBMODE, COL_PROP_MODE, COL_DXCC, COL_COUNTRY, COALESCE(NULLIF(COL_CONT, \'\'), dxcc_entities.cont) AS COL_CONT, COL_ITUZ, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_RST_SENT, COL_RST_RCVD, COL_STATION_CALLSIGN, COL_QSL_RCVD, COL_LOTW_QSL_RCVD, COL_EQSL_QSL_RCVD, station_profile.station_callsign AS location_callsign', FALSE);
+		$this->db->select($table . '.COL_PRIMARY_KEY, COL_CALL, COL_TIME_ON, COL_BAND, COL_FREQ, COL_MODE, COL_SUBMODE, COL_PROP_MODE, COL_DXCC, COL_COUNTRY, COALESCE(NULLIF(COL_CONT, \'\'), dxcc_entities.cont) AS COL_CONT, COL_ITUZ, COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_RST_SENT, COL_RST_RCVD, COL_STATION_CALLSIGN, COL_QSL_RCVD, COL_LOTW_QSL_RCVD, COL_EQSL_QSL_RCVD, COL_CLUBLOG_QSO_DOWNLOAD_STATUS, station_profile.station_callsign AS location_callsign', FALSE);
 		$this->db->from($table);
 		$this->db->join('station_profile', 'station_profile.station_id = ' . $table . '.station_id', 'left');
 		$this->db->join('dxcc_entities', 'dxcc_entities.adif = ' . $table . '.COL_DXCC', 'left');
@@ -58,13 +58,14 @@ class Rsgb extends CI_Model {
 		$this->db->order_by('COL_TIME_ON', 'ASC');
 		$query = $this->db->get();
 
-		$any_ticked = !empty($filters['qsl']) || !empty($filters['lotw']) || !empty($filters['eqsl']);
+		$any_ticked = !empty($filters['qsl']) || !empty($filters['lotw']) || !empty($filters['eqsl']) || !empty($filters['clublog']);
 		$qsos = array();
 		foreach ($query->result() as $row) {
 			$confirmed = !$any_ticked
 				|| (!empty($filters['qsl']) && $row->COL_QSL_RCVD == 'Y')
 				|| (!empty($filters['lotw']) && $row->COL_LOTW_QSL_RCVD == 'Y')
-				|| (!empty($filters['eqsl']) && $row->COL_EQSL_QSL_RCVD == 'Y');
+				|| (!empty($filters['eqsl']) && $row->COL_EQSL_QSL_RCVD == 'Y')
+				|| (!empty($filters['clublog']) && $row->COL_CLUBLOG_QSO_DOWNLOAD_STATUS == 'Y');
 			$qsos[] = array(
 				'id' => $row->COL_PRIMARY_KEY,
 				'call' => $row->COL_CALL,
@@ -86,6 +87,7 @@ class Rsgb extends CI_Model {
 				'qsl' => $row->COL_QSL_RCVD == 'Y',
 				'lotw' => $row->COL_LOTW_QSL_RCVD == 'Y',
 				'eqsl' => $row->COL_EQSL_QSL_RCVD == 'Y',
+				'clublog' => $row->COL_CLUBLOG_QSO_DOWNLOAD_STATUS == 'Y',
 				'confirmed' => $confirmed,
 			);
 		}

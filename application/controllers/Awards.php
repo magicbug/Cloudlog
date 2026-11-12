@@ -925,7 +925,8 @@ class Awards extends CI_Controller
     /*
         The RSGB award groups this logbook can use, the one picked, and the QSL filters.
         Foundation and Intermediate 100 need a station callsign of that licence class.
-        Awards that need cards start with QSL and LoTW ticked. The others start with nothing ticked.
+        Awards that need cards start with QSL, LoTW, and Club Log ticked, the three the RSGB accepts.
+        The others start with nothing ticked.
     */
     private function rsgb_setup()
     {
@@ -958,10 +959,11 @@ class Awards extends CI_Controller
                 'qsl' => (bool) $this->input->get_post('qsl'),
                 'lotw' => (bool) $this->input->get_post('lotw'),
                 'eqsl' => (bool) $this->input->get_post('eqsl'),
+                'clublog' => (bool) $this->input->get_post('clublog'),
             );
         } else {
             $cards = $groups[$award]['cards'];
-            $filters = array('qsl' => $cards, 'lotw' => $cards, 'eqsl' => false);
+            $filters = array('qsl' => $cards, 'lotw' => $cards, 'eqsl' => false, 'clublog' => $cards);
         }
 
         return array($groups, $award, $filters);
@@ -1007,6 +1009,9 @@ class Awards extends CI_Controller
             }
             if ($q['eqsl']) {
                 $confirmed_by[] = 'eQSL';
+            }
+            if ($q['clublog']) {
+                $confirmed_by[] = 'Club Log';
             }
             fputcsv($output, array(
                 $q['call'],
