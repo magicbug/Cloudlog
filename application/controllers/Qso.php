@@ -176,7 +176,11 @@ class QSO extends CI_Controller {
 	 */
 	public function saveqso() {
         $this->load->model('logbook_model');
-        $this->logbook_model->create_qso();
+        $create_result = $this->logbook_model->create_qso();
+        if ($create_result === 'station_not_accessible') {
+            $this->output->set_status_header(403);
+            echo 'Station not accessible.';
+        }
     }
 
     /*
@@ -246,7 +250,26 @@ class QSO extends CI_Controller {
             $this->session->set_userdata('prop_mode', 'SAT');
         }
 
-        $this->logbook_model->create_qso();
+        $create_result = $this->logbook_model->create_qso();
+
+        if ($create_result === 'duplicate') {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array(
+                    'status' => 'ok',
+                    'message' => 'QSO Added',
+                    'duplicate' => true,
+                )));
+        }
+
+        if ($create_result === 'station_not_accessible') {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array(
+                    'status' => 'error',
+                    'message' => 'Station not accessible.',
+                )));
+        }
 
         return $this->output
             ->set_content_type('application/json')

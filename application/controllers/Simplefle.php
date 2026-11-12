@@ -24,6 +24,7 @@ class SimpleFLE extends CI_Controller {
 		$footerData['scripts'] = [
 			'assets/js/moment.min.js',
 			'assets/js/datetime-moment.js',
+			'assets/js/offline-qso-queue.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/offline-qso-queue.js")),
 			'assets/js/sections/simplefle.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/simplefle.js"))
 		];
 

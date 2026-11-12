@@ -78,9 +78,46 @@ class Logbook_model extends CI_Model
     }
   }
 
+  /**
+   * @param int|string $station_id
+   * @param string $client_ref
+   */
+  public function qso_exists_for_client_ref($station_id, $client_ref)
+  {
+    if ($station_id === '' || $station_id === '0' || $client_ref === null || $client_ref === '') {
+      return false;
+    }
+
+    $this->db->select('COL_PRIMARY_KEY');
+    $this->db->where('station_id', $station_id);
+    $this->db->where('COL_CLIENT_REF', $client_ref);
+    $query = $this->db->get($this->config->item('table_name'), 1);
+
+    return $query->num_rows() > 0;
+  }
+
   /* Add QSO to Logbook */
   function create_qso()
   {
+    $CI = &get_instance();
+    $CI->load->helper('client_ref');
+
+    $station_id = $this->input->post('station_profile');
+    if ($station_id == "" || $station_id == "0") {
+      $CI->load->model('stations');
+      $station_id = $CI->stations->find_active();
+    }
+
+    $CI->load->model('stations');
+    if (!$CI->stations->check_station_is_accessible($station_id)) {
+      return 'station_not_accessible';
+    }
+
+    $client_ref = client_ref_normalize($this->input->post('client_ref'));
+
+    if ($client_ref !== null && $this->qso_exists_for_client_ref($station_id, $client_ref)) {
+      return 'duplicate';
+    }
 
     $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time - Parse date according to user's format preference
@@ -366,21 +403,11 @@ class Logbook_model extends CI_Model
       'COL_SIG_INFO' => $this->input->post('sig_info') == null ? '' : trim($this->input->post('sig_info')),
       'COL_DARC_DOK' => $darc_dok  == null ? '' : strtoupper(trim($darc_dok)),
       'COL_NOTES' => $this->input->post('notes'),
+      'COL_CLIENT_REF' => $client_ref,
     );
-
-    $station_id = $this->input->post('station_profile');
-
-    if ($station_id == "" || $station_id == "0") {
-      $CI = &get_instance();
-      $CI->load->model('stations');
-      $station_id = $CI->stations->find_active();
-    }
 
     $CI = &get_instance();
     $CI->load->model('stations');
-    if (!$CI->stations->check_station_is_accessible($station_id)) {  // Hard Exit if station_profile not accessible
-      return 'Station not accessible<br>';
-    }
 
 
     $station = null;
@@ -457,7 +484,12 @@ class Logbook_model extends CI_Model
       $data = $filtered_data;
     }
 
-    $this->add_qso($data, $skipexport = false);
+    $add_result = $this->add_qso($data, false);
+    if ($add_result === 'duplicate') {
+      return 'duplicate';
+    }
+
+    return 'ok';
   }
 
   public function check_last_lotw($call)
@@ -754,8 +786,27 @@ class Logbook_model extends CI_Model
       $data['COL_RX_PWR'] = str_replace("W", "", $data['COL_RX_PWR']);
     }
 
-    // Add QSO to database
-    $this->db->insert($this->config->item('table_name'), $data);
+    // Add QSO to database. A repeated client reference is the offline queue
+    // replaying a save that already landed, so treat that unique-key clash
+    // as success instead of a server error.
+    $client_ref = isset($data['COL_CLIENT_REF']) ? $data['COL_CLIENT_REF'] : null;
+    if ($client_ref !== null && $client_ref !== '') {
+      $previous_debug = $this->db->db_debug;
+      $this->db->db_debug = false;
+      $inserted = $this->db->insert($this->config->item('table_name'), $data);
+      $error = $this->db->error();
+      $this->db->db_debug = $previous_debug;
+      if (!$inserted) {
+        $message = isset($error['message']) ? $error['message'] : '';
+        if ((int) ($error['code'] ?? 0) === 1062 && stripos($message, 'idx_station_client_ref') !== false) {
+          return 'duplicate';
+        }
+        log_message('error', 'QSO insert failed: ' . $message);
+        show_error('Unable to save QSO.');
+      }
+    } else {
+      $this->db->insert($this->config->item('table_name'), $data);
+    }
 
     $last_id = $this->db->insert_id();
     

@@ -761,86 +761,22 @@ var favs={};
 			submitBtn.html('<i class="fas fa-spinner fa-spin"></i> Saving...');
 
 			var ajaxSaveUrl = $form.data('ajax-save-url') || (base_url + 'index.php/qso/ajax_saveqso');
+			var clientRef = (window.CloudlogOfflineQsoQueue)
+				? window.CloudlogOfflineQsoQueue.generateClientRef()
+				: '';
+			var postData = $form.serialize();
+			if (window.CloudlogOfflineQsoQueue && clientRef) {
+				postData = window.CloudlogOfflineQsoQueue.appendClientRefToSerialized(postData, clientRef);
+			}
 
 			$.ajax({
 				url: ajaxSaveUrl,
 				type: 'POST',
-				data: $form.serialize(),
+				data: postData,
 				dataType: 'json',
 				success: function(response) {
 					if (response && response.status === 'ok') {
-						var savedCallsign = normalizeFieldValue($('#callsign').val()).toUpperCase();
-						var savedStartDate = normalizeFieldValue($('#qso_input [name="start_date"]').first().val());
-						var savedStartTime = normalizeFieldValue($('#qso_input [name="start_time"]').first().val());
-						var savedEndTime = normalizeFieldValue($('#qso_input [name="end_time"]').first().val());
-						var savedBand = normalizeFieldValue($('#band').val());
-						var savedBandRx = normalizeFieldValue($('#band_rx').val());
-						var savedFrequency = normalizeFieldValue($('#frequency').val());
-						var savedFrequencyRx = normalizeFieldValue($('#frequency_rx').val());
-						var savedMode = normalizeFieldValue($('#mode').val());
-						var savedSatName = normalizeFieldValue($('#sat_name').val());
-						var savedSatMode = normalizeFieldValue($('#sat_mode').val());
-						var savedPropMode = $('#selectPropagation').val();
-						var savedRadio = normalizeFieldValue($('#qso_input select[name="radio"]').val());
-						var savedStationProfile = normalizeFieldValue($('#stationProfile').val());
-						var postSaveDefaults = {
-							start_date: savedStartDate,
-							start_time: savedStartTime,
-							end_time: savedEndTime,
-							band: savedBand,
-							band_rx: savedBandRx,
-							frequency: savedFrequency,
-							frequency_rx: savedFrequencyRx,
-							mode: savedMode,
-							sat_name: savedSatName,
-							sat_mode: savedSatMode,
-							prop_mode: savedPropMode,
-							radio: savedRadio,
-							station_profile: savedStationProfile
-						};
-						var saveMessage = (response && response.message) ? response.message : 'QSO Added';
-						if (savedCallsign && savedBand) {
-							saveMessage += ': <strong>' + escapeNoticeValue(savedCallsign) + ' on ' + escapeNoticeValue(savedBand) + '</strong>';
-						} else if (savedCallsign) {
-							saveMessage += ': <strong>' + escapeNoticeValue(savedCallsign) + '</strong>';
-						} else if (savedBand) {
-							saveMessage += ': <strong>on ' + escapeNoticeValue(savedBand) + '</strong>';
-						}
-
-						var qsoFormElement = document.getElementById('qso_input');
-						if (qsoFormElement) {
-							suppressNextResetHandler = true;
-							qsoFormElement.reset();
-						}
-
-						reset_fields();
-						if (document.getElementById('qsp-tab')) {
-							new bootstrap.Tab(document.getElementById('qsp-tab')).show();
-						}
-						reapplyPostSaveDefaults(postSaveDefaults);
-						syncFromSelectedRadioAfterReset();
-						setTimeout(function() {
-							syncFromSelectedRadioAfterReset();
-							var savedProp = String(postSaveDefaults.prop_mode || '').toUpperCase();
-							if (savedProp && savedProp !== 'SAT') {
-								$('#selectPropagation').val(postSaveDefaults.prop_mode).trigger('change');
-							}
-						}, 250);
-						showQsoNotice(saveMessage, 'info');
-
-						if (typeof htmx !== 'undefined' && document.getElementById('qso-last-table')) {
-							var pastContactsUrl = base_url + 'index.php/qso/component_past_contacts';
-							if (savedStationProfile) {
-								pastContactsUrl += '?station_id=' + encodeURIComponent(savedStationProfile);
-							}
-							htmx.ajax('GET', pastContactsUrl, {
-								target: '#qso-last-table',
-								swap: 'innerHTML'
-							});
-						}
-
-						$('#callsign').focus();
-						$('#qso_input').data('initialForm', $('#qso_input').serialize());
+						completeQsoEntryAfterSave(response);
 					} else {
 						var warningMessage = (response && response.message) ? response.message : 'Unable to save QSO. Please try again.';
 
@@ -860,7 +796,26 @@ var favs={};
 						$('#qso_input .warningOnSubmit').show();
 					}
 				},
-				error: function() {
+				error: function(xhr, textStatus) {
+					if (window.CloudlogOfflineQsoQueue && window.CloudlogOfflineQsoQueue.shouldEnqueue(xhr, textStatus)) {
+						window.CloudlogOfflineQsoQueue.enqueue({
+							clientRef: clientRef,
+							url: ajaxSaveUrl,
+							source: 'qso',
+							payloadType: 'serialize',
+							payload: postData,
+						});
+						window.CloudlogOfflineQsoQueue.showQueuedNotice();
+						completeQsoEntryAfterSave(
+							{ message: 'QSO queued for sync' },
+							{
+								messageOverride: 'QSO queued for sync. It will upload automatically when you are back online.',
+								noticeType: 'warning',
+								skipPastContacts: true,
+							}
+						);
+						return;
+					}
 					$('#qso_input .warningOnSubmit_txt').html('Unable to save QSO due to a network or server error.');
 					$('#qso_input .warningOnSubmit').show();
 				},
@@ -1070,6 +1025,86 @@ function changebadge(entityname, adif) {
 			$info.addClass("text-bg-secondary");
 		}
 	});
+}
+
+function completeQsoEntryAfterSave(response, options) {
+	options = options || {};
+	var savedCallsign = normalizeFieldValue($('#callsign').val()).toUpperCase();
+	var savedStartDate = normalizeFieldValue($('#qso_input [name="start_date"]').first().val());
+	var savedStartTime = normalizeFieldValue($('#qso_input [name="start_time"]').first().val());
+	var savedEndTime = normalizeFieldValue($('#qso_input [name="end_time"]').first().val());
+	var savedBand = normalizeFieldValue($('#band').val());
+	var savedBandRx = normalizeFieldValue($('#band_rx').val());
+	var savedFrequency = normalizeFieldValue($('#frequency').val());
+	var savedFrequencyRx = normalizeFieldValue($('#frequency_rx').val());
+	var savedMode = normalizeFieldValue($('#mode').val());
+	var savedSatName = normalizeFieldValue($('#sat_name').val());
+	var savedSatMode = normalizeFieldValue($('#sat_mode').val());
+	var savedPropMode = $('#selectPropagation').val();
+	var savedRadio = normalizeFieldValue($('#qso_input select[name="radio"]').val());
+	var savedStationProfile = normalizeFieldValue($('#stationProfile').val());
+	var postSaveDefaults = {
+		start_date: savedStartDate,
+		start_time: savedStartTime,
+		end_time: savedEndTime,
+		band: savedBand,
+		band_rx: savedBandRx,
+		frequency: savedFrequency,
+		frequency_rx: savedFrequencyRx,
+		mode: savedMode,
+		sat_name: savedSatName,
+		sat_mode: savedSatMode,
+		prop_mode: savedPropMode,
+		radio: savedRadio,
+		station_profile: savedStationProfile
+	};
+
+	var saveMessage = options.messageOverride;
+	if (!saveMessage) {
+		saveMessage = (response && response.message) ? response.message : 'QSO Added';
+		if (savedCallsign && savedBand) {
+			saveMessage += ': <strong>' + escapeNoticeValue(savedCallsign) + ' on ' + escapeNoticeValue(savedBand) + '</strong>';
+		} else if (savedCallsign) {
+			saveMessage += ': <strong>' + escapeNoticeValue(savedCallsign) + '</strong>';
+		} else if (savedBand) {
+			saveMessage += ': <strong>on ' + escapeNoticeValue(savedBand) + '</strong>';
+		}
+	}
+
+	var qsoFormElement = document.getElementById('qso_input');
+	if (qsoFormElement) {
+		suppressNextResetHandler = true;
+		qsoFormElement.reset();
+	}
+
+	reset_fields();
+	if (document.getElementById('qsp-tab')) {
+		new bootstrap.Tab(document.getElementById('qsp-tab')).show();
+	}
+	reapplyPostSaveDefaults(postSaveDefaults);
+	syncFromSelectedRadioAfterReset();
+	setTimeout(function() {
+		syncFromSelectedRadioAfterReset();
+		var savedProp = String(postSaveDefaults.prop_mode || '').toUpperCase();
+		if (savedProp && savedProp !== 'SAT') {
+			$('#selectPropagation').val(postSaveDefaults.prop_mode).trigger('change');
+		}
+	}, 250);
+	showQsoNotice(saveMessage, options.noticeType || 'info');
+
+	if (options.skipPastContacts !== true && typeof htmx !== 'undefined' && document.getElementById('qso-last-table')) {
+		var pastContactsUrl = base_url + 'index.php/qso/component_past_contacts';
+		if (savedStationProfile) {
+			pastContactsUrl += '?station_id=' + encodeURIComponent(savedStationProfile);
+		}
+		htmx.ajax('GET', pastContactsUrl, {
+			target: '#qso-last-table',
+			swap: 'innerHTML'
+		});
+	}
+
+	$('#callsign').focus();
+	$('#qso_input').data('initialForm', $('#qso_input').serialize());
 }
 
 /* Function: resetSubmissionState resets the form submission state */
