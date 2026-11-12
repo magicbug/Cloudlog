@@ -4186,36 +4186,99 @@ class Logbook_model extends CI_Model
   /* Delete QSO based on the QSO ID */
   function delete($id)
   {
-    if ($this->check_qso_is_accessible($id)) {
-      // Get station_id before deleting for cache clearing
-      $this->db->select('station_id, COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SUBMODE');
-      $this->db->where('COL_PRIMARY_KEY', $id);
-      $qso_query = $this->db->get($this->config->item('table_name'));
-      $station_id = null;
-      if ($qso_query->num_rows() > 0) {
-        $qso_row = $qso_query->row_array();
-        $station_id = $qso_row['station_id'];
-
-        $this->load->library('cloudlog_hooks');
-        $this->cloudlog_hooks->do_action('qso.action.before_delete', array(
-          'qso_id' => (int)$id,
-          'qso' => $qso_row,
-        ), array(
-          'station_id' => $station_id,
-        ));
-      }
-      
-      // Delete the QSO
-      $this->db->where('COL_PRIMARY_KEY', $id);
-      $this->db->delete($this->config->item('table_name'));
-      
-      // Clear dashboard cache for affected station
-      if ($station_id !== null) {
-        $this->clear_dashboard_cache($station_id);
-      }
-    } else {
-      return;
+    $station_id = $this->remove_qso_record($id);
+    if ($station_id !== null) {
+      $this->clear_dashboard_cache($station_id);
     }
+  }
+
+  /**
+   * Remove a QSO row (hooks only). Caller clears dashboard cache when appropriate.
+   *
+   * @return int|null station_id when the QSO was removed
+   */
+  public function remove_qso_record($id)
+  {
+    if (!$this->check_qso_is_accessible($id)) {
+      return null;
+    }
+
+    $this->db->select('station_id, COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SUBMODE');
+    $this->db->where('COL_PRIMARY_KEY', $id);
+    $qso_query = $this->db->get($this->config->item('table_name'));
+    if ($qso_query->num_rows() === 0) {
+      return null;
+    }
+
+    $qso_row = $qso_query->row_array();
+    $station_id = $qso_row['station_id'];
+
+    $this->load->library('cloudlog_hooks');
+    $this->cloudlog_hooks->do_action('qso.action.before_delete', array(
+      'qso_id' => (int)$id,
+      'qso' => $qso_row,
+    ), array(
+      'station_id' => $station_id,
+    ));
+
+    $this->db->where('COL_PRIMARY_KEY', $id);
+    $this->db->delete($this->config->item('table_name'));
+
+    return $station_id;
+  }
+
+  /**
+   * @param object $group Row from duplicate search (call, mode, band, etc.)
+   * @param int[] $station_location_ids
+   * @return int[]
+   */
+  public function duplicate_group_primary_keys($group, array $station_location_ids)
+  {
+    if ($station_location_ids === []) {
+      return [];
+    }
+
+    $table = $this->config->item('table_name');
+    $this->db->select($table . '.COL_PRIMARY_KEY');
+    $this->db->where_in($table . '.station_id', $station_location_ids);
+    $this->db->where($table . '.COL_CALL', $group->COL_CALL);
+    $this->db->where($table . '.COL_MODE', $group->COL_MODE);
+    $this->db->where($table . '.COL_BAND', $group->COL_BAND);
+    $station_callsign = $group->COL_STATION_CALLSIGN ?? $group->station_callsign ?? '';
+    $this->db->where($table . '.COL_STATION_CALLSIGN', $station_callsign);
+
+    if ($group->COL_SUBMODE === null || $group->COL_SUBMODE === '') {
+      $this->db->group_start();
+      $this->db->where($table . '.COL_SUBMODE IS NULL', null, false);
+      $this->db->or_where($table . '.COL_SUBMODE', '');
+      $this->db->group_end();
+    } else {
+      $this->db->where($table . '.COL_SUBMODE', $group->COL_SUBMODE);
+    }
+
+    if ($group->COL_SAT_NAME === null || $group->COL_SAT_NAME === '') {
+      $this->db->group_start();
+      $this->db->where($table . '.COL_SAT_NAME IS NULL', null, false);
+      $this->db->or_where($table . '.COL_SAT_NAME', '');
+      $this->db->group_end();
+    } else {
+      $this->db->where($table . '.COL_SAT_NAME', $group->COL_SAT_NAME);
+    }
+
+    $this->db->order_by($table . '.COL_TIME_ON', 'ASC');
+    $query = $this->db->get($table);
+
+    $ids = [];
+    foreach ($query->result() as $row) {
+      $ids[] = (int) $row->COL_PRIMARY_KEY;
+    }
+
+    return $ids;
+  }
+
+  public function invalidate_dashboard_cache($station_id = null)
+  {
+    $this->clear_dashboard_cache($station_id);
   }
 
   /* Used to check if the qso is already in the database */
