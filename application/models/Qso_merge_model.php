@@ -129,15 +129,23 @@ class Qso_merge_model extends CI_Model
         $this->db->where('COL_PRIMARY_KEY', $keeper_id);
         $this->db->update($table, $update);
 
+        $station_ids_for_cache = [];
         foreach ($delete_ids as $old_id) {
-            $this->db->where('COL_PRIMARY_KEY', $old_id);
-            $this->db->delete($table);
+            $station_id = $this->logbook_model->remove_qso_record($old_id);
+            if ($station_id !== null) {
+                $station_ids_for_cache[] = (int) $station_id;
+            }
         }
 
         $this->db->trans_complete();
 
         if (!$this->db->trans_status()) {
             return ['ok' => false, 'message' => 'Merge failed. No changes were saved.'];
+        }
+
+        $station_ids_for_cache[] = (int) $qsos[$keeper_id]['station_id'];
+        foreach (array_unique($station_ids_for_cache) as $station_id) {
+            $this->logbook_model->invalidate_dashboard_cache($station_id);
         }
 
         return ['ok' => true, 'keeper_id' => $keeper_id];

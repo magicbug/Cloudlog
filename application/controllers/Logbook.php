@@ -1268,7 +1268,7 @@ class Logbook extends CI_Controller
 
 		$location_list = "'" . implode("','", $logbooks_locations_array) . "'";
 
-		$sql = 'select count(*) as occurence, GROUP_CONCAT(col_primary_key ORDER BY col_time_on) as qso_ids, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from ' . $this->config->item('table_name') .
+		$sql = 'select count(*) as occurence, COL_CALL, COL_MODE, COL_SUBMODE, COL_STATION_CALLSIGN, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from ' . $this->config->item('table_name') .
 			' join station_profile on ' . $this->config->item('table_name') . '.station_id = station_profile.station_id where ' . $this->config->item('table_name') . '.station_id in (' . $location_list . ')';
 
 		if ($station_id != 'All') {
@@ -1279,7 +1279,22 @@ class Logbook extends CI_Controller
 
 		$query = $this->db->query($sql);
 
-		$data['qsos'] = $query;
+		$this->load->model('logbook_model');
+		$location_ids = $logbooks_locations_array;
+		if ($station_id != 'All') {
+			$location_ids = [(int) $station_id];
+		}
+
+		$duplicate_groups = [];
+		foreach ($query->result() as $group_row) {
+			$ids = $this->logbook_model->duplicate_group_primary_keys($group_row, $location_ids);
+			if (count($ids) > 1) {
+				$group_row->qso_ids = implode(',', $ids);
+			}
+			$duplicate_groups[] = $group_row;
+		}
+
+		$data['qsos'] = $duplicate_groups;
 
 		$this->lang->load('search');
 		$this->load->view('search/duplicates_result.php', $data);

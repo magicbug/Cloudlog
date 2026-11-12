@@ -1,5 +1,5 @@
 <?php
-if ($qsos->result() != NULL) {
+if (!empty($qsos)) {
 	Echo 'The following QSOs were found on the same band, mode, date and time difference 30 minutes:';
 	echo '<table style="width:100%" class="qsolist table-sm table-bordered table-hover table-striped table-condensed">
 	<thead>
@@ -27,7 +27,7 @@ if ($qsos->result() != NULL) {
 	}
 
 	$i = 0;
-	foreach ($qsos->result() as $qso) {
+	foreach ($qsos as $qso) {
 		echo '<tr>';
 		echo '<td style=\'text-align: center\'>' . $qso->occurence . '</td>';
 		echo '<td style=\'text-align: center\'><form id="searchcall_'.$i.'" method="POST" action="'.site_url('search'). '"><input type="hidden" value="'. strtoupper($qso->COL_CALL) .'" name="callsign"><a href="javascript:$(\'#searchcall_'.$i++.'\').submit()">' . $qso->COL_CALL . '</a></form></td>';
