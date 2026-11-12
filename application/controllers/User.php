@@ -1591,21 +1591,6 @@ class User extends CI_Controller
 					if ($new_user_q && $new_user_q->num_rows() > 0) {
 						$u = $new_user_q->row();
 
-						$this->load->library('email');
-						if ($this->optionslib->get_option('emailProtocol') == "smtp") {
-							$config = Array(
-								'protocol' => $this->optionslib->get_option('emailProtocol'),
-								'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-								'smtp_host' => $this->optionslib->get_option('smtpHost'),
-								'smtp_port' => $this->optionslib->get_option('smtpPort'),
-								'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-								'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-								'crlf' => "\r\n",
-								'newline' => "\r\n"
-							);
-							$this->email->initialize($config);
-						}
-
 						$email_data = array(
 							'username' => $u->user_name,
 							'user_firstname' => $u->user_firstname,
@@ -1616,12 +1601,10 @@ class User extends CI_Controller
 						);
 						$message = $this->load->view('email/welcome_reminder.php', $email_data, TRUE);
 
-						$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-						$this->email->to($u->user_email);
-						$this->email->subject('Welcome to Cloudlog');
-						$this->email->message($message);
-						if (!$this->email->send()) {
-							log_message('error', 'Failed to send signup welcome email to ' . $u->user_email . '. Error: ' . $this->email->print_debugger());
+						$this->load->library('mailer');
+						$result = $this->mailer->send($u->user_email, 'Welcome to Cloudlog', $message);
+						if (!$result['sent']) {
+							log_message('error', 'Failed to send signup welcome email to ' . $u->user_email . '. Error: ' . $result['error']);
 						}
 					}
 				}
@@ -1688,32 +1671,14 @@ class User extends CI_Controller
 				// Send email with reset code
 
 				$this->data['reset_code'] = $reset_code;
-				$this->load->library('email');
-
-				if ($this->optionslib->get_option('emailProtocol') == "smtp") {
-					$config = array(
-						'protocol' => $this->optionslib->get_option('emailProtocol'),
-						'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-						'smtp_host' => $this->optionslib->get_option('smtpHost'),
-						'smtp_port' => $this->optionslib->get_option('smtpPort'),
-						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-						'crlf' => "\r\n",
-						'newline' => "\r\n"
-					);
-
-					$this->email->initialize($config);
-				}
 
 				$message = $this->load->view('email/forgot_password', $this->data,  TRUE);
 
-				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-				$this->email->to($this->input->post('email', true));
+				$this->load->library('mailer');
+				$result = $this->mailer->send($this->input->post('email', true), 'Cloudlog Account Password Reset', $message);
 
-				$this->email->subject('Cloudlog Account Password Reset');
-				$this->email->message($message);
-
-				if (!$this->email->send()) {
+				if (!$result['sent']) {
+					log_message('error', 'Password reset email failed. Error: ' . $result['error']);
 					// Redirect to login page with message
 					$this->session->set_flashdata('warning', 'Email settings are incorrect.');
 					redirect('user/login');
@@ -1768,31 +1733,14 @@ class User extends CI_Controller
 				$this->data['user_firstname'] = $data->user_firstname; // We can call the user by their first name in the E-Mail
 				$this->data['user_callsign'] = $data->user_callsign;
 				$this->data['user_name'] = $data->user_name;
-				$this->load->library('email');
-
-				if ($this->optionslib->get_option('emailProtocol') == "smtp") {
-					$config = array(
-						'protocol' => $this->optionslib->get_option('emailProtocol'),
-						'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-						'smtp_host' => $this->optionslib->get_option('smtpHost'),
-						'smtp_port' => $this->optionslib->get_option('smtpPort'),
-						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-						'crlf' => "\r\n",
-						'newline' => "\r\n"
-					);
-
-					$this->email->initialize($config);
-				}
 
 				$message = $this->load->view('email/admin_reset_password', $this->data,  TRUE);
 
-				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-				$this->email->to($data->user_email);
-				$this->email->subject('Cloudlog Account Password Reset');
-				$this->email->message($message);
+				$this->load->library('mailer');
+				$result = $this->mailer->send($data->user_email, 'Cloudlog Account Password Reset', $message);
 
-				if (!$this->email->send()) {
+				if (!$result['sent']) {
+					log_message('error', 'Admin password reset email failed. Error: ' . $result['error']);
 					// Redirect to user page with message
 					$this->session->set_flashdata('danger', lang('admin_email_settings_incorrect'));
 					redirect('user');
@@ -1924,24 +1872,6 @@ class User extends CI_Controller
 			return;
 		}
 		
-		// Load email library
-		$this->load->library('email');
-		
-		// Configure SMTP if needed
-		if ($this->optionslib->get_option('emailProtocol') == "smtp") {
-			$config = Array(
-				'protocol' => $this->optionslib->get_option('emailProtocol'),
-				'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-				'smtp_host' => $this->optionslib->get_option('smtpHost'),
-				'smtp_port' => $this->optionslib->get_option('smtpPort'),
-				'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-				'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-				'crlf' => "\r\n",
-				'newline' => "\r\n"
-			);
-			$this->email->initialize($config);
-		}
-		
 		// Prepare email data
 		$email_data = array(
 			'username' => $username,
@@ -1954,14 +1884,12 @@ class User extends CI_Controller
 		);
 		
 		$message = $this->load->view('email/welcome.php', $email_data, TRUE);
+
+		$this->load->library('mailer');
+		$result = $this->mailer->send($email, 'Welcome to Cloudlog - Your Account Has Been Created', $message);
 		
-		$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-		$this->email->to($email);
-		$this->email->subject('Welcome to Cloudlog - Your Account Has Been Created');
-		$this->email->message($message);
-		
-		if (!$this->email->send()) {
-			log_message('error', 'Failed to send welcome email to ' . $email . '. Error: ' . $this->email->print_debugger());
+		if (!$result['sent']) {
+			log_message('error', 'Failed to send welcome email to ' . $email . '. Error: ' . $result['error']);
 		} else {
 			log_message('info', 'Welcome email sent to ' . $email);
 		}
@@ -1994,24 +1922,6 @@ class User extends CI_Controller
 			return;
 		}
 		
-		// Load email library
-		$this->load->library('email');
-		
-		// Configure SMTP if needed
-		if ($this->optionslib->get_option('emailProtocol') == "smtp") {
-			$config = Array(
-				'protocol' => $this->optionslib->get_option('emailProtocol'),
-				'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-				'smtp_host' => $this->optionslib->get_option('smtpHost'),
-				'smtp_port' => $this->optionslib->get_option('smtpPort'),
-				'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-				'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-				'crlf' => "\r\n",
-				'newline' => "\r\n"
-			);
-			$this->email->initialize($config);
-		}
-		
 		// Prepare email data (without password)
 		$email_data = array(
 			'username' => $user->user_name,
@@ -2024,14 +1934,12 @@ class User extends CI_Controller
 		
 		// Use the reminder template without password
 		$message = $this->load->view('email/welcome_reminder.php', $email_data, TRUE);
+
+		$this->load->library('mailer');
+		$result = $this->mailer->send($user->user_email, 'Cloudlog Account Reminder', $message);
 		
-		$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-		$this->email->to($user->user_email);
-		$this->email->subject('Cloudlog Account Reminder');
-		$this->email->message($message);
-		
-		if (!$this->email->send()) {
-			log_message('error', 'Failed to resend welcome email to ' . $user->user_email . '. Error: ' . $this->email->print_debugger());
+		if (!$result['sent']) {
+			log_message('error', 'Failed to resend welcome email to ' . $user->user_email . '. Error: ' . $result['error']);
 			$this->session->set_flashdata('danger', 'Failed to send email to ' . $user->user_email);
 		} else {
 			log_message('info', 'Welcome reminder email sent to ' . $user->user_email);

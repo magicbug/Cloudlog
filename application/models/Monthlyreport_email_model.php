@@ -134,35 +134,15 @@ class Monthlyreport_email_model extends CI_Model {
 			'report_url' => site_url('monthlyreport'),
 		), TRUE);
 
-		$this->load->library('email');
-		$this->email->clear();
-		if ($this->optionslib->get_option('emailProtocol') == "smtp") {
-			$config = Array(
-				'protocol' => $this->optionslib->get_option('emailProtocol'),
-				'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-				'smtp_host' => $this->optionslib->get_option('smtpHost'),
-				'smtp_port' => $this->optionslib->get_option('smtpPort'),
-				'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-				'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-				'crlf' => "\r\n",
-				'newline' => "\r\n"
-			);
-			$this->email->initialize($config);
-		}
+		$this->load->library('mailer');
+		$result = $this->mailer->send($user->user_email, $subject, $message);
 
-		$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-		$this->email->to($user->user_email);
-		$this->email->subject($subject);
-		$this->email->message($message);
-
-		if (!$this->email->send(FALSE)) {
-			$error = $this->email->print_debugger(array('headers'));
+		if (!$result['sent']) {
+			$error = strip_tags($result['error']);
 			log_message('error', 'Monthly report email to user '.$user->user_id.' failed: '.$error);
-			$this->email->clear();
-			return array('status' => 'error', 'error' => strip_tags($error), 'total_qsos' => (int) $report['total_qsos']);
+			return array('status' => 'error', 'error' => $error, 'total_qsos' => (int) $report['total_qsos']);
 		}
 
-		$this->email->clear();
 		return array('status' => 'sent', 'error' => null, 'total_qsos' => (int) $report['total_qsos']);
 	}
 }

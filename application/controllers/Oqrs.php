@@ -255,37 +255,22 @@ class Oqrs extends CI_Controller {
 
 			if($email != "" && $sendEmail == "1") {
 
-				$this->load->library('email');
-
-				if($this->optionslib->get_option('emailProtocol') == "smtp") {
-					$config = Array(
-						'protocol' => $this->optionslib->get_option('emailProtocol'),
-						'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-						'smtp_host' => $this->optionslib->get_option('smtpHost'),
-						'smtp_port' => $this->optionslib->get_option('smtpPort'),
-						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-						'crlf' => "\r\n",
-						'newline' => "\r\n"
-					);
-
-					$this->email->initialize($config);
-				}
-
 				$data['callsign'] = $this->security->xss_clean($postdata['callsign']);
 				$data['usermessage'] = $this->security->xss_clean($postdata['message']);
 
 				$message = $this->load->view('email/oqrs_request', $data,  TRUE);
 
-				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-				$this->email->to($email);
-				$this->email->reply_to($this->security->xss_clean($postdata['email']), strtoupper($data['callsign']));
+				$this->load->library('mailer');
+				$result = $this->mailer->send(
+					$email,
+					'Cloudlog OQRS from ' . strtoupper($data['callsign']),
+					$message,
+					$this->security->xss_clean($postdata['email']),
+					strtoupper($data['callsign'])
+				);
 
-				$this->email->subject('Cloudlog OQRS from ' . strtoupper($data['callsign']));
-				$this->email->message($message);
-
-				if (! $this->email->send()) {
-					log_message('error', 'OQRS Alert! Email settings are incorrect.');
+				if (!$result['sent']) {
+					log_message('error', 'OQRS Alert! Email settings are incorrect. ' . $result['error']);
 				} else {
 					log_message('info', 'An OQRS request is made.');
 				}

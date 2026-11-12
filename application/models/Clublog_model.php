@@ -96,22 +96,6 @@ class Clublog_model extends CI_Model {
 			return false;
 		}
 
-		$this->load->library('email');
-
-		if ($this->optionslib->get_option('emailProtocol') == 'smtp') {
-			$config = array(
-				'protocol' => $this->optionslib->get_option('emailProtocol'),
-				'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-				'smtp_host' => $this->optionslib->get_option('smtpHost'),
-				'smtp_port' => $this->optionslib->get_option('smtpPort'),
-				'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-				'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-				'crlf' => "\r\n",
-				'newline' => "\r\n"
-			);
-			$this->email->initialize($config);
-		}
-
 		$email_data = array(
 			'user_firstname' => $user->user_firstname,
 			'user_lastname' => $user->user_lastname,
@@ -123,13 +107,11 @@ class Clublog_model extends CI_Model {
 
 		$message = $this->load->view('email/clublog_credentials_reset', $email_data, true);
 
-		$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-		$this->email->to($user->user_email);
-		$this->email->subject('Cloudlog - Clublog Credentials Reset');
-		$this->email->message($message);
+		$this->load->library('mailer');
+		$result = $this->mailer->send($user->user_email, 'Cloudlog - Clublog Credentials Reset', $message);
 
-		if (!$this->email->send()) {
-			log_message('error', 'Failed to send Clublog credentials reset email to ' . $user->user_email . '. Error: ' . $this->email->print_debugger());
+		if (!$result['sent']) {
+			log_message('error', 'Failed to send Clublog credentials reset email to ' . $user->user_email . '. Error: ' . $result['error']);
 			return false;
 		}
 

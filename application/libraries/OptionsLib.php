@@ -49,7 +49,8 @@ class OptionsLib {
         // Make Codeigniter functions available to library
         $CI =& get_instance();
         
-        // Check for managed email configuration overrides
+        // Keys set in application/config/managed.php replace the Email page.
+        // See application/config/managed.example.php.
         $email_settings_map = array(
             'emailProtocol' => 'managed_email_protocol',
             'smtpEncryption' => 'managed_email_smtp_encryption',
@@ -58,7 +59,10 @@ class OptionsLib {
             'smtpHost' => 'managed_email_smtp_host',
             'smtpPort' => 'managed_email_smtp_port',
             'smtpUsername' => 'managed_email_smtp_username',
-            'smtpPassword' => 'managed_email_smtp_password'
+            'smtpPassword' => 'managed_email_smtp_password',
+            'sesRegion' => 'managed_email_ses_region',
+            'sesAccessKey' => 'managed_email_ses_access_key',
+            'sesSecretKey' => 'managed_email_ses_secret_key'
         );
         
         // If this is an email setting and managed email is configured, return managed value
