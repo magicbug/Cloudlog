@@ -1069,6 +1069,48 @@ table.dataTable tfoot td {
 	margin-right: 0.125rem;
 }
 
+/* Collapsed navbar: stack nested submenus vertically instead of sideways flyouts */
+@media (max-width: 991.98px) {
+	.navbar-expand-lg .navbar-collapse.show {
+		max-height: calc(100vh - 4rem);
+		max-height: calc(100dvh - 4rem);
+		overflow-y: auto;
+		overflow-x: hidden;
+		overscroll-behavior: contain;
+	}
+
+	.navbar-expand-lg .navbar-nav .dropdown-menu {
+		position: static !important;
+		min-width: 0;
+		max-width: 100%;
+	}
+
+	.navbar-expand-lg .navbar-nav .dropdown-submenu > .dropdown-menu {
+		position: static !important;
+		inset: auto !important;
+		transform: none !important;
+		float: none;
+		width: auto;
+		margin: 0.125rem 0.35rem 0.35rem 1rem;
+		box-shadow: none;
+	}
+
+	.navbar-expand-lg .navbar-nav .dropdown-submenu:focus-within > .dropdown-menu {
+		display: block;
+	}
+
+	.navbar-expand-lg .navbar-nav .dropdown-item {
+		width: auto;
+		white-space: normal;
+		overflow-wrap: anywhere;
+	}
+
+	.navbar-expand-lg .navbar-nav .dropdown-submenu > .dropdown-toggle::after {
+		flex-shrink: 0;
+		transform: rotate(45deg);
+	}
+}
+
 .navbar .dropdown-menu {
 	padding: 0.35rem 0;
 	border-radius: 0.5rem;
