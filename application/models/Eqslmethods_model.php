@@ -87,8 +87,7 @@ class Eqslmethods_model extends CI_Model {
         if (!empty($logbooks_locations_array)) {
             $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
         } else {
-            // Option 1: Skip the query altogether (return no results)
-            return [];
+            return $this->empty_query_result();
         }
 
         return $this->db->get();
@@ -98,7 +97,7 @@ class Eqslmethods_model extends CI_Model {
     function eqsl_not_yet_sent_for_station($station_id, $qth_nickname = null) {
         $station_id = (int) $station_id;
         if ($station_id <= 0) {
-            return array();
+            return $this->empty_query_result();
         }
 
         $this->db->select('station_profile.*, '.$this->config->item('table_name').'.COL_PRIMARY_KEY, '.$this->config->item('table_name').'.COL_TIME_ON, '.$this->config->item('table_name').'.COL_CALL, '.$this->config->item('table_name').'.COL_MODE, '.$this->config->item('table_name').'.COL_SUBMODE, '.$this->config->item('table_name').'.COL_BAND, '.$this->config->item('table_name').'.COL_COMMENT, '.$this->config->item('table_name').'.COL_RST_SENT, '.$this->config->item('table_name').'.COL_PROP_MODE, '.$this->config->item('table_name').'.COL_SAT_NAME, '.$this->config->item('table_name').'.COL_SAT_MODE, '.$this->config->item('table_name').'.COL_QSLMSG');
@@ -145,8 +144,7 @@ class Eqslmethods_model extends CI_Model {
         if (!empty($logbooks_locations_array)) {
             $this->db->where_in('station_profile.station_id', $logbooks_locations_array);
         } else {
-            // Option 1: Skip the query altogether (return no results)
-            return [];
+            return $this->empty_query_result();
         }
         $this->db->order_by("COL_TIME_ON", "desc");
 
@@ -403,6 +401,11 @@ class Eqslmethods_model extends CI_Model {
         }
 
         return $affected_rows;
+    }
+
+    private function empty_query_result()
+    {
+        return $this->db->query('SELECT 1 WHERE 1 = 0');
     }
 
 }
