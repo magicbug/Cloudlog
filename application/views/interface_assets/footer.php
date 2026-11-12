@@ -1598,6 +1598,7 @@ $(document).ready(function() {
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
+    <script src="<?php echo base_url(); ?>assets/js/offline-qso-queue.js?<?php echo filemtime(FCPATH . 'assets/js/offline-qso-queue.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/qso.js?<?php echo filemtime(FCPATH . 'assets/js/sections/qso.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/cw-sidetone.js"></script>
     <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
@@ -4960,6 +4961,7 @@ $(document).ready(function() {
     <script>
         var manual = <?php echo (int) ($_GET['manual'] ?? 0); ?>;
     </script>
+    <script src="<?php echo base_url(); ?>assets/js/offline-qso-queue.js?<?php echo filemtime(FCPATH . 'assets/js/offline-qso-queue.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/contesting.js?v2"></script>
 <?php } ?>
 

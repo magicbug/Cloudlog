@@ -950,17 +950,15 @@ $(".js-save-to-log").click(function () {
 			btnOKLabel: lang_general_word_ok,
 			btnOKClass: "btn-info",
 			callback: function (result) {
-				if (result) {
-					var operator = $("#operator").val();
-					operator = operator.toUpperCase();
-					var ownCallsign = $("#station-call").val().toUpperCase();
-					ownCallsign = ownCallsign.toUpperCase();
-					// var mySotaWwff = $("#my-sota-wwff").val().toUpperCase();
+				if (!result) {
+					return;
+				}
+				(async function () {
+					var saveUrl = base_url + "index.php/qso/saveqso";
+					var hardFailure = false;
 
-					// var myPower = $("#my-power").val();
-					// var myGrid = $("#my-grid").val().toUpperCase();
-
-					qsoList.forEach((item) => {
+					for (var idx = 0; idx < qsoList.length; idx++) {
+						var item = qsoList[idx];
 						var callsign = item[2];
 						var rst_rcvd = item[7];
 						var rst_sent = item[6];
@@ -988,8 +986,7 @@ $(".js-save-to-log").click(function () {
 						} else if (isWWFF(item[8])) {
 							wwff_ref = item[8];
 						}
-						
-						// Satellite data
+
 						var sat_name = item[9] || "";
 						var sat_mode = item[10] || "";
 						var prop_mode = item[11] || "";
@@ -998,54 +995,90 @@ $(".js-save-to-log").click(function () {
 						var gridsquare = item[14] || "";
 						var comment = item[15] || "";
 
-						// Check if gridsquare contains multiple comma-separated grids (VUCC)
 						var locator = "";
 						var vucc_grids = "";
 						if (gridsquare && gridsquare.includes(",")) {
-							// Multiple gridsquares - store as VUCC grids
 							vucc_grids = gridsquare;
 						} else {
-							// Single gridsquare
 							locator = gridsquare;
 						}
 
-						$.ajax({
-							url: base_url + "index.php/qso/saveqso",
-							type: "post",
-							data: {
-								callsign: callsign,
-								rst_rcvd: rst_rcvd,
-								rst_sent: rst_sent,
-								start_date: start_date,
-								band: band,
-								mode: mode,
-								freq_display: freq_display,
-								start_time: start_time,
-								station_profile: station_profile,
-								sota_ref: sota_ref,
-								iota_ref: iota_ref,
-								pota_ref: pota_ref,
-								wwff_ref: wwff_ref,
-								sat_name: sat_name,
-								sat_mode: sat_mode,
-								prop_mode: prop_mode,
-								freq_display_rx: freq_display_rx,
-								band_rx: band_rx,
-								locator: locator,
-								vucc_grids: vucc_grids,
-								comment: comment,
-								isSFLE: true,
-							},
-							success: function (result) {},
+						var clientRef = (window.CloudlogOfflineQsoQueue)
+							? window.CloudlogOfflineQsoQueue.generateClientRef()
+							: "";
+						var payload = {
+							callsign: callsign,
+							rst_rcvd: rst_rcvd,
+							rst_sent: rst_sent,
+							start_date: start_date,
+							band: band,
+							mode: mode,
+							freq_display: freq_display,
+							start_time: start_time,
+							station_profile: station_profile,
+							sota_ref: sota_ref,
+							iota_ref: iota_ref,
+							pota_ref: pota_ref,
+							wwff_ref: wwff_ref,
+							sat_name: sat_name,
+							sat_mode: sat_mode,
+							prop_mode: prop_mode,
+							freq_display_rx: freq_display_rx,
+							band_rx: band_rx,
+							locator: locator,
+							vucc_grids: vucc_grids,
+							comment: comment,
+							isSFLE: true,
+							client_ref: clientRef,
+						};
+
+						try {
+							await new Promise(function (resolve, reject) {
+								$.ajax({
+									url: saveUrl,
+									type: "post",
+									data: payload,
+									success: function () {
+										resolve();
+									},
+									error: function (xhr, textStatus) {
+										reject({ xhr: xhr, textStatus: textStatus });
+									},
+								});
+							});
+						} catch (err) {
+							if (window.CloudlogOfflineQsoQueue && window.CloudlogOfflineQsoQueue.shouldEnqueue(err.xhr, err.textStatus)) {
+								window.CloudlogOfflineQsoQueue.enqueue({
+									clientRef: clientRef,
+									url: saveUrl,
+									source: "simplefle",
+									payloadType: "object",
+									payload: payload,
+								});
+							} else {
+								hardFailure = true;
+							}
+						}
+					}
+
+					if (hardFailure) {
+						BootstrapDialog.alert({
+							title: lang_general_word_warning,
+							message: "Some QSOs could not be saved or queued. Please try again.",
+							type: BootstrapDialog.TYPE_DANGER,
 						});
-					});
+						return;
+					}
 
 					clearSession();
+					if (window.CloudlogOfflineQsoQueue && window.CloudlogOfflineQsoQueue.queueCount() > 0) {
+						window.CloudlogOfflineQsoQueue.showQueuedNotice();
+					}
 					BootstrapDialog.alert({
 						title: lang_qso_simplefle_success_save_to_log_header,
 						message: lang_qso_simplefle_success_save_to_log,
 					});
-				}
+				})();
 			},
 		});
 	}

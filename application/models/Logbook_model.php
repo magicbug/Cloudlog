@@ -78,9 +78,46 @@ class Logbook_model extends CI_Model
     }
   }
 
+  /**
+   * @param int|string $station_id
+   * @param string $client_ref
+   */
+  public function qso_exists_for_client_ref($station_id, $client_ref)
+  {
+    if ($station_id === '' || $station_id === '0' || $client_ref === null || $client_ref === '') {
+      return false;
+    }
+
+    $this->db->select('COL_PRIMARY_KEY');
+    $this->db->where('station_id', $station_id);
+    $this->db->where('COL_CLIENT_REF', $client_ref);
+    $query = $this->db->get($this->config->item('table_name'), 1);
+
+    return $query->num_rows() > 0;
+  }
+
   /* Add QSO to Logbook */
   function create_qso()
   {
+    $CI = &get_instance();
+    $CI->load->helper('client_ref');
+
+    $station_id = $this->input->post('station_profile');
+    if ($station_id == "" || $station_id == "0") {
+      $CI->load->model('stations');
+      $station_id = $CI->stations->find_active();
+    }
+
+    $CI->load->model('stations');
+    if (!$CI->stations->check_station_is_accessible($station_id)) {
+      return 'station_not_accessible';
+    }
+
+    $client_ref = client_ref_normalize($this->input->post('client_ref'));
+
+    if ($client_ref !== null && $this->qso_exists_for_client_ref($station_id, $client_ref)) {
+      return 'duplicate';
+    }
 
     $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time - Parse date according to user's format preference
@@ -366,21 +403,11 @@ class Logbook_model extends CI_Model
       'COL_SIG_INFO' => $this->input->post('sig_info') == null ? '' : trim($this->input->post('sig_info')),
       'COL_DARC_DOK' => $darc_dok  == null ? '' : strtoupper(trim($darc_dok)),
       'COL_NOTES' => $this->input->post('notes'),
+      'COL_CLIENT_REF' => $client_ref,
     );
-
-    $station_id = $this->input->post('station_profile');
-
-    if ($station_id == "" || $station_id == "0") {
-      $CI = &get_instance();
-      $CI->load->model('stations');
-      $station_id = $CI->stations->find_active();
-    }
 
     $CI = &get_instance();
     $CI->load->model('stations');
-    if (!$CI->stations->check_station_is_accessible($station_id)) {  // Hard Exit if station_profile not accessible
-      return 'Station not accessible<br>';
-    }
 
 
     $station = null;
@@ -458,6 +485,8 @@ class Logbook_model extends CI_Model
     }
 
     $this->add_qso($data, $skipexport = false);
+
+    return 'ok';
   }
 
   public function check_last_lotw($call)

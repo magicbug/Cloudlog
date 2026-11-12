@@ -668,6 +668,36 @@ function setExchangetype(exchangetype) {
 	updateTableColumns(exchangetype);
 }
 
+async function completeContestQsoSave(formdata) {
+	var exchangetype = $("#exchangetype").val();
+	if (exchangetype == "Serial" || exchangetype == 'Serialexchange' || exchangetype == 'Serialgridsquare') {
+		$("#exch_serial_s").val(+$("#exch_serial_s").val() + 1);
+		formdata.set('exch_serial_s', $("#exch_serial_s").val());
+	}
+
+	$('#name').val("");
+
+	$('#callsign').val("");
+	$('#comment').val("");
+	$('#exch_rcvd').val("");
+	$('#exch_gridsquare_r').val("");
+	$('#exch_serial_r').val("");
+	$('.callsign-suggestions').text("");
+	$('.callsign-suggest').hide();
+	$('#callsign').css({'border-color': '', 'box-shadow': ''});
+	$('#callsign_info').text("").removeClass('text-bg-danger text-bg-success');
+	renderCallhistoryPanel([]);
+	if (manual) {
+		$("#start_time").focus().select();
+	} else {
+		$("#callsign").focus();
+	}
+	await setSession(formdata);
+
+	sessiondata = await getSession();
+	await refresh_qso_table(sessiondata);
+}
+
 /*
 	Function: logQso
 	Job: this handles the logging done in the contesting module.
@@ -742,44 +772,38 @@ function logQso() {
 		]];
 
 		var formdata = new FormData(document.getElementById("qso_input"));
+		var clientRef = (window.CloudlogOfflineQsoQueue)
+			? window.CloudlogOfflineQsoQueue.generateClientRef()
+			: '';
+		if (clientRef) {
+			formdata.set('client_ref', clientRef);
+		}
+		var saveUrl = base_url + 'index.php/qso/saveqso';
 		$.ajax({
-			url: base_url + 'index.php/qso/saveqso',
+			url: saveUrl,
 			type: 'post',
 			data: formdata,
 			processData: false,
 			contentType: false,
 			enctype: 'multipart/form-data',
-			success: async function (html) {
-				var exchangetype = $("#exchangetype").val();
-				if (exchangetype == "Serial" || exchangetype == 'Serialexchange' || exchangetype == 'Serialgridsquare') {
-					$("#exch_serial_s").val(+$("#exch_serial_s").val() + 1);
-					formdata.set('exch_serial_s', $("#exch_serial_s").val());
+			success: async function () {
+				await completeContestQsoSave(formdata);
+			},
+			error: async function (xhr, textStatus) {
+				if (window.CloudlogOfflineQsoQueue && window.CloudlogOfflineQsoQueue.shouldEnqueue(xhr, textStatus)) {
+					window.CloudlogOfflineQsoQueue.enqueue({
+						clientRef: clientRef,
+						url: saveUrl,
+						source: 'contesting',
+						payloadType: 'object',
+						payload: window.CloudlogOfflineQsoQueue.formDataToObject(formdata),
+					});
+					window.CloudlogOfflineQsoQueue.showQueuedNotice();
+					await completeContestQsoSave(formdata);
+					return;
 				}
-
-				$('#name').val("");
-
-				$('#callsign').val("");
-				$('#comment').val("");
-				$('#exch_rcvd').val("");
-				$('#exch_gridsquare_r').val("");
-				$('#exch_serial_r').val("");
-				$('.callsign-suggestions').text("");
-				$('.callsign-suggest').hide();
-				$('#callsign').css({'border-color': '', 'box-shadow': ''});
-				$('#callsign_info').text("").removeClass('text-bg-danger text-bg-success');
-				renderCallhistoryPanel([]);
-                if (manual) {
-                  $("#start_time").focus().select();
-                } else {
-                  $("#callsign").focus();
-                }
-				await setSession(formdata);
-
-				// Re-fetch session so table shows all QSOs from session start, not just last minute
-				sessiondata = await getSession();
-				await refresh_qso_table(sessiondata);
-
-			}
+				alert('Unable to save QSO due to a network or server error.');
+			},
 		});
 	}
 }
