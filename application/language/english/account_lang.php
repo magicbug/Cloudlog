@@ -135,3 +135,14 @@ $lang['account_hamsat_workable_only'] = "Show Workable Passes Only";
 $lang['account_hamsat_workable_only_hint'] = "If enabled shows only workable passes based on the gridsquare set in your hams.at account. Requires private feed key to be set.";
 
 $lang['account_remember_me'] = 'Remember me';
+
+$lang['account_qso_webhook'] = 'QSO Webhook';
+$lang['account_qso_webhook_intro'] = 'When enabled, Cloudlog sends a small JSON document to your URL each time a QSO is saved or updated in your logbook.';
+$lang['account_qso_webhook_enabled'] = 'Enable QSO webhook';
+$lang['account_qso_webhook_url'] = 'Webhook URL';
+$lang['account_qso_webhook_url_hint'] = 'Must be an http or https URL. Delivery uses a short timeout and never blocks logging.';
+$lang['account_qso_webhook_secret'] = 'Signing secret';
+$lang['account_qso_webhook_secret_hint'] = 'Optional. When set, requests include an X-Cloudlog-Signature header (HMAC-SHA256 of the JSON body). Leave blank to keep the existing secret.';
+$lang['account_qso_webhook_send_test'] = 'Send test';
+$lang['account_qso_webhook_test_ok'] = 'Test webhook delivered successfully.';
+$lang['account_qso_webhook_test_failed'] = 'Test webhook could not be delivered.';

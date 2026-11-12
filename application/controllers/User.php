@@ -354,6 +354,7 @@ class User extends CI_Controller
 		$this->form_validation->set_rules('user_clublog_name', 'Clublog Email', 'callback_check_clublog_email');
 		$this->form_validation->set_rules('user_locator', 'Locator', 'callback_check_locator');
 		$this->form_validation->set_rules('user_timezone', 'Timezone', 'required');
+		$this->form_validation->set_rules('user_qso_webhook_url', 'QSO Webhook URL', 'callback_check_qso_webhook_url');
 
 		$data['user_form_action'] = site_url('user/edit') . "/" . $this->uri->segment(3);;
 		$data['bands'] = $this->bands->get_user_bands();
@@ -719,6 +720,19 @@ class User extends CI_Controller
 				$data['user_force_amsat_status_upload'] = isset($oscarwatch_force_amsat_option->option_value) ? $oscarwatch_force_amsat_option->option_value : '0';
 			}
 
+			$this->load->library('qso_webhook');
+			$qso_webhook_config = $this->qso_webhook->get_user_webhook_config($edited_user_id);
+			if ($this->input->post('user_qso_webhook_enabled') !== null) {
+				$data['user_qso_webhook_enabled'] = $this->input->post('user_qso_webhook_enabled', false);
+			} else {
+				$data['user_qso_webhook_enabled'] = $qso_webhook_config['enabled'] ? '1' : '0';
+			}
+			if ($this->input->post('user_qso_webhook_url', true) !== null && $this->input->post('user_qso_webhook_url', true) !== false) {
+				$data['user_qso_webhook_url'] = $this->input->post('user_qso_webhook_url', true);
+			} else {
+				$data['user_qso_webhook_url'] = $qso_webhook_config['url'];
+			}
+
 			// Set defaults
 			$data['dashboard_upcoming_dx_card'] = false;
 			$data['dashboard_dxpedition_sat_worked'] = false;
@@ -913,6 +927,19 @@ class User extends CI_Controller
 				// All okay, return to user screen
 				case OK:
 					$this->save_user_callbook($this->input->post('id', true));
+					$this->load->library('qso_webhook');
+					$webhook_user_id = (int) $this->input->post('id', true);
+					$webhook_enabled = ((string) $this->input->post('user_qso_webhook_enabled') === '1');
+					$webhook_url = $this->input->post('user_qso_webhook_url', true);
+					$webhook_secret = $this->input->post('user_qso_webhook_secret', true);
+					$webhook_update_secret = (trim((string) $webhook_secret) !== '');
+					$this->qso_webhook->save_user_webhook_config(
+						$webhook_user_id,
+						$webhook_enabled,
+						$webhook_url ?? '',
+						$webhook_secret ?? '',
+						$webhook_update_secret
+					);
 					if ($this->session->userdata('user_id') == $this->uri->segment(3)) { // Editing own User? Set cookie!
 						$cookie = array(
 
@@ -1138,6 +1165,68 @@ class User extends CI_Controller
 				$this->session->unset_userdata(array('qrz_session_key', 'hamqth_session_key'));
 			}
 		}
+	}
+
+	public function check_qso_webhook_url($url)
+	{
+		if ((string) $this->input->post('user_qso_webhook_enabled') !== '1') {
+			return true;
+		}
+
+		$url = trim((string) $url);
+		if ($url === '') {
+			$this->form_validation->set_message('check_qso_webhook_url', 'A webhook URL is required when the QSO webhook is enabled.');
+			return false;
+		}
+
+		$this->load->library('qso_webhook');
+		if (!$this->qso_webhook->is_allowed_webhook_url($url)) {
+			$this->form_validation->set_message('check_qso_webhook_url', 'The webhook URL must be a valid http or https address.');
+			return false;
+		}
+
+		return true;
+	}
+
+	public function test_qso_webhook()
+	{
+		$this->load->model('user_model');
+		if (!$this->user_model->authorize(2)) {
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(403)
+				->set_output(json_encode(array('ok' => false, 'message' => 'Not authorised')));
+		}
+
+		$url = trim((string) $this->input->post('url', true));
+		$secret = (string) $this->input->post('secret', true);
+
+		$this->load->library('qso_webhook');
+		if (trim($secret) === '') {
+			$stored = $this->qso_webhook->get_user_webhook_config((int) $this->session->userdata('user_id'));
+			$secret = $stored['secret'];
+		}
+		if (!$this->qso_webhook->is_allowed_webhook_url($url)) {
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(400)
+				->set_output(json_encode(array('ok' => false, 'message' => 'Please enter a valid http or https webhook URL.')));
+		}
+
+		$payload = $this->qso_webhook->build_test_payload();
+		$result = $this->qso_webhook->send_webhook($url, $secret, $payload);
+
+		if (!$result['ok']) {
+			$message = $result['error'] !== '' ? $result['error'] : lang('account_qso_webhook_test_failed');
+			return $this->output
+				->set_content_type('application/json')
+				->set_status_header(502)
+				->set_output(json_encode(array('ok' => false, 'message' => $message)));
+		}
+
+		return $this->output
+			->set_content_type('application/json')
+			->set_output(json_encode(array('ok' => true, 'message' => lang('account_qso_webhook_test_ok'))));
 	}
 
 	public function validate_oscarwatch_token()
