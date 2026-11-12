@@ -264,6 +264,10 @@
 							<a class="dropdown-item" href="<?php echo site_url('awards/waja'); ?>"><i class="fas fa-torii-gate"></i> <?php echo lang('menu_waja'); ?></a>
 							<div class="dropdown-divider"></div>
 								<?php } ?>
+								<?php if (!empty($user_awards->wac)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/wac'); ?>"><i class="fas fa-globe-africa"></i> <?php echo lang('menu_wac'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
 								<?php if ($user_awards->was == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/was'); ?>"><i class="fas fa-flag-usa"></i> <?php echo lang('menu_was'); ?></a>
 							<div class="dropdown-divider"></div>

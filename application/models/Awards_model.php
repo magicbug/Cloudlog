@@ -44,6 +44,7 @@ class Awards_model extends CI_Model {
 			'vucc' => 1,
 			'wab' => 1,
 			'waja' => 1,
+			'wac' => 1,
 			'was' => 1,
 			'wwff' => 1,
 		);
@@ -61,7 +62,7 @@ class Awards_model extends CI_Model {
 		$valid_awards = array(
 			'cq', 'dok', 'dxcc', 'ffma', 'iota',
 			'gridmaster_dl', 'gridmaster_lx', 'gridmaster_ja', 'gridmaster_us', 'gridmaster_uk',
-			'gmdxsummer', 'pota', 'sig', 'sota', 'uscounties', 'vucc', 'wab', 'waja', 'was', 'wwff'
+			'gmdxsummer', 'pota', 'sig', 'sota', 'uscounties', 'vucc', 'wab', 'waja', 'wac', 'was', 'wwff'
 		);
 		
 		if (!in_array($award_type, $valid_awards)) {
@@ -102,6 +103,7 @@ class Awards_model extends CI_Model {
 			'vucc' 			=> $awards['vucc'] 			== "true" ? '1' : '0',
 			'wab' 			=> $awards['wab'] 			== "true" ? '1' : '0',
 			'waja' 			=> $awards['waja'] 			== "true" ? '1' : '0',
+			'wac' 			=> ($awards['wac'] ?? '') 	== "true" ? '1' : '0',
 			'was' 			=> $awards['was'] 			== "true" ? '1' : '0',
 			'wwff' 			=> $awards['wwff'] 			== "true" ? '1' : '0',
 		);
@@ -135,6 +137,7 @@ class Awards_model extends CI_Model {
 			'vucc' => 1,
 			'wab' => 1,
 			'waja' => 1,
+			'wac' => 1,
 			'was' => 1,
 			'wwff' => 1,
 		);
@@ -168,6 +171,7 @@ class Awards_model extends CI_Model {
 			'vucc' => 0,
 			'wab' => 0,
 			'waja' => 0,
+			'wac' => 0,
 			'was' => 0,
 			'wwff' => 0,
 		);

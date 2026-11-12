@@ -155,6 +155,11 @@ WAS -- Użyj wszystkich 4 wierszy tekstu
 ___________________________________________________________________________________________
 */
 
+$lang['awards_wac_description_ln1'] = "WAC Award";
+$lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is for contacts with each of the six continents: Africa, Asia, Europe, North America, Oceania, and South America. Antarctica does not count towards the six.";
+$lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
+$lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
+
 $lang['awards_was_description_ln1'] = "Nagroda WAS";
 $lang['awards_was_description_ln2'] = "Najpopularniejszą nagrodą ARRL jest nagroda Worked All States Award. Tysiące nagród przyznano radioamatorom na całym świecie. W 101. roku istnienia ARRL przeprojektowano certyfikaty i program w nadziei na usprawnienie i ulepszenie programu nagród.";
 $lang['awards_was_description_ln3'] = "Nagroda WAS (Worked All States) jest dostępna dla wszystkich amatorów na całym świecie, którzy przedstawią dowód z pisemnym potwierdzeniem kontaktów z każdym z 50 stanów Stanów Zjednoczonych Ameryki. Amatorzy w Stanach Zjednoczonych i ich posiadłościach muszą być członkami ARRL, aby ubiegać się o WAS. Kandydaci spoza Stanów Zjednoczonych są zwolnieni z tego wymogu.";

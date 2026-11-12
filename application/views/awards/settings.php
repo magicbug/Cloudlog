@@ -208,6 +208,13 @@
 						<td class="award-description">Worked All Japan</td>
 					</tr>
 					<tr>
+						<td class='award-checkbox-cell award_wac'>
+							<input type="checkbox" data-award="wac" <?php if (!empty($user_awards->wac)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">WAC</td>
+						<td class="award-description">Worked All Continents</td>
+					</tr>
+					<tr>
 						<td class='award-checkbox-cell award_was'>
 							<input type="checkbox" data-award="was" <?php if ($user_awards->was == 1) echo 'checked'; ?>>
 						</td>

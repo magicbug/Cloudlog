@@ -3513,6 +3513,69 @@ class Logbook_model extends CI_Model
     return $query;
   }
 
+  /*
+   * QSO and confirmed counts per continent for the WAC award.
+   * $filters: band ('All', 'SAT', or a band), mode ('All' or a mode/submode),
+   * and qsl, lotw, eqsl (truthy when that confirmation counts).
+   * Returns an array keyed by continent code, each with qsos and confirmed.
+   */
+  function wac_continent_summary($filters)
+  {
+    $CI = &get_instance();
+    $CI->load->model('logbooks_model');
+    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+    if (!$logbooks_locations_array) {
+      return array();
+    }
+
+    $confirmed = array();
+    if (!empty($filters['qsl'])) {
+      $confirmed[] = "COL_QSL_RCVD = 'Y'";
+    }
+    if (!empty($filters['lotw'])) {
+      $confirmed[] = "COL_LOTW_QSL_RCVD = 'Y'";
+    }
+    if (!empty($filters['eqsl'])) {
+      $confirmed[] = "COL_EQSL_QSL_RCVD = 'Y'";
+    }
+    $confirmed_sql = $confirmed ? 'SUM(CASE WHEN ' . implode(' OR ', $confirmed) . ' THEN 1 ELSE 0 END)' : '0';
+
+    $this->db->select('UPPER(COL_CONT) AS cont, COUNT(*) AS qsos, ' . $confirmed_sql . ' AS confirmed', FALSE);
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->where('COL_CONT is not null');
+    $this->db->where('COL_CONT !=', '');
+
+    if (isset($filters['mode']) && $filters['mode'] !== 'All' && $filters['mode'] !== '') {
+      $this->db->group_start();
+      $this->db->where('COL_MODE', $filters['mode']);
+      $this->db->or_where('COL_SUBMODE', $filters['mode']);
+      $this->db->group_end();
+    }
+
+    if (isset($filters['band']) && $filters['band'] !== 'All' && $filters['band'] !== '') {
+      if ($filters['band'] != 'SAT') {
+        $this->db->where('COL_BAND', $filters['band']);
+        $this->db->where('(COL_PROP_MODE IS NULL OR COL_PROP_MODE != "SAT")', NULL, FALSE);
+      } else {
+        $this->db->where('COL_PROP_MODE', 'SAT');
+      }
+    }
+
+    $this->db->group_by('UPPER(COL_CONT)');
+    $query = $this->db->get($this->config->item('table_name'));
+
+    $summary = array();
+    foreach ($query->result() as $row) {
+      $summary[$row->cont] = array(
+        'qsos' => (int) $row->qsos,
+        'confirmed' => (int) $row->confirmed,
+      );
+    }
+
+    return $summary;
+  }
+
   /* Return total number of CW QSOs */
   function total_cw()
   {

@@ -169,6 +169,11 @@ WAS -- Verwenden Sie alle 4 Textzeilen
 ___________________________________________________________________________________________
 */
 
+$lang['awards_wac_description_ln1'] = "WAC Award";
+$lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is for contacts with each of the six continents: Africa, Asia, Europe, North America, Oceania, and South America. Antarctica does not count towards the six.";
+$lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
+$lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
+
 $lang['awards_was_description_ln1'] = "WAS Diplom";
 $lang['awards_was_description_ln2'] = "Die beliebteste Auszeichnung des ARRL ist das Worked All States Diplom. Tausende von Diplomen wurden an Funkamateure auf der ganzen Welt verliehen. Im 101. Jahr des ARRL haben sie die Diplome und das Programm in der Hoffnung überarbeitet und verbessert, das Diplomprogramm zu optimieren und zu vereinfachen.";
 $lang['awards_was_description_ln3'] = "Das WAS (Worked All States) Diplom steht allen Funkamateuren weltweit zur Verfügung, die den Nachweis mit schriftlicher Bestätigung von Kontakten mit jedem der 50 Bundesstaaten der Vereinigten Staaten von Amerika erbringen. Funkamateure in den USA und ihren angehängten Staaten müssen Mitglieder des ARRL sein, um sich für einen WAS bewerben zu können. Bewerber aus dem Ausland sind von dieser Anforderung befreit.";

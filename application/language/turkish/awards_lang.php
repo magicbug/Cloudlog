@@ -163,6 +163,11 @@ WAS - Metnin 4 Satırının Tümünü Kullan
 ___________________________________________________________________________________________
 */
 
+$lang['awards_wac_description_ln1'] = "WAC Award";
+$lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is for contacts with each of the six continents: Africa, Asia, Europe, North America, Oceania, and South America. Antarctica does not count towards the six.";
+$lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
+$lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
+
 $lang['awards_was_description_ln1'] = "WAS Ödülü";
 $lang['awards_was_description_ln2'] = "ARRL'nin en popüler ödülü, Çalışılan Tüm Eyaletler Ödülü'dür. Dünya çapında amatörlere binlerce ve binlerce ödül verilmiştir. ARRL'nin 101. yılında, sertifikaları ve programı yeniden tasarladılar. ödül programının düzenlenmesi ve iyileştirilmesi.";
 $lang['awards_was_description_ln3'] = "WAS (Tüm Eyaletlerde Çalışıldı) Ödülü, Amerika Birleşik Devletleri'nin 50 eyaletinin her biriyle iletişimlerinin yazılı onayını içeren kanıt sunan dünya çapındaki tüm amatörlere açıktır. ABD'deki ve ABD'deki amatörler ABD dışından başvuranlar bu şarttan muaftır.";

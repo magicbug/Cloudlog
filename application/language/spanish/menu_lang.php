@@ -51,6 +51,7 @@ $lang['menu_us_counties'] = 'Condados de USA';
 $lang['menu_us_gridmaster'] = 'Gridmaster USA';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_waja'] = 'WAJA';
+$lang['menu_wac'] = 'WAC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 

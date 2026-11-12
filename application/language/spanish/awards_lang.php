@@ -169,6 +169,11 @@ WAS -- Use all 4 Lines of Text
 ___________________________________________________________________________________________
 */
 
+$lang['awards_wac_description_ln1'] = "WAC Award";
+$lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is for contacts with each of the six continents: Africa, Asia, Europe, North America, Oceania, and South America. Antarctica does not count towards the six.";
+$lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
+$lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
+
 $lang['awards_was_description_ln1'] = "Diploma WAS";
 $lang['awards_was_description_ln2'] = "El diploma más popular de la ARRL es el diploma Worked All States (Trabajados todos los Estados). Miles y miles de diplomas se han otorgado a radioaficionados alrededor del mundo. En el aniversario 101 de la ARRL, se ha rediseñado el certificado y las reglas del programa con la esperanza de facilitar y mejorar el programa de diplomas.";
 $lang['awards_was_description_ln3'] = "El diploma WAS (Worked All States) está disponible para todos los radioaficionados alrededor del mundo que demuestren confirmaciones escritas de contactos en cada uno de los 50 estados de los Estados Unidos de América. Los radioaficionados en los Estados Unidos y sus posesiones deberán ser miembros de la ARRL para aplicar para un diploma WAS. Los aplicantes fuera de los Estados Unidos están exentos de este requerimiento.";

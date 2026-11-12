@@ -767,6 +767,69 @@ class Awards extends CI_Controller
         $this->load->view('awards/was/index');
         $this->load->view('interface_assets/footer', $footerData);
     }
+
+    public function wac()
+    {
+        $this->load->model('logbook_model');
+        $this->load->model('modes');
+        $this->load->model('bands');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands();
+        $data['modes'] = $this->modes->active();
+
+        if ($this->input->method() === 'post') {
+            $filters = array(
+                'band' => $this->security->xss_clean($this->input->post('band')) ?: 'All',
+                'mode' => $this->security->xss_clean($this->input->post('mode')) ?: 'All',
+                'qsl' => (bool) $this->input->post('qsl'),
+                'lotw' => (bool) $this->input->post('lotw'),
+                'eqsl' => (bool) $this->input->post('eqsl'),
+            );
+        } else {
+            $filters = array('band' => 'All', 'mode' => 'All', 'qsl' => true, 'lotw' => true, 'eqsl' => false);
+        }
+        $data['filters'] = $filters;
+
+        $summary = $this->logbook_model->wac_continent_summary($filters);
+
+        $required = array(
+            'AF' => 'Africa',
+            'AS' => 'Asia',
+            'EU' => 'Europe',
+            'NA' => 'North America',
+            'OC' => 'Oceania',
+            'SA' => 'South America',
+        );
+
+        $rows = array();
+        $worked_count = 0;
+        $confirmed_count = 0;
+        foreach ($required as $code => $name) {
+            $qsos = isset($summary[$code]) ? $summary[$code]['qsos'] : 0;
+            $confirmed = isset($summary[$code]) ? $summary[$code]['confirmed'] : 0;
+            if ($qsos > 0) {
+                $worked_count++;
+            }
+            if ($confirmed > 0) {
+                $confirmed_count++;
+            }
+            $rows[] = array('code' => $code, 'name' => $name, 'qsos' => $qsos, 'confirmed' => $confirmed, 'required' => true);
+        }
+
+        if (!empty($summary['AN']['qsos'])) {
+            $rows[] = array('code' => 'AN', 'name' => 'Antarctica', 'qsos' => $summary['AN']['qsos'], 'confirmed' => $summary['AN']['confirmed'], 'required' => false);
+        }
+
+        $data['wac_rows'] = $rows;
+        $data['wac_required'] = count($required);
+        $data['wac_worked'] = $worked_count;
+        $data['wac_confirmed'] = $confirmed_count;
+
+        $data['page_title'] = "Awards - WAC (Worked All Continents)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/wac/index');
+        $this->load->view('interface_assets/footer');
+    }
     public function wab()
     {
         $footerData = [];
