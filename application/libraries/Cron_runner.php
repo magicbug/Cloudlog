@@ -114,6 +114,36 @@ class Cron_runner {
         return true;
     }
 
+    /**
+     * Take only the job's lock, for a run a user started from the page. It skips the interval
+     * guard and leaves the job's schedule untouched, but still cannot overlap a scheduled run.
+     *
+     * @return bool False when another run holds the lock.
+     */
+    public function acquire_lock($job_key)
+    {
+        $CI =& get_instance();
+        $lock_name = $this->lock_name($job_key);
+        $lock_row = $CI->db->query(
+            'SELECT GET_LOCK(?, ?) AS acquired',
+            array($lock_name, self::LOCK_WAIT_SECONDS)
+        )->row();
+
+        if (!$lock_row || (int) $lock_row->acquired !== 1) {
+            return false;
+        }
+
+        $this->lock_held = true;
+        $this->active_job_key = $job_key;
+        $this->active_lock_name = $lock_name;
+        return true;
+    }
+
+    public function release()
+    {
+        $this->release_lock();
+    }
+
     public function finish($job_key, $status = 'ok', $error = null)
     {
         $CI =& get_instance();
