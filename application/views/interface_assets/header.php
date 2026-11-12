@@ -240,6 +240,10 @@
 							<a class="dropdown-item" href="<?php echo site_url('awards/pota'); ?>"><i class="fas fa-tree"></i> <?php echo lang('menu_pota'); ?></a>
 							<div class="dropdown-divider"></div>
 								<?php } ?>
+								<?php if (!empty($user_awards->rac)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/rac'); ?>"><i class="fas fa-award"></i> <?php echo lang('menu_rac'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
 								<?php if (!empty($user_awards->rda)) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/rda'); ?>"><i class="fas fa-map-marked-alt"></i> <?php echo lang('menu_rda'); ?></a>
 							<div class="dropdown-divider"></div>

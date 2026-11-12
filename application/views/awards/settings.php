@@ -166,6 +166,13 @@
 						<td class="award-description">Parks on the Air</td>
 					</tr>
 					<tr>
+						<td class='award-checkbox-cell award_rac'>
+							<input type="checkbox" data-award="rac" <?php if (!empty($user_awards->rac)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">RAC</td>
+						<td class="award-description">Radio Amateurs of Canada: Canadaward, Canadian Century Club, and Worked All RAC</td>
+					</tr>
+					<tr>
 						<td class='award-checkbox-cell award_rda'>
 							<input type="checkbox" data-award="rda" <?php if (!empty($user_awards->rda)) echo 'checked'; ?>>
 						</td>

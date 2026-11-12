@@ -1033,6 +1033,95 @@ class Awards extends CI_Controller
         fclose($output);
     }
 
+    /*
+        The RAC award picked and the QSL filters. RAC accepts paper QSLs, LoTW, eQSL, and QRZ.com;
+        Cloudlog has no received QRZ.com confirmation, so the filters start with QSL and LoTW ticked.
+    */
+    private function rac_setup()
+    {
+        $this->load->model('rac');
+        $this->load->library('rac_awards');
+
+        $groups = $this->rac_awards->groups;
+        $award = (string) $this->security->xss_clean($this->input->get_post('award'));
+        if (!isset($groups[$award])) {
+            reset($groups);
+            $award = key($groups);
+        }
+
+        if ($this->input->get_post('filtered')) {
+            $filters = array(
+                'qsl' => (bool) $this->input->get_post('qsl'),
+                'lotw' => (bool) $this->input->get_post('lotw'),
+                'eqsl' => (bool) $this->input->get_post('eqsl'),
+            );
+        } else {
+            $filters = array('qsl' => true, 'lotw' => true, 'eqsl' => false);
+        }
+
+        return array($groups, $award, $filters);
+    }
+
+    public function rac()
+    {
+        list($groups, $award, $filters) = $this->rac_setup();
+
+        $data['rac_groups'] = $groups;
+        $data['rac_award'] = $award;
+        $data['filters'] = $filters;
+        $data['rac'] = $this->rac_awards->evaluate($award, $this->rac->get_qsos($groups[$award], $filters));
+
+        $data['page_title'] = "Awards - RAC";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/rac/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    /*
+        The contacts that count toward the selected RAC award, for the RAC application form.
+    */
+    public function rac_csv()
+    {
+        list($groups, $award, $filters) = $this->rac_setup();
+        $qsos = $this->rac->get_qsos($groups[$award], $filters);
+        $result = $this->rac_awards->evaluate($award, $qsos);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=RAC_' . $award . '_' . date('Y-m-d') . '.csv');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, array('Callsign', 'Province', 'Date', 'Time', 'Frequency (MHz)', 'Band', 'Mode', 'Propagation', 'RST sent', 'RST received', 'Station callsign', 'Confirmed by'));
+        foreach ($result['eligible'] as $i) {
+            $q = $qsos[$i];
+            $confirmed_by = array();
+            if ($q['qsl']) {
+                $confirmed_by[] = 'QSL';
+            }
+            if ($q['lotw']) {
+                $confirmed_by[] = 'LoTW';
+            }
+            if ($q['eqsl']) {
+                $confirmed_by[] = 'eQSL';
+            }
+            $province = $this->rac_awards->province($q);
+            fputcsv($output, array(
+                $q['call'],
+                $province !== null ? $this->rac_awards->provinces[$province] : '',
+                date('Y-m-d', strtotime($q['time'])),
+                date('H:i', strtotime($q['time'])),
+                $q['freq'] > 0 ? number_format($q['freq'] / 1000000, 6, '.', '') : '',
+                $q['band'],
+                $q['submode'] ? $q['submode'] : $q['mode'],
+                $q['prop'],
+                $q['rst_sent'],
+                $q['rst_rcvd'],
+                $q['station_call'],
+                implode(' ', $confirmed_by),
+            ));
+        }
+        fclose($output);
+    }
+
     public function wab()
     {
         $footerData = [];

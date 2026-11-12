@@ -55,6 +55,7 @@ $lang['menu_wac'] = 'WAC';
 $lang['menu_skcc'] = 'SKCC';
 $lang['menu_rda'] = 'RDA';
 $lang['menu_rsgb'] = 'RSGB';
+$lang['menu_rac'] = 'RAC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
