@@ -13,6 +13,7 @@ if ($qsos->result() != NULL) {
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_mode') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_band') . '</th>
 	<th style=\'text-align: center\'>' . lang('gen_hamradio_station') . '</th>
+	<th style=\'text-align: center\'>' . lang('search_merge_open') . '</th>
 	</tr>
 	</thead><tbody>';
 
@@ -37,6 +38,12 @@ if ($qsos->result() != NULL) {
 		echo '<td style=\'text-align: center\'>'; echo $qso->COL_SUBMODE==null?$qso->COL_MODE:$qso->COL_SUBMODE; echo '</td>';
 		echo '<td style=\'text-align: center\'>'; if($qso->COL_SAT_NAME != null) { echo $qso->COL_SAT_NAME; } else { echo strtolower($qso->COL_BAND); }; echo '</td>';
 		echo '<td style=\'text-align: center\'><span class="badge text-bg-light">' . $qso->station_callsign . '</span></td>';
+		$merge_ids = isset($qso->qso_ids) ? htmlspecialchars($qso->qso_ids, ENT_QUOTES, 'UTF-8') : '';
+		echo '<td style=\'text-align: center\'>';
+		if ($merge_ids !== '') {
+			echo '<a class="btn btn-sm btn-warning" href="' . site_url('search/merge') . '?ids=' . urlencode($merge_ids) . '"><i class="fas fa-compress-alt"></i> ' . lang('search_merge_open') . '</a>';
+		}
+		echo '</td>';
 		echo '</tr>';
 	}
 

@@ -1268,7 +1268,7 @@ class Logbook extends CI_Controller
 
 		$location_list = "'" . implode("','", $logbooks_locations_array) . "'";
 
-		$sql = 'select count(*) as occurence, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from ' . $this->config->item('table_name') .
+		$sql = 'select count(*) as occurence, GROUP_CONCAT(col_primary_key ORDER BY col_time_on) as qso_ids, COL_CALL, COL_MODE, COL_SUBMODE, station_callsign, COL_SAT_NAME, COL_BAND,  min(col_time_on) Mintime, max(col_time_on) Maxtime from ' . $this->config->item('table_name') .
 			' join station_profile on ' . $this->config->item('table_name') . '.station_id = station_profile.station_id where ' . $this->config->item('table_name') . '.station_id in (' . $location_list . ')';
 
 		if ($station_id != 'All') {
@@ -1281,6 +1281,7 @@ class Logbook extends CI_Controller
 
 		$data['qsos'] = $query;
 
+		$this->lang->load('search');
 		$this->load->view('search/duplicates_result.php', $data);
 	}
 
