@@ -782,6 +782,10 @@ class Logbook_model extends CI_Model
       'station_id' => isset($data['station_id']) ? $data['station_id'] : null,
     ));
 
+    if (!$skipexport) {
+      $this->maybe_queue_qso_webhook('qso.created', $last_id, isset($data['station_id']) ? $data['station_id'] : 0);
+    }
+
     // No point in fetching hrdlog code or qrz api key and qrzrealtime setting if we're skipping the export
     if (!$skipexport) {
 
@@ -2057,6 +2061,8 @@ class Logbook_model extends CI_Model
     ), array(
       'station_id' => $stationId,
     ));
+
+    $this->maybe_queue_qso_webhook('qso.updated', (int)$this->input->post('id'), $stationId);
   }
 
   /* QSL received */
@@ -6865,6 +6871,30 @@ class Logbook_model extends CI_Model
     $this->db->order_by('COL_TIME_ON', 'ASC');
     
     return $this->db->get($this->config->item('table_name'));
+  }
+
+  private function maybe_queue_qso_webhook($event_type, $qso_id, $station_id)
+  {
+    $qso_id = (int) $qso_id;
+    if ($qso_id <= 0) {
+      return;
+    }
+
+    $this->load->library('qso_webhook');
+
+    $user_id = $this->qso_webhook->user_id_for_station($station_id);
+    if ($user_id <= 0) {
+      $session_user = $this->session->userdata('user_id');
+      if ($session_user) {
+        $user_id = (int) $session_user;
+      }
+    }
+
+    if ($user_id <= 0) {
+      return;
+    }
+
+    $this->qso_webhook->queue_qso_event($user_id, $qso_id, $event_type);
   }
 }
 

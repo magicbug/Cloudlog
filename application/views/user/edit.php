@@ -1359,6 +1359,44 @@
 										</div>
 									</div>
 								</div>
+
+								<!-- QSO Webhook -->
+								<div class="col-md">
+									<div class="card">
+										<div class="card-header"><?php echo lang('account_qso_webhook'); ?></div>
+										<div class="card-body">
+											<p class="form-text text-muted"><?php echo lang('account_qso_webhook_intro'); ?></p>
+											<div class="mb-3">
+												<label for="user_qso_webhook_enabled"><?php echo lang('account_qso_webhook_enabled'); ?></label>
+												<?php if (!isset($user_qso_webhook_enabled)) {
+													$user_qso_webhook_enabled = '0';
+												} ?>
+												<select class="form-select" id="user_qso_webhook_enabled" name="user_qso_webhook_enabled">
+													<option value="1" <?php if ($user_qso_webhook_enabled == 1) {
+														echo ' selected="selected"';
+													} ?>><?php echo lang('general_word_yes'); ?></option>
+													<option value="0" <?php if ($user_qso_webhook_enabled == 0) {
+														echo ' selected="selected"';
+													} ?>><?php echo lang('general_word_no'); ?></option>
+												</select>
+											</div>
+											<div class="mb-3">
+												<label for="user_qso_webhook_url"><?php echo lang('account_qso_webhook_url'); ?></label>
+												<div class="input-group">
+													<input class="form-control" type="url" id="user_qso_webhook_url" name="user_qso_webhook_url" value="<?php echo isset($user_qso_webhook_url) ? htmlspecialchars($user_qso_webhook_url, ENT_QUOTES, 'UTF-8') : ''; ?>" autocomplete="off" />
+													<button class="btn btn-outline-secondary" type="button" id="testQsoWebhookBtn"><?php echo lang('account_qso_webhook_send_test'); ?></button>
+												</div>
+												<small id="qsoWebhookTestResult" class="form-text text-muted"></small>
+												<small class="form-text text-muted"><?php echo lang('account_qso_webhook_url_hint'); ?></small>
+											</div>
+											<div class="mb-3">
+												<label for="user_qso_webhook_secret"><?php echo lang('account_qso_webhook_secret'); ?></label>
+												<input class="form-control" type="password" id="user_qso_webhook_secret" name="user_qso_webhook_secret" value="" autocomplete="new-password" />
+												<small class="form-text text-muted"><?php echo lang('account_qso_webhook_secret_hint'); ?></small>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -1748,6 +1786,62 @@
 					.catch(function() {
 						result.className = 'form-text text-danger';
 						result.textContent = 'Unable to validate token right now.';
+					})
+					.finally(function() {
+						btn.disabled = false;
+					});
+			});
+		}
+
+		var qsoWebhookTestBtn = document.getElementById('testQsoWebhookBtn');
+		if (qsoWebhookTestBtn) {
+			qsoWebhookTestBtn.addEventListener('click', function() {
+				const urlInput = document.getElementById('user_qso_webhook_url');
+				const secretInput = document.getElementById('user_qso_webhook_secret');
+				const result = document.getElementById('qsoWebhookTestResult');
+				const btn = document.getElementById('testQsoWebhookBtn');
+
+				if (!urlInput || !result || !btn) {
+					return;
+				}
+
+				const url = urlInput.value.trim();
+				if (url === '') {
+					result.className = 'form-text text-danger';
+					result.textContent = 'Please enter a webhook URL first.';
+					return;
+				}
+
+				btn.disabled = true;
+				result.className = 'form-text text-muted';
+				result.textContent = 'Sending test webhook...';
+
+				const body = new URLSearchParams();
+				body.append('url', url);
+				body.append('secret', secretInput ? secretInput.value : '');
+
+				fetch('<?php echo site_url('user/test_qso_webhook'); ?>', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+					},
+					body: body.toString(),
+				})
+					.then(async function(response) {
+						const payload = await response.json().catch(function() {
+							return null;
+						});
+						if (payload && payload.ok) {
+							result.className = 'form-text text-success';
+							result.textContent = payload.message || 'Test delivered.';
+						} else {
+							result.className = 'form-text text-danger';
+							result.textContent = (payload && payload.message) ? payload.message : 'Test webhook failed.';
+						}
+					})
+					.catch(function() {
+						result.className = 'form-text text-danger';
+						result.textContent = 'Unable to send test webhook right now.';
 					})
 					.finally(function() {
 						btn.disabled = false;

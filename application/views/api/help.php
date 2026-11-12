@@ -106,5 +106,41 @@
 		</div>
 	</div>
 
+	<div class="card mt-4">
+		<div class="card-header bg-light">
+			<h5 class="mb-0"><i class="fas fa-bell me-2"></i>QSO Webhook payload</h5>
+		</div>
+		<div class="card-body">
+			<p class="card-text">Users can enable an optional per-account QSO webhook under <strong>Account</strong>. When a QSO is created or updated, Cloudlog POSTs JSON to the configured URL (http or https only). Delivery is asynchronous with a short timeout and does not block logging.</p>
+			<p class="card-text">If a signing secret is set, the raw request body is authenticated with an <code>X-Cloudlog-Signature</code> header containing the HMAC-SHA256 hex digest of the body using that secret.</p>
+			<p class="card-text mb-2"><span class="badge text-bg-secondary">event</span> values:</p>
+			<ul>
+				<li><code>qso.created</code> when a new QSO is saved</li>
+				<li><code>qso.updated</code> when an existing QSO is edited</li>
+				<li><code>webhook.test</code> for the account &ldquo;Send test&rdquo; action</li>
+			</ul>
+			<p class="card-text mb-2">Example payload:</p>
+<pre class="bg-light p-3 rounded border"><code>{
+  "event": "qso.created",
+  "qso_id": 12345,
+  "callsign": "W1AW",
+  "datetime_utc": "2026-11-12T14:30:00Z",
+  "band": "20m",
+  "mode": "FT8",
+  "frequency": 14.074,
+  "rst_sent": "599",
+  "rst_received": "599",
+  "gridsquare": "FN31pr",
+  "dxcc": 291,
+  "dxcc_name": "United States",
+  "station_callsign": "G0VGS",
+  "station_profile_name": "Home",
+  "satellite_name": null,
+  "satellite_mode": null
+}</code></pre>
+			<p class="card-text text-muted mb-0"><code>satellite_name</code> and <code>satellite_mode</code> are set only for satellite QSOs. <code>gridsquare</code> uses the QSO locator, or VUCC grid list when applicable. Bulk ADIF import skips webhooks.</p>
+		</div>
+	</div>
+
 </div>
 
