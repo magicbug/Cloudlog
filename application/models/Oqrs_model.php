@@ -18,6 +18,15 @@ class Oqrs_model extends CI_Model {
 		return array_values(array_unique($ids));
 	}
 
+	/*
+	 * Restrict a query on the oqrs table to requests made against station
+	 * locations owned by the logged in user.
+	 */
+	private function limit_to_own_stations() {
+		$user_id = (int) $this->session->userdata('user_id');
+		$this->db->where('oqrs.station_id IN (SELECT station_id FROM station_profile WHERE user_id = ' . $user_id . ')', NULL, FALSE);
+	}
+
     function get_oqrs_stations() {
         $this->db->where('oqrs', "1");
 		return $this->db->get('station_profile');
@@ -242,9 +251,10 @@ class Oqrs_model extends CI_Model {
 
 	function delete_oqrs_line($id) {
 		$this->db->where('id', (int) $id);
+		$this->limit_to_own_stations();
 		$this->db->delete('oqrs');
 
-		return true;
+		return $this->db->affected_rows() > 0;
 	}
 
 
@@ -350,9 +360,11 @@ class Oqrs_model extends CI_Model {
 			'status' => '2',
 	   );
    
-	   $this->db->where('id', $id);
-   
+	   $this->db->where('id', (int) $id);
+	   $this->limit_to_own_stations();
 	   $this->db->update('oqrs', $data);
+
+	   return $this->db->affected_rows() > 0;
 	}
 
 	function getQslInfo($station_id) {

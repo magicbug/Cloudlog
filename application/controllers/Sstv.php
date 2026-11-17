@@ -98,13 +98,19 @@ class Sstv extends CI_Controller {
         $this->load->model('user_model');
         if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 
-        $id = $this->input->post('id');
+        $id = (int) $this->input->post('id');
         $this->load->model('Sstv_model');
 
+        $query = $this->Sstv_model->getSSTVFilename($id);
+        if ($query === null || $query->num_rows() === 0) {
+            return;
+        }
+
         $path = './assets/sstvimages/';
-        $file = $this->Sstv_model->getSSTVFilename($id)->row();
-        $filename = $file->filename;
-        unlink($path.$filename);
+        $filename = $query->row()->filename;
+        if (is_file($path . $filename)) {
+            unlink($path . $filename);
+        }
 
         $this->Sstv_model->deleteSstv($id);
     }
