@@ -38,7 +38,7 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <?php
 $load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'search', 'activators', 'activatorsmap'], true)
-    || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota'], true));
+    || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota', 'rda'], true));
 ?>
 <?php if ($load_leaflet) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
@@ -1598,6 +1598,7 @@ $(document).ready(function() {
 
 <?php if ($this->uri->segment(1) == "qso") { ?>
 
+    <script src="<?php echo base_url(); ?>assets/js/offline-qso-queue.js?<?php echo filemtime(FCPATH . 'assets/js/offline-qso-queue.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/qso.js?<?php echo filemtime(FCPATH . 'assets/js/sections/qso.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/cw-sidetone.js"></script>
     <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
@@ -4960,6 +4961,7 @@ $(document).ready(function() {
     <script>
         var manual = <?php echo (int) ($_GET['manual'] ?? 0); ?>;
     </script>
+    <script src="<?php echo base_url(); ?>assets/js/offline-qso-queue.js?<?php echo filemtime(FCPATH . 'assets/js/offline-qso-queue.js'); ?>"></script>
     <script src="<?php echo base_url(); ?>assets/js/sections/contesting.js?v2"></script>
 <?php } ?>
 
@@ -5358,6 +5360,25 @@ $(document).ready(function() {
                 ]
             });
             // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+                $('[class*="buttons"]').css("color", "white");
+            }
+        </script>
+    <?php } else if ($this->uri->segment(2) == "skcc") { ?>
+        <script>
+            $('#skcctable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                order: [[0, 'asc']],
+                "scrollX": true,
+                "language": {
+                    url: getDataTablesLanguageUrl(),
+                },
+                dom: 'Bfrtip',
+                buttons: [{
+                    extend: 'csv'
+                }]
+            });
             if (isDarkModeTheme()) {
                 $('[class*="buttons"]').css("color", "white");
             }

@@ -176,7 +176,11 @@ class QSO extends CI_Controller {
 	 */
 	public function saveqso() {
         $this->load->model('logbook_model');
-        $this->logbook_model->create_qso();
+        $create_result = $this->logbook_model->create_qso();
+        if ($create_result === 'station_not_accessible') {
+            $this->output->set_status_header(403);
+            echo 'Station not accessible.';
+        }
     }
 
     /*
@@ -246,7 +250,26 @@ class QSO extends CI_Controller {
             $this->session->set_userdata('prop_mode', 'SAT');
         }
 
-        $this->logbook_model->create_qso();
+        $create_result = $this->logbook_model->create_qso();
+
+        if ($create_result === 'duplicate') {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array(
+                    'status' => 'ok',
+                    'message' => 'QSO Added',
+                    'duplicate' => true,
+                )));
+        }
+
+        if ($create_result === 'station_not_accessible') {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode(array(
+                    'status' => 'error',
+                    'message' => 'Station not accessible.',
+                )));
+        }
 
         return $this->output
             ->set_content_type('application/json')
@@ -908,6 +931,33 @@ class QSO extends CI_Controller {
                     // Limit to 100 as to not slowdown browser too much
                     if (count($json) <= 100) {
                         $json[] = ["name"=>$value];
+                    }
+                }
+            }
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($json);
+    }
+
+    /*
+	 * Function is used for autocompletion of RDA districts in the county box of the QSO entry form
+	 */
+    public function get_rda() {
+        $json = [];
+        $query = strtoupper(trim((string) $this->input->get("query")));
+
+        if ($query !== '') {
+            $this->load->library('rda_award');
+            $reference = $this->rda_award->load_reference();
+            foreach ($reference['districts'] as $district) {
+                if (!empty($district['deleted'])) {
+                    continue;
+                }
+                if (strpos($district['code'], $query) === 0 || stripos($district['name'], $query) !== false) {
+                    $json[] = ["name" => $district['code'], "description" => $district['name'] . ', ' . $district['oblast_name']];
+                    if (count($json) >= 100) {
+                        break;
                     }
                 }
             }

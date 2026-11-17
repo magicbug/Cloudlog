@@ -98,39 +98,43 @@ class Qslprint_model extends CI_Model {
 	}
 
 	function delete_from_qsl_queue($id) {
-		// be sure that QSO belongs to user
+		$clean_id = (int) $id;
+
+		// be sure that QSO belongs to user and user has write permission
 		$CI =& get_instance();
 		$CI->load->model('logbook_model');
-		if (!$CI->logbook_model->check_qso_is_accessible($id)) {
-			return;
+		if (!$CI->logbook_model->check_qso_is_writable($clean_id)) {
+			return false;
 		}
 
 		$data = array(
 			'COL_QSL_SENT' => "N",
 		);
 
-		$this->db->where("COL_PRIMARY_KEY", $id);
+		$this->db->where("COL_PRIMARY_KEY", $clean_id);
 		$this->db->update($this->config->item('table_name'), $data);
 
-		return true;
+		return $this->db->affected_rows() > 0;
 	}
 
 	function add_qso_to_print_queue($id) {
-		// be sure that QSO belongs to user
+		$clean_id = (int) $id;
+
+		// be sure that QSO belongs to user and user has write permission
 		$CI =& get_instance();
 		$CI->load->model('logbook_model');
-		if (!$CI->logbook_model->check_qso_is_accessible($id)) {
-			return;
+		if (!$CI->logbook_model->check_qso_is_writable($clean_id)) {
+			return false;
 		}
 
 		$data = array(
 			'COL_QSL_SENT' => "R",
 		);
 
-		$this->db->where("COL_PRIMARY_KEY", $id);
+		$this->db->where("COL_PRIMARY_KEY", $clean_id);
 		$this->db->update($this->config->item('table_name'), $data);
 
-		return true;
+		return $this->db->affected_rows() > 0;
 	}
 
 	function open_qso_list($callsign) {

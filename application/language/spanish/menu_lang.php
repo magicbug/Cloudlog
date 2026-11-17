@@ -51,6 +51,11 @@ $lang['menu_us_counties'] = 'Condados de USA';
 $lang['menu_us_gridmaster'] = 'Gridmaster USA';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_waja'] = 'WAJA';
+$lang['menu_wac'] = 'WAC';
+$lang['menu_skcc'] = 'SKCC';
+$lang['menu_rda'] = 'RDA';
+$lang['menu_rsgb'] = 'RSGB';
+$lang['menu_rac'] = 'RAC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -97,4 +102,5 @@ $lang['menu_logout'] = 'Cerrar Sesión';
 $lang['menu_ffma'] = "Diploma en memoria de Fred Fish";
 $lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Mantenimiento';
+$lang['menu_cron_scheduler']='Programador de tareas';
 $lang['menu_uk_gridmaster'] = 'UK Gridmaster';

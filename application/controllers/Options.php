@@ -308,9 +308,14 @@ class Options extends CI_Controller {
 			}
 			else
 			{
+				$protocol = $this->input->post('emailProtocol');
+				if (!in_array($protocol, array('sendmail', 'smtp', 'ses'), true)) {
+					$this->session->set_flashdata('saveFailed', $this->lang->line('options_mail_settings_failed'));
+					redirect('/options/email');
+				}
 
 				// Update emailProtocol choice within the options system
-				$emailProtocolupdate = $this->optionslib->update('emailProtocol', $this->input->post('emailProtocol'), 'yes');
+				$emailProtocolupdate = $this->optionslib->update('emailProtocol', $protocol, 'yes');
 
 				// Update smtpEncryption choice within the options system
 				$smtpEncryptionupdate = $this->optionslib->update('smtpEncryption', $this->input->post('smtpEncryption'), 'yes');
@@ -336,7 +341,11 @@ class Options extends CI_Controller {
 
 				// Update smtpPassword choice within the options system
 				$smtpPasswordupdate = $this->optionslib->update('smtpPassword', $this->input->post('smtpPassword'), 'yes');
-	
+
+				$sesRegionupdate = $this->optionslib->update('sesRegion', trim((string) $this->input->post('sesRegion')), 'yes');
+				$sesAccessKeyupdate = $this->optionslib->update('sesAccessKey', trim((string) $this->input->post('sesAccessKey')), 'yes');
+				$sesSecretKeyupdate = $this->optionslib->update('sesSecretKey', $this->input->post('sesSecretKey'), 'yes');
+
 				// Consider save successful when at least one value is persisted.
 				$updateSuccessful = $emailProtocolupdate ||
 									$smtpEncryptionupdate ||
@@ -345,7 +354,10 @@ class Options extends CI_Controller {
 									$smtpHostupdate ||
 									$smtpPortupdate ||
 									$smtpUsernameupdate ||
-									$smtpPasswordupdate;
+									$smtpPasswordupdate ||
+									$sesRegionupdate ||
+									$sesAccessKeyupdate ||
+									$sesSecretKeyupdate;
 
 				// Set flash session based on update success
 				if ($updateSuccessful) {
@@ -400,34 +412,18 @@ class Options extends CI_Controller {
 
 		if($email != "") {
 
-			$this->load->library('email');
-
-			if($this->optionslib->get_option('emailProtocol') == "smtp") {
-				$config = Array(
-					'protocol' => $this->optionslib->get_option('emailProtocol'),
-					'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-					'smtp_host' => $this->optionslib->get_option('smtpHost'),
-					'smtp_port' => $this->optionslib->get_option('smtpPort'),
-					'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-					'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-					'crlf' => "\r\n",
-					'newline' => "\r\n"
-				);
-
-				$this->email->initialize($config);
-			}
-
 			$message = $this->load->view('email/testmail.php', NULL, TRUE);
 
-			$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-			$this->email->to($email);
-			$this->email->subject('Cloudlog Test-Mail');
-			$this->email->message($message);
+			$this->load->library('mailer');
+			$result = $this->mailer->send($email, 'Cloudlog Test-Mail', $message);
 
-			if (! $this->email->send()){
-				// Log the error for debugging
-				log_message('error', 'Test email failed to send. Error: ' . $this->email->print_debugger());
-				$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed') . ' Check application logs for details.');
+			if (!$result['sent']) {
+				log_message('error', 'Test email failed to send. Error: ' . $result['error']);
+				$detail = trim(preg_replace('/\s+/', ' ', strip_tags($result['error'])));
+				if (strlen($detail) > 300) {
+					$detail = 'Check application logs for details.';
+				}
+				$this->session->set_flashdata('testmailFailed', $this->lang->line('options_send_testmail_failed') . ' ' . htmlspecialchars($detail, ENT_QUOTES, 'UTF-8'));
 			} else {
 				$this->session->set_flashdata('testmailSuccess', $this->lang->line('options_send_testmail_success'));
 			}

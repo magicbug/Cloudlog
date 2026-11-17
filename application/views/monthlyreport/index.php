@@ -1,6 +1,13 @@
 <div class="container">
 	<br>
 	<h2><?php echo $page_title; ?></h2>
+
+	<?php if ($this->session->flashdata('success')) { ?>
+		<div class="alert alert-success"><?php echo $this->session->flashdata('success'); ?></div>
+	<?php } ?>
+	<?php if ($this->session->flashdata('notice')) { ?>
+		<div class="alert alert-warning"><?php echo $this->session->flashdata('notice'); ?></div>
+	<?php } ?>
 	
 	<div class="card">
 		<div class="card-header">
@@ -94,6 +101,72 @@
 
 		</div>
 	</div>
+
+	<?php if ($logbooks->num_rows() > 0) {
+		$email_logbook_id = $email_pref['logbook_id'] ?: $this->session->userdata('active_station_logbook');
+	?>
+	<div class="card mt-4">
+		<div class="card-header">
+			<i class="fas fa-envelope"></i> Monthly Report Email
+		</div>
+		<div class="card-body">
+			<p class="card-text">
+				Get a short summary of last month's activity by email in the first week of each month.
+				Months with no QSOs are not emailed. Months are counted in UTC.
+			</p>
+
+			<?php if (!$email_configured) { ?>
+				<div class="alert alert-warning" role="alert">
+					<i class="fas fa-exclamation-triangle"></i>
+					Outbound email is not configured on this Cloudlog, so no report emails can be sent.
+					An administrator can set it up under Admin &gt; Options &gt; Email.
+				</div>
+			<?php } elseif (empty($user_email)) { ?>
+				<div class="alert alert-warning" role="alert">
+					<i class="fas fa-exclamation-triangle"></i>
+					Your account has no email address. Add one in your account settings to receive report emails.
+				</div>
+			<?php } else { ?>
+				<p class="text-muted small">Emails go to <?php echo htmlspecialchars($user_email); ?>.</p>
+			<?php } ?>
+
+			<form method="post" action="<?php echo site_url('monthlyreport/save_email_preference'); ?>" id="monthly_report_email_form">
+				<div class="row mb-3">
+					<div class="col-md-6">
+						<label for="email_logbook_id" class="form-label">
+							<i class="fas fa-book"></i> Logbook
+						</label>
+						<select name="email_logbook_id" id="email_logbook_id" class="form-select" required>
+							<?php foreach ($logbooks->result() as $logbook) { ?>
+								<option value="<?php echo $logbook->logbook_id; ?>"
+									<?php if ($email_logbook_id == $logbook->logbook_id) echo 'selected'; ?>>
+									<?php echo $logbook->logbook_name; ?>
+								</option>
+							<?php } ?>
+						</select>
+					</div>
+				</div>
+
+				<div class="form-check mb-3">
+					<input class="form-check-input" type="checkbox" name="email_enabled" value="1" id="email_enabled"
+						<?php if ($email_pref['enabled']) echo 'checked'; ?>>
+					<label class="form-check-label" for="email_enabled">
+						Email me this report each month
+					</label>
+				</div>
+
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-save"></i> Save
+				</button>
+				<button type="submit" class="btn btn-outline-secondary"
+					formaction="<?php echo site_url('monthlyreport/send_preview'); ?>"
+					<?php if (!$email_configured || empty($user_email)) echo 'disabled'; ?>>
+					<i class="fas fa-paper-plane"></i> Email me <?php echo $last_month_label; ?> now
+				</button>
+			</form>
+		</div>
+	</div>
+	<?php } ?>
 
 	<div class="card mt-4">
 		<div class="card-header">

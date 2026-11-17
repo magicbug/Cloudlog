@@ -504,24 +504,6 @@ class Logbooks extends CI_Controller {
 		}
 		$owner = $owner_query->row();
 		
-		// Load email library
-		$this->load->library('email');
-		
-		// Configure SMTP if needed
-		if ($this->optionslib->get_option('emailProtocol') == "smtp") {
-			$config = Array(
-				'protocol' => $this->optionslib->get_option('emailProtocol'),
-				'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-				'smtp_host' => $this->optionslib->get_option('smtpHost'),
-				'smtp_port' => $this->optionslib->get_option('smtpPort'),
-				'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-				'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-				'crlf' => "\r\n",
-				'newline' => "\r\n"
-			);
-			$this->email->initialize($config);
-		}
-		
 		// Prepare email data
 		$email_data = array(
 			'user_callsign' => $user->user_callsign,
@@ -532,14 +514,12 @@ class Logbooks extends CI_Controller {
 		);
 		
 		$message = $this->load->view('email/logbook_shared.php', $email_data, TRUE);
+
+		$this->load->library('mailer');
+		$result = $this->mailer->send($user->user_email, 'Cloudlog - Logbook Shared With You', $message);
 		
-		$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-		$this->email->to($user->user_email);
-		$this->email->subject('Cloudlog - Logbook Shared With You');
-		$this->email->message($message);
-		
-		if (!$this->email->send()) {
-			log_message('error', 'Failed to send logbook sharing email to ' . $user->user_email . '. Error: ' . $this->email->print_debugger());
+		if (!$result['sent']) {
+			log_message('error', 'Failed to send logbook sharing email to ' . $user->user_email . '. Error: ' . $result['error']);
 		} else {
 			log_message('info', 'Logbook sharing notification sent to ' . $user->user_email);
 		}

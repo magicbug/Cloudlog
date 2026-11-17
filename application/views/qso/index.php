@@ -674,11 +674,36 @@
                   </select>
                 </div>
 
+                <div class="mb-3" id="ca_province_field_wrapper" style="display:none">
+                  <label for="input_ca_province">Province or territory</label>
+                  <select class="form-select" id="input_ca_province" name="ca_province">
+                    <option value=""></option>
+                    <option value="AB">Alberta (AB)</option>
+                    <option value="BC">British Columbia (BC)</option>
+                    <option value="MB">Manitoba (MB)</option>
+                    <option value="NB">New Brunswick (NB)</option>
+                    <option value="NL">Newfoundland and Labrador (NL)</option>
+                    <option value="NS">Nova Scotia (NS)</option>
+                    <option value="NT">Northwest Territories (NT)</option>
+                    <option value="NU">Nunavut (NU)</option>
+                    <option value="ON">Ontario (ON)</option>
+                    <option value="PE">Prince Edward Island (PE)</option>
+                    <option value="QC">Quebec (QC)</option>
+                    <option value="SK">Saskatchewan (SK)</option>
+                    <option value="YT">Yukon (YT)</option>
+                  </select>
+                </div>
+
                 <div class="mb-3" id="usa_county_field_wrapper" style="display:none">
                   <label for="stationCntyInput"><?php echo lang('gen_hamradio_county_reference'); ?></label>
                   <input disabled="disabled" class="form-control" id="stationCntyInput" type="text" name="county" value="" />
                 </div>
                 <?php endif; // usa_state ?>
+
+                <div class="mb-3" id="rda_field_wrapper" style="display:none">
+                  <label for="rda_district">RDA district</label>
+                  <input class="form-control" id="rda_district" type="text" name="rda" value="" placeholder="TB-02" autocomplete="off" />
+                </div>
 
                 <?php if ($qso_fields['iota']): ?>
                 <div class="mb-3">
@@ -1416,6 +1441,16 @@
       var stateSelect = document.getElementById('input_usa_state');
       if (stateSelect) stateSelect.value = '';
     }
+
+    // Canada (1) gets the province box instead
+    var provinceWrapper = document.getElementById('ca_province_field_wrapper');
+    if (provinceWrapper) {
+      var isCanada = dxcc && dxcc.value == '1';
+      provinceWrapper.style.display = isCanada ? '' : 'none';
+      if (!isCanada) {
+        document.getElementById('input_ca_province').value = '';
+      }
+    }
   }
 
   // Show DOK field only when DXCC is Germany (230)
@@ -1432,10 +1467,21 @@
     }
   }
 
+  // Show the RDA district box for European Russia (54), Asiatic Russia (15), and Kaliningrad (126)
+  function toggleRdaField() {
+    var wrapper = document.getElementById('rda_field_wrapper');
+    if (!wrapper) return;
+    var dxcc = document.getElementById('dxcc_id');
+    var isRussia = dxcc && (dxcc.value == '54' || dxcc.value == '15' || dxcc.value == '126');
+    var input = document.getElementById('rda_district');
+    wrapper.style.display = (isRussia || (input && input.value !== '')) ? '' : 'none';
+  }
+
   // Initialise on page load once DOM is ready
   document.addEventListener('DOMContentLoaded', function() {
     toggleDokField();
     toggleUsaFields();
+    toggleRdaField();
   });
 
 

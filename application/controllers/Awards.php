@@ -767,6 +767,361 @@ class Awards extends CI_Controller
         $this->load->view('awards/was/index');
         $this->load->view('interface_assets/footer', $footerData);
     }
+
+    public function wac()
+    {
+        $this->load->model('logbook_model');
+        $this->load->model('modes');
+        $this->load->model('bands');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands();
+        $data['modes'] = $this->modes->active();
+
+        if ($this->input->method() === 'post') {
+            $filters = array(
+                'band' => $this->security->xss_clean($this->input->post('band')) ?: 'All',
+                'mode' => $this->security->xss_clean($this->input->post('mode')) ?: 'All',
+                'qsl' => (bool) $this->input->post('qsl'),
+                'lotw' => (bool) $this->input->post('lotw'),
+                'eqsl' => (bool) $this->input->post('eqsl'),
+            );
+        } else {
+            $filters = array('band' => 'All', 'mode' => 'All', 'qsl' => true, 'lotw' => true, 'eqsl' => false);
+        }
+        $data['filters'] = $filters;
+
+        $summary = $this->logbook_model->wac_continent_summary($filters);
+
+        $required = array(
+            'AF' => 'Africa',
+            'AS' => 'Asia',
+            'EU' => 'Europe',
+            'NA' => 'North America',
+            'OC' => 'Oceania',
+            'SA' => 'South America',
+        );
+
+        $rows = array();
+        $worked_count = 0;
+        $confirmed_count = 0;
+        foreach ($required as $code => $name) {
+            $qsos = isset($summary[$code]) ? $summary[$code]['qsos'] : 0;
+            $confirmed = isset($summary[$code]) ? $summary[$code]['confirmed'] : 0;
+            if ($qsos > 0) {
+                $worked_count++;
+            }
+            if ($confirmed > 0) {
+                $confirmed_count++;
+            }
+            $rows[] = array('code' => $code, 'name' => $name, 'qsos' => $qsos, 'confirmed' => $confirmed, 'required' => true);
+        }
+
+        if (!empty($summary['AN']['qsos'])) {
+            $rows[] = array('code' => 'AN', 'name' => 'Antarctica', 'qsos' => $summary['AN']['qsos'], 'confirmed' => $summary['AN']['confirmed'], 'required' => false);
+        }
+
+        $data['wac_rows'] = $rows;
+        $data['wac_required'] = count($required);
+        $data['wac_worked'] = $worked_count;
+        $data['wac_confirmed'] = $confirmed_count;
+
+        $data['page_title'] = "Awards - WAC (Worked All Continents)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/wac/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function skcc()
+    {
+        $this->load->model('skcc');
+        $this->load->model('modes');
+        $this->load->model('bands');
+        $this->load->library('skcc_award');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands();
+        $data['modes'] = $this->modes->active();
+
+        if ($this->input->method() === 'post') {
+            $filters = array(
+                'band' => $this->security->xss_clean($this->input->post('band')) ?: 'All',
+                'mode' => $this->security->xss_clean($this->input->post('mode')) ?: 'All',
+                'qsl' => (bool) $this->input->post('qsl'),
+                'lotw' => (bool) $this->input->post('lotw'),
+                'eqsl' => (bool) $this->input->post('eqsl'),
+            );
+        } else {
+            $filters = array('band' => 'All', 'mode' => 'All', 'qsl' => false, 'lotw' => false, 'eqsl' => false);
+        }
+        $data['filters'] = $filters;
+
+        $data['skcc'] = $this->skcc_award->evaluate($this->skcc->get_qsos($filters));
+
+        $data['page_title'] = "Awards - SKCC";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/skcc/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    private function rda_filters()
+    {
+        if ($this->input->method() === 'post') {
+            return array(
+                'band' => $this->security->xss_clean($this->input->post('band')) ?: 'All',
+                'mode' => $this->security->xss_clean($this->input->post('mode')) ?: 'All',
+                'qsl' => (bool) $this->input->post('qsl'),
+                'lotw' => (bool) $this->input->post('lotw'),
+                'eqsl' => (bool) $this->input->post('eqsl'),
+            );
+        }
+        return array('band' => 'All', 'mode' => 'All', 'qsl' => true, 'lotw' => true, 'eqsl' => false);
+    }
+
+    public function rda()
+    {
+        $this->load->model('rda');
+        $this->load->model('modes');
+        $this->load->model('bands');
+        $this->load->library('rda_award');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands();
+        $data['modes'] = $this->modes->active();
+        $data['filters'] = $this->rda_filters();
+        $data['rda'] = $this->rda_award->evaluate($this->rda->get_qsos($data['filters']));
+
+        $footerData = [];
+        $footerData['scripts'] = [
+            'assets/js/sections/rdamap.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/rdamap.js")),
+        ];
+
+        $data['page_title'] = "Awards - RDA (Russian Districts Award)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/rda/index');
+        $this->load->view('interface_assets/footer', $footerData);
+    }
+
+    /*
+        Oblast progress for the RDA map: worked, confirmed, and current districts per oblast code.
+    */
+    public function rda_map()
+    {
+        $this->load->model('rda');
+        $this->load->library('rda_award');
+
+        $result = $this->rda_award->evaluate($this->rda->get_qsos($this->rda_filters()));
+        $map = array();
+        foreach ($result['oblasts'] as $code => $oblast) {
+            $map[$code] = array(
+                'name' => $oblast['name'],
+                'worked' => $oblast['worked'],
+                'confirmed' => $oblast['confirmed'],
+                'total' => $oblast['total'],
+            );
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode($map);
+    }
+
+    /*
+        The RSGB award groups this logbook can use, the one picked, and the QSL filters.
+        Foundation and Intermediate 100 need a station callsign of that licence class.
+        Awards that need cards start with QSL, LoTW, and Club Log ticked, the three the RSGB accepts.
+        The others start with nothing ticked.
+    */
+    private function rsgb_setup()
+    {
+        $this->load->model('rsgb');
+        $this->load->library('rsgb_awards');
+
+        $classes = array();
+        foreach ($this->rsgb->station_callsigns() as $call) {
+            $class = $this->rsgb_awards->licence_class($call);
+            if ($class !== null) {
+                $classes[$class] = true;
+            }
+        }
+
+        $groups = array();
+        foreach ($this->rsgb_awards->groups as $key => $group) {
+            if ($group['licence'] === null || isset($classes[$group['licence']])) {
+                $groups[$key] = $group;
+            }
+        }
+
+        $award = (string) $this->security->xss_clean($this->input->get_post('award'));
+        if (!isset($groups[$award])) {
+            reset($groups);
+            $award = key($groups);
+        }
+
+        if ($this->input->get_post('filtered')) {
+            $filters = array(
+                'qsl' => (bool) $this->input->get_post('qsl'),
+                'lotw' => (bool) $this->input->get_post('lotw'),
+                'eqsl' => (bool) $this->input->get_post('eqsl'),
+                'clublog' => (bool) $this->input->get_post('clublog'),
+            );
+        } else {
+            $cards = $groups[$award]['cards'];
+            $filters = array('qsl' => $cards, 'lotw' => $cards, 'eqsl' => false, 'clublog' => $cards);
+        }
+
+        return array($groups, $award, $filters);
+    }
+
+    public function rsgb()
+    {
+        list($groups, $award, $filters) = $this->rsgb_setup();
+
+        $data['rsgb_groups'] = $groups;
+        $data['rsgb_award'] = $award;
+        $data['filters'] = $filters;
+        $data['rsgb'] = $this->rsgb_awards->evaluate($award, $this->rsgb->get_qsos($groups[$award], $filters));
+
+        $data['page_title'] = "Awards - RSGB";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/rsgb/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    /*
+        The contacts that count toward the selected RSGB award, for the RSGB check sheet.
+    */
+    public function rsgb_csv()
+    {
+        list($groups, $award, $filters) = $this->rsgb_setup();
+        $qsos = $this->rsgb->get_qsos($groups[$award], $filters);
+        $result = $this->rsgb_awards->evaluate($award, $qsos);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=RSGB_' . $award . '_' . date('Y-m-d') . '.csv');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, array('Callsign', 'Date', 'Time', 'Frequency (MHz)', 'Band', 'Mode', 'RST sent', 'RST received', 'Country', 'DXCC', 'ITU zone', 'Locator', 'Station callsign', 'Confirmed by'));
+        foreach ($result['eligible'] as $i) {
+            $q = $qsos[$i];
+            $confirmed_by = array();
+            if ($q['qsl']) {
+                $confirmed_by[] = 'QSL';
+            }
+            if ($q['lotw']) {
+                $confirmed_by[] = 'LoTW';
+            }
+            if ($q['eqsl']) {
+                $confirmed_by[] = 'eQSL';
+            }
+            if ($q['clublog']) {
+                $confirmed_by[] = 'Club Log';
+            }
+            fputcsv($output, array(
+                $q['call'],
+                date('Y-m-d', strtotime($q['time'])),
+                date('H:i', strtotime($q['time'])),
+                $q['freq'] > 0 ? number_format($q['freq'] / 1000000, 6, '.', '') : '',
+                $q['band'],
+                $q['submode'] ? $q['submode'] : $q['mode'],
+                $q['rst_sent'],
+                $q['rst_rcvd'],
+                $q['country'],
+                $q['dxcc'],
+                $q['ituz'],
+                $q['vucc'] ? $q['vucc'] : $q['grid'],
+                $q['station_call'],
+                implode(' ', $confirmed_by),
+            ));
+        }
+        fclose($output);
+    }
+
+    /*
+        The RAC award picked and the QSL filters. RAC accepts paper QSLs, LoTW, eQSL, and QRZ.com;
+        Cloudlog has no received QRZ.com confirmation, so the filters start with QSL and LoTW ticked.
+    */
+    private function rac_setup()
+    {
+        $this->load->model('rac');
+        $this->load->library('rac_awards');
+
+        $groups = $this->rac_awards->groups;
+        $award = (string) $this->security->xss_clean($this->input->get_post('award'));
+        if (!isset($groups[$award])) {
+            reset($groups);
+            $award = key($groups);
+        }
+
+        if ($this->input->get_post('filtered')) {
+            $filters = array(
+                'qsl' => (bool) $this->input->get_post('qsl'),
+                'lotw' => (bool) $this->input->get_post('lotw'),
+                'eqsl' => (bool) $this->input->get_post('eqsl'),
+            );
+        } else {
+            $filters = array('qsl' => true, 'lotw' => true, 'eqsl' => false);
+        }
+
+        return array($groups, $award, $filters);
+    }
+
+    public function rac()
+    {
+        list($groups, $award, $filters) = $this->rac_setup();
+
+        $data['rac_groups'] = $groups;
+        $data['rac_award'] = $award;
+        $data['filters'] = $filters;
+        $data['rac'] = $this->rac_awards->evaluate($award, $this->rac->get_qsos($groups[$award], $filters));
+
+        $data['page_title'] = "Awards - RAC";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/rac/index');
+        $this->load->view('interface_assets/footer');
+    }
+
+    /*
+        The contacts that count toward the selected RAC award, for the RAC application form.
+    */
+    public function rac_csv()
+    {
+        list($groups, $award, $filters) = $this->rac_setup();
+        $qsos = $this->rac->get_qsos($groups[$award], $filters);
+        $result = $this->rac_awards->evaluate($award, $qsos);
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename=RAC_' . $award . '_' . date('Y-m-d') . '.csv');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, array('Callsign', 'Province', 'Date', 'Time', 'Frequency (MHz)', 'Band', 'Mode', 'Propagation', 'RST sent', 'RST received', 'Station callsign', 'Confirmed by'));
+        foreach ($result['eligible'] as $i) {
+            $q = $qsos[$i];
+            $confirmed_by = array();
+            if ($q['qsl']) {
+                $confirmed_by[] = 'QSL';
+            }
+            if ($q['lotw']) {
+                $confirmed_by[] = 'LoTW';
+            }
+            if ($q['eqsl']) {
+                $confirmed_by[] = 'eQSL';
+            }
+            $province = $this->rac_awards->province($q);
+            fputcsv($output, array(
+                $q['call'],
+                $province !== null ? $this->rac_awards->provinces[$province] : '',
+                date('Y-m-d', strtotime($q['time'])),
+                date('H:i', strtotime($q['time'])),
+                $q['freq'] > 0 ? number_format($q['freq'] / 1000000, 6, '.', '') : '',
+                $q['band'],
+                $q['submode'] ? $q['submode'] : $q['mode'],
+                $q['prop'],
+                $q['rst_sent'],
+                $q['rst_rcvd'],
+                $q['station_call'],
+                implode(' ', $confirmed_by),
+            ));
+        }
+        fclose($output);
+    }
+
     public function wab()
     {
         $footerData = [];

@@ -166,11 +166,39 @@
 						<td class="award-description">Parks on the Air</td>
 					</tr>
 					<tr>
+						<td class='award-checkbox-cell award_rac'>
+							<input type="checkbox" data-award="rac" <?php if (!empty($user_awards->rac)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">RAC</td>
+						<td class="award-description">Radio Amateurs of Canada: Canadaward, Canadian Century Club, and Worked All RAC</td>
+					</tr>
+					<tr>
+						<td class='award-checkbox-cell award_rda'>
+							<input type="checkbox" data-award="rda" <?php if (!empty($user_awards->rda)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">RDA</td>
+						<td class="award-description">Russian Districts Award</td>
+					</tr>
+					<tr>
+						<td class='award-checkbox-cell award_rsgb'>
+							<input type="checkbox" data-award="rsgb" <?php if (!empty($user_awards->rsgb)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">RSGB</td>
+						<td class="award-description">RSGB HF, VHF/UHF, Foundation, and Intermediate awards</td>
+					</tr>
+					<tr>
 						<td class='award-checkbox-cell award_sig'>
 							<input type="checkbox" data-award="sig" <?php if ($user_awards->sig == 1) echo 'checked'; ?>>
 						</td>
 						<td class="award-name">SIG</td>
 						<td class="award-description">Special Interest Group</td>
+					</tr>
+					<tr>
+						<td class='award-checkbox-cell award_skcc'>
+							<input type="checkbox" data-award="skcc" <?php if (!empty($user_awards->skcc)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">SKCC</td>
+						<td class="award-description">Straight Key Century Club (Centurion, Tribune, Senator)</td>
 					</tr>
 					<tr>
 						<td class='award-checkbox-cell award_sota'>
@@ -206,6 +234,13 @@
 						</td>
 						<td class="award-name">WAJA</td>
 						<td class="award-description">Worked All Japan</td>
+					</tr>
+					<tr>
+						<td class='award-checkbox-cell award_wac'>
+							<input type="checkbox" data-award="wac" <?php if (!empty($user_awards->wac)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">WAC</td>
+						<td class="award-description">Worked All Continents</td>
 					</tr>
 					<tr>
 						<td class='award-checkbox-cell award_was'>

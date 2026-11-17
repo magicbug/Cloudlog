@@ -52,6 +52,11 @@ $lang['menu_us_counties'] = 'Condados dos EUA';
 $lang['menu_us_gridmaster'] = 'Gridmaster EUA';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_waja'] = 'WAJA';
+$lang['menu_wac'] = 'WAC';
+$lang['menu_skcc'] = 'SKCC';
+$lang['menu_rda'] = 'RDA';
+$lang['menu_rsgb'] = 'RSGB';
+$lang['menu_rac'] = 'RAC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -96,4 +101,5 @@ $lang['menu_forum'] = 'Fórum';
 $lang['menu_logout'] = 'Sair';
 
 $lang['menu_maintenance'] = 'Manutenção';
+$lang['menu_cron_scheduler'] = 'Agendador de tarefas';
 $lang['menu_uk_gridmaster'] = 'Gridmaster UK & Dependências da Coroa';

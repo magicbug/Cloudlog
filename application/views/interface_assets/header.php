@@ -28,7 +28,7 @@
 
 	<?php
 	$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'search', 'activators', 'activatorsmap'], true)
-		|| ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota'], true));
+		|| ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota', 'rda'], true));
 	?>
 
 	<!-- Maps -->
@@ -240,8 +240,24 @@
 							<a class="dropdown-item" href="<?php echo site_url('awards/pota'); ?>"><i class="fas fa-tree"></i> <?php echo lang('menu_pota'); ?></a>
 							<div class="dropdown-divider"></div>
 								<?php } ?>
+								<?php if (!empty($user_awards->rac)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/rac'); ?>"><i class="fas fa-award"></i> <?php echo lang('menu_rac'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if (!empty($user_awards->rda)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/rda'); ?>"><i class="fas fa-map-marked-alt"></i> <?php echo lang('menu_rda'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if (!empty($user_awards->rsgb)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/rsgb'); ?>"><i class="fas fa-award"></i> <?php echo lang('menu_rsgb'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
 								<?php if ($user_awards->sig == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/sig'); ?>"><i class="fas fa-certificate"></i> <?php echo lang('menu_sig'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if (!empty($user_awards->skcc)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/skcc'); ?>"><i class="fas fa-key"></i> <?php echo lang('menu_skcc'); ?></a>
 							<div class="dropdown-divider"></div>
 								<?php } ?>
 								<?php if ($user_awards->sota == 1) { ?>
@@ -262,6 +278,10 @@
 								<?php } ?>
 								<?php if ($user_awards->waja == 1) { ?>
 							<a class="dropdown-item" href="<?php echo site_url('awards/waja'); ?>"><i class="fas fa-torii-gate"></i> <?php echo lang('menu_waja'); ?></a>
+							<div class="dropdown-divider"></div>
+								<?php } ?>
+								<?php if (!empty($user_awards->wac)) { ?>
+							<a class="dropdown-item" href="<?php echo site_url('awards/wac'); ?>"><i class="fas fa-globe-africa"></i> <?php echo lang('menu_wac'); ?></a>
 							<div class="dropdown-divider"></div>
 								<?php } ?>
 								<?php if ($user_awards->was == 1) { ?>
@@ -347,6 +367,10 @@
 									<div class="dropdown-divider"></div>
 
 									<a class="dropdown-item" href="<?php echo site_url('maintenance'); ?>" title="maintenance"><i class="fas fa-wrench"></i> <?php echo lang('menu_maintenance'); ?></a>
+
+									<div class="dropdown-divider"></div>
+
+									<a class="dropdown-item" href="<?php echo site_url('cronmanager'); ?>" title="<?php echo lang('menu_cron_scheduler'); ?>"><i class="fas fa-clock"></i> <?php echo lang('menu_cron_scheduler'); ?></a>
 
 									<div class="dropdown-divider"></div>
 

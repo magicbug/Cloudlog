@@ -51,6 +51,11 @@ $lang['menu_us_counties'] = 'ABD Eyaletleri';
 $lang['menu_us_gridmaster'] = 'ABD Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_waja'] = 'WAJA';
+$lang['menu_wac'] = 'WAC';
+$lang['menu_skcc'] = 'SKCC';
+$lang['menu_rda'] = 'RDA';
+$lang['menu_rsgb'] = 'RSGB';
+$lang['menu_rac'] = 'RAC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -97,4 +102,5 @@ $lang['menu_logout'] = 'Çıkış';
 $lang['menu_ffma'] = "Fred Fish Anma Ödülü";
 $lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Bakım';
+$lang['menu_cron_scheduler']='Arka plan zamanlayıcı';
 $lang['menu_uk_gridmaster'] = 'UK Gridmaster';

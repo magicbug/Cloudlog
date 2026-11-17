@@ -1096,6 +1096,8 @@ class eqsl extends CI_Controller
 	 */
 	public function sync()
 	{
+		$this->load->library('cron_runner');
+		$this->cron_runner->run_guarded('eqsl_sync', function () {
 		ini_set('memory_limit', '-1');
 		set_time_limit(0);
 		$this->load->model('eqslmethods_model');
@@ -1119,6 +1121,7 @@ class eqsl extends CI_Controller
 			$this->uploadUser($user->user_id, $user->user_eqsl_name, $decoded_password);
 			$this->downloadUser($user->user_id, $user->user_eqsl_name, $decoded_password);
 		}
+		});
 	}
 
 	public function downloadUser($userid, $username, $password)

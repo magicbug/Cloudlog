@@ -55,6 +55,11 @@ $lang['menu_us_counties'] = 'US Counties';
 $lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_waja'] = 'WAJA';
+$lang['menu_wac'] = 'WAC';
+$lang['menu_skcc'] = 'SKCC';
+$lang['menu_rda'] = 'RDA';
+$lang['menu_rsgb'] = 'RSGB';
+$lang['menu_rac'] = 'RAC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -99,4 +104,5 @@ $lang['menu_forum'] = 'Forum';
 $lang['menu_logout'] = 'Logout';
 
 $lang['menu_maintenance']='Maintenance';
+$lang['menu_cron_scheduler']='Background job scheduler';
 $lang['menu_uk_gridmaster'] = 'UK & Crown Dependencies Gridmaster';

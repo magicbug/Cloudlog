@@ -17,7 +17,17 @@ class Search extends CI_Controller {
         $this->lang->load(array(
           'lotw',
           'eqsl',
+          'search',
         ));
+    }
+
+    private function require_search_write_access()
+    {
+        $this->load->model('user_model');
+        if (!$this->user_model->authorize(2)) {
+            $this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
+            redirect('dashboard');
+        }
     }
 
 	public function index()
@@ -80,6 +90,95 @@ class Search extends CI_Controller {
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('search/duplicates');
 		$this->load->view('interface_assets/footer');
+    }
+
+    public function merge()
+    {
+        $this->require_search_write_access();
+
+        $ids_raw = $this->security->xss_clean($this->input->get('ids'));
+        $ids = array_filter(array_map('intval', explode(',', (string) $ids_raw)));
+
+        $this->load->model('Qso_merge_model', 'qso_merge_model');
+        $this->load->library('Qso_merge_field_chooser', null, 'merge_chooser');
+
+        $loaded = $this->qso_merge_model->load_merge_group($ids);
+        if (!$loaded['ok']) {
+            $this->session->set_flashdata('error', $loaded['message']);
+            redirect('search/duplicates');
+        }
+
+        $qsos = $loaded['qsos'];
+        $default_keeper = $this->merge_chooser->suggest_keeper_id($qsos);
+        $default_choices = $this->merge_chooser->default_choices($qsos);
+        $fields = $this->merge_chooser->mergeable_fields($qsos);
+
+        $data['page_title'] = lang('search_merge_title');
+        $data['qsos'] = $qsos;
+        $data['fields'] = $fields;
+        $data['default_keeper'] = $default_keeper;
+        $data['default_choices'] = $default_choices;
+        $data['qso_ids'] = implode(',', array_keys($qsos));
+
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('search/merge');
+        $this->load->view('interface_assets/footer');
+    }
+
+    public function merge_preview()
+    {
+        $this->require_search_write_access();
+        header('Content-Type: application/json');
+
+        $ids = array_filter(array_map('intval', explode(',', (string) $this->input->post('ids'))));
+        $keeper_id = (int) $this->input->post('keeper_id');
+        $field_sources = $this->input->post('field_sources');
+        if (!is_array($field_sources)) {
+            $field_sources = [];
+        }
+
+        $this->load->model('Qso_merge_model', 'qso_merge_model');
+        $loaded = $this->qso_merge_model->load_merge_group($ids);
+        if (!$loaded['ok']) {
+            echo json_encode(['ok' => false, 'message' => $loaded['message']]);
+            return;
+        }
+
+        if (!isset($loaded['qsos'][$keeper_id])) {
+            echo json_encode(['ok' => false, 'message' => 'Invalid keeper QSO.']);
+            return;
+        }
+
+        $preview = $this->qso_merge_model->build_merged_preview($keeper_id, $loaded['qsos'], $field_sources);
+        echo json_encode(['ok' => true, 'preview' => $preview]);
+    }
+
+    public function merge_confirm()
+    {
+        $this->require_search_write_access();
+        header('Content-Type: application/json');
+
+        $ids = array_filter(array_map('intval', explode(',', (string) $this->input->post('ids'))));
+        $keeper_id = (int) $this->input->post('keeper_id');
+        $field_sources = $this->input->post('field_sources');
+        if (!is_array($field_sources)) {
+            $field_sources = [];
+        }
+
+        $this->load->model('Qso_merge_model', 'qso_merge_model');
+        $delete_ids = array_values(array_diff($ids, [$keeper_id]));
+        $result = $this->qso_merge_model->execute_merge($keeper_id, $delete_ids, $field_sources);
+
+        if (!$result['ok']) {
+            echo json_encode($result);
+            return;
+        }
+
+        echo json_encode([
+            'ok' => true,
+            'keeper_id' => $result['keeper_id'],
+            'redirect' => site_url('logbook/view/' . $result['keeper_id']),
+        ]);
     }
 
 	// Searches for incorrect CQ Zones

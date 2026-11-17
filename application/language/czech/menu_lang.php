@@ -51,6 +51,11 @@ $lang['menu_us_counties'] = 'US okresy';
 $lang['menu_us_gridmaster'] = 'US Gridmaster';
 $lang['menu_vucc'] = 'VUCC';
 $lang['menu_waja'] = 'WAJA';
+$lang['menu_wac'] = 'WAC';
+$lang['menu_skcc'] = 'SKCC';
+$lang['menu_rda'] = 'RDA';
+$lang['menu_rsgb'] = 'RSGB';
+$lang['menu_rac'] = 'RAC';
 $lang['menu_was'] = 'WAS';
 $lang['menu_wwff'] = 'WWFF';
 
@@ -97,4 +102,5 @@ $lang['menu_logout'] = 'Odhlásit se';
 $lang['menu_ffma'] = "Fred Fish Memorial Award";
 $lang['menu_ja_gridmaster'] = 'JA Gridmaster';
 $lang['menu_maintenance']='Maintenance';
+$lang['menu_cron_scheduler']='Background job scheduler';
 $lang['menu_uk_gridmaster'] = 'UK Gridmaster';

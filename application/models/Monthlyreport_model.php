@@ -71,6 +71,10 @@ class Monthlyreport_model extends CI_Model {
 	 * This prevents hundreds of individual queries
 	 */
 	private function build_historical_caches($locations, $start_date) {
+		$this->historical_grids = array();
+		$this->historical_grids_by_prop = array();
+		$this->historical_grids_hf = array();
+
 		// Get ALL historical gridsquares (before this month)
 		$this->db->select('COL_GRIDSQUARE, COL_VUCC_GRIDS, COL_PROP_MODE');
 		$this->db->from($this->config->item('table_name'));

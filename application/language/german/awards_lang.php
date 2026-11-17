@@ -169,6 +169,36 @@ WAS -- Verwenden Sie alle 4 Textzeilen
 ___________________________________________________________________________________________
 */
 
+$lang['awards_wac_description_ln1'] = "WAC Award";
+$lang['awards_wac_description_ln2'] = "The IARU Worked All Continents award is for contacts with each of the six continents: Africa, Asia, Europe, North America, Oceania, and South America. Antarctica does not count towards the six.";
+$lang['awards_wac_description_ln3'] = "Cloudlog reads the continent stored on each QSO in the active logbook. Use the band and mode filters for a single-band or single-mode endorsement, and the QSL types to choose which confirmations count.";
+$lang['awards_wac_description_ln4'] = "All information and rules for the IARU WAC award can be found <a href='https://www.iaru.org/on-the-air/operating-awards/' target='_blank'>here</a>.";
+
+/*
+___________________________________________________________________________________________
+SKCC
+___________________________________________________________________________________________
+*/
+
+$lang['awards_skcc_description_ln1'] = "SKCC Awards";
+$lang['awards_skcc_description_ln2'] = "The Straight Key Century Club awards count unique SKCC members by membership number. Centurion is 100 members. Tribune, after Centurion, is 50 members who are C, T, or S. Senator, after Tribune x8 (400), is 200 members who are T or S.";
+$lang['awards_skcc_description_ln3'] = "Cloudlog reads the SKCC field on each QSO in the active logbook, or SIG Info when SIG is SKCC. Log the suffix that was sent, such as 14086T, because a number on its own only counts toward Centurion. Contacts with K9SKC and K3Y do not count.";
+$lang['awards_skcc_description_ln4'] = "Rules for the <a href='https://www.skccgroup.com/operating_awards/centurion/' target='_blank'>Centurion</a>, <a href='https://www.skccgroup.com/operating_awards/tribune/' target='_blank'>Tribune</a>, and <a href='https://www.skccgroup.com/operating_awards/senator/' target='_blank'>Senator</a> awards are on the SKCC website.";
+
+$lang['awards_rda_description_ln1'] = "RDA Award";
+$lang['awards_rda_description_ln2'] = "The Russian Districts Award, from the Tambov Award Group, counts districts of the Russian Federation from the RDA list. Each district counts once, on any band. Certificates are RDA-100, 250, 500, 1000, 1500, and 2000, then the Honor Roll plaque at 2500 and Honor Roll #1 for every current district.";
+$lang['awards_rda_description_ln3'] = "Cloudlog reads the county field on each QSO in the active logbook, where ADIF keeps the district as a code such as TB-02. Deleted codes and contacts made before a district existed are listed but do not count.";
+$lang['awards_rda_description_ln4'] = "The <a href='https://www.rdaward.org/rda_rules_eng.htm' target='_blank'>RDA rules</a> and the <a href='https://www.rdaward.org/rda_eng.txt' target='_blank'>district list</a> are on rdaward.org. Credit is granted by the <a href='https://rdaward.ru' target='_blank'>RDA Autocfm</a> site, not by Cloudlog.";
+
+$lang['awards_rsgb_description_ln1'] = "RSGB Awards";
+$lang['awards_rsgb_description_ln2'] = "The Radio Society of Great Britain runs HF and VHF/UHF awards open to everyone, and Foundation and Intermediate awards for UK licence holders. This page scores IARU Region 1, the Commonwealth Century Award, Worked ITU Zones, the 50 MHz awards, the VHF squares and countries awards, and the V/UHF Activity Award.";
+$lang['awards_rsgb_description_ln3'] = "Cloudlog reads the active logbook. The Foundation and Intermediate 100 awards appear when a station location in the logbook has a Foundation (M3, M6, M7) or Intermediate (2E0, 2E1, M8, M9) callsign, and count only the contacts made from it. Awards that ask for every contact from one country assume the logbook holds one country.";
+$lang['awards_rsgb_description_ln4'] = "Rules, application forms, and check sheets are on the <a href='https://rsgb.org/main/operating/amateur-radio-awards/' target='_blank'>RSGB awards page</a>. Send claims to the RSGB Awards Manager.";
+$lang['awards_rac_description_ln1'] = "RAC Awards";
+$lang['awards_rac_description_ln2'] = "Radio Amateurs of Canada runs operating awards open to everyone. This page scores the Canadaward (every province and territory), the Canadian Century Club (100 different Canadian stations), and Worked All RAC (10 of the official RAC call-area stations), with Basic, band, satellite, and mode endorsements.";
+$lang['awards_rac_description_ln3'] = "Cloudlog reads the active logbook and places each Canadian contact by the province in its State field. When the State is blank, the callsign prefix is used, except VE1 and VA1, which older New Brunswick and Prince Edward Island calls still share with Nova Scotia. Awards that ask for every contact from one country assume the logbook holds one country.";
+$lang['awards_rac_description_ln4'] = "Rules and application forms are on the <a href='https://www.rac.ca/operating/rac-operating-awards/' target='_blank'>RAC Operating Awards page</a>. Send claims to the RAC Awards Manager.";
+
 $lang['awards_was_description_ln1'] = "WAS Diplom";
 $lang['awards_was_description_ln2'] = "Die beliebteste Auszeichnung des ARRL ist das Worked All States Diplom. Tausende von Diplomen wurden an Funkamateure auf der ganzen Welt verliehen. Im 101. Jahr des ARRL haben sie die Diplome und das Programm in der Hoffnung überarbeitet und verbessert, das Diplomprogramm zu optimieren und zu vereinfachen.";
 $lang['awards_was_description_ln3'] = "Das WAS (Worked All States) Diplom steht allen Funkamateuren weltweit zur Verfügung, die den Nachweis mit schriftlicher Bestätigung von Kontakten mit jedem der 50 Bundesstaaten der Vereinigten Staaten von Amerika erbringen. Funkamateure in den USA und ihren angehängten Staaten müssen Mitglieder des ARRL sein, um sich für einen WAS bewerben zu können. Bewerber aus dem Ausland sind von dieser Anforderung befreit.";

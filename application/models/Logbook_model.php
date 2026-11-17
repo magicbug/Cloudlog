@@ -17,6 +17,28 @@ class Logbook_model extends CI_Model
     return implode(',', $parts);
   }
 
+  private function rda_code($value)
+  {
+    $this->load->library('rda_award');
+    return $this->rda_award->normalize($value);
+  }
+
+  /*
+   * ADIF keeps the RDA district in CNTY. Some Russian loggers write a separate RDA tag,
+   * or SIG RDA with the code in SIG_INFO; those fill CNTY only when it is empty.
+   */
+  private function import_cnty($record)
+  {
+    if (!empty($record['cnty'])) {
+      return $record['cnty'];
+    }
+    $code = $this->rda_code($record['rda'] ?? '');
+    if ($code === null && strtoupper(trim((string)($record['sig'] ?? ''))) === 'RDA') {
+      $code = $this->rda_code($record['sig_info'] ?? '');
+    }
+    return $code ?? '';
+  }
+
   /**
    * Clear dashboard cache for all users with access to a station
    * This should be called whenever QSOs are added, edited, or deleted
@@ -78,9 +100,46 @@ class Logbook_model extends CI_Model
     }
   }
 
+  /**
+   * @param int|string $station_id
+   * @param string $client_ref
+   */
+  public function qso_exists_for_client_ref($station_id, $client_ref)
+  {
+    if ($station_id === '' || $station_id === '0' || $client_ref === null || $client_ref === '') {
+      return false;
+    }
+
+    $this->db->select('COL_PRIMARY_KEY');
+    $this->db->where('station_id', $station_id);
+    $this->db->where('COL_CLIENT_REF', $client_ref);
+    $query = $this->db->get($this->config->item('table_name'), 1);
+
+    return $query->num_rows() > 0;
+  }
+
   /* Add QSO to Logbook */
   function create_qso()
   {
+    $CI = &get_instance();
+    $CI->load->helper('client_ref');
+
+    $station_id = $this->input->post('station_profile');
+    if ($station_id == "" || $station_id == "0") {
+      $CI->load->model('stations');
+      $station_id = $CI->stations->find_active();
+    }
+
+    $CI->load->model('stations');
+    if (!$CI->stations->check_station_is_accessible($station_id)) {
+      return 'station_not_accessible';
+    }
+
+    $client_ref = client_ref_normalize($this->input->post('client_ref'));
+
+    if ($client_ref !== null && $this->qso_exists_for_client_ref($station_id, $client_ref)) {
+      return 'duplicate';
+    }
 
     $callsign = str_replace('Ø', '0', $this->input->post('callsign'));
     // Join date+time - Parse date according to user's format preference
@@ -232,7 +291,7 @@ class Logbook_model extends CI_Model
     if ($this->input->post('county') && $this->input->post('usa_state')) {
       $clean_county_input = trim($this->input->post('usa_state')) . "," . trim($this->input->post('county'));
     } else {
-      $clean_county_input = null;
+      $clean_county_input = $this->rda_code($this->input->post('rda'));
     }
 
     if ($this->input->post('copyexchangetodok')) {
@@ -246,7 +305,7 @@ class Logbook_model extends CI_Model
     $qso_locator = strtoupper(trim(xss_clean($this->input->post('vucc_grids') ?? '') ?: xss_clean($this->input->post('locator') ?? '')));
     $qso_name = $this->input->post('name');
     $qso_age = null;
-    $qso_usa_state = $this->input->post('usa_state') == null ? '' : $this->input->post('usa_state');
+    $qso_usa_state = $this->input->post('usa_state') ?: ($this->input->post('ca_province') ?: '');
     $qso_rx_power = null;
 
     if ($this->input->post('copyexchangeto')) {
@@ -366,21 +425,11 @@ class Logbook_model extends CI_Model
       'COL_SIG_INFO' => $this->input->post('sig_info') == null ? '' : trim($this->input->post('sig_info')),
       'COL_DARC_DOK' => $darc_dok  == null ? '' : strtoupper(trim($darc_dok)),
       'COL_NOTES' => $this->input->post('notes'),
+      'COL_CLIENT_REF' => $client_ref,
     );
-
-    $station_id = $this->input->post('station_profile');
-
-    if ($station_id == "" || $station_id == "0") {
-      $CI = &get_instance();
-      $CI->load->model('stations');
-      $station_id = $CI->stations->find_active();
-    }
 
     $CI = &get_instance();
     $CI->load->model('stations');
-    if (!$CI->stations->check_station_is_accessible($station_id)) {  // Hard Exit if station_profile not accessible
-      return 'Station not accessible<br>';
-    }
 
 
     $station = null;
@@ -457,7 +506,12 @@ class Logbook_model extends CI_Model
       $data = $filtered_data;
     }
 
-    $this->add_qso($data, $skipexport = false);
+    $add_result = $this->add_qso($data, false);
+    if ($add_result === 'duplicate') {
+      return 'duplicate';
+    }
+
+    return 'ok';
   }
 
   public function check_last_lotw($call)
@@ -537,6 +591,9 @@ class Logbook_model extends CI_Model
         break;
       case 'DOK':
         $this->db->where('COL_DARC_DOK', $searchphrase);
+        break;
+      case 'RDA':
+        $this->db->where("UPPER(REPLACE(REPLACE(COL_CNTY, ' ', ''), '-', '')) =", strtoupper(str_replace(array(' ', '-'), '', $searchphrase)));
         break;
       case 'WAJA':
         $state = str_pad($searchphrase, 2, '0', STR_PAD_LEFT);
@@ -754,8 +811,27 @@ class Logbook_model extends CI_Model
       $data['COL_RX_PWR'] = str_replace("W", "", $data['COL_RX_PWR']);
     }
 
-    // Add QSO to database
-    $this->db->insert($this->config->item('table_name'), $data);
+    // Add QSO to database. A repeated client reference is the offline queue
+    // replaying a save that already landed, so treat that unique-key clash
+    // as success instead of a server error.
+    $client_ref = isset($data['COL_CLIENT_REF']) ? $data['COL_CLIENT_REF'] : null;
+    if ($client_ref !== null && $client_ref !== '') {
+      $previous_debug = $this->db->db_debug;
+      $this->db->db_debug = false;
+      $inserted = $this->db->insert($this->config->item('table_name'), $data);
+      $error = $this->db->error();
+      $this->db->db_debug = $previous_debug;
+      if (!$inserted) {
+        $message = isset($error['message']) ? $error['message'] : '';
+        if ((int) ($error['code'] ?? 0) === 1062 && stripos($message, 'idx_station_client_ref') !== false) {
+          return 'duplicate';
+        }
+        log_message('error', 'QSO insert failed: ' . $message);
+        show_error('Unable to save QSO.');
+      }
+    } else {
+      $this->db->insert($this->config->item('table_name'), $data);
+    }
 
     $last_id = $this->db->insert_id();
     
@@ -781,6 +857,10 @@ class Logbook_model extends CI_Model
       'source' => $skipexport ? 'import' : 'manual',
       'station_id' => isset($data['station_id']) ? $data['station_id'] : null,
     ));
+
+    if (!$skipexport) {
+      $this->maybe_queue_qso_webhook('qso.created', $last_id, isset($data['station_id']) ? $data['station_id'] : 0);
+    }
 
     // No point in fetching hrdlog code or qrz api key and qrzrealtime setting if we're skipping the export
     if (!$skipexport) {
@@ -1861,9 +1941,14 @@ class Logbook_model extends CI_Model
     }
 
     if ($this->input->post('usa_county') && $this->input->post('usa_state')) {
-      $uscounty = trim($this->input->post('usa_state') . "," . $this->input->post('usa_county'));
+      $edit_state = trim($this->input->post('usa_state'));
+      $edit_county = trim($this->input->post('usa_county'));
+      if (stripos($edit_county, $edit_state . ',') === 0) {
+        $edit_county = trim(substr($edit_county, strlen($edit_state) + 1));
+      }
+      $uscounty = $edit_state . "," . $edit_county;
     } else {
-      $uscounty = null;
+      $uscounty = $this->rda_code($this->input->post('rda'));
     }
 
     if ($this->input->post('qsl_sent')) {
@@ -2012,7 +2097,7 @@ class Logbook_model extends CI_Model
       'COL_MY_WWFF_REF' => $wwffRef,
       'COL_MY_POTA_REF' => $potaRef,
       'COL_OPERATOR' => $this->input->post('operator_callsign'),
-      'COL_STATE' => $this->input->post('usa_state'),
+      'COL_STATE' => $this->input->post('usa_state') ?: ($this->input->post('ca_province') ?: ''),
       'COL_CNTY' => $uscounty
     );
 
@@ -2057,6 +2142,8 @@ class Logbook_model extends CI_Model
     ), array(
       'station_id' => $stationId,
     ));
+
+    $this->maybe_queue_qso_webhook('qso.updated', (int)$this->input->post('id'), $stationId);
   }
 
   /* QSL received */
@@ -3456,6 +3543,69 @@ class Logbook_model extends CI_Model
     return $query;
   }
 
+  /*
+   * QSO and confirmed counts per continent for the WAC award.
+   * $filters: band ('All', 'SAT', or a band), mode ('All' or a mode/submode),
+   * and qsl, lotw, eqsl (truthy when that confirmation counts).
+   * Returns an array keyed by continent code, each with qsos and confirmed.
+   */
+  function wac_continent_summary($filters)
+  {
+    $CI = &get_instance();
+    $CI->load->model('logbooks_model');
+    $logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+    if (!$logbooks_locations_array) {
+      return array();
+    }
+
+    $confirmed = array();
+    if (!empty($filters['qsl'])) {
+      $confirmed[] = "COL_QSL_RCVD = 'Y'";
+    }
+    if (!empty($filters['lotw'])) {
+      $confirmed[] = "COL_LOTW_QSL_RCVD = 'Y'";
+    }
+    if (!empty($filters['eqsl'])) {
+      $confirmed[] = "COL_EQSL_QSL_RCVD = 'Y'";
+    }
+    $confirmed_sql = $confirmed ? 'SUM(CASE WHEN ' . implode(' OR ', $confirmed) . ' THEN 1 ELSE 0 END)' : '0';
+
+    $this->db->select('UPPER(COL_CONT) AS cont, COUNT(*) AS qsos, ' . $confirmed_sql . ' AS confirmed', FALSE);
+    $this->db->where_in('station_id', $logbooks_locations_array);
+    $this->db->where('COL_CONT is not null');
+    $this->db->where('COL_CONT !=', '');
+
+    if (isset($filters['mode']) && $filters['mode'] !== 'All' && $filters['mode'] !== '') {
+      $this->db->group_start();
+      $this->db->where('COL_MODE', $filters['mode']);
+      $this->db->or_where('COL_SUBMODE', $filters['mode']);
+      $this->db->group_end();
+    }
+
+    if (isset($filters['band']) && $filters['band'] !== 'All' && $filters['band'] !== '') {
+      if ($filters['band'] != 'SAT') {
+        $this->db->where('COL_BAND', $filters['band']);
+        $this->db->where('(COL_PROP_MODE IS NULL OR COL_PROP_MODE != "SAT")', NULL, FALSE);
+      } else {
+        $this->db->where('COL_PROP_MODE', 'SAT');
+      }
+    }
+
+    $this->db->group_by('UPPER(COL_CONT)');
+    $query = $this->db->get($this->config->item('table_name'));
+
+    $summary = array();
+    foreach ($query->result() as $row) {
+      $summary[$row->cont] = array(
+        'qsos' => (int) $row->qsos,
+        'confirmed' => (int) $row->confirmed,
+      );
+    }
+
+    return $summary;
+  }
+
   /* Return total number of CW QSOs */
   function total_cw()
   {
@@ -4186,36 +4336,99 @@ class Logbook_model extends CI_Model
   /* Delete QSO based on the QSO ID */
   function delete($id)
   {
-    if ($this->check_qso_is_accessible($id)) {
-      // Get station_id before deleting for cache clearing
-      $this->db->select('station_id, COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SUBMODE');
-      $this->db->where('COL_PRIMARY_KEY', $id);
-      $qso_query = $this->db->get($this->config->item('table_name'));
-      $station_id = null;
-      if ($qso_query->num_rows() > 0) {
-        $qso_row = $qso_query->row_array();
-        $station_id = $qso_row['station_id'];
-
-        $this->load->library('cloudlog_hooks');
-        $this->cloudlog_hooks->do_action('qso.action.before_delete', array(
-          'qso_id' => (int)$id,
-          'qso' => $qso_row,
-        ), array(
-          'station_id' => $station_id,
-        ));
-      }
-      
-      // Delete the QSO
-      $this->db->where('COL_PRIMARY_KEY', $id);
-      $this->db->delete($this->config->item('table_name'));
-      
-      // Clear dashboard cache for affected station
-      if ($station_id !== null) {
-        $this->clear_dashboard_cache($station_id);
-      }
-    } else {
-      return;
+    $station_id = $this->remove_qso_record($id);
+    if ($station_id !== null) {
+      $this->clear_dashboard_cache($station_id);
     }
+  }
+
+  /**
+   * Remove a QSO row (hooks only). Caller clears dashboard cache when appropriate.
+   *
+   * @return int|null station_id when the QSO was removed
+   */
+  public function remove_qso_record($id)
+  {
+    if (!$this->check_qso_is_accessible($id)) {
+      return null;
+    }
+
+    $this->db->select('station_id, COL_CALL, COL_TIME_ON, COL_BAND, COL_MODE, COL_SUBMODE');
+    $this->db->where('COL_PRIMARY_KEY', $id);
+    $qso_query = $this->db->get($this->config->item('table_name'));
+    if ($qso_query->num_rows() === 0) {
+      return null;
+    }
+
+    $qso_row = $qso_query->row_array();
+    $station_id = $qso_row['station_id'];
+
+    $this->load->library('cloudlog_hooks');
+    $this->cloudlog_hooks->do_action('qso.action.before_delete', array(
+      'qso_id' => (int)$id,
+      'qso' => $qso_row,
+    ), array(
+      'station_id' => $station_id,
+    ));
+
+    $this->db->where('COL_PRIMARY_KEY', $id);
+    $this->db->delete($this->config->item('table_name'));
+
+    return $station_id;
+  }
+
+  /**
+   * @param object $group Row from duplicate search (call, mode, band, etc.)
+   * @param int[] $station_location_ids
+   * @return int[]
+   */
+  public function duplicate_group_primary_keys($group, array $station_location_ids)
+  {
+    if ($station_location_ids === []) {
+      return [];
+    }
+
+    $table = $this->config->item('table_name');
+    $this->db->select($table . '.COL_PRIMARY_KEY');
+    $this->db->where_in($table . '.station_id', $station_location_ids);
+    $this->db->where($table . '.COL_CALL', $group->COL_CALL);
+    $this->db->where($table . '.COL_MODE', $group->COL_MODE);
+    $this->db->where($table . '.COL_BAND', $group->COL_BAND);
+    $station_callsign = $group->COL_STATION_CALLSIGN ?? $group->station_callsign ?? '';
+    $this->db->where($table . '.COL_STATION_CALLSIGN', $station_callsign);
+
+    if ($group->COL_SUBMODE === null || $group->COL_SUBMODE === '') {
+      $this->db->group_start();
+      $this->db->where($table . '.COL_SUBMODE IS NULL', null, false);
+      $this->db->or_where($table . '.COL_SUBMODE', '');
+      $this->db->group_end();
+    } else {
+      $this->db->where($table . '.COL_SUBMODE', $group->COL_SUBMODE);
+    }
+
+    if ($group->COL_SAT_NAME === null || $group->COL_SAT_NAME === '') {
+      $this->db->group_start();
+      $this->db->where($table . '.COL_SAT_NAME IS NULL', null, false);
+      $this->db->or_where($table . '.COL_SAT_NAME', '');
+      $this->db->group_end();
+    } else {
+      $this->db->where($table . '.COL_SAT_NAME', $group->COL_SAT_NAME);
+    }
+
+    $this->db->order_by($table . '.COL_TIME_ON', 'ASC');
+    $query = $this->db->get($table);
+
+    $ids = [];
+    foreach ($query->result() as $row) {
+      $ids[] = (int) $row->COL_PRIMARY_KEY;
+    }
+
+    return $ids;
+  }
+
+  public function invalidate_dashboard_cache($station_id = null)
+  {
+    $this->clear_dashboard_cache($station_id);
   }
 
   /* Used to check if the qso is already in the database */
@@ -5067,7 +5280,7 @@ class Logbook_model extends CI_Model
         'COL_CLASS' => (!empty($record['class'])) ? $record['class'] : '',
         'COL_CLUBLOG_QSO_UPLOAD_DATE' => $input_clublog_qslsdate,
         'COL_CLUBLOG_QSO_UPLOAD_STATUS' => $input_clublog_qsl_sent,
-        'COL_CNTY' => (!empty($record['cnty'])) ? $record['cnty'] : '',
+        'COL_CNTY' => $this->import_cnty($record),
         'COL_COMMENT' => (!empty($record['comment'])) ? $record['comment'] : '',
         'COL_COMMENT_INTL' => (!empty($record['comment_intl'])) ? $record['comment_intl'] : '',
         'COL_CONT' => (!empty($record['cont'])) ? $record['cont'] : '',
@@ -6802,6 +7015,30 @@ class Logbook_model extends CI_Model
     $this->db->order_by('COL_TIME_ON', 'ASC');
     
     return $this->db->get($this->config->item('table_name'));
+  }
+
+  private function maybe_queue_qso_webhook($event_type, $qso_id, $station_id)
+  {
+    $qso_id = (int) $qso_id;
+    if ($qso_id <= 0) {
+      return;
+    }
+
+    $this->load->library('qso_webhook');
+
+    $user_id = $this->qso_webhook->user_id_for_station($station_id);
+    if ($user_id <= 0) {
+      $session_user = $this->session->userdata('user_id');
+      if ($session_user) {
+        $user_id = (int) $session_user;
+      }
+    }
+
+    if ($user_id <= 0) {
+      return;
+    }
+
+    $this->qso_webhook->queue_qso_event($user_id, $qso_id, $event_type);
   }
 }
 

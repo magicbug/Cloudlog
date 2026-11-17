@@ -6,10 +6,18 @@
 
 class Monthlyreport extends CI_Controller {
 
+	const EMAIL_SEND_LAST_DAY = 7;
+	const EMAIL_BATCH_SIZE = 20;
+
 	function __construct()
 	{
 		parent::__construct();
 		$this->load->helper(array('form', 'url'));
+
+		// Cron entry point: runs without a session and only emails opted-in users.
+		if ($this->router->method === 'send_scheduled') {
+			return;
+		}
 
 		$this->load->model('user_model');
 		if(!$this->user_model->authorize(2)) { 
@@ -24,9 +32,15 @@ class Monthlyreport extends CI_Controller {
 	public function index() 
 	{
 		$this->load->model('logbooks_model');
+		$this->load->model('monthlyreport_email_model');
 		
 		$data['logbooks'] = $this->logbooks_model->show_all();
 		$data['page_title'] = "Monthly Report";
+		$data['email_configured'] = $this->monthlyreport_email_model->email_configured();
+		$data['email_pref'] = $this->monthlyreport_email_model->get_preference($this->session->userdata('user_id'));
+		$data['user_email'] = $this->user_model->get_user_email_by_id($this->session->userdata('user_id'));
+		$last_month = $this->previous_month();
+		$data['last_month_label'] = date('F Y', mktime(0, 0, 0, $last_month['month'], 1, $last_month['year']));
 		
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('monthlyreport/index');
@@ -71,6 +85,132 @@ class Monthlyreport extends CI_Controller {
 		$this->load->view('interface_assets/header', $data);
 		$this->load->view('monthlyreport/report');
 		$this->load->view('interface_assets/footer');
+	}
+
+	/**
+	 * Save the monthly report email opt-in and logbook
+	 */
+	public function save_email_preference()
+	{
+		$this->load->model('monthlyreport_email_model');
+
+		$user_id = $this->session->userdata('user_id');
+		$enabled = $this->input->post('email_enabled') == '1';
+		$logbook_id = (int) $this->input->post('email_logbook_id');
+
+		if (!$this->monthlyreport_email_model->user_can_access_logbook($user_id, $logbook_id)) {
+			$this->session->set_flashdata('notice', 'Please choose one of your logbooks for the monthly email');
+			redirect('monthlyreport');
+		}
+
+		$this->monthlyreport_email_model->save_preference($user_id, $enabled, $logbook_id);
+		$this->session->set_flashdata('success', $enabled
+			? 'Monthly report email turned on for ' . htmlspecialchars($this->monthlyreport_email_model->logbook_name($logbook_id))
+			: 'Monthly report email turned off');
+		redirect('monthlyreport');
+	}
+
+	/**
+	 * Email last month's report now; not recorded in the send log
+	 */
+	public function send_preview()
+	{
+		$this->load->model('monthlyreport_email_model');
+
+		$user_id = $this->session->userdata('user_id');
+		$logbook_id = (int) $this->input->post('email_logbook_id');
+
+		if (!$this->monthlyreport_email_model->email_configured()) {
+			$this->session->set_flashdata('notice', 'Outbound email is not configured on this Cloudlog');
+			redirect('monthlyreport');
+		}
+
+		if (!$this->monthlyreport_email_model->user_can_access_logbook($user_id, $logbook_id)) {
+			$this->session->set_flashdata('notice', 'Please choose one of your logbooks for the monthly email');
+			redirect('monthlyreport');
+		}
+
+		$user = $this->user_model->get_by_id($user_id)->row();
+		if (!$user || $user->user_email == '') {
+			$this->session->set_flashdata('notice', 'Your account has no email address');
+			redirect('monthlyreport');
+		}
+
+		$period = $this->previous_month();
+		$label = date('F Y', mktime(0, 0, 0, $period['month'], 1, $period['year']));
+		$result = $this->monthlyreport_email_model->send_report($user, $logbook_id, $period['year'], $period['month']);
+
+		if ($result['status'] === 'sent') {
+			$this->session->set_flashdata('success', 'The ' . $label . ' report was emailed to ' . $user->user_email);
+		} elseif ($result['status'] === 'skipped_empty') {
+			$this->session->set_flashdata('notice', 'No QSOs in ' . $label . ' for that logbook, so there was nothing to email. The scheduled email skips empty months too.');
+		} else {
+			$this->session->set_flashdata('notice', 'The email could not be sent. Check Admin > Options > Email, or the Cloudlog log for details.');
+		}
+		redirect('monthlyreport');
+	}
+
+	/**
+	 * Daily cron job: in the first week of each month (UTC), email last month's report
+	 * to opted-in users who have not had it yet.
+	 */
+	public function send_scheduled()
+	{
+		$this->load->library('cron_runner');
+		$this->cron_runner->run_guarded('monthly_report_email', function () {
+			$this->load->model('monthlyreport_email_model');
+
+			if ((int) gmdate('j') > self::EMAIL_SEND_LAST_DAY) {
+				echo 'Monthly report emails are only sent on days 1-' . self::EMAIL_SEND_LAST_DAY . ' of the month.' . "\n";
+				return;
+			}
+
+			if (!$this->monthlyreport_email_model->email_configured()) {
+				echo 'Email is not configured; no monthly reports sent.' . "\n";
+				log_message('info', 'Monthly report email: email not configured');
+				return;
+			}
+
+			$period = $this->previous_month();
+			$period_key = sprintf('%04d-%02d', $period['year'], $period['month']);
+			$users = $this->monthlyreport_email_model->get_pending_users($period_key, self::EMAIL_BATCH_SIZE);
+
+			$counts = array('sent' => 0, 'skipped_empty' => 0, 'skipped_inaccessible' => 0, 'error' => 0);
+			foreach ($users as $user) {
+				$logbook_id = $user->logbook_id !== null && $user->logbook_id !== '' ? (int) $user->logbook_id : null;
+
+				if ($logbook_id === null || !$this->monthlyreport_email_model->user_can_access_logbook($user->user_id, $logbook_id)) {
+					$result = array('status' => 'skipped_inaccessible', 'error' => null);
+				} else {
+					try {
+						$result = $this->monthlyreport_email_model->send_report($user, $logbook_id, $period['year'], $period['month']);
+					} catch (Throwable $e) {
+						log_message('error', 'Monthly report email to user ' . $user->user_id . ': ' . $e->getMessage());
+						$result = array('status' => 'error', 'error' => $e->getMessage());
+					}
+				}
+
+				$this->monthlyreport_email_model->log_result($user->user_id, $period_key, $logbook_id, $result['status'], $result['error']);
+				$counts[$result['status']]++;
+			}
+
+			$summary = 'Monthly report emails for ' . $period_key . ': sent ' . $counts['sent']
+				. ', empty ' . $counts['skipped_empty']
+				. ', no logbook ' . $counts['skipped_inaccessible']
+				. ', failed ' . $counts['error'];
+			echo $summary . "\n";
+			log_message('info', $summary);
+		});
+	}
+
+	/**
+	 * @return array year, month of the previous calendar month (UTC)
+	 */
+	private function previous_month()
+	{
+		$first_of_this_month = gmmktime(0, 0, 0, (int) gmdate('n'), 1, (int) gmdate('Y'));
+		$last_month = $first_of_this_month - 86400;
+		return array('year' => (int) gmdate('Y', $last_month), 'month' => (int) gmdate('n', $last_month));
 	}
 
 	/**

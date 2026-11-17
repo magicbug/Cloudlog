@@ -16,6 +16,20 @@ class Oqrs extends CI_Controller {
 		// if(!$this->user_model->authorize(2)) { $this->session->set_flashdata('notice', 'You\'re not allowed to do that!'); redirect('dashboard'); }
 	}
 
+	/*
+	 * The controller is deliberately public (visitors use it to request QSLs),
+	 * so authentication is enforced per management action instead of in the
+	 * constructor. Anything that reads or changes requests for the logged in
+	 * user must call this first.
+	 */
+	private function require_operator() {
+		$this->load->model('user_model');
+		if (!$this->user_model->authorize(2)) {
+			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
+			redirect('dashboard');
+		}
+	}
+
 	function _remap($method, $params = array()) {
 		$reserved = array(
 			'get_station_info',
@@ -181,6 +195,7 @@ class Oqrs extends CI_Controller {
 	}
 
 	public function requests() {
+		$this->require_operator();
 		$data['page_title'] = "OQRS Requests";
 
 		$CI =& get_instance();
@@ -217,12 +232,14 @@ class Oqrs extends CI_Controller {
 	}
 
 	public function delete_oqrs_line() {
+		$this->require_operator();
 		$id = $this->input->post('id');
 		$this->load->model('oqrs_model');
 		$this->oqrs_model->delete_oqrs_line($id);
 	}
 
 	public function search_log() {
+		$this->require_operator();
 		$this->load->model('oqrs_model');
 		$callsign = $this->input->post('callsign');
 
@@ -232,6 +249,7 @@ class Oqrs extends CI_Controller {
 	}
 
 	public function search_log_time_date() {
+		$this->require_operator();
 		$this->load->model('oqrs_model');
 		$time = $this->security->xss_clean($this->input->post('time'));
 		$date = $this->security->xss_clean($this->input->post('date'));
@@ -255,37 +273,22 @@ class Oqrs extends CI_Controller {
 
 			if($email != "" && $sendEmail == "1") {
 
-				$this->load->library('email');
-
-				if($this->optionslib->get_option('emailProtocol') == "smtp") {
-					$config = Array(
-						'protocol' => $this->optionslib->get_option('emailProtocol'),
-						'smtp_crypto' => $this->optionslib->get_option('smtpEncryption'),
-						'smtp_host' => $this->optionslib->get_option('smtpHost'),
-						'smtp_port' => $this->optionslib->get_option('smtpPort'),
-						'smtp_user' => $this->optionslib->get_option('smtpUsername'),
-						'smtp_pass' => $this->optionslib->get_option('smtpPassword'),
-						'crlf' => "\r\n",
-						'newline' => "\r\n"
-					);
-
-					$this->email->initialize($config);
-				}
-
 				$data['callsign'] = $this->security->xss_clean($postdata['callsign']);
 				$data['usermessage'] = $this->security->xss_clean($postdata['message']);
 
 				$message = $this->load->view('email/oqrs_request', $data,  TRUE);
 
-				$this->email->from($this->optionslib->get_option('emailAddress'), $this->optionslib->get_option('emailSenderName'));
-				$this->email->to($email);
-				$this->email->reply_to($this->security->xss_clean($postdata['email']), strtoupper($data['callsign']));
+				$this->load->library('mailer');
+				$result = $this->mailer->send(
+					$email,
+					'Cloudlog OQRS from ' . strtoupper($data['callsign']),
+					$message,
+					$this->security->xss_clean($postdata['email']),
+					strtoupper($data['callsign'])
+				);
 
-				$this->email->subject('Cloudlog OQRS from ' . strtoupper($data['callsign']));
-				$this->email->message($message);
-
-				if (! $this->email->send()) {
-					log_message('error', 'OQRS Alert! Email settings are incorrect.');
+				if (!$result['sent']) {
+					log_message('error', 'OQRS Alert! Email settings are incorrect. ' . $result['error']);
 				} else {
 					log_message('info', 'An OQRS request is made.');
 				}
@@ -294,6 +297,7 @@ class Oqrs extends CI_Controller {
 	}
 
 	public function mark_oqrs_line_as_done() {
+		$this->require_operator();
 		$this->load->model('oqrs_model');
 		$id = $this->security->xss_clean($this->input->post('id'));
 
@@ -301,6 +305,7 @@ class Oqrs extends CI_Controller {
 	}
 
 	public function search() {
+		$this->require_operator();
 		$this->load->model('oqrs_model');
 
 		$searchCriteria = array(

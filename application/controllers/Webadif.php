@@ -11,6 +11,8 @@ class Webadif extends CI_Controller {
      */
 	public function upload()
 	{
+		$this->load->library('cron_runner');
+		$this->cron_runner->run_guarded('webadif_upload', function () {
 		$this->setOptions();
 
 		$this->load->model('logbook_model');
@@ -33,6 +35,7 @@ class Webadif extends CI_Controller {
 			echo "No station profiles with a QO-100 Dx Club API Key found.";
 			log_message('error', "No station profiles with a QO-100 Dx Club API Key found.");
 		}
+		});
 	}
 
     function setOptions() {

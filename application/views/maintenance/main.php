@@ -120,6 +120,16 @@
 		<?php } ?>
 	  </div>
 
+	  <div class="card" style="margin-bottom: 15px;">
+		  <div class="card-header">
+			Background job scheduler
+		  </div>
+		  <div class="card-body">
+		  	<p class="card-text">Optional single crontab entry for integrations and reference data updates. Legacy URLs remain valid.</p>
+		  	<a class="btn btn-sm btn-primary" href="<?php echo site_url('cronmanager'); ?>">Open scheduler settings</a>
+		  </div>
+	  </div>
+
 	  <div class="card">
 		  <div class="card-header">
 			Data File Updates
@@ -177,6 +187,20 @@
 								</button>
 								<span id="spinner-dok" class="htmx-indicator spinner-border spinner-border-sm ms-2" role="status"></span>
 								<div id="update-result-dok" class="mt-2"></div>
+							</td>
+						</tr>
+						<tr>
+							<td><strong>RDA</strong></td>
+							<td>Russian Districts Award district list</td>
+							<td>
+								<button class="btn btn-sm btn-primary" 
+										hx-get="<?php echo site_url('update/update_rda_ui'); ?>" 
+										hx-target="#update-result-rda"
+										hx-indicator="#spinner-rda">
+									<i class="fas fa-sync"></i> Update RDA
+								</button>
+								<span id="spinner-rda" class="htmx-indicator spinner-border spinner-border-sm ms-2" role="status"></span>
+								<div id="update-result-rda" class="mt-2"></div>
 							</td>
 						</tr>
 						<tr>
