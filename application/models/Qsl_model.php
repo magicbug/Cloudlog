@@ -69,7 +69,11 @@ class Qsl_model extends CI_Model
         $this->db->select('qsoid');
         $this->db->from('qsl_images');
         $this->db->where('id', $clean_id);
-        $qsoid = $this->db->get()->row()->qsoid;
+        $row = $this->db->get()->row();
+        if ($row === null) {
+            return;
+        }
+        $qsoid = (int) $row->qsoid;
         if (!$CI->logbook_model->check_qso_is_writable($qsoid)) {
             return;
         }
@@ -88,8 +92,12 @@ class Qsl_model extends CI_Model
         $this->db->select('qsoid');
         $this->db->from('qsl_images');
         $this->db->where('id', $clean_id);
-        $qsoid = $this->db->get()->row()->qsoid;
-        if (!$CI->logbook_model->check_qso_is_accessible($qsoid)) {
+        $row = $this->db->get()->row();
+        if ($row === null) {
+            return;
+        }
+        $qsoid = (int) $row->qsoid;
+        if (!$CI->logbook_model->check_qso_is_writable($qsoid)) {
             return;
         }
 
@@ -124,7 +132,7 @@ class Qsl_model extends CI_Model
         // be sure that QSO belongs to user
         $CI = &get_instance();
         $CI->load->model('logbook_model');
-        if (!$CI->logbook_model->check_qso_is_accessible($clean_qsoid)) {
+        if (!$CI->logbook_model->check_qso_is_writable($clean_qsoid)) {
             return;
         }
 

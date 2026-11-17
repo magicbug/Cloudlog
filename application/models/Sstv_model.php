@@ -33,8 +33,12 @@ class Sstv_model extends CI_Model
         $this->db->select('qsoid');
         $this->db->from('sstv_images');
         $this->db->where('id', $clean_id);
-        $qsoid = $this->db->get()->row()->qsoid;
-        if (!$CI->logbook_model->check_qso_is_accessible($qsoid)) {
+        $row = $this->db->get()->row();
+        if ($row === null) {
+            return;
+        }
+        $qsoid = (int) $row->qsoid;
+        if (!$CI->logbook_model->check_qso_is_writable($qsoid)) {
             return;
         }
 
@@ -56,7 +60,11 @@ class Sstv_model extends CI_Model
         $this->db->select('qsoid');
         $this->db->from('sstv_images');
         $this->db->where('id', $clean_id);
-        $qsoid = $this->db->get()->row()->qsoid;
+        $row = $this->db->get()->row();
+        if ($row === null) {
+            return;
+        }
+        $qsoid = (int) $row->qsoid;
         if (!$CI->logbook_model->check_qso_is_writable($qsoid)) {
             return;
         }
