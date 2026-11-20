@@ -8,6 +8,7 @@
 
 class Awards extends CI_Controller
 {
+    private const COUNTIES_FIX_CSRF_SESSION_KEY = 'counties_fix_csrf_token';
 
     function __construct()
     {
@@ -1350,14 +1351,89 @@ class Awards extends CI_Controller
         $this->load->model('logbook_model');
         $this->load->model('counties');
 
-        $state = str_replace('"', "", $this->security->xss_clean($this->input->post("State")));
-        $county = str_replace('"', "", $this->security->xss_clean($this->input->post("County")));
-        $data['results'] = $this->logbook_model->county_qso_details($state, $this->counties->logged_names($state, $county));
+        // Read-only lookup via GET so CSRF-protected installs do not reject the dialog.
+        // Do not xss_clean county text: it URL-decodes and can change the lookup key.
+        $state = strtoupper(trim((string)$this->input->get('State')));
+        $county = trim((string)$this->input->get('County'));
+        $names = $this->counties->logged_names($state, $county);
+        // Invalid / unknown logged names are not award counties; match the posted name directly.
+        if (empty($names) && $county !== '') {
+            $names = array(strtolower($county));
+        }
+        $data['results'] = $this->logbook_model->county_qso_details($state, $names);
 
         // Render Page
         $data['page_title'] = "Log View - Counties";
         $data['filter'] = "county " . $county . ", " . $state;
         $this->load->view('awards/details', $data);
+    }
+
+    /*
+     * Lists logged county names that do not match a USA-CA county, with suggestions and a bulk fix form.
+     */
+    public function counties_fix()
+    {
+        $this->load->model('counties');
+        $data['unknown'] = $this->counties->unknown_counties();
+        $data['counties_fix_csrf_token'] = $this->get_counties_fix_csrf_token();
+        $data['logbook_id'] = (int)$this->session->userdata('active_station_logbook');
+        $data['page_title'] = "Fix invalid US Counties";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/counties/fix');
+        $this->load->view('interface_assets/footer');
+    }
+
+    /*
+     * Applies a county rewrite for all matching QSOs owned by the user in the active logbook.
+     */
+    public function counties_fix_apply()
+    {
+        if (!$this->validate_counties_fix_csrf_token((string)$this->input->post('counties_fix_csrf_token', true))) {
+            $this->session->set_flashdata('counties_fix_error', 'Invalid security token. Reload the page and try again.');
+            redirect('awards/counties_fix');
+            return;
+        }
+
+        $posted_logbook = (int)$this->input->post('logbook_id');
+        $active_logbook = (int)$this->session->userdata('active_station_logbook');
+        if ($posted_logbook <= 0 || $posted_logbook !== $active_logbook) {
+            $this->session->set_flashdata('counties_fix_error', 'Active logbook changed since this page was loaded. Reload and try again.');
+            redirect('awards/counties_fix');
+            return;
+        }
+
+        $this->load->model('counties');
+        // Do not xss_clean old_county: it URL-decodes and can rewrite the wrong QSOs.
+        $state = strtoupper(trim((string)$this->input->post('state')));
+        $old_county = trim((string)$this->input->post('old_county'));
+        $new_county = trim((string)$this->input->post('new_county'));
+
+        $updated = $this->counties->rewrite_county($state, $old_county, $new_county);
+        if ($updated === false) {
+            $this->session->set_flashdata('counties_fix_error', 'Could not update county. Choose a valid USA-CA county for that state.');
+        } else {
+            $this->session->set_flashdata('counties_fix_success', $updated . ' QSO(s) updated from ' . $state . ', ' . $old_county . ' to ' . $state . ', ' . $new_county . '.');
+        }
+        redirect('awards/counties_fix');
+    }
+
+    private function get_counties_fix_csrf_token()
+    {
+        $token = (string)$this->session->userdata(self::COUNTIES_FIX_CSRF_SESSION_KEY);
+        if ($token === '') {
+            $token = bin2hex(random_bytes(32));
+            $this->session->set_userdata(self::COUNTIES_FIX_CSRF_SESSION_KEY, $token);
+        }
+        return $token;
+    }
+
+    private function validate_counties_fix_csrf_token($posted_token)
+    {
+        $session_token = (string)$this->session->userdata(self::COUNTIES_FIX_CSRF_SESSION_KEY);
+        if ($session_token === '' || $posted_token === '') {
+            return false;
+        }
+        return hash_equals($session_token, $posted_token);
     }
 
     public function gridmaster($dxcc)

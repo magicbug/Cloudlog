@@ -5042,35 +5042,37 @@ $(document).ready(function() {
 
 <?php } ?>
 
-<?php if ($this->uri->segment(2) == "counties" || $this->uri->segment(2) == "counties_details") { ?>
+<?php if ($this->uri->segment(2) == "counties" || $this->uri->segment(2) == "counties_details" || $this->uri->segment(2) == "counties_fix") { ?>
     <script>
-        $('.countiestable').DataTable({
-            "pageLength": 25,
-            responsive: false,
-            ordering: false,
-            "scrollY": "390px",
-            "scrollCollapse": true,
-            "paging": false,
-            "scrollX": true,
-            "language": {
-                url: getDataTablesLanguageUrl(),
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'csv'
-            ]
-        });
+        if ($('.countiestable').length) {
+            $('.countiestable').DataTable({
+                "pageLength": 25,
+                responsive: false,
+                ordering: false,
+                "scrollY": "390px",
+                "scrollCollapse": true,
+                "paging": false,
+                "scrollX": true,
+                "language": {
+                    url: getDataTablesLanguageUrl(),
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'csv'
+                ]
+            });
 
-        // change color of csv-button if dark mode is chosen
-        if (isDarkModeTheme()) {
-            $(".buttons-csv").css("color", "white");
+            // change color of csv-button if dark mode is chosen
+            if (isDarkModeTheme()) {
+                $(".buttons-csv").css("color", "white");
+            }
         }
 
         function displayCountyContacts(state, county) {
             var baseURL = "<?php echo base_url(); ?>";
             $.ajax({
                 url: baseURL + 'index.php/awards/counties_details_ajax',
-                type: 'post',
+                type: 'get',
                 data: {
                     'State': state,
                     'County': county
@@ -5095,6 +5097,25 @@ $(document).ready(function() {
                 }
             });
         }
+
+        $(document).on('click', '.county-contacts-link', function(e) {
+            e.preventDefault();
+            displayCountyContacts($(this).attr('data-state'), $(this).attr('data-county'));
+        });
+
+        $('.counties-fix-form').on('submit', function(e) {
+            var county = $(this).find('select[name="new_county"]').val();
+            var oldCounty = $(this).find('input[name="old_county"]').val();
+            var state = $(this).find('input[name="state"]').val();
+            if (!county) {
+                e.preventDefault();
+                return false;
+            }
+            if (!confirm('Update all matching QSOs from ' + state + ', ' + oldCounty + ' to ' + state + ', ' + county + '?')) {
+                e.preventDefault();
+                return false;
+            }
+        });
     </script>
 <?php } ?>
 

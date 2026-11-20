@@ -214,6 +214,9 @@
             <div class="alert alert-warning" role="alert">
                 <?php echo count($summary['unknown']); ?> logged county name(s) do not match a USA-CA county and are not counted:
                 <?php echo htmlspecialchars(implode('; ', array_slice($summary['unknown'], 0, 25))); ?><?php echo count($summary['unknown']) > 25 ? '; ...' : ''; ?>
+                <div class="mt-2">
+                    <a class="btn btn-sm btn-warning" href="<?php echo site_url('awards/counties_fix'); ?>">Review and fix invalid counties</a>
+                </div>
             </div>
         <?php } ?>
 
