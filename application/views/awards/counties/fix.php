@@ -1,3 +1,8 @@
+<?php
+$counties_fix_csrf_token = isset($counties_fix_csrf_token) ? (string)$counties_fix_csrf_token : '';
+$csrf_name = $this->security->get_csrf_token_name();
+$csrf_hash = $this->security->get_csrf_hash();
+?>
 <div class="container">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mt-3 mb-3">
         <div>
@@ -20,7 +25,7 @@
     <?php } ?>
 
     <?php if (empty($unknown)) { ?>
-        <div class="alert alert-success" role="alert">No invalid county names found in the active logbook.</div>
+        <div class="alert alert-success" role="alert">No invalid county names found that you can fix in the active logbook.</div>
     <?php } else { ?>
         <div class="table-responsive">
             <table class="table table-sm table-bordered table-hover align-middle counties-fix-table">
@@ -42,7 +47,7 @@
                         <tr>
                             <td><?php echo htmlspecialchars($state); ?></td>
                             <td>
-                                <a href="javascript:displayCountyContacts(<?php echo htmlspecialchars(json_encode($state)); ?>,<?php echo htmlspecialchars(json_encode($county)); ?>)">
+                                <a href="#" class="county-contacts-link" data-state="<?php echo htmlspecialchars($state, ENT_QUOTES, 'UTF-8'); ?>" data-county="<?php echo htmlspecialchars($county, ENT_QUOTES, 'UTF-8'); ?>">
                                     <?php echo htmlspecialchars($county); ?>
                                 </a>
                             </td>
@@ -56,6 +61,8 @@
                             </td>
                             <td>
                                 <form method="post" action="<?php echo site_url('awards/counties_fix_apply'); ?>" class="counties-fix-form d-flex flex-wrap gap-2 align-items-center mb-0">
+                                    <input type="hidden" name="counties_fix_csrf_token" value="<?php echo htmlspecialchars($counties_fix_csrf_token); ?>">
+                                    <input type="hidden" name="<?php echo htmlspecialchars($csrf_name); ?>" value="<?php echo htmlspecialchars($csrf_hash); ?>">
                                     <input type="hidden" name="state" value="<?php echo htmlspecialchars($state); ?>">
                                     <input type="hidden" name="old_county" value="<?php echo htmlspecialchars($county); ?>">
                                     <select name="new_county" class="form-select form-select-sm" required style="min-width: 12rem;">
@@ -74,6 +81,6 @@
                 </tbody>
             </table>
         </div>
-        <p class="text-muted small">Updates set COL_CNTY to STATE,County and COL_STATE to the state abbreviation. Only QSOs at station locations you own are changed.</p>
+        <p class="text-muted small">Updates set COL_CNTY to STATE,County and COL_STATE to the state abbreviation. Only QSOs at station locations you own are listed and changed.</p>
     <?php } ?>
 </div>

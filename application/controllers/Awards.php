@@ -8,6 +8,7 @@
 
 class Awards extends CI_Controller
 {
+    private const COUNTIES_FIX_CSRF_SESSION_KEY = 'counties_fix_csrf_token';
 
     function __construct()
     {
@@ -1372,6 +1373,7 @@ class Awards extends CI_Controller
     {
         $this->load->model('counties');
         $data['unknown'] = $this->counties->unknown_counties();
+        $data['counties_fix_csrf_token'] = $this->get_counties_fix_csrf_token();
         $data['page_title'] = "Fix invalid US Counties";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/counties/fix');
@@ -1383,6 +1385,12 @@ class Awards extends CI_Controller
      */
     public function counties_fix_apply()
     {
+        if (!$this->validate_counties_fix_csrf_token((string)$this->input->post('counties_fix_csrf_token', true))) {
+            $this->session->set_flashdata('counties_fix_error', 'Invalid security token. Reload the page and try again.');
+            redirect('awards/counties_fix');
+            return;
+        }
+
         $this->load->model('counties');
         $state = $this->security->xss_clean($this->input->post('state'));
         $old_county = $this->security->xss_clean($this->input->post('old_county'));
@@ -1395,6 +1403,25 @@ class Awards extends CI_Controller
             $this->session->set_flashdata('counties_fix_success', $updated . ' QSO(s) updated from ' . $state . ', ' . $old_county . ' to ' . $state . ', ' . $new_county . '.');
         }
         redirect('awards/counties_fix');
+    }
+
+    private function get_counties_fix_csrf_token()
+    {
+        $token = (string)$this->session->userdata(self::COUNTIES_FIX_CSRF_SESSION_KEY);
+        if ($token === '') {
+            $token = bin2hex(random_bytes(32));
+            $this->session->set_userdata(self::COUNTIES_FIX_CSRF_SESSION_KEY, $token);
+        }
+        return $token;
+    }
+
+    private function validate_counties_fix_csrf_token($posted_token)
+    {
+        $session_token = (string)$this->session->userdata(self::COUNTIES_FIX_CSRF_SESSION_KEY);
+        if ($session_token === '' || $posted_token === '') {
+            return false;
+        }
+        return hash_equals($session_token, $posted_token);
     }
 
     public function gridmaster($dxcc)

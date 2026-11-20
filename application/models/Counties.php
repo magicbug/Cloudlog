@@ -251,8 +251,14 @@ class Counties extends CI_Model
 
     /*
      * Distinct state / logged county with QSO counts for the fix-invalid-counties page.
+     * Scoped to stations the current user owns in the active logbook (same as rewrite_county).
      */
     private function fetch_unknown_rows() {
+        $user_id = $this->session->userdata('user_id');
+        if (!$user_id) {
+            return null;
+        }
+
         $this->load->model('logbooks_model');
         $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
@@ -261,10 +267,14 @@ class Counties extends CI_Model
         }
 
         $location_list = implode(',', array_map('intval', $logbooks_locations_array));
+        $table = $this->config->item('table_name');
 
         $sql = "select " . self::STATE_EXPRESSION . " as state, " . self::COUNTY_EXPRESSION . " as county, count(*) as qsos
-                from " . $this->config->item('table_name') . "
+                from " . $table . "
                 where station_id in (" . $location_list . ")
+                and station_id in (
+                    select station_id from station_profile where user_id = " . $this->db->escape($user_id) . "
+                )
                 and COL_DXCC in ('291', '6', '110')
                 and " . self::COUNTY_EXPRESSION . " <> ''
                 and " . self::STATE_EXPRESSION . " <> ''

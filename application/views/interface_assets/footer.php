@@ -5098,6 +5098,11 @@ $(document).ready(function() {
             });
         }
 
+        $(document).on('click', '.county-contacts-link', function(e) {
+            e.preventDefault();
+            displayCountyContacts($(this).attr('data-state'), $(this).attr('data-county'));
+        });
+
         $('.counties-fix-form').on('submit', function(e) {
             var county = $(this).find('select[name="new_county"]').val();
             var oldCounty = $(this).find('input[name="old_county"]').val();
