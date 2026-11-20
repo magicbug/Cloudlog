@@ -148,6 +148,90 @@ class Counties extends CI_Model
     }
 
     /*
+     * Unknown logged county names with QSO counts and suggested corrections for the fix UI.
+     */
+    function unknown_counties() {
+        $rows = $this->fetch_unknown_rows();
+        if ($rows === null) {
+            return array();
+        }
+
+        $unknown = array();
+        foreach ($rows as $row) {
+            $mapped = $this->usaca->map($row['state'], $row['county']);
+            if ($mapped === null || $mapped['type'] !== 'unknown') {
+                continue;
+            }
+            $id = $row['state'] . '|' . strtolower($mapped['name']);
+            if (!isset($unknown[$id])) {
+                $suggestions = $this->usaca->suggest($row['state'], $mapped['name']);
+                $unknown[$id] = array(
+                    'state' => $row['state'],
+                    'county' => $mapped['name'],
+                    'qsos' => 0,
+                    'suggestions' => $suggestions,
+                    'counties' => $this->usaca->counties_for_state($row['state']),
+                );
+            }
+            $unknown[$id]['qsos'] += (int)$row['qsos'];
+        }
+        ksort($unknown, SORT_NATURAL | SORT_FLAG_CASE);
+
+        return array_values($unknown);
+    }
+
+    /*
+     * Rewrites COL_CNTY (and COL_STATE) for QSOs the user owns that match a logged unknown county.
+     * $new_county must map to a USA-CA award county (or a one-neighbor independent city credited as a county).
+     * Returns the number of QSOs updated, or false on validation / permission failure.
+     */
+    function rewrite_county($state, $old_county, $new_county) {
+        $state = strtoupper(trim((string)$state));
+        $old_county = trim((string)$old_county);
+        $new_county = trim((string)$new_county);
+        if ($state === '' || $old_county === '' || $new_county === '') {
+            return false;
+        }
+
+        $mapped = $this->usaca->map($state, $new_county);
+        if ($mapped === null || $mapped['type'] !== 'county') {
+            return false;
+        }
+        $canonical = $mapped['name'];
+
+        $user_id = $this->session->userdata('user_id');
+        if (!$user_id) {
+            return false;
+        }
+
+        $this->load->model('logbooks_model');
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+        if (!$logbooks_locations_array) {
+            return false;
+        }
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
+
+        $table = $this->config->item('table_name');
+        $cnty_value = $state . ',' . $canonical;
+        // Owner-only write scope, matching Logbookadvanced_model bulk updates.
+        $sql = "UPDATE " . $table . "
+                SET COL_CNTY = " . $this->db->escape($cnty_value) . ",
+                    COL_STATE = " . $this->db->escape($state) . "
+                WHERE station_id IN (
+                    SELECT station_id FROM station_profile WHERE user_id = " . $this->db->escape($user_id) . "
+                )
+                AND station_id IN (" . $location_list . ")
+                AND COL_DXCC IN ('291', '6', '110')
+                AND COL_BAND != 'SAT'
+                AND COALESCE(COL_PROP_MODE, '') != 'SAT'
+                AND " . self::STATE_EXPRESSION . " = " . $this->db->escape($state) . "
+                AND LOWER(" . self::COUNTY_EXPRESSION . ") = " . $this->db->escape(strtolower($old_county));
+
+        $this->db->query($sql);
+        return $this->db->affected_rows();
+    }
+
+    /*
      * Logged county names (lower case) in a state that map to the given award county or independent city.
      */
     function logged_names($state, $county) {
@@ -163,6 +247,32 @@ class Counties extends CI_Model
             }
         }
         return array_keys($names);
+    }
+
+    /*
+     * Distinct state / logged county with QSO counts for the fix-invalid-counties page.
+     */
+    private function fetch_unknown_rows() {
+        $this->load->model('logbooks_model');
+        $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+
+        if (!$logbooks_locations_array) {
+            return null;
+        }
+
+        $location_list = implode(',', array_map('intval', $logbooks_locations_array));
+
+        $sql = "select " . self::STATE_EXPRESSION . " as state, " . self::COUNTY_EXPRESSION . " as county, count(*) as qsos
+                from " . $this->config->item('table_name') . "
+                where station_id in (" . $location_list . ")
+                and COL_DXCC in ('291', '6', '110')
+                and " . self::COUNTY_EXPRESSION . " <> ''
+                and " . self::STATE_EXPRESSION . " <> ''
+                and COL_BAND != 'SAT'
+                and coalesce(COL_PROP_MODE, '') != 'SAT'
+                group by state, county";
+
+        return $this->db->query($sql)->result_array();
     }
 
     /*

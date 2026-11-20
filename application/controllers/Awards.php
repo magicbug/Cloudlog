@@ -1352,12 +1352,49 @@ class Awards extends CI_Controller
 
         $state = str_replace('"', "", $this->security->xss_clean($this->input->post("State")));
         $county = str_replace('"', "", $this->security->xss_clean($this->input->post("County")));
-        $data['results'] = $this->logbook_model->county_qso_details($state, $this->counties->logged_names($state, $county));
+        $names = $this->counties->logged_names($state, $county);
+        // Invalid / unknown logged names are not award counties; match the posted name directly.
+        if (empty($names) && trim($county) !== '') {
+            $names = array(strtolower(trim($county)));
+        }
+        $data['results'] = $this->logbook_model->county_qso_details($state, $names);
 
         // Render Page
         $data['page_title'] = "Log View - Counties";
         $data['filter'] = "county " . $county . ", " . $state;
         $this->load->view('awards/details', $data);
+    }
+
+    /*
+     * Lists logged county names that do not match a USA-CA county, with suggestions and a bulk fix form.
+     */
+    public function counties_fix()
+    {
+        $this->load->model('counties');
+        $data['unknown'] = $this->counties->unknown_counties();
+        $data['page_title'] = "Fix invalid US Counties";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/counties/fix');
+        $this->load->view('interface_assets/footer');
+    }
+
+    /*
+     * Applies a county rewrite for all matching QSOs owned by the user in the active logbook.
+     */
+    public function counties_fix_apply()
+    {
+        $this->load->model('counties');
+        $state = $this->security->xss_clean($this->input->post('state'));
+        $old_county = $this->security->xss_clean($this->input->post('old_county'));
+        $new_county = $this->security->xss_clean($this->input->post('new_county'));
+
+        $updated = $this->counties->rewrite_county($state, $old_county, $new_county);
+        if ($updated === false) {
+            $this->session->set_flashdata('counties_fix_error', 'Could not update county. Choose a valid USA-CA county for that state.');
+        } else {
+            $this->session->set_flashdata('counties_fix_success', $updated . ' QSO(s) updated from ' . $state . ', ' . $old_county . ' to ' . $state . ', ' . $new_county . '.');
+        }
+        redirect('awards/counties_fix');
     }
 
     public function gridmaster($dxcc)

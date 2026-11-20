@@ -118,6 +118,51 @@ class Usaca {
 	}
 
 	/*
+	 * Award county names for a state, sorted naturally. Used by the fix-invalid-counties UI.
+	 */
+	public function counties_for_state($state) {
+		$state = strtoupper(trim((string)$state));
+		if (!isset($this->counties[$state])) {
+			return array();
+		}
+		$names = array_values($this->counties[$state]);
+		natcasesort($names);
+		return array_values($names);
+	}
+
+	/*
+	 * Closest award-county names for a logged (possibly misspelled) county in a state.
+	 * Distance is levenshtein on Usaca::key(); returns up to $limit names within $max_distance.
+	 */
+	public function suggest($state, $county, $limit = 5, $max_distance = 4) {
+		$state = strtoupper(trim((string)$state));
+		$key = self::key($county);
+		if ($key === '' || !isset($this->counties[$state])) {
+			return array();
+		}
+
+		$scored = array();
+		foreach ($this->counties[$state] as $candidate_key => $name) {
+			$distance = levenshtein($key, $candidate_key);
+			if ($distance <= $max_distance) {
+				$scored[] = array('name' => $name, 'distance' => $distance);
+			}
+		}
+		usort($scored, function ($a, $b) {
+			if ($a['distance'] === $b['distance']) {
+				return strcasecmp($a['name'], $b['name']);
+			}
+			return $a['distance'] - $b['distance'];
+		});
+
+		$names = array();
+		foreach (array_slice($scored, 0, max(0, (int)$limit)) as $row) {
+			$names[] = $row['name'];
+		}
+		return $names;
+	}
+
+	/*
 	 * Returns null for a blank county, otherwise an array with 'type':
 	 *   county  - award county 'name' (via_city set when credited from a one-neighbor independent city)
 	 *   city    - independent city with several neighbors; 'name' is the city, 'neighbors' the choices
