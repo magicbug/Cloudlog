@@ -214,9 +214,13 @@ class Counties extends CI_Model
         $table = $this->config->item('table_name');
         $cnty_value = $state . ',' . $canonical;
         // Owner-only write scope, matching Logbookadvanced_model bulk updates.
+        // Mark previously uploaded QSOs modified so QRZ / HRDLog / Club Log re-send the correction.
         $sql = "UPDATE " . $table . "
                 SET COL_CNTY = " . $this->db->escape($cnty_value) . ",
-                    COL_STATE = " . $this->db->escape($state) . "
+                    COL_STATE = " . $this->db->escape($state) . ",
+                    COL_QRZCOM_QSO_UPLOAD_STATUS = CASE WHEN COL_QRZCOM_QSO_UPLOAD_STATUS = 'Y' THEN 'M' ELSE COL_QRZCOM_QSO_UPLOAD_STATUS END,
+                    COL_HRDLOG_QSO_UPLOAD_STATUS = CASE WHEN COL_HRDLOG_QSO_UPLOAD_STATUS = 'Y' THEN 'M' ELSE COL_HRDLOG_QSO_UPLOAD_STATUS END,
+                    COL_CLUBLOG_QSO_UPLOAD_STATUS = CASE WHEN COL_CLUBLOG_QSO_UPLOAD_STATUS = 'Y' THEN 'M' ELSE COL_CLUBLOG_QSO_UPLOAD_STATUS END
                 WHERE station_id IN (
                     SELECT station_id FROM station_profile WHERE user_id = " . $this->db->escape($user_id) . "
                 )

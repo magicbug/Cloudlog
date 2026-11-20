@@ -1351,12 +1351,14 @@ class Awards extends CI_Controller
         $this->load->model('logbook_model');
         $this->load->model('counties');
 
-        $state = str_replace('"', "", $this->security->xss_clean($this->input->post("State")));
-        $county = str_replace('"', "", $this->security->xss_clean($this->input->post("County")));
+        // Read-only lookup via GET so CSRF-protected installs do not reject the dialog.
+        // Do not xss_clean county text: it URL-decodes and can change the lookup key.
+        $state = strtoupper(trim((string)$this->input->get('State')));
+        $county = trim((string)$this->input->get('County'));
         $names = $this->counties->logged_names($state, $county);
         // Invalid / unknown logged names are not award counties; match the posted name directly.
-        if (empty($names) && trim($county) !== '') {
-            $names = array(strtolower(trim($county)));
+        if (empty($names) && $county !== '') {
+            $names = array(strtolower($county));
         }
         $data['results'] = $this->logbook_model->county_qso_details($state, $names);
 
@@ -1374,6 +1376,7 @@ class Awards extends CI_Controller
         $this->load->model('counties');
         $data['unknown'] = $this->counties->unknown_counties();
         $data['counties_fix_csrf_token'] = $this->get_counties_fix_csrf_token();
+        $data['logbook_id'] = (int)$this->session->userdata('active_station_logbook');
         $data['page_title'] = "Fix invalid US Counties";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/counties/fix');
@@ -1391,10 +1394,19 @@ class Awards extends CI_Controller
             return;
         }
 
+        $posted_logbook = (int)$this->input->post('logbook_id');
+        $active_logbook = (int)$this->session->userdata('active_station_logbook');
+        if ($posted_logbook <= 0 || $posted_logbook !== $active_logbook) {
+            $this->session->set_flashdata('counties_fix_error', 'Active logbook changed since this page was loaded. Reload and try again.');
+            redirect('awards/counties_fix');
+            return;
+        }
+
         $this->load->model('counties');
-        $state = $this->security->xss_clean($this->input->post('state'));
-        $old_county = $this->security->xss_clean($this->input->post('old_county'));
-        $new_county = $this->security->xss_clean($this->input->post('new_county'));
+        // Do not xss_clean old_county: it URL-decodes and can rewrite the wrong QSOs.
+        $state = strtoupper(trim((string)$this->input->post('state')));
+        $old_county = trim((string)$this->input->post('old_county'));
+        $new_county = trim((string)$this->input->post('new_county'));
 
         $updated = $this->counties->rewrite_county($state, $old_county, $new_county);
         if ($updated === false) {

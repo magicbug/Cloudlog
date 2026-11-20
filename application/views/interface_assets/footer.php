@@ -5072,7 +5072,7 @@ $(document).ready(function() {
             var baseURL = "<?php echo base_url(); ?>";
             $.ajax({
                 url: baseURL + 'index.php/awards/counties_details_ajax',
-                type: 'post',
+                type: 'get',
                 data: {
                     'State': state,
                     'County': county

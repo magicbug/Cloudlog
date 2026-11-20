@@ -1,5 +1,6 @@
 <?php
 $counties_fix_csrf_token = isset($counties_fix_csrf_token) ? (string)$counties_fix_csrf_token : '';
+$logbook_id = isset($logbook_id) ? (int)$logbook_id : 0;
 $csrf_name = $this->security->get_csrf_token_name();
 $csrf_hash = $this->security->get_csrf_hash();
 ?>
@@ -63,6 +64,7 @@ $csrf_hash = $this->security->get_csrf_hash();
                                 <form method="post" action="<?php echo site_url('awards/counties_fix_apply'); ?>" class="counties-fix-form d-flex flex-wrap gap-2 align-items-center mb-0">
                                     <input type="hidden" name="counties_fix_csrf_token" value="<?php echo htmlspecialchars($counties_fix_csrf_token); ?>">
                                     <input type="hidden" name="<?php echo htmlspecialchars($csrf_name); ?>" value="<?php echo htmlspecialchars($csrf_hash); ?>">
+                                    <input type="hidden" name="logbook_id" value="<?php echo $logbook_id; ?>">
                                     <input type="hidden" name="state" value="<?php echo htmlspecialchars($state); ?>">
                                     <input type="hidden" name="old_county" value="<?php echo htmlspecialchars($county); ?>">
                                     <select name="new_county" class="form-select form-select-sm" required style="min-width: 12rem;">
