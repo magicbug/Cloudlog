@@ -1323,11 +1323,26 @@ class Awards extends CI_Controller
         $this->load->model('counties');
         $data['counties_array'] = $this->counties->get_counties_array();
 
+        $footerData = array();
+        $footerData['scripts'] = array(
+            'assets/js/sections/countiesmap.js?' . filemtime(realpath(__DIR__ . "/../../assets/js/sections/countiesmap.js")),
+        );
+
         // Render Page
         $data['page_title'] = "Awards - US Counties (USA-CA)";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/counties/index');
-        $this->load->view('interface_assets/footer');
+        $this->load->view('interface_assets/footer', $footerData);
+    }
+
+    /*
+     * County and state progress for the USA-CA map: C/W per county and worked/confirmed/total per state.
+     */
+    public function counties_map()
+    {
+        $this->load->model('counties');
+        header('Content-Type: application/json');
+        echo json_encode($this->counties->get_map_data());
     }
 
     public function counties_details()

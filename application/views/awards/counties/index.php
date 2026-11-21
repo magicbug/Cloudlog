@@ -101,7 +101,63 @@
             font-size: 0.75rem;
             color: #6b7280;
         }
+
+        #countiesmap {
+            height: 70vh;
+            min-height: 400px;
+            max-height: 750px;
+        }
+
+        #countiesmap .legend {
+            padding: 6px 8px;
+            font: 14px Arial, Helvetica, sans-serif;
+            background: rgba(255, 255, 255, 0.8);
+            line-height: 24px;
+            color: #555;
+            border-radius: 5px;
+        }
+
+        #countiesmap .legend h4 {
+            text-align: center;
+            font-size: 16px;
+            margin: 2px 12px 8px;
+            color: #555;
+        }
+
+        #countiesmap .legend span {
+            position: relative;
+            bottom: 3px;
+            color: #555;
+        }
+
+        #countiesmap .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin: 0 8px 0 0;
+            opacity: 0.7;
+        }
+
+        #countiesmap .counties-map-info {
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #222;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #countiesmap .counties-map-info h4 {
+            margin: 0 0 5px;
+            font-size: 0.95rem;
+        }
+
+        #countiesmap .counties-map-back .btn {
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
+    <script>
+        var tileUrl = "<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>";
+    </script>
 
     <!-- Award Info Box -->
     <div class="counties-hero d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
@@ -220,62 +276,80 @@
             </div>
         <?php } ?>
 
-        <div class="counties-table-wrap">
-            <table style="width:100%" class="countiestable table table-sm table-bordered table-hover table-striped table-condensed text-center align-middle">
-                <thead>
-                    <tr>
-                        <th scope="col">State</th>
-                        <th scope="col">Worked</th>
-                        <th scope="col">Confirmed</th>
-                        <th scope="col">Target</th>
-                        <th scope="col">Remaining</th>
-                        <th scope="col">Worked Progress</th>
-                        <th scope="col">Confirmed Progress</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($summary['states'] as $state => $counts) {
-                        $worked = (int)$counts['worked'];
-                        $confirmed = (int)$counts['confirmed'];
-                        $target = (int)$counts['target'];
-                        $remaining = max(0, $target - $worked);
-                        $worked_pct = $target > 0 ? round(($worked / $target) * 100, 1) : 0;
-                        $confirmed_pct = $target > 0 ? round(($confirmed / $target) * 100, 1) : 0;
-                    ?>
-                        <tr>
-                            <td><span class="counties-label-chip"><?php echo $state; ?></span></td>
-                            <td><a href='counties_details?State="<?php echo $state; ?>"&Type="worked"'><?php echo $worked; ?></a></td>
-                            <td><a href='counties_details?State="<?php echo $state; ?>"&Type="confirmed"'><?php echo $confirmed; ?></a></td>
-                            <td><?php echo $target; ?></td>
-                            <td><?php echo $remaining; ?></td>
-                            <td>
-                                <div class="progress counties-progress">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo $worked_pct; ?>%" aria-valuenow="<?php echo $worked_pct; ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $worked_pct; ?>%</div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="progress counties-progress">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $confirmed_pct; ?>%" aria-valuenow="<?php echo $confirmed_pct; ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $confirmed_pct; ?>%</div>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th scope="row">Total</th>
-                        <th><a href='counties_details?State="All"&Type="worked"'><?php echo $worked_total; ?></a></th>
-                        <th><a href='counties_details?State="All"&Type="confirmed"'><?php echo $confirmed_total; ?></a></th>
-                        <th><?php echo $overall_target; ?></th>
-                        <th><?php echo $remaining_total; ?></th>
-                        <th><?php echo $worked_progress; ?>%</th>
-                        <th><?php echo $confirmed_progress; ?>%</th>
-                    </tr>
-                </tfoot>
-            </table>
+        <ul class="nav nav-tabs" id="countiesTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="counties-table-tab" data-bs-toggle="tab" href="#countiestabletab" role="tab" aria-controls="countiestabletab" aria-selected="true">Table</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="counties-map-tab" data-bs-toggle="tab" href="#countiesmaptab" role="tab" aria-controls="countiesmaptab" aria-selected="false">Map</a>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-3">
+            <div class="tab-pane fade show active" id="countiestabletab" role="tabpanel" aria-labelledby="counties-table-tab">
+                <div class="counties-table-wrap">
+                    <table style="width:100%" class="countiestable table table-sm table-bordered table-hover table-striped table-condensed text-center align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">State</th>
+                                <th scope="col">Worked</th>
+                                <th scope="col">Confirmed</th>
+                                <th scope="col">Target</th>
+                                <th scope="col">Remaining</th>
+                                <th scope="col">Worked Progress</th>
+                                <th scope="col">Confirmed Progress</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($summary['states'] as $state => $counts) {
+                                $worked = (int)$counts['worked'];
+                                $confirmed = (int)$counts['confirmed'];
+                                $target = (int)$counts['target'];
+                                $remaining = max(0, $target - $worked);
+                                $worked_pct = $target > 0 ? round(($worked / $target) * 100, 1) : 0;
+                                $confirmed_pct = $target > 0 ? round(($confirmed / $target) * 100, 1) : 0;
+                            ?>
+                                <tr>
+                                    <td><span class="counties-label-chip"><?php echo $state; ?></span></td>
+                                    <td><a href='counties_details?State="<?php echo $state; ?>"&Type="worked"'><?php echo $worked; ?></a></td>
+                                    <td><a href='counties_details?State="<?php echo $state; ?>"&Type="confirmed"'><?php echo $confirmed; ?></a></td>
+                                    <td><?php echo $target; ?></td>
+                                    <td><?php echo $remaining; ?></td>
+                                    <td>
+                                        <div class="progress counties-progress">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo $worked_pct; ?>%" aria-valuenow="<?php echo $worked_pct; ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $worked_pct; ?>%</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="progress counties-progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $confirmed_pct; ?>%" aria-valuenow="<?php echo $confirmed_pct; ?>" aria-valuemin="0" aria-valuemax="100"><?php echo $confirmed_pct; ?>%</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th scope="row">Total</th>
+                                <th><a href='counties_details?State="All"&Type="worked"'><?php echo $worked_total; ?></a></th>
+                                <th><a href='counties_details?State="All"&Type="confirmed"'><?php echo $confirmed_total; ?></a></th>
+                                <th><?php echo $overall_target; ?></th>
+                                <th><?php echo $remaining_total; ?></th>
+                                <th><?php echo $worked_progress; ?>%</th>
+                                <th><?php echo $confirmed_progress; ?>%</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="countiesmaptab" role="tabpanel" aria-labelledby="counties-map-tab">
+                <div id="countiesmap" class="map-leaflet"></div>
+                <p class="text-muted small mt-2">States are shaded by county progress. Click a state for its counties; click a worked or confirmed county to open the QSO list.</p>
+            </div>
         </div>
 
-        <h4>Single band and single mode endorsements</h4>
+        <h4 class="mt-4">Single band and single mode endorsements</h4>
         <p class="text-muted small">MARAC endorses an award class for one band or one mode when every county counted was worked on that band or mode. SSB, CW and Digital are counted separately; AM, FM and digital voice only count toward the basic award.</p>
         <div class="counties-table-wrap">
             <table style="width:100%" class="table table-sm table-bordered table-hover table-striped text-center align-middle">

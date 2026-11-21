@@ -116,6 +116,51 @@ class Counties extends CI_Model
     }
 
     /*
+     * Status payload for the USA-CA Leaflet map: per-state totals and county C/W flags.
+     */
+    function get_map_data() {
+        $summary = $this->get_counties_array();
+        if ($summary === 0 || !is_array($summary)) {
+            return array('states' => array(), 'counties' => array());
+        }
+
+        $rows = $this->fetch_rows();
+        if ($rows === null) {
+            return array('states' => array(), 'counties' => array());
+        }
+
+        $worked = array();
+        $confirmed = array();
+        foreach ($rows as $row) {
+            $mapped = $this->usaca->map($row['state'], $row['county']);
+            if ($mapped === null || $mapped['type'] !== 'county') {
+                continue;
+            }
+            $id = $row['state'] . '|' . $mapped['name'];
+            $worked[$id] = true;
+            if ((int)$row['confirmed'] === 1) {
+                $confirmed[$id] = true;
+            }
+        }
+
+        $counties = array();
+        foreach ($worked as $id => $unused) {
+            $counties[$id] = isset($confirmed[$id]) ? 'C' : 'W';
+        }
+
+        $states = array();
+        foreach ($summary['states'] as $state => $counts) {
+            $states[$state] = array(
+                'worked' => (int)$counts['worked'],
+                'confirmed' => (int)$counts['confirmed'],
+                'total' => (int)$counts['target'],
+            );
+        }
+
+        return array('states' => $states, 'counties' => $counties);
+    }
+
+    /*
      * Lists the award counties (and multi-neighbor independent city contacts) for a state or 'All'.
      */
     function counties_details($state, $type) {
