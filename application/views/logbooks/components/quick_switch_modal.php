@@ -7,6 +7,9 @@ $quick_switch_logbooks = $CI->logbooks_model->show_all();
 $quick_switch_locations = $CI->stations->all_of_user();
 $active_logbook_id = $CI->session->userdata('active_station_logbook');
 $active_location_id = $CI->stations->find_active();
+$quick_switch_return = (isset($quick_switch_return) && in_array($quick_switch_return, array('dashboard', 'logbook'), true))
+	? $quick_switch_return
+	: 'logbook';
 ?>
 
 <div class="modal fade" id="logbookQuickSwitchModal" tabindex="-1" aria-labelledby="logbookQuickSwitchModalLabel" aria-hidden="true"
@@ -16,6 +19,7 @@ $active_location_id = $CI->stations->find_active();
 	<div class="modal-dialog modal-dialog-scrollable">
 		<div class="modal-content">
 			<form method="post" action="<?php echo site_url('logbooks/quick_switch'); ?>" id="logbookQuickSwitchForm">
+				<input type="hidden" name="return_to" value="<?php echo htmlspecialchars($quick_switch_return, ENT_QUOTES, 'UTF-8'); ?>">
 				<div class="modal-header">
 					<h5 class="modal-title" id="logbookQuickSwitchModalLabel"><?php echo lang('station_logbooks_quick_switch_title'); ?></h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

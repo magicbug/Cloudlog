@@ -354,6 +354,11 @@ $kpi_col_class = ($kpi_count === 4) ? 'col-6 col-xl-3' : (($kpi_count === 3) ? '
 						<span><?php echo htmlspecialchars($logbook_label, ENT_QUOTES, 'UTF-8'); ?></span>
 					</a>
 				<?php } ?>
+				<?php if ($station_name !== '' || $logbook_label !== '') { ?>
+					<button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2" data-bs-toggle="modal" data-bs-target="#logbookQuickSwitchModal">
+						<i class="fas fa-exchange-alt me-1"></i><?php echo lang('station_logbooks_change'); ?>
+					</button>
+				<?php } ?>
 			</div>
 		</div>
 
@@ -368,6 +373,14 @@ $kpi_col_class = ($kpi_count === 4) ? 'col-6 col-xl-3' : (($kpi_count === 3) ? '
 			</div>
 		<?php } ?>
 	</div>
+
+	<?php if ($this->session->flashdata('notice')) { ?>
+		<div class="alert alert-info alert-dismissible fade show py-2 mb-3" role="alert">
+			<i class="fas fa-info-circle me-1"></i>
+			<?php echo $this->session->flashdata('notice'); ?>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	<?php } ?>
 
 	<!-- System & Account Alerts -->
 	<?php if ($can_log) { ?>
@@ -701,3 +714,7 @@ $kpi_col_class = ($kpi_count === 4) ? 'col-6 col-xl-3' : (($kpi_count === 3) ? '
 		});
 	})();
 </script>
+<?php if ($station_name !== '' || $logbook_label !== '') {
+	$this->load->view('logbooks/components/quick_switch_modal', array('quick_switch_return' => 'dashboard'));
+	echo '<script src="' . base_url() . 'assets/js/sections/logbook_quick_switch.js"></script>';
+} ?>

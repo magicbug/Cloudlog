@@ -128,16 +128,20 @@ class Logbooks extends CI_Controller {
 
 		$logbook_id = $this->security->xss_clean($this->input->post('logbook_id'));
 		$station_id = $this->security->xss_clean($this->input->post('station_id'));
+		$return_to = $this->input->post('return_to');
+		if (!in_array($return_to, array('dashboard', 'logbook'), true)) {
+			$return_to = 'logbook';
+		}
 
 		if (!$this->logbooks_model->check_logbook_is_accessible($logbook_id)) {
 			$this->session->set_flashdata('notice', 'You\'re not allowed to do that!');
-			redirect('logbook');
+			redirect($return_to);
 			return;
 		}
 
 		if (!$this->stations->check_station_is_accessible($station_id)) {
 			$this->session->set_flashdata('notice', lang('station_logbooks_quick_switch_invalid_location'));
-			redirect('logbook');
+			redirect($return_to);
 			return;
 		}
 
@@ -156,7 +160,7 @@ class Logbooks extends CI_Controller {
 
 		$this->user_model->update_session($this->session->userdata('user_id'));
 
-		redirect('logbook');
+		redirect($return_to);
 	}
 
 	public function last_location($logbook_id) {
