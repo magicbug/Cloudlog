@@ -49,6 +49,12 @@ class Logbook extends CI_Controller
 
 		$this->pagination->initialize($config);
 
+		$data['total_qsos'] = (int) $config['total_rows'];
+		$data['per_page'] = (int) $config['per_page'];
+		$data['offset'] = (int) $this->uri->segment(3, 0);
+		$data['active_logbook_name'] = $this->logbooks_model->find_name($this->session->userdata('active_station_logbook'));
+		$data['active_station_name'] = $this->stations->find_name();
+
 		//load the model and get results
 		$data['results'] = $this->logbook_model->get_qsos($config['per_page'], $this->uri->segment(3));
 

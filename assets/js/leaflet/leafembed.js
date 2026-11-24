@@ -11,6 +11,9 @@ var osmUrl = $('#leafembed').attr("tileUrl");
 
 // function to initialise map (can called alone, without plot) //
 function initmap(ShowGrid='No', MapTag='map', options={}) {
+    if (!document.getElementById(MapTag)) {
+        return;
+    }
     // set up the map
     map = new L.Map(MapTag);
     // create the tile layer with correct attribution
@@ -65,7 +68,6 @@ function initplot(_url_qso, options={}) {
 }
 
 function askForPlots(_url_qso, options={}) {
-	console.log('askForPlots called with URL:', _url_qso, 'options:', options);
 	removeMarkers();
 	if (typeof options.dataPost !== "undefined") { _dataPost = options.dataPost; } else { _dataPost = {}; }
     $.ajax({
@@ -75,15 +77,12 @@ function askForPlots(_url_qso, options={}) {
         data: _dataPost,
         timeout: 50000, // 50 second timeout
         error: function(xhr, status, error) { 
-            console.log('[ERROR] ajax askForPlots() function return error:', status, error, xhr);
             // Call custom error callback if provided
             if (typeof options.onError === 'function') {
-                console.log('Calling custom error callback');
                 options.onError();
             }
         },
         success: function(plotjson) {
-        	console.log('askForPlots AJAX success, plotjson:', plotjson);
         	if ((typeof plotjson['markers'] !== "undefined")&&(plotjson['markers'].length>0)) {
 				for (i=0;i<plotjson['markers'].length;i++) { createPlots(plotjson['markers'][i]); }
         	}
@@ -96,10 +95,7 @@ function askForPlots(_url_qso, options={}) {
         	
         	// Call custom success callback if provided
         	if (typeof options.onSuccess === 'function') {
-        	    console.log('Calling custom success callback');
         	    options.onSuccess(plotjson);
-        	} else {
-        	    console.warn('No custom success callback provided');
         	}
         }
     });
