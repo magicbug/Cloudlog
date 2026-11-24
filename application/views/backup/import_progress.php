@@ -4,6 +4,7 @@
     <li>Stations imported: <?php echo $stations; ?> / <?php echo $total_stations; ?></li>
     <li>Logbooks imported: <?php echo $logbooks; ?> / <?php echo $total_logbooks; ?></li>
     <li>QSOs imported: <?php echo $qsos; ?> / <?php echo $total_qsos; ?></li>
+    <li>Image attachments restored: <?php echo (int)$images; ?></li>
   </ul>
   <?php if (!empty($step)): ?>
     <div>Current step: <?php echo htmlspecialchars($step); ?></div>

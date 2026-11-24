@@ -1,5 +1,11 @@
 <div class="mt-3">
   <h5>Import Preview</h5>
+  <p>Images in backup: <?php echo (int)$images_count; ?>. QSO images are restored for the selected stations.</p>
+  <?php if (!empty($file_notices)): ?>
+    <div class="alert alert-warning">Some source images were unavailable during export:
+      <ul><?php foreach ($file_notices as $notice): ?><li><?php echo htmlspecialchars($notice, ENT_QUOTES, 'UTF-8'); ?></li><?php endforeach; ?></ul>
+    </div>
+  <?php endif; ?>
   <form method="post" hx-post="<?php echo site_url('backup/user_do_import'); ?>" hx-target="#user-import-progress" hx-swap="innerHTML">
     <div class="row">
       <div class="col-md-6">
@@ -30,6 +36,9 @@
       </div>
     </div>
     <button type="submit" class="btn btn-primary mt-2">Import Selected</button>
+    <?php if ($diary_count > 0): ?>
+      <label class="form-check-label ms-2"><input type="checkbox" class="form-check-input" name="import_diary" value="1" checked> Restore diary entries with images (<?php echo (int)$diary_count; ?>)</label>
+    <?php endif; ?>
   </form>
   <div id="user-import-progress" class="mt-3">
     <div id="user-import-spinner" style="display:none;">
