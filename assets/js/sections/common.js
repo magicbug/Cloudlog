@@ -879,5 +879,5 @@ if ($('.table-responsive .dropdown-toggle').length > 0) {
 function getDataTablesLanguageUrl() {
     // Check if lang_datatables_language is defined, otherwise use a default
     var language = (typeof lang_datatables_language !== 'undefined') ? lang_datatables_language : 'english';
-    return base_url + "/assets/json/datatables_languages/" + language + ".json";
+    return base_url.replace(/\/$/, '') + "/assets/json/datatables_languages/" + language + ".json";
 }
