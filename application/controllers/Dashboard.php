@@ -76,6 +76,9 @@ class Dashboard extends CI_Controller
 		$data['locationCount'] = $setup_counts['location_count'];
 
 		$data['current_active'] = $this->stations->find_active();
+		$data['active_station_profile'] = ($data['current_active'] != 0) ? $this->stations->profile_clean($data['current_active']) : null;
+		$active_logbook_id = $this->session->userdata('active_station_logbook');
+		$data['active_logbook_name'] = !empty($active_logbook_id) ? $this->logbooks_model->find_name($active_logbook_id) : '';
 		$data['clublog_cron_station_warning'] = false;
 		$this->load->model('clublog_model');
 		$user_id = $this->session->userdata('user_id');
@@ -202,7 +205,9 @@ class Dashboard extends CI_Controller
 			// Optimize DXCC calculation - get count directly instead of loading all records
 			$this->load->model('dxcc');
 			$total_dxcc_count = $this->dxcc->get_total_dxcc_count();
-			$data['total_countries_needed'] = $total_dxcc_count - $current_countries;
+			$data['total_dxcc_count'] = $total_dxcc_count;
+			$data['current_countries'] = $current_countries;
+			$data['total_countries_needed'] = max(0, $total_dxcc_count - $current_countries);
 
 			$this->load->view('interface_assets/header', $data);
 			$this->load->view('dashboard/index');

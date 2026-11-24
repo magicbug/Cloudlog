@@ -458,7 +458,7 @@ class Workabledxcc_model extends CI_Model
             if ($daysLeft < 0) {
                 $record['daysLeft'] = "Ended";
             } else {
-                $record['daysLeft'] = ($daysLeft === 0) ? "Last day" : $daysLeft . " days left";
+                $record['daysLeft'] = ($daysLeft === 0) ? "Last day" : ($daysLeft === 1 ? "1 day left" : $daysLeft . " days left");
             }
 
             $oldStartDate = DateTime::createFromFormat('Y-m-d', $record['0']);

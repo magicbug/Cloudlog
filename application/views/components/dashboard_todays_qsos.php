@@ -1,11 +1,12 @@
-<div hx-get="<?php echo site_url('dashboard/todays_qso_component'); ?>" hx-trigger="every 30s">
-    <?php if ($todays_qsos >= 1) { ?>
-        <div class="alert alert-success" role="alert">
-            <?php echo lang('dashboard_you_have_had'); ?> <strong><?php echo $todays_qsos; ?></strong> <?php echo $todays_qsos != 1 ? lang('dashboard_qsos_today') : str_replace('QSOs', 'QSO', lang('dashboard_qsos_today')); ?>
-        </div>
-    <?php } else { ?>
-        <div class="alert alert-warning" role="alert">
-            <span class="badge text-bg-info"><?php echo lang('general_word_important'); ?></span> <i class="fas fa-broadcast-tower"></i> <?php echo lang('notice_turn_the_radio_on'); ?>
-        </div>
-    <?php } ?>
-</div>
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
+<?php if ($todays_qsos >= 1) { ?>
+	<span class="dashboard-today-pill has-qsos">
+		<i class="fas fa-broadcast-tower"></i>
+		<span><?php echo lang('dashboard_you_have_had'); ?> <strong><?php echo number_format((int) $todays_qsos); ?></strong> <?php echo $todays_qsos != 1 ? lang('dashboard_qsos_today') : str_replace('QSOs', 'QSO', lang('dashboard_qsos_today')); ?></span>
+	</span>
+<?php } else { ?>
+	<span class="dashboard-today-pill no-qsos">
+		<i class="fas fa-broadcast-tower"></i>
+		<span><?php echo lang('notice_turn_the_radio_on'); ?></span>
+	</span>
+<?php } ?>

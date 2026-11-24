@@ -1042,15 +1042,12 @@ $(document).ready(function() {
                     console.log('[ERROR] ajax get_map_custom() function return error.');
                 },
                 success: function(json_mapinfo) {
-                    console.log(json_mapinfo);
                     if (typeof json_mapinfo.qso !== "undefined") {
                         iconsList = json_mapinfo;
                     }
                 }
             });
         });
-
-        console.log(iconsList);
     </script>
 
     <script type="text/javascript">
@@ -1077,6 +1074,9 @@ $(document).ready(function() {
         });
 
         $(document).ready(function() {
+            if (!document.getElementById('map')) {
+                return;
+            }
             <?php if ($this->config->item('map_gridsquares') != FALSE) { ?>
                 var ShowGrid = "Yes";
             <?php } else { ?>
@@ -1213,7 +1213,11 @@ $(document).ready(function() {
             }
 
             loadMarkers();
-            setInterval(loadMarkers, 5000);
+            setInterval(function() {
+                if (!document.hidden) {
+                    loadMarkers();
+                }
+            }, 15000);
 
         });
     </script>
@@ -5424,15 +5428,19 @@ $(document).ready(function() {
                     $(this).hide();
                 }
             });
-            $('.icon_selectBox_data label').off('click').on('click', function() {
+            $('.icon_selectBox_data label, .icon_selectBox_data .icon_option').off('click').on('click', function() {
                 var boxcontent = $(this).closest('.icon_selectBox_data').attr('data-boxcontent');
-                $('input[name="user_map_' + boxcontent + '_icon"]').attr('value', $(this).attr('data-value'));
+                var $iconInput = $('input[name="user_map_' + boxcontent + '_icon"]');
+                $iconInput.val($(this).attr('data-value'));
+                if ($iconInput[0]) {
+                    $iconInput[0].dispatchEvent(new Event('change', { bubbles: true }));
+                }
                 if ($(this).attr('data-value') != "0") {
                     $('.user_icon_color[data-icon="' + boxcontent + '"]').show();
                     $('.icon_selectBox[data-boxcontent="' + boxcontent + '"] .icon_overSelect').html($(this).html());
                 } else {
                     $('.user_icon_color[data-icon="' + boxcontent + '"]').hide();
-                    $('.icon_selectBox[data-boxcontent="' + boxcontent + '"] .icon_overSelect').html($(this).html().substring(0, 10) + '.');
+                    $('.icon_selectBox[data-boxcontent="' + boxcontent + '"] .icon_overSelect').html($(this).html());
                 }
                 $('.icon_selectBox_data[data-boxcontent="' + boxcontent + '"]').hide();
             });
