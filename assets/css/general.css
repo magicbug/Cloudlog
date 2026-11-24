@@ -1175,6 +1175,22 @@ tr.htmx-swapping td {
 	transition: opacity 1s ease-out;
 }
 
+/* Leaflet's div icon is 12px square, so a gridsquare such as JO wraps one letter per line. */
+.leaflet-marker-icon.my-div-icon:has(.grid-text) {
+	background: transparent;
+	border: none;
+	overflow: visible;
+}
+
+.my-div-icon .grid-text {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	white-space: nowrap;
+	line-height: 1;
+}
+
 .error-red-border {
     border-color: red;
 }

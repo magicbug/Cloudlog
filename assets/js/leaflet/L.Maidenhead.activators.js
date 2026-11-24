@@ -80,7 +80,7 @@ L.MaidenheadActivators = L.LayerGroup.extend({
 				}
 
 				if (zoom < 2 || zoom > 4) {
-					this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c), map));
+					this.addLayer(this._getLabel(lon+unit, lat+(unit/2), map));
 				}
 				if (zoom < 3 ) {
 					this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
@@ -90,7 +90,7 @@ L.MaidenheadActivators = L.LayerGroup.extend({
 				}
 
 				if (zoom < 3 || zoom > 5) {
-					this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c), map));
+					this.addLayer(this._getLabel(lon+unit, lat+(unit/2), map));
 				}
 
 			}
@@ -113,7 +113,7 @@ L.MaidenheadActivators = L.LayerGroup.extend({
 						fill: false,
 						interactive: false
 					}));
-					this.addLayer(this._getLabel2(lon + unit - (unit / lcor), lat + (unit / 2) + (unit / lcor * c), map));
+					this.addLayer(this._getLabel2(lon + unit, lat + (unit / 2), map));
 				}
 			}
 		}

@@ -73,11 +73,11 @@ L.Maidenhead = L.LayerGroup.extend({
 							this.addLayer(rectWorked);
 						}
 						// Controls text on grid on various zoom levels
-						this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
+						this.addLayer(this._getLabel(lon+unit, lat+(unit/2)));
 					} else if (grids.includes(locator)) {
 						var rect = L.rectangle(bounds, {className: 'grid-rectangle grid-unworked', color: 'rgba(0,0,0, 0.3)', weight: 1, fillOpacity: 0.15, fill:true, interactive: false})
 						this.addLayer(rect);
-						this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
+						this.addLayer(this._getLabel(lon+unit, lat+(unit/2)));
 					}
 				}
 			}

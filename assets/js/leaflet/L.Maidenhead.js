@@ -36,16 +36,13 @@ L.Maidenhead = L.LayerGroup.extend({
 
 	redraw: function () {
 		var d3 =         new Array(20,10,10,10,10,10,1 ,1 ,1 ,1 ,1/24,1/24,1/24,1/24,1/24,1/240,1/240,1/240,1/240,1/240/24,1/240/24 );
-		var lat_cor =    new Array(0 ,8 ,8 ,8 ,10,14,6 ,8 ,8 ,8 ,1.4 ,2.5 ,3   ,3.5 ,4   ,4    ,3.5  ,3.5  ,3    ,1.8     ,1.6      );
 		var bounds = map.getBounds();
 		var zoom = map.getZoom();
 		var unit = d3[zoom];
-		var lcor = lat_cor[zoom];
 		var w = bounds.getWest();
 		var e = bounds.getEast();
 		var n = bounds.getNorth();
 		var s = bounds.getSouth();
-		if (zoom==1) {var c = 2;} else {var c = 0.1;}
 		if (n > 85) n = 85;
 		if (s < -85) s = -85;
 		var left = Math.floor(w/(unit*2))*(unit*2);
@@ -59,7 +56,7 @@ L.Maidenhead = L.LayerGroup.extend({
 			this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
 			//var pont = map.latLngToLayerPoint([lat,lon]);
 			//console.log(pont.x);
-			this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
+			this.addLayer(this._getLabel(lon+unit, lat+(unit/2)));
 			}
 		}
 		return this;

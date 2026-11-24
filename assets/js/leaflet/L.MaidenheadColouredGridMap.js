@@ -72,7 +72,7 @@ L.Maidenhead = L.LayerGroup.extend({
 						}
 						// Controls text on grid on various zoom levels
 						if (zoom < 2 || zoom > 2) {
-							this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
+							this.addLayer(this._getLabel(lon+unit, lat+(unit/2)));
 						}
 						if (zoom < 3 ) {
 							this.addLayer(L.rectangle(bounds, {className: 'grid-rectangle', color: this.options.color, weight: 1, fill:false, interactive: false}));
@@ -84,7 +84,7 @@ L.Maidenhead = L.LayerGroup.extend({
 					}
 					// This one shows all grids, not just the worked/confirmed
 					if (zoom < 3 || zoom > 5) {
-						this.addLayer(this._getLabel(lon+unit-(unit/lcor),lat+(unit/2)+(unit/lcor*c)));
+						this.addLayer(this._getLabel(lon+unit, lat+(unit/2)));
 					}
 				}
 			}
@@ -107,7 +107,7 @@ L.Maidenhead = L.LayerGroup.extend({
 							fill: false,
 							interactive: false
 						}));
-						this.addLayer(this._getLabel2(lon + unit - (unit / field_cor), lat + (unit / 2) + (unit / lcor * c)));
+						this.addLayer(this._getLabel2(lon + unit, lat + (unit / 2)));
 					}
 		}
 		}
