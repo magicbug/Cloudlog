@@ -460,9 +460,22 @@ $kpi_col_class = ($kpi_count === 4) ? 'col-6 col-xl-3' : (($kpi_count === 3) ? '
 						<i class="fas fa-chart-bar"></i>
 					</div>
 					<div class="kpi-value"><?php echo number_format((int) $total_qsos); ?></div>
+					<?php
+					$cur_month_qsos = (int) $month_qsos;
+					$prev_mtd_qsos = isset($prev_month_mtd_qsos) ? (int) $prev_month_mtd_qsos : 0;
+					$month_delta = $cur_month_qsos - $prev_mtd_qsos;
+					$month_trend_title = number_format($cur_month_qsos) . ' this month vs ' . number_format($prev_mtd_qsos) . ' by this point last month';
+					?>
 					<div class="kpi-sub text-muted">
 						<span><?php echo lang('general_word_year'); ?>: <strong class="text-body"><?php echo number_format((int) $year_qsos); ?></strong></span>
-						<span><?php echo lang('general_word_month'); ?>: <strong class="text-body"><?php echo number_format((int) $month_qsos); ?></strong></span>
+						<span class="d-inline-flex align-items-center gap-1">
+							<span><?php echo lang('general_word_month'); ?>: <strong class="text-body"><?php echo number_format($cur_month_qsos); ?></strong></span>
+							<?php if ($month_delta > 0) { ?>
+								<span class="text-success" data-bs-toggle="tooltip" title="<?php echo htmlspecialchars($month_trend_title . ' (+' . number_format($month_delta) . ')', ENT_QUOTES, 'UTF-8'); ?>" aria-label="<?php echo htmlspecialchars($month_trend_title, ENT_QUOTES, 'UTF-8'); ?>"><i class="fas fa-caret-up"></i></span>
+							<?php } elseif ($month_delta < 0) { ?>
+								<span class="text-muted opacity-75" data-bs-toggle="tooltip" title="<?php echo htmlspecialchars($month_trend_title . ' (' . number_format($month_delta) . ')', ENT_QUOTES, 'UTF-8'); ?>" aria-label="<?php echo htmlspecialchars($month_trend_title, ENT_QUOTES, 'UTF-8'); ?>"><i class="fas fa-caret-down"></i></span>
+							<?php } ?>
+						</span>
 					</div>
 				</div>
 			</div>

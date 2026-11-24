@@ -6915,6 +6915,7 @@ class Logbook_model extends CI_Model
         'total_qsos' => 0,
         'todays_qsos' => 0,
         'month_qsos' => 0,
+        'prev_month_mtd_qsos' => 0,
         'year_qsos' => 0
       );
     }
@@ -6926,6 +6927,10 @@ class Logbook_model extends CI_Model
     $date = new DateTime('now');
     $date->modify('last day of this month');
     $month_night = $date->format('Y-m-d') . " 23:59:59";
+    $prev_month_start_dt = new DateTime('first day of last month 00:00:00');
+    $prev_month_morning = $prev_month_start_dt->format('Y-m-d H:i:s');
+    $prev_month_day = min((int) date('j'), (int) $prev_month_start_dt->format('t'));
+    $prev_month_mtd_night = $prev_month_start_dt->format('Y-m-') . sprintf('%02d', $prev_month_day) . ' 23:59:59';
     $year_morning = date('Y-01-01 00:00:00');
     $year_night = date('Y-12-31 23:59:59');
 
@@ -6934,6 +6939,7 @@ class Logbook_model extends CI_Model
       COUNT(*) as total_qsos,
       COUNT(CASE WHEN COL_TIME_ON >= '$today_morning' AND COL_TIME_ON <= '$today_night' THEN 1 END) as todays_qsos,
       COUNT(CASE WHEN COL_TIME_ON >= '$month_morning' AND COL_TIME_ON <= '$month_night' THEN 1 END) as month_qsos,
+      COUNT(CASE WHEN COL_TIME_ON >= '$prev_month_morning' AND COL_TIME_ON <= '$prev_month_mtd_night' THEN 1 END) as prev_month_mtd_qsos,
       COUNT(CASE WHEN COL_TIME_ON >= '$year_morning' AND COL_TIME_ON <= '$year_night' THEN 1 END) as year_qsos
     ", FALSE);
     $this->db->where_in('station_id', $logbooks_locations_array);
@@ -6945,6 +6951,7 @@ class Logbook_model extends CI_Model
         'total_qsos' => (int)$row->total_qsos,
         'todays_qsos' => (int)$row->todays_qsos,
         'month_qsos' => (int)$row->month_qsos,
+        'prev_month_mtd_qsos' => (int)$row->prev_month_mtd_qsos,
         'year_qsos' => (int)$row->year_qsos
       );
     }
@@ -6953,6 +6960,7 @@ class Logbook_model extends CI_Model
       'total_qsos' => 0,
       'todays_qsos' => 0,
       'month_qsos' => 0,
+      'prev_month_mtd_qsos' => 0,
       'year_qsos' => 0
     );
   }

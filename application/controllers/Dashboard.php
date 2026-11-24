@@ -107,7 +107,7 @@ class Dashboard extends CI_Controller
 			
 			// Try to get QSO statistics from cache
 			$qso_stats = $this->cache->get($cache_key . '_qso');
-			if (!$qso_stats) {
+			if (!$qso_stats || !isset($qso_stats['prev_month_mtd_qsos'])) {
 				// Cache miss - query database
 				$qso_stats = $this->logbook_model->get_qso_statistics_consolidated($logbooks_locations_array);
 				$this->cache->save($cache_key . '_qso', $qso_stats, $cache_ttl);
@@ -115,6 +115,7 @@ class Dashboard extends CI_Controller
 			$data['todays_qsos'] = $qso_stats['todays_qsos'];
 			$data['total_qsos'] = $qso_stats['total_qsos'];
 			$data['month_qsos'] = $qso_stats['month_qsos'];
+			$data['prev_month_mtd_qsos'] = $qso_stats['prev_month_mtd_qsos'];
 			$data['year_qsos'] = $qso_stats['year_qsos'];
 
 			// Try to get countries statistics from cache
