@@ -110,6 +110,7 @@ class Awards extends CI_Controller
         $data['worked_bands'] = $this->bands->get_worked_bands('dxcc'); // Used in the view for band select
         $data['modes'] = $this->modes->active(); // Used in the view for mode select
         $data['worked_years'] = $this->dxcc->get_worked_years(); // Used in the view for year select
+        $data['worked_sats'] = $this->dxcc->get_worked_sats(); // Used in the view for satellite select
 
         if ($this->input->method() === 'post' && $this->input->post('bands') != NULL) {
             $bands = array_values(array_unique(array_map(array($this->security, 'xss_clean'), $this->input->post('bands'))));
@@ -137,6 +138,7 @@ class Awards extends CI_Controller
             $postdata['band'] = $bands;
             $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
             $postdata['year'] = $this->security->xss_clean($this->input->post('year'));
+            $postdata['sat'] = $this->security->xss_clean($this->input->post('sat')) ?: 'All';
         } else { // Setting default values at first load of page
             $postdata['qsl'] = 1;
             $postdata['lotw'] = 1;
@@ -155,7 +157,11 @@ class Awards extends CI_Controller
             $postdata['band'] = $bands;
             $postdata['mode'] = 'All';
             $postdata['year'] = 'All';
+            $postdata['sat'] = 'All';
         }
+
+        $postdata['sat'] = $this->dxcc->getSatFilter($postdata);
+        $data['selected_sat'] = $postdata['sat'];
 
         $dxcclist = $this->dxcc->fetchdxcc($postdata);
         $data['dxcc_array'] = $this->dxcc->get_dxcc_array($dxcclist, $bands, $postdata);
@@ -2057,6 +2063,8 @@ class Awards extends CI_Controller
         $postdata['band'] = $bands;
         $postdata['mode'] = $this->security->xss_clean($this->input->post('mode'));
         $postdata['year'] = $this->security->xss_clean($this->input->post('year'));
+        $postdata['sat'] = $this->security->xss_clean($this->input->post('sat')) ?: 'All';
+        $postdata['sat'] = $this->dxcc->getSatFilter($postdata);
         $postdata['includedeleted'] = $this->input->post('includedeleted') == 0 ? NULL : 1;
         $postdata['Africa'] = $this->input->post('Africa') == 0 ? NULL : 1;
         $postdata['Asia'] = $this->input->post('Asia') == 0 ? NULL : 1;
@@ -2173,6 +2181,19 @@ class Awards extends CI_Controller
     }
 
     /*
+    * Optional satellite restriction for the DXCC QSO drilldown modals (issue #3501).
+    * Only satellite QSOs are narrowed; terrestrial QSOs are unaffected.
+    */
+    private function dxccDrilldownSatWhere()
+    {
+        $sat = trim((string) $this->security->xss_clean($this->input->post('sat')));
+        if ($sat === '' || $sat === 'All') {
+            return '';
+        }
+        return " AND (COALESCE(col_prop_mode, '') != 'SAT' OR col_sat_name = " . $this->db->escape($sat) . ")";
+    }
+
+    /*
     * Get QSOs for a specific DXCC entity
     */
     public function get_dxcc_qsos()
@@ -2206,6 +2227,7 @@ class Awards extends CI_Controller
                     col_call,
                     col_band,
                     col_mode,
+                    col_sat_name,
                     col_rst_sent,
                     col_rst_rcvd,
                     col_qsl_sent,
@@ -2214,7 +2236,7 @@ class Awards extends CI_Controller
                     COL_LOTW_QSL_RCVD
                 FROM " . $this->config->item('table_name') . "
                 WHERE station_id IN (" . $location_list . ")
-                AND col_dxcc = " . $dxcc_id . "
+                AND col_dxcc = " . $dxcc_id . $this->dxccDrilldownSatWhere() . "
                 ORDER BY col_time_on DESC
                 LIMIT " . intval($limit)
             );
@@ -2278,6 +2300,7 @@ class Awards extends CI_Controller
                     col_call,
                     col_band,
                     col_mode,
+                    col_sat_name,
                     col_rst_sent,
                     col_rst_rcvd,
                     col_qsl_sent,
@@ -2286,7 +2309,7 @@ class Awards extends CI_Controller
                     COL_LOTW_QSL_RCVD
                 FROM " . $this->config->item('table_name') . "
                 WHERE station_id IN (" . $location_list . ")
-                AND col_dxcc = " . $dxcc_id . $status_where . "
+                AND col_dxcc = " . $dxcc_id . $status_where . $this->dxccDrilldownSatWhere() . "
                 ORDER BY col_time_on DESC
                 LIMIT " . intval($limit)
             );

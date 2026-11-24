@@ -30,6 +30,7 @@ function load_dxcc_map() {
             bands: getSelectedDxccBands(),
             mode: $('#mode').val(),
             year: $('#year').val(),
+            sat: ($('#sat').length && !$('#sat').prop('disabled')) ? $('#sat').val() : 'All',
             worked: +worked,
             confirmed: +confirmed,
             notworked: +notworked,

@@ -149,7 +149,7 @@ class DXCC extends CI_Model {
 					where station_id in (" . $location_list .
 				  ") and col_dxcc > 0";
 
-		$sql .= $this->addBandToQuery($band);
+		$sql .= $this->addBandToQuery($band, $this->getSatFilter($postdata));
 
 		$sql .= $this->addModeToQuery($postdata['mode']);
 
@@ -177,7 +177,7 @@ class DXCC extends CI_Model {
 					where station_id in (" . $location_list .
 					") and col_dxcc > 0";
 
-		$sql .= $this->addBandToQuery($band);
+		$sql .= $this->addBandToQuery($band, $this->getSatFilter($postdata));
 
 		$sql .= $this->addModeToQuery($postdata['mode']);
 
@@ -197,7 +197,55 @@ class DXCC extends CI_Model {
 		return $query->result();
 	}
 
-	function addBandToQuery($band) {
+	/*
+	 * Returns the selected satellite name, or 'All' when no specific satellite filter applies.
+	 * The filter only applies when SAT is one of the selected bands.
+	 */
+	function getSatFilter($postdata) {
+		$sat = isset($postdata['sat']) ? trim((string) $postdata['sat']) : '';
+		if ($sat === '' || $sat === 'All') {
+			return 'All';
+		}
+		$bands = isset($postdata['band']) ? $postdata['band'] : array();
+		if (!is_array($bands)) {
+			$bands = array($bands);
+		}
+		return in_array('SAT', $bands, true) ? $sat : 'All';
+	}
+
+	/*
+	 * SQL predicate restricting satellite QSOs to a single satellite. Non-SAT QSOs are left untouched,
+	 * so it is safe to combine with mixed band selections (e.g. SAT + 20m).
+	 */
+	function addSatToQuery($sat) {
+		if ($sat === NULL || $sat === '' || $sat === 'All') {
+			return '';
+		}
+		return " and (col_prop_mode != 'SAT' or col_sat_name = '" . $this->db->escape_str($sat) . "')";
+	}
+
+	/*
+	 * Satellites worked (with a valid DXCC) in the active logbook.
+	 */
+	function get_worked_sats() {
+		$CI =& get_instance();
+		$CI->load->model('logbooks_model');
+		$logbooks_locations_array = $CI->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		if (!$logbooks_locations_array) {
+			return [];
+		}
+		$location_list = implode(',', array_map('intval', $logbooks_locations_array));
+		$sql = "SELECT DISTINCT col_sat_name FROM " . $this->config->item('table_name') .
+			" WHERE station_id IN (" . $location_list . ") AND col_prop_mode = 'SAT' AND col_dxcc > 0 AND coalesce(col_sat_name, '') <> '' ORDER BY col_sat_name";
+		$query = $this->db->query($sql);
+		return array_column($query->result_array(), 'col_sat_name');
+	}
+
+	function addBandToQuery($band, $sat = 'All') {
+		return $this->buildBandQuery($band) . $this->addSatToQuery($sat);
+	}
+
+	function buildBandQuery($band) {
 		$sql = '';
 		$propModeBands = array('SAT', 'EME');
 
@@ -292,7 +340,7 @@ class DXCC extends CI_Model {
 		if ($postdata['notworked'] == NULL) {
 			$sql .= " join (select col_dxcc from " . $this->config->item('table_name') . " where station_id in (" . $location_list . ") and col_dxcc > 0";
 
-			$sql .= $this->addBandToQuery($postdata['band']);
+			$sql .= $this->addBandToQuery($postdata['band'], $this->getSatFilter($postdata));
 
 			$sql .= $this->addModeToQuery($postdata['mode']);
 
@@ -321,7 +369,7 @@ class DXCC extends CI_Model {
             where station_id in (" . $location_list .
               ") and col_dxcc > 0";
 
-		$sql .= $this->addBandToQuery($postdata['band']);
+		$sql .= $this->addBandToQuery($postdata['band'], $this->getSatFilter($postdata));
 
 		$sql .= $this->addModeToQuery($postdata['mode']);
 
@@ -329,7 +377,7 @@ class DXCC extends CI_Model {
 
 		$sql .= " and not exists (select 1 from ".$this->config->item('table_name')." where station_id in (". $location_list .") and col_dxcc = thcv.col_dxcc and col_dxcc > 0";
 
-		$sql .= $this->addBandToQuery($postdata['band']);
+		$sql .= $this->addBandToQuery($postdata['band'], $this->getSatFilter($postdata));
 
 		$sql .= $this->addModeToQuery($postdata['mode']);
 
@@ -362,7 +410,7 @@ class DXCC extends CI_Model {
                 where station_id in (". $location_list .
                     ") and col_dxcc > 0";
 
-		$sql .= $this->addBandToQuery($postdata['band']);
+		$sql .= $this->addBandToQuery($postdata['band'], $this->getSatFilter($postdata));
 
 		$sql .= $this->addModeToQuery($postdata['mode']);
 
@@ -477,9 +525,10 @@ class DXCC extends CI_Model {
 		$sql .= " where station_id in (" . $location_list . ") and col_dxcc > 0";
 
 		if (is_array($band)) {
-			$sql .= $this->addBandToQuery($band);
+			$sql .= $this->addBandToQuery($band, $this->getSatFilter($postdata));
 		} else if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
+			$sql .= $this->addSatToQuery($this->getSatFilter($postdata));
 		} else if ($band == 'All') {
 			$this->load->model('bands');
 
@@ -515,9 +564,10 @@ class DXCC extends CI_Model {
 		$sql .= " where station_id in (" . $location_list . ")";
 
 		if (is_array($band)) {
-			$sql .= $this->addBandToQuery($band);
+			$sql .= $this->addBandToQuery($band, $this->getSatFilter($postdata));
 		} else if ($band == 'SAT') {
 			$sql .= " and thcv.col_prop_mode ='" . $this->db->escape_str($band) . "'";
+			$sql .= $this->addSatToQuery($this->getSatFilter($postdata));
 		} else if ($band == 'All') {
 			$this->load->model('bands');
 

@@ -288,6 +288,20 @@
                         </div>
                     </div>
 
+                    <?php if (in_array('SAT', $worked_bands, true) && !empty($worked_sats)) { ?>
+                    <div class="mb-3 row" id="satWrapper"<?php if (!in_array('SAT', $bands, true)) echo ' style="display: none;"'; ?>>
+                        <label class="col-md-2 control-label" for="sat"><?php echo lang('general_word_satellite'); ?></label>
+                        <div class="col-md-2">
+                            <select id="sat" name="sat" class="form-select form-select-sm">
+                                <option value="All"<?php if (($selected_sat ?? 'All') === 'All') echo ' selected'; ?>>All</option>
+                                <?php foreach ($worked_sats as $satName): ?>
+                                    <option value="<?php echo htmlspecialchars($satName, ENT_QUOTES); ?>"<?php if (($selected_sat ?? 'All') === $satName) echo ' selected'; ?>><?php echo htmlspecialchars($satName); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <?php } ?>
+
                     <div class="mb-3 row">
                         <label class="col-md-2 control-label" for="mode">Mode</label>
                         <div class="col-md-2">
@@ -578,8 +592,15 @@
 let currentSort = { column: null, direction: 'asc' };
 let currentModalType = 'qso'; // 'qso' or 'continent'
 
-document.querySelectorAll('[data-dxcc-band-tooltip="1"]').forEach(el => {
-    new bootstrap.Tooltip(el);
+// Satellite filter actually applied to the current results (used by the QSO drilldowns)
+const dxccAppliedSat = <?php echo json_encode($selected_sat ?? 'All'); ?>;
+
+// Bootstrap is loaded in the footer, so initialise tooltips once the DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof bootstrap === 'undefined') return;
+    document.querySelectorAll('[data-dxcc-band-tooltip="1"]').forEach(el => {
+        new bootstrap.Tooltip(el);
+    });
 });
 
 // Table sorting functionality
@@ -643,12 +664,44 @@ if (searchInput) {
     });
 }
 
+// Show the Satellite dropdown only while the SAT band is ticked
+function updateSatVisibility() {
+    const wrapper = document.getElementById('satWrapper');
+    if (!wrapper) return;
+    const satBand = document.querySelector('input[name="bands[]"][value="SAT"]');
+    const show = !!(satBand && satBand.checked);
+    wrapper.style.display = show ? '' : 'none';
+    const select = document.getElementById('sat');
+    if (select) {
+        select.disabled = !show; // a hidden, stale selection is never submitted
+        if (!show) select.value = 'All';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[name="bands[]"]').forEach(cb => cb.addEventListener('change', updateSatVisibility));
+    const form = document.getElementById('dxccForm');
+    if (form) form.addEventListener('reset', () => setTimeout(updateSatVisibility, 0));
+    updateSatVisibility();
+});
+
+function escapeDxccHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
+}
+
+function formatDxccBand(qso) {
+    return escapeDxccHtml(qso.col_band) + (qso.col_sat_name ? ' <small class="text-muted">(' + escapeDxccHtml(qso.col_sat_name) + ')</small>' : '');
+}
+
 // Preset filter functions
 function applyPreset(preset) {
     const form = document.getElementById('dxccForm');
     
-    // Reset all checkboxes first
-    form.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    // Reset status/QSL/continent checkboxes first, but keep the band selection intact
+    form.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        if (cb.name === 'bands[]') return;
+        cb.checked = false;
+    });
     
     // All QSL types
     const allQslTypes = ['qsl', 'lotw', 'eqsl'];
@@ -698,6 +751,11 @@ function applyPreset(preset) {
 }
 
 function setBandGroup(group) {
+    applyBandGroup(group);
+    updateSatVisibility();
+}
+
+function applyBandGroup(group) {
     const hfBands = ['160m', '80m', '60m', '40m', '30m', '20m', '17m', '15m', '12m', '10m'];
     const bandCheckboxes = document.querySelectorAll('input[name="bands[]"]');
 
@@ -743,6 +801,9 @@ function resetFilters() {
     const form = document.getElementById('dxccForm');
     form.reset();
     form.querySelectorAll('input[name="bands[]"]').forEach(cb => cb.checked = true);
+    const sat = document.getElementById('sat');
+    if (sat) sat.value = 'All';
+    updateSatVisibility();
 }
 
 // View QSOs for specific DXCC filtered by status
@@ -781,6 +842,7 @@ function viewDxccQsosByStatus(dxcc, status) {
         data: {
             dxcc_id: dxcc,
             status: status,
+            sat: dxccAppliedSat,
             limit: 100
         },
         dataType: 'json',
@@ -808,7 +870,7 @@ function viewDxccQsosByStatus(dxcc, status) {
                     row.innerHTML = `
                         <td>${datetime}</td>
                         <td>${qso.col_call}</td>
-                        <td>${qso.col_band}</td>
+                        <td>${formatDxccBand(qso)}</td>
                         <td>${qso.col_mode}</td>
                         <td>${qso.col_rst_sent || '-'}</td>
                         <td>${qso.col_rst_rcvd || '-'}</td>
@@ -953,6 +1015,7 @@ function viewDxccQsos(dxcc) {
         type: 'post',
         data: {
             dxcc_id: dxcc,
+            sat: dxccAppliedSat,
             limit: 100
         },
         dataType: 'json',
@@ -974,7 +1037,7 @@ function viewDxccQsos(dxcc) {
                     row.innerHTML = `
                         <td>${datetime}</td>
                         <td>${qso.col_call}</td>
-                        <td>${qso.col_band}</td>
+                        <td>${formatDxccBand(qso)}</td>
                         <td>${qso.col_mode}</td>
                         <td>${qso.col_rst_sent || '-'}</td>
                         <td>${qso.col_rst_rcvd || '-'}</td>
