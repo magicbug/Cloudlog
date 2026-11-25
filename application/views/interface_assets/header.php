@@ -106,7 +106,7 @@
 	$nav_is_notes = ($nav_seg1 === 'notes');
 	$nav_is_analytics = in_array($nav_seg1, ['statistics', 'monthlyreport', 'gridmap', 'activated_gridmap', 'activators', 'activatorsmap', 'distances', 'dayswithqso', 'timeline', 'accumulated', 'timeplotter', 'mostworked', 'map', 'continents', 'emeinitials'], true);
 	$nav_is_awards = in_array($nav_seg1, ['awards', 'award'], true);
-	$nav_is_tools = in_array($nav_seg1, ['propagationadvisor', 'callhistory', 'dxcluster', 'workabledxcc', 'hamsat'], true);
+	$nav_is_tools = in_array($nav_seg1, ['propagationadvisor', 'dxcluster', 'workabledxcc', 'hamsat'], true);
 	$nav_is_admin = in_array($nav_seg1, ['user', 'options', 'mode', 'themes', 'update', 'maintenance', 'cronmanager', 'plugins', 'debug'], true)
 		|| ($nav_seg1 === 'contesting' && $nav_seg2 === 'add');
 
@@ -383,7 +383,6 @@
 							<div class="dropdown-menu" aria-labelledby="navTools">
 								<h6 class="dropdown-header">Tools</h6>
 								<a class="dropdown-item" href="<?php echo site_url('propagationadvisor'); ?>" title="<?php echo lang('menu_propagation_advisor'); ?>"><i class="fas fa-clock"></i> <?php echo lang('menu_propagation_advisor'); ?></a>
-								<a class="dropdown-item" href="<?php echo site_url('callhistory'); ?>" title="Call History"><i class="fas fa-address-book"></i> Call History</a>
 								<a class="dropdown-item" href="<?php echo site_url('dxcluster'); ?>" title="DX Cluster"><i class="fas fa-broadcast-tower"></i> DX Cluster</a>
 								<a class="dropdown-item" href="<?php echo site_url('workabledxcc'); ?>" title="Upcoming DXPeditions"><i class="fas fa-globe"></i> Upcoming DXPeditions</a>
 								<a class="dropdown-item" href="<?php echo site_url('hamsat'); ?>" title="Hams.at"><i class="fas fa-list"></i> Hams.at</a>
@@ -510,6 +509,7 @@
 											<a class="dropdown-item" href="<?php echo site_url('band'); ?>" title="Manage Bands"><i class="fas fa-wave-square"></i> <?php echo lang('menu_bands'); ?></a>
 											<a class="dropdown-item" href="<?php echo site_url('radio'); ?>" title="Interface with one or more radios"><i class="fas fa-plug"></i> <?php echo lang('menu_hardware_interfaces'); ?></a>
 											<a class="dropdown-item" href="<?php echo site_url('api/help'); ?>" title="Manage API keys"><i class="fas fa-key"></i> <?php echo lang('menu_api_keys'); ?></a>
+											<a class="dropdown-item" href="<?php echo site_url('callhistory'); ?>" title="Call History"><i class="fas fa-address-book"></i> Call History</a>
 
 											<h6 class="dropdown-header mt-2">QSL &amp; Printing</h6>
 											<a class="dropdown-item d-flex align-items-center justify-content-between" href="<?php echo site_url('oqrs/requests'); ?>" title="OQRS Requests">
