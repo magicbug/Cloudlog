@@ -38,7 +38,7 @@
 <script src="<?php echo base_url(); ?>assets/js/bootstrap.bundle.js"></script>
 <?php
 $load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'search', 'activators', 'activatorsmap'], true)
-    || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota', 'rda', 'counties'], true));
+    || ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota', 'rda', 'counties', 'vucc_band'], true));
 ?>
 <?php if ($load_leaflet) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/leaflet/leaflet.js"></script>
@@ -3575,7 +3575,7 @@ $(document).ready(function() {
             "pageLength": 25,
             responsive: false,
             ordering: false,
-            "scrollY": "400px",
+            "scrollY": "440px",
             "scrollCollapse": true,
             "paging": false,
             "scrollX": true,
@@ -3592,6 +3592,113 @@ $(document).ready(function() {
         if (isDarkModeTheme()) {
             $(".buttons-csv").css("color", "white");
         }
+
+        // Interactive VUCC Band Grid Map
+        (function() {
+            var mapEl = document.getElementById('vucc_band_map');
+            if (!mapEl || typeof L === 'undefined' || !window.vuccBandMapData) {
+                return;
+            }
+
+            var cfg = window.vuccBandMapData;
+            var grids = Array.isArray(cfg.grids) ? cfg.grids : [];
+            var tileUrl = <?php echo json_encode($this->optionslib->get_option('option_map_tile_server')); ?>;
+            var tileAttrib = 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+
+            var map = L.map('vucc_band_map', {
+                center: [30, 0],
+                zoom: 2,
+                minZoom: 2,
+                maxZoom: 12,
+                worldCopyJump: true,
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft'
+                }
+            });
+
+            L.tileLayer(tileUrl, {
+                maxZoom: 12,
+                attribution: tileAttrib
+            }).addTo(map);
+
+            function maidenheadBounds(grid) {
+                if (!grid || grid.length < 4) return null;
+                var g = grid.toUpperCase();
+                if (!/^[A-R]{2}[0-9]{2}$/.test(g.substring(0, 4))) return null;
+                var lonMin = (g.charCodeAt(0) - 65) * 20 - 180 + parseInt(g.charAt(2), 10) * 2;
+                var latMin = (g.charCodeAt(1) - 65) * 10 - 90 + parseInt(g.charAt(3), 10) * 1;
+                return [[latMin, lonMin], [latMin + 1, lonMin + 2]];
+            }
+
+            var gridLayers = {};
+            var boundsList = [];
+
+            grids.forEach(function(item) {
+                var b = maidenheadBounds(item.grid);
+                if (!b) return;
+                boundsList.push(b[0], b[1]);
+
+                var baseStyle = item.confirmed
+                    ? { color: '#157347', weight: 1.2, fillColor: '#198754', fillOpacity: 0.5 }
+                    : { color: '#0b5ed7', weight: 1.2, fillColor: '#3b82f6', fillOpacity: 0.4 };
+
+                var hoverStyle = item.confirmed
+                    ? { color: '#0f5132', weight: 2.2, fillColor: '#20c997', fillOpacity: 0.7 }
+                    : { color: '#084298', weight: 2.2, fillColor: '#60a5fa', fillOpacity: 0.65 };
+
+                var statusParts = [];
+                if (item.qsl) statusParts.push('QSL');
+                if (item.lotw) statusParts.push('LoTW');
+                var statusText = item.confirmed
+                    ? 'Confirmed' + (statusParts.length ? ' (' + statusParts.join(', ') + ')' : '')
+                    : 'Worked (unconfirmed)';
+
+                var rect = L.rectangle(b, baseStyle).addTo(map);
+                rect.bindTooltip(
+                    '<strong>' + item.grid + '</strong><br><span style="font-size:0.85em;">' + statusText + '</span>',
+                    { sticky: true, direction: 'top' }
+                );
+
+                rect.on('mouseover', function() {
+                    rect.setStyle(hoverStyle);
+                    rect.bringToFront();
+                });
+                rect.on('mouseout', function() {
+                    rect.setStyle(baseStyle);
+                });
+                rect.on('click', function() {
+                    displayContacts(item.grid, cfg.band, 'All', 'VUCC');
+                });
+
+                gridLayers[item.grid.toUpperCase()] = { rect: rect, bounds: b, baseStyle: baseStyle, hoverStyle: hoverStyle };
+            });
+
+            function fitAllGrids() {
+                if (boundsList.length > 0) {
+                    map.fitBounds(L.latLngBounds(boundsList), { padding: [24, 24], maxZoom: 7 });
+                }
+            }
+
+            fitAllGrids();
+
+            var fitBtn = document.getElementById('vuccFitMapBtn');
+            if (fitBtn) {
+                fitBtn.addEventListener('click', fitAllGrids);
+            }
+
+            window.vuccFocusGrid = function(grid) {
+                var entry = gridLayers[(grid || '').toUpperCase()];
+                if (!entry) return;
+                map.fitBounds(entry.bounds, { padding: [80, 80], maxZoom: 7 });
+                entry.rect.setStyle(entry.hoverStyle);
+                entry.rect.bringToFront();
+                entry.rect.openTooltip();
+                setTimeout(function() {
+                    entry.rect.setStyle(entry.baseStyle);
+                }, 1600);
+            };
+        })();
     </script>
 <?php } ?>
 

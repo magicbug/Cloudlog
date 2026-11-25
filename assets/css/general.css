@@ -2097,6 +2097,258 @@ tr.htmx-swapping td {
 	font-size: 1.4rem;
 }
 
+/* VUCC Awards Pages */
+.vucc-page {
+	padding-top: 14px;
+	padding-bottom: 28px;
+}
+
+.vucc-page #awardInfoButton {
+	display: block;
+}
+
+.vucc-topbar {
+	width: 100%;
+}
+
+.vucc-table-card .dataTables_scrollHeadInner,
+.vucc-table-card .dataTables_scrollHeadInner table {
+	width: 100% !important;
+}
+
+.vucc-topbar,
+.vucc-kpi-card,
+.vucc-table-card,
+.vucc-map-card,
+.vucc-empty-card {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.75rem;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+	overflow: hidden;
+}
+
+.vucc-map-card .card-header,
+.vucc-map-footer {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.05));
+}
+
+.vucc-band-map {
+	width: 100%;
+	height: 540px;
+	min-height: 420px;
+}
+
+.vucc-fit-btn {
+	font-size: 0.74rem;
+	padding: 0.15rem 0.5rem;
+}
+
+.vucc-locate-btn {
+	line-height: 1;
+	opacity: 0.65;
+	transition: opacity 120ms ease, color 120ms ease;
+}
+
+.vucc-locate-btn:hover {
+	opacity: 1;
+	color: var(--bs-primary, #0d6efd) !important;
+}
+
+.vucc-brand-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 0.55rem;
+	background-color: var(--bs-primary, #0d6efd);
+	color: #fff;
+	font-size: 0.95rem;
+	flex-shrink: 0;
+}
+
+.vucc-kpi-label {
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.vucc-kpi-value {
+	font-size: 1.65rem;
+	font-weight: 700;
+	line-height: 1.15;
+	font-variant-numeric: tabular-nums;
+}
+
+.vucc-rate-badge {
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	color: var(--bs-primary, #0d6efd);
+	font-weight: 600;
+}
+
+.vucc-section-title {
+	letter-spacing: 0.04em;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.vucc-table-card .card-header {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.05));
+}
+
+.vucc-table thead th {
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--bs-secondary-color, #64748b);
+	border-bottom-width: 1px;
+	padding-top: 0.65rem;
+	padding-bottom: 0.65rem;
+}
+
+.vucc-table tbody td {
+	padding-top: 0.7rem;
+	padding-bottom: 0.7rem;
+}
+
+.vucc-progress-col {
+	min-width: 210px;
+}
+
+.vucc-band-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 54px;
+	padding: 0.28rem 0.65rem;
+	border-radius: 0.45rem;
+	font-weight: 700;
+	font-size: 0.85rem;
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	color: var(--bs-primary, #0d6efd);
+	border: 1px solid rgba(var(--bs-primary-rgb, 13, 110, 253), 0.25);
+	transition: background-color 120ms ease, color 120ms ease;
+}
+
+.vucc-band-badge:hover {
+	background-color: var(--bs-primary, #0d6efd);
+	color: #fff;
+}
+
+.vucc-num-link {
+	display: inline-block;
+	min-width: 44px;
+	padding: 0.2rem 0.55rem;
+	border-radius: 0.4rem;
+	font-weight: 700;
+	font-variant-numeric: tabular-nums;
+	text-decoration: none;
+	color: var(--bs-body-color, inherit);
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
+	transition: border-color 120ms ease, color 120ms ease;
+}
+
+.vucc-num-link:hover {
+	border-color: var(--bs-primary, #0d6efd);
+	color: var(--bs-primary, #0d6efd);
+}
+
+.vucc-num-link.is-confirmed {
+	background-color: rgba(var(--bs-success-rgb, 25, 135, 84), 0.14);
+	border-color: rgba(var(--bs-success-rgb, 25, 135, 84), 0.28);
+	color: var(--bs-success, #198754);
+}
+
+.vucc-num-link.is-confirmed:hover {
+	background-color: var(--bs-success, #198754);
+	color: #fff;
+}
+
+.vucc-progress-track {
+	position: relative;
+	height: 8px;
+	border-radius: 999px;
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.18));
+	overflow: hidden;
+}
+
+.vucc-progress-worked {
+	position: absolute;
+	inset: 0 auto 0 0;
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.35);
+	border-radius: 999px;
+}
+
+.vucc-progress-confirmed {
+	position: absolute;
+	inset: 0 auto 0 0;
+	background-color: var(--bs-success, #198754);
+	border-radius: 999px;
+}
+
+.vucc-legend-dot {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.vucc-legend-confirmed {
+	background-color: var(--bs-success, #198754);
+}
+
+.vucc-legend-worked {
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.45);
+}
+
+.vucc-remaining-badge {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.12));
+	color: var(--bs-secondary-color, #64748b);
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	font-weight: 600;
+}
+
+.vucc-detail-btn {
+	font-size: 0.78rem;
+	padding: 0.2rem 0.55rem;
+}
+
+.vucc-totals-row td {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.05));
+	border-top: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	padding-top: 0.65rem;
+	padding-bottom: 0.65rem;
+}
+
+.vucc-grid-chip {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.22rem 0.6rem;
+	border-radius: 0.4rem;
+	font-family: var(--bs-font-monospace, monospace);
+	font-weight: 700;
+	font-size: 0.88rem;
+	letter-spacing: 0.04em;
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.12);
+	color: var(--bs-primary, #0d6efd);
+	border: 1px solid rgba(var(--bs-primary-rgb, 13, 110, 253), 0.25);
+	transition: background-color 120ms ease, color 120ms ease;
+}
+
+.vucc-grid-chip:hover {
+	background-color: var(--bs-primary, #0d6efd);
+	color: #fff;
+}
+
+.vucc-empty-icon {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.12);
+	color: var(--bs-primary, #0d6efd);
+	font-size: 1.5rem;
+}
+
 @media (max-width: 575.98px) {
 	.qso_panel #qsoRightTabs {
 		flex-wrap: wrap !important;

@@ -404,3 +404,29 @@ kbd {
 .notes-item-title:hover {
 	color: #7ab3ef;
 }
+
+/* VUCC Awards Dark Mode high-contrast accents */
+.vucc-rate-badge,
+.vucc-band-badge,
+.vucc-grid-chip,
+.vucc-empty-icon {
+	background-color: rgba(122, 179, 239, 0.16);
+	color: #7ab3ef;
+	border-color: rgba(122, 179, 239, 0.32);
+}
+
+.vucc-num-link:hover {
+	border-color: #7ab3ef;
+	color: #7ab3ef;
+}
+
+.vucc-num-link.is-confirmed {
+	background-color: rgba(0, 188, 140, 0.18);
+	border-color: rgba(0, 188, 140, 0.4);
+	color: #3dd5a3;
+}
+
+.vucc-progress-worked,
+.vucc-legend-worked {
+	background-color: rgba(122, 179, 239, 0.42);
+}
