@@ -1,6 +1,9 @@
-<div class="container">
-	<br>
-	<h2><?php echo $page_title; ?></h2>
+<div class="container awards-page">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Generate a monthly summary of your amateur radio activity and exports',
+		'icon' => 'fas fa-calendar-alt',
+	)); ?>
 
 	<?php if ($this->session->flashdata('success')) { ?>
 		<div class="alert alert-success"><?php echo $this->session->flashdata('success'); ?></div>

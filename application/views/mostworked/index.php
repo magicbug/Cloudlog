@@ -1,11 +1,12 @@
-<div class="container" style="padding-top: 10px;">
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => 'Most Worked Callsigns',
+        'subtitle' => 'Callsigns worked multiple times from your active logbook, showing contact frequency and details',
+        'icon' => 'fas fa-user-friends',
+    )); ?>
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Most Worked Callsigns</h2>
-                    <p class="card-text">Callsigns worked multiple times from your active logbook, showing contact frequency and other details.</p>
-                </div>
                 <div class="card-body">
                     <!-- Filter Form -->
                     <form method="post" id="mostworked_filter_form">

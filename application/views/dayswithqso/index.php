@@ -4,11 +4,13 @@
     var lang_qsos_this_weekday = "<?php echo lang('statistics_number_of_qsos_this_weekday'); ?>";
 </script>
 
-<div class="container">
-    <br>
-    <h2><?php echo $page_title; ?></h2>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Yearly activity, weekday distribution, operating streaks, and daily totals',
+        'icon' => 'fas fa-chart-area',
+    )); ?>
 
-    <br>
 	<div class="tabs">
 		<ul class="nav nav-tabs" id="myTab" role="tablist">
 			<li class="nav-item">

@@ -113,12 +113,13 @@
 		var lang_statistics_unique_callsigns = "<?php echo lang('statistics_unique_callsigns')?>";
 </script>
 
-<div class="container statistics">
+<div class="container statistics awards-page">
 
-	<h2>
-		<?php echo $page_title; ?>
-		<small class="text-muted"><?php echo lang('statistics_explore_the_logbook'); ?></small>
-	</h2>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => lang('statistics_explore_the_logbook'),
+		'icon' => 'fas fa-chart-pie',
+	)); ?>
 
 	<!-- Summary Cards -->
 	<div class="stats-summary-cards" id="summaryCards">

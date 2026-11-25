@@ -4,13 +4,12 @@
 }
 </style>
 
-<div class="container statistics">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-        <div>
-            <h1 class="mb-0"><?php echo $page_title; ?></h1>
-            <p class="text-muted mb-0">See how your QSOs are distributed across continents by band and mode.</p>
-        </div>
-    </div>
+<div class="container statistics awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'See how your QSOs are distributed across continents by band and mode.',
+        'icon' => 'fas fa-globe-europe',
+    )); ?>
 
     <div class="card shadow-sm mb-4">
         <div class="card-header py-3">

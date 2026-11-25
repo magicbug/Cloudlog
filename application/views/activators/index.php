@@ -1,10 +1,9 @@
-<div class="container">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-        <div>
-            <h1 class="mb-0"><?php echo lang('gridsquares_gridsquare_activators'); ?></h1>
-            <p class="text-muted mb-0">View activators and their activated gridsquares by band and satellite type.</p>
-        </div>
-    </div>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => lang('gridsquares_gridsquare_activators'),
+        'subtitle' => 'View activators and their activated gridsquares by band and satellite type.',
+        'icon' => 'fas fa-th',
+    )); ?>
 
     <div class="card shadow-sm mb-4">
         <div class="card-header py-3">

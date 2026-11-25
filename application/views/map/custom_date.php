@@ -24,26 +24,12 @@
 
 </style>
 
-<div class="container custom-map-QSOs">
-    <br>
-    
-    <!-- Enhanced Header Section -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 mb-4">
-                <div class="card-body rounded">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div>
-                            <h2 class="mb-1">
-                                <i class="fas fa-map-marked-alt me-2"></i>
-                                <?php echo $logbook_name; echo strpos($logbook_name, 'logbook') ? '' : ' logbook'; ?> QSOs (Custom Dates)
-                            </h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container custom-map-QSOs awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => htmlspecialchars($logbook_name . (strpos($logbook_name, 'logbook') ? '' : ' logbook') . ' QSOs (Custom Dates)', ENT_QUOTES, 'UTF-8'),
+        'subtitle' => 'Plot QSOs on an interactive world map filtered by date range, band, and mode',
+        'icon' => 'fas fa-map',
+    )); ?>
 
     <?php if ($this->session->flashdata('notice')) { ?>
         <div class="alert alert-info" role="alert">

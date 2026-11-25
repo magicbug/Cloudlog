@@ -1,8 +1,9 @@
-<div class="container">
-
-    <br>
-
-    <h2><?php echo lang('statistics_distances_worked'); ?></h2>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => lang('statistics_distances_worked'),
+        'subtitle' => 'Distribution of QSO distances worked by band, mode, and satellite',
+        'icon' => 'fas fa-ruler',
+    )); ?>
     <script>
         var lang_general_word_qso_data = '<?php echo lang('general_word_qso_data'); ?>';
         var lang_statistics_distances_worked = '<?php echo lang('statistics_distances_worked'); ?>';

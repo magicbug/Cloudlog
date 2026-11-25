@@ -40,11 +40,12 @@
     width: 120px;
 }
 </style>
-<div class="container">
-
-	<br>
-
-	<h2><?php echo lang('gridsquares_activated_gridsquare_map'); ?></h2>
+<div class="container awards-page pb-0">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => lang('gridsquares_activated_gridsquare_map'),
+		'subtitle' => 'Gridsquares you have operated and activated from',
+		'icon' => 'fas fa-th-large',
+	)); ?>
 
     <div id="activated-grid-summary" class="row g-3 mb-3"></div>
 

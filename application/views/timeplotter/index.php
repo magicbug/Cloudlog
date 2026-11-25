@@ -1,10 +1,9 @@
-<div class="container">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-        <div>
-            <h1 class="mb-0"><?php echo $page_title; ?></h1>
-            <p class="text-muted mb-0">Analyze when your QSOs happen across the day by band, DXCC, and CQ zone.</p>
-        </div>
-    </div>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Analyze when your QSOs happen across the day by band, DXCC, and CQ zone.',
+        'icon' => 'fas fa-clock',
+    )); ?>
 
     <div class="card shadow-sm mb-4">
         <div class="card-header py-3">

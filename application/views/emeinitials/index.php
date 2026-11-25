@@ -1,10 +1,9 @@
-<div class="container">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-        <div>
-            <h1 class="mb-0"><?php echo lang('statistics_emeinitials'); ?></h1>
-            <p class="text-muted mb-0">Track first EME callsign initials by band and mode.</p>
-        </div>
-    </div>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => lang('statistics_emeinitials'),
+        'subtitle' => 'Track first EME callsign initials by band and mode.',
+        'icon' => 'fas fa-moon',
+    )); ?>
 
     <div class="card shadow-sm mb-4">
         <div class="card-header py-3">
