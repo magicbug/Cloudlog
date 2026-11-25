@@ -1,9 +1,9 @@
-<div class="container">
-	<br>
-
-	<h2><?php echo $page_title; ?></h2>
-
-	<p class="text-muted"><?php echo lang('cron_scheduler_intro'); ?></p>
+<div class="container awards-page">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => lang('cron_scheduler_intro'),
+		'icon' => 'fas fa-clock',
+	)); ?>
 
 	<?php if (!empty($duplicate_warning)) { ?>
 		<div class="alert alert-warning" role="alert">

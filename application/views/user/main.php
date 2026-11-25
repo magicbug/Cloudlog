@@ -1,16 +1,18 @@
-<div class="container">
+<div class="container awards-page">
 
-	<!-- Page Header -->
-	<div class="row mt-4 mb-4">
-		<div class="col-md-12">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2><i class="fas fa-users me-2"></i><?php echo $page_title; ?></h2>
-				<a class="btn btn-primary" href="<?php echo site_url('user/add'); ?>">
-					<i class="fas fa-user-plus me-2"></i><?php echo lang('admin_create_user'); ?>
-				</a>
-			</div>
-		</div>
-	</div>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Create, edit, and manage Cloudlog user accounts and permissions',
+		'icon' => 'fas fa-users',
+		'actions' => array(
+			array(
+				'label' => lang('admin_create_user'),
+				'url' => site_url('user/add'),
+				'icon' => 'fas fa-user-plus',
+				'class' => 'btn-primary',
+			),
+		),
+	)); ?>
 
 	<?php if ($this->session->flashdata('notice')) { ?>
 		<!-- Display Message -->
@@ -40,7 +42,7 @@
 	<div class="row mb-4">
 		<div class="col-md-12">
 			<div class="card">
-				<div class="card-header bg-light">
+				<div class="card-header">
 					<h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>About User Management</h5>
 				</div>
 				<div class="card-body">

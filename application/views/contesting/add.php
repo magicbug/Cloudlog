@@ -1,14 +1,18 @@
-<div class="container">
+<div class="container awards-page">
 
-	<br>
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
-		<div class="alert-message error">
-			<p><?php echo $this->session->flashdata('message'); ?></p>
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+			<?php echo $this->session->flashdata('message'); ?>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	<?php } ?>
 
-	<h2><?php echo $page_title; ?></h2>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Manage ADIF contest names available in the Contest Logging cockpit',
+		'icon' => 'fas fa-medal',
+	)); ?>
 
 	<div class="card">
 		<div class="card-body">

@@ -1,5 +1,9 @@
-<div class="container">
-	<h2><?php echo $page_title; ?></h2>
+<div class="container awards-page">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Update Clublog DXCC lookup tables and recalculate QSO distances',
+		'icon' => 'fas fa-download',
+	)); ?>
 
 	<div class="card">
 		<div class="card-header">
@@ -30,7 +34,7 @@
 							<span id="btn_text">Update DXCC Data</span>
 						</button>
 
-						<div id="dxcc_update_status" class="mt-3 p-2 border rounded bg-light" style="min-height: 60px;">
+						<div id="dxcc_update_status" class="mt-3 p-2 border rounded bg-body-tertiary" style="min-height: 60px;">
 							<strong>Status:</strong> Ready to update
 						</div>
 

@@ -1,12 +1,23 @@
-<div class="container debug_main">
+<div class="container debug_main awards-page">
 
-<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-    <h2 class="mb-0"><?php echo $page_title; ?></h2>
-    <button type="button" class="btn btn-sm btn-primary" id="copyDebugMarkdown">
-        <i class="fas fa-copy me-1"></i>Copy as Markdown
-    </button>
+<div class="card awards-topbar mb-3">
+    <div class="card-body py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <div class="d-flex align-items-center gap-2">
+            <span class="awards-brand-icon d-inline-flex align-items-center justify-content-center">
+                <i class="fas fa-bug"></i>
+            </span>
+            <div>
+                <h1 class="h5 mb-0 fw-semibold"><?php echo $page_title; ?></h1>
+                <div class="small text-muted">Copy a Markdown report to paste into a GitHub issue or when asking for help</div>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+            <button type="button" class="btn btn-sm btn-primary" id="copyDebugMarkdown">
+                <i class="fas fa-copy me-1"></i>Copy as Markdown
+            </button>
+        </div>
+    </div>
 </div>
-<p class="text-muted">Copy a Markdown report to paste into a GitHub issue or when asking for help.</p>
 
 <div class="row">
     <div class="col">

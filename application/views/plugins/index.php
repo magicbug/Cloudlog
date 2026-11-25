@@ -3,9 +3,12 @@ $plugins_csrf_token = isset($plugins_csrf_token) ? (string)$plugins_csrf_token :
 $plugins_security_alert = isset($plugins_security_alert) ? (string)$plugins_security_alert : '';
 ?>
 
-<div class="container">
-    <h2>Plugin Manager</h2>
-    <p class="text-muted">Upload a plugin zip package, install it, and control whether it is enabled.</p>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => 'Plugin Manager',
+        'subtitle' => 'Upload a plugin zip package, install it, and control whether it is enabled',
+        'icon' => 'fas fa-puzzle-piece',
+    )); ?>
 
     <?php if (!empty($plugins_security_alert)) { ?>
         <div class="alert alert-warning" role="alert">

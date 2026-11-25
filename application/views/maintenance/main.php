@@ -1,13 +1,17 @@
-<div class="container">
-	<br>
-		<?php if($this->session->flashdata('message')) { ?>
-			<!-- Display Message -->
-			<div class="alert-message error">
-			  <p><?php echo $this->session->flashdata('message'); ?></p>
-			</div>
-		<?php } ?>
-	
-	<h2><?php echo $page_title; ?></h2>
+<div class="container awards-page">
+	<?php if($this->session->flashdata('message')) { ?>
+		<!-- Display Message -->
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+		  <?php echo $this->session->flashdata('message'); ?>
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		</div>
+	<?php } ?>
+
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Database integrity checks, orphan QSO repair, and station maintenance tools',
+		'icon' => 'fas fa-wrench',
+	)); ?>
 
 	<style>
 		.htmx-indicator {
@@ -30,7 +34,7 @@
 						<span class="badge rounded-pill text-bg-warning">Warning</span> The Database contains <?php echo count($qsos_with_no_station_id); ?> QSO<?php echo count($qsos_with_no_station_id) > 1 ? 's' : '' ?> without a station-profile (location)<br/>
 					</div>
 		  <div class="card-body">
-		  <div class?"table-responsive">
+		  <div class="table-responsive">
 				<table id="unasigned_qsos_table" class="table table-sm table-striped">
 					<thead>
 						<tr>

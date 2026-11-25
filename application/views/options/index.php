@@ -1,4 +1,10 @@
-<div class="container settings">
+<div class="container settings awards-page">
+
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Configure global settings for your Cloudlog installation',
+		'icon' => 'fas fa-cog',
+	)); ?>
 
 	<div class="row">
 		<!-- Nav Start -->
@@ -8,12 +14,9 @@
 		<!-- Content -->
 		<div class="col-md-9">
             <div class="card mb-3">
-                <div class="card-header">
-					<h2 class="card-title mb-0"><i class="fas fa-cog"></i> <?php echo $page_title; ?></h2>
-				</div>
                 <div class="card-body">
-                    <p class="lead"><?php echo lang('options_message1'); ?></p>
-					<p>Select a category from the menu on the left to configure global settings for your Cloudlog installation.</p>
+                    <p class="lead mb-2"><?php echo lang('options_message1'); ?></p>
+					<p class="mb-0 text-muted">Select a category from the menu on the left to configure global settings for your Cloudlog installation.</p>
                 </div>
             </div>
 
