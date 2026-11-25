@@ -174,19 +174,33 @@ class AdifHelper {
         $time_off = date('His', $time_off);
         $line .= $this->getAdifFieldLine("TIME_OFF", $time_off);
 
-        // "MY" information
-        $line .= $this->getAdifFieldLine("STATION_CALLSIGN", $qso->station_callsign);
+        // "MY" information (station_profile fields — optional empties are omitted by getAdifFieldLine)
+        $station_callsign = $qso->station_callsign ?? null;
+        $station_city = $qso->station_city ?? null;
+        $station_country = $qso->station_country ?? null;
+        $station_dxcc = $qso->station_dxcc ?? null;
+        $station_gridsquare = $qso->station_gridsquare ?? '';
+        $station_iota = $qso->station_iota ?? null;
+        $station_sota = $qso->station_sota ?? null;
+        $station_pota = $qso->station_pota ?? null;
+        $station_cq = $qso->station_cq ?? null;
+        $station_wab = $qso->station_wab ?? null;
+        $station_itu = $qso->station_itu ?? null;
+        $station_state = $qso->state ?? null;
+        $station_cnty = $qso->station_cnty ?? null;
+        $station_wwff = $qso->station_wwff ?? null;
+        $station_sig = $qso->station_sig ?? '';
+        $station_sig_info = $qso->station_sig_info ?? null;
 
-        $line .= $this->getAdifFieldLine("MY_CITY", $qso->station_city);
+        $line .= $this->getAdifFieldLine("STATION_CALLSIGN", $station_callsign);
+        $line .= $this->getAdifFieldLine("MY_CITY", $station_city);
+        $line .= $this->getAdifFieldLine("MY_COUNTRY", $station_country);
+        $line .= $this->getAdifFieldLine("MY_DXCC", $station_dxcc);
 
-        $line .= $this->getAdifFieldLine("MY_COUNTRY", $qso->station_country);
-
-        $line .= $this->getAdifFieldLine("MY_DXCC", $qso->station_dxcc);
-
-        if (strpos($qso->station_gridsquare, ',') !== false ) {
-            $line .= $this->getAdifFieldLine("MY_VUCC_GRIDS", $qso->station_gridsquare);
+        if (strpos((string)$station_gridsquare, ',') !== false) {
+            $line .= $this->getAdifFieldLine("MY_VUCC_GRIDS", $station_gridsquare);
         } else {
-            $line .= $this->getAdifFieldLine("MY_GRIDSQUARE", $qso->station_gridsquare);
+            $line .= $this->getAdifFieldLine("MY_GRIDSQUARE", $station_gridsquare);
         }
 
         if($qso->COL_SAT_NAME) {
@@ -202,15 +216,12 @@ class AdifHelper {
             }
         }
 
-        $line .= $this->getAdifFieldLine("MY_IOTA", $qso->station_iota);
-
-        $line .= $this->getAdifFieldLine("MY_SOTA_REF", $qso->station_sota);
-
-        $line .= $this->getAdifFieldLine("MY_POTA_REF", $qso->station_pota);
-
-        $line .= $this->getAdifFieldLine("MY_CQ_ZONE", $qso->station_cq);
-        $line .= $this->getAdifFieldLine("APP_CLOUDLOG_MY_WAB", $qso->station_wab);
-        $line .= $this->getAdifFieldLine("MY_ITU_ZONE", $qso->station_itu);
+        $line .= $this->getAdifFieldLine("MY_IOTA", $station_iota);
+        $line .= $this->getAdifFieldLine("MY_SOTA_REF", $station_sota);
+        $line .= $this->getAdifFieldLine("MY_POTA_REF", $station_pota);
+        $line .= $this->getAdifFieldLine("MY_CQ_ZONE", $station_cq);
+        $line .= $this->getAdifFieldLine("APP_CLOUDLOG_MY_WAB", $station_wab);
+        $line .= $this->getAdifFieldLine("MY_ITU_ZONE", $station_itu);
 
         // Export operator name from the owning user account when available.
         $my_name = '';
@@ -221,26 +232,26 @@ class AdifHelper {
         }
         $line .= $this->getAdifFieldLine("MY_NAME", $my_name);
 
-	if($qso->state) {
-    	    $line .= $this->getAdifFieldLine("MY_STATE", $qso->state);
+	if($station_state) {
+    	    $line .= $this->getAdifFieldLine("MY_STATE", $station_state);
 	}
 
-	if ($qso->station_cnty) {
-		switch ($qso->station_dxcc) {
+	if ($station_cnty) {
+		switch ($station_dxcc) {
 		    case '291':
 		    case '6':
 		    case '110':
-			$county = trim($qso->state) . "," . trim($qso->station_cnty);
+			$county = trim((string)$station_state) . "," . trim((string)$station_cnty);
 		        break;
 		    case '54':
 		    case '15':
 		    case '61':
 		    case '126':
 		    case '151':
-	    	        $county = trim($qso->station_cnty);
+	    	        $county = trim((string)$station_cnty);
 		        break;
 		    default:
-	    		$county = trim($qso->station_cnty);
+	    		$county = trim((string)$station_cnty);
 		}
 	} else {
 	    $county = '';
@@ -252,19 +263,18 @@ class AdifHelper {
 
 
 		$line .= $this->getAdifFieldLine("WWFF_REF", $qso->{'COL_WWFF_REF'});
-		$line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_wwff);
+		$line .= $this->getAdifFieldLine("MY_WWFF_REF", $station_wwff);
 
 		// If MY_SIG is WWFF it's a special case
 		// Else set MY_SIG and MY_SIG_INFO as usual
-		$station_sig = $qso->station_sig ?? "";
 		if ($station_sig === "WWFF") {
 			// If MY_WWFF_REF wasn't set yet, set it - end result is priority is given to STATION_WWFF
-			if (empty($qso->station_wwff)) {
-				$line .= $this->getAdifFieldLine("MY_WWFF_REF", $qso->station_sig_info);
+			if (empty($station_wwff)) {
+				$line .= $this->getAdifFieldLine("MY_WWFF_REF", $station_sig_info);
 			}
 		} else {
-			$line .= $this->getAdifFieldLine("MY_SIG", $qso->station_sig);
-			$line .= $this->getAdifFieldLine("MY_SIG_INFO", $qso->station_sig_info);
+			$line .= $this->getAdifFieldLine("MY_SIG", $station_sig);
+			$line .= $this->getAdifFieldLine("MY_SIG_INFO", $station_sig_info);
 		}
 
 		// Same for COL_SIG If it's WWFF, it's a special case

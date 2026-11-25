@@ -2747,7 +2747,7 @@ class Logbook_model extends CI_Model
      */
   function get_hrdlog_qsos($station_id, $limit = 1000, $offset = 0)
   {
-    $sql = "select thcv.*, dxcc_entities.name as station_country, TRIM(COALESCE(NULLIF(CONCAT_WS(' ', users.user_firstname, users.user_lastname), ''), users.user_name, '')) as export_my_name from " . $this->config->item('table_name') . ' thcv ' .
+    $sql = "select thcv.*, station_profile.*, dxcc_entities.name as station_country, TRIM(COALESCE(NULLIF(CONCAT_WS(' ', users.user_firstname, users.user_lastname), ''), users.user_name, '')) as export_my_name from " . $this->config->item('table_name') . ' thcv ' .
       ' left join station_profile on thcv.station_id = station_profile.station_id' .
       ' left join ' . $this->config->item('auth_table') . ' users on station_profile.user_id = users.user_id' .
       ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
@@ -2774,7 +2774,8 @@ class Logbook_model extends CI_Model
     if ((!$trusted) && (!$CI->stations->check_station_is_accessible($station_id))) {
       return;
     }
-    $sql = "select thcv.*, dxcc_entities.name as station_country, TRIM(COALESCE(NULLIF(CONCAT_WS(' ', users.user_firstname, users.user_lastname), ''), users.user_name, '')) as export_my_name from " . $this->config->item('table_name') . ' thcv ' .
+    // Must include station_profile.* — AdifHelper expects station_callsign, station_city, etc.
+    $sql = "select thcv.*, station_profile.*, dxcc_entities.name as station_country, TRIM(COALESCE(NULLIF(CONCAT_WS(' ', users.user_firstname, users.user_lastname), ''), users.user_name, '')) as export_my_name from " . $this->config->item('table_name') . ' thcv ' .
       ' left join station_profile on thcv.station_id = station_profile.station_id' .
       ' left join ' . $this->config->item('auth_table') . ' users on station_profile.user_id = users.user_id' .
       ' left outer join dxcc_entities on thcv.col_my_dxcc = dxcc_entities.adif' .
