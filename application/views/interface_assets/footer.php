@@ -4966,7 +4966,7 @@ $(document).ready(function() {
         var manual = <?php echo (int) ($_GET['manual'] ?? 0); ?>;
     </script>
     <script src="<?php echo base_url(); ?>assets/js/offline-qso-queue.js?<?php echo filemtime(FCPATH . 'assets/js/offline-qso-queue.js'); ?>"></script>
-    <script src="<?php echo base_url(); ?>assets/js/sections/contesting.js?v2"></script>
+    <script src="<?php echo base_url(); ?>assets/js/sections/contesting.js?<?php echo filemtime(FCPATH . 'assets/js/sections/contesting.js'); ?>"></script>
 <?php } ?>
 
 <?php if ($this->uri->segment(1) == "station") { ?>

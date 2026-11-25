@@ -332,8 +332,9 @@
                     <span id="qso-lookup-ready" class="badge rounded-pill text-bg-secondary bg-opacity-25 text-body-secondary fw-normal">Ready &mdash; auto-lookup active</span>
                     <small id="callsign_info" class="badge text-bg-secondary"></small>
                     <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
-                    <small id="qrz_info" class="text-bg-secondary"></small>
-                    <small id="hamqth_info" class="text-bg-secondary"></small>
+                    <small id="locator_info" class="badge text-bg-info font-monospace"></small>
+                    <small id="qrz_info"></small>
+                    <small id="hamqth_info"></small>
                   </div>
                 </div>
 
@@ -400,10 +401,7 @@
 
                   <?php if ($qso_fields['locator']): ?>
                   <div class="<?php echo $qso_fields['name'] ? 'col-12 col-sm-5' : 'col-12'; ?>">
-                    <div class="d-flex align-items-center justify-content-between gap-1">
-                      <label class="qso-field-label" for="locator"><?php echo lang('gen_hamradio_gridsquare'); ?></label>
-                      <small id="locator_info" class="text-primary font-monospace" style="font-size:0.7rem;"></small>
-                    </div>
+                    <label class="qso-field-label" for="locator"><?php echo lang('gen_hamradio_gridsquare'); ?></label>
                     <input type="text" class="form-control form-control-sm font-monospace" name="locator" id="locator" placeholder="e.g. IO85" value="">
                   </div>
                   <?php endif; ?>
@@ -1507,9 +1505,10 @@
       if (readyPill) {
         var ci = document.getElementById('callsign_info');
         var li = document.getElementById('lotw_info');
+        var loci = document.getElementById('locator_info');
         var qi = document.getElementById('qrz_info');
         var hi = document.getElementById('hamqth_info');
-        var hasInfo = (ci && ci.textContent.trim() !== '') || (li && li.textContent.trim() !== '') || (qi && qi.textContent.trim() !== '') || (hi && hi.textContent.trim() !== '');
+        var hasInfo = (ci && ci.textContent.trim() !== '') || (li && li.textContent.trim() !== '') || (loci && loci.textContent.trim() !== '') || (qi && qi.textContent.trim() !== '') || (hi && hi.textContent.trim() !== '');
         readyPill.style.display = hasInfo ? 'none' : '';
       }
 

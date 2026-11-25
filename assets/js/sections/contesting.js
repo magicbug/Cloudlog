@@ -709,12 +709,14 @@ $('#band').change(function () {
 function qsyContestRadioToBand(band) {
 	var radioId = $('#radio').val();
 	if (!radioId || radioId === '0') {
+		console.warn('Contest QSY skipped: no radio selected');
 		return;
 	}
 	var mode = $('#mode').val() || $('.mode').val();
-	$.get('qso/band_to_freq/' + band + '/' + mode, function (result) {
+	$.get(base_url + 'index.php/qso/band_to_freq/' + band + '/' + mode, function (result) {
 		var freqHz = parseFloat(result);
 		if (!freqHz || isNaN(freqHz)) {
+			console.warn('Contest QSY skipped: could not resolve frequency for', band, mode);
 			return;
 		}
 		var body = {
@@ -728,7 +730,15 @@ function qsyContestRadioToBand(band) {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(body)
-		}).catch(function () {});
+		}).then(function (response) {
+			return response.json().then(function (data) {
+				if (!response.ok || !data.success) {
+					console.warn('Contest QSY failed:', data && data.message ? data.message : response.status);
+				}
+			});
+		}).catch(function (err) {
+			console.warn('Contest QSY request error:', err);
+		});
 	});
 }
 
