@@ -1,6 +1,9 @@
-<div class="container">
-	<br>
-	<h2><?php echo lang('export_dxatlas_header'); ?></h2>
+<div class="container awards-page">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => lang('export_dxatlas_header'),
+		'subtitle' => lang('export_dxatlas_description'),
+		'icon' => 'fas fa-globe-europe',
+	)); ?>
 
 	<div class="card">
 		<div class="card-header">

@@ -1,21 +1,24 @@
-<div class="container">
+<div class="container awards-page">
 
-	<!-- Page Header -->
-	<div class="row mt-4 mb-4">
-		<div class="col-md-12">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2><i class="fas fa-tags me-2"></i><?php echo $page_title; ?></h2>
-				<div>
-					<a href="<?php echo site_url('labels/create'); ?>" class="btn btn-primary">
-						<i class="fas fa-plus me-2"></i>Create New Label Type
-					</a>
-					<a href="<?php echo site_url('labels/createpaper'); ?>" class="btn btn-primary">
-						<i class="fas fa-plus me-2"></i>Create New Paper Type
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Configure QSL label templates and paper sizes for printing',
+		'icon' => 'fas fa-address-card',
+		'actions' => array(
+			array(
+				'label' => 'Create New Label Type',
+				'url' => site_url('labels/create'),
+				'icon' => 'fas fa-plus',
+				'class' => 'btn-primary',
+			),
+			array(
+				'label' => 'Create New Paper Type',
+				'url' => site_url('labels/createpaper'),
+				'icon' => 'fas fa-plus',
+				'class' => 'btn-outline-secondary',
+			),
+		),
+	)); ?>
 
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->

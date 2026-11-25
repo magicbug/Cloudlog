@@ -1,7 +1,11 @@
 
-<div class="container adif">
+<div class="container adif awards-page">
 
-    <h2><?php echo $page_title; ?></h2>
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Upload and mark QSOs synced with QO-100 Dx Club via webADIF',
+        'icon' => 'fas fa-upload',
+    )); ?>
 
     <div class="card">
         <div class="card-header">

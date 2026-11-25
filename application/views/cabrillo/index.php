@@ -5,11 +5,12 @@
 	var lang_export_cabrillo_select_date_range = '<?php echo lang ('export_cabrillo_select_date_range') ?>'; 
 	var lang_export_cabrillo_no_contests_for_stationlocation = '<?php echo lang('export_cabrillo_no_contests_for_stationlocation') ?>';
 </script>
-<div class="container">
-
-    <br>
-
-    <h2><?php echo $page_title; ?></h2>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => lang('export_cabrillo_description'),
+        'icon' => 'fas fa-file-alt',
+    )); ?>
 
     <div class="card">
         <div class="card-header">

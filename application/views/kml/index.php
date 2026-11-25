@@ -1,6 +1,9 @@
-<div class="container">
-<br>
-    <h2><?php echo lang('export_kml_header'); ?></h2>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => lang('export_kml_header'),
+        'subtitle' => lang('export_kml_description'),
+        'icon' => 'fas fa-map',
+    )); ?>
 
     <div class="card">
         <div class="card-header">

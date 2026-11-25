@@ -1,6 +1,5 @@
-<div class="container logbooks-management">
+<div class="container logbooks-management awards-page">
 
-<br>
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
 		<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -9,25 +8,25 @@
 		</div>
 	<?php } ?>
 
-<!-- Page Header -->
-<div class="row mb-4">
-    <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <h2><i class="fas fa-book me-2"></i><?php echo $page_title; ?></h2>
-                <p class="text-muted mb-0">Organize your QSOs into separate logbooks</p>
-            </div>
-            <a href="<?php echo site_url('logbooks/create'); ?>" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i><?php echo lang('station_logbooks_create')?></a>
-        </div>
-    </div>
-</div>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Organize your QSOs into separate station logbooks',
+		'icon' => 'fas fa-book',
+		'actions' => array(
+			array(
+				'label' => lang('station_logbooks_create'),
+				'url' => site_url('logbooks/create'),
+				'icon' => 'fas fa-plus',
+				'class' => 'btn-primary',
+			),
+		),
+	)); ?>
 
 <!-- Information Card -->
 <div class="row mb-4">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header bg-light">
+            <div class="card-header">
                 <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i><?php echo lang('station_logbooks_description_header')?></h5>
             </div>
             <div class="card-body">

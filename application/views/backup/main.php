@@ -1,9 +1,9 @@
-<div class="container">
-<br>
+<div class="container awards-page">
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
-		<div class="alert-message error">
-		  <p><?php echo $this->session->flashdata('message'); ?></p>
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+		  <?php echo $this->session->flashdata('message'); ?>
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	<?php } ?>
 
@@ -13,11 +13,23 @@
 		</div>
 	<?php } ?>
 
-<h2><?php echo $page_title; ?></h2>
+<?php $this->load->view('awards/components/topbar', array(
+	'title' => $page_title,
+	'subtitle' => 'Export and restore your stations, logbooks, and QSOs as a portable ZIP archive',
+	'icon' => 'fas fa-database',
+	'actions' => array(
+		array(
+			'label' => 'Download ZIP Backup',
+			'url' => site_url('backup/user_export'),
+			'icon' => 'fas fa-download',
+			'class' => 'btn-primary',
+		),
+	),
+)); ?>
 
 <!-- Legacy backup card removed as ADIF/Notes exports superseded by user data ZIP import/export workflow -->
 
-<div class="card mt-4">
+<div class="card">
 	<div class="card-header d-flex justify-content-between align-items-center">
 		<span>User Data Backup & Restore</span>
 		<a href="<?php echo site_url('backup/user_export'); ?>" class="btn btn-sm btn-outline-primary" title="Download ZIP backup of your stations, logbooks & QSOs">Download ZIP Backup</a>

@@ -4,8 +4,12 @@ $eqsl_mapping_mode = $eqsl_mapping_mode ?? false;
 $eqsl_mappings_count = $eqsl_mappings_count ?? 0;
 $mapped_station_ids = $mapped_station_ids ?? array();
 ?>
-<div class="container eqsl">
-<h2><?php echo $page_title; ?></h2>
+<div class="container eqsl awards-page">
+<?php $this->load->view('awards/components/topbar', array(
+	'title' => $page_title,
+	'subtitle' => 'Download and upload QSOs, manage QTH mappings, and fetch eQSL cards',
+	'icon' => 'fas fa-sync',
+)); ?>
 <div class="card">
   <div class="card-header">
   	<div class="card-title">eQSL Import</div>

@@ -16,12 +16,17 @@ function echo_qsl_method($method) {
 }
 
 ?>
-<div class="container-fluid oqrs pt-3 ps-4 pe-4">
-	<h2><?php echo $page_title; ?></h2>
+<div class="container-fluid oqrs awards-page ps-4 pe-4">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Review, filter, and process incoming Online QSL Request System (OQRS) requests',
+		'icon' => 'fas fa-envelope-open-text',
+	)); ?>
 	<?php if ($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
-		<div class="alert-message error">
-			<p><?php echo $this->session->flashdata('message'); ?></p>
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+			<?php echo $this->session->flashdata('message'); ?>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	<?php } ?>
 <div class="row">

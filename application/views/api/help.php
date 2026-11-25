@@ -1,21 +1,24 @@
-<div class="container">
+<div class="container awards-page">
 
-	<!-- Page Header -->
-	<div class="row mt-4 mb-4">
-		<div class="col-md-12">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2><i class="fas fa-code me-2"></i><?php echo $page_title; ?></h2>
-				<div>
-					<a href="<?php echo site_url('api/generate/rw'); ?>" class="btn btn-primary">
-						<i class="fas fa-plus me-2"></i>Create Read & Write Key
-					</a>
-					<a href="<?php echo site_url('api/generate/r'); ?>" class="btn btn-primary">
-						<i class="fas fa-plus me-2"></i>Create Read-Only Key
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Generate and manage API keys for third-party logging and CAT integrations',
+		'icon' => 'fas fa-key',
+		'actions' => array(
+			array(
+				'label' => 'Create Read & Write Key',
+				'url' => site_url('api/generate/rw'),
+				'icon' => 'fas fa-plus',
+				'class' => 'btn-primary',
+			),
+			array(
+				'label' => 'Create Read-Only Key',
+				'url' => site_url('api/generate/r'),
+				'icon' => 'fas fa-plus',
+				'class' => 'btn-outline-secondary',
+			),
+		),
+	)); ?>
 
 	<?php if($this->session->flashdata('notice')) { ?>
 		<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -26,7 +29,7 @@
 
 	<!-- API Keys Card -->
 	<div class="card">
-		<div class="card-header bg-light">
+		<div class="card-header">
 			<h5 class="mb-0"><i class="fas fa-key me-2"></i>API Keys</h5>
 		</div>
 		<div class="card-body">

@@ -1,6 +1,9 @@
-<div class="container">
-	<br>
-	<h2><?php echo lang('export_sota_header'); ?></h2>
+<div class="container awards-page">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => lang('export_sota_header'),
+		'subtitle' => lang('export_sota_description'),
+		'icon' => 'fas fa-mountain',
+	)); ?>
 
 	<div class="card">
 		<div class="card-header">

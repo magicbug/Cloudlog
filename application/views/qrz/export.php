@@ -1,6 +1,10 @@
-<div class="container adif" id="qrz_export">
+<div class="container adif awards-page" id="qrz_export">
 
-	<h2><?php echo $page_title; ?></h2>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Upload, download, and mark QSOs synced with your QRZ.com logbook',
+		'icon' => 'fas fa-sync',
+	)); ?>
 
 	<div class="card">
 		<div class="card-header">

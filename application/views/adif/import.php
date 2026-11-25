@@ -1,11 +1,10 @@
-<div class="container adif" id="adif_import">
+<div class="container adif awards-page" id="adif_import">
 
-    <div class="row">
-        <div class="col-md-12">
-            <h2><i class="fas fa-file-import me-2"></i><?php echo $page_title; ?></h2>
-            <p class="text-muted mb-4">Import and export your amateur radio logs in ADIF format</p>
-        </div>
-    </div>
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Import and export your amateur radio logs in ADIF format',
+        'icon' => 'fas fa-sync-alt',
+    )); ?>
 
     <?php
     $showtab = '';

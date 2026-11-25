@@ -1,7 +1,11 @@
 
-<div class="container adif" id="hrdlog_export">
+<div class="container adif awards-page" id="hrdlog_export">
 
-    <h2><?php echo $page_title; ?></h2>
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Upload and mark QSOs synced with your HRDLog.net logbook',
+        'icon' => 'fas fa-upload',
+    )); ?>
 
     <div class="card">
         <div class="card-header">

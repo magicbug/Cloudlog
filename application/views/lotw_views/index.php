@@ -1,7 +1,17 @@
-<div class="container lotw">
-<br>
-	<a class="btn btn-outline-primary btn-sm float-end" href="<?php echo site_url('/lotw/import'); ?>" role="button"><i class="fas fa-cloud-download-alt"></i> <?php echo lang('lotw_btn_lotw_import'); ?></a>
-	<h2><?php echo lang('lotw_title'); ?></h2>
+<div class="container lotw awards-page">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => lang('lotw_title'),
+		'subtitle' => 'Manage LoTW certificates and synchronise QSOs with Logbook of the World',
+		'icon' => 'fas fa-sync',
+		'actions' => array(
+			array(
+				'label' => lang('lotw_btn_lotw_import'),
+				'url' => site_url('/lotw/import'),
+				'icon' => 'fas fa-cloud-download-alt',
+				'class' => 'btn-primary',
+			),
+		),
+	)); ?>
 
 	<!-- Card Starts -->
 	<div class="card">

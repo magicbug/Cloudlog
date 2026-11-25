@@ -1,13 +1,10 @@
-<div class="container">
+<div class="container awards-page">
 
-	<!-- Page Header -->
-	<div class="row mt-4 mb-4">
-		<div class="col-md-12">
-			<div class="d-flex justify-content-between align-items-center">
-				<h2><i class="fas fa-address-card me-2"></i><?php echo $page_title; ?></h2>
-			</div>
-		</div>
-	</div>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Generate PDF QSL labels and ADIF exports for requested QSL cards',
+		'icon' => 'fas fa-print',
+	)); ?>
 
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
@@ -19,7 +16,7 @@
 
 	<!-- Main Card -->
 	<div class="card">
-		<div class="card-header bg-light">
+		<div class="card-header">
 			<div class="d-flex justify-content-between align-items-center">
 				<h5 class="mb-0"><i class="fas fa-print me-2"></i><?php echo lang('qslcard_qslprint_header'); ?></h5>
 				<div>

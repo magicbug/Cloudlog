@@ -11,17 +11,21 @@ $vucc = 0;
 $was = 0;
 $wwff = 0;
 ?>
-<div class="container">
+<div class="container awards-page">
 
-<br>
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
-		<div class="alert-message error">
-		  <p><?php echo $this->session->flashdata('message'); ?></p>
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+		  <?php echo $this->session->flashdata('message'); ?>
+		  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	<?php } ?>
 
-<h2><?php echo lang('options_bands'); ?></h2>
+<?php $this->load->view('awards/components/topbar', array(
+	'title' => lang('options_bands'),
+	'subtitle' => 'Configure active bands for QSO entry and per-band award tracking',
+	'icon' => 'fas fa-wave-square',
+)); ?>
 
 <!-- Info Card -->
 <div class="card mb-3">

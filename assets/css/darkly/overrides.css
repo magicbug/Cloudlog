@@ -493,3 +493,8 @@ kbd {
 	color: #f1f3f5 !important;
 	border: 1px solid rgba(255, 255, 255, 0.16) !important;
 }
+
+.awards-page .card-header.bg-light {
+	background-color: var(--bs-tertiary-bg, #262626) !important;
+	color: #f1f3f5 !important;
+}
