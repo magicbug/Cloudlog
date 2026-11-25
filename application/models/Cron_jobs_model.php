@@ -22,6 +22,39 @@ class Cron_jobs_model extends CI_Model {
         $this->db->update('cron_jobs', array('enabled' => (int) $enabled));
     }
 
+    /**
+     * Update how often a job runs and recompute next_run_at from last finish (or now).
+     *
+     * @return object|null Updated job row, or null if job_key unknown
+     */
+    public function set_interval($job_key, $interval_seconds)
+    {
+        $job = $this->get_by_key($job_key);
+        if (!$job) {
+            return null;
+        }
+
+        $interval_seconds = (int) $interval_seconds;
+        if (!empty($job->last_finished_at)) {
+            $base = strtotime($job->last_finished_at);
+            if ($base === false) {
+                $base = time();
+            }
+        } else {
+            $base = time();
+        }
+
+        $next_run_at = date('Y-m-d H:i:s', $base + $interval_seconds);
+
+        $this->db->where('job_key', $job_key);
+        $this->db->update('cron_jobs', array(
+            'interval_seconds' => $interval_seconds,
+            'next_run_at' => $next_run_at,
+        ));
+
+        return $this->get_by_key($job_key);
+    }
+
     public function get_due_jobs($limit = 50)
     {
         $now = date('Y-m-d H:i:s');

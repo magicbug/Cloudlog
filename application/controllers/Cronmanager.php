@@ -15,7 +15,14 @@ class Cronmanager extends CI_Controller {
         $this->lang->load('cron_scheduler');
 
         $data['page_title'] = lang('cron_scheduler_title');
-        $data['jobs'] = $this->cron_jobs_model->get_all()->result();
+        $jobs = $this->cron_jobs_model->get_all()->result();
+        foreach ($jobs as $job) {
+            $parts = $this->interval_parts((int) $job->interval_seconds);
+            $job->interval_value = $parts['value'];
+            $job->interval_unit = $parts['unit'];
+            $job->interval_label = $parts['label'];
+        }
+        $data['jobs'] = $jobs;
         $data['scheduler_enabled'] = $this->is_scheduler_enabled();
         $data['scheduler_key'] = (string) $this->optionslib->get_option('cron_scheduler_key');
         $data['cli_cron_line'] = '* * * * * php '.FCPATH.'index.php cron run';
@@ -110,6 +117,135 @@ class Cronmanager extends CI_Controller {
 
         header('Content-Type: application/json');
         echo json_encode($result);
+    }
+
+    public function set_interval()
+    {
+        $this->load->model('user_model');
+        $this->lang->load('cron_scheduler');
+        header('Content-Type: application/json');
+
+        if (!$this->user_model->authorize(99)) {
+            echo json_encode(array(
+                'ok' => false,
+                'message' => lang('cron_scheduler_interval_forbidden'),
+            ));
+            return;
+        }
+
+        $job_key = trim((string) $this->input->post('job_key', true));
+        $value = (int) $this->input->post('value', true);
+        $unit = strtolower(trim((string) $this->input->post('unit', true)));
+
+        $seconds = $this->interval_to_seconds($value, $unit);
+        if ($seconds === null) {
+            echo json_encode(array(
+                'ok' => false,
+                'message' => lang('cron_scheduler_interval_invalid'),
+            ));
+            return;
+        }
+
+        $this->load->model('cron_jobs_model');
+        $job = $this->cron_jobs_model->set_interval($job_key, $seconds);
+        if (!$job) {
+            echo json_encode(array(
+                'ok' => false,
+                'message' => lang('cron_scheduler_interval_unknown_job'),
+            ));
+            return;
+        }
+
+        $parts = $this->interval_parts((int) $job->interval_seconds);
+        echo json_encode(array(
+            'ok' => true,
+            'message' => lang('cron_scheduler_interval_saved'),
+            'interval_seconds' => (int) $job->interval_seconds,
+            'value' => $parts['value'],
+            'unit' => $parts['unit'],
+            'label' => $parts['label'],
+            'next_run_at' => $job->next_run_at,
+        ));
+    }
+
+    /**
+     * @return array{value:int,unit:string,label:string}
+     */
+    public function interval_parts($interval_seconds)
+    {
+        $this->lang->load('cron_scheduler');
+        $seconds = max(0, (int) $interval_seconds);
+
+        if ($seconds >= 86400 && ($seconds % 86400) === 0) {
+            $value = (int) ($seconds / 86400);
+            $unit = 'days';
+        } elseif ($seconds >= 3600 && ($seconds % 3600) === 0) {
+            $value = (int) ($seconds / 3600);
+            $unit = 'hours';
+        } else {
+            $value = max(1, (int) round($seconds / 60));
+            $unit = 'minutes';
+        }
+
+        return array(
+            'value' => $value,
+            'unit' => $unit,
+            'label' => $this->format_interval_label($value, $unit),
+        );
+    }
+
+    private function format_interval_label($value, $unit)
+    {
+        $value = (int) $value;
+        if ($unit === 'days') {
+            if ($value === 1) {
+                return lang('cron_scheduler_every_one_day');
+            }
+            return sprintf(lang('cron_scheduler_every_days'), $value);
+        }
+        if ($unit === 'hours') {
+            if ($value === 1) {
+                return lang('cron_scheduler_every_one_hour');
+            }
+            return sprintf(lang('cron_scheduler_every_hours'), $value);
+        }
+        if ($value === 1) {
+            return lang('cron_scheduler_every_one_minute');
+        }
+        return sprintf(lang('cron_scheduler_every_minutes'), $value);
+    }
+
+    /**
+     * @return int|null Seconds, or null if invalid
+     */
+    private function interval_to_seconds($value, $unit)
+    {
+        $value = (int) $value;
+        if ($value < 1) {
+            return null;
+        }
+
+        switch ($unit) {
+            case 'minutes':
+                $seconds = $value * 60;
+                break;
+            case 'hours':
+                $seconds = $value * 3600;
+                break;
+            case 'days':
+                $seconds = $value * 86400;
+                break;
+            default:
+                return null;
+        }
+
+        $min = 60;
+        $max = 90 * 86400;
+        if ($seconds < $min || $seconds > $max) {
+            return null;
+        }
+
+        return $seconds;
     }
 
     private function is_scheduler_enabled()

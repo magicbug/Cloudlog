@@ -68,7 +68,7 @@
 					<thead>
 						<tr>
 							<th><?php echo lang('cron_scheduler_col_description'); ?></th>
-							<th><?php echo lang('cron_scheduler_col_interval'); ?></th>
+							<th style="min-width: 14rem;"><?php echo lang('cron_scheduler_col_interval'); ?></th>
 							<th><?php echo lang('cron_scheduler_col_last_run'); ?></th>
 							<th><?php echo lang('cron_scheduler_col_status'); ?></th>
 							<th><?php echo lang('cron_scheduler_col_error'); ?></th>
@@ -78,12 +78,25 @@
 					</thead>
 					<tbody>
 						<?php foreach ($jobs as $job) { ?>
-						<tr>
+						<tr data-job-key="<?php echo htmlspecialchars($job->job_key, ENT_QUOTES, 'UTF-8'); ?>">
 							<td>
 								<strong><?php echo htmlspecialchars($job->description, ENT_QUOTES, 'UTF-8'); ?></strong><br>
 								<small class="text-muted"><?php echo htmlspecialchars($job->legacy_uri, ENT_QUOTES, 'UTF-8'); ?></small>
 							</td>
-							<td><?php echo (int) $job->interval_seconds; ?>s</td>
+							<td>
+								<div class="cron-interval-editor" data-job-key="<?php echo htmlspecialchars($job->job_key, ENT_QUOTES, 'UTF-8'); ?>">
+									<div class="fw-semibold cron-interval-label mb-1"><?php echo htmlspecialchars($job->interval_label, ENT_QUOTES, 'UTF-8'); ?></div>
+									<div class="input-group input-group-sm" style="max-width: 14rem;" title="<?php echo htmlspecialchars(lang('cron_scheduler_interval_hint'), ENT_QUOTES, 'UTF-8'); ?>">
+										<input type="number" class="form-control cron-interval-value" min="1" step="1" value="<?php echo (int) $job->interval_value; ?>" aria-label="<?php echo htmlspecialchars(lang('cron_scheduler_col_interval'), ENT_QUOTES, 'UTF-8'); ?>">
+										<select class="form-select cron-interval-unit" aria-label="<?php echo htmlspecialchars(lang('cron_scheduler_col_interval'), ENT_QUOTES, 'UTF-8'); ?>">
+											<option value="minutes" <?php if ($job->interval_unit === 'minutes') { echo 'selected'; } ?>><?php echo lang('cron_scheduler_unit_minutes'); ?></option>
+											<option value="hours" <?php if ($job->interval_unit === 'hours') { echo 'selected'; } ?>><?php echo lang('cron_scheduler_unit_hours'); ?></option>
+											<option value="days" <?php if ($job->interval_unit === 'days') { echo 'selected'; } ?>><?php echo lang('cron_scheduler_unit_days'); ?></option>
+										</select>
+									</div>
+									<small class="cron-interval-feedback text-muted" aria-live="polite"></small>
+								</div>
+							</td>
 							<td><?php echo $job->last_finished_at ? htmlspecialchars($job->last_finished_at, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 							<td><?php echo $job->last_status ? htmlspecialchars($job->last_status, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
 							<td class="small"><?php echo $job->last_error ? htmlspecialchars($job->last_error, ENT_QUOTES, 'UTF-8') : '-'; ?></td>
@@ -159,4 +172,85 @@ document.querySelectorAll('.cron-run-now').forEach(function (btn) {
 		});
 	});
 });
+
+(function () {
+	const setIntervalUrl = '<?php echo site_url('cronmanager/set_interval'); ?>';
+	const msgInvalid = <?php echo json_encode(lang('cron_scheduler_interval_invalid')); ?>;
+
+	function saveInterval(editor) {
+		const jobKey = editor.getAttribute('data-job-key');
+		const valueEl = editor.querySelector('.cron-interval-value');
+		const unitEl = editor.querySelector('.cron-interval-unit');
+		const labelEl = editor.querySelector('.cron-interval-label');
+		const feedbackEl = editor.querySelector('.cron-interval-feedback');
+		const value = parseInt(valueEl.value, 10);
+		const unit = unitEl.value;
+
+		if (!jobKey || !value || value < 1) {
+			feedbackEl.textContent = msgInvalid;
+			feedbackEl.className = 'cron-interval-feedback text-danger';
+			return;
+		}
+
+		feedbackEl.textContent = '';
+		feedbackEl.className = 'cron-interval-feedback text-muted';
+		valueEl.disabled = true;
+		unitEl.disabled = true;
+
+		fetch(setIntervalUrl, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: 'job_key=' + encodeURIComponent(jobKey)
+				+ '&value=' + encodeURIComponent(value)
+				+ '&unit=' + encodeURIComponent(unit)
+		}).then(function (r) { return r.json(); }).then(function (data) {
+			valueEl.disabled = false;
+			unitEl.disabled = false;
+			if (data && data.ok) {
+				if (data.label) {
+					labelEl.textContent = data.label;
+				}
+				if (data.value) {
+					valueEl.value = data.value;
+				}
+				if (data.unit) {
+					unitEl.value = data.unit;
+				}
+				feedbackEl.textContent = data.message || '';
+				feedbackEl.className = 'cron-interval-feedback text-success';
+			} else {
+				feedbackEl.textContent = (data && data.message) ? data.message : msgInvalid;
+				feedbackEl.className = 'cron-interval-feedback text-danger';
+			}
+		}).catch(function () {
+			valueEl.disabled = false;
+			unitEl.disabled = false;
+			feedbackEl.textContent = msgInvalid;
+			feedbackEl.className = 'cron-interval-feedback text-danger';
+		});
+	}
+
+	document.querySelectorAll('.cron-interval-editor').forEach(function (editor) {
+		const valueEl = editor.querySelector('.cron-interval-value');
+		const unitEl = editor.querySelector('.cron-interval-unit');
+		let debounceTimer = null;
+
+		function scheduleSave() {
+			clearTimeout(debounceTimer);
+			debounceTimer = setTimeout(function () {
+				saveInterval(editor);
+			}, 400);
+		}
+
+		valueEl.addEventListener('change', scheduleSave);
+		valueEl.addEventListener('blur', function () {
+			clearTimeout(debounceTimer);
+			saveInterval(editor);
+		});
+		unitEl.addEventListener('change', function () {
+			clearTimeout(debounceTimer);
+			saveInterval(editor);
+		});
+	});
+})();
 </script>
