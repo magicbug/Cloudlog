@@ -1399,3 +1399,246 @@ tr.htmx-swapping td {
 .error-red-border {
     border-color: red;
 }
+
+/* Contest Logging Cockpit */
+.contesting-cockpit {
+	padding-top: 14px;
+	padding-bottom: 24px;
+}
+
+.contesting-topbar {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.65rem;
+}
+
+.contesting-brand-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 0.55rem;
+	background-color: var(--bs-primary, #0d6efd);
+	color: #fff;
+	font-size: 0.95rem;
+	flex-shrink: 0;
+}
+
+.contesting-mode-pill {
+	font-size: 0.7rem;
+	letter-spacing: 0.04em;
+	padding: 0.3em 0.65em;
+}
+
+.contesting-meta-line {
+	font-size: 0.78rem;
+	line-height: 1.25;
+	display: flex;
+	align-items: center;
+	flex-wrap: nowrap;
+}
+
+.contesting-meta-line #hdr-contest-name {
+	display: inline-block;
+	max-width: 210px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: bottom;
+}
+
+.contesting-clock-pill {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.5rem;
+	line-height: 1.15;
+	text-align: right;
+}
+
+.contesting-clock-time {
+	font-size: 0.98rem;
+	font-variant-numeric: tabular-nums;
+}
+
+.contesting-utc-tag {
+	font-size: 0.65rem;
+	opacity: 0.65;
+	font-weight: 600;
+}
+
+.contesting-clock-date {
+	font-size: 0.68rem;
+	opacity: 0.7;
+}
+
+.contesting-rig-pill {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.5rem;
+}
+
+.contesting-inline-select {
+	width: auto;
+	max-width: 105px;
+	text-overflow: ellipsis;
+	border: none !important;
+	background-color: transparent !important;
+	padding-left: 0.3rem;
+	padding-right: 1.5rem;
+	box-shadow: none !important;
+}
+
+.contesting-inline-select#band {
+	max-width: 78px;
+}
+
+.contesting-inline-freq {
+	width: 90px;
+	border: none !important;
+	background-color: transparent !important;
+	padding-left: 0.2rem;
+	padding-right: 0.2rem;
+	font-weight: 600;
+	box-shadow: none !important;
+}
+
+.contesting-pill-sep {
+	opacity: 0.3;
+	user-select: none;
+}
+
+.contesting-entry-card,
+.contesting-log-card,
+.contesting-side-card {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.65rem;
+}
+
+.contesting-shortcuts kbd {
+	font-size: 0.7rem;
+	padding: 0.12rem 0.38rem;
+	border-radius: 0.25rem;
+}
+
+.contesting-field-label {
+	display: block;
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	margin-bottom: 0.25rem;
+	opacity: 0.78;
+	white-space: nowrap;
+}
+
+.contesting-hero-input {
+	font-size: 1.25rem;
+	padding: 0.45rem 0.75rem;
+	height: 46px;
+	letter-spacing: 0.04em;
+}
+
+.contesting-mid-input {
+	font-size: 1rem;
+	padding: 0.45rem 0.45rem;
+	height: 46px;
+}
+
+.contesting-action-btn {
+	height: 46px;
+	display: inline-flex;
+	align-items: center;
+	white-space: nowrap;
+}
+
+.contesting-field-callsign {
+	flex: 1 1 210px;
+	min-width: 185px;
+	max-width: 280px;
+}
+
+.contesting-field-rst {
+	flex: 0 0 68px;
+}
+
+.contesting-field-serial {
+	flex: 0 0 82px;
+}
+
+.contesting-field-exch {
+	flex: 0 0 92px;
+}
+
+.contesting-field-grid {
+	flex: 0 0 105px;
+}
+
+.contesting-field-rcvd {
+	flex: 1 1 115px;
+	min-width: 105px;
+	max-width: 170px;
+}
+
+.contesting-field-grid-r {
+	flex: 1 1 135px;
+	min-width: 125px;
+	max-width: 185px;
+}
+
+.contesting-field-dist {
+	flex: 0 0 105px;
+}
+
+/* Remove clunky browser spin buttons on contest serial inputs */
+.contesting-cockpit input[type="number"]::-webkit-inner-spin-button,
+.contesting-cockpit input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.contesting-cockpit input[type="number"] {
+	-moz-appearance: textfield;
+}
+
+.contesting-stat-tile {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
+	border-radius: 0.5rem;
+}
+
+.contesting-stat-label {
+	font-size: 0.68rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	opacity: 0.7;
+}
+
+.contesting-stat-value {
+	font-size: 1.25rem;
+	font-weight: 700;
+	line-height: 1.2;
+}
+
+.contesting-assist-body {
+	min-height: 46px;
+}
+
+.contesting-scp-chip {
+	padding: 0.15rem 0.45rem;
+	font-size: 0.78rem;
+}
+
+.contesting-band-pill {
+	cursor: pointer;
+	font-size: 0.76rem;
+	padding: 0.25rem 0.5rem;
+}
+
+.contesting-table-wrap .dataTables_info {
+	padding: 0.5rem 0.85rem;
+	font-size: 0.78rem;
+	opacity: 0.75;
+}
+
+.contesting-table-wrap .dataTables_scrollHeadInner,
+.contesting-table-wrap .dataTables_scrollHeadInner table {
+	width: 100% !important;
+}

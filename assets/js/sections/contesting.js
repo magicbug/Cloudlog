@@ -1,6 +1,50 @@
 // Callsign always has focus on load
 $("#callsign").focus();
 
+function updateCockpitHeaderMeta() {
+	var $contest = $('#contestname');
+	if ($contest.length && $contest[0].selectedIndex >= 0) {
+		$('#hdr-contest-name').text($contest[0].options[$contest[0].selectedIndex].text);
+	}
+	var op = ($('#operator_callsign').val() || '').trim().toUpperCase();
+	if (op) {
+		$('#hdr-op').text(op);
+	}
+}
+
+function updateNextSerialBadge() {
+	var exchangetype = $('#exchangetype').val();
+	var $badge = $('#stats-next-serial');
+	if (!$badge.length) return;
+	if (['Serial', 'Serialexchange', 'Serialgridsquare'].indexOf(exchangetype) !== -1) {
+		var val = $('#exch_serial_s').val() || '1';
+		$badge.text('Next #' + pad(val, 3)).show();
+	} else {
+		$badge.hide();
+	}
+}
+
+function renderScpSuggestions(rawResult, term) {
+	var $box = $('.callsign-suggestions');
+	var $count = $('#scp-match-count');
+	var tokens = String(rawResult || '').trim().split(/\s+/).filter(Boolean);
+	if (tokens.length === 0) {
+		$count.html('&mdash;');
+		$box.html('<span class="small text-body-secondary">Type 3+ characters to match known contest callsigns&hellip;</span>');
+		return;
+	}
+	$count.text(tokens.length);
+	var re = term ? new RegExp('(' + RegExp.escape(term) + ')', 'gi') : null;
+	var html = '<div class="d-flex flex-wrap gap-1">';
+	tokens.slice(0, 30).forEach(function (call) {
+		var safe = escapeHtml(call);
+		var display = re ? safe.replace(re, '<strong class="text-primary">$1</strong>') : safe;
+		html += '<button type="button" class="btn btn-sm btn-outline-secondary font-monospace contesting-scp-chip" data-call="' + safe + '">' + display + '</button>';
+	});
+	html += '</div>';
+	$box.html(html);
+}
+
 var sessiondata = {};
 $(document).ready(function () {
 	(async function() {
@@ -8,9 +52,45 @@ $(document).ready(function () {
 		await restoreContestSession(sessiondata);	// wait for restoring until finished
 		setRst($("#mode").val());
 		setContestingTabOrder($("#exchangetype").val());
+		updateCockpitHeaderMeta();
+		updateNextSerialBadge();
 		$("#callsign").focus().select();
 	})();
 	renderCallhistoryPanel([]);
+
+	$(document).on('input change', '#operator_callsign', function () {
+		updateCockpitHeaderMeta();
+	});
+
+	$(document).on('input change', '#exch_serial_s', function () {
+		updateNextSerialBadge();
+	});
+
+	$(document).on('click', '.contesting-scp-chip', function () {
+		var chosen = $(this).data('call');
+		if (!chosen) return;
+		$('#callsign').val(chosen).trigger('keyup');
+		checkIfWorkedBefore();
+		var $rcvd = $('#exch_serial_r:visible, #exch_rcvd:visible, #exch_gridsquare_r:visible').first();
+		if ($rcvd.length) {
+			$rcvd.focus();
+		} else {
+			$('#callsign').focus();
+		}
+	});
+
+	$(document).on('click', '.contesting-band-pill', function () {
+		var targetBand = $(this).data('band');
+		if (targetBand && $('#band option[value="' + targetBand + '"]').length) {
+			$('#band').val(targetBand).trigger('change');
+		}
+	});
+
+	$(window).on('resize.contestTable', function () {
+		if ($.fn.DataTable.isDataTable('.qsotable')) {
+			$('.qsotable').DataTable().columns.adjust();
+		}
+	});
 
 	/* On Key up Calculate Bearing and Distance for Contest Gridsquare */
 	$(document).on('keyup', '#exch_gridsquare_r', function(){
@@ -47,7 +127,8 @@ function renderCallhistoryPanel(matches) {
 	}
 
 	if (!matches || matches.length === 0) {
-		$card.hide();
+		$panel.html('<div class="small text-body-secondary">Type a callsign to see membership details from your uploaded call history files.</div>');
+		$card.show();
 		return;
 	}
 
@@ -298,6 +379,7 @@ function reset_contest_session() {
 $('#contestname, #copyexchangeto').change(function () {
 	var formdata = new FormData(document.getElementById("qso_input"));
 	setSession(formdata);
+	updateCockpitHeaderMeta();
 });
 
 // Storing the exchange type in contest session
@@ -478,12 +560,9 @@ $("#callsign").keyup(function () {
 			},
 			success: function (result) {
 				if (result && result.trim() !== '') {
-					$('.callsign-suggestions').text(result);
-					highlight(call.toUpperCase());
-					$('.callsign-suggest').show();
+					renderScpSuggestions(result, call.toUpperCase());
 				} else {
-					$('.callsign-suggestions').text('');
-					$('.callsign-suggest').hide();
+					renderScpSuggestions('', '');
 				}
 			}
 		});
@@ -495,10 +574,10 @@ $("#callsign").keyup(function () {
 		lookupCallhistory(call.toUpperCase());
 	}
 	else if (call.length <= 2) {
-		$('.callsign-suggestions').text("");
-		$('.callsign-suggest').hide();
+		renderScpSuggestions('', '');
 		$('#callsign').css({'border-color': '', 'box-shadow': ''});
 		$('#callsign_info').text("").removeClass('text-bg-danger text-bg-success');
+		$('#callsign_ready_hint').show();
 		renderCallhistoryPanel([]);
 		if ($.fn.DataTable.isDataTable('.qsotable')) {
 			$('.qsotable').DataTable().search('').draw();
@@ -521,18 +600,21 @@ function checkIfWorkedBefore() {
 			},
 			success: function (result) {
 				if (result.message.substr(0, 6) == 'Worked') {
+					$('#callsign_ready_hint').hide();
 					$('#callsign_info').removeClass('text-bg-success');
 					$('#callsign_info').addClass('text-bg-danger');
 					$('#callsign_info').text(result.message);
 					$('#callsign').css({'border-color': '#dc3545', 'box-shadow': '0 0 0 0.2rem rgba(220,53,69,.25)'});
 				}
 				else if (result.message == "OKAY") {
+					$('#callsign_ready_hint').hide();
 					$('#callsign_info').removeClass('text-bg-danger');
 					$('#callsign_info').addClass('text-bg-success');
 					$('#callsign_info').text("Go Work Them!");
 					$('#callsign').css({'border-color': '#198754', 'box-shadow': '0 0 0 0.2rem rgba(25,135,84,.25)'});
 				} else {
 					$('#callsign_info').text("");
+					$('#callsign_ready_hint').show();
 					$('#callsign').css({'border-color': '', 'box-shadow': ''});
 				}
 			}
@@ -550,8 +632,7 @@ function checkIfWorkedBefore() {
 
 async function reset_log_fields() {
 	$('#name').val("");
-	$('.callsign-suggestions').text("");
-	$('.callsign-suggest').hide();
+	renderScpSuggestions('', '');
 	$('#callsign').val("").css({'border-color': '', 'box-shadow': ''});
 	$('#comment').val("");
 	$('#exch_rcvd').val("");
@@ -566,6 +647,7 @@ async function reset_log_fields() {
 	$("#callsign").focus();
 	setRst($("#mode").val());
 	$('#callsign_info').text("").removeClass('text-bg-danger text-bg-success');
+	$('#callsign_ready_hint').show();
 	renderCallhistoryPanel([]);
 
 	sessiondata = await getSession();
@@ -628,6 +710,7 @@ function setSerial(data) {
 		serialsent = parseInt(data.serialsent);
 	}
 	$("#exch_serial_s").val(serialsent);
+	updateNextSerialBadge();
 }
 
 function setExchangetype(exchangetype) {
@@ -666,6 +749,7 @@ function setExchangetype(exchangetype) {
 
 	setContestingTabOrder(exchangetype);
 	updateTableColumns(exchangetype);
+	updateNextSerialBadge();
 }
 
 async function completeContestQsoSave(formdata) {
@@ -673,6 +757,7 @@ async function completeContestQsoSave(formdata) {
 	if (exchangetype == "Serial" || exchangetype == 'Serialexchange' || exchangetype == 'Serialgridsquare') {
 		$("#exch_serial_s").val(+$("#exch_serial_s").val() + 1);
 		formdata.set('exch_serial_s', $("#exch_serial_s").val());
+		updateNextSerialBadge();
 	}
 
 	$('#name').val("");
@@ -682,10 +767,10 @@ async function completeContestQsoSave(formdata) {
 	$('#exch_rcvd').val("");
 	$('#exch_gridsquare_r').val("");
 	$('#exch_serial_r').val("");
-	$('.callsign-suggestions').text("");
-	$('.callsign-suggest').hide();
+	renderScpSuggestions('', '');
 	$('#callsign').css({'border-color': '', 'box-shadow': ''});
 	$('#callsign_info').text("").removeClass('text-bg-danger text-bg-success');
+	$('#callsign_ready_hint').show();
 	renderCallhistoryPanel([]);
 	if (manual) {
 		$("#start_time").focus().select();
@@ -1013,16 +1098,26 @@ function updateTableColumns(exchangetype) {
 	table.column(10).visible(showGrid, false);
 	table.column(11).visible(showGrid, false);
 	table.draw(false);
+	setTimeout(function () {
+		if ($.fn.DataTable.isDataTable('.qsotable')) {
+			$('.qsotable').DataTable().columns.adjust();
+		}
+	}, 0);
 }
 
 function updateContestStats(qsoData) {
 	if (!qsoData || qsoData.length === 0) {
-		$('#contest-stats-card').hide();
+		$('#stats-total').text('0');
+		$('#stats-rate').text('0');
+		$('#stats-unique').text('0');
+		$('#logbook-count-badge').text('0 QSOs');
+		$('#stats-bands').html('<span class="small text-body-secondary">No QSOs logged yet</span>');
 		return;
 	}
 
 	var bandOrder = ['160m','80m','60m','40m','30m','20m','17m','15m','12m','10m','6m','4m','2m','70cm','23cm'];
 	var bandCounts = {};
+	var uniqueCalls = {};
 	var now = new Date();
 	var cutoff = new Date(now.getTime() - 60 * 60 * 1000);
 	var recentCount = 0;
@@ -1030,6 +1125,9 @@ function updateContestStats(qsoData) {
 	$.each(qsoData, function () {
 		var band = this.col_band || 'Unknown';
 		bandCounts[band] = (bandCounts[band] || 0) + 1;
+		if (this.col_call) {
+			uniqueCalls[String(this.col_call).toUpperCase()] = true;
+		}
 
 		// Parse col_time_on: format DD-MM-YYYY HH:mm:ss
 		var parts = this.col_time_on.match(/(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2}):(\d{2})/);
@@ -1045,20 +1143,22 @@ function updateContestStats(qsoData) {
 	});
 
 	var total = qsoData.length;
-	$('#stats-total').text(total + (total === 1 ? ' QSO' : ' QSOs'));
-	$('#stats-rate').text(recentCount + '/hr');
+	$('#stats-total').text(total);
+	$('#logbook-count-badge').text(total + (total === 1 ? ' QSO' : ' QSOs'));
+	$('#stats-rate').text(recentCount);
+	$('#stats-unique').text(Object.keys(uniqueCalls).length);
 
-	// Build per-band badges in canonical order, then remaining bands alphabetically
+	// Build clickable per-band pills in canonical order, then remaining bands alphabetically
 	var orderedBands = bandOrder.filter(function (b) { return bandCounts[b]; });
 	var extraBands = Object.keys(bandCounts).filter(function (b) { return bandOrder.indexOf(b) === -1; }).sort();
 	var allBands = orderedBands.concat(extraBands);
+	var activeBand = $('#band').val();
 
 	var html = allBands.map(function (b) {
-		return '<span class="badge text-bg-secondary me-1">' + b + ': ' + bandCounts[b] + '</span>';
+		var cls = (b === activeBand) ? 'text-bg-primary' : 'text-bg-secondary';
+		return '<span class="badge ' + cls + ' contesting-band-pill font-monospace" data-band="' + escapeHtml(b) + '" title="Switch to ' + escapeHtml(b) + '">' + escapeHtml(b) + ': ' + bandCounts[b] + '</span>';
 	}).join('');
 	$('#stats-bands').html(html);
-
-	$('#contest-stats-card').show();
 }
 
 function pad(str, max) {
@@ -1068,14 +1168,14 @@ function pad(str, max) {
 
 function getUTCTimeStamp(el) {
 	var now = new Date();
-	var localTime = now.getTime();
-	var utc = localTime + (now.getTimezoneOffset() * 60000);
-	$(el).attr('value', ("0" + now.getUTCHours()).slice(-2) + ':' + ("0" + now.getUTCMinutes()).slice(-2) + ':' + ("0" + now.getUTCSeconds()).slice(-2));
+	var formatted = ("0" + now.getUTCHours()).slice(-2) + ':' + ("0" + now.getUTCMinutes()).slice(-2) + ':' + ("0" + now.getUTCSeconds()).slice(-2);
+	$(el).attr('value', formatted);
+	$('#contest-utc-clock').text(formatted);
 }
 
 function getUTCDateStamp(el) {
 	var now = new Date();
-	var localTime = now.getTime();
-	var utc = localTime + (now.getTimezoneOffset() * 60000);
-	$(el).attr('value', ("0" + now.getUTCDate()).slice(-2) + '-' + ("0" + (now.getUTCMonth() + 1)).slice(-2) + '-' + now.getUTCFullYear());
+	var formatted = ("0" + now.getUTCDate()).slice(-2) + '-' + ("0" + (now.getUTCMonth() + 1)).slice(-2) + '-' + now.getUTCFullYear();
+	$(el).attr('value', formatted);
+	$('#contest-utc-date').text(formatted);
 }

@@ -1,277 +1,365 @@
-<div class="container qso_panel contesting">
-    <div class="float-end">
-        <button type="button" class="btn btn-sm btn-primary me-2" onclick="openBandmap()" title="Open DX Cluster Bandmap"><i class="fas fa-chart-line"></i> <?php echo lang('menu_bandmap'); ?></button>
-        <button type="button" class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#cabrilloExportModal" title="Export contest log as Cabrillo file"><i class="fas fa-download"></i> Export Cabrillo</button>
-        <button type="button" class="btn btn-sm btn-warning" onclick="reset_contest_session()"><i class="fas fa-sync-alt"></i> <?php echo lang('contesting_button_reset_contest_session'); ?></button>
-    </div>
-    <h2 style="display:inline"><?php echo lang('contesting_page_title'); ?> </h2> <?php echo ($_GET['manual'] == 0 ? " <span style='display:inline; cursor: pointer;' class='align-text-top badge text-bg-success' onclick=\"window.location.href='" . site_url('contesting') . "?manual=1'\" title='Switch to POST mode'>LIVE</span>" : " <span style='display:inline; cursor: pointer;' class='align-text-top badge text-bg-danger' onclick=\"window.location.href='" . site_url('contesting') . "?manual=0'\" title='Switch to LIVE mode'>POST</span>");  ?>
-    <div class="row">
-
-        <div class="col-sm-12 col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <form id="qso_input" name="qsos">
-                        <div class="d-flex justify-content-end mb-1">
-                            <button type="button" class="btn btn-link btn-sm text-muted p-0 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#contest-settings-panel" title="Toggle session settings">
-                                <i class="fas fa-sliders-h me-1"></i><small>Session Settings <i class="fas fa-chevron-down fa-xs" id="settings-chevron"></i></small>
-                            </button>
-                        </div>
-                        <div id="contest-settings-panel" class="collapse show">
-                        <div class="mb-3 row">
-							<label class="col-auto control-label" for="radio"><?php echo lang('contesting_exchange_type'); ?></label>
-
-							<div class="col-auto">
-								<select class="form-select form-select-sm" id="exchangetype" name="exchangetype">
-									<option value='None'><?php echo lang('contesting_exchange_type_none'); ?></option>
-									<option value='Exchange'><?php echo lang('contesting_exchange_type_exchange'); ?></option>
-									<option value='Gridsquare'><?php echo lang('contesting_exchange_type_gridsquare'); ?></option>
-									<option value='Serial'><?php echo lang('contesting_exchange_type_serial'); ?></option>
-									<option value='Serialexchange'><?php echo lang('contesting_exchange_type_serial_exchange'); ?></option>
-									<option value='Serialgridsquare'><?php echo lang('contesting_exchange_type_serial_gridsquare'); ?></option>
-								</select>
-							</div>
-
-                            <label class="col-auto control-label" for="contestname"><?php echo lang('contesting_contest_name'); ?></label>
-
-                            <div class="col-auto">
-                                <select class="form-select form-select-sm" id="contestname" name="contestname">
-									<?php foreach($contestnames as $contest) {
-										echo "<option value='" . $contest['adifname'] . "'>" . $contest['name'] . "</option>";
-									} ?>
-                                </select>
-                            </div>
-
-                            <label class="col-auto control-label" for="operatorcall"><?php echo lang('contesting_operator_callsign'); ?></label>
-                            <div class="col-auto">
-                                <input type="text" class="form-control form-control-sm" id="operator_callsign" name="operator_callsign" value='<?php echo $this->session->userdata('operator_callsign'); ?>' required>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="mb-3 col-md-2">
-                                <label for="start_date"><?php echo lang('general_word_date'); ?></label>
-                                <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date('d-m-Y');}?>" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
-                            </div>
-
-                            <div class="mb-3 col-md-1">
-                                <label for="start_time"><?php echo lang('general_word_time'); ?></label>
-                                <input type="text" class="form-control form-control-sm input_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo substr($this->session->userdata('start_time'),0,5); } else { echo $_GET['manual'] == 0 ? date('H:i:s') : date('H:i'); } ?>" size="7" <?php echo ($_GET['manual'] == 0 ? "disabled" : "");  ?> >
-                            </div>
-
-                            <?php if ( $_GET['manual'] == 0 ) { ?>
-                              <input class="input_time" type="hidden" id="start_time"  name="start_time"value="<?php echo date('H:i'); ?>" />
-                              <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo date('d-m-Y'); ?>" />
+<?php $is_manual = (isset($_GET['manual']) && $_GET['manual'] == 1); ?>
+<div class="container qso_panel contesting contesting-cockpit">
+    <form id="qso_input" name="qsos">
+        <!-- 1. TOP COCKPIT HEADER BAR (Always visible: Title, LIVE/POST, UTC Clock, Rig/Band/Mode/Freq, Actions) -->
+        <div class="card contesting-topbar mb-3">
+            <div class="card-body py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <!-- Left: Title + LIVE/POST Pill + Active Contest Meta -->
+                <div class="d-flex align-items-center gap-2">
+                    <span class="contesting-brand-icon d-inline-flex align-items-center justify-content-center">
+                        <i class="fas fa-trophy"></i>
+                    </span>
+                    <div>
+                        <div class="d-flex align-items-center gap-2">
+                            <h2 class="h5 mb-0 fw-bold"><?php echo lang('contesting_page_title'); ?></h2>
+                            <?php if (!$is_manual) { ?>
+                                <span style="cursor: pointer;" class="badge rounded-pill text-bg-success contesting-mode-pill" onclick="window.location.href='<?php echo site_url('contesting'); ?>?manual=1'" title="Switch to POST mode">
+                                    <i class="fas fa-circle fa-2xs me-1"></i>LIVE
+                                </span>
+                            <?php } else { ?>
+                                <span style="cursor: pointer;" class="badge rounded-pill text-bg-danger contesting-mode-pill" onclick="window.location.href='<?php echo site_url('contesting'); ?>?manual=0'" title="Switch to LIVE mode">
+                                    <i class="fas fa-pen fa-2xs me-1"></i>POST
+                                </span>
                             <?php } ?>
-
-                            <div class="mb-3 col-md-2">
-                                <label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
-                                <select id="mode" class="form-select mode form-select-sm" name="mode">
-                                    <?php foreach($modes->result() as $mode) {
-                                            if ($mode->submode == null) {
-                                                printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $this->session->userdata('mode')==$mode->mode?"selected=\"selected\"":"",$mode->mode);
-                                            } else {
-                                                printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $this->session->userdata('mode')==$mode->submode?"selected=\"selected\"":"",$mode->submode);
-                                            }
-                                    } ?>
-                                </select>
-                            </div>
-
-                            <div class="mb-3 col-md-2">
-                                <label for="band"><?php echo lang('gen_hamradio_band'); ?></label>
-
-                                <select id="band" class="form-select form-select-sm" name="band">
-                                <?php foreach($bands as $key=>$bandgroup) {
-                                    echo '<optgroup label="' . strtoupper($key) . '">';
-                                    foreach($bandgroup as $band) {
-                                        echo '<option value="' . $band . '"';
-                                        if ($this->session->userdata('band') == $band) echo ' selected';
-                                        echo '>' . $band . '</option>'."\n";
-                                    }
-                                    echo '</optgroup>';
-                                    }
-                                ?>
-                                </select>
-                            </div>
-
-                            <div class="mb-3 col-md-2">
-                                <label for="frequency"><?php echo lang('gen_hamradio_frequency'); ?></label>
-                                <input type="text" class="form-control form-control-sm" id="frequency" name="freq_display" value="<?php echo $this->session->userdata('freq'); ?>" />
-                            </div>
-
-                            <div class="mb-3 col-md-2">
-                                <label for="inputRadio"><?php echo lang('gen_hamradio_radio'); ?></label>
-                                <select class="form-select form-select-sm radios" id="radio" name="radio">
-                                    <option value="0" selected="selected"><?php echo lang('general_word_none'); ?></option>
-                                        <?php foreach ($radios->result() as $row) { ?>
-                                        <option value="<?php echo $row->id; ?>" <?php if($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo $row->radio; ?></option>
-                                        <?php } ?>
-                                </select>
-                            </div>
                         </div>
-
-                        </div><!-- /contest-settings-panel -->
-
-                        <div id="radio_status"></div>
-
-                        <div class="row align-items-end">
-                            <div class="mb-3 col-md-4">
-                                <label for="callsign"><strong><?php echo lang('gen_hamradio_callsign'); ?></strong></label>
-                                <input type="text" class="form-control" id="callsign" name="callsign" required pattern="\S+" title="Whitespace is not allowed" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
-                            </div>
-
-                            <div class="mb-3 col-md-1">
-                                <label for="rst_sent" class="text-muted small"><?php echo lang('gen_hamradio_rsts'); ?></label>
-                                <input type="text" class="form-control text-center text-muted" name="rst_sent" id="rst_sent" value="59">
-                            </div>
-
-                            <div style="display:none" class="mb-3 col-md-1 serials">
-								<label for="exch_serial_s"><?php echo lang('contesting_exchange_serial_s'); ?></label>
-                                <input type="number" class="form-control" name="exch_serial_s" id="exch_serial_s" value="">
-							</div>
-
-                            <div style="display:none" class="mb-3 col-md-1 exchanges">
-                                <label for="exch_sent"><?php echo lang('gen_hamradio_exchange_sent_short'); ?></label>
-                                <input type="text" class="form-control" name="exch_sent" id="exch_sent" value="">
-                            </div>
-
-							<div style="display:none" class="mb-3 col-md-2 gridsquares">
-								<label for="exch_gridsquare_s"><?php echo lang('contesting_exchange_gridsquare_s'); ?></label>
-                                <input disabled type="text" class="form-control" name="exch_gridsquare_s" id="exch_gridsquare_s" value="<?php echo $my_gridsquare;?>">
-							</div>
-
-                            <div class="mb-3 col-md-1">
-                                <label for="rst_rcvd" class="text-muted small"><?php echo lang('gen_hamradio_rstr'); ?></label>
-                                <input type="text" class="form-control text-center text-muted" name="rst_rcvd" id="rst_rcvd" value="59">
-                            </div>
-
-                            <div style="display:none" class="mb-3 col-md-1 serialr">
-								<label for="exch_serial_r"><?php echo lang('contesting_exchange_serial_r'); ?></label>
-                                <input type="number" class="form-control" name="exch_serial_r" id="exch_serial_r" value="">
-							</div>
-
-							<div style="display:none" class="mb-3 col-md-1 exchanger">
-								<label for="exch_rcvd"><?php echo lang('gen_hamradio_exchange_rcvd_short'); ?></label>
-                                <input type="text" class="form-control" name="exch_rcvd" id="exch_rcvd" value="">
-							</div>
-
-							<div style="display:none" class="mb-3 col-md-2 gridsquarer">
-								<label for="exch_gridsquare_r"><?php echo lang('contesting_exchange_gridsquare_r'); ?></label>
-                                <input type="text" class="form-control" name="locator" id="exch_gridsquare_r" value="" maxlength="8">
-								<small id="locator_info_contest" class="badge text-bg-info"></small>
-							</div>
-
-							<div style="display:none" class="mb-3 col-md-1 gridsquarer">
-								<label for="distance_contest"><?php echo lang('gen_hamradio_distance'); ?></label>
-							<input type="text" class="form-control" id="distance_contest" value="" disabled>
-							</div>
+                        <div class="small text-body-secondary contesting-meta-line">
+                            <span id="hdr-contest-name" class="fw-medium">Contest</span>
+                            <span class="mx-1">&middot;</span>
+                            <span>Op: <strong id="hdr-op" class="font-monospace"><?php echo htmlspecialchars($this->session->userdata('operator_callsign') ?: $this->session->userdata('user_callsign')); ?></strong></span>
+                            <?php if (!empty($my_gridsquare)) { ?>
+                                <span class="mx-1">&middot;</span>
+                                <span>Grid: <strong class="font-monospace"><?php echo htmlspecialchars($my_gridsquare); ?></strong></span>
+                            <?php } ?>
                         </div>
-                        <div class="mb-1" id="callsign-badge-row" style="min-height:1.5rem">
-                            <small id="callsign_info" class="badge text-bg-danger"></small>
-                            <small id="locator_info_contest_dxcc" class="badge text-bg-info ms-1" style="display:none"></small>
-                            <small id="distance_contest_dxcc" class="badge text-bg-secondary ms-1" style="display:none"></small>
-                        </div>
+                    </div>
+                </div>
 
-                        <div class="d-flex align-items-center gap-2 mt-1 mb-2">
-                            <button type="button" class="btn btn-lg btn-outline-secondary" id="reset_qso" onclick="reset_log_fields()"><i class="fas fa-sync-alt"></i> <?php echo lang('contesting_btn_reset_qso'); ?></button>
-                            <button type="button" class="btn btn-success btn-lg px-4" id="save_qso" onclick="logQso();"><i class="fas fa-save"></i> <?php echo lang('contesting_btn_save_qso'); ?></button>
-                            <button type="button" class="btn btn-link btn-sm text-muted p-0 text-decoration-none ms-1" data-bs-toggle="collapse" data-bs-target="#extra-fields" title="Name, comment and copy exchange">
-                                <i class="fas fa-ellipsis-h me-1"></i><small>Extra fields <i class="fas fa-chevron-right fa-xs" id="extra-chevron"></i></small>
-                            </button>
+                <!-- Center: Always-Visible UTC Clock + Band / Mode / Frequency Readout -->
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <?php if (!$is_manual) { ?>
+                        <div class="contesting-clock-pill px-3 py-1">
+                            <div class="font-monospace fw-bold contesting-clock-time"><span id="contest-utc-clock"><?php echo gmdate('H:i:s'); ?></span> <span class="contesting-utc-tag">UTC</span></div>
+                            <div class="font-monospace contesting-clock-date" id="contest-utc-date"><?php echo gmdate('d-m-Y'); ?></div>
                         </div>
-                        <div id="extra-fields" class="collapse">
-                            <div class="row mt-1">
-                                <div class="mb-2 col-md-4">
-                                    <label for="name" class="form-label form-label-sm"><?php echo lang('general_word_name'); ?></label>
-                                    <input type="text" class="form-control form-control-sm" name="name" id="name" value="">
-                                </div>
-                                <div class="mb-2 col-md-4">
-                                    <label for="comment" class="form-label form-label-sm"><?php echo lang('general_word_comment'); ?></label>
-                                    <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
-                                </div>
-                                <div class="mb-2 col-md-4">
-                                    <label class="form-label form-label-sm">Copy exchange to</label>
-                                    <select class="form-select form-select-sm" id="copyexchangeto" name="copyexchangeto">
-                                        <option value='None'><?php echo lang('contesting_copy_exch_to_none'); ?></option>
-                                        <option value='dok'><?php echo lang('contesting_copy_exch_to_dok'); ?></option>
-                                        <option value='name'><?php echo lang('contesting_copy_exch_to_name'); ?></option>
-                                        <option value='age'><?php echo lang('contesting_copy_exch_to_age'); ?></option>
-                                        <option value='state'><?php echo lang('contesting_copy_exch_to_state'); ?></option>
-                                        <option value='power'><?php echo lang('contesting_copy_exch_to_power'); ?></option>
-                                        <option value='locator'><?php echo lang('contesting_copy_exch_to_locator'); ?></option>
-                                    </select>
-                                </div>
-                            </div>
+                        <input class="input_time" type="hidden" id="start_time" name="start_time" value="<?php echo gmdate('H:i:s'); ?>" />
+                        <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo gmdate('d-m-Y'); ?>" />
+                    <?php } else { ?>
+                        <div class="d-flex align-items-center gap-1 contesting-post-datetime">
+                            <input type="text" class="form-control form-control-sm input_date font-monospace" name="start_date" id="start_date" aria-label="<?php echo lang('general_word_date'); ?>" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo gmdate('d-m-Y'); } ?>" style="width: 105px;">
+                            <input type="text" class="form-control form-control-sm input_time font-monospace" name="start_time" id="start_time" aria-label="<?php echo lang('general_word_time'); ?>" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo substr($this->session->userdata('start_time'), 0, 5); } else { echo gmdate('H:i'); } ?>" style="width: 78px;">
                         </div>
-                    </form>
+                    <?php } ?>
+
+                    <!-- Compact Rig / Band / Mode / Frequency Bar -->
+                    <div class="contesting-rig-pill d-flex align-items-center gap-1 px-2 py-1">
+                        <select id="band" class="form-select form-select-sm contesting-inline-select fw-bold" name="band" aria-label="<?php echo lang('gen_hamradio_band'); ?>">
+                            <?php foreach ($bands as $key => $bandgroup) {
+                                echo '<optgroup label="' . strtoupper($key) . '">';
+                                foreach ($bandgroup as $band) {
+                                    echo '<option value="' . $band . '"';
+                                    if ($this->session->userdata('band') == $band) echo ' selected';
+                                    echo '>' . $band . '</option>' . "\n";
+                                }
+                                echo '</optgroup>';
+                            } ?>
+                        </select>
+                        <span class="contesting-pill-sep">|</span>
+                        <select id="mode" class="form-select form-select-sm mode contesting-inline-select fw-semibold" name="mode" aria-label="<?php echo lang('gen_hamradio_mode'); ?>">
+                            <?php foreach ($modes->result() as $mode) {
+                                if ($mode->submode == null) {
+                                    printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $this->session->userdata('mode') == $mode->mode ? "selected=\"selected\"" : "", $mode->mode);
+                                } else {
+                                    printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $this->session->userdata('mode') == $mode->submode ? "selected=\"selected\"" : "", $mode->submode);
+                                }
+                            } ?>
+                        </select>
+                        <span class="contesting-pill-sep">|</span>
+                        <input type="text" class="form-control form-control-sm contesting-inline-freq font-monospace" id="frequency" name="freq_display" aria-label="<?php echo lang('gen_hamradio_frequency'); ?>" value="<?php echo $this->session->userdata('freq'); ?>" placeholder="Freq (Hz)" />
+                    </div>
+                </div>
+
+                <!-- Right: Session Setup Drawer Toggle + Actions -->
+                <div class="d-flex flex-wrap align-items-center gap-1">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#contest-settings-panel" aria-expanded="false" aria-controls="contest-settings-panel" title="Toggle session settings">
+                        <i class="fas fa-sliders-h me-1"></i>Setup <i class="fas fa-chevron-right fa-xs ms-1" id="settings-chevron"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="openBandmap()" title="Open DX Cluster Bandmap">
+                        <i class="fas fa-chart-line me-1"></i><?php echo lang('menu_bandmap'); ?>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#cabrilloExportModal" title="Export contest log as Cabrillo file">
+                        <i class="fas fa-download me-1"></i>Cabrillo
+                    </button>
+                    <button type="button" class="btn btn-sm btn-warning text-dark" onclick="reset_contest_session()" title="<?php echo lang('contesting_button_reset_contest_session'); ?>">
+                        <i class="fas fa-sync-alt me-1"></i>New Session
+                    </button>
                 </div>
             </div>
 
-            <br/>
-
-            <!-- Callsign SCP Box -->
-            <div class="card callsign-suggest" style="display:none">
-                <div class="card-header"><h5 class="card-title"><?php echo lang('contesting_title_callsign_suggestions'); ?></h5></div>
-
-                <div class="card-body callsign-suggestions"></div>
-            </div>
-
-            <div class="card mt-3" id="callhistory-info-panel" style="display: none;">
-                <div class="card-header"><h5 class="card-title mb-0">Call History Membership</h5></div>
-                <div class="card-body" id="callhistory-results">
-                    <div class="text-muted">Type a callsign to see membership details from your uploaded call history files.</div>
-                </div>
-            </div>
-
-            <!-- Contest Stats Card -->
-            <div class="card mt-3" id="contest-stats-card" style="display:none">
-                <div class="card-body py-2">
-                    <div class="d-flex flex-wrap align-items-center gap-3">
-                        <div>
-                            <span class="text-muted me-1">Session:</span>
-                            <span class="badge text-bg-primary" id="stats-total">0 QSOs</span>
+            <!-- Collapsible Static Session Setup Drawer (Never hides UTC Clock or Band/Mode/Freq) -->
+            <div id="contest-settings-panel" class="collapse border-top">
+                <div class="card-body py-2 px-3 contesting-setup-drawer">
+                    <div class="row g-2 align-items-end">
+                        <div class="col-sm-6 col-lg-3">
+                            <label class="form-label form-label-sm mb-1" for="contestname"><?php echo lang('contesting_contest_name'); ?></label>
+                            <select class="form-select form-select-sm" id="contestname" name="contestname">
+                                <?php foreach ($contestnames as $contest) {
+                                    echo "<option value='" . htmlspecialchars($contest['adifname'], ENT_QUOTES) . "'>" . htmlspecialchars($contest['name']) . "</option>";
+                                } ?>
+                            </select>
                         </div>
-                        <div>
-                            <span class="text-muted me-1">By Band:</span>
-                            <span id="stats-bands"></span>
+                        <div class="col-sm-6 col-lg-2">
+                            <label class="form-label form-label-sm mb-1" for="exchangetype"><?php echo lang('contesting_exchange_type'); ?></label>
+                            <select class="form-select form-select-sm" id="exchangetype" name="exchangetype">
+                                <option value='None'><?php echo lang('contesting_exchange_type_none'); ?></option>
+                                <option value='Exchange'><?php echo lang('contesting_exchange_type_exchange'); ?></option>
+                                <option value='Gridsquare'><?php echo lang('contesting_exchange_type_gridsquare'); ?></option>
+                                <option value='Serial'><?php echo lang('contesting_exchange_type_serial'); ?></option>
+                                <option value='Serialexchange'><?php echo lang('contesting_exchange_type_serial_exchange'); ?></option>
+                                <option value='Serialgridsquare'><?php echo lang('contesting_exchange_type_serial_gridsquare'); ?></option>
+                            </select>
                         </div>
-                        <div>
-                            <span class="text-muted me-1">Rate:</span>
-                            <span class="badge text-bg-info" id="stats-rate">0/hr</span>
+                        <div class="col-sm-4 col-lg-2">
+                            <label class="form-label form-label-sm mb-1" for="operator_callsign"><?php echo lang('contesting_operator_callsign'); ?></label>
+                            <input type="text" class="form-control form-control-sm font-monospace text-uppercase" id="operator_callsign" name="operator_callsign" value="<?php echo htmlspecialchars($this->session->userdata('operator_callsign')); ?>" required>
+                        </div>
+                        <div class="col-sm-4 col-lg-2">
+                            <label class="form-label form-label-sm mb-1" for="radio"><?php echo lang('gen_hamradio_radio'); ?></label>
+                            <select class="form-select form-select-sm radios" id="radio" name="radio">
+                                <option value="0" selected="selected"><?php echo lang('general_word_none'); ?></option>
+                                <?php foreach ($radios->result() as $row) { ?>
+                                    <option value="<?php echo $row->id; ?>" <?php if ($this->session->userdata('radio') == $row->id) { echo "selected=\"selected\""; } ?>><?php echo htmlspecialchars($row->radio); ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="col-sm-4 col-lg-3">
+                            <label class="form-label form-label-sm mb-1" for="copyexchangeto">Copy exchange to</label>
+                            <select class="form-select form-select-sm" id="copyexchangeto" name="copyexchangeto">
+                                <option value='None'><?php echo lang('contesting_copy_exch_to_none'); ?></option>
+                                <option value='dok'><?php echo lang('contesting_copy_exch_to_dok'); ?></option>
+                                <option value='name'><?php echo lang('contesting_copy_exch_to_name'); ?></option>
+                                <option value='age'><?php echo lang('contesting_copy_exch_to_age'); ?></option>
+                                <option value='state'><?php echo lang('contesting_copy_exch_to_state'); ?></option>
+                                <option value='power'><?php echo lang('contesting_copy_exch_to_power'); ?></option>
+                                <option value='locator'><?php echo lang('contesting_copy_exch_to_locator'); ?></option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Past QSO Box -->
-            <div class="card log">
-                <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="card-title mb-0"><?php echo lang('contesting_title_contest_logbook'); ?></h5>
+        <div id="radio_status"></div>
+
+        <!-- 2. HERO SINGLE-ROW HIGH-SPEED QSO ENTRY CONSOLE -->
+        <div class="card contesting-entry-card mb-3">
+            <!-- Always-visible card-header (also anchors offline-qso-queue-badge cleanly!) -->
+            <div class="card-header py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                <div class="d-flex flex-wrap align-items-center gap-2" id="callsign-badge-row">
+                    <span id="callsign_ready_hint" class="badge text-bg-secondary bg-opacity-25 text-body-secondary">Ready &mdash; enter callsign</span>
+                    <small id="callsign_info" class="badge"></small>
+                    <small id="locator_info_contest_dxcc" class="badge text-bg-info" style="display:none"></small>
+                    <small id="distance_contest_dxcc" class="badge text-bg-secondary" style="display:none"></small>
+                </div>
+                <div class="d-none d-md-flex align-items-center gap-2 small text-body-secondary contesting-shortcuts">
+                    <span><kbd>Space</kbd> Next</span>
+                    <span><kbd>Enter</kbd> Log</span>
+                    <span><kbd>Esc</kbd> Wipe</span>
+                </div>
+            </div>
+
+            <div class="card-body py-3 px-3">
+                <div class="contesting-entry-row d-flex flex-wrap flex-lg-nowrap align-items-end gap-2">
+                    <!-- Callsign (Hero Input) -->
+                    <div class="contesting-field-callsign">
+                        <label for="callsign" class="contesting-field-label"><?php echo lang('gen_hamradio_callsign'); ?></label>
+                        <input type="text" class="form-control contesting-hero-input font-monospace fw-bold" id="callsign" name="callsign" required pattern="\S+" title="Whitespace is not allowed" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" placeholder="CALLSIGN">
+                    </div>
+
+                    <!-- Sent RST -->
+                    <div class="contesting-field-rst">
+                        <label for="rst_sent" class="contesting-field-label text-center"><?php echo lang('gen_hamradio_rsts'); ?></label>
+                        <input type="text" class="form-control contesting-mid-input text-center font-monospace text-body-secondary" name="rst_sent" id="rst_sent" value="59">
+                    </div>
+
+                    <!-- Sent Serial -->
+                    <div style="display:none" class="contesting-field-serial serials">
+                        <label for="exch_serial_s" class="contesting-field-label text-center"><?php echo lang('contesting_exchange_serial_s'); ?></label>
+                        <input type="number" class="form-control contesting-mid-input text-center font-monospace fw-bold" name="exch_serial_s" id="exch_serial_s" value="">
+                    </div>
+
+                    <!-- Sent Exchange -->
+                    <div style="display:none" class="contesting-field-exch exchanges">
+                        <label for="exch_sent" class="contesting-field-label text-center"><?php echo lang('gen_hamradio_exchange_sent_short'); ?></label>
+                        <input type="text" class="form-control contesting-mid-input text-center font-monospace" name="exch_sent" id="exch_sent" value="">
+                    </div>
+
+                    <!-- Sent Gridsquare -->
+                    <div style="display:none" class="contesting-field-grid gridsquares">
+                        <label for="exch_gridsquare_s" class="contesting-field-label text-center"><?php echo lang('contesting_exchange_gridsquare_s'); ?></label>
+                        <input disabled type="text" class="form-control contesting-mid-input text-center font-monospace" name="exch_gridsquare_s" id="exch_gridsquare_s" value="<?php echo htmlspecialchars($my_gridsquare); ?>">
+                    </div>
+
+                    <!-- Rcvd RST -->
+                    <div class="contesting-field-rst">
+                        <label for="rst_rcvd" class="contesting-field-label text-center"><?php echo lang('gen_hamradio_rstr'); ?></label>
+                        <input type="text" class="form-control contesting-mid-input text-center font-monospace text-body-secondary" name="rst_rcvd" id="rst_rcvd" value="59">
+                    </div>
+
+                    <!-- Rcvd Serial (Hot field) -->
+                    <div style="display:none" class="contesting-field-rcvd serialr">
+                        <label for="exch_serial_r" class="contesting-field-label text-primary"><?php echo lang('contesting_exchange_serial_r'); ?></label>
+                        <input type="number" class="form-control contesting-hero-input font-monospace fw-bold" name="exch_serial_r" id="exch_serial_r" value="" placeholder="001">
+                    </div>
+
+                    <!-- Rcvd Exchange (Hot field) -->
+                    <div style="display:none" class="contesting-field-rcvd exchanger">
+                        <label for="exch_rcvd" class="contesting-field-label text-primary"><?php echo lang('gen_hamradio_exchange_rcvd_short'); ?></label>
+                        <input type="text" class="form-control contesting-hero-input font-monospace fw-bold" name="exch_rcvd" id="exch_rcvd" value="" placeholder="EXCH">
+                    </div>
+
+                    <!-- Rcvd Gridsquare (Hot field) -->
+                    <div style="display:none" class="contesting-field-grid-r gridsquarer">
+                        <label for="exch_gridsquare_r" class="contesting-field-label text-primary d-flex align-items-center justify-content-between">
+                            <span><?php echo lang('contesting_exchange_gridsquare_r'); ?></span>
+                            <small id="locator_info_contest" class="badge text-bg-info"></small>
+                        </label>
+                        <input type="text" class="form-control contesting-hero-input font-monospace fw-bold" name="locator" id="exch_gridsquare_r" value="" maxlength="8" placeholder="IO85">
+                    </div>
+
+                    <!-- Distance (Gridsquare mode) -->
+                    <div style="display:none" class="contesting-field-dist gridsquarer">
+                        <label for="distance_contest" class="contesting-field-label"><?php echo lang('gen_hamradio_distance'); ?></label>
+                        <input type="text" class="form-control contesting-mid-input font-monospace" id="distance_contest" value="" disabled>
+                    </div>
+
+                    <!-- Inline Wipe & Log QSO Actions -->
+                    <div class="contesting-entry-actions d-flex align-items-center gap-2 ms-lg-auto">
+                        <button type="button" class="btn btn-outline-secondary contesting-action-btn" id="reset_qso" onclick="reset_log_fields()" title="<?php echo lang('contesting_btn_reset_qso'); ?> (Esc / Alt+W)">
+                            <i class="fas fa-eraser me-1"></i><?php echo lang('contesting_btn_reset_qso'); ?>
+                        </button>
+                        <button type="button" class="btn btn-success contesting-action-btn px-4 fw-semibold" id="save_qso" onclick="logQso();">
+                            <i class="fas fa-check me-1"></i><?php echo lang('contesting_btn_save_qso'); ?>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Collapsible Extra Fields (Name & Comment) -->
+                <div class="mt-2 pt-2 border-top d-flex align-items-center justify-content-between">
+                    <button type="button" class="btn btn-link btn-sm text-body-secondary p-0 text-decoration-none" data-bs-toggle="collapse" data-bs-target="#extra-fields" aria-expanded="false" aria-controls="extra-fields" title="Name and comment">
+                        <i class="fas fa-chevron-right fa-xs me-1" id="extra-chevron"></i><small>Extra fields (<?php echo lang('general_word_name'); ?>, <?php echo lang('general_word_comment'); ?>)</small>
+                    </button>
+                </div>
+                <div id="extra-fields" class="collapse">
+                    <div class="row g-2 mt-1">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label form-label-sm mb-1"><?php echo lang('general_word_name'); ?></label>
+                            <input type="text" class="form-control form-control-sm" name="name" id="name" value="">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="comment" class="form-label form-label-sm mb-1"><?php echo lang('general_word_comment'); ?></label>
+                            <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- 3. TWO-COLUMN WORKSPACE: Contest Logbook (Left) + Telemetry & Zero-Shift Assist Sidebar (Right) -->
+    <div class="row g-3 align-items-start">
+        <!-- LEFT: Contest Logbook -->
+        <div class="col-xl-8">
+            <div class="card log contesting-log-card">
+                <div class="card-header py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <h5 class="card-title mb-0 fs-6 fw-semibold"><?php echo lang('contesting_title_contest_logbook'); ?></h5>
+                        <span class="badge text-bg-primary rounded-pill" id="logbook-count-badge">0 QSOs</span>
+                    </div>
                     <div class="d-flex align-items-center gap-1">
-                        <label for="logbook-search" class="text-muted small mb-0 me-1">Search:</label>
-                        <input type="search" id="logbook-search" class="form-control form-control-sm" style="width:180px" placeholder="">
+                        <label for="logbook-search" class="text-body-secondary small mb-0 me-1">Search:</label>
+                        <input type="search" id="logbook-search" class="form-control form-control-sm" style="width: 185px" placeholder="Filter callsign…">
                     </div>
                 </div>
-                <table style="width:100%" class="table-sm table qsotable table-bordered table-hover table-striped table-condensed text-center mb-0">
-                    <thead>
-                        <tr class="log_title titles">
-                            <th><?php echo lang('general_word_date'); ?>/<?php echo lang('general_word_time'); ?></th>
-                            <th><?php echo lang('gen_hamradio_call'); ?></th>
-                            <th><?php echo lang('gen_hamradio_band'); ?></th>
-                            <th><?php echo lang('gen_hamradio_mode'); ?></th>
-                            <th><?php echo lang('gen_hamradio_rsts'); ?></th>
-                            <th><?php echo lang('gen_hamradio_rstr'); ?></th>
-                            <th><?php echo lang('gen_hamradio_exchange_sent_short'); ?></th>
-                            <th><?php echo lang('gen_hamradio_exchange_rcvd_short'); ?></th>
-							<th><?php echo lang('contesting_exchange_serial_s'); ?></th>
-							<th><?php echo lang('contesting_exchange_serial_r'); ?></th>
-							<th><?php echo lang('contesting_exchange_type_gridsquare'); ?></th>
-							<th><?php echo 'VUCC ' . lang('contesting_exchange_type_gridsquare'); ?></th>
-                        </tr>
-                    </thead>
+                <div class="contesting-table-wrap">
+                    <table style="width:100%" class="table-sm table qsotable table-hover table-striped text-center mb-0">
+                        <thead>
+                            <tr class="log_title titles">
+                                <th><?php echo lang('general_word_date'); ?>/<?php echo lang('general_word_time'); ?></th>
+                                <th><?php echo lang('gen_hamradio_call'); ?></th>
+                                <th><?php echo lang('gen_hamradio_band'); ?></th>
+                                <th><?php echo lang('gen_hamradio_mode'); ?></th>
+                                <th><?php echo lang('gen_hamradio_rsts'); ?></th>
+                                <th><?php echo lang('gen_hamradio_rstr'); ?></th>
+                                <th><?php echo lang('gen_hamradio_exchange_sent_short'); ?></th>
+                                <th><?php echo lang('gen_hamradio_exchange_rcvd_short'); ?></th>
+                                <th><?php echo lang('contesting_exchange_serial_s'); ?></th>
+                                <th><?php echo lang('contesting_exchange_serial_r'); ?></th>
+                                <th><?php echo lang('contesting_exchange_type_gridsquare'); ?></th>
+                                <th><?php echo 'VUCC ' . lang('contesting_exchange_type_gridsquare'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody class="contest_qso_table_contents">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-                    <tbody class="contest_qso_table_contents">
-                    </tbody>
-                </table>
+        <!-- RIGHT: Live Telemetry + Zero-Shift Assist Sidebar -->
+        <div class="col-xl-4 d-flex flex-column gap-3">
+            <!-- Session Telemetry Card -->
+            <div class="card contesting-side-card mb-0" id="contest-stats-card">
+                <div class="card-header py-2 px-3 d-flex align-items-center justify-content-between">
+                    <h6 class="card-title mb-0 small text-uppercase fw-bold text-body-secondary">Session Telemetry</h6>
+                    <span class="badge text-bg-primary font-monospace" id="stats-next-serial" style="display:none">Next #001</span>
+                </div>
+                <div class="card-body py-2 px-3">
+                    <div class="row g-2 text-center mb-2">
+                        <div class="col-4">
+                            <div class="contesting-stat-tile p-2">
+                                <div class="contesting-stat-label">QSOs</div>
+                                <div class="contesting-stat-value font-monospace" id="stats-total">0</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="contesting-stat-tile p-2">
+                                <div class="contesting-stat-label">Rate/hr</div>
+                                <div class="contesting-stat-value font-monospace text-info" id="stats-rate">0</div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="contesting-stat-tile p-2">
+                                <div class="contesting-stat-label">Unique</div>
+                                <div class="contesting-stat-value font-monospace text-success" id="stats-unique">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contesting-stat-label mb-1">By Band <span class="fw-normal opacity-75">(click to QSY)</span></div>
+                    <div id="stats-bands" class="d-flex flex-wrap gap-1">
+                        <span class="small text-body-secondary">No QSOs logged yet</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Super Check Partial (Fixed-slot card — zero layout shift!) -->
+            <div class="card contesting-side-card callsign-suggest mb-0">
+                <div class="card-header py-2 px-3 d-flex align-items-center justify-content-between">
+                    <h6 class="card-title mb-0 small text-uppercase fw-bold text-body-secondary"><?php echo lang('contesting_title_callsign_suggestions'); ?></h6>
+                    <span class="small font-monospace text-body-secondary" id="scp-match-count">&mdash;</span>
+                </div>
+                <div class="card-body py-2 px-3 callsign-suggestions contesting-assist-body">
+                    <span class="small text-body-secondary">Type 3+ characters to match known contest callsigns&hellip;</span>
+                </div>
+            </div>
+
+            <!-- Call History Membership (Fixed-slot card — zero layout shift!) -->
+            <div class="card contesting-side-card mb-0" id="callhistory-info-panel">
+                <div class="card-header py-2 px-3">
+                    <h6 class="card-title mb-0 small text-uppercase fw-bold text-body-secondary">Call History Membership</h6>
+                </div>
+                <div class="card-body py-2 px-3 contesting-assist-body" id="callhistory-results">
+                    <div class="small text-body-secondary">Type a callsign to see membership details from your uploaded call history files.</div>
+                </div>
             </div>
         </div>
     </div>
