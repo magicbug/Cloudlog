@@ -1,9 +1,20 @@
-<div class="container">
-    <h2><?php echo $page_title; ?></h2>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Special Interest Group QSO breakdown and filtering',
+        'icon' => 'fas fa-star',
+        'actions' => array(
+            array(
+                'label' => 'Back to SIG',
+                'url' => site_url('awards/sig'),
+                'icon' => 'fas fa-arrow-left',
+            ),
+        ),
+    )); ?>
 
     <!-- Filter Card -->
-    <div class="card mt-4 mb-4">
-        <div class="card-header bg-light">
+    <div class="card mb-4">
+        <div class="card-header">
             <h5 class="mb-0">
                 <i class="fa fa-filter"></i> <?php echo lang('awards_sig_filter_detail'); ?>
             </h5>

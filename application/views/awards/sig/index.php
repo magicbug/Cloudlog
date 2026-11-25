@@ -1,22 +1,21 @@
-<div class="container">
-    <!-- Award Info Box -->
-    <br>
-    <div id="awardInfoButton">
-        <script>
-        var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-        var lang_award_info_ln1 = "<?php echo lang('awards_sig_description_ln1'); ?>";
-        var lang_award_info_ln2 = "<?php echo lang('awards_sig_description_ln2'); ?>";
-        var lang_award_info_ln3 = "<?php echo lang('awards_sig_description_ln3'); ?>";
-        var lang_award_info_ln4 = "<?php echo lang('awards_sig_description_ln4'); ?>";
-        </script>
-        <h2><?php echo $page_title; ?></h2>
-        <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
-    </div>
-    <!-- End of Award Info Box -->
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Special Interest Groups &middot; Summary of logged SIG programs and references',
+        'icon' => 'fas fa-star',
+        'info_lines' => array(
+            lang('awards_sig_description_ln1'),
+            lang('awards_sig_description_ln2'),
+            lang('awards_sig_description_ln3'),
+            lang('awards_sig_description_ln4'),
+        ),
+    )); ?>
 
     <?php if ($sig_types) { ?>
-        <table style="width:100%" class="table-sm table table-bordered table-hover table-striped table-condensed text-center">
-            <thead class="table-light">
+        <div class="card">
+        <div class="table-responsive">
+        <table style="width:100%" class="table-sm table table-hover align-middle mb-0 text-center">
+            <thead>
             <tr>
                 <th><?php echo lang('awards_sig_table_name'); ?></th>
                 <th><?php echo lang('awards_sig_table_qsos'); ?></th>
@@ -45,6 +44,8 @@
             <?php } ?>
             </tbody>
         </table>
+        </div>
+        </div>
     <?php }
     else {
         echo '<div class="alert alert-info alert-dismissible fade show" role="alert">';

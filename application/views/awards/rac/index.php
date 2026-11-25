@@ -10,23 +10,20 @@ $csv_query = http_build_query(array(
     'eqsl' => $filters['eqsl'] ? 1 : 0,
 ));
 ?>
-<div class="container">
-        <!-- Award Info Box -->
-        <br>
-        <div id="awardInfoButton">
-            <script>
-            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-            var lang_award_info_ln1 = "<?php echo lang('awards_rac_description_ln1'); ?>";
-            var lang_award_info_ln2 = "<?php echo lang('awards_rac_description_ln2'); ?>";
-            var lang_award_info_ln3 = "<?php echo lang('awards_rac_description_ln3'); ?>";
-            var lang_award_info_ln4 = "<?php echo lang('awards_rac_description_ln4'); ?>";
-            </script>
-            <h2><?php echo $page_title; ?></h2>
-            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
-        </div>
-        <!-- End of Award Info Box -->
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Radio Amateurs of Canada &middot; Canadian provinces and territories awards',
+        'icon' => 'fas fa-maple-leaf',
+        'info_lines' => array(
+            lang('awards_rac_description_ln1'),
+            lang('awards_rac_description_ln2'),
+            lang('awards_rac_description_ln3'),
+            lang('awards_rac_description_ln4'),
+        ),
+    )); ?>
 
-    <ul class="nav nav-pills mt-3" id="racAwards">
+    <ul class="nav nav-pills mb-3" id="racAwards">
         <?php foreach ($rac_groups as $key => $g) { ?>
         <li class="nav-item">
             <a class="nav-link<?php echo $key === $rac_award ? ' active' : ''; ?>" href="<?php echo site_url('awards/rac') . '?award=' . $e($key); ?>"><?php echo $e($g['name']); ?></a>

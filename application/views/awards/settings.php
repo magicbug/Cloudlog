@@ -1,6 +1,4 @@
-<div class="container">
-
-<br>
+<div class="container awards-page">
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
 		<div class="alert-message error">
@@ -33,7 +31,11 @@
 	}
 </style>
 
-<h2>Award Settings</h2>
+<?php $this->load->view('awards/components/topbar', array(
+	'title' => 'Award Settings',
+	'subtitle' => 'Choose which awards appear in your Awards navigation menu',
+	'icon' => 'fas fa-sliders-h',
+)); ?>
 
 <!-- Info Card -->
 <div class="card mb-3">

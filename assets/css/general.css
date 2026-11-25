@@ -2349,6 +2349,81 @@ tr.htmx-swapping td {
 	font-size: 1.5rem;
 }
 
+/* Unified Awards Pages */
+.awards-page {
+	padding-top: 14px;
+	padding-bottom: 28px;
+}
+
+.awards-info-wrap,
+.awards-page #awardInfoButton {
+	display: block !important;
+	width: 100%;
+}
+
+.awards-topbar {
+	width: 100%;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.75rem;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+	overflow: hidden;
+}
+
+.awards-brand-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 0.55rem;
+	background-color: var(--bs-primary, #0d6efd);
+	color: #fff;
+	font-size: 0.95rem;
+	flex-shrink: 0;
+}
+
+.awards-page .card:not(.awards-topbar) {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.75rem;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+}
+
+.awards-page .stats-card {
+	border-radius: 0.65rem !important;
+	background-color: var(--bs-tertiary-bg, #f8f9fa) !important;
+	border-top: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
+	border-right: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
+	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
+}
+
+.awards-page .filter-section {
+	background-color: var(--bs-tertiary-bg, #f8f9fa) !important;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12)) !important;
+	border-radius: 0.75rem !important;
+}
+
+.awards-page .filter-section .form-label {
+	color: var(--bs-body-color, inherit) !important;
+}
+
+.awards-page .nav-tabs {
+	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	gap: 0.25rem;
+}
+
+.awards-page .nav-tabs .nav-link {
+	border: none;
+	border-bottom: 2px solid transparent;
+	border-radius: 0;
+	color: var(--bs-secondary-color, #64748b);
+	font-weight: 500;
+	padding: 0.55rem 0.95rem;
+}
+
+.awards-page .nav-tabs .nav-link.active {
+	background-color: transparent;
+	color: var(--bs-primary, #0d6efd);
+	border-bottom-color: var(--bs-primary, #0d6efd);
+	font-weight: 600;
+}
+
 @media (max-width: 575.98px) {
 	.qso_panel #qsoRightTabs {
 		flex-wrap: wrap !important;

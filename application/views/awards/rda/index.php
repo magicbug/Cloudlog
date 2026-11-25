@@ -41,7 +41,7 @@ foreach ($reference['districts'] as $district) {
     var rdaDistricts = <?php echo json_encode($rows, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     var rdaFilters = <?php echo json_encode(array('band' => $filters['band'], 'mode' => $filters['mode'], 'qsl' => $filters['qsl'] ? 1 : 0, 'lotw' => $filters['lotw'] ? 1 : 0, 'eqsl' => $filters['eqsl'] ? 1 : 0)); ?>;
 </script>
-<div class="container">
+<div class="container awards-page">
     <style>
         .rda-levels { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
         .rda-level { flex: 1 1 110px; border: 1px solid var(--bs-border-color); border-radius: 0.6rem; padding: 0.5rem 0.75rem; text-align: center; }
@@ -60,20 +60,19 @@ foreach ($reference['districts'] as $district) {
         #rdamap .rda-info h4 { margin: 0 0 5px; font-size: 0.95rem; }
     </style>
 
-    <br>
-    <div id="awardInfoButton">
-        <script>
-        var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-        var lang_award_info_ln1 = "<?php echo lang('awards_rda_description_ln1'); ?>";
-        var lang_award_info_ln2 = "<?php echo lang('awards_rda_description_ln2'); ?>";
-        var lang_award_info_ln3 = "<?php echo lang('awards_rda_description_ln3'); ?>";
-        var lang_award_info_ln4 = "<?php echo lang('awards_rda_description_ln4'); ?>";
-        </script>
-        <h2><?php echo $page_title; ?></h2>
-        <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
-    </div>
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Russian Districts Award &middot; Track worked and confirmed RDA districts',
+        'icon' => 'fas fa-map-marked',
+        'info_lines' => array(
+            lang('awards_rda_description_ln1'),
+            lang('awards_rda_description_ln2'),
+            lang('awards_rda_description_ln3'),
+            lang('awards_rda_description_ln4'),
+        ),
+    )); ?>
 
-    <form class="form mt-3" action="<?php echo site_url('awards/rda'); ?>" method="post" enctype="multipart/form-data">
+    <form class="form filter-section p-3 mb-3" action="<?php echo site_url('awards/rda'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>
             <div class="mb-3 row">
                 <div class="col-md-2">Confirmed by</div>

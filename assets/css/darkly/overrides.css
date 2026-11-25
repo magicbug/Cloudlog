@@ -430,3 +430,66 @@ kbd {
 .vucc-legend-worked {
 	background-color: rgba(122, 179, 239, 0.42);
 }
+
+/* Unified Awards Dark Mode overrides (neutralize inline light styles) */
+.awards-page .nav-tabs .nav-link {
+	color: #adb5bd;
+}
+
+.awards-page .nav-tabs .nav-link:hover {
+	color: #ffffff;
+}
+
+.awards-page .nav-tabs .nav-link.active {
+	color: #7ab3ef !important;
+	border-bottom-color: #7ab3ef !important;
+}
+
+.awards-page .stats-number {
+	color: #7ab3ef !important;
+}
+
+.awards-page .table-iota thead th,
+.awards-page .table thead th {
+	background-color: var(--bs-tertiary-bg, #262626) !important;
+	color: #e9ecef;
+}
+
+.awards-page .info.leaflet-control,
+.info.leaflet-control {
+	background-color: rgba(34, 34, 34, 0.92) !important;
+	color: #f1f3f5 !important;
+	border: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.awards-page .info.leaflet-control h4,
+.info.leaflet-control h4 {
+	color: #f1f3f5 !important;
+}
+
+.counties-tier {
+	background-color: #2b2b2b !important;
+	border-color: rgba(255, 255, 255, 0.14) !important;
+	color: #f1f3f5 !important;
+}
+
+.counties-tier.reached {
+	background-color: rgba(25, 135, 84, 0.25) !important;
+	border-color: rgba(25, 135, 84, 0.55) !important;
+}
+
+.counties-tier-sub {
+	color: #adb5bd !important;
+}
+
+.counties-label-chip {
+	background-color: #363636 !important;
+	color: #e9ecef !important;
+}
+
+#countiesmap .counties-map-info,
+#rdamap .rda-info {
+	background-color: rgba(34, 34, 34, 0.92) !important;
+	color: #f1f3f5 !important;
+	border: 1px solid rgba(255, 255, 255, 0.16) !important;
+}

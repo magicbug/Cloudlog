@@ -1,18 +1,17 @@
-<div class="container">
-	<br>
-	<div id="awardInfoButton">
-		<script>
-		var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-		var lang_award_info_ln1 = "<?php echo lang('awards_sota_description_ln1'); ?>";
-		var lang_award_info_ln2 = "<?php echo lang('awards_sota_description_ln2'); ?>";
-		var lang_award_info_ln3 = "<?php echo lang('awards_sota_description_ln3'); ?>";
-		var lang_award_info_ln4 = "<?php echo lang('awards_sota_description_ln4'); ?>";
-		</script>
-		<h2><?php echo $page_title; ?></h2>
-		<button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
-	</div>
+<div class="container awards-page">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => $page_title,
+		'subtitle' => 'Summits On The Air &middot; Chaser progress across SOTA associations and regions',
+		'icon' => 'fas fa-mountain',
+		'info_lines' => array(
+			lang('awards_sota_description_ln1'),
+			lang('awards_sota_description_ln2'),
+			lang('awards_sota_description_ln3'),
+			lang('awards_sota_description_ln4'),
+		),
+	)); ?>
 
-	<div class="card mt-3">
+	<div class="card">
 		<div class="card-body">
 			<form id="sotaFilters" class="row gy-2 gx-3 align-items-end">
 				<div class="col-auto">

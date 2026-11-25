@@ -79,24 +79,20 @@
 </style>
 
 
-<div class="container">
+<div class="container awards-page">
     <div class="row">
         <div class="col-lg-12">
-            <!-- Award Info Box -->
-            <div class="d-flex justify-content-between align-items-center mb-4 mt-3">
-                <h2><?php echo $page_title; ?></h2>
-                <button type="button" class="btn btn-primary" id="displayAwardInfo">
-                    <i class="fas fa-info-circle"></i> <?php echo lang('awards_info_button'); ?>
-                </button>
-            </div>
-            <script>
-            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-            var lang_award_info_ln1 = "<?php echo lang('awards_iota_description_ln1'); ?>";
-            var lang_award_info_ln2 = "<?php echo lang('awards_iota_description_ln2'); ?>";
-            var lang_award_info_ln3 = "<?php echo lang('awards_iota_description_ln3'); ?>";
-            var lang_award_info_ln4 = "<?php echo lang('awards_iota_description_ln4'); ?>";
-            </script>
-            <!-- End of Award Info Box -->
+            <?php $this->load->view('awards/components/topbar', array(
+                'title' => $page_title,
+                'subtitle' => 'Islands On The Air &middot; Worked and confirmed IOTA island references',
+                'icon' => 'fas fa-water',
+                'info_lines' => array(
+                    lang('awards_iota_description_ln1'),
+                    lang('awards_iota_description_ln2'),
+                    lang('awards_iota_description_ln3'),
+                    lang('awards_iota_description_ln4'),
+                ),
+            )); ?>
 
     <form class="form filter-section" action="<?php echo site_url('awards/iota'); ?>" method="post" enctype="multipart/form-data">
         <fieldset>

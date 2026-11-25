@@ -107,24 +107,21 @@
     color: #555;
 }
 </style>
-<div class="container">
-        <!-- Award Info Box -->
-        <br>
-        <div id="awardInfoButton">
-            <script>
-            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-            var lang_award_info_ln1 = "<?php echo lang('awards_waja_description_ln1'); ?>";
-            var lang_award_info_ln2 = "<?php echo lang('awards_waja_description_ln2'); ?>";
-            var lang_award_info_ln3 = "<?php echo lang('awards_waja_description_ln3'); ?>";
-            var lang_award_info_ln4 = "<?php echo lang('awards_waja_description_ln4'); ?>";
-            </script>
-            <h2><?php echo $page_title; ?></h2>
-            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
-        </div>
-        <!-- End of Award Info Box -->
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'Worked All Japan &middot; Track all 47 Japanese prefectures by band and mode',
+        'icon' => 'fas fa-torii-gate',
+        'info_lines' => array(
+            lang('awards_waja_description_ln1'),
+            lang('awards_waja_description_ln2'),
+            lang('awards_waja_description_ln3'),
+            lang('awards_waja_description_ln4'),
+        ),
+    )); ?>
 
     <!-- Filters Section (collapsible card like DXCC) -->
-    <div class="card mb-4" style="margin-top: 20px;">
+    <div class="card mb-4">
         <div class="card-header filter-collapse" data-bs-toggle="collapse" data-bs-target="#filterPanel" style="cursor: pointer;">
             <i class="fas fa-filter me-2"></i><strong>Filters</strong>
             <span class="float-end"><i class="fas fa-chevron-down"></i></span>

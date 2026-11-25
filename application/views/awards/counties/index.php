@@ -159,24 +159,19 @@
         var tileUrl = "<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>";
     </script>
 
-    <!-- Award Info Box -->
-    <div class="counties-hero d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
-        <div>
-            <script>
-            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-            var lang_award_info_ln1 = "<?php echo lang('awards_counties_description_ln1'); ?>";
-            var lang_award_info_ln2 = "<?php echo lang('awards_counties_description_ln2'); ?>";
-            var lang_award_info_ln3 = "<?php echo lang('awards_counties_description_ln3'); ?>";
-            var lang_award_info_ln4 = "<?php echo lang('awards_counties_description_ln4'); ?>";
-            </script>
-            <h2 class="mb-1"><?php echo $page_title; ?></h2>
-            <p class="mb-0 text-muted">MARAC United States of America Counties Award (USA-CA): track worked counties toward each 500-county class and the full 3077.</p>
-        </div>
-        <div>
-            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
-        </div>
+    <div class="awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'MARAC United States of America Counties Award (USA-CA) &middot; Track worked counties toward each 500-county class and the full 3,077',
+        'icon' => 'fas fa-map',
+        'info_lines' => array(
+            lang('awards_counties_description_ln1'),
+            lang('awards_counties_description_ln2'),
+            lang('awards_counties_description_ln3'),
+            lang('awards_counties_description_ln4'),
+        ),
+    )); ?>
     </div>
-    <!-- End of Award Info Box -->
 
     <?php if ($counties_array) {
         $summary = $counties_array;

@@ -1,13 +1,11 @@
-<div class="container">
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'GMDX Summer VHF Challenge &middot; 4m &amp; 6m Maidenhead locator scoring',
+        'icon' => 'fas fa-medal',
+    )); ?>
 
-    <!-- Award Info Box -->
-    <br>
-    <div id="awardInfoButton">
-        <h2><?php echo $page_title; ?></h2>
-    </div>
-    <!-- End of Award Info Box -->
-
-    <div class="card">
+    <div class="card mb-3">
         <div class="card-header">
             What is the GMDX Summer Challenge?
         </div>

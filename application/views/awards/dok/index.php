@@ -1,19 +1,16 @@
-<div class="container">
-        <!-- Award Info Box -->
-        <br>
-        <div id="awardInfoButton">
-            <script>
-            var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-            var lang_award_info_ln1 = "<?php echo lang('awards_dok_description_ln1'); ?>";
-            var lang_award_info_ln2 = "<?php echo lang('awards_dok_description_ln2'); ?>";
-            var lang_award_info_ln3 = "<?php echo lang('awards_dok_description_ln3'); ?>";
-            var lang_award_info_ln4 = "<?php echo lang('awards_dok_description_ln4'); ?>";
-            </script>
-            <h2><?php echo $page_title; ?></h2>
-            <button type="button" class="btn btn-sm btn-primary me-1" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
-        </div>
-        <!-- End of Award Info Box -->
-            <form class="form" action="<?php echo site_url('awards/dok'); ?>" method="post" enctype="multipart/form-data">
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => $page_title,
+        'subtitle' => 'DARC DOK &amp; SDOK &middot; German Ortsverband reference tracking',
+        'icon' => 'fas fa-map-pin',
+        'info_lines' => array(
+            lang('awards_dok_description_ln1'),
+            lang('awards_dok_description_ln2'),
+            lang('awards_dok_description_ln3'),
+            lang('awards_dok_description_ln4'),
+        ),
+    )); ?>
+    <form class="form filter-section p-3 mb-3" action="<?php echo site_url('awards/dok'); ?>" method="post" enctype="multipart/form-data">
             <fieldset>
 
             <div class="mb-3 row">

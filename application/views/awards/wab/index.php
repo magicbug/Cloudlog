@@ -65,20 +65,18 @@
   }
 </style>
 
-<div class="container">
-  <br>
-  <div id="awardInfoButton">
-    <script>
-      var lang_awards_info_button = "<?php echo lang('awards_info_button'); ?>";
-      var lang_award_info_ln1 = "<?php echo lang('awards_wab_description_ln1'); ?>";
-      var lang_award_info_ln2 = "<?php echo lang('awards_wab_description_ln2'); ?>";
-      var lang_award_info_ln3 = "<?php echo lang('awards_wab_description_ln3'); ?>";
-      var lang_award_info_ln4 = "<?php echo lang('awards_wab_description_ln4'); ?>";
-    </script>
-
-    <h2 class="mb-3"><?php echo $page_title; ?></h2>
-    <button type="button" class="btn btn-sm btn-primary me-2" id="displayAwardInfo"><?php echo lang('awards_info_button'); ?></button>
-  </div>
+<div class="container awards-page">
+  <?php $this->load->view('awards/components/topbar', array(
+      'title' => $page_title,
+      'subtitle' => 'Worked All Britain &middot; UK OS grid squares worked and confirmed',
+      'icon' => 'fas fa-th-list',
+      'info_lines' => array(
+          lang('awards_wab_description_ln1'),
+          lang('awards_wab_description_ln2'),
+          lang('awards_wab_description_ln3'),
+          lang('awards_wab_description_ln4'),
+      ),
+  )); ?>
 
   <?php if ($worked_count == 0 && $confirmed_count == 0) { ?>
   <div class="alert alert-info alert-dismissible fade show mb-4" role="alert">
