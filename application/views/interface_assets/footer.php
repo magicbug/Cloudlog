@@ -4459,8 +4459,10 @@ $(document).ready(function() {
             }
         };
         <?php if ($this->uri->segment(1) == "qsl") { ?>
+            if ($('.qsltable').length) {
             $('.qsltable').DataTable({
                     <?php } else if ($this->uri->segment(1) == "eqsl") { ?>
+                        if ($('.eqsltable').length) {
                         $('.eqsltable').DataTable({
                         <?php } ?> "pageLength": 25,
                         responsive: false,
@@ -4472,13 +4474,18 @@ $(document).ready(function() {
                         "language": {
                             url: getDataTablesLanguageUrl(),
                         },
-                        "order": [2, 'desc'],
+                        "order": [<?php echo $this->uri->segment(1) == "qsl" ? "3" : "2"; ?>, 'desc'],
+                        "columnDefs": [{
+                            "orderable": false,
+                            "targets": -1
+                        }],
                         dom: 'Bfrtip',
                         buttons: [{
                             extend: 'clear',
-                            text: 'Clear'
+                            text: 'Clear Filter'
                         }]
                         });
+            }
                         // change color of csv-button if dark mode is chosen
                         if (isDarkModeTheme()) {
                             $('[class*="buttons"]').css("color", "white");
