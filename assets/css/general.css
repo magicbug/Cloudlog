@@ -1642,3 +1642,255 @@ tr.htmx-swapping td {
 .contesting-table-wrap .dataTables_scrollHeadInner table {
 	width: 100% !important;
 }
+
+/* Main Live QSO Entry Cockpit */
+.qso_panel {
+	padding-top: 14px;
+	padding-bottom: 24px;
+}
+
+.qso-topbar,
+.qso-entry-card,
+.qso_panel .qso-map,
+.qso_panel .previous-qsos,
+.qso_panel .remote-operation-settings {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.75rem;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+	overflow: hidden;
+}
+
+.qso-topbar {
+	overflow: visible;
+}
+
+.qso-brand-icon {
+	width: 34px;
+	height: 34px;
+	border-radius: 0.55rem;
+	background-color: var(--bs-primary, #0d6efd);
+	color: #fff;
+	font-size: 0.9rem;
+	flex-shrink: 0;
+}
+
+.qso-mode-pill {
+	font-size: 0.7rem;
+	letter-spacing: 0.04em;
+	padding: 0.28em 0.65em;
+}
+
+.qso-station-inline {
+	font-size: 0.78rem;
+	line-height: 1.2;
+}
+
+.qso-inline-select {
+	width: auto !important;
+	min-width: 0;
+	max-width: 155px;
+	text-overflow: ellipsis;
+	border: none !important;
+	background-color: transparent !important;
+	padding: 0 1.45rem 0 0.25rem !important;
+	font-size: 0.8rem;
+	box-shadow: none !important;
+}
+
+/* Clean modern underline tabs matching mockup */
+.qso_panel .card-header:has(#myTab),
+.qso_panel .card-header:has(#qsoRightTabs) {
+	padding: 0.35rem 0.75rem 0;
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.05));
+}
+
+.qso_panel #myTab,
+.qso_panel #qsoRightTabs {
+	border-bottom: none;
+	gap: 0.25rem;
+}
+
+.qso_panel #myTab .nav-link,
+.qso_panel #qsoRightTabs .nav-link {
+	border: none !important;
+	border-bottom: 2px solid transparent !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: var(--bs-secondary-color, #64748b);
+	font-weight: 500;
+	padding: 0.45rem 0.7rem !important;
+	margin-bottom: -1px;
+}
+
+.qso_panel #myTab .nav-link.active,
+.qso_panel #qsoRightTabs .nav-link.active {
+	color: var(--bs-primary, #0d6efd) !important;
+	border-bottom-color: var(--bs-primary, #0d6efd) !important;
+	font-weight: 600;
+}
+
+.qso-clock-pill,
+.qso-rig-pill {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.5rem;
+}
+
+.qso-clock-pill {
+	line-height: 1.15;
+	text-align: right;
+}
+
+.qso-clock-time {
+	font-size: 0.96rem;
+	font-variant-numeric: tabular-nums;
+}
+
+.qso-utc-tag {
+	font-size: 0.64rem;
+	opacity: 0.65;
+	font-weight: 600;
+}
+
+.qso-clock-date {
+	font-size: 0.68rem;
+	opacity: 0.7;
+}
+
+.qso-pill-sep {
+	opacity: 0.3;
+	user-select: none;
+}
+
+.qso-cat-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background-color: var(--bs-secondary-color, #94a3b8);
+	margin-left: 0.25rem;
+	flex-shrink: 0;
+}
+
+.qso-cat-dot.is-connected {
+	background-color: var(--bs-success, #198754);
+	box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.2);
+}
+
+.qso-map-overlay {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 450;
+	padding: 0.22rem 0.6rem;
+	font-size: 0.74rem;
+	border-radius: 0.45rem;
+	background-color: var(--bs-body-bg, rgba(255, 255, 255, 0.92));
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
+	box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
+	pointer-events: none;
+	opacity: 0.94;
+}
+
+.qso-card-tabs {
+	font-size: 0.9rem;
+}
+
+.qso-field-label {
+	display: block;
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	margin-bottom: 0.22rem;
+	opacity: 0.78;
+	white-space: nowrap;
+}
+
+.qso-hero-callsign {
+	font-size: 1.25rem;
+	padding: 0.5rem 0.85rem;
+	height: 48px;
+	border-radius: 0.5rem;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.qso-hero-callsign::placeholder,
+.qso_panel #locator::placeholder {
+	text-transform: none;
+	font-weight: 400;
+	letter-spacing: normal;
+	opacity: 0.55;
+}
+
+/* Uniform height, border-radius & crispness across all QSO inputs & selects */
+.qso-entry-card .card-body {
+	padding: 1rem 1.1rem;
+}
+
+.qso-entry-card .form-control-sm,
+.qso-entry-card .form-select-sm {
+	height: 40px;
+	font-size: 0.95rem;
+	border-radius: 0.45rem;
+	padding-top: 0.4rem;
+	padding-bottom: 0.4rem;
+	border-color: var(--bs-border-color, #cbd5e1);
+}
+
+.qso-entry-card .form-control-sm {
+	padding-left: 0.7rem;
+	padding-right: 0.7rem;
+}
+
+.qso-entry-card textarea.form-control {
+	border-radius: 0.45rem;
+	font-size: 0.95rem;
+}
+
+.qso-lookup-strip {
+	min-height: 1.5rem;
+	margin-top: 0.4rem !important;
+	margin-bottom: 0.35rem;
+}
+
+.qso-entry-footer {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.05));
+	padding: 0.7rem 1.1rem !important;
+}
+
+.qso-entry-footer .btn {
+	border-radius: 0.45rem;
+	padding: 0.45rem 1.15rem;
+	font-size: 0.9rem;
+}
+
+/* Crisp compact Previous Contacts & DX Cluster table typography */
+.qso_panel .previous-qsos .table {
+	font-size: 0.85rem;
+}
+
+.qso_panel .previous-qsos .table thead th {
+	font-size: 0.72rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--bs-secondary-color, #64748b);
+	font-weight: 700;
+}
+
+.qso_panel .previous-qsos .table td {
+	vertical-align: middle;
+}
+
+@media (max-width: 575.98px) {
+	.qso_panel #qsoRightTabs {
+		flex-wrap: wrap !important;
+		overflow-x: visible !important;
+		white-space: normal !important;
+		gap: 0.15rem;
+	}
+	.qso_panel #qsoRightTabs .nav-link {
+		font-size: 0.82rem;
+		padding: 0.3rem 0.5rem;
+	}
+}

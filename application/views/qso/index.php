@@ -141,15 +141,110 @@
     }
   </style>
 
-  <div class="row qsopane">
+  <!-- Unified Top Operating Strip -->
+  <?php
+  $selected_station_profile = $this->session->userdata('station_profile_id');
+  if (empty($selected_station_profile)) {
+    $selected_station_profile = $active_station_profile;
+  }
+  $selected_station_found = false;
+  foreach ($stations->result() as $stationrow) {
+    if ((string)$stationrow->station_id === (string)$selected_station_profile) {
+      $selected_station_found = true;
+      break;
+    }
+  }
+  if (!$selected_station_found) {
+    $selected_station_profile = $active_station_profile;
+  }
+  ?>
+  <div class="card qso-topbar mb-3">
+    <div class="card-body py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+      <!-- Left: Title + LIVE/POST Toggle + Active Station Profile -->
+      <div class="d-flex align-items-center gap-2">
+        <span class="qso-brand-icon d-inline-flex align-items-center justify-content-center">
+          <i class="fas fa-broadcast-tower"></i>
+        </span>
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <h2 class="h5 mb-0 fw-bold"><?php echo lang('gen_hamradio_qso'); ?></h2>
+            <?php if ($manual == 0) { ?>
+              <span class="badge rounded-pill text-bg-success qso-mode-pill" style="cursor: pointer;" onclick="switchMode('<?php echo site_url('qso') . '?manual=1'; ?>')" title="Switch to Manual (POST) mode">
+                <i class="fas fa-circle fa-2xs me-1"></i>LIVE
+              </span>
+            <?php } else { ?>
+              <span class="badge rounded-pill text-bg-danger qso-mode-pill" style="cursor: pointer;" onclick="switchMode('<?php echo site_url('qso') . '?manual=0'; ?>')" title="Switch to LIVE mode">
+                <i class="fas fa-pen fa-2xs me-1"></i>POST
+              </span>
+            <?php } ?>
+          </div>
+          <div class="d-flex align-items-center gap-1 small text-body-secondary qso-station-inline">
+            <span>Station:</span>
+            <select id="qso-topbar-station" class="form-select form-select-sm qso-inline-select fw-semibold" aria-label="<?php echo lang('cloudlog_station_profile'); ?>">
+              <?php foreach ($stations->result() as $stationrow) { ?>
+                <option value="<?php echo $stationrow->station_id; ?>" <?php if ((string)$selected_station_profile === (string)$stationrow->station_id) { echo 'selected="selected"'; } ?>><?php echo htmlspecialchars($stationrow->station_profile_name); ?></option>
+              <?php } ?>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center: Live UTC Clock + Unified Radio & Frequency Pill -->
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <?php if ($manual == 0) { ?>
+          <div class="qso-clock-pill px-3 py-1">
+            <div class="font-monospace fw-bold qso-clock-time">
+              <span id="qso-utc-clock"><?php echo gmdate('H:i:s'); ?></span>
+              <span class="qso-utc-tag">UTC</span>
+              <?php if ($this->session->userdata('user_qso_end_times') == 1) { ?>
+                <i id="reset_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch ms-1 text-primary" style="cursor:pointer;"></i>
+              <?php } ?>
+            </div>
+            <div class="font-monospace qso-clock-date" id="qso-utc-date"><?php echo date($user_date_format); ?></div>
+          </div>
+        <?php } ?>
+
+        <div class="qso-rig-pill d-flex align-items-center gap-1 px-2 py-1">
+          <span id="qso-cat-dot" class="qso-cat-dot <?php echo ($this->session->userdata('radio') && $this->session->userdata('radio') != '0') ? 'is-connected' : ''; ?>" title="CAT Radio Status"></span>
+          <select class="form-select form-select-sm qso-inline-select radios" id="qso-topbar-radio" aria-label="<?php echo lang('gen_hamradio_radio'); ?>">
+            <option value="0" selected="selected"><?php echo lang('general_word_none'); ?></option>
+            <?php foreach ($radios->result() as $row) { ?>
+              <option value="<?php echo $row->id; ?>" <?php if ($this->session->userdata('radio') == $row->id) { echo 'selected="selected"'; } ?>><?php echo htmlspecialchars($row->radio); ?></option>
+            <?php } ?>
+          </select>
+          <span class="qso-pill-sep">|</span>
+          <span id="qso-topbar-freq" class="font-monospace fw-bold small text-primary px-1"><?php echo $this->session->userdata('freq') ? htmlspecialchars($this->session->userdata('freq')) : '&mdash;'; ?></span>
+        </div>
+      </div>
+
+      <!-- Right: Favorites Dropdown + Bandmap -->
+      <div class="d-flex align-items-center gap-1">
+        <div class="dropdown">
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" id="fav_item" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Favourites">
+            <i class="fa fa-star text-warning me-1"></i>Favs
+          </button>
+          <div class="dropdown-menu dropdown-menu-end">
+            <button type="button" class="dropdown-item" id="fav_add"><?php echo lang('fav_add'); ?></button>
+            <div class="dropdown-divider"></div>
+            <div id="fav_menu"></div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-primary" onclick="openBandmap()" title="Open DX Cluster Bandmap">
+          <i class="fas fa-chart-line me-1"></i><?php echo lang('menu_bandmap'); ?>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="row qsopane g-3 align-items-start">
 
     <div class="col-lg-5">
-      <div class="card">
+      <div class="card qso-entry-card">
 
         <form id="qso_input" method="post" action="<?php echo site_url('qso') . "?manual=" . $manual; ?>" data-ajax-save-url="<?php echo site_url('qso/ajax_saveqso'); ?>" name="qsos" autocomplete="off" onReset="resetTimers(<?php echo $manual; ?>);">
 
           <div class="card-header">
-            <ul style="font-size: 15px;" class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
+            <ul class="nav nav-tabs card-header-tabs qso-card-tabs" id="myTab" role="tablist">
               <li class="nav-item">
                 <a class="nav-link active" id="qsp-tab" data-bs-toggle="tab" href="#qso" role="tab" aria-controls="qso" aria-selected="true"><?php echo lang('gen_hamradio_qso'); ?></a>
               </li>
@@ -183,139 +278,70 @@
                 <a class="nav-link" id="qsl-tab" data-bs-toggle="tab" href="#qsl" role="tab" aria-controls="qsl" aria-selected="false"><?php echo lang('gen_hamradio_qsl'); ?></a>
               </li>
               <?php endif; ?>
-
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="fav_item" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-star"></i></a>
-                <div class="dropdown-menu">
-                  <button type="button" class="dropdown-item" id="fav_add"><?php echo lang('fav_add'); ?></button>
-                  <div class="dropdown-divider"></div>
-                  <div id="fav_menu"></div>
-                </div>
-              </li>
-
-              <li class="nav-item ms-auto d-flex align-items-center">
-                <?php if ($manual == 0) {
-                  echo " <span class=\"badge text-bg-success\" style=\"cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0.9rem;\" onclick=\"switchMode('" . site_url('qso') . "?manual=1')\" title=\"Switch to Manual mode\">LIVE</span>";
-                };
-                if ($manual == 1) {
-                  echo " <span class=\"badge text-bg-danger\" style=\"cursor: pointer; font-size: 0.9rem; padding: 0.4rem 0.9rem;\" onclick=\"switchMode('" . site_url('qso') . "?manual=0')\" title=\"Switch to LIVE mode\">POST</span>";
-                } ?>
-              </li>
-              
             </ul>
           </div>
 
-          <div class="card-body">
+          <div class="card-body py-3">
             <div class="tab-content" id="myTabContent">
-              <div class="tab-pane fade show active" id="qso" role="tabpanel" aria-labelledby="qso-tab">
-                <!-- HTML for Date/Time -->
-                <?php if ($this->session->userdata('user_qso_end_times')  == 1) { ?>
-                  <div class="row">
-                    <div class="mb-3 col-6 col-md-3">
-                      <label for="start_date"><?php echo lang('general_word_date'); ?></label>
-                      <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
-                                                                                                                                    echo $this->session->userdata('start_date');
-                                                                                                                                  } else {
-                                                                                                                                    echo date($user_date_format);
-                                                                                                                                  } ?>" <?php echo ($manual == 0 ? "disabled" : "");  ?> required>
+              <div class="tab-pane fade show active" id="qso" role="tabpanel" aria-labelledby="qsp-tab">
+                <!-- HTML for Date/Time (Visible editable inputs in POST mode; single unique hidden inputs in LIVE mode) -->
+                <?php if ($manual == 0) { ?>
+                  <input class="input_start_time" type="hidden" id="start_time" name="start_time" value="<?php echo date('H:i:s'); ?>" />
+                  <?php if ($this->session->userdata('user_qso_end_times') == 1) { ?>
+                    <input class="input_end_time" type="hidden" id="end_time" name="end_time" value="<?php echo date('H:i:s'); ?>" />
+                  <?php } ?>
+                  <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo date($user_date_format); ?>" />
+                <?php } elseif ($this->session->userdata('user_qso_end_times') == 1) { ?>
+                  <div class="row g-2 mb-2">
+                    <div class="col-4">
+                      <label class="qso-field-label" for="start_date"><?php echo lang('general_word_date'); ?></label>
+                      <input type="text" class="form-control form-control-sm input_date font-monospace" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date($user_date_format); } ?>" required>
                     </div>
-
-                    <div class="mb-3 col-6 col-md-3">
-                      <label for="start_time"><?php echo lang('general_word_time_on'); ?></label>
-                      <?php if ($manual != 1) { ?>
-                        <i id="reset_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch"></i>
-                      <?php } else { ?>
-                        <i id="reset_start_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch"></i>
-                      <?php } ?>
-                      <input type="text" class="form-control form-control-sm input_start_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
-                                                                                                                                          echo substr($this->session->userdata('start_time'), 0, 5);
-                                                                                                                                        } else {
-                                                                                                                                          echo $manual == 0 ? date('H:i:s') : date('H:i');
-                                                                                                                                        } ?>" size="7" <?php echo ($manual == 0 ? "disabled" : "");  ?> required pattern="[0-2][0-9]:[0-5][0-9]">
+                    <div class="col-4">
+                      <label class="qso-field-label" for="start_time"><?php echo lang('general_word_time_on'); ?> <i id="reset_start_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch ms-1" style="cursor:pointer;"></i></label>
+                      <input type="text" class="form-control form-control-sm input_start_time font-monospace" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo substr($this->session->userdata('start_time'), 0, 5); } else { echo date('H:i'); } ?>" size="7" required pattern="[0-2][0-9]:[0-5][0-9]">
                     </div>
-
-                    <div class="mb-3 col-6 col-md-3">
-                      <label for="end_time"><?php echo lang('general_word_time_off'); ?></label>
-                      <?php if ($manual == 1) { ?>
-                        <i id="reset_end_time" data-bs-toggle="tooltip" title="Reset end time" class="fas fa-stopwatch"></i>
-                      <?php } ?>
-                      <input type="text" class="form-control form-control-sm input_end_time" name="end_time" id="end_time" value="<?php if (($this->session->userdata('end_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
-                                                                                                                                    echo substr($this->session->userdata('end_time'), 0, 5);
-                                                                                                                                  } else {
-                                                                                                                                    echo $manual == 0 ? date('H:i:s') : date('H:i');
-                                                                                                                                  } ?>" size="7" <?php echo ($manual == 0 ? "disabled" : "");  ?> required pattern="[0-2][0-9]:[0-5][0-9]">
+                    <div class="col-4">
+                      <label class="qso-field-label" for="end_time"><?php echo lang('general_word_time_off'); ?> <i id="reset_end_time" data-bs-toggle="tooltip" title="Reset end time" class="fas fa-stopwatch ms-1" style="cursor:pointer;"></i></label>
+                      <input type="text" class="form-control form-control-sm input_end_time font-monospace" name="end_time" id="end_time" value="<?php if (($this->session->userdata('end_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo substr($this->session->userdata('end_time'), 0, 5); } else { echo date('H:i'); } ?>" size="7" required pattern="[0-2][0-9]:[0-5][0-9]">
                     </div>
-
-                    <?php if ($manual == 0) { ?>
-                      <input class="input_start_time" type="hidden" id="start_time" name="start_time" value="<?php echo date('H:i:s'); ?>" />
-                      <input class="input_end_time" type="hidden" id="end_time" name="end_time" value="<?php echo date('H:i:s'); ?>" />
-                      <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo date($user_date_format); ?>" />
-                    <?php } ?>
                   </div>
-
                 <?php } else { ?>
-                  <div class="row">
-                    <div class="mb-3 col-6 col-md-6">
-                      <label for="start_date"><?php echo lang('general_word_date'); ?></label>
-                      <input type="text" class="form-control form-control-sm input_date" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
-                                                                                                                                    echo $this->session->userdata('start_date');
-                                                                                                                                  } else {
-                                                                                                                                    echo date($user_date_format);
-                                                                                                                                  } ?>" <?php echo ($manual == 0 ? "disabled" : "");  ?> required>
+                  <div class="row g-2 mb-2">
+                    <div class="col-6">
+                      <label class="qso-field-label" for="start_date"><?php echo lang('general_word_date'); ?></label>
+                      <input type="text" class="form-control form-control-sm input_date font-monospace" name="start_date" id="start_date" value="<?php if (($this->session->userdata('start_date') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo $this->session->userdata('start_date'); } else { echo date($user_date_format); } ?>" required>
                     </div>
-
-                    <div class="mb-3 col-6 col-md-6">
-                      <label for="start_time"><?php echo lang('general_word_time'); ?></label>
-                      <?php if ($manual == 1) { ?>
-                        <i id="reset_start_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch"></i>
-                      <?php } ?>
-                      <input type="text" class="form-control form-control-sm input_start_time" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) {
-                                                                                                                                          echo substr($this->session->userdata('start_time'), 0, 5);
-                                                                                                                                        } else {
-                                                                                                                                          echo $manual == 0 ? date('H:i:s') : date('H:i');
-                                                                                                                                        } ?>" size="7" <?php echo ($manual == 0 ? "disabled" : "");  ?> required pattern="[0-2][0-9]:[0-5][0-9]">
+                    <div class="col-6">
+                      <label class="qso-field-label" for="start_time"><?php echo lang('general_word_time'); ?> <i id="reset_start_time" data-bs-toggle="tooltip" title="Reset start time" class="fas fa-stopwatch ms-1" style="cursor:pointer;"></i></label>
+                      <input type="text" class="form-control form-control-sm input_start_time font-monospace" name="start_time" id="start_time" value="<?php if (($this->session->userdata('start_time') != NULL && ((time() - $this->session->userdata('time_stamp')) < 24 * 60 * 60))) { echo substr($this->session->userdata('start_time'), 0, 5); } else { echo date('H:i'); } ?>" size="7" required pattern="[0-2][0-9]:[0-5][0-9]">
                     </div>
-
-                    <?php if ($manual == 0) { ?>
-                      <input class="input_start_time" type="hidden" id="start_time" name="start_time" value="<?php echo date('H:i:s'); ?>" />
-                      <input class="input_date" type="hidden" id="start_date" name="start_date" value="<?php echo date($user_date_format); ?>" />
-                    <?php } ?>
                   </div>
                 <?php } ?>
 
-                <!-- Callsign Input -->
-                <div class="row">
-                  <div class="mb-3 col-md-9">
-                    <label for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label><?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>&nbsp;<i id="check_cluster" data-bs-toggle="tooltip" title="Search DXCluster for latest Spot" class="fas fa-search"></i> <?php } ?>
-                  <input type="text" class="form-control" id="callsign" name="callsign" required>
-                  <small id="callsign_info" class="badge text-bg-secondary"></small> <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
+                <!-- Hero Callsign Input -->
+                <div class="mb-2">
+                  <div class="d-flex align-items-center justify-content-between mb-1">
+                    <label class="qso-field-label mb-0" for="callsign"><?php echo lang('gen_hamradio_callsign'); ?></label>
+                    <?php if ($this->optionslib->get_option('dxcache_url') != '') { ?>
+                      <span id="check_cluster" data-bs-toggle="tooltip" title="Search DXCluster for latest Spot" class="small text-primary" style="cursor:pointer;"><i class="fas fa-search me-1"></i>Cluster</span>
+                    <?php } ?>
                   </div>
-                  <div class="mb-3 col-md-3 align-self-center">
-                    <small id="qrz_info" class="text-bg-secondary me-1"></small>
-                    <small id="hamqth_info" class="text-bg-secondary me-1"></small>
+                  <input type="text" class="form-control qso-hero-callsign font-monospace fw-bold" id="callsign" name="callsign" placeholder="CALLSIGN" required>
+                  <div class="qso-lookup-strip d-flex flex-wrap align-items-center gap-1 mt-1">
+                    <span id="qso-lookup-ready" class="badge rounded-pill text-bg-secondary bg-opacity-25 text-body-secondary fw-normal">Ready &mdash; auto-lookup active</span>
+                    <small id="callsign_info" class="badge text-bg-secondary"></small>
+                    <a id="lotw_link"><small id="lotw_info" class="badge text-bg-success"></small></a>
+                    <small id="qrz_info" class="text-bg-secondary"></small>
+                    <small id="hamqth_info" class="text-bg-secondary"></small>
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="mb-3 col-6">
-                    <label for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
-                    <select id="mode" class="form-select mode form-select-sm" name="mode">
-                      <?php
-                      foreach ($modes->result() as $mode) {
-                        if ($mode->submode == null) {
-                          printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $this->session->userdata('mode') == $mode->mode ? "selected=\"selected\"" : "", $mode->mode);
-                        } else {
-                          printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $this->session->userdata('mode') == $mode->submode ? "selected=\"selected\"" : "", $mode->submode);
-                        }
-                      }
-                      ?>
-                    </select>
-                  </div>
-
-                  <div class="mb-3 col-6">
-                    <label for="band"><?php echo lang('gen_hamradio_band'); ?></label>
-
-                    <select id="band" class="form-select form-select-sm" name="band">
+                <!-- Mode, Band & Signal Reports (Compact 4-Column Row) -->
+                <div class="row g-2 mb-3">
+                  <div class="<?php echo $qso_fields['rst'] ? 'col-6 col-sm-3' : 'col-6'; ?>">
+                    <label class="qso-field-label" for="band"><?php echo lang('gen_hamradio_band'); ?></label>
+                    <select id="band" class="form-select form-select-sm fw-semibold" name="band">
                       <?php foreach ($bands as $key => $bandgroup) {
                         echo '<optgroup label="' . strtoupper($key) . '">';
                         foreach ($bandgroup as $band) {
@@ -330,454 +356,391 @@
                       ?>
                     </select>
                   </div>
-                </div>
 
-                <!-- Signal Report Information -->
-                <?php if ($qso_fields['rst']): ?>
-                <div class="row">
-                  <div class="mb-3 col-6">
-                    <label for="rst_sent"><?php echo lang('gen_hamradio_rsts'); ?></label>
-                    <input type="text" class="form-control form-control-sm" name="rst_sent" id="rst_sent" value="59">
+                  <div class="<?php echo $qso_fields['rst'] ? 'col-6 col-sm-3' : 'col-6'; ?>">
+                    <label class="qso-field-label" for="mode"><?php echo lang('gen_hamradio_mode'); ?></label>
+                    <select id="mode" class="form-select mode form-select-sm fw-semibold" name="mode">
+                      <?php
+                      foreach ($modes->result() as $mode) {
+                        if ($mode->submode == null) {
+                          printf("<option value=\"%s\" %s>%s</option>", $mode->mode, $this->session->userdata('mode') == $mode->mode ? "selected=\"selected\"" : "", $mode->mode);
+                        } else {
+                          printf("<option value=\"%s\" %s>&rArr; %s</option>", $mode->submode, $this->session->userdata('mode') == $mode->submode ? "selected=\"selected\"" : "", $mode->submode);
+                        }
+                      }
+                      ?>
+                    </select>
                   </div>
 
-                  <div class="mb-3 col-6">
-                    <label for="rst_rcvd"><?php echo lang('gen_hamradio_rstr'); ?></label>
-                    <input type="text" class="form-control form-control-sm" name="rst_rcvd" id="rst_rcvd" value="59">
+                  <?php if ($qso_fields['rst']): ?>
+                  <div class="col-6 col-sm-3">
+                    <label class="qso-field-label" for="rst_sent"><?php echo lang('gen_hamradio_rsts'); ?></label>
+                    <input type="text" class="form-control form-control-sm font-monospace text-center" name="rst_sent" id="rst_sent" value="59">
                   </div>
-                </div>
-                <?php else: ?>
-                <input type="hidden" name="rst_sent" value="59">
-                <input type="hidden" name="rst_rcvd" value="59">
-                <?php endif; ?>
 
-                <?php if ($qso_fields['name']): ?>
-                <div class="mb-3 row">
-                  <label for="name" class="col-sm-3 col-form-label"><?php echo lang('general_word_name'); ?></label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="name" id="name" value="">
+                  <div class="col-6 col-sm-3">
+                    <label class="qso-field-label" for="rst_rcvd"><?php echo lang('gen_hamradio_rstr'); ?></label>
+                    <input type="text" class="form-control form-control-sm font-monospace text-center" name="rst_rcvd" id="rst_rcvd" value="59">
                   </div>
+                  <?php else: ?>
+                  <input type="hidden" name="rst_sent" value="59">
+                  <input type="hidden" name="rst_rcvd" value="59">
+                  <?php endif; ?>
+                </div>
+
+                <!-- Name & Gridsquare Row -->
+                <?php if ($qso_fields['name'] || $qso_fields['locator']): ?>
+                <div class="row g-2 mb-3">
+                  <?php if ($qso_fields['name']): ?>
+                  <div class="<?php echo $qso_fields['locator'] ? 'col-12 col-sm-7' : 'col-12'; ?>">
+                    <label class="qso-field-label" for="name"><?php echo lang('general_word_name'); ?></label>
+                    <input type="text" class="form-control form-control-sm" name="name" id="name" placeholder="Operator name" value="">
+                  </div>
+                  <?php endif; ?>
+
+                  <?php if ($qso_fields['locator']): ?>
+                  <div class="<?php echo $qso_fields['name'] ? 'col-12 col-sm-5' : 'col-12'; ?>">
+                    <div class="d-flex align-items-center justify-content-between gap-1">
+                      <label class="qso-field-label" for="locator"><?php echo lang('gen_hamradio_gridsquare'); ?></label>
+                      <small id="locator_info" class="text-primary font-monospace" style="font-size:0.7rem;"></small>
+                    </div>
+                    <input type="text" class="form-control form-control-sm font-monospace" name="locator" id="locator" placeholder="e.g. IO85" value="">
+                  </div>
+                  <?php endif; ?>
                 </div>
                 <?php endif; ?>
 
-                <?php if ($qso_fields['qth'] || $qso_fields['locator']): ?>
-                <div class="d-lg-none mb-2">
-                  <button class="btn btn-outline-secondary btn-sm w-100" type="button" data-bs-toggle="collapse" data-bs-target="#qsoMobileOptionalFields" aria-expanded="false" aria-controls="qsoMobileOptionalFields">
-                    More QSO Fields
-                  </button>
-                </div>
-                <div id="qsoMobileOptionalFields" class="collapse d-lg-block">
-                <?php endif; ?>
-
+                <!-- Full-Width Location (QTH) -->
                 <?php if ($qso_fields['qth']): ?>
-                <div class="mb-3 row">
-                  <label for="qth" class="col-sm-3 col-form-label"><?php echo lang('general_word_location'); ?></label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="qth" id="qth" value="">
-                  </div>
+                <div class="mb-3">
+                  <label class="qso-field-label" for="qth"><?php echo lang('general_word_location'); ?></label>
+                  <input type="text" class="form-control form-control-sm" name="qth" id="qth" placeholder="City / Region / Country" value="">
                 </div>
                 <?php endif; ?>
 
-                <?php if ($qso_fields['locator']): ?>
-                <div class="mb-3 row">
-                  <label for="locator" class="col-sm-3 col-form-label"><?php echo lang('gen_hamradio_gridsquare'); ?></label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="locator" id="locator" value="">
-                    <small id="locator_info" class="form-text text-muted"></small>
-                  </div>
-                </div>
-                <?php endif; ?>
-
-                <?php if ($qso_fields['qth'] || $qso_fields['locator']): ?>
+                <!-- Full-Width Comment -->
+                <?php if ($qso_fields['comment']): ?>
+                <div class="mb-1">
+                  <label class="qso-field-label" for="comment"><?php echo lang('general_word_comment'); ?></label>
+                  <input type="text" class="form-control form-control-sm" name="comment" id="comment" placeholder="Rig, antenna, notes…" value="">
                 </div>
                 <?php endif; ?>
 
                 <input type="hidden" name="distance" id="distance" value="0">
-
-                <?php if ($qso_fields['comment']): ?>
-                <div class="mb-3 row">
-                  <label for="comment" class="col-sm-3 col-form-label"><?php echo lang('general_word_comment'); ?></label>
-                  <div class="col-sm-9">
-                    <input type="text" class="form-control form-control-sm" name="comment" id="comment" value="">
-                  </div>
-                </div>
-                <?php endif; ?>
 
               </div>
 
               <?php if ($qso_fields['station_tab']): ?>
               <!-- Station Panel Data -->
               <div class="tab-pane fade" id="station" role="tabpanel" aria-labelledby="station-tab">
-                <div class="mb-3">
-                  <label for="stationProfile"><?php echo lang('cloudlog_station_profile'); ?></label>
-                  <select id="stationProfile" class="form-select" name="station_profile">
-                    <?php
-                    $power = '';
-                    $selected_station_profile = $this->session->userdata('station_profile_id');
-                    if (empty($selected_station_profile)) {
-                      $selected_station_profile = $active_station_profile;
-                    }
-                    $selected_station_found = false;
-                    foreach ($stations->result() as $stationrow) {
-                      if ((string)$stationrow->station_id === (string)$selected_station_profile) {
-                        $selected_station_found = true;
-                        break;
-                      }
-                    }
-                    if (!$selected_station_found) {
-                      $selected_station_profile = $active_station_profile;
-                    }
-                    foreach ($stations->result() as $stationrow) {
-                    ?>
-                      <option value="<?php echo $stationrow->station_id; ?>" <?php if ((string)$selected_station_profile === (string)$stationrow->station_id) {
-                                                                                echo "selected=\"selected\"";
-                                                                                $power = $stationrow->station_power;
-                                                                              } ?>><?php echo $stationrow->station_profile_name; ?></option>
-                    <?php } ?>
-                  </select>
+                <div class="row g-2 mb-2">
+                  <div class="col-12">
+                    <label class="qso-field-label" for="stationProfile"><?php echo lang('cloudlog_station_profile'); ?></label>
+                    <select id="stationProfile" class="form-select form-select-sm" name="station_profile">
+                      <?php
+                      $power = '';
+                      foreach ($stations->result() as $stationrow) {
+                      ?>
+                        <option value="<?php echo $stationrow->station_id; ?>" <?php if ((string)$selected_station_profile === (string)$stationrow->station_id) {
+                                                                                  echo "selected=\"selected\"";
+                                                                                  $power = $stationrow->station_power;
+                                                                                } ?>><?php echo $stationrow->station_profile_name; ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="qso-field-label" for="radio"><?php echo lang('gen_hamradio_radio'); ?></label>
+                    <select class="form-select form-select-sm radios" id="radio" name="radio">
+                      <option value="0" selected="selected"><?php echo lang('general_word_none'); ?></option>
+                      <?php foreach ($radios->result() as $row) { ?>
+                        <option value="<?php echo $row->id; ?>" <?php if ($this->session->userdata('radio') == $row->id) {
+                                                                  echo "selected=\"selected\"";
+                                                                } ?>><?php echo $row->radio; ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
                 </div>
 
-                <div class="mb-3">
-                  <label for="radio"><?php echo lang('gen_hamradio_radio'); ?></label>
-                  <select class="form-select radios" id="radio" name="radio">
-                    <option value="0" selected="selected"><?php echo lang('general_word_none'); ?></option>
-                    <?php foreach ($radios->result() as $row) { ?>
-                      <option value="<?php echo $row->id; ?>" <?php if ($this->session->userdata('radio') == $row->id) {
-                                                                echo "selected=\"selected\"";
-                                                              } ?>><?php echo $row->radio; ?></option>
-                    <?php } ?>
-                  </select>
+                <div class="row g-2 mb-2">
+                  <?php if ($qso_fields['freq_tx']): ?>
+                  <div class="col-6">
+                    <label class="qso-field-label" for="frequency"><?php echo lang('gen_hamradio_frequency'); ?></label>
+                    <input type="text" class="form-control form-control-sm font-monospace" id="frequency" name="freq_display" value="<?php echo $this->session->userdata('freq'); ?>" />
+                  </div>
+                  <?php endif; ?>
+
+                  <?php if ($qso_fields['freq_rx']): ?>
+                  <div class="col-6">
+                    <label class="qso-field-label" for="frequency_rx"><?php echo lang('gen_hamradio_frequency_rx'); ?></label>
+                    <input type="text" class="form-control form-control-sm font-monospace" id="frequency_rx" name="freq_display_rx" value="<?php echo $this->session->userdata('freq_rx'); ?>" />
+                  </div>
+                  <?php endif; ?>
                 </div>
 
-                <?php if ($qso_fields['freq_tx']): ?>
-                <div class="mb-3">
-                  <label for="frequency"><?php echo lang('gen_hamradio_frequency'); ?></label>
-                  <input type="text" class="form-control" id="frequency" name="freq_display" value="<?php echo $this->session->userdata('freq'); ?>" />
+                <div class="row g-2 mb-2">
+                  <?php if ($qso_fields['band_rx']): ?>
+                  <div class="col-6">
+                    <label class="qso-field-label" for="band_rx"><?php echo lang('gen_hamradio_band_rx'); ?></label>
+                    <select id="band_rx" class="form-select form-select-sm" name="band_rx">
+                      <option value="" <?php if ($this->session->userdata('band_rx') == "") { echo "selected=\"selected\""; } ?>></option>
+                      <?php foreach ($bands as $key => $bandgroup) {
+                        echo '<optgroup label="' . strtoupper($key) . '">';
+                        foreach ($bandgroup as $band) {
+                          echo '<option value="' . $band . '"';
+                          if ($this->session->userdata('band_rx') == $band) echo ' selected';
+                          echo '>' . $band . '</option>' . "\n";
+                        }
+                        echo '</optgroup>';
+                      } ?>
+                    </select>
+                  </div>
+                  <?php endif; ?>
+
+                  <?php if ($qso_fields['transmit_power']): ?>
+                  <div class="col-6">
+                    <label class="qso-field-label" for="transmit_power"><?php echo lang('gen_hamradio_transmit_power'); ?></label>
+                    <input type="number" step="0.001" class="form-control form-control-sm font-monospace" id="transmit_power" name="transmit_power" value="<?php if ($this->session->userdata('transmit_power')) { echo $this->session->userdata('transmit_power'); } else { echo $power; } ?>" />
+                    <small id="powerHelp" class="form-text text-muted"><?php echo lang('qso_transmit_power_helptext'); ?></small>
+                  </div>
+                  <?php endif; ?>
                 </div>
-                <?php endif; // freq_tx ?>
-
-                <?php if ($qso_fields['freq_rx']): ?>
-                <div class="mb-3">
-                  <label for="frequency_rx"><?php echo lang('gen_hamradio_frequency_rx'); ?></label>
-                  <input type="text" class="form-control" id="frequency_rx" name="freq_display_rx" value="<?php echo $this->session->userdata('freq_rx'); ?>" />
-                </div>
-                <?php endif; // freq_rx ?>
-
-                <?php if ($qso_fields['band_rx']): ?>
-                <div class="mb-3">
-                  <label for="band_rx"><?php echo lang('gen_hamradio_band_rx'); ?></label>
-
-                  <select id="band_rx" class="form-select" name="band_rx">
-                    <option value="" <?php if ($this->session->userdata('band_rx') == "") {
-                                        echo "selected=\"selected\"";
-                                      } ?>></option>
-
-                    <?php foreach ($bands as $key => $bandgroup) {
-                      echo '<optgroup label="' . strtoupper($key) . '">';
-                      foreach ($bandgroup as $band) {
-                        echo '<option value="' . $band . '"';
-                        if ($this->session->userdata('band_rx') == $band) echo ' selected';
-                        echo '>' . $band . '</option>' . "\n";
-                      }
-                      echo '</optgroup>';
-                    }
-                    ?>
-                  </select>
-                </div>
-                <?php endif; // band_rx ?>
-
-                <?php if ($qso_fields['transmit_power']): ?>
-                <div class="mb-3">
-                  <label for="transmit_power"><?php echo lang('gen_hamradio_transmit_power'); ?></label>
-                  <input type="number" step="0.001" class="form-control" id="transmit_power" name="transmit_power" value="<?php if ($this->session->userdata('transmit_power')) {
-                                                                                                                            echo $this->session->userdata('transmit_power');
-                                                                                                                          } else {
-                                                                                                                            echo $power;
-                                                                                                                          } ?>" />
-                  <small id="powerHelp" class="form-text text-muted"><?php echo lang('qso_transmit_power_helptext'); ?></small>
-                </div>
-                <?php endif; // transmit_power ?>
 
                 <?php if ($qso_fields['operator_callsign']): ?>
-                <div class="mb-3">
-                  <label for="operator_callsign"><?php echo lang('qso_operator_callsign'); ?></label>
-                  <input type="text" class="form-control" id="operator_callsign" name="operator_callsign" value="<?php if ($this->session->userdata('operator_callsign')) {
-                                                                                                                    echo $this->session->userdata('operator_callsign');
-                                                                                                                  } ?>" />
+                <div class="mb-1">
+                  <label class="qso-field-label" for="operator_callsign"><?php echo lang('qso_operator_callsign'); ?></label>
+                  <input type="text" class="form-control form-control-sm font-monospace" id="operator_callsign" name="operator_callsign" value="<?php if ($this->session->userdata('operator_callsign')) { echo $this->session->userdata('operator_callsign'); } ?>" />
                 </div>
-                <?php endif; // operator_callsign ?>
+                <?php endif; ?>
 
               </div>
               <?php endif; // station_tab ?>
 
               <?php if ($qso_fields['general_tab']): ?>
-              <!-- General Items -->
+              <!-- General Items (Compact 2-Column Grid) -->
               <div class="tab-pane fade" id="general" role="tabpanel" aria-labelledby="general-tab">
-                <div class="mb-3">
-                  <label for="dxcc_id"><?php echo lang('gen_hamradio_dxcc'); ?></label>
-                  <select class="form-select" id="dxcc_id" name="dxcc_id" required>
-                    <option value="0">- NONE -</option>
-                    <?php
-                    foreach ($dxcc as $d) {
-                      echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name)));
-                      if ($d->Enddate != null) {
-                        echo ' (' . lang('gen_hamradio_deleted_dxcc') . ')';
+                <div class="row g-2 mb-2">
+                  <div class="col-12 col-sm-7">
+                    <label class="qso-field-label" for="dxcc_id"><?php echo lang('gen_hamradio_dxcc'); ?></label>
+                    <select class="form-select form-select-sm" id="dxcc_id" name="dxcc_id" required>
+                      <option value="0">- NONE -</option>
+                      <?php
+                      foreach ($dxcc as $d) {
+                        echo '<option value=' . $d->adif . '>' . $d->prefix . ' - ' . ucwords(strtolower(($d->name)));
+                        if ($d->Enddate != null) {
+                          echo ' (' . lang('gen_hamradio_deleted_dxcc') . ')';
+                        }
+                        echo '</option>';
                       }
-                      echo '</option>';
-                    }
-                    ?>
-
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="continent"><?php echo lang('gen_hamradio_continent'); ?></label>
-                  <select class="form-select" id="continent" name="continent">
-                    <option value=""></option>
-                    <option value="AF"><?php echo lang('africa'); ?></option>
-                    <option value="AN"><?php echo lang('antarctica'); ?></option>
-                    <option value="AS"><?php echo lang('asia'); ?></option>
-                    <option value="EU"><?php echo lang('europe'); ?></option>
-                    <option value="NA"><?php echo lang('northamerica'); ?></option>
-                    <option value="OC"><?php echo lang('oceania'); ?></option>
-                    <option value="SA"><?php echo lang('southamerica'); ?></option>
-                  </select>
-                </div>
-                <div class="mb-3">
-                  <label for="cqz"><?php echo lang('gen_hamradio_cq_zone'); ?></label>
-                  <select class="form-select" id="cqz" name="cqz" required>
-                    <?php
-                    for ($i = 0; $i <= 40; $i++) {
-                      echo '<option value="' . $i . '">' . $i . '</option>';
-                    }
-                    ?>
-                  </select>
+                      ?>
+                    </select>
+                  </div>
+                  <div class="col-6 col-sm-5">
+                    <label class="qso-field-label" for="continent"><?php echo lang('gen_hamradio_continent'); ?></label>
+                    <select class="form-select form-select-sm" id="continent" name="continent">
+                      <option value=""></option>
+                      <option value="AF"><?php echo lang('africa'); ?></option>
+                      <option value="AN"><?php echo lang('antarctica'); ?></option>
+                      <option value="AS"><?php echo lang('asia'); ?></option>
+                      <option value="EU"><?php echo lang('europe'); ?></option>
+                      <option value="NA"><?php echo lang('northamerica'); ?></option>
+                      <option value="OC"><?php echo lang('oceania'); ?></option>
+                      <option value="SA"><?php echo lang('southamerica'); ?></option>
+                    </select>
+                  </div>
                 </div>
 
-                <div class="mb-3">
-                  <label for="selectPropagation"><?php echo lang('gen_hamradio_propagation_mode'); ?></label>
-                  <select class="form-select" id="selectPropagation" name="prop_mode">
-                    <option value="" <?php if (!empty($this->session->userdata('prop_mode'))) {
-                                        echo "selected=\"selected\"";
-                                      } ?>></option>
-                    <option value="AS" <?php if ($this->session->userdata('prop_mode') == "AS") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Aircraft Scatter</option>
-                    <option value="AUR" <?php if ($this->session->userdata('prop_mode') == "AUR") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Aurora</option>
-                    <option value="AUE" <?php if ($this->session->userdata('prop_mode') == "AUE") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Aurora-E</option>
-                    <option value="BS" <?php if ($this->session->userdata('prop_mode') == "BS") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Back scatter</option>
-                    <option value="ECH" <?php if ($this->session->userdata('prop_mode') == "ECH") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>EchoLink</option>
-                    <option value="EME" <?php if ($this->session->userdata('prop_mode') == "EME") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Earth-Moon-Earth</option>
-                    <option value="ES" <?php if ($this->session->userdata('prop_mode') == "ES") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Sporadic E</option>
-                    <option value="FAI" <?php if ($this->session->userdata('prop_mode') == "FAI") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Field Aligned Irregularities</option>
-                    <option value="F2" <?php if ($this->session->userdata('prop_mode') == "F2") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>F2 Reflection</option>
-                    <option value="INTERNET" <?php if ($this->session->userdata('prop_mode') == "INTERNET") {
-                                                echo "selected=\"selected\"";
-                                              } ?>>Internet-assisted</option>
-                    <option value="ION" <?php if ($this->session->userdata('prop_mode') == "ION") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Ionoscatter</option>
-                    <option value="IRL" <?php if ($this->session->userdata('prop_mode') == "IRL") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>IRLP</option>
-                    <option value="MS" <?php if ($this->session->userdata('prop_mode') == "MS") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Meteor scatter</option>
-                    <option value="RPT" <?php if ($this->session->userdata('prop_mode') == "RPT") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Terrestrial or atmospheric repeater or transponder</option>
-                    <option value="RS" <?php if ($this->session->userdata('prop_mode') == "RS") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Rain scatter</option>
-                    <option value="SAT" <?php if ($this->session->userdata('prop_mode') == "SAT") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Satellite</option>
-                    <option value="TEP" <?php if ($this->session->userdata('prop_mode') == "TEP") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Trans-equatorial</option>
-                    <option value="TR" <?php if ($this->session->userdata('prop_mode') == "TR") {
-                                          echo "selected=\"selected\"";
-                                        } ?>>Tropospheric ducting</option>
-                  </select>
+                <div class="row g-2 mb-2">
+                  <div class="col-4">
+                    <label class="qso-field-label" for="cqz"><?php echo lang('gen_hamradio_cq_zone'); ?></label>
+                    <select class="form-select form-select-sm" id="cqz" name="cqz" required>
+                      <?php
+                      for ($i = 0; $i <= 40; $i++) {
+                        echo '<option value="' . $i . '">' . $i . '</option>';
+                      }
+                      ?>
+                    </select>
+                  </div>
+                  <div class="col-8">
+                    <label class="qso-field-label" for="selectPropagation"><?php echo lang('gen_hamradio_propagation_mode'); ?></label>
+                    <select class="form-select form-select-sm" id="selectPropagation" name="prop_mode">
+                      <option value="" <?php if (!empty($this->session->userdata('prop_mode'))) { echo "selected=\"selected\""; } ?>></option>
+                      <option value="AS" <?php if ($this->session->userdata('prop_mode') == "AS") { echo "selected=\"selected\""; } ?>>Aircraft Scatter</option>
+                      <option value="AUR" <?php if ($this->session->userdata('prop_mode') == "AUR") { echo "selected=\"selected\""; } ?>>Aurora</option>
+                      <option value="AUE" <?php if ($this->session->userdata('prop_mode') == "AUE") { echo "selected=\"selected\""; } ?>>Aurora-E</option>
+                      <option value="BS" <?php if ($this->session->userdata('prop_mode') == "BS") { echo "selected=\"selected\""; } ?>>Back scatter</option>
+                      <option value="ECH" <?php if ($this->session->userdata('prop_mode') == "ECH") { echo "selected=\"selected\""; } ?>>EchoLink</option>
+                      <option value="EME" <?php if ($this->session->userdata('prop_mode') == "EME") { echo "selected=\"selected\""; } ?>>Earth-Moon-Earth</option>
+                      <option value="ES" <?php if ($this->session->userdata('prop_mode') == "ES") { echo "selected=\"selected\""; } ?>>Sporadic E</option>
+                      <option value="FAI" <?php if ($this->session->userdata('prop_mode') == "FAI") { echo "selected=\"selected\""; } ?>>Field Aligned Irregularities</option>
+                      <option value="F2" <?php if ($this->session->userdata('prop_mode') == "F2") { echo "selected=\"selected\""; } ?>>F2 Reflection</option>
+                      <option value="INTERNET" <?php if ($this->session->userdata('prop_mode') == "INTERNET") { echo "selected=\"selected\""; } ?>>Internet-assisted</option>
+                      <option value="ION" <?php if ($this->session->userdata('prop_mode') == "ION") { echo "selected=\"selected\""; } ?>>Ionoscatter</option>
+                      <option value="IRL" <?php if ($this->session->userdata('prop_mode') == "IRL") { echo "selected=\"selected\""; } ?>>IRLP</option>
+                      <option value="MS" <?php if ($this->session->userdata('prop_mode') == "MS") { echo "selected=\"selected\""; } ?>>Meteor scatter</option>
+                      <option value="RPT" <?php if ($this->session->userdata('prop_mode') == "RPT") { echo "selected=\"selected\""; } ?>>Terrestrial or atmospheric repeater or transponder</option>
+                      <option value="RS" <?php if ($this->session->userdata('prop_mode') == "RS") { echo "selected=\"selected\""; } ?>>Rain scatter</option>
+                      <option value="SAT" <?php if ($this->session->userdata('prop_mode') == "SAT") { echo "selected=\"selected\""; } ?>>Satellite</option>
+                      <option value="TEP" <?php if ($this->session->userdata('prop_mode') == "TEP") { echo "selected=\"selected\""; } ?>>Trans-equatorial</option>
+                      <option value="TR" <?php if ($this->session->userdata('prop_mode') == "TR") { echo "selected=\"selected\""; } ?>>Tropospheric ducting</option>
+                    </select>
+                  </div>
                 </div>
 
                 <?php if ($qso_fields['usa_state']): ?>
-                <div class="mb-3" id="usa_state_field_wrapper" style="display:none">
-                  <label for="input_usa_state"><?php echo lang('gen_hamradio_usa_state'); ?></label>
-                  <select class="form-select" id="input_usa_state" name="usa_state">
-                    <option value=""></option>
-                    <option value="AL">Alabama (AL)</option>
-                    <option value="AK">Alaska (AK)</option>
-                    <option value="AZ">Arizona (AZ)</option>
-                    <option value="AR">Arkansas (AR)</option>
-                    <option value="CA">California (CA)</option>
-                    <option value="CO">Colorado (CO)</option>
-                    <option value="CT">Connecticut (CT)</option>
-                    <option value="DE">Delaware (DE)</option>
-                    <option value="DC">District Of Columbia (DC)</option>
-                    <option value="FL">Florida (FL)</option>
-                    <option value="GA">Georgia (GA)</option>
-                    <option value="HI">Hawaii (HI)</option>
-                    <option value="ID">Idaho (ID)</option>
-                    <option value="IL">Illinois (IL)</option>
-                    <option value="IN">Indiana (IN)</option>
-                    <option value="IA">Iowa (IA)</option>
-                    <option value="KS">Kansas (KS)</option>
-                    <option value="KY">Kentucky (KY)</option>
-                    <option value="LA">Louisiana (LA)</option>
-                    <option value="ME">Maine (ME)</option>
-                    <option value="MD">Maryland (MD)</option>
-                    <option value="MA">Massachusetts (MA)</option>
-                    <option value="MI">Michigan (MI)</option>
-                    <option value="MN">Minnesota (MN)</option>
-                    <option value="MS">Mississippi (MS)</option>
-                    <option value="MO">Missouri (MO)</option>
-                    <option value="MT">Montana (MT)</option>
-                    <option value="NE">Nebraska (NE)</option>
-                    <option value="NV">Nevada (NV)</option>
-                    <option value="NH">New Hampshire (NH)</option>
-                    <option value="NJ">New Jersey (NJ)</option>
-                    <option value="NM">New Mexico (NM)</option>
-                    <option value="NY">New York (NY)</option>
-                    <option value="NC">North Carolina (NC)</option>
-                    <option value="ND">North Dakota (ND)</option>
-                    <option value="OH">Ohio (OH)</option>
-                    <option value="OK">Oklahoma (OK)</option>
-                    <option value="OR">Oregon (OR)</option>
-                    <option value="PA">Pennsylvania (PA)</option>
-                    <option value="RI">Rhode Island (RI)</option>
-                    <option value="SC">South Carolina (SC)</option>
-                    <option value="SD">South Dakota (SD)</option>
-                    <option value="TN">Tennessee (TN)</option>
-                    <option value="TX">Texas (TX)</option>
-                    <option value="UT">Utah (UT)</option>
-                    <option value="VT">Vermont (VT)</option>
-                    <option value="VA">Virginia (VA)</option>
-                    <option value="WA">Washington (WA)</option>
-                    <option value="WV">West Virginia (WV)</option>
-                    <option value="WI">Wisconsin (WI)</option>
-                    <option value="WY">Wyoming (WY)</option>
-                  </select>
-                </div>
+                <div class="row g-2 mb-2">
+                  <div class="col-6" id="usa_state_field_wrapper" style="display:none">
+                    <label class="qso-field-label" for="input_usa_state"><?php echo lang('gen_hamradio_usa_state'); ?></label>
+                    <select class="form-select form-select-sm" id="input_usa_state" name="usa_state">
+                      <option value=""></option>
+                      <option value="AL">Alabama (AL)</option>
+                      <option value="AK">Alaska (AK)</option>
+                      <option value="AZ">Arizona (AZ)</option>
+                      <option value="AR">Arkansas (AR)</option>
+                      <option value="CA">California (CA)</option>
+                      <option value="CO">Colorado (CO)</option>
+                      <option value="CT">Connecticut (CT)</option>
+                      <option value="DE">Delaware (DE)</option>
+                      <option value="DC">District Of Columbia (DC)</option>
+                      <option value="FL">Florida (FL)</option>
+                      <option value="GA">Georgia (GA)</option>
+                      <option value="HI">Hawaii (HI)</option>
+                      <option value="ID">Idaho (ID)</option>
+                      <option value="IL">Illinois (IL)</option>
+                      <option value="IN">Indiana (IN)</option>
+                      <option value="IA">Iowa (IA)</option>
+                      <option value="KS">Kansas (KS)</option>
+                      <option value="KY">Kentucky (KY)</option>
+                      <option value="LA">Louisiana (LA)</option>
+                      <option value="ME">Maine (ME)</option>
+                      <option value="MD">Maryland (MD)</option>
+                      <option value="MA">Massachusetts (MA)</option>
+                      <option value="MI">Michigan (MI)</option>
+                      <option value="MN">Minnesota (MN)</option>
+                      <option value="MS">Mississippi (MS)</option>
+                      <option value="MO">Missouri (MO)</option>
+                      <option value="MT">Montana (MT)</option>
+                      <option value="NE">Nebraska (NE)</option>
+                      <option value="NV">Nevada (NV)</option>
+                      <option value="NH">New Hampshire (NH)</option>
+                      <option value="NJ">New Jersey (NJ)</option>
+                      <option value="NM">New Mexico (NM)</option>
+                      <option value="NY">New York (NY)</option>
+                      <option value="NC">North Carolina (NC)</option>
+                      <option value="ND">North Dakota (ND)</option>
+                      <option value="OH">Ohio (OH)</option>
+                      <option value="OK">Oklahoma (OK)</option>
+                      <option value="OR">Oregon (OR)</option>
+                      <option value="PA">Pennsylvania (PA)</option>
+                      <option value="RI">Rhode Island (RI)</option>
+                      <option value="SC">South Carolina (SC)</option>
+                      <option value="SD">South Dakota (SD)</option>
+                      <option value="TN">Tennessee (TN)</option>
+                      <option value="TX">Texas (TX)</option>
+                      <option value="UT">Utah (UT)</option>
+                      <option value="VT">Vermont (VT)</option>
+                      <option value="VA">Virginia (VA)</option>
+                      <option value="WA">Washington (WA)</option>
+                      <option value="WV">West Virginia (WV)</option>
+                      <option value="WI">Wisconsin (WI)</option>
+                      <option value="WY">Wyoming (WY)</option>
+                    </select>
+                  </div>
 
-                <div class="mb-3" id="ca_province_field_wrapper" style="display:none">
-                  <label for="input_ca_province">Province or territory</label>
-                  <select class="form-select" id="input_ca_province" name="ca_province">
-                    <option value=""></option>
-                    <option value="AB">Alberta (AB)</option>
-                    <option value="BC">British Columbia (BC)</option>
-                    <option value="MB">Manitoba (MB)</option>
-                    <option value="NB">New Brunswick (NB)</option>
-                    <option value="NL">Newfoundland and Labrador (NL)</option>
-                    <option value="NS">Nova Scotia (NS)</option>
-                    <option value="NT">Northwest Territories (NT)</option>
-                    <option value="NU">Nunavut (NU)</option>
-                    <option value="ON">Ontario (ON)</option>
-                    <option value="PE">Prince Edward Island (PE)</option>
-                    <option value="QC">Quebec (QC)</option>
-                    <option value="SK">Saskatchewan (SK)</option>
-                    <option value="YT">Yukon (YT)</option>
-                  </select>
-                </div>
+                  <div class="col-6" id="ca_province_field_wrapper" style="display:none">
+                    <label class="qso-field-label" for="input_ca_province">Province or territory</label>
+                    <select class="form-select form-select-sm" id="input_ca_province" name="ca_province">
+                      <option value=""></option>
+                      <option value="AB">Alberta (AB)</option>
+                      <option value="BC">British Columbia (BC)</option>
+                      <option value="MB">Manitoba (MB)</option>
+                      <option value="NB">New Brunswick (NB)</option>
+                      <option value="NL">Newfoundland and Labrador (NL)</option>
+                      <option value="NS">Nova Scotia (NS)</option>
+                      <option value="NT">Northwest Territories (NT)</option>
+                      <option value="NU">Nunavut (NU)</option>
+                      <option value="ON">Ontario (ON)</option>
+                      <option value="PE">Prince Edward Island (PE)</option>
+                      <option value="QC">Quebec (QC)</option>
+                      <option value="SK">Saskatchewan (SK)</option>
+                      <option value="YT">Yukon (YT)</option>
+                    </select>
+                  </div>
 
-                <div class="mb-3" id="usa_county_field_wrapper" style="display:none">
-                  <label for="stationCntyInput"><?php echo lang('gen_hamradio_county_reference'); ?></label>
-                  <input disabled="disabled" class="form-control" id="stationCntyInput" type="text" name="county" value="" />
+                  <div class="col-6" id="usa_county_field_wrapper" style="display:none">
+                    <label class="qso-field-label" for="stationCntyInput"><?php echo lang('gen_hamradio_county_reference'); ?></label>
+                    <input disabled="disabled" class="form-control form-control-sm" id="stationCntyInput" type="text" name="county" value="" />
+                  </div>
                 </div>
                 <?php endif; // usa_state ?>
 
-                <div class="mb-3" id="rda_field_wrapper" style="display:none">
-                  <label for="rda_district">RDA district</label>
-                  <input class="form-control" id="rda_district" type="text" name="rda" value="" placeholder="TB-02" autocomplete="off" />
+                <div class="mb-2" id="rda_field_wrapper" style="display:none">
+                  <label class="qso-field-label" for="rda_district">RDA district</label>
+                  <input class="form-control form-control-sm" id="rda_district" type="text" name="rda" value="" placeholder="TB-02" autocomplete="off" />
                 </div>
 
                 <?php if ($qso_fields['iota']): ?>
-                <div class="mb-3">
-                  <label for="iota_ref"><?php echo lang('gen_hamradio_iota_reference'); ?></label>
-                  <select class="form-select" id="iota_ref" name="iota_ref">
+                <div class="mb-2">
+                  <label class="qso-field-label" for="iota_ref"><?php echo lang('gen_hamradio_iota_reference'); ?></label>
+                  <select class="form-select form-select-sm" id="iota_ref" name="iota_ref">
                     <option value=""></option>
-
                     <?php
                     foreach ($iota as $i) {
                       echo '<option value=' . $i->tag . '>' . $i->tag . ' - ' . $i->name . '</option>';
                     }
                     ?>
-
                   </select>
                 </div>
                 <?php endif; // iota ?>
 
-                <?php if ($qso_fields['sota']): ?>
-                <div class="row">
-                  <div class="mb-3 col-md-9">
-                    <label for="sota_ref"><?php echo lang('gen_hamradio_sota_reference'); ?></label>
-                    <input class="form-control" id="sota_ref" type="text" name="sota_ref" value="" />
-                    <small id="sotaRefHelp" class="form-text text-muted"><?php echo lang('qso_sota_ref_helptext'); ?></small>
+                <div class="row g-2 mb-2">
+                  <?php if ($qso_fields['sota']): ?>
+                  <div class="col-12 col-sm-6">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <label class="qso-field-label" for="sota_ref"><?php echo lang('gen_hamradio_sota_reference'); ?></label>
+                      <small id="sota_info" class="badge text-bg-secondary"></small>
+                    </div>
+                    <input class="form-control form-control-sm" id="sota_ref" type="text" name="sota_ref" value="" />
                   </div>
-                  <div class="mb-3 col-md-3 align-self-center">
-                    <small id="sota_info" class="badge text-bg-secondary"></small>
+                  <?php endif; ?>
+
+                  <?php if ($qso_fields['pota']): ?>
+                  <div class="col-12 col-sm-6">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <label class="qso-field-label" for="pota_ref"><?php echo lang('gen_hamradio_pota_reference'); ?></label>
+                      <small id="pota_info" class="badge text-bg-secondary"></small>
+                    </div>
+                    <input class="form-control form-control-sm" id="pota_ref" type="text" name="pota_ref" value="" />
                   </div>
+                  <?php endif; ?>
                 </div>
-                <?php endif; // sota ?>
 
                 <?php if ($qso_fields['wwff']): ?>
-                <div class="row">
-                  <div class="mb-3 col-md-9">
-                    <label for="wwff_ref"><?php echo lang('gen_hamradio_wwff_reference'); ?></label>
-                    <input class="form-control" id="wwff_ref" type="text" name="wwff_ref" value="" />
-                    <small id="wwffRefHelp" class="form-text text-muted"><?php echo lang('qso_wwff_ref_helptext'); ?></small>
-                  </div>
-                  <div class="mb-3 col-md-3 align-self-center">
+                <div class="mb-2">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <label class="qso-field-label" for="wwff_ref"><?php echo lang('gen_hamradio_wwff_reference'); ?></label>
                     <small id="wwff_info" class="badge text-bg-secondary"></small>
                   </div>
+                  <input class="form-control form-control-sm" id="wwff_ref" type="text" name="wwff_ref" value="" />
                 </div>
-                <?php endif; // wwff ?>
-
-                <?php if ($qso_fields['pota']): ?>
-                <div class="row">
-                  <div class="mb-3 col-md-9">
-                    <label for="pota_ref"><?php echo lang('gen_hamradio_pota_reference'); ?></label>
-                    <input class="form-control" id="pota_ref" type="text" name="pota_ref" value="" />
-                    <small id="potaRefHelp" class="form-text text-muted"><?php echo lang('qso_pota_ref_helptext'); ?></small>
-                  </div>
-                  <div class="mb-3 col-md-3 align-self-center">
-                    <small id="pota_info" class="badge text-bg-secondary"></small>
-                  </div>
-                </div>
-                <?php endif; // pota ?>
+                <?php endif; ?>
 
                 <?php if ($qso_fields['sig']): ?>
-                <div class="mb-3">
-                  <label for="sig"><?php echo lang('gen_hamradio_sig'); ?></label>
-                  <input class="form-control" id="sig" type="text" name="sig" value="" />
-                  <small id="sigHelp" class="form-text text-muted"><?php echo lang('qso_sig_helptext'); ?></small>
+                <div class="row g-2 mb-2">
+                  <div class="col-6">
+                    <label class="qso-field-label" for="sig"><?php echo lang('gen_hamradio_sig'); ?></label>
+                    <input class="form-control form-control-sm" id="sig" type="text" name="sig" value="" />
+                  </div>
+                  <div class="col-6">
+                    <label class="qso-field-label" for="sig_info"><?php echo lang('gen_hamradio_sig_info'); ?></label>
+                    <input class="form-control form-control-sm" id="sig_info" type="text" name="sig_info" value="" />
+                  </div>
                 </div>
+                <?php endif; ?>
 
-                <div class="mb-3">
-                  <label for="sig_info"><?php echo lang('gen_hamradio_sig_info'); ?></label>
-                  <input class="form-control" id="sig_info" type="text" name="sig_info" value="" />
-                  <small id="sigInfoHelp" class="form-text text-muted"><?php echo lang('qso_sig_info_helptext'); ?></small>
-                </div>
-                <?php endif; // sig ?>
-
-                <div class="mb-3" id="dok_field_wrapper" style="display:none"<?php if (!$qso_fields['dok']): ?> data-user-hidden="true"<?php endif; ?>>
-                  <label for="darc_dok"><?php echo lang('gen_hamradio_dok'); ?></label>
-                  <input class="form-control" id="darc_dok" type="text" name="darc_dok" value="" />
-                  <small id="dokHelp" class="form-text text-muted"><?php echo lang('qso_dok_helptext'); ?></small>
+                <div class="mb-1" id="dok_field_wrapper" style="display:none"<?php if (!$qso_fields['dok']): ?> data-user-hidden="true"<?php endif; ?>>
+                  <label class="qso-field-label" for="darc_dok"><?php echo lang('gen_hamradio_dok'); ?></label>
+                  <input class="form-control form-control-sm" id="darc_dok" type="text" name="darc_dok" value="" />
                 </div>
               </div>
               <?php endif; // general_tab ?>
@@ -871,10 +834,12 @@
             <div class="info">
               <input size="20" id="country" type="hidden" name="country" value="" />
             </div>
+            <div class="alert alert-danger warningOnSubmit mt-2 mb-0" style="display:none;"><span><i class="fas fa-times-circle"></i></span> <span class="warningOnSubmit_txt ms-1">Error</span></div>
+          </div>
 
-            <button type="reset" class="btn btn-secondary" onclick="reset_fields()"><?php echo lang('qso_btn_reset_qso'); ?></button>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> <?php echo lang('qso_btn_save_qso'); ?></button>
-            <div class="alert alert-danger warningOnSubmit mt-3" style="display:none;"><span><i class="fas fa-times-circle"></i></span> <span class="warningOnSubmit_txt ms-1">Error</span></div>
+          <div class="card-footer qso-entry-footer d-flex align-items-center justify-content-between gap-2 py-2 px-3">
+            <button type="reset" class="btn btn-sm btn-outline-secondary" onclick="reset_fields()"><?php echo lang('qso_btn_reset_qso'); ?></button>
+            <button type="submit" class="btn btn-sm btn-primary px-4 fw-semibold"><i class="fas fa-save me-1"></i> <?php echo lang('qso_btn_save_qso'); ?></button>
           </div>
         </form>
       </div>
@@ -899,53 +864,47 @@
 
       </div>
 
-      <!-- QSO Map -->
-      <div class="card qso-map d-none d-md-block">
-        <div id="qsomap" class="map-leaflet" style="width: 100%; height: 200px;"></div>
+      <!-- QSO Map with Floating QTH / Path Overlay -->
+      <div class="card qso-map d-none d-md-block mb-3 position-relative">
+        <div id="qsomap" class="map-leaflet" style="width: 100%; height: 185px;"></div>
+        <div class="qso-map-overlay font-monospace" id="qso-map-overlay">
+          <span>QTH: <strong id="qso-map-qth">&mdash;</strong></span>
+          <span id="qso-map-dx-path" class="ms-2 text-primary fw-semibold" style="display:none;"></span>
+        </div>
       </div>
 
       <div id="radio_status"></div>
 
-      <div class="radio_selection d-flex align-items-center mb-3">
-        <label for="radio" class="form-label me-3">Select Radio</label>
-        <select class="form-select radios" id="radio" name="radio" style="flex: 1;">
-          <option value="0" selected="selected"><?php echo lang('general_word_none'); ?></option>
-          <?php foreach ($radios->result() as $row) { ?>
-            <option value="<?php echo $row->id; ?>" <?php if ($this->session->userdata('radio') == $row->id) {
-                                                      echo "selected=\"selected\"";
-                                                    } ?>><?php echo $row->radio; ?></option>
-          <?php } ?>
-        </select>
-
-        <button class="btn btn-primary" onclick="openBandmap()">Open Bandmap</button>
-      </div>
-
       <?php if (isset($isRemoteOperationEnabled) ? $isRemoteOperationEnabled : $this->session->userdata('isRemoteOperationEnabled')) { ?>
-        <div id="remote_operation" class="card remote-operation-settings" style="margin-bottom: 10px;">
-          <div class="card-header">
-            <h4 style="font-size: 16px; font-weight: bold;" class="card-title">Remote Operation
+        <div id="remote_operation" class="card remote-operation-settings mb-3">
+          <div class="card-header py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none fw-bold text-body d-inline-flex align-items-center gap-1" data-bs-toggle="collapse" data-bs-target="#remoteOperationBody" aria-expanded="false" aria-controls="remoteOperationBody">
+                <i class="fas fa-chevron-right fa-xs" id="remoteOpChevron"></i>
+                <span>Remote Operation</span>
+              </button>
+              <span id="remote_operation_status" class="badge text-bg-secondary">Status: Disconnected</span>
+              <span class="badge text-bg-danger"><?php echo lang('admin_experimental'); ?></span>
+            </div>
 
-              <span class="badge text-bg-danger ms-2"><?php echo lang('admin_experimental'); ?></span>
-
-              <div id="remote_operation_status" class="badge text-bg-secondary ms-2">Status: Disconnected</div>
-
-              <button type="button" class="btn btn-sm btn-primary ms-2" id="remoteOperationConnectButton">Connect</button>
-
-              <button type="button" class="btn btn-sm btn-secondary"
+            <div class="d-flex align-items-center gap-1">
+              <button type="button" class="btn btn-sm btn-primary" id="remoteOperationConnectButton">Connect</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary"
                 id="remoteOperationSettingsButton"
                 hx-get="<?php echo base_url(); ?>index.php/qso/remoteoperationsettings"
                 hx-target="#remote-modals-here"
                 hx-trigger="click"
-                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-sliders-h"></i> Settings</button>
-            </h4>
+                _="on htmx:afterOnLoad wait 10ms then add .show to #modal then add .show to #modal-backdrop"><i class="fas fa-sliders-h me-1"></i>Settings</button>
+            </div>
           </div>
 
           <audio id="remoteOperationRx" autoplay playsinline style="display:none;"></audio>
 
           <div id="remote-modals-here"></div>
 
-          <div class="card-body">
-            <p class="mb-2">Experimental browser-based shack audio bridge. Use Settings to configure the signalling server, link and audio devices.</p>
+          <div id="remoteOperationBody" class="collapse">
+          <div class="card-body py-2 px-3">
+            <p class="small text-muted mb-2">Experimental browser-based shack audio bridge. Use Settings to configure the signalling server, link and audio devices.</p>
             <div id="remoteOperationDeviceWarning" class="alert alert-warning py-2 px-3 small mb-2 d-none" role="alert"></div>
             <div class="row g-2 align-items-center mb-2">
               <div class="col-12 col-md-6">
@@ -966,12 +925,12 @@
                 <label for="remoteOperationPlaybackVolume" class="form-label small text-muted mb-1">Playback volume</label>
                 <input id="remoteOperationPlaybackVolume" type="range" class="form-range" min="0" max="100" step="1" value="50">
               </div>
-              <div class="col-12 col-md-6 d-flex align-items-center gap-3">
-                <div class="form-check mb-0 mt-3">
+              <div class="col-12 col-md-6 d-flex flex-wrap align-items-center gap-3">
+                <div class="form-check mb-0 mt-2">
                   <input class="form-check-input" type="checkbox" id="remoteOperationMicMuteToggle" checked>
                   <label class="form-check-label small" for="remoteOperationMicMuteToggle">Mute microphone</label>
                 </div>
-                <div class="form-check mb-0 mt-3">
+                <div class="form-check mb-0 mt-2">
                   <input class="form-check-input" type="checkbox" id="remoteOperationMuteToggle">
                   <label class="form-check-label small" for="remoteOperationMuteToggle">Mute playback</label>
                 </div>
@@ -979,8 +938,8 @@
               </div>
             </div>
             <div id="remoteOperationAudioUnlockHint" class="small text-warning mb-2 d-none"></div>
-            <div id="remoteOperationQuickDiagnostics" class="small text-muted mb-2">State: Disconnected | speaker: default | inbound packets: 0 | jitter: n/a | reconnects: 0</div>
-            <small class="text-muted d-block">The card stays hidden unless you enable Remote Operation in your account settings.</small>
+            <div id="remoteOperationQuickDiagnostics" class="small text-muted mb-1">State: Disconnected | speaker: default | inbound packets: 0 | jitter: n/a | reconnects: 0</div>
+          </div>
           </div>
         </div>
       <?php } ?>
@@ -1021,27 +980,29 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" id="winkeyRelayEnabled">
-                    <label class="form-check-label" for="winkeyRelayEnabled">Use Relay Server</label>
-                  </div>
+                  <form onsubmit="return false;">
+                    <div class="form-check form-switch mb-3">
+                      <input class="form-check-input" type="checkbox" id="winkeyRelayEnabled">
+                      <label class="form-check-label" for="winkeyRelayEnabled">Use Relay Server</label>
+                    </div>
 
-                  <div class="mb-3">
-                    <label for="winkeyRelayUrl" class="form-label">Relay WebSocket URL</label>
-                    <input type="text" class="form-control" id="winkeyRelayUrl" placeholder="wss://relay.cloudlog.org/">
-                  </div>
+                    <div class="mb-3">
+                      <label for="winkeyRelayUrl" class="form-label">Relay WebSocket URL</label>
+                      <input type="text" class="form-control" id="winkeyRelayUrl" placeholder="wss://relay.cloudlog.org/">
+                    </div>
 
-                  <div class="mb-3">
-                    <label for="winkeyRelayToken" class="form-label">Relay Token</label>
-                    <input type="password" class="form-control" id="winkeyRelayToken" autocomplete="off" placeholder="Shared secret (min 8 chars)">
-                  </div>
+                    <div class="mb-3">
+                      <label for="winkeyRelayToken" class="form-label">Relay Token</label>
+                      <input type="password" class="form-control" id="winkeyRelayToken" autocomplete="off" placeholder="Shared secret (min 8 chars)">
+                    </div>
 
-                  <div class="mb-2">
-                    <label for="winkeyRelayRoom" class="form-label">Relay Room</label>
-                    <input type="text" class="form-control" id="winkeyRelayRoom" placeholder="cw_room">
-                  </div>
+                    <div class="mb-2">
+                      <label for="winkeyRelayRoom" class="form-label">Relay Room</label>
+                      <input type="text" class="form-control" id="winkeyRelayRoom" placeholder="cw_room">
+                    </div>
 
-                  <small class="text-muted">Relay settings are stored in your user account and follow your login across devices.</small>
+                    <small class="text-muted">Relay settings are stored in your user account and follow your login across devices.</small>
+                  </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -1119,7 +1080,7 @@
             <div id="messageLogContainer" style="display: none;">
               <div class="row">
                 <div class="col-12">
-                  <label class="form-label fw-bold">Message Log:</label>
+                  <label for="messageLog" class="form-label fw-bold">Message Log:</label>
                   <textarea id="messageLog" class="form-control" rows="4" readonly placeholder="WebSocket messages will appear here..."></textarea>
                 </div>
               </div>
@@ -1245,8 +1206,9 @@
             <?php } ?>
             <?php if ($qso_fields['dxcluster_tab']): ?>
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="dx-cluster-tab" data-bs-toggle="tab" data-bs-target="#dx-cluster-pane" type="button" role="tab" aria-controls="dx-cluster-pane" aria-selected="false">
-                DX Cluster
+              <button class="nav-link d-inline-flex align-items-center gap-1" id="dx-cluster-tab" data-bs-toggle="tab" data-bs-target="#dx-cluster-pane" type="button" role="tab" aria-controls="dx-cluster-pane" aria-selected="false">
+                <span>DX Cluster</span>
+                <span id="qso-cluster-count" class="badge rounded-pill text-bg-primary" style="display:none; font-size:0.65rem;">0</span>
               </button>
             </li>
             <?php endif; ?>
@@ -1288,7 +1250,7 @@
             <div class="tab-pane fade" id="dx-cluster-pane" role="tabpanel" aria-labelledby="dx-cluster-tab">
               <div class="d-flex align-items-center gap-2 flex-wrap pt-2 pb-1 border-bottom mb-1">
                 <span id="qso-cluster-status" class="badge bg-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Disconnected from DX Cluster" style="font-size:0.85rem; cursor:default;"><i id="qso-cluster-status-icon" class="fas fa-circle"></i></span>
-                <select id="qso-cluster-band" class="form-select form-select-sm" style="width:auto;font-size:0.8rem;">
+                <select id="qso-cluster-band" aria-label="Filter DX Cluster by band" class="form-select form-select-sm" style="width:auto;font-size:0.8rem;">
                   <option value="all">All Bands</option>
                   <option value="160m">160m</option>
                   <option value="80m">80m</option>
@@ -1307,7 +1269,7 @@
                   <option value="23cm">23cm</option>
                   <option value="ghz">GHz+</option>
                 </select>
-                <select id="qso-cluster-mode" class="form-select form-select-sm" style="width:auto;font-size:0.8rem;">
+                <select id="qso-cluster-mode" aria-label="Filter DX Cluster by mode" class="form-select form-select-sm" style="width:auto;font-size:0.8rem;">
                   <option value="all">All Modes</option>
                   <option value="cw">CW</option>
                   <option value="ssb">SSB</option>
@@ -1317,7 +1279,7 @@
                   <input class="form-check-input" type="checkbox" id="qso-cluster-hide-rbn" checked>
                   <label class="form-check-label" for="qso-cluster-hide-rbn" style="font-size:0.8rem;">Hide RBN</label>
                 </div>
-                <select id="qso-cluster-new-dxcc" class="form-select form-select-sm" style="width:auto;font-size:0.8rem;">
+                <select id="qso-cluster-new-dxcc" aria-label="Filter DX Cluster by new DXCC status" class="form-select form-select-sm" style="width:auto;font-size:0.8rem;">
                   <option value="all">All Spots</option>
                   <option value="new_any">New DXCC or Band</option>
                   <option value="new_dxcc">New DXCC only</option>
@@ -1482,6 +1444,121 @@
     toggleDokField();
     toggleUsaFields();
     toggleRdaField();
+
+    // Sync Top Operating Strip controls with #qso_input form fields
+    var topStation = document.getElementById('qso-topbar-station');
+    var formStation = document.getElementById('stationProfile');
+    if (topStation && formStation) {
+      topStation.addEventListener('change', function() {
+        formStation.value = topStation.value;
+        if (window.jQuery) { window.jQuery(formStation).trigger('change'); }
+      });
+      formStation.addEventListener('change', function() {
+        if (topStation.value !== formStation.value) { topStation.value = formStation.value; }
+      });
+    }
+
+    var topRadio = document.getElementById('qso-topbar-radio');
+    var formRadio = document.getElementById('radio');
+    if (topRadio && formRadio) {
+      topRadio.addEventListener('change', function() {
+        formRadio.value = topRadio.value;
+        if (window.jQuery) { window.jQuery(formRadio).trigger('change'); }
+      });
+      formRadio.addEventListener('change', function() {
+        if (topRadio.value !== formRadio.value) { topRadio.value = formRadio.value; }
+      });
+    }
+
+    // Live UTC clock & Frequency readout mirror in Top Operating Strip
+    function syncTopbarLiveReadouts() {
+      var clockEl = document.getElementById('qso-utc-clock');
+      var dateEl = document.getElementById('qso-utc-date');
+      var startTimeEl = document.getElementById('start_time');
+      var startDateEl = document.getElementById('start_date');
+      if (clockEl && startTimeEl && startTimeEl.value) {
+        clockEl.textContent = startTimeEl.value;
+      }
+      if (dateEl && startDateEl && startDateEl.value) {
+        dateEl.textContent = startDateEl.value;
+      }
+      var freqReadout = document.getElementById('qso-topbar-freq');
+      var freqInput = document.getElementById('frequency');
+      if (freqReadout && freqInput) {
+        var raw = String(freqInput.value || '').trim();
+        var num = parseFloat(raw);
+        if (!isNaN(num) && num >= 100000) {
+          freqReadout.textContent = (num / 1000000).toFixed(3) + ' MHz';
+        } else if (raw) {
+          freqReadout.textContent = raw;
+        } else {
+          freqReadout.innerHTML = '&mdash;';
+        }
+      }
+
+      // Update CAT status dot
+      var catDot = document.getElementById('qso-cat-dot');
+      if (catDot && formRadio) {
+        catDot.classList.toggle('is-connected', formRadio.value && formRadio.value !== '0');
+      }
+
+      // Toggle lookup-ready hint pill based on lookup badges
+      var readyPill = document.getElementById('qso-lookup-ready');
+      if (readyPill) {
+        var ci = document.getElementById('callsign_info');
+        var li = document.getElementById('lotw_info');
+        var qi = document.getElementById('qrz_info');
+        var hi = document.getElementById('hamqth_info');
+        var hasInfo = (ci && ci.textContent.trim() !== '') || (li && li.textContent.trim() !== '') || (qi && qi.textContent.trim() !== '') || (hi && hi.textContent.trim() !== '');
+        readyPill.style.display = hasInfo ? 'none' : '';
+      }
+
+      // Update Floating Map QTH & DX Path Overlay
+      var mapQth = document.getElementById('qso-map-qth');
+      if (mapQth && formStation && typeof station_gridsquares !== 'undefined') {
+        var grid = station_gridsquares[parseInt(formStation.value, 10)] || '';
+        mapQth.textContent = grid ? grid.toUpperCase() : '—';
+      }
+      var mapDxPath = document.getElementById('qso-map-dx-path');
+      if (mapDxPath) {
+        var callEl = document.getElementById('callsign');
+        var locEl = document.getElementById('locator');
+        var locInfoEl = document.getElementById('locator_info');
+        var callVal = callEl ? callEl.value.trim().toUpperCase() : '';
+        var locVal = locEl ? locEl.value.trim().toUpperCase() : '';
+        var locInfo = locInfoEl ? locInfoEl.textContent.trim() : '';
+        if (callVal && (locVal || locInfo)) {
+          var parts = ['→ ' + callVal];
+          if (locVal) parts.push('(' + locVal + ')');
+          if (locInfo) parts.push('· ' + locInfo);
+          mapDxPath.textContent = parts.join(' ');
+          mapDxPath.style.display = '';
+        } else {
+          mapDxPath.style.display = 'none';
+        }
+      }
+    }
+    syncTopbarLiveReadouts();
+    setInterval(syncTopbarLiveReadouts, 500);
+
+    // Remote Operation collapse chevron & auto-expand on Connect
+    var remoteBody = document.getElementById('remoteOperationBody');
+    var remoteChevron = document.getElementById('remoteOpChevron');
+    if (remoteBody && remoteChevron) {
+      remoteBody.addEventListener('show.bs.collapse', function() {
+        remoteChevron.classList.replace('fa-chevron-right', 'fa-chevron-down');
+      });
+      remoteBody.addEventListener('hide.bs.collapse', function() {
+        remoteChevron.classList.replace('fa-chevron-down', 'fa-chevron-right');
+      });
+    }
+    var remoteConnectBtn = document.getElementById('remoteOperationConnectButton');
+    if (remoteConnectBtn && remoteBody && window.bootstrap) {
+      remoteConnectBtn.addEventListener('click', function() {
+        var bsCollapse = bootstrap.Collapse.getOrCreateInstance(remoteBody, { toggle: false });
+        bsCollapse.show();
+      });
+    }
   });
 
 
@@ -1934,6 +2011,12 @@
       });
 
       this.dataTable.draw(false);
+
+      var countBadge = document.getElementById('qso-cluster-count');
+      if (countBadge) {
+        countBadge.textContent = sorted.length;
+        countBadge.style.display = sorted.length > 0 ? '' : 'none';
+      }
     },
 
     checkWorkedStatus: async function() {

@@ -83,6 +83,7 @@ $(document).ready(function () {
 		var targetBand = $(this).data('band');
 		if (targetBand && $('#band option[value="' + targetBand + '"]').length) {
 			$('#band').val(targetBand).trigger('change');
+			qsyContestRadioToBand(targetBand);
 		}
 	});
 
@@ -704,6 +705,33 @@ $('#band').change(function () {
 	checkIfWorkedBefore();
 });
 
+/* Queue SET_FREQ (and mode) to the selected CAT radio — same path as DX Cluster / QSO */
+function qsyContestRadioToBand(band) {
+	var radioId = $('#radio').val();
+	if (!radioId || radioId === '0') {
+		return;
+	}
+	var mode = $('#mode').val() || $('.mode').val();
+	$.get('qso/band_to_freq/' + band + '/' + mode, function (result) {
+		var freqHz = parseFloat(result);
+		if (!freqHz || isNaN(freqHz)) {
+			return;
+		}
+		var body = {
+			radio_id: radioId,
+			frequency: (freqHz / 1000000).toFixed(3)
+		};
+		if (mode) {
+			body.mode = mode;
+		}
+		fetch(base_url + 'index.php/dxcluster/qsy', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(body)
+		}).catch(function () {});
+	});
+}
+
 function setSerial(data) {
 	var serialsent = 1;
 	if (data.serialsent != "") {
@@ -1156,7 +1184,7 @@ function updateContestStats(qsoData) {
 
 	var html = allBands.map(function (b) {
 		var cls = (b === activeBand) ? 'text-bg-primary' : 'text-bg-secondary';
-		return '<span class="badge ' + cls + ' contesting-band-pill font-monospace" data-band="' + escapeHtml(b) + '" title="Switch to ' + escapeHtml(b) + '">' + escapeHtml(b) + ': ' + bandCounts[b] + '</span>';
+		return '<span class="badge ' + cls + ' contesting-band-pill font-monospace" data-band="' + escapeHtml(b) + '" title="QSY to ' + escapeHtml(b) + '">' + escapeHtml(b) + ': ' + bandCounts[b] + '</span>';
 	}).join('');
 	$('#stats-bands').html(html);
 }
