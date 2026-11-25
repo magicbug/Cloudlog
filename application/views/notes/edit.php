@@ -1,197 +1,206 @@
-
-<div class="container-fluid notes px-3 px-lg-4">
-<div class="row">
-<div class="col-12">
-
-<?php foreach ($note->result() as $row) { ?>
-<?php
-$defaultCategories = array('General', 'Antennas', 'Satellites');
-$existingCategories = isset($categories) && is_array($categories) ? $categories : array();
-$categoryOptions = array_values(array_unique(array_merge($defaultCategories, $existingCategories, array($row->cat))));
-$selectedCategory = set_value('category', $row->cat);
+<main class="container notes notes-page">
+<?php foreach ($note->result() as $row) {
+	$defaultCategories = array('General', 'Antennas', 'Satellites');
+	$existingCategories = isset($categories) && is_array($categories) ? $categories : array();
+	$categoryOptions = array_values(array_unique(array_merge($defaultCategories, $existingCategories, array($row->cat))));
+	$selectedCategory = set_value('category', $row->cat);
+	$entryImages = isset($diary_images[$row->id]) ? $diary_images[$row->id] : array();
+	$isPublicInitial = ((int)($row->is_public ?? 0) === 1);
+	$dateValue = '';
+	$dateDisplayValue = '';
+	if (!is_null($row->created_at) && $row->created_at !== '' && $row->created_at !== '0000-00-00 00:00:00') {
+		$dateValue = date('Y-m-d', strtotime($row->created_at));
+		$dateDisplayValue = date('M d, Y \a\t g:i A', strtotime($row->created_at));
+	}
 ?>
-<div class="card shadow-sm">
-  <div class="card-header">
-    <div class="d-flex flex-wrap justify-content-between align-items-start gap-2">
-    	<div class="d-flex flex-column">
-    		<a class="small text-decoration-none" href="<?php echo site_url('notes'); ?>">&larr; <?php echo lang('notes_menu_notes'); ?></a>
-    		<h2 class="card-title mb-0"><?php echo lang('notes_edit_note'); ?></h2>
-    	</div>
-		<ul class="nav nav-tabs card-header-tabs ms-auto">
-		    <li class="nav-item">
-		    	<a class="nav-link" href="<?php echo site_url('notes'); ?>"><?php echo lang('notes_menu_notes'); ?></a>
-		    </li>
-		    <li class="nav-item">
-		    	<a class="nav-link" href="<?php echo site_url('notes/add'); ?>"><?php echo lang('notes_create_note'); ?></a>
-		    </li>
-		</ul>
-    </div>
-  </div>
-
-  <div class="card-body">
-
-  	<?php if (!empty(validation_errors())): ?>
-    <div class="alert alert-danger">
-        <a class="btn-close" data-bs-dismiss="alert" title="close">x</a>
-        <ul><?php echo (validation_errors('<li>', '</li>')); ?></ul>
-    </div>
-	<?php endif; ?>
-
 	<form method="post" action="<?php echo site_url('notes/edit'); ?>/<?php echo $id; ?>" name="notes_add" id="notes_add" enctype="multipart/form-data">
+		<input type="hidden" name="id" value="<?php echo $id; ?>" />
 
-	<!-- Basic Information -->
-	<div class="mb-3">
-		<label for="inputTitle" class="form-label fw-semibold"><?php echo lang('notes_input_title'); ?></label>
-		<input type="text" name="title" class="form-control" value="<?php echo set_value('title', $row->title); ?>" id="inputTitle" placeholder="e.g. Field day setup" autocomplete="off" required>
-	</div>
-
-	<div class="row mb-3">
-		<div class="col-md-6">
-			<label for="catSelect" class="form-label fw-semibold"><?php echo lang('notes_input_category'); ?></label>
-			<select name="category" class="form-select" id="catSelect">
-				<?php foreach ($categoryOptions as $catOption) { ?>
-				<option value="<?php echo $catOption; ?>" <?php echo ($selectedCategory === $catOption) ? 'selected' : ''; ?>><?php echo $catOption; ?></option>
-				<?php } ?>
-			</select>
-			<small class="text-muted">Select existing or create new below</small>
+		<!-- Unified Topbar Card -->
+		<div class="card notes-topbar mb-3">
+			<div class="card-body py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+				<div class="d-flex align-items-center gap-2">
+					<a href="<?php echo site_url('notes'); ?>" class="btn btn-sm btn-outline-secondary">
+						<i class="fas fa-arrow-left me-1"></i><?php echo lang('notes_menu_notes'); ?>
+					</a>
+					<div>
+						<h1 class="h5 mb-0 fw-bold"><?php echo lang('notes_edit_note'); ?></h1>
+						<div class="small text-body-secondary">Rich-text note &amp; Station Diary editor</div>
+					</div>
+				</div>
+				<div class="d-flex align-items-center gap-2">
+					<a href="<?php echo site_url('notes/view/' . $id); ?>" class="btn btn-sm btn-outline-secondary">
+						<?php echo lang('general_word_cancel') ?: 'Cancel'; ?>
+					</a>
+					<button type="submit" value="Submit" class="btn btn-sm btn-primary px-3">
+						<i class="fas fa-save me-1"></i><?php echo lang('notes_input_btn_save_note'); ?>
+					</button>
+				</div>
+			</div>
 		</div>
-		<div class="col-md-6">
-			<label for="newCategoryInput" class="form-label fw-semibold">New category <span class="badge bg-secondary">Optional</span></label>
-			<input type="text" name="new_category" class="form-control" id="newCategoryInput" value="<?php echo set_value('new_category'); ?>" placeholder="e.g. Portable Ops" autocomplete="off">
-			<small class="text-muted">Overrides selected category</small>
-		</div>
-	</div>
 
-	<!-- Note Content -->
-	<div class="mb-4">
-		<label for="noteContent" class="form-label fw-semibold"><?php echo lang('notes_input_notes_content'); ?></label>
-		<textarea name="content" id="noteContent" class="form-control"><?php echo set_value('content', $row->note); ?></textarea>
-	</div>
+		<?php if (!empty(validation_errors())): ?>
+			<div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+				<ul class="mb-0"><?php echo (validation_errors('<li>', '</li>')); ?></ul>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		<?php endif; ?>
 
-	<!-- Accordion for Optional Settings -->
-	<div class="accordion mb-4" id="noteSettingsAccordion">
-		
-		<!-- Station Diary Settings -->
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="headingVisibility">
-				<button class="accordion-button <?php echo ((int)($row->is_public ?? 0) === 1 || (int)($row->include_qso_summary ?? 0) === 1) ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVisibility" aria-expanded="<?php echo ((int)($row->is_public ?? 0) === 1 || (int)($row->include_qso_summary ?? 0) === 1) ? 'true' : 'false'; ?>" aria-controls="collapseVisibility">
-					<i class="fas fa-eye me-2"></i> Station Diary Settings
-				</button>
-			</h2>
-			<div id="collapseVisibility" class="accordion-collapse collapse <?php echo ((int)($row->is_public ?? 0) === 1 || (int)($row->include_qso_summary ?? 0) === 1) ? 'show' : ''; ?>" aria-labelledby="headingVisibility" data-bs-parent="#noteSettingsAccordion">
-				<div class="accordion-body">
-					<?php if (isset($public_station_diary_enabled) && !$public_station_diary_enabled) { ?>
-						<div class="alert alert-warning mb-3">Public Station Diary is globally disabled. Entries will remain private.</div>
-					<?php } ?>
-					<div class="mb-3">
-						<span id="visibilityStatusBadge" class="badge <?php echo ((int)($row->is_public ?? 0) === 1) ? 'bg-success' : 'bg-dark'; ?>">
-							<?php echo ((int)($row->is_public ?? 0) === 1) ? '🌍 Public' : '🔒 Private'; ?>
+		<!-- 2-Column Editor Layout -->
+		<div class="row g-3 align-items-start">
+			<!-- Left 8 cols: Title + Rich Text Editor -->
+			<div class="col-lg-8">
+				<div class="card notes-editor-card">
+					<div class="card-body p-3 p-md-4">
+						<div class="mb-3">
+							<label for="inputTitle" class="notes-field-label"><?php echo lang('notes_input_title'); ?></label>
+							<input type="text" name="title" class="form-control fw-semibold" value="<?php echo set_value('title', $row->title); ?>" id="inputTitle" placeholder="e.g. Field day setup" autocomplete="off" required>
+						</div>
+
+						<div>
+							<label for="noteContent" class="notes-field-label"><?php echo lang('notes_input_notes_content'); ?></label>
+							<textarea name="content" id="noteContent" class="form-control"><?php echo set_value('content', $row->note); ?></textarea>
+						</div>
+					</div>
+					<div class="card-footer notes-card-footer px-3 px-md-4 py-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+						<span class="small text-body-secondary font-monospace">
+							<?php echo !empty($dateDisplayValue) ? 'Saved: ' . $dateDisplayValue : ''; ?>
+						</span>
+						<div class="d-flex gap-2">
+							<a href="<?php echo site_url('notes/view/' . $id); ?>" class="btn btn-outline-secondary btn-sm px-3">
+								<i class="fas fa-times me-1"></i><?php echo lang('general_word_cancel') ?: 'Cancel'; ?>
+							</a>
+							<button type="submit" value="Submit" class="btn btn-primary btn-sm px-4">
+								<i class="fas fa-save me-1"></i><?php echo lang('notes_input_btn_save_note'); ?>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Right 4 cols: Organization + Station Diary + Filters + Photos + Advanced -->
+			<div class="col-lg-4 d-flex flex-column gap-3">
+				<!-- Organization Card -->
+				<div class="card notes-side-card mb-0">
+					<div class="card-header py-2 px-3">
+						<h2 class="h6 mb-0 small text-uppercase fw-bold text-body-secondary">Organization</h2>
+					</div>
+					<div class="card-body p-3">
+						<div class="mb-3">
+							<label for="catSelect" class="notes-field-label"><?php echo lang('notes_input_category'); ?></label>
+							<select name="category" class="form-select form-select-sm" id="catSelect">
+								<?php foreach ($categoryOptions as $catOption) { ?>
+									<option value="<?php echo htmlspecialchars($catOption, ENT_QUOTES); ?>" <?php echo ($selectedCategory === $catOption) ? 'selected' : ''; ?>><?php echo htmlspecialchars($catOption, ENT_QUOTES); ?></option>
+								<?php } ?>
+							</select>
+						</div>
+						<div>
+							<label for="newCategoryInput" class="notes-field-label">New Category <span class="fw-normal opacity-75">(optional)</span></label>
+							<input type="text" name="new_category" class="form-control form-control-sm" id="newCategoryInput" value="<?php echo set_value('new_category'); ?>" placeholder="e.g. Portable Ops" autocomplete="off">
+							<div class="form-text">Overrides the selected category above.</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Station Diary Settings Card -->
+				<div class="card notes-side-card mb-0">
+					<div class="card-header py-2 px-3 d-flex align-items-center justify-content-between gap-2">
+						<h2 class="h6 mb-0 small text-uppercase fw-bold text-body-secondary"><i class="fas fa-eye me-1"></i>Station Diary</h2>
+						<span id="visibilityStatusBadge" class="badge rounded-pill <?php echo $isPublicInitial ? 'text-bg-success' : 'text-bg-secondary'; ?>">
+							<i class="fas <?php echo $isPublicInitial ? 'fa-globe' : 'fa-lock'; ?> me-1"></i><?php echo $isPublicInitial ? 'Public' : 'Private'; ?>
 						</span>
 					</div>
-					<div class="form-check mb-3">
-						<input class="form-check-input" type="checkbox" value="1" id="isPublicEntry" name="is_public" <?php echo set_value('is_public', ((int)($row->is_public ?? 0) === 1 ? '1' : '')) ? 'checked' : ''; ?> <?php echo (isset($public_station_diary_enabled) && !$public_station_diary_enabled) ? 'disabled' : ''; ?>>
-						<label class="form-check-label" for="isPublicEntry">
-							<strong>🌍 Make entry public</strong>
-							<small class="d-block text-muted">Only applies to "Station Diary" category</small>
-						</label>
-					</div>
-					<div class="form-check mb-3">
-						<input class="form-check-input" type="checkbox" value="1" id="includeQsoSummary" name="include_qso_summary" <?php echo set_value('include_qso_summary', ((int)($row->include_qso_summary ?? 0) === 1 ? '1' : '')) ? 'checked' : ''; ?> <?php echo (isset($public_station_diary_enabled) && !$public_station_diary_enabled) ? 'disabled' : ''; ?>>
-						<label class="form-check-label" for="includeQsoSummary">
-							<strong>Include QSO summary</strong>
-							<small class="d-block text-muted">Shows contact statistics on public page</small>
-						</label>
-					</div>
-					<div id="logbookSelectorContainer" style="<?php echo set_value('include_qso_summary', ((int)($row->include_qso_summary ?? 0) === 1 ? '1' : '')) ? '' : 'display:none;'; ?>">
-						<label for="logbookSelect" class="form-label">Logbook <span class="text-danger">*</span></label>
-						<select name="logbook_id" class="form-select" id="logbookSelect" required>
-							<option value="">-- Choose a logbook --</option>
-							<?php if (isset($user_logbooks) && $user_logbooks->num_rows() > 0) {
-								$selected_logbook = set_value('logbook_id', $row->logbook_id ?? '');
-								foreach ($user_logbooks->result() as $logbook) { ?>
-									<option value="<?php echo $logbook->logbook_id; ?>" <?php echo $selected_logbook == $logbook->logbook_id ? 'selected' : ''; ?>><?php echo htmlspecialchars($logbook->logbook_name, ENT_QUOTES); ?></option>
-								<?php }
-							} ?>
-						</select>
-						<small class="text-muted">QSO summary filtered to this logbook</small>
+					<div class="card-body p-3">
+						<?php if (isset($public_station_diary_enabled) && !$public_station_diary_enabled) { ?>
+							<div class="alert alert-warning small py-2 mb-3">Public Station Diary is globally disabled. Entries will remain private.</div>
+						<?php } ?>
+						<div class="form-check form-switch mb-3">
+							<input class="form-check-input" type="checkbox" value="1" id="isPublicEntry" name="is_public" <?php echo set_value('is_public', ($isPublicInitial ? '1' : '')) ? 'checked' : ''; ?> <?php echo (isset($public_station_diary_enabled) && !$public_station_diary_enabled) ? 'disabled' : ''; ?>>
+							<label class="form-check-label small" for="isPublicEntry">
+								<strong class="d-block"><i class="fas fa-globe me-1"></i>Make entry public</strong>
+								<span class="text-body-secondary">Only applies to &ldquo;Station Diary&rdquo; category</span>
+							</label>
+						</div>
+						<div class="form-check form-switch mb-3">
+							<input class="form-check-input" type="checkbox" value="1" id="includeQsoSummary" name="include_qso_summary" <?php echo set_value('include_qso_summary', ((int)($row->include_qso_summary ?? 0) === 1 ? '1' : '')) ? 'checked' : ''; ?> <?php echo (isset($public_station_diary_enabled) && !$public_station_diary_enabled) ? 'disabled' : ''; ?>>
+							<label class="form-check-label small" for="includeQsoSummary">
+								<strong class="d-block">Include QSO summary</strong>
+								<span class="text-body-secondary">Shows contact statistics on public page</span>
+							</label>
+						</div>
+						<div id="logbookSelectorContainer" style="<?php echo set_value('include_qso_summary', ((int)($row->include_qso_summary ?? 0) === 1 ? '1' : '')) ? '' : 'display:none;'; ?>">
+							<label for="logbookSelect" class="notes-field-label">Logbook <span class="text-danger">*</span></label>
+							<select name="logbook_id" class="form-select form-select-sm" id="logbookSelect" required>
+								<option value="">-- Choose a logbook --</option>
+								<?php if (isset($user_logbooks) && $user_logbooks->num_rows() > 0) {
+									$selected_logbook = set_value('logbook_id', $row->logbook_id ?? '');
+									foreach ($user_logbooks->result() as $logbook) { ?>
+										<option value="<?php echo $logbook->logbook_id; ?>" <?php echo $selected_logbook == $logbook->logbook_id ? 'selected' : ''; ?>><?php echo htmlspecialchars($logbook->logbook_name, ENT_QUOTES); ?></option>
+									<?php }
+								} ?>
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
 
-		<!-- QSO Filters -->
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="headingFilters">
-				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
-					<i class="fas fa-filter me-2"></i> QSO Summary Filters
-				</button>
-			</h2>
-			<div id="collapseFilters" class="accordion-collapse collapse" aria-labelledby="headingFilters" data-bs-parent="#noteSettingsAccordion">
-				<div class="accordion-body">
-					<p class="text-muted mb-3">Control which QSOs appear in the summary:</p>
-					<div class="row g-3 mb-3">
-						<div class="col-md-6">
-							<label for="qsoDateStart" class="form-label">Date Range Start</label>
-							<input type="date" class="form-control" id="qsoDateStart" name="qso_date_start" 
-								value="<?php echo set_value('qso_date_start', !empty($row->qso_date_start) ? $row->qso_date_start : ''); ?>">
-							<small class="text-muted">Leave empty for entry date</small>
-						</div>
-						<div class="col-md-6">
-							<label for="qsoDateEnd" class="form-label">Date Range End</label>
-							<input type="date" class="form-control" id="qsoDateEnd" name="qso_date_end" 
-								value="<?php echo set_value('qso_date_end', !empty($row->qso_date_end) ? $row->qso_date_end : ''); ?>">
-							<small class="text-muted">Leave empty for today</small>
-						</div>
+				<!-- QSO Summary Filters Card (Collapsible) -->
+				<div class="card notes-side-card mb-0">
+					<div class="card-header py-2 px-3">
+						<button type="button" class="btn btn-link btn-sm p-0 text-decoration-none w-100 d-flex align-items-center justify-content-between text-body-secondary fw-bold text-uppercase small" data-bs-toggle="collapse" data-bs-target="#collapseFilters" aria-expanded="false" aria-controls="collapseFilters">
+							<span><i class="fas fa-filter me-1"></i>QSO Summary Filters</span>
+							<i class="fas fa-chevron-down fa-xs"></i>
+						</button>
 					</div>
-					<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="1" id="qsoSatelliteOnly" 
-							name="qso_satellite_only" 
-							<?php echo set_value('qso_satellite_only', ((int)($row->qso_satellite_only ?? 0) === 1 ? '1' : '')) ? 'checked' : ''; ?>>
-						<label class="form-check-label" for="qsoSatelliteOnly">
-							<i class="fas fa-satellite me-1"></i>Satellite QSOs only
-						</label>
+					<div id="collapseFilters" class="collapse">
+						<div class="card-body p-3">
+							<div class="mb-2">
+								<label for="qsoDateStart" class="notes-field-label">Date Range Start</label>
+								<input type="date" class="form-control form-control-sm" id="qsoDateStart" name="qso_date_start" value="<?php echo set_value('qso_date_start', !empty($row->qso_date_start) ? $row->qso_date_start : ''); ?>">
+							</div>
+							<div class="mb-3">
+								<label for="qsoDateEnd" class="notes-field-label">Date Range End</label>
+								<input type="date" class="form-control form-control-sm" id="qsoDateEnd" name="qso_date_end" value="<?php echo set_value('qso_date_end', !empty($row->qso_date_end) ? $row->qso_date_end : ''); ?>">
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="1" id="qsoSatelliteOnly" name="qso_satellite_only" <?php echo set_value('qso_satellite_only', ((int)($row->qso_satellite_only ?? 0) === 1 ? '1' : '')) ? 'checked' : ''; ?>>
+								<label class="form-check-label small" for="qsoSatelliteOnly">
+									<i class="fas fa-satellite me-1"></i>Satellite QSOs only
+								</label>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
 
-		<!-- Images -->
-		<?php $entryImages = isset($diary_images[$row->id]) ? $diary_images[$row->id] : array(); ?>
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="headingImages">
-				<button class="accordion-button <?php echo !empty($entryImages) ? '' : 'collapsed'; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#collapseImages" aria-expanded="<?php echo !empty($entryImages) ? 'true' : 'false'; ?>" aria-controls="collapseImages">
-					<i class="fas fa-image me-2"></i> Images <?php if (!empty($entryImages)) { ?><span class="badge bg-primary ms-2"><?php echo count($entryImages); ?></span><?php } ?>
-				</button>
-			</h2>
-			<div id="collapseImages" class="accordion-collapse collapse <?php echo !empty($entryImages) ? 'show' : ''; ?>" aria-labelledby="headingImages" data-bs-parent="#noteSettingsAccordion">
-				<div class="accordion-body">
-					<?php if (!empty($entryImages)) { ?>
-						<div class="alert alert-info small mb-3">
-							<strong>💡 Inline Shortcodes:</strong> Use <code>[image:<?php echo $entryImages[0]->id; ?>]</code> or <code>[image:caption]</code> in your note text. 
-							Add <code>:left</code>, <code>:right</code>, <code>:center</code>, <code>:small</code>, <code>:medium</code>, or <code>:large</code> for positioning/sizing.
-						</div>
-						<div class="row g-3 mb-4" id="currentImagesContainer">
-							<?php foreach ($entryImages as $image) { ?>
-								<div class="col-md-4" id="image-<?php echo $image->id; ?>">
-									<div class="position-relative">
-										<img src="<?php echo base_url() . ltrim($image->filename, '/'); ?>" class="img-fluid rounded border" alt="Diary image">
-										<button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2" onclick="deleteDiaryImage(<?php echo $image->id; ?>)" title="Delete image">
-											<i class="fas fa-trash"></i>
-										</button>
-									</div>
-									<div class="mt-2 small">
-										<div class="text-muted mb-1">
-											<strong>ID:</strong> <code class="user-select-all bg-light px-1"><?php echo $image->id; ?></code>
-											<button type="button" class="btn btn-sm btn-link p-0 ms-1" onclick="navigator.clipboard.writeText('[image:<?php echo $image->id; ?>]')" title="Copy shortcode">
-												<i class="fas fa-copy"></i>
+				<!-- Diary Photos Card -->
+				<div class="card notes-side-card mb-0">
+					<div class="card-header py-2 px-3 d-flex align-items-center justify-content-between">
+						<h2 class="h6 mb-0 small text-uppercase fw-bold text-body-secondary"><i class="fas fa-image me-1"></i>Diary Photos</h2>
+						<?php if (!empty($entryImages)) { ?>
+							<span class="badge rounded-pill text-bg-primary"><?php echo count($entryImages); ?></span>
+						<?php } ?>
+					</div>
+					<div class="card-body p-3">
+						<?php if (!empty($entryImages)) { ?>
+							<div class="alert alert-info py-2 px-2 small mb-3">
+								<i class="fas fa-info-circle me-1"></i>Use <code>[image:<?php echo $entryImages[0]->id; ?>]</code> (or <code>:left</code>, <code>:center</code>, <code>:small</code>) inline.
+							</div>
+							<div class="d-flex flex-column gap-3 mb-3" id="currentImagesContainer">
+								<?php foreach ($entryImages as $image) { ?>
+									<div class="border rounded p-2" id="image-<?php echo $image->id; ?>">
+										<div class="position-relative mb-2">
+											<img src="<?php echo base_url() . ltrim($image->filename, '/'); ?>" class="img-fluid rounded w-100" style="max-height: 140px; object-fit: cover;" alt="Diary image">
+											<button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" onclick="deleteDiaryImage(<?php echo $image->id; ?>)" title="Delete image">
+												<i class="fas fa-trash"></i>
+											</button>
+										</div>
+										<div class="d-flex align-items-center justify-content-between small mb-1">
+											<span>ID: <code class="user-select-all"><?php echo $image->id; ?></code></span>
+											<button type="button" class="btn btn-sm btn-link p-0 text-decoration-none" onclick="navigator.clipboard.writeText('[image:<?php echo $image->id; ?>]')" title="Copy shortcode">
+												<i class="fas fa-copy me-1"></i>Copy shortcode
 											</button>
 										</div>
 										<div class="input-group input-group-sm">
-											<input type="text" 
-												   class="form-control form-control-sm" 
-												   id="caption-<?php echo $image->id; ?>" 
-												   value="<?php echo htmlspecialchars($image->caption ?? '', ENT_QUOTES); ?>" 
-												   placeholder="Add caption">
+											<input type="text" class="form-control form-control-sm" id="caption-<?php echo $image->id; ?>" value="<?php echo htmlspecialchars($image->caption ?? '', ENT_QUOTES); ?>" placeholder="Add caption">
 											<button type="button" class="btn btn-outline-secondary" onclick="saveImageCaption(<?php echo $image->id; ?>)" title="Save caption">
 												<i class="fas fa-save"></i>
 											</button>
@@ -202,59 +211,34 @@ $selectedCategory = set_value('category', $row->cat);
 											<?php } ?>
 										</div>
 									</div>
-								</div>
-							<?php } ?>
+								<?php } ?>
+							</div>
+						<?php } ?>
+
+						<label for="diaryImages" class="notes-field-label">Add New Images</label>
+						<input type="file" class="form-control form-control-sm" id="diaryImages" name="diary_images[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple>
+						<div class="form-text">Max 8 MB per image. Auto-resized and compressed.</div>
+					</div>
+				</div>
+
+				<!-- Advanced Settings Card (Collapsible) -->
+				<div class="card notes-side-card mb-0">
+					<div class="card-header py-2 px-3">
+						<button type="button" class="btn btn-link btn-sm p-0 text-decoration-none w-100 d-flex align-items-center justify-content-between text-body-secondary fw-bold text-uppercase small" data-bs-toggle="collapse" data-bs-target="#collapseAdvanced" aria-expanded="false" aria-controls="collapseAdvanced">
+							<span><i class="fas fa-cog me-1"></i>Advanced Settings</span>
+							<i class="fas fa-chevron-down fa-xs"></i>
+						</button>
+					</div>
+					<div id="collapseAdvanced" class="collapse">
+						<div class="card-body p-3">
+							<label for="createdAtInput" class="notes-field-label">Created Date</label>
+							<input type="date" name="created_at" class="form-control form-control-sm" id="createdAtInput" value="<?php echo set_value('created_at', $dateValue); ?>">
+							<div class="form-text">Current: <strong><?php echo !empty($dateDisplayValue) ? $dateDisplayValue : 'N/A'; ?></strong></div>
 						</div>
-					<?php } ?>
-					
-					<div>
-						<label for="diaryImages" class="form-label fw-semibold">Add new images</label>
-						<input type="file" class="form-control" id="diaryImages" name="diary_images[]" accept="image/jpeg,image/png,image/gif,image/webp" multiple>
-						<small class="text-muted">Max 8 MB per image. Auto-resized and compressed.</small>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<!-- Advanced Settings -->
-		<div class="accordion-item">
-			<h2 class="accordion-header" id="headingAdvanced">
-				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAdvanced" aria-expanded="false" aria-controls="collapseAdvanced">
-					<i class="fas fa-cog me-2"></i> Advanced Settings
-				</button>
-			</h2>
-			<div id="collapseAdvanced" class="accordion-collapse collapse" aria-labelledby="headingAdvanced" data-bs-parent="#noteSettingsAccordion">
-				<div class="accordion-body">
-					<label for="createdAtInput" class="form-label">Created Date</label>
-					<?php 
-					$dateValue = '';
-					$dateDisplayValue = '';
-					if (!is_null($row->created_at) && $row->created_at !== '' && $row->created_at !== '0000-00-00 00:00:00') {
-						$dateValue = date('Y-m-d', strtotime($row->created_at));
-						$dateDisplayValue = date('M d, Y \a\t g:i A', strtotime($row->created_at));
-					}
-					?>
-					<div class="mb-2">
-						<small class="text-muted">Current: <strong><?php echo !empty($dateDisplayValue) ? $dateDisplayValue : 'N/A'; ?></strong></small>
-					</div>
-					<input type="date" name="created_at" class="form-control" id="createdAtInput" value="<?php echo set_value('created_at', $dateValue); ?>">
-					<small class="text-muted">Leave empty to keep current date, or set custom creation date.</small>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<input type="hidden" name="id" value="<?php echo $id; ?>" />
-	<div class="d-flex flex-wrap gap-2 sticky-bottom bg-white py-3 border-top">
-		<button type="submit" value="Submit" class="btn btn-primary btn-lg">
-			<i class="fas fa-save me-2"></i><?php echo lang('notes_input_btn_save_note'); ?>
-		</button>
-		<a href="<?php echo site_url('notes/view/'.$id); ?>" class="btn btn-outline-secondary btn-lg">
-			<i class="fas fa-times me-2"></i><?php echo lang('general_word_cancel') ?: 'Cancel'; ?>
-		</a>
-	</div>
-	</form>
-	</div>
 	</form>
 
 	<div class="modal fade" id="confirmPublicModal" tabindex="-1" aria-labelledby="confirmPublicModalLabel" aria-hidden="true">
@@ -280,48 +264,45 @@ $selectedCategory = set_value('category', $row->cat);
 			var isPublicEntry = document.getElementById('isPublicEntry');
 			var includeQsoSummary = document.getElementById('includeQsoSummary');
 			var logbookSelectorContainer = document.getElementById('logbookSelectorContainer');
-		var logbookSelect = document.getElementById('logbookSelect');
-		var visibilityStatusBadge = document.getElementById('visibilityStatusBadge');
-		var confirmModalEl = document.getElementById('confirmPublicModal');
-		var confirmModalProceed = document.getElementById('confirmPublicModalProceed');
-		
-		// Toggle logbook selector visibility and required attribute
-		if (includeQsoSummary && logbookSelectorContainer && logbookSelect) {
-			// Set initial state based on checkbox
-			if (includeQsoSummary.checked) {
-				logbookSelect.setAttribute('required', 'required');
-			} else {
-				logbookSelect.removeAttribute('required');
-			}
-			
-			includeQsoSummary.addEventListener('change', function() {
+			var logbookSelect = document.getElementById('logbookSelect');
+			var visibilityStatusBadge = document.getElementById('visibilityStatusBadge');
+			var confirmModalEl = document.getElementById('confirmPublicModal');
+			var confirmModalProceed = document.getElementById('confirmPublicModalProceed');
+
+			if (includeQsoSummary && logbookSelectorContainer && logbookSelect) {
 				if (includeQsoSummary.checked) {
-					logbookSelectorContainer.style.display = 'block';
 					logbookSelect.setAttribute('required', 'required');
 				} else {
-					logbookSelectorContainer.style.display = 'none';
 					logbookSelect.removeAttribute('required');
 				}
-			});
-		}
-		
-		if (!isPublicEntry) {
-			return;
-		}
 
-		function updateVisibilityBadge() {
+				includeQsoSummary.addEventListener('change', function() {
+					if (includeQsoSummary.checked) {
+						logbookSelectorContainer.style.display = 'block';
+						logbookSelect.setAttribute('required', 'required');
+					} else {
+						logbookSelectorContainer.style.display = 'none';
+						logbookSelect.removeAttribute('required');
+					}
+				});
+			}
+
+			if (!isPublicEntry) {
+				return;
+			}
+
+			function updateVisibilityBadge() {
 				if (!visibilityStatusBadge) {
 					return;
 				}
-
 				if (isPublicEntry.checked) {
-					visibilityStatusBadge.classList.remove('bg-dark');
-					visibilityStatusBadge.classList.add('bg-success');
-					visibilityStatusBadge.textContent = 'Current visibility: 🌍 Public';
+					visibilityStatusBadge.classList.remove('text-bg-secondary');
+					visibilityStatusBadge.classList.add('text-bg-success');
+					visibilityStatusBadge.innerHTML = '<i class="fas fa-globe me-1"></i>Public';
 				} else {
-					visibilityStatusBadge.classList.remove('bg-success');
-					visibilityStatusBadge.classList.add('bg-dark');
-					visibilityStatusBadge.textContent = 'Current visibility: 🔒 Private';
+					visibilityStatusBadge.classList.remove('text-bg-success');
+					visibilityStatusBadge.classList.add('text-bg-secondary');
+					visibilityStatusBadge.innerHTML = '<i class="fas fa-lock me-1"></i>Private';
 				}
 			}
 
@@ -342,7 +323,6 @@ $selectedCategory = set_value('category', $row->cat);
 					confirmModal.show();
 					return;
 				}
-
 				updateVisibilityBadge();
 			});
 
@@ -359,34 +339,25 @@ $selectedCategory = set_value('category', $row->cat);
 			if (!confirm('Are you sure you want to delete this image? This cannot be undone.')) {
 				return;
 			}
-
 			var imageElement = document.getElementById('image-' + imageId);
-			if (!imageElement) {
-				return;
-			}
-
-			// Show loading state
+			if (!imageElement) return;
 			imageElement.style.opacity = '0.5';
 
 			fetch('<?php echo site_url("notes/delete_diary_image"); ?>', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 				body: 'image_id=' + encodeURIComponent(imageId)
 			})
 			.then(function(response) { return response.json(); })
 			.then(function(data) {
 				if (data.success) {
-					// Remove element with fade out
 					imageElement.style.transition = 'opacity 0.3s';
 					imageElement.style.opacity = '0';
 					setTimeout(function() {
 						imageElement.remove();
-						// Hide container if no more images
 						var container = document.getElementById('currentImagesContainer');
 						if (container && container.children.length === 0) {
-							container.parentElement.remove();
+							container.remove();
 						}
 					}, 300);
 				} else {
@@ -394,7 +365,7 @@ $selectedCategory = set_value('category', $row->cat);
 					alert('Error: ' + (data.message || 'Failed to delete image'));
 				}
 			})
-			.catch(function(error) {
+			.catch(function() {
 				imageElement.style.opacity = '1';
 				alert('Error: Failed to delete image');
 			});
@@ -402,18 +373,13 @@ $selectedCategory = set_value('category', $row->cat);
 
 		function saveImageCaption(imageId) {
 			var captionInput = document.getElementById('caption-' + imageId);
-			if (!captionInput) {
-				return;
-			}
-
+			if (!captionInput) return;
 			var caption = captionInput.value.trim();
 			captionInput.disabled = true;
 
 			fetch('<?php echo site_url("notes/update_image_caption"); ?>', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
+				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 				body: 'image_id=' + encodeURIComponent(imageId) + '&caption=' + encodeURIComponent(caption)
 			})
 			.then(function(response) { return response.json(); })
@@ -421,33 +387,21 @@ $selectedCategory = set_value('category', $row->cat);
 				captionInput.disabled = false;
 				if (data.success) {
 					captionInput.classList.add('border-success');
-					setTimeout(function() {
-						captionInput.classList.remove('border-success');
-					}, 2000);
+					setTimeout(function() { captionInput.classList.remove('border-success'); }, 2000);
 				} else {
 					captionInput.classList.add('border-danger');
 					alert('Error: ' + (data.message || 'Failed to save caption'));
-					setTimeout(function() {
-						captionInput.classList.remove('border-danger');
-					}, 2000);
+					setTimeout(function() { captionInput.classList.remove('border-danger'); }, 2000);
 				}
 			})
-			.catch(function(error) {
+			.catch(function() {
 				captionInput.disabled = false;
 				captionInput.classList.add('border-danger');
 				alert('Error: Failed to save caption');
-				setTimeout(function() {
-					captionInput.classList.remove('border-danger');
-				}, 2000);
+				setTimeout(function() { captionInput.classList.remove('border-danger'); }, 2000);
 			});
 		}
 	</script>
-  </div>
-
-  <?php } ?>
-</div>
-
-
-</div>
-</div>
+<?php } ?>
+</main>
 
