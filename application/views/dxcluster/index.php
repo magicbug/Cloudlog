@@ -1,17 +1,28 @@
 
-<div class="container">
+<div class="container awards-page">
+    <div class="card awards-topbar mb-3">
+        <div class="card-body py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <span class="awards-brand-icon d-inline-flex align-items-center justify-content-center">
+                    <i class="fas fa-broadcast-tower"></i>
+                </span>
+                <div>
+                    <h1 class="h5 mb-0 fw-semibold"><?php echo $page_title; ?></h1>
+                    <div class="small text-muted">Live DX cluster spots with band, mode, and radio CAT integration</div>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap align-items-center gap-2">
+                <span id="connectionStatus" class="badge bg-secondary">Connecting...</span>
+                <a href="<?php echo site_url('dxcluster/bandmap'); ?>" class="btn btn-primary btn-sm" target="_blank">
+                    <i class="fas fa-chart-line me-1"></i>Bandmap
+                </a>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0"><?php echo $page_title; ?></h3>
-                    <div>
-                        <span id="connectionStatus" class="badge bg-secondary me-2">Connecting...</span>
-                        <a href="<?php echo site_url('dxcluster/bandmap'); ?>" class="btn btn-primary btn-sm" target="_blank">
-                            <i class="fas fa-chart-line"></i> Bandmap
-                        </a>
-                    </div>
-                </div>
                 <div class="card-body">
                     <!-- Filters and Radio Control Panel -->
                     <div class="card mb-3">

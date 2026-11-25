@@ -26,7 +26,7 @@
 
 <div class="container custom-map-QSOs awards-page">
     <?php $this->load->view('awards/components/topbar', array(
-        'title' => htmlspecialchars($logbook_name . (strpos($logbook_name, 'logbook') ? '' : ' logbook') . ' QSOs (Custom Dates)', ENT_QUOTES, 'UTF-8'),
+        'title' => htmlspecialchars($logbook_name . (stripos($logbook_name, 'logbook') !== false ? '' : ' logbook') . ' QSOs (Custom Dates)', ENT_QUOTES, 'UTF-8'),
         'subtitle' => 'Plot QSOs on an interactive world map filtered by date range, band, and mode',
         'icon' => 'fas fa-map',
     )); ?>

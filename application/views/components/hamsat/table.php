@@ -1,11 +1,11 @@
+<div class="card">
+<div class="card-body">
 <div class="table-responsive">
-    <br>
-    <h2>Hamsat - Satellite Rovers</h2>
-    <p>This data is from <a target="_blank" href="https://hams.at/">https://hams.at/</a>.
+    <p class="small text-muted mb-3">Data sourced from <a target="_blank" href="https://hams.at/">https://hams.at/</a> &middot;
         <?php if ($user_hamsat_workable_only) {
-            echo " Only workable passes shown.";
+            echo "Only workable passes shown.";
         } else {
-            echo " All passes shown.";
+            echo "All passes shown.";
         } ?>
     </p>
     <?php if ($user_hamsat_workable_only && $user_hamsat_key == '') { ?>
@@ -160,4 +160,6 @@
                 </tbody>
             </table>
     <?php } ?>
+</div>
+</div>
 </div>

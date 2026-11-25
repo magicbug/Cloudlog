@@ -1,6 +1,9 @@
-<div class="container">
-    <h2>Call History</h2>
-    <p class="text-muted">Upload N1MM call history files (.txt/.csv), assign an organization label (e.g., FOC), and set file priority for matching.</p>
+<div class="container awards-page">
+    <?php $this->load->view('awards/components/topbar', array(
+        'title' => 'Call History',
+        'subtitle' => 'Upload N1MM call history files (.txt/.csv), assign an organization label, and set file priority for matching',
+        'icon' => 'fas fa-address-book',
+    )); ?>
 
     <?php if (!empty($preview)) { ?>
     <div class="card mb-3 border-warning">

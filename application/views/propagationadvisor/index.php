@@ -1,8 +1,11 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 
-<div class="container propagation-advisor mt-4 mb-4">
-  <h2 class="mb-2"><?php echo lang('propagation_title'); ?></h2>
-  <p class="text-muted mb-4"><?php echo lang('propagation_description'); ?></p>
+<div class="container propagation-advisor awards-page">
+  <?php $this->load->view('awards/components/topbar', array(
+    'title' => lang('propagation_title'),
+    'subtitle' => lang('propagation_description'),
+    'icon' => 'fas fa-clock',
+  )); ?>
 
   <?php if ($this->session->flashdata('notice')) { ?>
     <div class="alert alert-info" role="alert"><?php echo $this->session->flashdata('notice'); ?></div>
