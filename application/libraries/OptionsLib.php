@@ -124,6 +124,13 @@ class OptionsLib {
     }
 
 
+    // Normalize any legacy theme name to either Light ('default') or Dark ('darkly').
+    function normalize_theme($theme) {
+        $t = strtolower(trim((string) $theme));
+        $dark_themes = array('dark', 'darkly', 'darkly_wide', 'cyborg', 'cyborg_wide', 'superhero', 'superhero_wide');
+        return in_array($t, $dark_themes, true) ? 'darkly' : 'default';
+    }
+
     // This returns the global theme or the theme stored in the logged in users session data.
     function get_theme() {
         // Make Codeigniter functions available to library
@@ -131,10 +138,10 @@ class OptionsLib {
 
         // If session data for stylesheet is set return choice
         if($CI->session->userdata('user_stylesheet')) {
-            return $CI->session->userdata('user_stylesheet');
+            return $this->normalize_theme($CI->session->userdata('user_stylesheet'));
         } else {
             // Return the global choice.
-            return $CI->config->item('option_theme');
+            return $this->normalize_theme($CI->config->item('option_theme'));
         }
 
     }

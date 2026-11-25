@@ -709,13 +709,17 @@ $submit_label = $is_add ? lang('account_create_account') : lang('account_save_ac
 								</div>
 								<div class="card-body">
 									<div class="row g-3">
+										<?php $normalized_user_theme = $this->optionslib->normalize_theme($user_stylesheet); ?>
 										<div class="<?php echo $this->config->item('cl_multilanguage') ? 'col-md-6' : 'col-12'; ?>">
-											<label class="form-label" for="user_stylesheet"><?php echo lang('account_theme') . ' / ' . lang('account_stylesheet'); ?></label>
-											<select class="form-select" id="user_stylesheet" name="user_stylesheet" required>
-												<?php foreach ($themes as $theme) {
-													echo '<option value="' . $theme->foldername . '" ' . (($user_stylesheet == $theme->foldername) ? 'selected="selected"' : '') . '>' . $theme->name . '</option>';
-												} ?>
-											</select>
+											<label class="form-label d-block">Appearance</label>
+											<div class="btn-group w-100" role="group" aria-label="Appearance mode">
+												<input type="radio" class="btn-check" name="user_stylesheet" id="user_stylesheet_light" value="default" <?php echo ($normalized_user_theme === 'default') ? 'checked' : ''; ?> required>
+												<label class="btn btn-outline-primary" for="user_stylesheet_light"><i class="fas fa-sun me-1"></i> Light</label>
+
+												<input type="radio" class="btn-check" name="user_stylesheet" id="user_stylesheet_dark" value="darkly" <?php echo ($normalized_user_theme === 'darkly') ? 'checked' : ''; ?> required>
+												<label class="btn btn-outline-primary" for="user_stylesheet_dark"><i class="fas fa-moon me-1"></i> Dark</label>
+											</div>
+											<small class="form-text text-muted">Choose Light or Dark mode for your Cloudlog interface.</small>
 										</div>
 
 										<?php if ($this->config->item('cl_multilanguage')) { ?>

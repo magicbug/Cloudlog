@@ -126,8 +126,9 @@ class Options extends CI_Controller {
 			// Track if any updates were successful
 			$any_update_successful = FALSE;
 
-			// Update theme choice within the options system
-			$theme_update_status = $this->optionslib->update('theme', $this->input->post('theme'), 'yes');
+			// Update theme choice within the options system (normalized to Light/Dark)
+			$normalized_theme = $this->optionslib->normalize_theme($this->input->post('theme'));
+			$theme_update_status = $this->optionslib->update('theme', $normalized_theme, 'yes');
 			if($theme_update_status == TRUE) {
 				$any_update_successful = TRUE;
 			}

@@ -2,11 +2,12 @@
 class Themes_model extends CI_Model {
 
 	// FUNCTION: array getThemes()
-	// Returns a list of themes
+	// Returns the supported Light and Dark theme options
 	function getThemes() {
-		$result = $this->db->query('SELECT * FROM themes order by name');
-
-		return $result->result();
+		return array(
+			(object) array('id' => 1, 'name' => 'Light', 'foldername' => 'default'),
+			(object) array('id' => 2, 'name' => 'Dark', 'foldername' => 'darkly'),
+		);
 	}
 
 	function delete($id) {

@@ -42,20 +42,17 @@
                         </div> -->
 
                         <!-- Form options for selecting global theme choice -->
+                        <?php $normalized_global_theme = $this->optionslib->normalize_theme($this->optionslib->get_option('option_theme')); ?>
                         <div class="mb-3">
-                            <label for="themeSelect"><?php echo lang('options_theme'); ?></label>
-                            <select class="form-select" id="themeSelect" name="theme" aria-describedby="themeHelp" required>
-								<?php
-								foreach ($themes as $theme) {
-									echo '<option value="' . $theme->foldername . '"';
-									if ($this->optionslib->get_option('option_theme') == $theme->foldername) {
-										echo 'selected="selected"';
-									}
-									echo '>' . $theme->name . '</option>';
-								}
-								?>
-                                </select>
-                            <small id="themeHelp" class="form-text text-muted"><?php echo lang('options_global_theme_choice_this_is_used_when_users_arent_logged_in'); ?></small>
+                            <label class="form-label d-block"><?php echo lang('options_theme'); ?></label>
+                            <div class="btn-group" role="group" aria-label="Default appearance mode">
+                                <input type="radio" class="btn-check" name="theme" id="globalThemeLight" value="default" <?php echo ($normalized_global_theme === 'default') ? 'checked' : ''; ?> required>
+                                <label class="btn btn-outline-primary px-4" for="globalThemeLight"><i class="fas fa-sun me-1"></i> Light</label>
+
+                                <input type="radio" class="btn-check" name="theme" id="globalThemeDark" value="darkly" <?php echo ($normalized_global_theme === 'darkly') ? 'checked' : ''; ?> required>
+                                <label class="btn btn-outline-primary px-4" for="globalThemeDark"><i class="fas fa-moon me-1"></i> Dark</label>
+                            </div>
+                            <small id="themeHelp" class="form-text text-muted d-block mt-1"><?php echo lang('options_global_theme_choice_this_is_used_when_users_arent_logged_in'); ?></small>
                         </div>
                         
                         

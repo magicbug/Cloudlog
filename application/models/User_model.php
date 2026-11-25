@@ -220,7 +220,7 @@ class User_Model extends CI_Model {
 			'user_timezone' => (int)$timezone,
 				'user_measurement_base' => xss_clean($measurement),
 				'user_date_format' => xss_clean($user_date_format),
-				'user_stylesheet' => xss_clean($user_stylesheet),
+				'user_stylesheet' => $this->optionslib->normalize_theme(xss_clean($user_stylesheet)),
 				'user_qth_lookup' => (int)$user_qth_lookup,
 				'user_sota_lookup' => (int)$user_sota_lookup,
 				'user_wwff_lookup' => (int)$user_wwff_lookup,
@@ -312,7 +312,7 @@ class User_Model extends CI_Model {
 					'user_clublog_name' => xss_clean($fields['user_clublog_name']), // Must be a valid email address - Clublog no longer accepts callsigns
 					'user_measurement_base' => xss_clean($fields['user_measurement_base']),
 					'user_date_format' => xss_clean($fields['user_date_format']),
-					'user_stylesheet' => xss_clean($fields['user_stylesheet']),
+					'user_stylesheet' => $this->optionslib->normalize_theme(xss_clean($fields['user_stylesheet'])),
 					'user_qth_lookup' => xss_clean($fields['user_qth_lookup']),
 					'user_sota_lookup' => xss_clean($fields['user_sota_lookup']),
 					'user_wwff_lookup' => xss_clean($fields['user_wwff_lookup']),
@@ -519,7 +519,7 @@ class User_Model extends CI_Model {
 			'station_profile_id' => isset($_COOKIE["station_profile_id"])?$_COOKIE["station_profile_id"]:"",
 			'user_measurement_base' => $u->row()->user_measurement_base,
 			'user_date_format' => $u->row()->user_date_format,
-			'user_stylesheet' => $u->row()->user_stylesheet,
+			'user_stylesheet' => $this->optionslib->normalize_theme($u->row()->user_stylesheet),
 			'user_qth_lookup' => isset($u->row()->user_qth_lookup) ? $u->row()->user_qth_lookup : 0,
 			'user_sota_lookup' => isset($u->row()->user_sota_lookup) ? $u->row()->user_sota_lookup : 0,
 			'user_wwff_lookup' => isset($u->row()->user_wwff_lookup) ? $u->row()->user_wwff_lookup : 0,
@@ -659,11 +659,12 @@ class User_Model extends CI_Model {
 	}
 
 	// FUNCTION: array getThemes()
-	// Returns a list of themes
+	// Returns the supported Light and Dark theme options
 	function getThemes() {
-		$result = $this->db->query('SELECT * FROM themes order by name');
-
-		return $result->result();
+		return array(
+			(object) array('id' => 1, 'name' => 'Light', 'foldername' => 'default'),
+			(object) array('id' => 2, 'name' => 'Dark', 'foldername' => 'darkly'),
+		);
 	}
 
 	/*

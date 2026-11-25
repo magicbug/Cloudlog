@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css?v=<?php echo filemtime(FCPATH . 'assets/css/general.css'); ?>">
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/selectize.bootstrap4.css" />
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap-dialog.css" />
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme(); ?>/overrides.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme(); ?>/overrides.css?v=<?php echo filemtime(FCPATH . 'assets/css/' . $this->optionslib->get_theme() . '/overrides.css'); ?>">
 	<?php } ?>
 
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/fontawesome.css">
@@ -468,7 +468,6 @@
 										<a class="dropdown-item" href="<?php echo site_url('options'); ?>" title="Manage global options"><i class="fas fa-cog"></i> <?php echo lang('menu_global_options'); ?></a>
 										<a class="dropdown-item" href="<?php echo site_url('mode'); ?>" title="Manage QSO modes"><i class="fas fa-broadcast-tower"></i> <?php echo lang('menu_modes'); ?></a>
 										<a class="dropdown-item" href="<?php echo site_url('contesting/add'); ?>" title="Manage Contest names"><i class="fas fa-medal"></i> <?php echo lang('menu_contests'); ?></a>
-										<a class="dropdown-item" href="<?php echo site_url('themes'); ?>" title="Manage Themes"><i class="fas fa-palette"></i> <?php echo lang('menu_themes'); ?></a>
 										<a class="dropdown-item" href="<?php echo site_url('plugins'); ?>" title="Plugin Manager"><i class="fas fa-puzzle-piece"></i> Plugin Manager</a>
 										<div class="dropdown-divider"></div>
 										<h6 class="dropdown-header">System</h6>

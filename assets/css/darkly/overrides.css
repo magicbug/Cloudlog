@@ -216,3 +216,191 @@ div.alert-danger {
 	width: 33%;
 	color: #000;
 }
+
+/* Dark mode semantic tokens (Bootswatch Darkly leaves BS 5.3 tokens at light defaults) */
+:root {
+	color-scheme: dark;
+	--bs-tertiary-bg: #262626;
+	--bs-tertiary-bg-rgb: 38, 38, 38;
+	--bs-secondary-bg: #363636;
+	--bs-secondary-bg-rgb: 54, 54, 54;
+	--bs-light-bg-subtle: #2b2b2b;
+	--bs-border-color: rgba(255, 255, 255, 0.14);
+	--bs-border-color-translucent: rgba(255, 255, 255, 0.14);
+	--bs-emphasis-color: #ffffff;
+	--bs-emphasis-color-rgb: 255, 255, 255;
+	--bs-secondary-color: #adb5bd;
+	--bs-secondary-color-rgb: 173, 181, 189;
+}
+
+/* Fix Bootstrap 5.3 light-subtle surfaces & hardcoded light award/stats cards in Dark Mode */
+.bg-light-subtle {
+	background-color: #2b2b2b !important;
+	color: #f1f3f5 !important;
+}
+
+.stats-card {
+	background-color: #2b2b2b !important;
+	border-color: rgba(255, 255, 255, 0.14) !important;
+	color: #f1f3f5 !important;
+}
+
+.stats-card h4,
+.stats-card h5,
+.stats-card h6 {
+	color: #f1f3f5 !important;
+}
+
+.stats-card.milestone.achieved {
+	background-color: rgba(25, 135, 84, 0.25) !important;
+	border-color: rgba(25, 135, 84, 0.55) !important;
+	color: #d1f7e0 !important;
+}
+
+.stats-card-value,
+.stats-card .stats-value,
+.stats-card .text-primary {
+	color: #7ab3ef !important;
+}
+
+.legend.leaflet-control {
+	background-color: rgba(34, 34, 34, 0.92) !important;
+	color: #f1f3f5 !important;
+	border: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.legend.leaflet-control h4,
+.legend.leaflet-control h5,
+.legend.leaflet-control b,
+.legend.leaflet-control strong {
+	color: #f1f3f5 !important;
+}
+
+/* High-contrast outline buttons, primary accents, kbd, and badges on dark surfaces */
+.btn-outline-secondary {
+	--bs-btn-color: #ced4da;
+	--bs-btn-border-color: #6c757d;
+	--bs-btn-hover-color: #ffffff;
+	--bs-btn-hover-bg: #495057;
+	--bs-btn-hover-border-color: #6c757d;
+	--bs-btn-active-color: #ffffff;
+	--bs-btn-active-bg: #495057;
+	--bs-btn-active-border-color: #6c757d;
+	color: #ced4da;
+	border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus,
+.btn-outline-secondary.active {
+	color: #ffffff;
+	background-color: #495057;
+	border-color: #6c757d;
+}
+
+.btn-outline-primary {
+	--bs-btn-color: #7ab3ef;
+	--bs-btn-border-color: #4f86c6;
+	--bs-btn-hover-color: #ffffff;
+	--bs-btn-hover-bg: #375a7f;
+	--bs-btn-hover-border-color: #4f86c6;
+	--bs-btn-active-color: #ffffff;
+	--bs-btn-active-bg: #375a7f;
+	--bs-btn-active-border-color: #4f86c6;
+	color: #7ab3ef;
+	border-color: #4f86c6;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary.active {
+	color: #ffffff;
+	background-color: #375a7f;
+	border-color: #4f86c6;
+}
+
+.text-primary {
+	color: #7ab3ef !important;
+}
+
+kbd {
+	background-color: #3a3a3a;
+	color: #f1f3f5;
+	border: 1px solid #555555;
+}
+
+.card-header .badge.text-bg-secondary,
+.card-header .badge.bg-secondary {
+	background-color: #262626 !important;
+	color: #dee2e6 !important;
+	border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.qso-entry-card .form-control-sm,
+.qso-entry-card .form-select-sm,
+.qso-hero-callsign {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Dark mode high-contrast hover & active states (darkly --bs-primary #375a7f is too dark as text) */
+.main-nav .navbar-nav .nav-link:hover,
+.main-nav .navbar-nav .nav-link:focus {
+	background-color: rgba(255, 255, 255, 0.1);
+	color: #ffffff !important;
+}
+
+.main-nav .navbar-nav .nav-link.active {
+	background-color: rgba(55, 90, 127, 0.55);
+	color: #ffffff !important;
+}
+
+.navbar .dropdown-menu {
+	background-color: #2b2b2b;
+	border-color: #444444;
+}
+
+.navbar .dropdown-item {
+	color: #e9ecef;
+}
+
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
+	background-color: rgba(255, 255, 255, 0.14);
+	color: #ffffff !important;
+}
+
+.navbar .dropdown-item:hover i,
+.navbar .dropdown-item:focus i {
+	opacity: 1;
+}
+
+.main-nav .dropdown-header {
+	color: #adb5bd;
+}
+
+.qso_panel #myTab .nav-link,
+.qso_panel #qsoRightTabs .nav-link {
+	color: #adb5bd;
+}
+
+.qso_panel #myTab .nav-link:hover,
+.qso_panel #qsoRightTabs .nav-link:hover {
+	color: #ffffff;
+}
+
+.qso_panel #myTab .nav-link.active,
+.qso_panel #qsoRightTabs .nav-link.active {
+	color: #7ab3ef !important;
+	border-bottom-color: #7ab3ef !important;
+}
+
+.notes-cat-pill:hover,
+.notes-cat-pill.is-active {
+	color: #7ab3ef;
+	border-color: #7ab3ef;
+	background-color: rgba(122, 179, 239, 0.16);
+}
+
+.notes-item-title:hover {
+	color: #7ab3ef;
+}
