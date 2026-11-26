@@ -1,10 +1,56 @@
+<?php
+$bandmap_theme = ($this->optionslib->get_theme() === 'darkly') ? 'dark' : 'light';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="<?php echo $bandmap_theme; ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DX Cluster Bandmap</title>
+    <title>DX Cluster Bandmap - Cloudlog</title>
+    <link rel="icon" href="<?php echo base_url(); ?>favicon.ico">
     <style>
+        :root {
+            color-scheme: light;
+            --bm-bg: #f4f6f9;
+            --bm-surface: #ffffff;
+            --bm-surface-subtle: #f8fafc;
+            --bm-canvas: #eef2f6;
+            --bm-scale-bg: #ffffff;
+            --bm-border: rgba(15, 23, 42, 0.12);
+            --bm-text: #0f172a;
+            --bm-text-muted: #64748b;
+            --bm-accent: #0d6efd;
+            --bm-accent-soft: rgba(13, 110, 253, 0.12);
+            --bm-line: rgba(15, 23, 42, 0.18);
+            --bm-input-bg: #f8fafc;
+            --bm-tooltip-bg: #ffffff;
+            --bm-tooltip-shadow: 0 10px 28px rgba(15, 23, 42, 0.18);
+            --bm-success: #198754;
+            --bm-danger: #dc3545;
+            --bm-warning: #d97706;
+        }
+
+        [data-theme="dark"] {
+            color-scheme: dark;
+            --bm-bg: #1c1c1c;
+            --bm-surface: #252525;
+            --bm-surface-subtle: #1e1e1e;
+            --bm-canvas: #181a1d;
+            --bm-scale-bg: #222529;
+            --bm-border: rgba(255, 255, 255, 0.14);
+            --bm-text: #f1f3f5;
+            --bm-text-muted: #adb5bd;
+            --bm-accent: #7ab3ef;
+            --bm-accent-soft: rgba(122, 179, 239, 0.16);
+            --bm-line: rgba(255, 255, 255, 0.22);
+            --bm-input-bg: #1e1e1e;
+            --bm-tooltip-bg: #252525;
+            --bm-tooltip-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+            --bm-success: #00bc8c;
+            --bm-danger: #e74c3c;
+            --bm-warning: #f59e0b;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,143 +58,186 @@
         }
 
         body {
-            font-family: 'Consolas', 'Monaco', monospace;
-            background: #1e1e1e;
-            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: var(--bm-bg);
+            color: var(--bm-text);
             overflow: hidden;
+            font-size: 13px;
         }
 
         .bandmap-container {
             height: 100vh;
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: var(--bm-bg);
             display: flex;
             flex-direction: column;
         }
 
         .toolbar {
-            background: #2c3e50;
-            padding: 10px 20px;
-            border-bottom: 2px solid #34495e;
+            background: var(--bm-surface);
+            padding: 8px 16px;
+            border-bottom: 1px solid var(--bm-border);
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: space-between;
+            gap: 12px;
             flex-wrap: wrap;
-            min-height: 60px;
+            min-height: 54px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+            z-index: 20;
+        }
+
+        .toolbar-left,
+        .toolbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding-right: 12px;
+            border-right: 1px solid var(--bm-border);
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--bm-text);
+        }
+
+        .toolbar-brand img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
         }
 
         .bandmap-display {
             flex: 1;
             position: relative;
-            background: #1a1a1a;
+            background: var(--bm-canvas);
             overflow: hidden;
         }
 
         .toolbar-group {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .toolbar-label {
-            color: #3498db;
-            font-size: 0.9em;
-            font-weight: 600;
+            color: var(--bm-text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             white-space: nowrap;
         }
 
-        .band-select {
-            background: #34495e;
-            color: white;
-            border: 1px solid #555;
-            border-radius: 4px;
-            padding: 6px 8px;
-            font-size: 0.9em;
-            cursor: pointer;
+        .band-select,
+        .frequency-input {
+            background: var(--bm-input-bg);
+            color: var(--bm-text);
+            border: 1px solid var(--bm-border);
+            border-radius: 6px;
+            padding: 5px 9px;
+            font-size: 13px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-weight: 600;
+            height: 32px;
         }
 
-        .band-select:focus {
-            outline: none;
-            border-color: #3498db;
+        .band-select {
+            cursor: pointer;
         }
 
         .frequency-input {
-            width: 100px;
-            padding: 6px 8px;
-            background: #34495e;
-            border: 1px solid #555;
-            color: white;
-            border-radius: 4px;
-            font-size: 0.9em;
+            width: 96px;
         }
 
+        .band-select:focus,
         .frequency-input:focus {
             outline: none;
-            border-color: #3498db;
+            border-color: var(--bm-accent);
+            box-shadow: 0 0 0 3px var(--bm-accent-soft);
         }
 
         .toolbar-btn {
-            background: #34495e;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            padding: 6px 10px;
+            background: var(--bm-surface-subtle);
+            color: var(--bm-text);
+            border: 1px solid var(--bm-border);
+            border-radius: 6px;
+            padding: 5px 10px;
+            height: 32px;
             cursor: pointer;
-            font-size: 0.9em;
-            transition: background 0.2s;
+            font-size: 12.5px;
+            font-weight: 600;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
         }
 
         .toolbar-btn:hover {
-            background: #3498db;
+            background: var(--bm-accent-soft);
+            border-color: var(--bm-accent);
+            color: var(--bm-accent);
         }
 
         .zoom-btn {
             width: 32px;
-            height: 32px;
-            display: flex;
+            padding: 0;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 1.1em;
+            font-weight: 700;
+            font-size: 15px;
         }
 
         .stats-display {
             display: flex;
-            gap: 15px;
-            font-size: 0.85em;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .stat-item {
-            color: #bdc3c7;
+            background: var(--bm-surface-subtle);
+            border: 1px solid var(--bm-border);
+            border-radius: 6px;
+            padding: 4px 9px;
+            font-size: 12px;
+            color: var(--bm-text-muted);
+            font-variant-numeric: tabular-nums;
         }
 
         .stat-value {
-            color: #3498db;
-            font-weight: bold;
+            color: var(--bm-text);
+            font-weight: 700;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
         }
 
         .frequency-scale {
             position: absolute;
             left: 0;
             top: 0;
-            width: 80px;
+            width: 88px;
             height: 100%;
-            background: rgba(44, 62, 80, 0.9);
-            border-right: 2px solid #3498db;
+            background: var(--bm-scale-bg);
+            border-right: 1px solid var(--bm-border);
             overflow: hidden;
         }
 
         .frequency-marker {
             position: absolute;
-            right: 5px;
-            font-size: 14px;
-            color: #3498db;
-            font-weight: bold;
+            right: 8px;
+            font-size: 12px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            color: var(--bm-accent);
+            font-weight: 700;
             white-space: nowrap;
+            font-variant-numeric: tabular-nums;
         }
 
         .spots-canvas {
             position: absolute;
-            left: 80px;
+            left: 88px;
             top: 0;
             right: 0;
             height: 100%;
@@ -157,75 +246,67 @@
 
         .spot-marker {
             position: absolute;
-            background: #e74c3c;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: bold;
+            background: #dc3545;
+            color: #ffffff;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 11.5px;
+            font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
-            border: 1px solid #c0392b;
-            transition: all 0.2s;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
             z-index: 10;
         }
 
         .spot-marker:hover {
-            background: #f39c12;
-            border-color: #d68910;
-            transform: scale(1.1);
+            filter: brightness(1.1);
+            transform: scale(1.06);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.28);
             z-index: 20;
         }
 
         .spot-marker.aged {
-            background: #7f8c8d;
-            color: #ecf0f1;
-            border-color: #95a5a6;
+            background: #6c757d;
+            color: #f8f9fa;
+            border-color: rgba(0, 0, 0, 0.18);
+            opacity: 0.78;
         }
 
         .spot-marker.aged:hover {
-            background: #95a5a6;
-            border-color: #bdc3c7;
+            opacity: 1;
         }
 
         .spot-marker.new {
-            animation: spotAppear 0.5s ease-out;
+            animation: spotAppear 0.4s ease-out;
         }
-        
+
         /* Worked status styling */
         .spot-marker.worked-on-band {
-            background: #27ae60;
-            border-color: #229954;
+            background: #198754;
+            border-color: #146c43;
         }
-        
-        .spot-marker.worked-on-band:hover {
-            background: #2ecc71;
-            border-color: #27ae60;
-        }
-        
+
         .spot-marker.worked-other-band {
-            background: #3498db;
-            border-color: #2980b9;
+            background: #0d6efd;
+            border-color: #0a58ca;
         }
-        
-        .spot-marker.worked-other-band:hover {
-            background: #5dade2;
-            border-color: #3498db;
-        }
-        
+
         .spot-marker.not-worked {
-            background: #e74c3c;
-            border-color: #c0392b;
+            background: #dc3545;
+            border-color: #b02a37;
         }
-        
+
         .spot-marker.new-dxcc {
-            box-shadow: 0 0 10px #f39c12, 0 0 20px #f39c12;
-            border: 2px solid #f39c12;
+            box-shadow: 0 0 0 2px #f59e0b, 0 0 12px rgba(245, 158, 11, 0.6);
+            border-color: #f59e0b;
         }
-        
+
         .spot-marker.new-band-dxcc {
-            box-shadow: 0 0 10px #e74c3c, 0 0 20px #e74c3c;
-            border: 2px solid #e74c3c;
+            box-shadow: 0 0 0 2px #ef4444, 0 0 12px rgba(239, 68, 68, 0.55);
+            border-color: #ef4444;
         }
 
         .tune-indicator {
@@ -233,35 +314,46 @@
             left: 0;
             right: 0;
             height: 2px;
-            background: #f39c12;
-            box-shadow: 0 0 10px #f39c12;
+            background: #f59e0b;
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.75);
             z-index: 100;
+            pointer-events: none;
         }
 
         .connection-status {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .connection-status::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
         }
 
         .connected {
-            background: #27ae60;
-            color: white;
+            background: rgba(25, 135, 84, 0.16);
+            color: var(--bm-success);
+            border: 1px solid rgba(25, 135, 84, 0.35);
         }
 
         .disconnected {
-            background: #e74c3c;
-            color: white;
+            background: rgba(220, 53, 69, 0.16);
+            color: var(--bm-danger);
+            border: 1px solid rgba(220, 53, 69, 0.35);
         }
 
         @keyframes spotAppear {
             from {
                 opacity: 0;
-                transform: scale(0.5) translateY(-10px);
+                transform: scale(0.85) translateY(-6px);
             }
             to {
                 opacity: 1;
@@ -275,36 +367,40 @@
             top: 0;
             bottom: 0;
             width: 3px;
-            border-radius: 1px;
+            border-radius: 2px 0 0 2px;
         }
 
-        .age-new { background: #27ae60; }
-        .age-recent { background: #f39c12; }
-        .age-old { background: #95a5a6; }
+        .age-new { background: #20c997; }
+        .age-recent { background: #f59e0b; }
+        .age-old { background: #adb5bd; }
 
         .spot-tooltip {
             position: absolute;
-            background: #2c3e50;
-            border: 2px solid #3498db;
-            border-radius: 5px;
-            padding: 10px;
+            background: var(--bm-tooltip-bg);
+            color: var(--bm-text);
+            border: 1px solid var(--bm-border);
+            border-left: 3px solid var(--bm-accent);
+            border-radius: 8px;
+            padding: 10px 12px;
             font-size: 12px;
+            line-height: 1.5;
             pointer-events: none;
             z-index: 1000;
             display: none;
-            min-width: 200px;
+            min-width: 210px;
+            box-shadow: var(--bm-tooltip-shadow);
         }
 
         .frequency-line {
             position: absolute;
             height: 1px;
-            background: #7f8c8d;
+            background: var(--bm-line);
             z-index: 5;
             pointer-events: none;
         }
 
         .frequency-line.active {
-            background: #f39c12;
+            background: #f59e0b;
             height: 2px;
         }
 
@@ -312,146 +408,196 @@
         .toggle-container {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .toggle-switch {
             position: relative;
-            width: 50px;
-            height: 24px;
-            background: #34495e;
-            border-radius: 12px;
+            width: 42px;
+            height: 22px;
+            background: var(--bm-input-bg);
+            border-radius: 999px;
             cursor: pointer;
-            transition: background 0.3s;
-            border: 1px solid #555;
+            transition: background 0.2s, border-color 0.2s;
+            border: 1px solid var(--bm-border);
         }
 
         .toggle-switch.active {
-            background: #27ae60;
+            background: var(--bm-success);
+            border-color: var(--bm-success);
         }
 
         .toggle-slider {
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 18px;
-            height: 18px;
-            background: white;
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
             border-radius: 50%;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.28);
         }
 
         .toggle-switch.active .toggle-slider {
-            transform: translateX(26px);
+            transform: translateX(20px);
         }
 
         .auto-track-status {
-            font-size: 0.8em;
-            color: #bdc3c7;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--bm-text-muted);
+            min-width: 22px;
         }
 
         .auto-track-status.active {
-            color: #27ae60;
+            color: var(--bm-success);
+        }
+
+        /* Compact Legend Footer */
+        .bandmap-footer {
+            background: var(--bm-surface);
+            border-top: 1px solid var(--bm-border);
+            padding: 6px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 11.5px;
+            color: var(--bm-text-muted);
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-swatch {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
     <div class="bandmap-container">
         <div class="toolbar">
-            <div class="toolbar-group">
-                <span class="toolbar-label">Band:</span>
-                <select class="band-select" id="bandSelect" onchange="handleBandChange()">
-                    <?php 
-                    if (isset($bands) && is_array($bands) && count($bands) > 0) {
-                        $defaultSelected = false;
-                        foreach ($bands as $band) {
-                            // Extract the numeric part from band (e.g., "20" from "20m")
-                            $bandMeters = str_replace('m', '', $band['band']);
-                            $selected = (!$defaultSelected && $band['band'] == '20m') ? ' selected' : '';
-                            if ($selected) {
-                                $defaultSelected = true;
+            <div class="toolbar-left">
+                <div class="toolbar-brand">
+                    <img src="<?php echo base_url(); ?>CloudLog_logo.png" alt="Cloudlog">
+                    <span>Bandmap</span>
+                </div>
+
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Band</span>
+                    <select class="band-select" id="bandSelect" onchange="handleBandChange()">
+                        <?php
+                        if (isset($bands) && is_array($bands) && count($bands) > 0) {
+                            $defaultSelected = false;
+                            foreach ($bands as $band) {
+                                $bandMeters = str_replace('m', '', $band['band']);
+                                $selected = (!$defaultSelected && $band['band'] == '20m') ? ' selected' : '';
+                                if ($selected) {
+                                    $defaultSelected = true;
+                                }
+                                echo '<option value="' . $bandMeters . ',' . $band['start'] . ',' . $band['end'] . '"' . $selected . '>' . $band['band'] . '</option>' . "\n";
                             }
-                            echo '<option value="' . $bandMeters . ',' . $band['start'] . ',' . $band['end'] . '"' . $selected . '>' . $band['band'] . '</option>' . "\n";
+                        } else {
+                            echo '<option value="2190,135700,137800">2190m</option>';
+                            echo '<option value="630,472000,479000">630m</option>';
+                            echo '<option value="560,501000,504000">560m</option>';
+                            echo '<option value="160,1800,2000">160m</option>';
+                            echo '<option value="80,3500,4000">80m</option>';
+                            echo '<option value="60,5351500,5366500">60m</option>';
+                            echo '<option value="40,7000,7300">40m</option>';
+                            echo '<option value="30,10100,10150">30m</option>';
+                            echo '<option value="20,14000,14350" selected>20m</option>';
+                            echo '<option value="17,18068,18168">17m</option>';
+                            echo '<option value="15,21000,21450">15m</option>';
+                            echo '<option value="12,24890,24990">12m</option>';
+                            echo '<option value="10,28000,29700">10m</option>';
+                            echo '<option value="6,50000,54000">6m</option>';
+                            echo '<option value="4,70000,70500">4m</option>';
+                            echo '<option value="2,144000,148000">2m</option>';
+                            echo '<option value="1.25,222000,225000">1.25m</option>';
+                            echo '<option value="70,420000,450000">70cm</option>';
+                            echo '<option value="33,902000,928000">33cm</option>';
+                            echo '<option value="23,1240000,1300000">23cm</option>';
+                            echo '<option value="13,2300000,2450000">13cm</option>';
+                            echo '<option value="9,3300000,3500000">9cm</option>';
+                            echo '<option value="6,5650000,5925000">6cm</option>';
+                            echo '<option value="3,10000000,10500000">3cm</option>';
+                            echo '<option value="1.2,24000000,24250000">1.2cm</option>';
+                            echo '<option value="6mm,47000000,47200000">6mm</option>';
+                            echo '<option value="4mm,75500000,81000000">4mm</option>';
+                            echo '<option value="2.5mm,119980000,120020000">2.5mm</option>';
+                            echo '<option value="2mm,142000000,149000000">2mm</option>';
+                            echo '<option value="1mm,241000000,250000000">1mm</option>';
                         }
-                    } else {
-                        // Fallback to default bands if no user bands configured
-                        // HF Bands
-                        echo '<option value="2190,135700,137800">2190m</option>';
-                        echo '<option value="630,472000,479000">630m</option>';
-                        echo '<option value="560,501000,504000">560m</option>';
-                        echo '<option value="160,1800,2000">160m</option>';
-                        echo '<option value="80,3500,4000">80m</option>';
-                        echo '<option value="60,5351500,5366500">60m</option>';
-                        echo '<option value="40,7000,7300">40m</option>';
-                        echo '<option value="30,10100,10150">30m</option>';
-                        echo '<option value="20,14000,14350" selected>20m</option>';
-                        echo '<option value="17,18068,18168">17m</option>';
-                        echo '<option value="15,21000,21450">15m</option>';
-                        echo '<option value="12,24890,24990">12m</option>';
-                        echo '<option value="10,28000,29700">10m</option>';
-                        // VHF Bands
-                        echo '<option value="6,50000,54000">6m</option>';
-                        echo '<option value="4,70000,70500">4m</option>';
-                        echo '<option value="2,144000,148000">2m</option>';
-                        echo '<option value="1.25,222000,225000">1.25m</option>';
-                        // UHF Bands
-                        echo '<option value="70,420000,450000">70cm</option>';
-                        echo '<option value="33,902000,928000">33cm</option>';
-                        // SHF Bands (Microwave)
-                        echo '<option value="23,1240000,1300000">23cm</option>';
-                        echo '<option value="13,2300000,2450000">13cm</option>';
-                        echo '<option value="9,3300000,3500000">9cm</option>';
-                        echo '<option value="6,5650000,5925000">6cm</option>';
-                        echo '<option value="3,10000000,10500000">3cm</option>';
-                        echo '<option value="1.2,24000000,24250000">1.2cm</option>';
-                        // EHF Bands (Millimeter wave)
-                        echo '<option value="6mm,47000000,47200000">6mm</option>';
-                        echo '<option value="4mm,75500000,81000000">4mm</option>';
-                        echo '<option value="2.5mm,119980000,120020000">2.5mm</option>';
-                        echo '<option value="2mm,142000000,149000000">2mm</option>';
-                        echo '<option value="1mm,241000000,250000000">1mm</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-            
-            <div class="toolbar-group">
-                <span class="toolbar-label">Zoom:</span>
-                <button class="toolbar-btn zoom-btn" onclick="zoomOut()" title="Zoom Out">−</button>
-                <button class="toolbar-btn zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
-            </div>
-            
-            <div class="toolbar-group">
-                <span class="toolbar-label">Tune:</span>
-                <input type="number" class="frequency-input" id="tuneFreq" placeholder="kHz" title="Tune Frequency">
-                <button class="toolbar-btn" onclick="centerOnFrequency()" title="Center on Frequency">Center</button>
-            </div>
-            
-            <div class="toolbar-group">
-                <span class="toolbar-label">Auto Track:</span>
-                <div class="toggle-container">
-                    <div class="toggle-switch active" id="autoTrackToggle" onclick="toggleAutoTrack()" title="Toggle Radio Auto-Tracking">
-                        <div class="toggle-slider"></div>
+                        ?>
+                    </select>
+                </div>
+
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Zoom</span>
+                    <button class="toolbar-btn zoom-btn" onclick="zoomOut()" title="Zoom Out">&minus;</button>
+                    <button class="toolbar-btn zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
+                </div>
+
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Tune</span>
+                    <input type="number" class="frequency-input" id="tuneFreq" placeholder="kHz" title="Tune Frequency">
+                    <button class="toolbar-btn" onclick="centerOnFrequency()" title="Center on Frequency">Center</button>
+                </div>
+
+                <div class="toolbar-group">
+                    <span class="toolbar-label">Auto Track</span>
+                    <div class="toggle-container">
+                        <div class="toggle-switch active" id="autoTrackToggle" onclick="toggleAutoTrack()" title="Toggle Radio Auto-Tracking">
+                            <div class="toggle-slider"></div>
+                        </div>
+                        <span class="auto-track-status active" id="autoTrackStatus">ON</span>
                     </div>
-                    <span class="auto-track-status active" id="autoTrackStatus">ON</span>
                 </div>
             </div>
-            
-            <div class="stats-display">
-                <div class="stat-item">Band: <span class="stat-value" id="currentBand">20m</span></div>
-                    <div class="stat-item">Viewing: <span class="stat-value" id="freqRange">14.000-14.350</span> MHz</div>
-                <div class="stat-item">Spots: <span class="stat-value" id="bandSpotCount">0</span></div>
-                <div class="stat-item">Total: <span class="stat-value" id="totalSpots">0</span></div>
+
+            <div class="toolbar-right">
+                <div class="stats-display">
+                    <div class="stat-item">Band <span class="stat-value" id="currentBand">20m</span></div>
+                    <div class="stat-item"><span class="stat-value" id="freqRange">14.000-14.350</span> MHz</div>
+                    <div class="stat-item">Spots <span class="stat-value" id="bandSpotCount">0</span></div>
+                    <div class="stat-item">Total <span class="stat-value" id="totalSpots">0</span></div>
+                </div>
+                <div class="connection-status disconnected" id="connectionStatus">Disconnected</div>
             </div>
         </div>
 
         <div class="bandmap-display" id="bandmapDisplay">
-            <div class="connection-status disconnected" id="connectionStatus">Disconnected</div>
             <div class="frequency-scale" id="frequencyScale"></div>
             <div class="spots-canvas" id="spotsCanvas"></div>
             <div class="tune-indicator" id="tuneIndicator" style="display: none;"></div>
             <div class="spot-tooltip" id="spotTooltip"></div>
+        </div>
+
+        <div class="bandmap-footer">
+            <div class="legend-items">
+                <span class="legend-item"><span class="legend-swatch" style="background: #dc3545; box-shadow: 0 0 0 2px #f59e0b;"></span>New DXCC</span>
+                <span class="legend-item"><span class="legend-swatch" style="background: #dc3545;"></span>Not Worked</span>
+                <span class="legend-item"><span class="legend-swatch" style="background: #0d6efd;"></span>Worked Other Band</span>
+                <span class="legend-item"><span class="legend-swatch" style="background: #198754;"></span>Worked on Band</span>
+                <span class="legend-item"><span class="legend-swatch" style="background: #6c757d;"></span>Aged</span>
+            </div>
+            <div>Click any spot to tune &amp; populate QSO entry &middot; Scroll to zoom</div>
         </div>
     </div>
 
