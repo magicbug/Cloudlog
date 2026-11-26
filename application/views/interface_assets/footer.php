@@ -3471,7 +3471,7 @@ $(document).ready(function() {
                         if (typeof QraUtils !== 'undefined' && typeof QraUtils.drawLocatorGrids === 'function') {
                             var qsoGrids = $("#qso_map_grids").text();
                             var gridLayer = QraUtils.drawLocatorGrids(mymap, qsoGrids);
-                            if (gridLayer && gridLayer.getLayers().length > 0) {
+                            if (gridLayer && typeof gridLayer.getBounds === 'function' && gridLayer.getLayers().length > 0) {
                                 var gridBounds = gridLayer.getBounds();
                                 if (lat && long) {
                                     gridBounds.extend([lat, long]);

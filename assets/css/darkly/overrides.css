@@ -614,6 +614,11 @@ kbd {
 	filter: invert(1) grayscale(100%) brightness(200%);
 }
 
+.qso-dialog .bootstrap-dialog-close-button .close {
+	color: #f1f3f5 !important;
+	text-shadow: none;
+}
+
 .qso-modal-callsign {
 	color: #ffffff;
 }
