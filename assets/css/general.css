@@ -2424,6 +2424,169 @@ tr.htmx-swapping td {
 	font-weight: 600;
 }
 
+/* Simple Fast Log Entry (SimpleFLE) Studio */
+.sfle-page {
+	padding-top: 14px;
+	padding-bottom: 28px;
+}
+
+.sfle-shell {
+	max-width: 1440px;
+}
+
+.sfle-page #simpleFleInfo {
+	display: block;
+}
+
+.sfle-topbar,
+.sfle-defaults-card,
+.sfle-panel-card {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.75rem;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+	overflow: hidden;
+}
+
+.sfle-brand-icon {
+	width: 36px;
+	height: 36px;
+	border-radius: 0.55rem;
+	background-color: var(--bs-primary, #0d6efd);
+	color: #fff;
+	font-size: 0.95rem;
+	flex-shrink: 0;
+}
+
+.sfle-clock-pill {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.5rem;
+	padding: 0.25rem 0.6rem;
+	line-height: 1.2;
+}
+
+.sfle-clock-val {
+	font-size: 0.9rem;
+	font-variant-numeric: tabular-nums;
+}
+
+.sfle-utc-tag {
+	font-size: 0.65rem;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.sfle-field-label {
+	display: block;
+	font-size: 0.7rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary-color, #64748b);
+	margin-bottom: 0.22rem;
+}
+
+.sfle-section-title {
+	font-size: 0.76rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.sfle-panel-card .card-header,
+.sfle-cheatsheet,
+.sfle-card-footer {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.05));
+}
+
+.sfle-hdr-btn {
+	font-size: 0.76rem;
+	padding: 0.18rem 0.5rem;
+}
+
+.sfle-snippet-bar {
+	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
+}
+
+.sfle-chip {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.15));
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	color: var(--bs-body-color, inherit);
+	border-radius: 0.35rem;
+	padding: 0.12rem 0.5rem;
+	font-family: var(--bs-font-monospace, monospace);
+	font-size: 0.75rem;
+	cursor: pointer;
+	transition: border-color 120ms ease, color 120ms ease;
+}
+
+.sfle-chip:hover {
+	border-color: var(--bs-primary, #0d6efd);
+	color: var(--bs-primary, #0d6efd);
+}
+
+.sfle-textarea {
+	font-family: var(--bs-font-monospace, monospace);
+	font-size: 0.9rem;
+	line-height: 1.65;
+	min-height: 360px;
+	resize: vertical;
+	border-radius: 0.5rem;
+}
+
+.sfle-cheatsheet code {
+	background-color: var(--bs-body-bg, #fff);
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.25rem;
+	padding: 0.05rem 0.35rem;
+	font-size: 0.74rem;
+}
+
+.sfle-count-badge {
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	color: var(--bs-primary, #0d6efd);
+	font-weight: 700;
+}
+
+.sfle-table-wrap {
+	min-height: 410px;
+}
+
+/* Override legacy sfletable display rules for clean horizontal scrolling */
+#qsoTable.sfletable.table thead,
+#qsoTable.sfletable.table tbody {
+	display: table-row-group !important;
+	position: static !important;
+	width: auto !important;
+	overflow-y: visible !important;
+	max-height: none !important;
+}
+
+#qsoTable.sfletable.table thead tr,
+#qsoTable.sfletable.table tbody tr {
+	display: table-row !important;
+	width: auto !important;
+}
+
+#qsoTable.sfletable {
+	height: auto !important;
+	font-size: 0.85rem;
+}
+
+#qsoTable.sfletable thead th {
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--bs-secondary-color, #64748b);
+	padding: 0.55rem 0.5rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 @media (max-width: 575.98px) {
 	.qso_panel #qsoRightTabs {
 		flex-wrap: wrap !important;

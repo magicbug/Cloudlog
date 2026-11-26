@@ -263,10 +263,10 @@
 								}
 
 								$has_gridmaster = ($user_awards->gridmaster_dl == 1 || $user_awards->gridmaster_lx == 1 || $user_awards->gridmaster_ja == 1 || $user_awards->gridmaster_us == 1 || $user_awards->gridmaster_uk == 1);
-								$has_global_awards = ($user_awards->dxcc == 1 || $user_awards->cq == 1 || !empty($user_awards->wac) || $user_awards->iota == 1 || $user_awards->gmdxsummer == 1);
+								$has_global_awards = ($user_awards->dxcc == 1 || $user_awards->cq == 1 || !empty($user_awards->wac) || $user_awards->iota == 1);
 								$has_grid_awards = ($user_awards->vucc == 1 || $user_awards->ffma == 1 || $has_gridmaster);
-								$has_portable_awards = ($user_awards->pota == 1 || $user_awards->sota == 1 || $user_awards->wwff == 1 || $user_awards->sig == 1 || !empty($user_awards->skcc) || !empty($user_awards->rsgb) || !empty($visible_plugin_awards));
-								$has_regional_awards = ($user_awards->was == 1 || $user_awards->uscounties == 1 || $user_awards->wab == 1 || $user_awards->dok == 1 || !empty($user_awards->rac) || !empty($user_awards->rda) || $user_awards->waja == 1);
+								$has_portable_awards = ($user_awards->pota == 1 || $user_awards->sota == 1 || $user_awards->wwff == 1 || $user_awards->sig == 1 || !empty($user_awards->skcc) || !empty($visible_plugin_awards));
+								$has_regional_awards = ($user_awards->was == 1 || $user_awards->uscounties == 1 || $user_awards->wab == 1 || !empty($user_awards->rsgb) || $user_awards->gmdxsummer == 1 || $user_awards->dok == 1 || !empty($user_awards->rac) || !empty($user_awards->rda) || $user_awards->waja == 1);
 								?>
 								<div class="nav-mega-grid">
 									<?php if ($has_global_awards || $has_grid_awards) { ?>
@@ -284,9 +284,6 @@
 												<?php } ?>
 												<?php if ($user_awards->iota == 1) { ?>
 													<a class="dropdown-item" href="<?php echo site_url('awards/iota'); ?>"><i class="fas fa-water"></i> <?php echo lang('menu_iota'); ?></a>
-												<?php } ?>
-												<?php if ($user_awards->gmdxsummer == 1) { ?>
-													<a class="dropdown-item" href="<?php echo site_url('awards/gmdxsummer'); ?>"><i class="fas fa-medal"></i> GMDX Summer Challenge</a>
 												<?php } ?>
 											<?php } ?>
 
@@ -335,9 +332,6 @@
 											<?php if (!empty($user_awards->skcc)) { ?>
 												<a class="dropdown-item" href="<?php echo site_url('awards/skcc'); ?>"><i class="fas fa-key"></i> <?php echo lang('menu_skcc'); ?></a>
 											<?php } ?>
-											<?php if (!empty($user_awards->rsgb)) { ?>
-												<a class="dropdown-item" href="<?php echo site_url('awards/rsgb'); ?>"><i class="fas fa-award"></i> <?php echo lang('menu_rsgb'); ?></a>
-											<?php } ?>
 											<?php foreach ($visible_plugin_awards as $plugin_award_entry) { ?>
 												<a class="dropdown-item" href="<?php echo site_url($plugin_award_entry['route']); ?>"><i class="<?php echo htmlspecialchars($plugin_award_entry['icon']); ?>"></i> <?php echo htmlspecialchars($plugin_award_entry['title']); ?></a>
 											<?php } ?>
@@ -355,6 +349,12 @@
 											<?php } ?>
 											<?php if ($user_awards->wab == 1) { ?>
 												<a class="dropdown-item" href="<?php echo site_url('awards/wab'); ?>"><i class="fas fa-map-pin"></i> Worked All Britain</a>
+											<?php } ?>
+											<?php if (!empty($user_awards->rsgb)) { ?>
+												<a class="dropdown-item" href="<?php echo site_url('awards/rsgb'); ?>"><i class="fas fa-award"></i> <?php echo lang('menu_rsgb'); ?></a>
+											<?php } ?>
+											<?php if ($user_awards->gmdxsummer == 1) { ?>
+												<a class="dropdown-item" href="<?php echo site_url('awards/gmdxsummer'); ?>"><i class="fas fa-medal"></i> GMDX Summer Challenge</a>
 											<?php } ?>
 											<?php if ($user_awards->dok == 1) { ?>
 												<a class="dropdown-item" href="<?php echo site_url('awards/dok'); ?>"><i class="fas fa-flag"></i> <?php echo lang('menu_dok'); ?></a>

@@ -574,3 +574,25 @@ kbd {
 	background-color: #262626 !important;
 	color: #f1f3f5 !important;
 }
+
+/* SimpleFLE Dark Mode accents */
+.sfle-count-badge {
+	background-color: rgba(122, 179, 239, 0.16);
+	color: #7ab3ef;
+}
+
+.sfle-chip:hover {
+	border-color: #7ab3ef;
+	color: #7ab3ef;
+}
+
+.sfle-textarea {
+	background-color: #1f1f1f;
+	color: #f1f3f5;
+	border-color: rgba(255, 255, 255, 0.16);
+}
+
+.sfle-cheatsheet code {
+	background-color: #1f1f1f;
+	color: #7ab3ef;
+}

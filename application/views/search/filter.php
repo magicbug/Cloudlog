@@ -1,20 +1,22 @@
-<div class="container search">
+<div class="container search awards-page">
 
-	<h1>
-		Advanced Search
-		<small class="text-muted"></small>
-	</h1>
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => 'Advanced Search',
+		'subtitle' => 'Build multi-field queries, save reusable filters, and export matching QSOs to ADIF',
+		'icon' => 'fas fa-filter',
+	)); ?>
 
 	<?php if($this->session->flashdata('message')) { ?>
 		<!-- Display Message -->
-		<div class="alert-message error">
-			<p><?php echo $this->session->flashdata('message'); ?></p>
+		<div class="alert alert-info alert-dismissible fade show" role="alert">
+			<?php echo $this->session->flashdata('message'); ?>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		</div>
 	<?php } ?>
 
 	<!-- Filter options here -->
 	<div class="card">
-	  <div class="card-header">
+	  <div class="card-header pb-0">
 	    <ul class="nav nav-tabs card-header-tabs">
 	      <li class="nav-item">
 	        <a class="nav-link" href="<?php echo site_url('search'); ?>">Search</a>
@@ -81,8 +83,8 @@
 	  <div class="card-header d-flex justify-content-between align-items-center">
 	    <div>
 			<span>Search Results</span>
-			<span class="badge text-bg-light ms-2" id="advanced-results-count">0 QSOs</span>
-			<span class="badge text-bg-secondary" id="advanced-results-mode">Filtered query</span>
+			<span class="badge rounded-pill text-bg-primary ms-2" id="advanced-results-count">0 QSOs</span>
+			<span class="badge rounded-pill text-bg-secondary" id="advanced-results-mode">Filtered query</span>
 		</div>
 		<div>
 			<div class="exportbutton d-inline-block"><button class="btn btn-sm btn-primary" id="btn-export" onclick="export_search_result();">Export to ADIF</button></div>

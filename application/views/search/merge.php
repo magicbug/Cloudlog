@@ -1,5 +1,16 @@
-<div class="container search">
-	<h1><?php echo lang('search_merge_title'); ?></h1>
+<div class="container search awards-page">
+	<?php $this->load->view('awards/components/topbar', array(
+		'title' => lang('search_merge_title'),
+		'subtitle' => 'Compare duplicate QSO fields and choose which values to keep',
+		'icon' => 'fas fa-code-branch',
+		'actions' => array(
+			array(
+				'label' => 'Back to Duplicates',
+				'url' => site_url('search/duplicates'),
+				'icon' => 'fas fa-arrow-left',
+			),
+		),
+	)); ?>
 
 	<div class="alert alert-danger" role="alert">
 		<i class="fas fa-exclamation-triangle"></i> <?php echo lang('search_merge_warning'); ?>
