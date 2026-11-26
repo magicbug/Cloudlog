@@ -1449,7 +1449,7 @@ tr.htmx-swapping td {
 	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
 	border-radius: 0.5rem;
 	line-height: 1.15;
-	text-align: right;
+	text-align: left;
 }
 
 .contesting-clock-time {
@@ -1738,7 +1738,7 @@ tr.htmx-swapping td {
 
 .qso-clock-pill {
 	line-height: 1.15;
-	text-align: right;
+	text-align: left;
 }
 
 .qso-clock-time {
