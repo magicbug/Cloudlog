@@ -3,6 +3,9 @@
 class API extends CI_Controller
 {
 
+	// Output buffer level at the start of get_contacts_adif()
+	private $_adif_ob_level = 0;
+
 	// Do absolutely nothing
 	function index()
 	{
@@ -254,6 +257,128 @@ class API extends CI_Controller
 			'count' => count($logbooks),
 			'logbooks' => $logbooks,
 		), JSON_PRETTY_PRINT);
+	}
+
+
+	/**
+	 * Incremental ADIF export of one station location.
+	 *
+	 * POST /api/get_contacts_adif
+	 * Content-Type: application/json
+	 * {"key": "<read-capable API key>", "station_id": 1, "fetchfromid": 0, "limit": 5000}
+	 *
+	 * station_id is a Cloudlog station location ID (station_profile.station_id)
+	 * and must belong to the API key owner. fetchfromid is a QSO primary key
+	 * cursor: only QSOs with a greater ID are returned, oldest ID first.
+	 * See docs/api_get_contacts_adif.md.
+	 */
+	public function get_contacts_adif()
+	{
+		// Capture anything echoed by PHP notices/warnings while we work, so it can never end up in front of the JSON body
+		$this->_adif_ob_level = ob_get_level();
+		ob_start();
+
+		try {
+			if (strtoupper((string)$this->input->server('REQUEST_METHOD')) !== 'POST') {
+				$this->output->set_header('Allow: POST');
+				$this->_get_contacts_adif_respond(405, array('status' => 'failed', 'reason' => 'Method not allowed, use POST'));
+				return;
+			}
+
+			$this->load->library('adif_export_request');
+			$request = Adif_export_request::parse(
+				(string)$this->input->server('CONTENT_TYPE'),
+				(string)file_get_contents('php://input', false, null, 0, Adif_export_request::MAX_BODY_BYTES + 1)
+			);
+			if (!$request['ok']) {
+				$this->_get_contacts_adif_respond($request['status'], array('status' => 'failed', 'reason' => $request['reason']));
+				return;
+			}
+
+			// Authenticate with the native API key model: must be an active key with at least read rights
+			$this->load->model('api_model');
+			if ($this->api_model->authorize($request['key']) < 1) {
+				$this->_get_contacts_adif_respond(401, array('status' => 'failed', 'reason' => 'Missing or invalid API key'));
+				return;
+			}
+			$user_id = $this->api_model->key_userid($request['key']);
+			if (empty($user_id)) {
+				// Legacy key that has never been claimed by a user: no owner, no data
+				$this->_get_contacts_adif_respond(401, array('status' => 'failed', 'reason' => 'Missing or invalid API key'));
+				return;
+			}
+			$this->api_model->update_last_used($request['key']);
+
+			// Authorize the requested station location: it must belong to the key owner.
+			// Same response whether it does not exist or belongs to someone else.
+			$this->load->model('stations');
+			if (!$this->stations->check_station_against_user($request['station_id'], $user_id)) {
+				$this->_get_contacts_adif_respond(403, array('status' => 'failed', 'reason' => 'Station not found or not accessible with this API key'));
+				return;
+			}
+
+			// Fetch one extra row to find out whether more records follow this page
+			$this->load->model('adif_data');
+			$query = $this->adif_data->export_station_after_id($request['station_id'], $user_id, $request['fetchfromid'], $request['limit'] + 1);
+			$qsos = $query->result();
+			$query->free_result();
+
+			$has_more = count($qsos) > $request['limit'];
+			if ($has_more) {
+				$qsos = array_slice($qsos, 0, $request['limit']);
+			}
+
+			$this->load->library('AdifHelper');
+			$adif = $this->adifhelper->getAdifHeader($this->config->item('app_name'), $this->optionslib->get_option('version'));
+			$last_id = $request['fetchfromid'];
+			foreach ($qsos as $qso) {
+				$adif .= $this->adifhelper->getAdifLine($qso);
+				$last_id = (int)$qso->COL_PRIMARY_KEY;
+			}
+
+			$this->_get_contacts_adif_respond(200, array(
+				'status'        => 'success',
+				'exported_qsos' => count($qsos),
+				'lastfetchedid' => $last_id,
+				'message'       => 'Export successful',
+				'station_id'    => $request['station_id'],
+				'limit'         => $request['limit'],
+				'has_more'      => $has_more,
+				'adif'          => $adif,
+			));
+		} catch (Throwable $e) {
+			log_message('error', 'api/get_contacts_adif failed: ' . get_class($e));
+			$this->_get_contacts_adif_respond(500, array('status' => 'failed', 'reason' => 'Internal server error'));
+		}
+	}
+
+	/**
+	 * Emit a JSON response for get_contacts_adif. Error bodies also carry
+	 * "message" (same text as "reason") for clients that read that field.
+	 */
+	private function _get_contacts_adif_respond($http_status, $body)
+	{
+		if (isset($body['reason']) && !isset($body['message'])) {
+			$body['message'] = $body['reason'];
+		}
+
+		$flags = defined('JSON_INVALID_UTF8_SUBSTITUTE') ? JSON_INVALID_UTF8_SUBSTITUTE : 0;
+		$json = json_encode($body, $flags);
+		if ($json === false) {
+			$http_status = 500;
+			$json = json_encode(array('status' => 'failed', 'reason' => 'Internal server error', 'message' => 'Internal server error'));
+		}
+
+		// Drop anything captured since get_contacts_adif() started (stray warnings/notices)
+		while (ob_get_level() > $this->_adif_ob_level) {
+			ob_end_clean();
+		}
+
+		$this->output
+			->set_status_header($http_status)
+			->set_content_type('application/json', 'utf-8')
+			->set_header('Cache-Control: no-store')
+			->set_output($json);
 	}
 
 
