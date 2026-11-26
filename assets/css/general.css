@@ -2889,6 +2889,67 @@ tr.htmx-swapping td {
 	}
 }
 
+/* Auth Pages (Login, Forgot Password, Reset Password) */
+.auth-shell {
+	min-height: calc(100vh - 40px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem 1rem;
+}
+
+.auth-card-wrap {
+	width: 100%;
+	max-width: 420px;
+}
+
+.auth-logo {
+	width: 72px;
+	height: 72px;
+	object-fit: contain;
+}
+
+.auth-card {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.9rem;
+	box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+	overflow: hidden;
+}
+
+.auth-field-label {
+	display: block;
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary-color, #64748b);
+	margin-bottom: 0.3rem;
+}
+
+.auth-input-icon {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	color: var(--bs-secondary-color, #64748b);
+	border-color: var(--bs-border-color, rgba(0, 0, 0, 0.15));
+	width: 40px;
+	justify-content: center;
+}
+
+.auth-eye-btn {
+	border-color: var(--bs-border-color, rgba(0, 0, 0, 0.15));
+}
+
+.auth-submit-btn {
+	padding-top: 0.55rem;
+	padding-bottom: 0.55rem;
+	font-weight: 600;
+	border-radius: 0.5rem;
+}
+
+.auth-card-footer {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.05));
+	border-top: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
+}
+
 @media (max-width: 575.98px) {
 	.qso_panel #qsoRightTabs {
 		flex-wrap: wrap !important;

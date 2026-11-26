@@ -1,60 +1,41 @@
-<style>
-    html,
-    body {
-        height: 100%;
-    }
+<main class="auth-shell">
+	<div class="auth-card-wrap">
+		<div class="text-center mb-3">
+			<img src="<?php echo base_url(); ?>CloudLog_logo.png" alt="Cloudlog" class="auth-logo mb-2">
+			<h1 class="h4 fw-bold mb-1"><?php echo lang('account_forgot_password'); ?></h1>
+			<p class="small text-muted mb-0"><?php echo lang('account_you_can_reset_your_password_here'); ?></p>
+		</div>
 
-    body {
-        display: flex;
-        align-items: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
-    }
+		<div class="card auth-card">
+			<div class="card-body p-4">
+				<?php if (validation_errors() != ''): ?>
+					<div class="alert alert-danger py-2 small" role="alert">
+						<?php echo validation_errors(); ?>
+					</div>
+				<?php endif; ?>
 
-    .form-forgot {
-        width: 100%;
-        max-width: 430px;
-        padding: 15px;
-        margin: auto;
-    }
+				<form id="register-form" role="form" autocomplete="off" class="form" method="post" action="<?php echo site_url('user/forgot_password'); ?>">
+					<div class="mb-3">
+						<label for="email" class="auth-field-label"><?php echo lang('account_email_address'); ?></label>
+						<div class="input-group">
+							<span class="input-group-text auth-input-icon"><i class="fas fa-envelope"></i></span>
+							<input id="email" name="email" placeholder="<?php echo lang('account_email_address'); ?>" class="form-control" type="email" autocomplete="email" autofocus>
+						</div>
+					</div>
 
-    input[type="email"] {
-        margin-bottom: -1px;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-</style>
+					<input type="hidden" class="hide" name="token" id="token" value="">
 
-<main class="form-forgot">
-    <img src="<?php echo base_url() ?>/CloudLog_logo.png" class="mx-auto d-block" alt="" style="width:100px;height:100px;">
-    <div class="my-2 bg-body rounded-0 shadow-sm card mb-2 shadow-sm">
-        <div class="card-body">
-            <div class="text-center">
-                <h3 class="text-center"><?php echo lang('account_forgot_password'); ?> <i class="fa fa-lock"></i></h3>
-                <p><?php echo lang('account_you_can_reset_your_password_here'); ?></p>
-                <div class="panel-body">
+					<button name="recover-submit" class="w-100 btn btn-primary auth-submit-btn" type="submit">
+						<i class="fas fa-paper-plane me-1"></i><?php echo lang('account_reset_password'); ?>
+					</button>
+				</form>
+			</div>
 
-                    <?php if (validation_errors() != ''): ?>
-                        <div class="alert alert-danger" role="alert">
-                            <?php echo validation_errors(); ?>
-                        </div>
-                    <?php endif; ?>
-
-                    <form id="register-form" role="form" autocomplete="off" class="form" method="post" action="<?php echo site_url('user/forgot_password'); ?>">
-                        <div class="mb-3">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
-                                <input id="email" name="email" placeholder="<?php echo lang('account_email_address'); ?>" class="form-control" type="email" autofocus>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <input name="recover-submit" class="w-100 btn btn-primary btn-block" value="<?php echo lang('account_reset_password'); ?>" type="submit">
-                        </div>
-                        <input type="hidden" class="hide" name="token" id="token" value="">
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
+			<div class="card-footer auth-card-footer text-center py-3">
+				<a class="small fw-semibold text-decoration-none" href="<?php echo site_url('user/login'); ?>">
+					<i class="fas fa-arrow-left me-1"></i>Back to <?php echo lang('account_login'); ?>
+				</a>
+			</div>
+		</div>
+	</div>
 </main>

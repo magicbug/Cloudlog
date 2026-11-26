@@ -728,3 +728,14 @@ kbd {
 .qso-qsl-tile.is-sent .qso-qsl-tile-status {
 	color: #fbbf24;
 }
+
+/* Auth Pages Dark Mode polish */
+.auth-card {
+	box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+}
+
+.auth-input-icon {
+	background-color: #262626;
+	color: #adb5bd;
+	border-color: rgba(255, 255, 255, 0.16);
+}
