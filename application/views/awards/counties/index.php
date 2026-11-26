@@ -1,12 +1,12 @@
-<div class="container">
+<div class="container awards-page">
     <style>
         .counties-hero {
             margin-top: 1rem;
             margin-bottom: 1rem;
             padding: 1rem 1.25rem;
-            border: 1px solid #d6e7ff;
+            border: 1px solid var(--bs-border-color, #d6e7ff);
             border-radius: 0.75rem;
-            background: linear-gradient(135deg, #f8fbff 0%, #edf5ff 100%);
+            background: var(--bs-tertiary-bg, #f8fbff);
         }
 
         .counties-stats {
@@ -14,9 +14,9 @@
         }
 
         .counties-stat-card {
-            border: 1px solid #e5e8ec;
+            border: 1px solid var(--bs-border-color, #e5e8ec);
             border-radius: 0.75rem;
-            background-color: #fff;
+            background-color: var(--bs-body-bg, #fff);
             padding: 0.9rem 1rem;
             height: 100%;
         }
@@ -25,7 +25,7 @@
             font-size: 0.75rem;
             letter-spacing: 0.04em;
             text-transform: uppercase;
-            color: #6b7280;
+            color: var(--bs-secondary-color, #6b7280);
             margin-bottom: 0.2rem;
         }
 
@@ -33,19 +33,19 @@
             font-size: 1.45rem;
             font-weight: 700;
             line-height: 1.2;
-            color: #1f2937;
+            color: var(--bs-body-color, #1f2937);
         }
 
         .counties-stat-sub {
             font-size: 0.8rem;
-            color: #6b7280;
+            color: var(--bs-secondary-color, #6b7280);
         }
 
         .counties-table-wrap {
-            border: 1px solid #dee2e6;
+            border: 1px solid var(--bs-border-color, #dee2e6);
             border-radius: 0.75rem;
             padding: 0.5rem;
-            background-color: #fff;
+            background-color: var(--bs-body-bg, #fff);
             margin-bottom: 1rem;
         }
 
@@ -54,7 +54,7 @@
             margin-bottom: 0;
             height: 0.8rem;
             border-radius: 999px;
-            background-color: #e9ecef;
+            background-color: var(--bs-tertiary-bg, #e9ecef);
         }
 
         .counties-progress .progress-bar {
@@ -67,8 +67,8 @@
             padding: 0.15rem 0.45rem;
             border-radius: 0.4rem;
             font-size: 0.75rem;
-            color: #0f172a;
-            background-color: #e2e8f0;
+            color: var(--bs-body-color, #0f172a);
+            background-color: var(--bs-tertiary-bg, #e2e8f0);
         }
 
         .counties-tiers {
@@ -80,17 +80,17 @@
 
         .counties-tier {
             flex: 1 1 110px;
-            border: 1px solid #e5e8ec;
+            border: 1px solid var(--bs-border-color, #e5e8ec);
             border-radius: 0.6rem;
             padding: 0.5rem 0.75rem;
             text-align: center;
-            background-color: #fff;
-            color: #1f2937;
+            background-color: var(--bs-body-bg, #fff);
+            color: var(--bs-body-color, #1f2937);
         }
 
         .counties-tier.reached {
             border-color: #198754;
-            background-color: #e8f5ee;
+            background-color: rgba(25, 135, 84, 0.14);
         }
 
         .counties-tier-name {
@@ -99,7 +99,7 @@
 
         .counties-tier-sub {
             font-size: 0.75rem;
-            color: #6b7280;
+            color: var(--bs-secondary-color, #6b7280);
         }
 
         #countiesmap {
@@ -159,7 +159,6 @@
         var tileUrl = "<?php echo $this->optionslib->get_option('option_map_tile_server'); ?>";
     </script>
 
-    <div class="awards-page">
     <?php $this->load->view('awards/components/topbar', array(
         'title' => $page_title,
         'subtitle' => 'MARAC United States of America Counties Award (USA-CA) &middot; Track worked counties toward each 500-county class and the full 3,077',
@@ -171,7 +170,6 @@
             lang('awards_counties_description_ln4'),
         ),
     )); ?>
-    </div>
 
     <?php if ($counties_array) {
         $summary = $counties_array;

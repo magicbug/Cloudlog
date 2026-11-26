@@ -5,42 +5,44 @@ $last = $first_last['last'] ?? null;
 ?>
 <style>
 .sota-stats-card {
-    border-left: 4px solid #007bff;
-    padding: 20px;
+    border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+    border-left: 4px solid var(--bs-primary, #0d6efd);
+    padding: 16px 20px;
     margin-bottom: 15px;
-    background-color: #f8f9fa;
-    border-radius: 4px;
+    background-color: var(--bs-tertiary-bg, #f8f9fa);
+    color: var(--bs-body-color, inherit);
+    border-radius: 0.65rem;
 }
 
 .sota-stats-card.confirmed {
-    border-left-color: #28a745;
-    background-color: #d4edda;
+    border-left-color: #198754;
+    background-color: rgba(25, 135, 84, 0.12);
 }
 
 .sota-stats-card.first-last {
-    border-left-color: #17a2b8;
-    background-color: #d1ecf1;
+    border-left-color: #0dcaf0;
+    background-color: var(--bs-tertiary-bg, #f8f9fa);
 }
 
 .sota-stats-card h5 {
     margin: 0 0 10px 0;
-    color: #333;
+    color: var(--bs-body-color, inherit);
     font-weight: 600;
 }
 
 .sota-stats-number {
     font-size: 28px;
     font-weight: bold;
-    color: #007bff;
+    color: var(--bs-primary, #0d6efd);
     margin: 5px 0;
 }
 
 .sota-stats-card.confirmed .sota-stats-number {
-    color: #28a745;
+    color: #198754;
 }
 
 .sota-stats-card.first-last .sota-stats-number {
-    color: #17a2b8;
+    color: #0dcaf0;
 }
 </style>
 

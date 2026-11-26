@@ -498,3 +498,79 @@ kbd {
 	background-color: var(--bs-tertiary-bg, #262626) !important;
 	color: #f1f3f5 !important;
 }
+
+/* Dark Mode high-contrast accents for Counties, SOTA, and WAB */
+.counties-stat-card,
+.counties-table-wrap {
+	background-color: #2b2b2b !important;
+	border-color: rgba(255, 255, 255, 0.14) !important;
+	color: #f1f3f5 !important;
+}
+
+.counties-stat-value {
+	color: #ffffff !important;
+}
+
+.counties-stat-label,
+.counties-stat-sub {
+	color: #adb5bd !important;
+}
+
+.counties-progress {
+	background-color: #3a3a3a !important;
+}
+
+.sota-stats-card {
+	background-color: #2b2b2b !important;
+	border-color: rgba(255, 255, 255, 0.14) !important;
+	border-left-color: #4f86c6 !important;
+	color: #f1f3f5 !important;
+}
+
+.sota-stats-card.first-last {
+	background-color: #2b2b2b !important;
+	border-left-color: #39c0ed !important;
+}
+
+.sota-stats-card h5 {
+	color: #f1f3f5 !important;
+}
+
+.sota-stats-number {
+	color: #7ab3ef !important;
+}
+
+.stat-pill {
+	background-color: #2b2b2b !important;
+	border-color: rgba(255, 255, 255, 0.14) !important;
+	color: #f1f3f5 !important;
+}
+
+.stat-pill .value {
+	color: #7ab3ef !important;
+}
+
+.stat-pill .label {
+	color: #adb5bd !important;
+}
+
+.legend.leaflet-control span,
+#countiesmap .legend span,
+#wab-map .legend span {
+	color: #f1f3f5 !important;
+}
+
+.continent-card:hover {
+	background-color: #363636 !important;
+}
+
+.table-light,
+.table-light > th,
+.table-light > td,
+.table thead.table-light th {
+	--bs-table-bg: #262626;
+	--bs-table-color: #f1f3f5;
+	--bs-table-border-color: rgba(255, 255, 255, 0.14);
+	background-color: #262626 !important;
+	color: #f1f3f5 !important;
+}

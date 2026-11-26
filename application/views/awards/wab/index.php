@@ -42,9 +42,10 @@
     align-items: center;
     gap: 10px;
     padding: 12px 16px;
-    border-radius: 6px;
-    background: #f8f9fa;
-    border: 1px solid #e5e7eb;
+    border-radius: 0.65rem;
+    background: var(--bs-tertiary-bg, #f8f9fa);
+    border: 1px solid var(--bs-border-color, #e5e7eb);
+    color: var(--bs-body-color, inherit);
     height: 100%;
   }
 
@@ -52,12 +53,12 @@
     font-size: 26px;
     font-weight: 700;
     margin: 0;
-    color: #0d6efd;
+    color: var(--bs-primary, #0d6efd);
   }
 
   .stat-pill .label {
     margin: 0;
-    color: #6c757d;
+    color: var(--bs-secondary-color, #6c757d);
   }
 
   .tab-content {
