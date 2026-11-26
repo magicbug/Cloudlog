@@ -739,3 +739,43 @@ kbd {
 	color: #adb5bd;
 	border-color: rgba(255, 255, 255, 0.16);
 }
+
+/* Upcoming DXpeditions Dark Mode accents */
+.dxped-pill:hover,
+.dxped-pill.is-active,
+.dxped-month-count,
+.dxped-call-chip,
+.dxped-status-confirmed,
+.dxped-timing-tag.is-soon {
+	color: #7ab3ef;
+}
+
+.dxped-pill.is-active,
+.dxped-month-count,
+.dxped-call-chip,
+.dxped-status-confirmed {
+	background-color: rgba(122, 179, 239, 0.16);
+	border-color: rgba(122, 179, 239, 0.32);
+}
+
+.dxped-status-needed {
+	background-color: rgba(231, 76, 60, 0.2);
+	border-color: rgba(231, 76, 60, 0.4);
+	color: #ff8577;
+}
+
+.dxped-status-worked,
+.dxped-timing-tag.is-live {
+	color: #3dd5a3;
+}
+
+.dxped-status-worked {
+	background-color: rgba(0, 188, 140, 0.18);
+	border-color: rgba(0, 188, 140, 0.38);
+}
+
+.dxped-status-sat {
+	background-color: rgba(57, 192, 237, 0.18);
+	border-color: rgba(57, 192, 237, 0.38);
+	color: #6edff6;
+}

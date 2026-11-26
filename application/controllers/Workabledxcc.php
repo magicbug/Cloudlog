@@ -103,6 +103,7 @@ class Workabledxcc extends CI_Controller
 
 			$requiredData[] = array(
 				'clean_date' => $item['0'],
+				'clean_end_date' => $item['1'],
 				'start_date' => $StartDate,
 				'end_date' => $EndDate,
 				'country' => $item['2'],
