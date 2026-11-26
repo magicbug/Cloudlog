@@ -2715,7 +2715,13 @@ class Logbook_model extends CI_Model
             INNER JOIN " . $this->config->item('table_name') . " qsos ON qsos.COL_PRIMARY_KEY = FilteredIDs.COL_PRIMARY_KEY
             INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
             LEFT JOIN dxcc_entities ON qsos.col_dxcc = dxcc_entities.adif
-            LEFT JOIN lotw_users lotw ON qsos.col_call = lotw.callsign
+            LEFT JOIN lotw_users lotw ON lotw.id = (
+                SELECT lu.id
+                FROM lotw_users lu
+                WHERE lu.callsign = qsos.COL_CALL
+                ORDER BY lu.lastupload DESC, lu.id DESC
+                LIMIT 1
+            )
             ORDER BY qsos.COL_TIME_ON DESC, qsos.COL_PRIMARY_KEY DESC";
     
     return $this->db->query($sql);
