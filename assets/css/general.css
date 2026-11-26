@@ -2903,6 +2903,10 @@ tr.htmx-swapping td {
 	max-width: 420px;
 }
 
+.auth-card-wrap-wide {
+	max-width: 640px;
+}
+
 .auth-logo {
 	width: 72px;
 	height: 72px;
