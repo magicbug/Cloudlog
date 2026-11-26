@@ -779,3 +779,28 @@ kbd {
 	border-color: rgba(57, 192, 237, 0.38);
 	color: #6edff6;
 }
+
+/* Global Dark Mode safety overrides for Plugins & third-party Bootstrap 5 light utilities */
+.alert-light {
+	background-color: #262626 !important;
+	border-color: rgba(255, 255, 255, 0.14) !important;
+	color: #f1f3f5 !important;
+}
+
+.badge.bg-light,
+.badge.text-bg-light,
+.badge.bg-light.text-dark {
+	background-color: #363636 !important;
+	color: #e9ecef !important;
+	border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.plugin-award-page .bg-white,
+.plugin-award-page .bg-light {
+	background-color: #262626 !important;
+	color: #f1f3f5 !important;
+}
+
+.plugin-award-page .text-dark {
+	color: #f1f3f5 !important;
+}
