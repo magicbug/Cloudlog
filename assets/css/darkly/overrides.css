@@ -596,3 +596,91 @@ kbd {
 	background-color: #1f1f1f;
 	color: #7ab3ef;
 }
+
+/* Redesigned QSO Data Modal Dark Mode accents */
+.qso-dialog .modal-content {
+	background-color: #252525;
+	color: #f1f3f5;
+	border-color: rgba(255, 255, 255, 0.15);
+	box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.qso-dialog .modal-header {
+	background: transparent !important;
+	border: none !important;
+}
+
+.qso-dialog .bootstrap-dialog-close-button .btn-close {
+	filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.qso-modal-callsign {
+	color: #ffffff;
+}
+
+.qso-modal-submeta,
+.qso-modal-datetime,
+.qso-qsl-tile-name,
+.qso-qsl-tile-date,
+.qso-meta-key {
+	color: #adb5bd;
+}
+
+.qso-modal-submeta strong,
+.qso-meta-val {
+	color: #f1f3f5;
+}
+
+.qso-modal-tabs {
+	background-color: #1e1e1e;
+	border-bottom-color: rgba(255, 255, 255, 0.13);
+}
+
+.qso-lookup-pill,
+.qso-sig-pill,
+.qso-qsl-tile,
+.qso-meta-box {
+	background-color: #1e1e1e;
+	border-color: rgba(255, 255, 255, 0.13);
+	color: #f1f3f5;
+}
+
+.qso-lookup-pill {
+	color: #ced4da;
+}
+
+.qso-map-pill {
+	background-color: rgba(30, 30, 30, 0.94);
+	border-color: rgba(255, 255, 255, 0.16);
+	color: #f1f3f5;
+}
+
+.qso-sig-pill.is-primary,
+.qso-grid-chip {
+	background-color: rgba(122, 179, 239, 0.16);
+	border-color: rgba(122, 179, 239, 0.32);
+	color: #7ab3ef;
+}
+
+.qso-lookup-pill:hover {
+	border-color: #7ab3ef;
+	color: #7ab3ef;
+}
+
+.qso-modal-tabs .nav-link:hover {
+	color: #ffffff;
+}
+
+.qso-modal-tabs .nav-link.active {
+	color: #7ab3ef !important;
+	border-bottom-color: #7ab3ef !important;
+}
+
+.qso-qsl-tile.is-confirmed .qso-qsl-tile-status,
+.qso-ref-chip {
+	color: #3dd5a3;
+}
+
+.qso-qsl-tile.is-sent .qso-qsl-tile-status {
+	color: #fbbf24;
+}

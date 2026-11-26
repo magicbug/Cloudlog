@@ -2587,6 +2587,308 @@ tr.htmx-swapping td {
 	text-overflow: ellipsis;
 }
 
+/* Redesigned QSO Data Modal (view_log/qso.php) */
+.qso-dialog .modal-dialog {
+	max-width: 920px;
+}
+
+.qso-dialog .modal-content {
+	position: relative;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
+	border-radius: 0.85rem;
+	box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22);
+	overflow: hidden;
+}
+
+.qso-dialog .modal-header {
+	position: absolute;
+	top: 0.65rem;
+	right: 0.75rem;
+	z-index: 10;
+	background: transparent !important;
+	border: none !important;
+	padding: 0 !important;
+	min-height: 0;
+}
+
+.qso-dialog .bootstrap-dialog-header {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	width: auto;
+}
+
+.qso-dialog .bootstrap-dialog-title {
+	display: none !important;
+}
+
+.qso-dialog .bootstrap-dialog-close-button {
+	display: inline-flex;
+	align-items: center;
+}
+
+.qso-dialog .bootstrap-dialog-close-button .btn-close,
+.qso-dialog .bootstrap-dialog-close-button .close {
+	font-size: 0.85rem;
+	opacity: 0.6;
+	padding: 0.35rem;
+	border-radius: 0.4rem;
+	transition: opacity 120ms ease, background-color 120ms ease;
+}
+
+.qso-dialog .bootstrap-dialog-close-button .btn-close:hover,
+.qso-dialog .bootstrap-dialog-close-button .close:hover {
+	opacity: 1;
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.14));
+}
+
+.qso-dialog .modal-body {
+	padding: 0;
+}
+
+.qso-modal-hero {
+	padding: 1rem 3rem 0.85rem 1.25rem;
+	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+}
+
+.qso-modal-callsign {
+	font-family: var(--bs-font-monospace, monospace);
+	font-size: 1.6rem;
+	font-weight: 800;
+	letter-spacing: 0.03em;
+	line-height: 1.1;
+}
+
+.qso-lookup-pill {
+	font-size: 0.72rem;
+	font-weight: 600;
+	padding: 0.14rem 0.45rem;
+	border-radius: 0.35rem;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	color: var(--bs-secondary-color, #64748b);
+	text-decoration: none;
+	transition: border-color 120ms ease, color 120ms ease;
+}
+
+.qso-lookup-pill:hover {
+	border-color: var(--bs-primary, #0d6efd);
+	color: var(--bs-primary, #0d6efd);
+}
+
+.qso-modal-submeta {
+	font-size: 0.82rem;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.qso-modal-submeta strong {
+	color: var(--bs-body-color, inherit);
+}
+
+.qso-sig-pill {
+	padding: 0.2rem 0.55rem;
+	border-radius: 0.4rem;
+	font-size: 0.76rem;
+	font-weight: 700;
+	font-family: var(--bs-font-monospace, monospace);
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+}
+
+.qso-sig-pill.is-primary {
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	border-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.28);
+	color: var(--bs-primary, #0d6efd);
+}
+
+.qso-modal-datetime {
+	font-variant-numeric: tabular-nums;
+}
+
+.qso-modal-tabs {
+	padding: 0 1.25rem;
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.05));
+	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	gap: 0.2rem;
+}
+
+.qso-modal-tabs .nav-link {
+	border: none !important;
+	border-bottom: 2px solid transparent !important;
+	border-radius: 0 !important;
+	background: transparent !important;
+	color: var(--bs-secondary-color, #64748b);
+	font-size: 0.84rem;
+	font-weight: 600;
+	padding: 0.55rem 0.75rem;
+	margin-bottom: -1px;
+}
+
+.qso-modal-tabs .nav-link.active {
+	color: var(--bs-primary, #0d6efd) !important;
+	border-bottom-color: var(--bs-primary, #0d6efd) !important;
+}
+
+.qso-modal-body {
+	padding: 1rem 1.25rem 1.2rem;
+}
+
+.qso-qsl-strip {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 0.5rem;
+}
+
+.qso-qsl-tile {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.06));
+	border-radius: 0.55rem;
+	padding: 0.45rem 0.5rem;
+	text-align: center;
+}
+
+.qso-qsl-tile.is-confirmed {
+	border-color: rgba(var(--bs-success-rgb, 25, 135, 84), 0.38);
+	background-color: rgba(var(--bs-success-rgb, 25, 135, 84), 0.14);
+}
+
+.qso-qsl-tile.is-sent {
+	border-color: rgba(245, 158, 11, 0.4);
+	background-color: rgba(245, 158, 11, 0.12);
+}
+
+.qso-qsl-tile-name {
+	font-size: 0.66rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.qso-qsl-tile-status {
+	font-size: 0.76rem;
+	font-weight: 700;
+	margin-top: 0.1rem;
+}
+
+.qso-qsl-tile.is-confirmed .qso-qsl-tile-status {
+	color: var(--bs-success, #198754);
+}
+
+.qso-qsl-tile.is-sent .qso-qsl-tile-status {
+	color: #b45309;
+}
+
+.qso-qsl-tile-date {
+	font-size: 0.65rem;
+	color: var(--bs-secondary-color, #64748b);
+	margin-top: 0.05rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.qso-meta-box {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.65rem;
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.04));
+	overflow: hidden;
+}
+
+.qso-meta-box:empty {
+	display: none;
+}
+
+.qso-meta-row {
+	display: grid;
+	grid-template-columns: 120px 1fr;
+	gap: 0.6rem;
+	padding: 0.5rem 0.75rem;
+	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.08));
+	align-items: center;
+}
+
+.qso-meta-row:last-child {
+	border-bottom: none;
+}
+
+.qso-meta-key {
+	font-size: 0.7rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.qso-meta-val {
+	font-size: 0.85rem;
+	font-weight: 500;
+	word-break: break-word;
+}
+
+.qso-grid-chip {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.12rem 0.45rem;
+	border-radius: 0.35rem;
+	font-family: var(--bs-font-monospace, monospace);
+	font-weight: 700;
+	font-size: 0.78rem;
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	color: var(--bs-primary, #0d6efd);
+}
+
+.qso-ref-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.3rem;
+	padding: 0.14rem 0.5rem;
+	border-radius: 0.35rem;
+	font-family: var(--bs-font-monospace, monospace);
+	font-weight: 700;
+	font-size: 0.74rem;
+	background-color: rgba(var(--bs-success-rgb, 25, 135, 84), 0.14);
+	color: var(--bs-success, #198754);
+	text-decoration: none;
+}
+
+.qso-ref-chip:hover {
+	background-color: var(--bs-success, #198754);
+	color: #fff;
+}
+
+.qso-map-frame {
+	position: relative;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
+	border-radius: 0.65rem;
+	overflow: hidden;
+}
+
+.qso-map-pill {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 450;
+	padding: 0.22rem 0.55rem;
+	border-radius: 0.45rem;
+	font-size: 0.74rem;
+	font-weight: 600;
+	background-color: var(--bs-body-bg, rgba(255, 255, 255, 0.94));
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
+	box-shadow: 0 2px 6px rgba(15, 23, 42, 0.18);
+	pointer-events: none;
+}
+
+@media (max-width: 575.98px) {
+	.qso-qsl-strip {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	.qso-meta-row {
+		grid-template-columns: 1fr;
+		gap: 0.15rem;
+	}
+}
+
 @media (max-width: 575.98px) {
 	.qso_panel #qsoRightTabs {
 		flex-wrap: wrap !important;

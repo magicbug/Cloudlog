@@ -6,10 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <?php if($this->optionslib->get_theme()) { ?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/bootstrap.min.css">
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/overrides.css">
+    <?php if($this->optionslib->get_theme()) {
+		$mini_theme = $this->optionslib->get_theme();
+		$mini_general_ver = file_exists(FCPATH . 'assets/css/general.css') ? '?v=' . filemtime(FCPATH . 'assets/css/general.css') : '';
+		$mini_overrides_path = FCPATH . 'assets/css/' . $mini_theme . '/overrides.css';
+		$mini_overrides_ver = file_exists($mini_overrides_path) ? '?v=' . filemtime($mini_overrides_path) : '';
+	?>
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $mini_theme;?>/bootstrap.min.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css<?php echo $mini_general_ver; ?>">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $mini_theme;?>/overrides.css<?php echo $mini_overrides_ver; ?>">
 	<?php } ?>
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
 
