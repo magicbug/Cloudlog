@@ -28,7 +28,7 @@
 
 	<?php
 	$load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logbook', 'logbookadvanced', 'gridmap', 'activated_gridmap', 'qso', 'map', 'search', 'activators', 'activatorsmap'], true)
-		|| ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'waja', 'was', 'sota', 'pota', 'rac', 'rda', 'counties', 'vucc_band'], true));
+		|| ($this->uri->segment(1) == 'awards' && in_array($this->uri->segment(2), ['cq', 'iota', 'dxcc', 'ffma', 'gridmaster', 'wab', 'wae', 'waja', 'was', 'wpx', 'sota', 'pota', 'rac', 'rda', 'counties', 'vucc_band'], true));
 	?>
 
 	<!-- Maps -->
@@ -263,7 +263,7 @@
 								}
 
 								$has_gridmaster = ($user_awards->gridmaster_dl == 1 || $user_awards->gridmaster_lx == 1 || $user_awards->gridmaster_ja == 1 || $user_awards->gridmaster_us == 1 || $user_awards->gridmaster_uk == 1);
-								$has_global_awards = ($user_awards->dxcc == 1 || $user_awards->cq == 1 || !empty($user_awards->wac) || $user_awards->iota == 1);
+								$has_global_awards = ($user_awards->dxcc == 1 || $user_awards->cq == 1 || !empty($user_awards->wac) || !empty($user_awards->wpx) || !empty($user_awards->wae) || $user_awards->iota == 1);
 								$has_grid_awards = ($user_awards->vucc == 1 || $user_awards->ffma == 1 || $has_gridmaster);
 								$has_portable_awards = ($user_awards->pota == 1 || $user_awards->sota == 1 || $user_awards->wwff == 1 || $user_awards->sig == 1 || !empty($user_awards->skcc) || !empty($visible_plugin_awards));
 								$has_regional_awards = ($user_awards->was == 1 || $user_awards->uscounties == 1 || $user_awards->wab == 1 || !empty($user_awards->rsgb) || $user_awards->gmdxsummer == 1 || $user_awards->dok == 1 || !empty($user_awards->rac) || !empty($user_awards->rda) || $user_awards->waja == 1);
@@ -281,6 +281,12 @@
 												<?php } ?>
 												<?php if (!empty($user_awards->wac)) { ?>
 													<a class="dropdown-item" href="<?php echo site_url('awards/wac'); ?>"><i class="fas fa-globe-africa"></i> <?php echo lang('menu_wac'); ?></a>
+												<?php } ?>
+												<?php if (!empty($user_awards->wpx)) { ?>
+													<a class="dropdown-item" href="<?php echo site_url('awards/wpx'); ?>"><i class="fas fa-hashtag"></i> <?php echo lang('menu_wpx'); ?></a>
+												<?php } ?>
+												<?php if (!empty($user_awards->wae)) { ?>
+													<a class="dropdown-item" href="<?php echo site_url('awards/wae'); ?>"><i class="fas fa-globe-europe"></i> <?php echo lang('menu_wae'); ?></a>
 												<?php } ?>
 												<?php if ($user_awards->iota == 1) { ?>
 													<a class="dropdown-item" href="<?php echo site_url('awards/iota'); ?>"><i class="fas fa-water"></i> <?php echo lang('menu_iota'); ?></a>

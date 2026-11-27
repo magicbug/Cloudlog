@@ -19,17 +19,18 @@ $(document).ready(function(){
 
 function saveAward(awardType, isChecked, $row) {
 	// Add saving state to row
-	$row.addClass('saving');
+	$row.addClass('saving').removeClass('saved error');
 	
 	$.ajax({
 		url: base_url + 'index.php/award/saveAward',
 		type: 'post',
+		dataType: 'json',
 		data: {
 			award_type: awardType,
 			award_value: isChecked ? '1' : '0'
 		},
 		success: function(data) {
-			if (data.message == 'OK') {
+			if (data && data.message == 'OK') {
 				// Visual feedback on entire row
 				$row.removeClass('saving').addClass('saved');
 				setTimeout(function() {
@@ -40,7 +41,11 @@ function saveAward(awardType, isChecked, $row) {
 				var awardName = $row.find('.award-name').text();
 				var status = isChecked ? 'shown in' : 'hidden from';
 				showToast('Success', awardName + ' will be ' + status + ' the Awards menu', 'success');
+				return;
 			}
+
+			$row.removeClass('saving').addClass('error');
+			showToast('Error', 'Failed to save award settings', 'danger');
 		},
 		error: function() {
 			$row.removeClass('saving').addClass('error');

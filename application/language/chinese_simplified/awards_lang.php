@@ -199,6 +199,18 @@ $lang['awards_rac_description_ln2'] = "Radio Amateurs of Canada runs operating a
 $lang['awards_rac_description_ln3'] = "Cloudlog reads the active logbook and places each Canadian contact by the province in its State field. When the State is blank, the callsign prefix is used, except VE1 and VA1, which older New Brunswick and Prince Edward Island calls still share with Nova Scotia. Awards that ask for every contact from one country assume the logbook holds one country.";
 $lang['awards_rac_description_ln4'] = "Rules and application forms are on the <a href='https://www.rac.ca/operating/rac-operating-awards/' target='_blank'>RAC Operating Awards page</a>. Send claims to the RAC Awards Manager.";
 
+$lang['awards_wpx_description_ln1'] = "WPX Award";
+$lang['awards_wpx_description_ln2'] = "The CQ Worked All Prefixes award counts unique callsign prefixes on 160 m through 6 m. Mixed needs 400 confirmed prefixes. CW, SSB, and Digital each need 300. Endorsements are issued every 50 prefixes, for each band, and for each continent.";
+$lang['awards_wpx_description_ln3'] = "Cloudlog uses the PFX field on each QSO when it is present, and otherwise computes the CQ prefix from the callsign. Use the band and mode filters for a single-band or single-mode view, and the QSL types to choose which confirmations count.";
+$lang['awards_wpx_description_ln4'] = "CQ WPX rules and applications are on the <a href='https://cq-amateur-radio.com/' target='_blank'>CQ Amateur Radio</a> site. LoTW confirmations can be submitted for WPX credit.";
+
+$lang['awards_wae_description_ln1'] = "WAE Award";
+$lang['awards_wae_description_ln2'] = "The DARC Worked All Europe award counts countries on the WAE list. Each confirmed country scores one point per band, up to five bands. Classes are WAE III (40/100), II (50/150), I (60/200), TOP (70/300), and the Trophy for every current country on five bands.";
+$lang['awards_wae_description_ln3'] = "Cloudlog maps each QSO to a WAE country from its DXCC entity and callsign. Sicily, Sardinia, Shetland, Bear Island, European Turkey, and 4U1V are separate countries. Deleted countries count only toward III, II, and I.";
+$lang['awards_wae_description_ln4'] = "Rules and the country list are on the <a href='https://www.darc.de/der-club/referate/dx/en/awards-of-darc-dx-commitee/awards-of-darc-dx-commitee/rules-wae-award/' target='_blank'>DARC WAE page</a>.";
+
+
+
 $lang['awards_was_description_ln1'] = "WAS 奖状";
 $lang['awards_was_description_ln2'] = "ARRL 最受欢迎的奖项是“Worked All States Award” 已向世界各地的HAM颁发了数以千计的奖项 在ARRL成立101周年之际，他们重新设计了证书和项目，希望能够精简和完善奖励项目";
 $lang['awards_was_description_ln3'] = "WAS（在所有州通联过）奖面向全世界所有提交证明并书面确认与美利坚合众国 50 个州联系的业余爱好者 美国及其属地的业余爱好者必须是 ARRL 的成员才能申请 WAS 来自美国境外的申请人不受此要求的约束";

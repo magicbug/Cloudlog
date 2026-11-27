@@ -838,6 +838,87 @@ class Awards extends CI_Controller
         $this->load->view('interface_assets/footer');
     }
 
+    public function wpx()
+    {
+        $this->load->model('wpx');
+        $this->load->model('modes');
+        $this->load->model('bands');
+        $this->load->library('wpx_award');
+
+        $data['worked_bands'] = array_values(array_intersect(
+            $this->bands->get_worked_bands(),
+            $this->wpx_award->bands
+        ));
+        $data['modes'] = $this->modes->active();
+
+        if ($this->input->method() === 'post') {
+            $filters = array(
+                'band' => $this->security->xss_clean($this->input->post('band')) ?: 'All',
+                'mode' => $this->security->xss_clean($this->input->post('mode')) ?: 'All',
+                'qsl' => (bool) $this->input->post('qsl'),
+                'lotw' => (bool) $this->input->post('lotw'),
+                'eqsl' => (bool) $this->input->post('eqsl'),
+            );
+        } else {
+            $filters = array('band' => 'All', 'mode' => 'All', 'qsl' => true, 'lotw' => true, 'eqsl' => false);
+        }
+        $data['filters'] = $filters;
+        $data['wpx'] = $this->wpx_award->evaluate($this->wpx->get_qsos($filters));
+        $data['wpx_map_entities'] = $this->wpx->get_map_entities($filters);
+        $data['tile_url'] = $this->optionslib->get_option('option_map_tile_server');
+
+        $footerData = array();
+        $wpxmap_path = realpath(__DIR__ . "/../../assets/js/sections/wpxmap.js");
+        $footerData['scripts'] = array(
+            'assets/js/sections/wpxmap.js?' . ($wpxmap_path ? filemtime($wpxmap_path) : time()),
+        );
+
+        $data['page_title'] = "Awards - WPX (Worked All Prefixes)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/wpx/index');
+        $this->load->view('interface_assets/footer', $footerData);
+    }
+
+    public function wae()
+    {
+        $this->load->model('wae');
+        $this->load->model('bands');
+        $this->load->library('wae_award');
+
+        $data['worked_bands'] = $this->bands->get_worked_bands();
+        $data['wae_modes'] = $this->wae_award->modes;
+
+        if ($this->input->method() === 'post') {
+            $mode = $this->security->xss_clean($this->input->post('mode')) ?: 'Mixed';
+            if (!in_array($mode, $this->wae_award->modes, true)) {
+                $mode = 'Mixed';
+            }
+            $filters = array(
+                'band' => $this->security->xss_clean($this->input->post('band')) ?: 'All',
+                'mode' => $mode,
+                'qsl' => (bool) $this->input->post('qsl'),
+                'lotw' => (bool) $this->input->post('lotw'),
+                'eqsl' => (bool) $this->input->post('eqsl'),
+            );
+        } else {
+            $filters = array('band' => 'All', 'mode' => 'Mixed', 'qsl' => true, 'lotw' => true, 'eqsl' => false);
+        }
+        $data['filters'] = $filters;
+        $data['wae'] = $this->wae_award->evaluate($this->wae->get_qsos($filters), $filters['mode']);
+        $data['tile_url'] = $this->optionslib->get_option('option_map_tile_server');
+
+        $footerData = array();
+        $waemap_path = realpath(__DIR__ . "/../../assets/js/sections/waemap.js");
+        $footerData['scripts'] = array(
+            'assets/js/sections/waemap.js?' . ($waemap_path ? filemtime($waemap_path) : time()),
+        );
+
+        $data['page_title'] = "Awards - WAE (Worked All Europe)";
+        $this->load->view('interface_assets/header', $data);
+        $this->load->view('awards/wae/index');
+        $this->load->view('interface_assets/footer', $footerData);
+    }
+
     public function skcc()
     {
         $this->load->model('skcc');

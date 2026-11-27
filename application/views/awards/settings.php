@@ -245,11 +245,25 @@
 						<td class="award-description">Worked All Continents</td>
 					</tr>
 					<tr>
+						<td class='award-checkbox-cell award_wae'>
+							<input type="checkbox" data-award="wae" <?php if (!empty($user_awards->wae)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">WAE</td>
+						<td class="award-description">Worked All Europe (DARC)</td>
+					</tr>
+					<tr>
 						<td class='award-checkbox-cell award_was'>
 							<input type="checkbox" data-award="was" <?php if ($user_awards->was == 1) echo 'checked'; ?>>
 						</td>
 						<td class="award-name">WAS</td>
 						<td class="award-description">Worked All States</td>
+					</tr>
+					<tr>
+						<td class='award-checkbox-cell award_wpx'>
+							<input type="checkbox" data-award="wpx" <?php if (!empty($user_awards->wpx)) echo 'checked'; ?>>
+						</td>
+						<td class="award-name">WPX</td>
+						<td class="award-description">CQ Worked All Prefixes</td>
 					</tr>
 					<tr>
 						<td class='award-checkbox-cell award_wwff'>

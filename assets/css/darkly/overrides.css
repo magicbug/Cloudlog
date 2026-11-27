@@ -1214,3 +1214,31 @@ kbd {
 	background: rgba(231, 76, 60, 0.22);
 	color: #ff7b72;
 }
+
+/* WAE Award Dark Mode */
+.wae-code-chip {
+	background: rgba(122, 179, 239, 0.16);
+	color: #7ab3ef;
+}
+
+.wae-missing-chip {
+	background: rgba(231, 76, 60, 0.18);
+	border-color: rgba(231, 76, 60, 0.38);
+	color: #ff7b72;
+}
+
+.wae-band-pill.is-conf {
+	background: rgba(0, 188, 140, 0.2);
+	color: #3dd5a3;
+}
+
+.wae-band-pill.is-work {
+	background: rgba(245, 158, 11, 0.2);
+	color: #fbbf24;
+}
+
+.wae-filter-card .btn-outline-secondary,
+.rac-map-card .btn-outline-secondary {
+	color: #cfd6de;
+	border-color: rgba(255, 255, 255, 0.24);
+}

@@ -49,6 +49,10 @@ class Award extends CI_Controller {
 		$result = $this->awards_model->save_single_award($award_type, $award_value);
 
 		header('Content-Type: application/json');
+		if ($result === false) {
+			echo json_encode(array('message' => 'Invalid award type'));
+			return;
+		}
 		echo json_encode(array('message' => 'OK'));
 		return;
     }
