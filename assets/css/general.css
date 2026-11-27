@@ -549,19 +549,19 @@ TD.lotw {
 .settings-nav {
 	margin-bottom: 15px;
 	list-style: none;
-	background-color: #fff;
-	border: 1px solid #d1d5da;
+	background-color: var(--bs-body-bg, #fff);
+	border: 1px solid var(--bs-border-color, #d1d5da);
 	border-radius: 3px;
 }
 
 .settings-nav .nav-link {
 	list-style: none;
-	background-color: #fff;
-	border: 1px solid #d1d5da;
+	background-color: var(--bs-body-bg, #fff);
+	border: 1px solid var(--bs-border-color, #d1d5da);
 }
 
 .settings-nav .nav-link:hover {
-	background-color: #e1e4e8;
+	background-color: var(--bs-tertiary-bg, #e1e4e8);
 }
 
 /* Options page styling */
@@ -571,23 +571,24 @@ TD.lotw {
 }
 
 .settings .list-group-item:hover {
-	border-left-color: #0d6efd;
-	background-color: #f8f9fa;
+	border-left-color: var(--bs-primary, #0d6efd);
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
 }
 
 .settings .list-group-item.active {
-	background-color: #e7f1ff;
-	border-left-color: #0d6efd;
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	border-left-color: var(--bs-primary, #0d6efd);
+	color: var(--bs-body-color, inherit);
 }
 
 .settings .list-group-item.active .nav-link {
-	color: #0d6efd;
+	color: var(--bs-primary, #0d6efd);
 	font-weight: 500;
 }
 
 .settings .list-group-item .nav-link {
 	padding: 0;
-	color: #212529;
+	color: var(--bs-body-color, #212529);
 	display: flex;
 	align-items: center;
 }
