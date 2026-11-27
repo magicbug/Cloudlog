@@ -574,126 +574,104 @@ class Lotw extends CI_Controller {
 			$tableheaders .= "</tr>";
 
 			$table = "";
-			$batch_updates = array(); // Collect all updates for batch processing
-			$table_rows = array(); // Collect table rows for later rendering
-			$found_count = 0;
-			$claimed_qso_ids = array();
-			
-			// First pass: collect all records for batch processing
-			while($record = $this->adif_parser->get_record())
+			$parsed = array();
+			$preview_limit = 200;
+			$show_page = ($display_view === true || $display_view === 'TRUE' || $display_view === '1');
+
+			while ($record = $this->adif_parser->get_record())
 			{
-
-				$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
-
-				$qsl_date = date('Y-m-d', strtotime($record['qslrdate'])) ." ".date('H:i', strtotime($record['qslrdate']));
-
-				if (isset($record['time_off'])) {
-					$time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_off']));
-				} else {
-				   $time_off = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
+				if (empty($record['call']) || empty($record['qso_date']) || empty($record['time_on'])) {
+					continue;
 				}
 
-				// If we have a positive match from LoTW, record it in the DB according to the user's preferences
-				if ($record['qsl_rcvd'] == "Y")
+				$time_on = date('Y-m-d', strtotime($record['qso_date'])) ." ".date('H:i', strtotime($record['time_on']));
+				$qsl_date = date('Y-m-d', strtotime($record['qslrdate'])) ." ".date('H:i', strtotime($record['qslrdate']));
+
+				if (isset($record['qsl_rcvd']) && $record['qsl_rcvd'] == "Y")
 				{
 					$record['qsl_rcvd'] = $config['lotw_rcvd_mark'];
 				}
 
-				$cnty = isset($record['cnty']) ? $record['cnty'] : "";
-				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'], $record['station_callsign'], null, $cnty, $claimed_qso_ids);
+				$parsed[] = array(
+					'datetime' => $time_on,
+					'call' => $record['call'],
+					'band' => isset($record['band']) ? $record['band'] : '',
+					'mode' => isset($record['mode']) ? $record['mode'] : '',
+					'qsl_date' => $qsl_date,
+					'qsl_rcvd' => isset($record['qsl_rcvd']) ? $record['qsl_rcvd'] : '',
+					'state' => isset($record['state']) ? $record['state'] : '',
+					'gridsquare' => isset($record['gridsquare']) ? $record['gridsquare'] : '',
+					'vucc_grids' => isset($record['vucc_grids']) ? $record['vucc_grids'] : '',
+					'iota' => isset($record['iota']) ? $record['iota'] : '',
+					'cnty' => isset($record['cnty']) ? $record['cnty'] : '',
+					'cqz' => isset($record['cqz']) ? $record['cqz'] : '',
+					'ituz' => isset($record['ituz']) ? $record['ituz'] : '',
+					'station_callsign' => isset($record['station_callsign']) ? $record['station_callsign'] : '',
+				);
+			}
 
-				if($status[0] == "Found") {
+			if ($display_view === 'summary') {
+				echo 'Parsed ' . count($parsed) . " confirmations, matching\n";
+			}
+
+			$matches = $this->logbook_model->match_lotw_confirmations($parsed, $display_view === 'summary');
+			$batch_updates = array();
+			$found_count = 0;
+			$preview_rows = 0;
+
+			foreach ($parsed as $index => $record) {
+				$found = isset($matches[$index]);
+				if ($found) {
 					$found_count++;
-					$claimed_qso_ids[] = $status[1];
-					$state = isset($record['state']) ? $record['state'] : "";
-					$qsl_gridsquare = isset($record['gridsquare']) ? $record['gridsquare'] : "";
-					$qsl_vucc_grids = isset($record['vucc_grids']) ? $record['vucc_grids'] : "";
-					$iota = isset($record['iota']) ? $record['iota'] : "";
-					$cqz = isset($record['cqz']) ? $record['cqz'] : "";
-					$ituz = isset($record['ituz']) ? $record['ituz'] : "";
-
-					// Add to batch update array
 					$batch_updates[] = array(
-						'primary_key' => $status[1],
-						'datetime' => $time_on,
+						'primary_key' => $matches[$index],
+						'datetime' => $record['datetime'],
 						'callsign' => $record['call'],
 						'band' => $record['band'],
-						'qsl_date' => $qsl_date,
+						'qsl_date' => $record['qsl_date'],
 						'qsl_status' => $record['qsl_rcvd'],
-						'state' => $state,
-						'qsl_gridsquare' => $qsl_gridsquare,
-						'qsl_vucc_grids' => $qsl_vucc_grids,
-						'iota' => $iota,
-						'cnty' => $cnty,
-						'cqz' => $cqz,
-						'ituz' => $ituz,
+						'state' => $record['state'],
+						'qsl_gridsquare' => $record['gridsquare'],
+						'qsl_vucc_grids' => $record['vucc_grids'],
+						'iota' => $record['iota'],
+						'cnty' => $record['cnty'],
+						'cqz' => $record['cqz'],
+						'ituz' => $record['ituz'],
 						'station_callsign' => $record['station_callsign']
 					);
+				}
 
-					$table_rows[] = array(
-						'station_callsign' => $record['station_callsign'],
-						'time_on' => $time_on,
-						'call' => $record['call'],
-						'mode' => $record['mode'],
-						'qsl_rcvd' => $record['qsl_rcvd'],
-						'qsl_date' => $qsl_date,
-						'state' => $state,
-						'gridsquare' => ($qsl_gridsquare != '' ? $qsl_gridsquare : $qsl_vucc_grids),
-						'iota' => $iota,
-						'status' => $status[0],
-						'found' => true
-					);
-				} else {
-					$table_rows[] = array(
-						'station_callsign' => $record['station_callsign'],
-						'time_on' => $time_on,
-						'call' => $record['call'],
-						'mode' => $record['mode'],
-						'qsl_rcvd' => $record['qsl_rcvd'],
-						'status' => $status[0],
-						'found' => false
-					);
+				if ($show_page && $preview_rows < $preview_limit) {
+					$preview_rows++;
+					$gridsquare = ($record['gridsquare'] != '' ? $record['gridsquare'] : $record['vucc_grids']);
+					$table .= "<tr>";
+					$table .= "<td>".htmlspecialchars($record['station_callsign'], ENT_QUOTES, 'UTF-8')."</td>";
+					$table .= "<td>".htmlspecialchars($record['datetime'], ENT_QUOTES, 'UTF-8')."</td>";
+					$table .= "<td>".htmlspecialchars($record['call'], ENT_QUOTES, 'UTF-8')."</td>";
+					$table .= "<td>".htmlspecialchars($record['mode'], ENT_QUOTES, 'UTF-8')."</td>";
+					$table .= "<td>".htmlspecialchars($record['qsl_rcvd'], ENT_QUOTES, 'UTF-8')."</td>";
+					$table .= "<td>".($found ? htmlspecialchars($record['qsl_date'], ENT_QUOTES, 'UTF-8') : '')."</td>";
+					$table .= "<td>".($found ? htmlspecialchars($record['state'], ENT_QUOTES, 'UTF-8') : '')."</td>";
+					$table .= "<td>".($found ? htmlspecialchars($gridsquare, ENT_QUOTES, 'UTF-8') : '')."</td>";
+					$table .= "<td>".($found ? htmlspecialchars($record['iota'], ENT_QUOTES, 'UTF-8') : '')."</td>";
+					$table .= "<td>QSO Record: ".($found ? "Found" : "No Match")."</td>";
+					$table .= "</tr>";
 				}
 			}
-			
-			// Batch update all LOTW confirmations in one operation
+
 			$lotw_status = "No updates";
+			$not_found = count($parsed) - $found_count;
 			if (!empty($batch_updates)) {
 				$result = $this->logbook_model->lotw_update_batch($batch_updates);
 				$already_confirmed = max(0, $found_count - $result['updated']);
-				$lotw_status = "Found: {$found_count} QSOs, Updated: {$result['updated']} QSOs, Already confirmed: {$already_confirmed} QSOs, Gridsquares updated: {$result['gridsquare_updated']}, Counties updated: {$result['county_updated']}";
+				$lotw_status = "Found: {$found_count} QSOs, Updated: {$result['updated']} QSOs, Already confirmed: {$already_confirmed} QSOs, Gridsquares updated: {$result['gridsquare_updated']}, Counties updated: {$result['county_updated']}, Not matched: {$not_found}";
 				log_message('info', 'LoTW Download: ' . $lotw_status);
+			} else if ($parsed !== array()) {
+				$lotw_status = "Found: 0 QSOs, Not matched: {$not_found}";
 			}
-			
-			// Build table from collected rows
-			foreach ($table_rows as $row) {
-				if ($row['found']) {
-					$table .= "<tr>";
-						$table .= "<td>".$row['station_callsign']."</td>";
-						$table .= "<td>".$row['time_on']."</td>";
-						$table .= "<td>".$row['call']."</td>";
-						$table .= "<td>".$row['mode']."</td>";
-						$table .= "<td>".$row['qsl_rcvd']."</td>";
-						$table .= "<td>".$row['qsl_date']."</td>";
-						$table .= "<td>".$row['state']."</td>";
-						$table .= "<td>".$row['gridsquare']."</td>";
-						$table .= "<td>".$row['iota']."</td>";
-						$table .= "<td>QSO Record: ".$row['status']."</td>";
-					$table .= "</tr>";
-				} else {
-					$table .= "<tr>";
-						$table .= "<td>".$row['station_callsign']."</td>";
-						$table .= "<td>".$row['time_on']."</td>";
-						$table .= "<td>".$row['call']."</td>";
-						$table .= "<td>".$row['mode']."</td>";
-						$table .= "<td>".$row['qsl_rcvd']."</td>";
-						$table .= "<td></td>";
-						$table .= "<td></td>";
-						$table .= "<td></td>";
-						$table .= "<td></td>";
-						$table .= "<td>QSO Record: ".$row['status']."</td>";
-					$table .= "</tr>";
-				}
+
+			if ($show_page && $preview_rows < count($parsed)) {
+				$table .= '<tr><td colspan="10">Showing the first ' . $preview_limit . ' of ' . count($parsed) . ' confirmations.</td></tr>';
 			}
 
 			if ($table != "")
@@ -706,17 +684,17 @@ class Lotw extends CI_Controller {
 
 		unlink($filepath);
 
+		if (!$show_page) {
+			return $lotw_status;
+		}
+
 		$this->load->model('user_model');
 		if ($this->user_model->authorize(2)) {	// Only Output results if authorized User
 			if(isset($data['lotw_table_headers'])) {
-				if($display_view == TRUE) {
-					$data['page_title'] = "LoTW ADIF Information";
-					$this->load->view('interface_assets/header', $data);
-					$this->load->view('lotw/analysis');
-					$this->load->view('interface_assets/footer');
-				} else {
-					return $tableheaders.$table;
-				}
+				$data['page_title'] = "LoTW ADIF Information";
+				$this->load->view('interface_assets/header', $data);
+				$this->load->view('lotw/analysis');
+				$this->load->view('interface_assets/footer');
 			} else {
 				echo "Downloaded LoTW report contains no matches.";
 			}
@@ -741,112 +719,19 @@ class Lotw extends CI_Controller {
 		if ($query->num_rows() >= 1) {
 			$result = '';
 
-			// Get URL for downloading LoTW
-			$url_query = $this->db->query('SELECT lotw_download_url FROM config');
-			$q = $url_query->row();
-			$lotw_base_url = $q->lotw_download_url;
-
 			foreach ($query->result() as $user) {
 				if ( ($sync_user_id != null) && ($sync_user_id != $user->user_id) ) { continue; }
 
-				// Validate that LoTW credentials are not empty
-				// TODO: We don't actually see the error message
 				if ($user->user_lotw_password == '') {
 					$result = "You have not defined your ARRL LoTW credentials!";
 					continue;
 				}
 
-				$config['upload_path'] = './uploads/';
-				$file = $config['upload_path'] . 'lotwreport_download.adi';
-				if (file_exists($file) && ! is_writable($file)) {
-					$result = "Temporary download file ".$file." is not writable. Aborting!";
-					continue;
-				}
-
-				// Get credentials for LoTW - use rawurlencode to prevent &amp; issues
-		    	$data['user_lotw_name'] = rawurlencode($user->user_lotw_name);
-				$data['user_lotw_password'] = rawurlencode($user->user_lotw_password);
-
+				$file = './uploads/lotwreport_download.adi';
 				$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($user->user_id)));
-
-				// Build URL for LoTW report file
-				$lotw_url = $lotw_base_url."?";
-				$lotw_url .= "login=" . $data['user_lotw_name'];
-				$lotw_url .= "&password=" . $data['user_lotw_password'];
-				$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
-				$lotw_url .= "&qso_qslsince=" . $lotw_last_qsl_date;
-
-				// Debug logging
-				log_message('debug', 'LoTW URL being requested: ' . $lotw_url);
-
-				if (! is_writable(dirname($file))) {
-					$result = "Temporary download directory ".dirname($file)." is not writable. Aborting!";
-					continue;
-				}
-
-				// Replace file_get_contents with cURL for better error handling
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL, $lotw_url);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-				curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
-				curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog LoTW Client/1.0');
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-					'Accept: text/plain,*/*',
-					'Accept-Language: en-US,en;q=0.9'
-				));
-
-				$max_retries = 3;
-				$retry_delay = 2; // seconds
-				$response = false;
-				$curl_error = '';
-				$http_code = 0;
-
-				for ($attempt = 1; $attempt <= $max_retries; $attempt++) {
-					$response = curl_exec($ch);
-					$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-					$curl_error = curl_error($ch);
-
-					// If successful or non-network error, break out of retry loop
-					if ($response !== false && empty($curl_error)) {
-						break;
-					}
-
-					// Log retry attempt
-					if ($attempt < $max_retries) {
-						log_message('debug', "LoTW download attempt {$attempt} failed for user ".$data['user_lotw_name'].": " . $curl_error . " - retrying in {$retry_delay} seconds");
-						sleep($retry_delay);
-						// Exponential backoff - increase delay for next retry
-						$retry_delay *= 2;
-					}
-				}
-
-				curl_close($ch);
-
-				// Check for cURL errors after all retries
-				if ($response === false || !empty($curl_error)) {
-					$result = "LoTW download failed for user ".$data['user_lotw_name']." after {$max_retries} attempts: " . $curl_error;
-					log_message('error', 'LoTW cURL error after retries: ' . $curl_error);
-					continue;
-				}
-
-				// Check HTTP response code
-				if ($http_code !== 200) {
-					$result = "LoTW download failed for user ".$data['user_lotw_name'].": HTTP " . $http_code;
-					log_message('error', 'LoTW HTTP error: ' . $http_code);
-					continue;
-				}
-
-				// Save the response to file
-				if (file_put_contents($file, $response) === false) {
-					$result = "Failed to write LoTW response to file for user ".$data['user_lotw_name'];
-					continue;
-				}
-				if (file_get_contents($file, false, null, 0, 39) != "ARRL Logbook of the World Status Report") {
-					$result = "LoTW downloading failed for User ".$data['user_lotw_name']." either due to it being down or incorrect logins.";
+				$fetched = $this->fetch_lotw_report($user->user_lotw_name, $user->user_lotw_password, $lotw_last_qsl_date, $file, 300);
+				if (!$fetched['ok']) {
+					$result = $fetched['message'];
 					continue;
 				}
 
@@ -857,6 +742,140 @@ class Lotw extends CI_Controller {
 		} else {
 			return "No LoTW User details found to carry out matches.";
 		}
+	}
+
+	/*
+	 * One-shot confirmation download that can run longer than a browser request.
+	 * php index.php lotw download_since YYYY-MM-DD [user_id]
+	 */
+	public function download_since($since = null, $user_id = null)
+	{
+		if (!is_cli()) {
+			show_error('Run this from the server: php index.php lotw download_since YYYY-MM-DD [user_id]', 400);
+			return;
+		}
+		if ($since === null || !preg_match('/^\d{4}-\d{2}-\d{2}$/', (string)$since)) {
+			echo "Usage: php index.php lotw download_since YYYY-MM-DD [user_id]\n";
+			return;
+		}
+
+		ini_set('memory_limit', '-1');
+		set_time_limit(0);
+
+		$this->load->library('cron_runner');
+		$this->load->model('user_model');
+		$this->load->model('logbook_model');
+
+		if (!$this->cron_runner->acquire_lock('lotw_sync')) {
+			echo "A LoTW sync is already running. Wait for it to finish, then run this again.\n";
+			return;
+		}
+
+		echo "LoTW backfill since {$since}\n";
+		$query = $this->user_model->get_all_lotw_users();
+		$ran = false;
+		foreach ($query->result() as $user) {
+			if ($user_id !== null && (string)$user_id !== (string)$user->user_id) {
+				continue;
+			}
+			if ($user->user_lotw_password == '') {
+				echo "User {$user->user_id}: no LoTW password, skipped\n";
+				continue;
+			}
+			$ran = true;
+			$label = 'User ' . $user->user_id;
+			if (!empty($user->user_callsign)) {
+				$label .= ' (' . $user->user_callsign . ')';
+			}
+			echo $label . ": downloading confirmations since {$since}\n";
+			$file = './uploads/lotwreport_cli_' . (int)$user->user_id . '.adi';
+			$fetched = $this->fetch_lotw_report($user->user_lotw_name, $user->user_lotw_password, $since, $file, 0);
+			if (!$fetched['ok']) {
+				echo $label . ': ' . $fetched['message'] . "\n";
+				continue;
+			}
+			echo $label . ': saved ' . $fetched['bytes'] . " bytes\n";
+			$summary = $this->loadFromFile($file, 'summary');
+			echo $label . ': ' . $summary . "\n";
+		}
+		if (!$ran) {
+			echo "No LoTW user matched.\n";
+		}
+		$this->cron_runner->release();
+	}
+
+	private function fetch_lotw_report($login, $password, $since, $destination, $timeout_seconds, $owncall = null)
+	{
+		$url_query = $this->db->query('SELECT lotw_download_url FROM config');
+		$base = $url_query->row()->lotw_download_url;
+		$lotw_url = $base . '?login=' . rawurlencode($login);
+		$lotw_url .= '&password=' . rawurlencode($password);
+		$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
+		$lotw_url .= '&qso_qslsince=' . rawurlencode($since);
+		if ($owncall !== null && $owncall !== '') {
+			$lotw_url .= '&qso_owncall=' . rawurlencode($owncall);
+		}
+
+		$directory = dirname($destination);
+		if (!is_dir($directory) || !is_writable($directory)) {
+			return array('ok' => false, 'message' => 'Temporary download directory is not writable.', 'bytes' => 0);
+		}
+		if (file_exists($destination) && !is_writable($destination)) {
+			return array('ok' => false, 'message' => 'Temporary download file is not writable.', 'bytes' => 0);
+		}
+
+		$max_retries = 3;
+		$retry_delay = 2;
+		$curl_error = '';
+		$http_code = 0;
+		$bytes = 0;
+		$saved = false;
+
+		for ($attempt = 1; $attempt <= $max_retries; $attempt++) {
+			$fp = fopen($destination, 'w');
+			if ($fp === false) {
+				return array('ok' => false, 'message' => 'Failed to write the LoTW report.', 'bytes' => 0);
+			}
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL, $lotw_url);
+			curl_setopt($ch, CURLOPT_FILE, $fp);
+			curl_setopt($ch, CURLOPT_TIMEOUT, (int)$timeout_seconds);
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+			curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog LoTW Client/1.0');
+			$ok = curl_exec($ch);
+			$http_code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+			$curl_error = curl_error($ch);
+			curl_close($ch);
+			fclose($fp);
+			clearstatcache(true, $destination);
+			$bytes = file_exists($destination) ? (int)filesize($destination) : 0;
+			$saved = ($ok !== false && $curl_error === '' && $http_code === 200);
+			if ($saved) {
+				break;
+			}
+			if ($attempt < $max_retries) {
+				log_message('error', 'LoTW download attempt ' . $attempt . ' failed: ' . $curl_error . ' HTTP ' . $http_code);
+				sleep($retry_delay);
+				$retry_delay *= 2;
+			}
+		}
+
+		if (!$saved) {
+			$message = $curl_error !== '' ? $curl_error : ('HTTP ' . $http_code);
+			log_message('error', 'LoTW download failed: ' . $message);
+			return array('ok' => false, 'message' => 'LoTW download failed: ' . $message, 'bytes' => $bytes);
+		}
+
+		$header = file_get_contents($destination, false, null, 0, 39);
+		if ($header != "ARRL Logbook of the World Status Report") {
+			return array('ok' => false, 'message' => 'LoTW download failed. The service may be down, or the username and password are wrong.', 'bytes' => $bytes);
+		}
+
+		log_message('info', 'LoTW report saved (' . $bytes . ' bytes) since ' . $since);
+		return array('ok' => true, 'message' => '', 'bytes' => $bytes);
 	}
 
 	public function import() {
@@ -876,58 +895,32 @@ class Lotw extends CI_Controller {
 		{
 			$file = $config['upload_path'] . 'lotwreport_download.adi';
 
-			// Get credentials for LoTW
 			$query = $this->user_model->get_by_id($this->session->userdata('user_id'));
-    	    $q = $query->row();
-    	    $data['user_lotw_name'] = urlencode($q->user_lotw_name);
-			$data['user_lotw_password'] = urlencode($q->user_lotw_password);
+			$account = $query->row();
 
-			// Get URL for downloading LoTW
-			$query = $query = $this->db->query('SELECT lotw_download_url FROM config');
-			$q = $query->row();
-			$lotw_url = $q->lotw_download_url;
-
-			// Validate that LoTW credentials are not empty
-			// TODO: We don't actually see the error message
-			if ($data['user_lotw_name'] == '' || $data['user_lotw_password'] == '')
+			if ($account->user_lotw_name == '' || $account->user_lotw_password == '')
 			{
 				$this->session->set_flashdata('warning', 'You have not defined your ARRL LoTW credentials!'); redirect('lotw/import');
 			}
 
-            $customDate = $this->input->post('from');
-
-			if ($customDate != NULL) {
-                $lotw_last_qsl_date = date($customDate);
-            }
-            else {
-                // Query the logbook to determine when the last LoTW confirmation was
-                $lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($this->session->userdata['user_id'])));
-            }
-
-			// Build URL for LoTW report file
-			$lotw_url .= "?";
-			$lotw_url .= "login=" . $data['user_lotw_name'];
-			$lotw_url .= "&password=" . $data['user_lotw_password'];
-			$lotw_url .= "&qso_query=1&qso_qsl='yes'&qso_qsldetail='yes'&qso_mydetail='yes'";
-
-			$lotw_url .= "&qso_qslsince=";
-			$lotw_url .= "$lotw_last_qsl_date";
-
-			if ($this->input->post('callsign') != '0') {
-				$lotw_url .= "&qso_owncall=".$this->input->post('callsign');
+			$customDate = $this->input->post('from');
+			if ($customDate != NULL && preg_match('/^\d{4}-\d{2}-\d{2}$/', $customDate)) {
+				$lotw_last_qsl_date = $customDate;
+			} else {
+				$lotw_last_qsl_date = date('Y-m-d', strtotime($this->logbook_model->lotw_last_qsl_date($this->session->userdata['user_id'])));
 			}
 
-			if (is_writable(dirname($file)) && (!file_exists($file) || is_writable($file))) {
-				file_put_contents($file, file_get_contents($lotw_url));
+			$owncall = $this->input->post('callsign');
+			if ($owncall === '0' || $owncall === 'All' || $owncall === null || $owncall === '') {
+				$owncall = null;
+			}
 
+			$fetched = $this->fetch_lotw_report($account->user_lotw_name, $account->user_lotw_password, $lotw_last_qsl_date, $file, 120, $owncall);
+			if ($fetched['ok']) {
 				ini_set('memory_limit', '-1');
 				$this->loadFromFile($file);
 			} else {
-				if (!is_writable(dirname($file))) {
-					$data['errormsg'] = 'Directory '.dirname($file).' is not writable!';
-				} else if (!is_writable($file)) {
-					$data['errormsg'] = 'File '.$file.' is not writable!';
-				}
+				$data['errormsg'] = $fetched['message'];
 				$this->load->model('Stations');
 				$data['callsigns'] = $this->Stations->callsigns_of_user($this->session->userdata('user_id'));
 

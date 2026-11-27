@@ -8,6 +8,20 @@
  */
 class Logged_county {
 
+	/*
+	 * LoTW confirmations match a logged QSO within this many minutes of TIME_ON.
+	 */
+	public static function within_minutes($qso_time, $confirm_time, $minutes = 15)
+	{
+		$qso = is_int($qso_time) ? $qso_time : strtotime((string)$qso_time);
+		$confirm = is_int($confirm_time) ? $confirm_time : strtotime((string)$confirm_time);
+		if ($qso === false || $confirm === false) {
+			return false;
+		}
+		$window = (int)$minutes * 60;
+		return $qso >= ($confirm - $window) && $qso <= ($confirm + $window);
+	}
+
 	public static function key($value)
 	{
 		$value = strtoupper(trim((string)$value));

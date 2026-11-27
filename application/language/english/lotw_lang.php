@@ -36,7 +36,7 @@ $lang['lotw_upload_type_must_be_adi'] = 'Log files must have the file type .adi'
 $lang['lotw_pull_lotw_data_for_me'] = 'Pull LoTW data for me';
 $lang['lotw_select_callsign'] = 'Select callsign to pull LoTW confirmations for';
 
-$lang['lotw_report_download_overview_helptext'] = 'Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since chosen date, or since your last LoTW confirmation (fetched from your log), up until now.';
+$lang['lotw_report_download_overview_helptext'] = 'Cloudlog will use the LoTW username and password stored in your user profile to download a report from LoTW for you. The report Cloudlog downloads will have all confirmations since chosen date, or since your last LoTW confirmation (fetched from your log), up until now. A download covering several years will time out in the browser. Run that on the server instead: php index.php lotw download_since YYYY-MM-DD';
 
 // Buttons
 $lang['lotw_btn_lotw_import'] = 'LoTW Import';

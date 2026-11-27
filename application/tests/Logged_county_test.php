@@ -40,4 +40,8 @@ assert(Logged_county::pick_match($pair, 'VA,Fairfax', array(1)) === 2, 'Only rem
 assert(Logged_county::pick_match(array($qso_blank, $qso_fairfax), 'VA,Fairfax', array(3)) === 1, 'Second confirmation takes the remaining matching county');
 assert(Logged_county::pick_match($pair, null) === 1, 'Callers that ignore county keep the first QSO');
 
+assert(Logged_county::within_minutes('2022-06-01 12:00:00', '2022-06-01 12:14:00') === true, 'QSO inside the 15 minute window matches');
+assert(Logged_county::within_minutes('2022-06-01 12:16:00', '2022-06-01 12:00:00') === false, 'QSO outside the 15 minute window does not match');
+assert(Logged_county::within_minutes('2022-06-01 11:45:00', '2022-06-01 12:00:00') === true, 'Window reaches 15 minutes earlier');
+
 echo "Logged_county_test: OK\n";

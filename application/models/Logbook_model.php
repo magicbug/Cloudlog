@@ -4439,6 +4439,110 @@ class Logbook_model extends CI_Model
   }
 
   /*
+   * Match a LoTW confirmation download to logged QSOs in a few queries.
+   * Returns record index => COL_PRIMARY_KEY for confirmations that found a QSO.
+   * County-line contacts stay apart: a confirmation is applied to the QSO with
+   * that county, or to one that has no county yet, and each QSO is used once.
+   */
+  function match_lotw_confirmations(array $records, $verbose = false)
+  {
+    $this->load->library('logged_county');
+    $empty = array();
+    if ($records === array()) {
+      return $empty;
+    }
+
+    $mode_map = array();
+    $mode_query = $this->db->select('mode, submode')->get('adif_modes');
+    foreach ($mode_query->result() as $row) {
+      $submode = strtoupper(trim((string)$row->submode));
+      if ($submode !== '') {
+        $mode_map[$submode] = strtoupper(trim((string)$row->mode));
+      }
+    }
+
+    $prepared = array();
+    $calls = array();
+    foreach ($records as $index => $record) {
+      $call = strtoupper(trim((string)($record['call'] ?? '')));
+      $band = strtolower(trim((string)($record['band'] ?? '')));
+      $station = strtoupper(trim((string)($record['station_callsign'] ?? '')));
+      $raw_mode = strtoupper(trim((string)($record['mode'] ?? '')));
+      $mode = isset($mode_map[$raw_mode]) ? $mode_map[$raw_mode] : $raw_mode;
+      $confirm_time = strtotime((string)($record['datetime'] ?? ''));
+      if ($call === '' || $band === '' || $mode === '' || $station === '' || $confirm_time === false) {
+        continue;
+      }
+      $prepared[$index] = array(
+        'call' => $call,
+        'band' => $band,
+        'mode' => $mode,
+        'station' => $station,
+        'time' => $confirm_time,
+        'cnty' => $record['cnty'] ?? '',
+      );
+      $calls[$call] = true;
+    }
+
+    if ($prepared === array()) {
+      return $empty;
+    }
+
+    $buckets = array();
+    $table = $this->config->item('table_name');
+    $call_list = array_keys($calls);
+    foreach (array_chunk($call_list, 400) as $chunk) {
+      $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND, COL_MODE, COL_STATION_CALLSIGN, COL_CNTY');
+      $this->db->where_in('COL_CALL', $chunk);
+      $query = $this->db->get($table);
+      foreach ($query->result() as $row) {
+        $key = strtoupper((string)$row->COL_CALL) . '|' . strtolower((string)$row->COL_BAND) . '|' . strtoupper((string)$row->COL_MODE) . '|' . strtoupper((string)$row->COL_STATION_CALLSIGN);
+        $buckets[$key][] = array(
+          'COL_PRIMARY_KEY' => (int)$row->COL_PRIMARY_KEY,
+          'COL_CNTY' => $row->COL_CNTY,
+          'time' => strtotime((string)$row->COL_TIME_ON),
+        );
+      }
+    }
+
+    foreach ($buckets as &$list) {
+      usort($list, function ($a, $b) {
+        return $a['COL_PRIMARY_KEY'] <=> $b['COL_PRIMARY_KEY'];
+      });
+    }
+    unset($list);
+
+    if ($verbose && function_exists('is_cli') && is_cli()) {
+      echo 'Loaded logged QSOs for ' . count($call_list) . " calls\n";
+    }
+
+    $claimed = array();
+    $matches = array();
+    foreach ($prepared as $index => $record) {
+      $key = $record['call'] . '|' . $record['band'] . '|' . $record['mode'] . '|' . $record['station'];
+      $candidates = array();
+      if (isset($buckets[$key])) {
+        foreach ($buckets[$key] as $qso) {
+          if (isset($claimed[$qso['COL_PRIMARY_KEY']])) {
+            continue;
+          }
+          if ($qso['time'] === false || !Logged_county::within_minutes($qso['time'], $record['time'])) {
+            continue;
+          }
+          $candidates[] = $qso;
+        }
+      }
+      $primary_key = Logged_county::pick_match($candidates, $record['cnty']);
+      if ($primary_key !== null) {
+        $claimed[$primary_key] = true;
+        $matches[$index] = $primary_key;
+      }
+    }
+
+    return $matches;
+  }
+
+  /*
    * Used to check if the qso is already in the database.
    * $cnty, when passed, keeps a county-line pair apart: the confirmation is
    * applied to the QSO with that county, or to one that has no county yet.
@@ -4460,16 +4564,12 @@ class Logbook_model extends CI_Model
       $this->db->where('station_id', $station_id);
     }
 
-    if (!empty($exclude_ids)) {
-      $this->db->where_not_in('COL_PRIMARY_KEY', array_map('intval', $exclude_ids));
-    }
-
     $this->db->order_by('COL_PRIMARY_KEY', 'ASC');
     $query = $this->db->get($this->config->item('table_name'));
 
     if ($query->num_rows() > 0) {
       $this->load->library('logged_county');
-      $primary_key = Logged_county::pick_match($query->result(), $cnty);
+      $primary_key = Logged_county::pick_match($query->result(), $cnty, $exclude_ids);
       if ($primary_key !== null) {
         return ["Found", $primary_key];
       }
@@ -4595,9 +4695,21 @@ class Logbook_model extends CI_Model
    *                       cnty, cqz, ituz, station_callsign
    * @return array Statistics array with 'updated', 'gridsquare_updated', 'county_updated', 'errors' counts
    */
-  function lotw_update_batch($records)
+  function lotw_update_batch($records, $allow_chunk = true)
   {
     $empty_result = array('updated' => 0, 'gridsquare_updated' => 0, 'county_updated' => 0, 'errors' => 0);
+    if ($allow_chunk && is_array($records) && count($records) > 400) {
+      $totals = $empty_result;
+      foreach (array_chunk($records, 400) as $slice) {
+        $part = $this->lotw_update_batch($slice, false);
+        $totals['updated'] += $part['updated'];
+        $totals['gridsquare_updated'] += $part['gridsquare_updated'];
+        $totals['county_updated'] += $part['county_updated'];
+        $totals['errors'] += $part['errors'];
+      }
+      log_message('info', 'LoTW batch update: finished ' . count($records) . ' records, updated ' . $totals['updated'] . ', counties ' . $totals['county_updated']);
+      return $totals;
+    }
     if (empty($records) || !is_array($records)) {
       log_message('debug', 'LoTW batch update: No records provided');
       return $empty_result;
