@@ -606,20 +606,6 @@ $kpi_col_class = ($kpi_count === 4) ? 'col-6 col-xl-3' : (($kpi_count === 3) ? '
 			<!-- Radio CAT Status (renders card only when a radio is active) -->
 			<div id="radio_display" hx-get="<?php echo site_url('dashboard/radio_display_component'); ?>" hx-trigger="load, every 15s [!document.hidden]" data-updated-target="#radio-last-updated" data-updated-wrap-target="#radio-last-updated-wrap"></div>
 
-			<!-- Upcoming DXPeditions -->
-			<?php if ($dashboard_upcoming_dx_card != false) { ?>
-				<div id="upcoming_dxccs_component" hx-get="<?php echo site_url('dashboard/upcoming_dxcc_component'); ?>" hx-trigger="load, every 30m [!document.hidden]" hx-indicator="#loading_upcoming_dxcc">
-					<div class="card">
-						<div class="card-header">
-							<span class="card-header-title"><i class="fas fa-globe"></i> DXPeditions (This Week)</span>
-						</div>
-						<div class="card-body py-3 text-center text-muted small">
-							<span id="loading_upcoming_dxcc"><i class="fas fa-spinner fa-spin me-1"></i> Loading upcoming DXpeditions...</span>
-						</div>
-					</div>
-				</div>
-			<?php } ?>
-
 			<!-- Hamsat Rovers -->
 			<?php if (!empty($dashboard_hamsat_card)) { ?>
 				<div id="hamsat_dashboard_component" hx-get="<?php echo site_url('dashboard/hamsat_component'); ?>" hx-trigger="load, every 5m [!document.hidden]" hx-indicator="#loading_hamsat_dashboard">
@@ -629,6 +615,20 @@ $kpi_col_class = ($kpi_count === 4) ? 'col-6 col-xl-3' : (($kpi_count === 3) ? '
 						</div>
 						<div class="card-body py-3 text-center text-muted small">
 							<span id="loading_hamsat_dashboard"><i class="fas fa-spinner fa-spin me-1"></i> Loading Hamsat activations...</span>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+
+			<!-- Upcoming DXPeditions -->
+			<?php if ($dashboard_upcoming_dx_card != false) { ?>
+				<div id="upcoming_dxccs_component" hx-get="<?php echo site_url('dashboard/upcoming_dxcc_component'); ?>" hx-trigger="load, every 30m [!document.hidden]" hx-indicator="#loading_upcoming_dxcc">
+					<div class="card">
+						<div class="card-header">
+							<span class="card-header-title"><i class="fas fa-globe"></i> DXPeditions (This Week)</span>
+						</div>
+						<div class="card-body py-3 text-center text-muted small">
+							<span id="loading_upcoming_dxcc"><i class="fas fa-spinner fa-spin me-1"></i> Loading upcoming DXpeditions...</span>
 						</div>
 					</div>
 				</div>
