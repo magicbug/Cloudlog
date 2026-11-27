@@ -227,14 +227,14 @@ thead>tr>td {
 }
 
 .station-management .card {
-	border: none;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.125));
 	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
 .station-management .card-header {
-	background-color: #f8f9fa;
-	border-bottom: 1px solid #dee2e6;
-	padding: 1rem 1.25rem;
+	background-color: var(--bs-card-cap-bg, rgba(0, 0, 0, 0.03));
+	border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+	padding: 0.85rem 1.25rem;
 }
 
 .station-management .badge {
@@ -272,15 +272,16 @@ thead>tr>td {
 .station-management .dataTables_filter input {
 	margin-left: 0.5rem;
 	border-radius: 0.375rem;
-	border: 1px solid #ced4da;
-	padding: 0.375rem 0.75rem;
+	border: 1px solid var(--bs-border-color, #ced4da);
+	padding: 0.3rem 0.65rem;
 }
 
 .station-management .dataTables_length select {
 	margin: 0 0.5rem;
 	border-radius: 0.375rem;
-	border: 1px solid #ced4da;
-	padding: 0.375rem 0.75rem;
+	border: 1px solid var(--bs-border-color, #ced4da);
+	padding: 0.25rem 2rem 0.25rem 0.65rem;
+	min-width: 4.5rem;
 }
 
 /* Logbooks Management Page Styling */
@@ -293,14 +294,14 @@ thead>tr>td {
 }
 
 .logbooks-management .card {
-	border: none;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.125));
 	box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
 .logbooks-management .card-header {
-	background-color: #f8f9fa;
-	border-bottom: 1px solid #dee2e6;
-	padding: 1rem 1.25rem;
+	background-color: var(--bs-card-cap-bg, rgba(0, 0, 0, 0.03));
+	border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+	padding: 0.85rem 1.25rem;
 }
 
 .logbooks-management .badge {
@@ -338,15 +339,16 @@ thead>tr>td {
 .logbooks-management .dataTables_filter input {
 	margin-left: 0.5rem;
 	border-radius: 0.375rem;
-	border: 1px solid #ced4da;
-	padding: 0.375rem 0.75rem;
+	border: 1px solid var(--bs-border-color, #ced4da);
+	padding: 0.3rem 0.65rem;
 }
 
 .logbooks-management .dataTables_length select {
 	margin: 0 0.5rem;
 	border-radius: 0.375rem;
-	border: 1px solid #ced4da;
-	padding: 0.375rem 0.75rem;
+	border: 1px solid var(--bs-border-color, #ced4da);
+	padding: 0.25rem 2rem 0.25rem 0.65rem;
+	min-width: 4.5rem;
 }
 
 .api .alert p {

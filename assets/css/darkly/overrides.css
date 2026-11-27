@@ -1131,3 +1131,41 @@ kbd {
 	border-color: rgba(0, 0, 0, 0.25) !important;
 	filter: invert(1) brightness(0.95);
 }
+
+/* Global Dark Mode Pagination, Warning Badges & Selectize Carets */
+.pagination .page-link {
+	background-color: #2b3038;
+	border-color: rgba(255, 255, 255, 0.16);
+	color: #cfd6de;
+}
+
+.pagination .page-link:hover {
+	background-color: #374151;
+	border-color: rgba(255, 255, 255, 0.28);
+	color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+	background-color: #375a7f;
+	border-color: #4f79a5;
+	color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+	background-color: #23272e;
+	border-color: rgba(255, 255, 255, 0.1);
+	color: #6c757d;
+}
+
+.badge.text-bg-warning,
+.badge.bg-warning {
+	color: #1a1a1a !important;
+}
+
+.selectize-control.single .selectize-input:after {
+	border-color: #adb5bd transparent transparent transparent !important;
+}
+
+.selectize-control.single .selectize-input.dropdown-active:after {
+	border-color: transparent transparent #adb5bd transparent !important;
+}
