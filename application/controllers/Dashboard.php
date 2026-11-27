@@ -137,6 +137,7 @@ class Dashboard extends CI_Controller
 			$data['dashboard_eqslcard_card'] = false;
 			$data['dashboard_lotw_card'] = false;
 			$data['dashboard_vuccgrids_card'] = false;
+			$data['dashboard_hamsat_card'] = false;
 			$data['dashboard_map_greyline'] = true;
 
 			$dashboard_options = $this->user_options_model->get_options('dashboard')->result();
@@ -153,6 +154,7 @@ class Dashboard extends CI_Controller
 			$data['dashboard_eqslcard_card'] = isset($options_map['dashboard_eqslcards_card']['enabled']) && $options_map['dashboard_eqslcards_card']['enabled'] == 'true';
 			$data['dashboard_lotw_card'] = isset($options_map['dashboard_lotw_card']['enabled']) && $options_map['dashboard_lotw_card']['enabled'] == 'true';
 			$data['dashboard_vuccgrids_card'] = isset($options_map['dashboard_vuccgrids_card']['enabled']) && $options_map['dashboard_vuccgrids_card']['enabled'] == 'true';
+			$data['dashboard_hamsat_card'] = isset($options_map['dashboard_hamsat_card']['enabled']) && $options_map['dashboard_hamsat_card']['enabled'] == 'true';
 			$data['dashboard_map_greyline'] = !isset($options_map['dashboard_map_greyline']['enabled']) || $options_map['dashboard_map_greyline']['enabled'] == 'true';
 
 			// Only load VUCC data if the card is actually enabled
@@ -285,5 +287,128 @@ class Dashboard extends CI_Controller
 		}
 
 		$this->load->view('components/upcoming_dxccs', $data);
+	}
+
+	function hamsat_component()
+	{
+		if ($this->user_model->validate_session() == 0) {
+			return;
+		}
+
+		$this->load->model('user_options_model');
+		$this->load->model('logbooks_model');
+		$this->load->model('logbook_model');
+		$this->load->driver('cache', array('adapter' => 'file', 'backup' => 'file'));
+
+		$userID = (int) $this->session->userdata('user_id');
+
+		$hkey_opt = $this->user_options_model->get_options('hamsat', array('option_name' => 'hamsat_key', 'option_key' => 'api'))->result();
+		$user_hamsat_key = (count($hkey_opt) > 0) ? trim((string) $hkey_opt[0]->option_value) : '';
+
+		$workable_opt = $this->user_options_model->get_options('hamsat', array('option_name' => 'hamsat_key', 'option_key' => 'workable'))->result();
+		$user_hamsat_workable_only = (count($workable_opt) > 0) ? (int) $workable_opt[0]->option_value : 0;
+
+		$cache_key = 'dashboard_hamsat_' . $userID . '_' . md5($user_hamsat_key);
+		$rovedata = $this->cache->get($cache_key);
+		$error = false;
+		$error_message = '';
+
+		if ($rovedata === false) {
+			$url = 'https://hams.at/api/alerts/upcoming';
+			$http_opts = array(
+				'method' => 'GET',
+				'timeout' => 6
+			);
+			if ($user_hamsat_key !== '') {
+				$http_opts['header'] = "Authorization: Bearer " . $user_hamsat_key . "\r\n";
+			}
+			$json = @file_get_contents($url, false, stream_context_create(array('http' => $http_opts)));
+
+			if ($json === false) {
+				$error = true;
+				$error_message = 'Unable to connect to hams.at right now.';
+				$rovedata = array('data' => array());
+			} else {
+				$decoded = json_decode($json, true);
+				if ($decoded === null && json_last_error() !== JSON_ERROR_NONE) {
+					$error = true;
+					$error_message = 'Invalid response from hams.at.';
+					$rovedata = array('data' => array());
+				} else {
+					$rovedata = $decoded;
+					$this->cache->save($cache_key, $rovedata, 120);
+				}
+			}
+		}
+
+		$logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
+		$grid_cache = array();
+		$passes = array();
+		$now_ts = time();
+
+		if (!$error && isset($rovedata['data']) && is_array($rovedata['data'])) {
+			foreach ($rovedata['data'] as $rove) {
+				$aos_ts = !empty($rove['aos_at']) ? strtotime($rove['aos_at']) : 0;
+				$los_ts = !empty($rove['los_at']) ? strtotime($rove['los_at']) : 0;
+				if ($los_ts > 0 && $los_ts < $now_ts) {
+					continue;
+				}
+
+				$grids_out = array();
+				$has_needed = false;
+				$raw_grids = (isset($rove['grids']) && is_array($rove['grids'])) ? $rove['grids'] : array();
+				foreach ($raw_grids as $g) {
+					$g4 = strtoupper(substr(trim((string) $g), 0, 4));
+					if ($g4 === '') continue;
+					if (!array_key_exists($g4, $grid_cache)) {
+						$grid_cache[$g4] = ($this->logbook_model->check_if_grid_worked_in_logbook($g4, $logbooks_locations_array, "SAT") != 0);
+					}
+					$worked = $grid_cache[$g4];
+					if (!$worked) {
+						$has_needed = true;
+					}
+					$grids_out[] = array('grid' => $g4, 'worked' => $worked);
+				}
+
+				$is_live = ($aos_ts > 0 && $los_ts > 0 && $now_ts >= $aos_ts && $now_ts <= $los_ts);
+				if ($is_live) {
+					$mins_left = max(1, (int) ceil(($los_ts - $now_ts) / 60));
+					$time_label = 'LIVE · ' . $mins_left . 'm';
+				} elseif ($aos_ts > $now_ts) {
+					$diff = $aos_ts - $now_ts;
+					if ($diff < 3600) {
+						$time_label = 'In ' . max(1, (int) floor($diff / 60)) . 'm';
+					} elseif ($diff < 86400) {
+						$time_label = 'In ' . (int) floor($diff / 3600) . 'h';
+					} else {
+						$time_label = date('M j', $aos_ts);
+					}
+				} else {
+					$time_label = !empty($rove['aos_at']) ? date('H:i', $aos_ts) : '—';
+				}
+
+				$passes[] = array(
+					'callsign' => isset($rove['callsign']) ? $rove['callsign'] : '',
+					'url' => isset($rove['url']) ? $rove['url'] : 'https://hams.at/',
+					'sat' => isset($rove['satellite']['name']) ? $rove['satellite']['name'] : '',
+					'mode' => isset($rove['mode']) ? $rove['mode'] : '',
+					'comment' => isset($rove['comment']) ? $rove['comment'] : '',
+					'grids' => $grids_out,
+					'has_needed' => $has_needed,
+					'is_live' => $is_live,
+					'is_workable' => !empty($rove['is_workable']),
+					'time_label' => $time_label,
+					'aos_utc' => $aos_ts ? date('H:i', $aos_ts) . ' UTC' : ''
+				);
+			}
+		}
+
+		$data['error'] = $error;
+		$data['error_message'] = $error_message;
+		$data['passes'] = $passes;
+		$data['has_key'] = ($user_hamsat_key !== '');
+		$data['workable_only_default'] = ($user_hamsat_workable_only == 1 && $user_hamsat_key !== '');
+
+		$this->load->view('components/hamsat_dashboard', $data);
 	}
 }

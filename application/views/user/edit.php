@@ -43,6 +43,7 @@ $dashboard_qslcard_card = !empty($dashboard_qslcard_card);
 $dashboard_eqslcard_card = !empty($dashboard_eqslcard_card);
 $dashboard_lotw_card = !empty($dashboard_lotw_card);
 $dashboard_vuccgrids_card = !empty($dashboard_vuccgrids_card);
+$dashboard_hamsat_card = !empty($dashboard_hamsat_card);
 $dashboard_map_greyline = !isset($dashboard_map_greyline) || $dashboard_map_greyline;
 $menu_show_qsl_cards = !isset($menu_show_qsl_cards) || $menu_show_qsl_cards;
 $menu_show_sstv_images = !empty($menu_show_sstv_images);
@@ -812,6 +813,12 @@ $submit_label = $is_add ? lang('account_create_account') : lang('account_save_ac
 											<div class="form-check form-switch py-1">
 												<input name="user_dashboard_enable_vuccgrids_card" class="form-check-input" type="checkbox" role="switch" id="DashboardvuccgridsCardCheck" <?php if ($dashboard_vuccgrids_card) echo 'checked'; ?>>
 												<label class="form-check-label" for="DashboardvuccgridsCardCheck">Enable VUCC-Grids Card</label>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-check form-switch py-1">
+												<input name="user_dashboard_enable_hamsat_card" class="form-check-input" type="checkbox" role="switch" id="DashboardHamsatCardCheck" <?php if ($dashboard_hamsat_card) echo 'checked'; ?>>
+												<label class="form-check-label" for="DashboardHamsatCardCheck">Enable Hamsat Rovers Card</label>
 											</div>
 										</div>
 										<div class="col-md-6">

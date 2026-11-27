@@ -804,3 +804,28 @@ kbd {
 .plugin-award-page .text-dark {
 	color: #f1f3f5 !important;
 }
+
+/* Hamsat Dark Mode mode badges */
+.dxped-call-chip.is-worked-call {
+	background-color: rgba(0, 188, 140, 0.18);
+	border-color: rgba(0, 188, 140, 0.38);
+	color: #3dd5a3;
+}
+
+.hamsat-mode-linear {
+	background-color: rgba(122, 179, 239, 0.16);
+	border-color: rgba(122, 179, 239, 0.32);
+	color: #7ab3ef;
+}
+
+.hamsat-mode-fm {
+	background-color: rgba(245, 158, 11, 0.18);
+	border-color: rgba(245, 158, 11, 0.38);
+	color: #fbbf24;
+}
+
+.hamsat-mode-data {
+	background-color: rgba(57, 192, 237, 0.18);
+	border-color: rgba(57, 192, 237, 0.38);
+	color: #6edff6;
+}

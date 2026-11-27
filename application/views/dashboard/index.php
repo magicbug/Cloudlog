@@ -620,6 +620,20 @@ $kpi_col_class = ($kpi_count === 4) ? 'col-6 col-xl-3' : (($kpi_count === 3) ? '
 				</div>
 			<?php } ?>
 
+			<!-- Hamsat Rovers -->
+			<?php if (!empty($dashboard_hamsat_card)) { ?>
+				<div id="hamsat_dashboard_component" hx-get="<?php echo site_url('dashboard/hamsat_component'); ?>" hx-trigger="load, every 5m [!document.hidden]" hx-indicator="#loading_hamsat_dashboard">
+					<div class="card">
+						<div class="card-header">
+							<span class="card-header-title"><i class="fas fa-satellite"></i> Hamsat Rovers</span>
+						</div>
+						<div class="card-body py-3 text-center text-muted small">
+							<span id="loading_hamsat_dashboard"><i class="fas fa-spinner fa-spin me-1"></i> Loading Hamsat activations...</span>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+
 			<!-- Consolidated QSL Services Card -->
 			<?php if (!empty($qsl_services)) { ?>
 				<div class="card">

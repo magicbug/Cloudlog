@@ -3122,6 +3122,48 @@ tr.htmx-swapping td {
 	font-size: 0.76rem;
 }
 
+/* Hamsat Rovers page & mode badges */
+.hamsat-card {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.75rem;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+	overflow: hidden;
+}
+
+.dxped-call-chip.is-worked-call {
+	background-color: rgba(25, 135, 84, 0.14);
+	color: #198754;
+	border-color: rgba(25, 135, 84, 0.3);
+}
+
+.hamsat-mode-linear {
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	color: var(--bs-primary, #0d6efd);
+	border: 1px solid rgba(var(--bs-primary-rgb, 13, 110, 253), 0.28);
+	font-weight: 600;
+}
+
+.hamsat-mode-fm {
+	background-color: rgba(245, 158, 11, 0.15);
+	color: #b45309;
+	border: 1px solid rgba(245, 158, 11, 0.35);
+	font-weight: 600;
+}
+
+.hamsat-mode-data {
+	background-color: rgba(13, 202, 240, 0.15);
+	color: #087990;
+	border: 1px solid rgba(13, 202, 240, 0.32);
+	font-weight: 600;
+}
+
+.hamsat-mode-other {
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.12));
+	color: var(--bs-secondary-color, #64748b);
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
+	font-weight: 600;
+}
+
 @media (max-width: 575.98px) {
 	.qso_panel #qsoRightTabs {
 		flex-wrap: wrap !important;
