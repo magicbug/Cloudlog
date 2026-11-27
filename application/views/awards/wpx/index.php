@@ -121,6 +121,9 @@ $hr = $wpx['honor_roll'];
                 <button type="button" class="rac-mode-pill" data-wpx-cont="AS">AS</button>
                 <button type="button" class="rac-mode-pill" data-wpx-cont="AF">AF</button>
                 <button type="button" class="rac-mode-pill" data-wpx-cont="OC">OC</button>
+                <button type="button" class="rac-mode-pill ms-1" id="wpxShowUnworkedBtn" aria-pressed="false" title="Toggle unworked DXCC entities (0 prefixes)">
+                    <i class="fas fa-eye-slash me-1"></i>Unworked
+                </button>
             </div>
         </div>
         <div class="card-body p-0">

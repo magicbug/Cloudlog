@@ -232,6 +232,28 @@ class Wpx extends CI_Model {
 			$add_pfx((int) $row->adif, $row->name, $row->cont, $row->lat, $row->lng, $pfx, !empty($row->confirmed));
 		}
 
+		// 3. Include current DXCC entities with 0 worked prefixes (for optional "Show Unworked" map toggle)
+		$this->db->select('adif, name, cont, lat, `long` AS lng', FALSE);
+		$this->db->from('dxcc_entities');
+		$this->db->where('adif >', 0);
+		$this->db->where('end IS NULL', NULL, FALSE);
+		$this->db->where('lat IS NOT NULL', NULL, FALSE);
+		$this->db->where('`long` IS NOT NULL', NULL, FALSE);
+		$all_dxcc = $this->db->get();
+		foreach ($all_dxcc->result() as $d) {
+			$adif = (int) $d->adif;
+			if (!isset($entities[$adif])) {
+				$entities[$adif] = array(
+					'adif' => $adif,
+					'name' => ucwords(strtolower((string) $d->name)),
+					'cont' => strtoupper(trim((string) $d->cont)),
+					'lat' => (float) $d->lat,
+					'lng' => (float) $d->lng,
+					'prefixes' => array(),
+				);
+			}
+		}
+
 		$result = array();
 		foreach ($entities as $ent) {
 			$worked = count($ent['prefixes']);

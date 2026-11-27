@@ -16,6 +16,10 @@
 	var wpxInfo = null;
 	var wpxLegend = null;
 	var activeCont = 'ALL';
+	var showUnworked = false;
+	try {
+		showUnworked = localStorage.getItem('cloudlog_wpx_show_unworked') === '1';
+	} catch (e) {}
 
 	function escapeHtml(str) {
 		return String(str || '')
@@ -34,14 +38,19 @@
 			return;
 		}
 		var isConf = ent.confirmed > 0;
-		var badgeCls = isConf ? 'is-conf' : 'is-work';
-		var badgeText = isConf ? 'Confirmed' : 'Worked only';
+		var isNone = ent.worked === 0;
+		var badgeCls = isConf ? 'is-conf' : (isNone ? 'is-none' : 'is-work');
+		var badgeText = isConf ? 'Confirmed' : (isNone ? 'Not worked' : 'Worked only');
 		var html = '<div class="rac-info-title">' + escapeHtml(ent.name) + ' <span class="rac-info-code">' + escapeHtml(ent.cont || '—') + '</span></div>';
 		html += '<div class="mb-1"><span class="rac-info-badge ' + badgeCls + '">' + badgeText + '</span></div>';
-		html += '<div class="rac-info-stat">Prefixes: <strong>' + ent.confirmed + '</strong> confirmed / <strong>' + ent.worked + '</strong> worked</div>';
-		if (ent.sample && ent.sample.length) {
-			var suffix = ent.worked > ent.sample.length ? ' +' + (ent.worked - ent.sample.length) : '';
-			html += '<div class="rac-info-stat">Sample: ' + escapeHtml(ent.sample.join(', ')) + suffix + '</div>';
+		if (isNone) {
+			html += '<div class="rac-info-sub">No WPX prefixes worked yet.</div>';
+		} else {
+			html += '<div class="rac-info-stat">Prefixes: <strong>' + ent.confirmed + '</strong> confirmed / <strong>' + ent.worked + '</strong> worked</div>';
+			if (ent.sample && ent.sample.length) {
+				var suffix = ent.worked > ent.sample.length ? ' +' + (ent.worked - ent.sample.length) : '';
+				html += '<div class="rac-info-stat">Sample: ' + escapeHtml(ent.sample.join(', ')) + suffix + '</div>';
+			}
 		}
 		wpxInfo._div.innerHTML = html;
 	}
@@ -53,16 +62,50 @@
 		}
 		markersLayer = L.layerGroup();
 
-		var totalEntities = 0;
+		var totalWorkedEntities = 0;
 		var confEntities = 0;
 		var workOnlyEntities = 0;
+		var unworkedEntities = 0;
 		var totalPfx = 0;
 
-		wpxMapEntities.forEach(function (ent) {
+		// Sort so unworked dots render underneath worked/confirmed bubbles
+		var ordered = wpxMapEntities.slice().sort(function (a, b) {
+			return a.worked - b.worked;
+		});
+
+		ordered.forEach(function (ent) {
 			if (activeCont !== 'ALL' && ent.cont !== activeCont) return;
 
+			if (ent.worked === 0) {
+				unworkedEntities++;
+				if (!showUnworked) return;
+
+				var uMarker = L.circleMarker([ent.lat, ent.lng], {
+					radius: 3.8,
+					fillColor: '#dc3545',
+					color: '#ffffff',
+					weight: 1,
+					opacity: 0.7,
+					fillOpacity: 0.45
+				});
+				uMarker.bindTooltip('<strong>' + escapeHtml(ent.name) + '</strong> · 0 prefixes', {
+					direction: 'top',
+					offset: [0, -5]
+				});
+				uMarker.on('mouseover', function () {
+					this.setStyle({ weight: 2, fillOpacity: 0.85 });
+					renderInfo(ent);
+				});
+				uMarker.on('mouseout', function () {
+					this.setStyle({ weight: 1, fillOpacity: 0.45 });
+					renderInfo(null);
+				});
+				uMarker.addTo(markersLayer);
+				return;
+			}
+
 			var isConf = ent.confirmed > 0;
-			totalEntities++;
+			totalWorkedEntities++;
 			totalPfx += ent.worked;
 			if (isConf) confEntities++;
 			else workOnlyEntities++;
@@ -108,11 +151,15 @@
 
 		if (wpxLegend && wpxLegend._div) {
 			var scopeLabel = activeCont === 'ALL' ? 'World' : activeCont;
-			wpxLegend._div.innerHTML =
-				'<div class="rac-legend-title">' + escapeHtml(scopeLabel) + ' · ' + totalEntities + ' entities (' + totalPfx + ' pfx)</div>' +
+			var legendHtml =
+				'<div class="rac-legend-title">' + escapeHtml(scopeLabel) + ' · ' + totalWorkedEntities + ' entities (' + totalPfx + ' pfx)</div>' +
 				'<div class="rac-legend-item"><span class="rac-swatch" style="background:#198754;border-radius:50%"></span>Confirmed (' + confEntities + ')</div>' +
-				'<div class="rac-legend-item"><span class="rac-swatch" style="background:#f59e0b;border-radius:50%"></span>Worked only (' + workOnlyEntities + ')</div>' +
-				'<div class="rac-info-sub mt-1">Bubble size = unique prefixes</div>';
+				'<div class="rac-legend-item"><span class="rac-swatch" style="background:#f59e0b;border-radius:50%"></span>Worked only (' + workOnlyEntities + ')</div>';
+			if (showUnworked) {
+				legendHtml += '<div class="rac-legend-item"><span class="rac-swatch" style="background:rgba(220,53,69,0.65);border-radius:50%"></span>Not worked (' + unworkedEntities + ')</div>';
+			}
+			legendHtml += '<div class="rac-info-sub mt-1">Bubble size = unique prefixes</div>';
+			wpxLegend._div.innerHTML = legendHtml;
 		}
 
 		renderInfo(null);
@@ -155,10 +202,10 @@
 		wpxMap.setView([25, 10], 2);
 		renderMarkers();
 
-		document.querySelectorAll('#wpxMapContPills .rac-mode-pill').forEach(function (btn) {
+		document.querySelectorAll('#wpxMapContPills .rac-mode-pill[data-wpx-cont]').forEach(function (btn) {
 			btn.addEventListener('click', function () {
 				activeCont = this.getAttribute('data-wpx-cont') || 'ALL';
-				document.querySelectorAll('#wpxMapContPills .rac-mode-pill').forEach(function (b) {
+				document.querySelectorAll('#wpxMapContPills .rac-mode-pill[data-wpx-cont]').forEach(function (b) {
 					b.classList.toggle('is-active', b === btn);
 				});
 				var view = CONT_VIEWS[activeCont] || CONT_VIEWS.ALL;
@@ -166,6 +213,24 @@
 				renderMarkers();
 			});
 		});
+
+		var unworkedBtn = document.getElementById('wpxShowUnworkedBtn');
+		if (unworkedBtn) {
+			var syncUnworkedBtn = function () {
+				unworkedBtn.classList.toggle('is-active', showUnworked);
+				unworkedBtn.setAttribute('aria-pressed', showUnworked ? 'true' : 'false');
+				unworkedBtn.innerHTML = (showUnworked ? '<i class="fas fa-eye me-1"></i>' : '<i class="fas fa-eye-slash me-1"></i>') + 'Unworked';
+			};
+			syncUnworkedBtn();
+			unworkedBtn.addEventListener('click', function () {
+				showUnworked = !showUnworked;
+				try {
+					localStorage.setItem('cloudlog_wpx_show_unworked', showUnworked ? '1' : '0');
+				} catch (e) {}
+				syncUnworkedBtn();
+				renderMarkers();
+			});
+		}
 	}
 
 	function initWpxTable() {
