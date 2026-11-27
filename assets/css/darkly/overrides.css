@@ -829,3 +829,87 @@ kbd {
 	border-color: rgba(57, 192, 237, 0.38);
 	color: #6edff6;
 }
+
+/* DX Cluster Dark Mode overrides */
+.dxc-band-pill {
+	background: #2b2b2b;
+	border-color: rgba(255, 255, 255, 0.12);
+	color: #adb5bd;
+}
+
+.dxc-band-pill.has-spots {
+	color: #f1f3f5;
+}
+
+.dxc-band-pill.is-active {
+	background: #375a7f;
+	border-color: #4f79a5;
+	color: #fff;
+}
+
+.dxc-status-pill.is-connected {
+	color: #3dd5a3;
+	background: rgba(0, 188, 140, 0.18);
+	border-color: rgba(0, 188, 140, 0.38);
+}
+
+.dxc-status-pill.is-connecting {
+	color: #fbbf24;
+	background: rgba(245, 158, 11, 0.18);
+	border-color: rgba(245, 158, 11, 0.38);
+}
+
+.dxc-status-pill.is-paused {
+	color: #7ab3ef;
+	background: rgba(122, 179, 239, 0.18);
+	border-color: rgba(122, 179, 239, 0.35);
+}
+
+.dxc-freq-btn {
+	background: rgba(122, 179, 239, 0.14);
+	border-color: rgba(122, 179, 239, 0.3);
+	color: #7ab3ef;
+}
+
+.dxc-freq-btn:hover {
+	background: #375a7f;
+	border-color: #4f79a5;
+	color: #fff;
+}
+
+.dxc-mode-cw {
+	background: rgba(245, 158, 11, 0.2);
+	color: #fbbf24;
+}
+
+.dxc-mode-ssb {
+	background: rgba(0, 188, 140, 0.2);
+	color: #3dd5a3;
+}
+
+.dxc-mode-digi {
+	background: rgba(57, 192, 237, 0.2);
+	color: #6edff6;
+}
+
+.dxc-tag-new-dxcc {
+	background: rgba(245, 158, 11, 0.22);
+	color: #fbbf24;
+	border-color: rgba(245, 158, 11, 0.42);
+}
+
+.dxc-tag-new-band {
+	background: rgba(231, 76, 60, 0.22);
+	color: #ff7b72;
+	border-color: rgba(231, 76, 60, 0.42);
+}
+
+.dxc-tag-rbn {
+	background: rgba(167, 139, 250, 0.2);
+	color: #c4b5fd;
+}
+
+.dxc-tag-kw {
+	background: rgba(122, 179, 239, 0.18);
+	color: #7ab3ef;
+}
