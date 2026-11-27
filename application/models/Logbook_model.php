@@ -4491,10 +4491,18 @@ class Logbook_model extends CI_Model
     $buckets = array();
     $table = $this->config->item('table_name');
     $call_list = array_keys($calls);
+    if ($verbose && function_exists('is_cli') && is_cli()) {
+      echo 'Looking up ' . count($call_list) . " calls in the log\n";
+    }
+    $loaded_calls = 0;
     foreach (array_chunk($call_list, 400) as $chunk) {
       $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND, COL_MODE, COL_STATION_CALLSIGN, COL_CNTY');
       $this->db->where_in('COL_CALL', $chunk);
       $query = $this->db->get($table);
+      $loaded_calls += count($chunk);
+      if ($verbose && function_exists('is_cli') && is_cli()) {
+        echo '  checked ' . $loaded_calls . ' of ' . count($call_list) . " calls\n";
+      }
       foreach ($query->result() as $row) {
         $key = strtoupper((string)$row->COL_CALL) . '|' . strtolower((string)$row->COL_BAND) . '|' . strtoupper((string)$row->COL_MODE) . '|' . strtoupper((string)$row->COL_STATION_CALLSIGN);
         $buckets[$key][] = array(
@@ -4518,7 +4526,13 @@ class Logbook_model extends CI_Model
 
     $claimed = array();
     $matches = array();
+    $seen = 0;
+    $total = count($prepared);
     foreach ($prepared as $index => $record) {
+      $seen++;
+      if ($verbose && function_exists('is_cli') && is_cli() && $seen % 5000 === 0) {
+        echo '  matched ' . $seen . ' of ' . $total . " confirmations\n";
+      }
       $key = $record['call'] . '|' . $record['band'] . '|' . $record['mode'] . '|' . $record['station'];
       $candidates = array();
       if (isset($buckets[$key])) {

@@ -557,6 +557,11 @@ class Lotw extends CI_Controller {
 
 		$this->adif_parser->load_from_file($filepath);
 
+		if ($display_view === 'summary') {
+			echo "Reading the report\n";
+			$this->lotw_flush_cli();
+		}
+
 		$this->adif_parser->initialize();
 
 		$tableheaders = "<table width=\"100%\">";
@@ -577,9 +582,15 @@ class Lotw extends CI_Controller {
 			$parsed = array();
 			$preview_limit = 200;
 			$show_page = ($display_view === true || $display_view === 'TRUE' || $display_view === '1');
+			$read = 0;
 
 			while ($record = $this->adif_parser->get_record())
 			{
+				$read++;
+				if ($display_view === 'summary' && $read % 5000 === 0) {
+					echo "  read {$read} QSOs\n";
+					$this->lotw_flush_cli();
+				}
 				if (empty($record['call']) || empty($record['qso_date']) || empty($record['time_on'])) {
 					continue;
 				}
@@ -662,6 +673,10 @@ class Lotw extends CI_Controller {
 			$lotw_status = "No updates";
 			$not_found = count($parsed) - $found_count;
 			if (!empty($batch_updates)) {
+				if ($display_view === 'summary') {
+					echo 'Updating ' . count($batch_updates) . " logged QSOs\n";
+					$this->lotw_flush_cli();
+				}
 				$result = $this->logbook_model->lotw_update_batch($batch_updates);
 				$already_confirmed = max(0, $found_count - $result['updated']);
 				$lotw_status = "Found: {$found_count} QSOs, Updated: {$result['updated']} QSOs, Already confirmed: {$already_confirmed} QSOs, Gridsquares updated: {$result['gridsquare_updated']}, Counties updated: {$result['county_updated']}, Not matched: {$not_found}";
@@ -788,8 +803,10 @@ class Lotw extends CI_Controller {
 				$label .= ' (' . $user->user_callsign . ')';
 			}
 			echo $label . ": downloading confirmations since {$since}\n";
+			echo "  LoTW builds the file before it sends anything. A line every 15 seconds means the connection is still open.\n";
+			$this->lotw_flush_cli();
 			$file = './uploads/lotwreport_cli_' . (int)$user->user_id . '.adi';
-			$fetched = $this->fetch_lotw_report($user->user_lotw_name, $user->user_lotw_password, $since, $file, 0);
+			$fetched = $this->fetch_lotw_report($user->user_lotw_name, $user->user_lotw_password, $since, $file, 0, null, true);
 			if (!$fetched['ok']) {
 				echo $label . ': ' . $fetched['message'] . "\n";
 				continue;
@@ -804,7 +821,7 @@ class Lotw extends CI_Controller {
 		$this->cron_runner->release();
 	}
 
-	private function fetch_lotw_report($login, $password, $since, $destination, $timeout_seconds, $owncall = null)
+	private function fetch_lotw_report($login, $password, $since, $destination, $timeout_seconds, $owncall = null, $verbose = false)
 	{
 		$url_query = $this->db->query('SELECT lotw_download_url FROM config');
 		$base = $url_query->row()->lotw_download_url;
@@ -832,6 +849,10 @@ class Lotw extends CI_Controller {
 		$saved = false;
 
 		for ($attempt = 1; $attempt <= $max_retries; $attempt++) {
+			if ($verbose && $attempt > 1) {
+				echo "  retry {$attempt} of {$max_retries}\n";
+				$this->lotw_flush_cli();
+			}
 			$fp = fopen($destination, 'w');
 			if ($fp === false) {
 				return array('ok' => false, 'message' => 'Failed to write the LoTW report.', 'bytes' => 0);
@@ -845,7 +866,7 @@ class Lotw extends CI_Controller {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 			curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog LoTW Client/1.0');
-			$ok = curl_exec($ch);
+			$ok = $this->lotw_curl_exec($ch, $verbose);
 			$http_code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			$curl_error = curl_error($ch);
 			curl_close($ch);
@@ -876,6 +897,76 @@ class Lotw extends CI_Controller {
 
 		log_message('info', 'LoTW report saved (' . $bytes . ' bytes) since ' . $since);
 		return array('ok' => true, 'message' => '', 'bytes' => $bytes);
+	}
+
+	/*
+	 * Runs the LoTW request and, on the command line, prints a line every 15 seconds.
+	 * LoTW often sends nothing until the whole report is built, so a byte count of
+	 * zero with the clock moving is the connection still waiting.
+	 */
+	private function lotw_curl_exec($ch, $verbose)
+	{
+		if (!$verbose) {
+			return curl_exec($ch);
+		}
+
+		echo "  request sent\n";
+		$this->lotw_flush_cli();
+
+		$mh = curl_multi_init();
+		curl_multi_add_handle($mh, $ch);
+		$started = microtime(true);
+		$last_report = $started;
+		$active = null;
+		$status = CURLM_OK;
+
+		do {
+			$status = curl_multi_exec($mh, $active);
+			if ($active) {
+				if (curl_multi_select($mh, 1.0) === -1) {
+					usleep(100000);
+				}
+			}
+			$now = microtime(true);
+			if ($now - $last_report >= 15) {
+				$downloaded = (int)curl_getinfo($ch, CURLINFO_SIZE_DOWNLOAD);
+				$elapsed = (int)($now - $started);
+				if ($downloaded > 0) {
+					echo '  receiving, ' . $elapsed . 's, ' . $this->lotw_format_bytes($downloaded) . "\n";
+				} else {
+					echo '  still waiting for LoTW, ' . $elapsed . "s, nothing received yet\n";
+				}
+				$this->lotw_flush_cli();
+				$last_report = $now;
+			}
+		} while ($active && $status === CURLM_OK);
+
+		curl_multi_remove_handle($mh, $ch);
+		curl_multi_close($mh);
+
+		return $status === CURLM_OK;
+	}
+
+	private function lotw_format_bytes($bytes)
+	{
+		$bytes = (int)$bytes;
+		if ($bytes < 1024) {
+			return $bytes . ' B';
+		}
+		if ($bytes < 1048576) {
+			return round($bytes / 1024, 1) . ' KB';
+		}
+		return round($bytes / 1048576, 1) . ' MB';
+	}
+
+	private function lotw_flush_cli()
+	{
+		if (function_exists('ob_get_level')) {
+			while (ob_get_level() > 0) {
+				ob_end_flush();
+			}
+		}
+		flush();
 	}
 
 	public function import() {
