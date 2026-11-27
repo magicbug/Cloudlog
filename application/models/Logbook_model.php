@@ -4438,12 +4438,17 @@ class Logbook_model extends CI_Model
     $this->clear_dashboard_cache($station_id);
   }
 
-  /* Used to check if the qso is already in the database */
-  function import_check($datetime, $callsign, $band, $mode, $station_callsign, $station_id = null)
+  /*
+   * Used to check if the qso is already in the database.
+   * $cnty, when passed, keeps a county-line pair apart: the confirmation is
+   * applied to the QSO with that county, or to one that has no county yet.
+   * $exclude_ids are matches already used by an earlier record in the same file.
+   */
+  function import_check($datetime, $callsign, $band, $mode, $station_callsign, $station_id = null, $cnty = null, $exclude_ids = array())
   {
     $mode = $this->get_main_mode_from_mode($mode);
 
-    $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND');
+    $this->db->select('COL_PRIMARY_KEY, COL_TIME_ON, COL_CALL, COL_BAND, COL_CNTY');
     $this->db->where('COL_TIME_ON >= DATE_ADD(DATE_FORMAT("' . $datetime . '", \'%Y-%m-%d %H:%i\' ), INTERVAL -15 MINUTE )');
     $this->db->where('COL_TIME_ON <= DATE_ADD(DATE_FORMAT("' . $datetime . '", \'%Y-%m-%d %H:%i\' ), INTERVAL 15 MINUTE )');
     $this->db->where('COL_CALL', $callsign);
@@ -4455,14 +4460,21 @@ class Logbook_model extends CI_Model
       $this->db->where('station_id', $station_id);
     }
 
+    if (!empty($exclude_ids)) {
+      $this->db->where_not_in('COL_PRIMARY_KEY', array_map('intval', $exclude_ids));
+    }
+
+    $this->db->order_by('COL_PRIMARY_KEY', 'ASC');
     $query = $this->db->get($this->config->item('table_name'));
 
     if ($query->num_rows() > 0) {
-      $ret = $query->row();
-      return ["Found", $ret->COL_PRIMARY_KEY];
-    } else {
-      return ["No Match", 0];
+      $this->load->library('logged_county');
+      $primary_key = Logged_county::pick_match($query->result(), $cnty);
+      if ($primary_key !== null) {
+        return ["Found", $primary_key];
+      }
     }
+    return ["No Match", 0];
   }
 
   function qrz_update($datetime, $callsign, $band, $qsl_date, $qsl_status, $station_callsign)
@@ -4581,13 +4593,14 @@ class Logbook_model extends CI_Model
    *                       datetime, callsign, band, qsl_date, qsl_status, 
    *                       state, qsl_gridsquare, qsl_vucc_grids, iota, 
    *                       cnty, cqz, ituz, station_callsign
-   * @return array Statistics array with 'updated', 'gridsquare_updated', 'errors' counts
+   * @return array Statistics array with 'updated', 'gridsquare_updated', 'county_updated', 'errors' counts
    */
   function lotw_update_batch($records)
   {
+    $empty_result = array('updated' => 0, 'gridsquare_updated' => 0, 'county_updated' => 0, 'errors' => 0);
     if (empty($records) || !is_array($records)) {
       log_message('debug', 'LoTW batch update: No records provided');
-      return array('updated' => 0, 'gridsquare_updated' => 0, 'errors' => 0);
+      return $empty_result;
     }
 
     $record_count = count($records);
@@ -4623,7 +4636,7 @@ class Logbook_model extends CI_Model
 
     if (empty($where_parts)) {
       log_message('warning', 'LoTW batch update: No usable keys provided');
-      return array('updated' => 0, 'gridsquare_updated' => 0, 'errors' => 0);
+      return $empty_result;
     }
     
     // Step 2: Get all matching QSOs with their current upload status and gridsquare
@@ -4633,6 +4646,8 @@ class Logbook_model extends CI_Model
                    COL_CLUBLOG_QSO_UPLOAD_STATUS as CL_STATE,
                    COL_QRZCOM_QSO_UPLOAD_STATUS as QRZ_STATE,
                    COL_LOTW_QSL_RCVD,
+                   COL_CNTY,
+                   COL_STATE,
                    station_profile.station_gridsquare,
                    station_profile.station_id
             FROM {$table_name}
@@ -4643,7 +4658,7 @@ class Logbook_model extends CI_Model
     
     if ($query->num_rows() == 0) {
       log_message('warning', 'LoTW batch update: No matching QSOs found in database');
-      return array('updated' => 0, 'gridsquare_updated' => 0, 'errors' => 0);
+      return $empty_result;
     }
     
     // Step 3: Build lookup map and batch update array
@@ -4657,6 +4672,8 @@ class Logbook_model extends CI_Model
     
     $batch_updates = array();
     $gridsquare_updates = array();
+    $county_count = 0;
+    $this->load->library('logged_county');
     
     foreach ($records as $record) {
       $qso = null;
@@ -4672,34 +4689,46 @@ class Logbook_model extends CI_Model
       if ($qso === null) {
         continue; // QSO not found in database
       }
-      
-      // Skip if already updated with this exact status
-      if ($qso->COL_LOTW_QSL_RCVD == $record['qsl_status']) {
+
+      $incoming_cnty = trim((string)($record['cnty'] ?? ''));
+      $existing_cnty = trim((string)($qso->COL_CNTY ?? ''));
+      // Fill a blank county from the confirmation. Leave a logged county alone
+      // so a county-line QSO cannot be overwritten by its partner.
+      $write_cnty = $incoming_cnty !== '' && Logged_county::key($existing_cnty) === '';
+      $already_confirmed = ($qso->COL_LOTW_QSL_RCVD == $record['qsl_status']);
+      if ($already_confirmed && !$write_cnty) {
         continue;
       }
       
       $update_data = array(
         'COL_PRIMARY_KEY' => $qso->COL_PRIMARY_KEY,
-        'COL_LOTW_QSLRDATE' => $record['qsl_date'],
-        'COL_LOTW_QSL_RCVD' => $record['qsl_status'],
-        'COL_LOTW_QSL_SENT' => 'Y'
       );
-      
-      // Add optional fields
-      if (!empty($record['state'])) {
-        $update_data['COL_STATE'] = $record['state'];
+
+      if (!$already_confirmed) {
+        $update_data['COL_LOTW_QSLRDATE'] = $record['qsl_date'];
+        $update_data['COL_LOTW_QSL_RCVD'] = $record['qsl_status'];
+        $update_data['COL_LOTW_QSL_SENT'] = 'Y';
+
+        if (!empty($record['state'])) {
+          $update_data['COL_STATE'] = $record['state'];
+        }
+        if (!empty($record['iota'])) {
+          $update_data['COL_IOTA'] = $record['iota'];
+        }
+        if (!empty($record['cqz'])) {
+          $update_data['COL_CQZ'] = $record['cqz'];
+        }
+        if (!empty($record['ituz'])) {
+          $update_data['COL_ITUZ'] = $record['ituz'];
+        }
       }
-      if (!empty($record['iota'])) {
-        $update_data['COL_IOTA'] = $record['iota'];
-      }
-      if (!empty($record['cnty'])) {
-        $update_data['COL_CNTY'] = $record['cnty'];
-      }
-      if (!empty($record['cqz'])) {
-        $update_data['COL_CQZ'] = $record['cqz'];
-      }
-      if (!empty($record['ituz'])) {
-        $update_data['COL_ITUZ'] = $record['ituz'];
+
+      if ($write_cnty) {
+        $update_data['COL_CNTY'] = $incoming_cnty;
+        $county_count++;
+        if ($already_confirmed && !empty($record['state']) && trim((string)($qso->COL_STATE ?? '')) === '') {
+          $update_data['COL_STATE'] = $record['state'];
+        }
       }
       
       // Mark for re-upload to QRZ/ClubLog if already uploaded
@@ -4713,7 +4742,7 @@ class Logbook_model extends CI_Model
       $batch_updates[] = $update_data;
       
       // Handle gridsquare updates separately (need distance calculation)
-      if (!empty($record['qsl_gridsquare']) || !empty($record['qsl_vucc_grids'])) {
+      if (!$already_confirmed && (!empty($record['qsl_gridsquare']) || !empty($record['qsl_vucc_grids']))) {
         $gridsquare_updates[] = array(
           'COL_PRIMARY_KEY' => $qso->COL_PRIMARY_KEY,
           'station_gridsquare' => $qso->station_gridsquare,
@@ -4771,6 +4800,7 @@ class Logbook_model extends CI_Model
     return array(
       'updated' => $updated_count,
       'gridsquare_updated' => $gridsquare_count,
+      'county_updated' => $county_count,
       'errors' => 0
     );
   }
@@ -4938,14 +4968,16 @@ class Logbook_model extends CI_Model
       $this->db->where('COL_BAND', $band);
       $this->db->where('COL_MODE', $input_mode);
       $this->db->where('station_id', $station_id);
+      $this->db->select('COL_CNTY, COL_MY_CNTY');
       $check = $this->db->get($this->config->item('table_name'));
 
-      // If dupe is not found, set variable to add QSO
-      if ($check->num_rows() <= 0) {
-        $skip = false;
-      } else {
-        $skip = true;
-      }
+      // Same time is still a new QSO when the logged county differs (county line).
+      $this->load->library('logged_county');
+      $skip = Logged_county::is_duplicate(
+        $check->result(),
+        $record['cnty'] ?? '',
+        $record['my_cnty'] ?? ''
+      );
     }
 
     if (!($skip)) {

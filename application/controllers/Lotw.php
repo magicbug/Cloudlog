@@ -577,6 +577,7 @@ class Lotw extends CI_Controller {
 			$batch_updates = array(); // Collect all updates for batch processing
 			$table_rows = array(); // Collect table rows for later rendering
 			$found_count = 0;
+			$claimed_qso_ids = array();
 			
 			// First pass: collect all records for batch processing
 			while($record = $this->adif_parser->get_record())
@@ -598,15 +599,16 @@ class Lotw extends CI_Controller {
 					$record['qsl_rcvd'] = $config['lotw_rcvd_mark'];
 				}
 
-				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'], $record['station_callsign']);
+				$cnty = isset($record['cnty']) ? $record['cnty'] : "";
+				$status = $this->logbook_model->import_check($time_on, $record['call'], $record['band'], $record['mode'], $record['station_callsign'], null, $cnty, $claimed_qso_ids);
 
 				if($status[0] == "Found") {
 					$found_count++;
+					$claimed_qso_ids[] = $status[1];
 					$state = isset($record['state']) ? $record['state'] : "";
 					$qsl_gridsquare = isset($record['gridsquare']) ? $record['gridsquare'] : "";
 					$qsl_vucc_grids = isset($record['vucc_grids']) ? $record['vucc_grids'] : "";
 					$iota = isset($record['iota']) ? $record['iota'] : "";
-					$cnty = isset($record['cnty']) ? $record['cnty'] : "";
 					$cqz = isset($record['cqz']) ? $record['cqz'] : "";
 					$ituz = isset($record['ituz']) ? $record['ituz'] : "";
 
@@ -659,7 +661,7 @@ class Lotw extends CI_Controller {
 			if (!empty($batch_updates)) {
 				$result = $this->logbook_model->lotw_update_batch($batch_updates);
 				$already_confirmed = max(0, $found_count - $result['updated']);
-				$lotw_status = "Found: {$found_count} QSOs, Updated: {$result['updated']} QSOs, Already confirmed: {$already_confirmed} QSOs, Gridsquares updated: {$result['gridsquare_updated']}";
+				$lotw_status = "Found: {$found_count} QSOs, Updated: {$result['updated']} QSOs, Already confirmed: {$already_confirmed} QSOs, Gridsquares updated: {$result['gridsquare_updated']}, Counties updated: {$result['county_updated']}";
 				log_message('info', 'LoTW Download: ' . $lotw_status);
 			}
 			
