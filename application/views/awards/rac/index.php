@@ -106,6 +106,29 @@ $csv_query = http_build_query(array(
     <div class="alert alert-info small mb-2"><?php echo $e($note); ?></div>
     <?php } ?>
 
+    <!-- Interactive Canada Provinces & Territories Map -->
+    <div class="card rac-map-card mb-3">
+        <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-2 py-2 px-3">
+            <span class="fw-semibold d-inline-flex align-items-center gap-2">
+                <i class="fas fa-map-marked-alt text-primary"></i>
+                <span>Canada Provinces &amp; Territories Map</span>
+            </span>
+            <div class="d-flex flex-wrap align-items-center gap-1" id="racMapModePills" role="group" aria-label="Filter map by mode">
+                <button type="button" class="rac-mode-pill is-active" data-rac-mode="Mixed">Mixed</button>
+                <button type="button" class="rac-mode-pill" data-rac-mode="Phone">Phone</button>
+                <button type="button" class="rac-mode-pill" data-rac-mode="CW">CW</button>
+                <button type="button" class="rac-mode-pill" data-rac-mode="Digital">Digital</button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div id="racmap" style="width: 100%; height: 430px;"></div>
+        </div>
+    </div>
+    <script>
+        var racMapData = <?php echo json_encode(isset($rac_map_data) ? $rac_map_data : array()); ?>;
+        var racTileUrl = <?php echo json_encode(!empty($tile_url) ? $tile_url : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'); ?>;
+    </script>
+
     <?php foreach ($rac['tables'] as $table) { ?>
     <h5 class="mt-4"><?php echo $e($table['title']); ?></h5>
     <div class="table-responsive">

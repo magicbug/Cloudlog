@@ -1073,15 +1073,84 @@ class Awards extends CI_Controller
     {
         list($groups, $award, $filters) = $this->rac_setup();
 
+        $qsos = $this->rac->get_qsos($groups[$award], $filters);
+        $rac_result = $this->rac_awards->evaluate($award, $qsos);
+
+        // Build per-province map data for Canada's 13 provinces & territories
+        $map_data = array();
+        foreach ($this->rac_awards->provinces as $code => $pname) {
+            $map_data[$code] = array(
+                'code' => $code,
+                'name' => $pname,
+                'worked' => 0,
+                'confirmed' => 0,
+                'modes' => array('Mixed' => '', 'Phone' => '', 'CW' => '', 'Digital' => ''),
+                'bands' => array(),
+            );
+        }
+
+        foreach ($rac_result['eligible'] as $idx) {
+            if (!isset($qsos[$idx])) {
+                continue;
+            }
+            $q = $qsos[$idx];
+            $prov = null;
+            if ($award === 'warac') {
+                $slot = $this->rac_awards->warac_slot($q['call']);
+                if ($slot === 'NF' || $slot === 'LB') {
+                    $prov = 'NL';
+                } elseif ($slot !== null && isset($map_data[$slot])) {
+                    $prov = $slot;
+                }
+            }
+            if ($prov === null) {
+                $prov = $this->rac_awards->province($q);
+            }
+            if ($prov === null || !isset($map_data[$prov])) {
+                continue;
+            }
+
+            $is_conf = !empty($q['confirmed']);
+            $map_data[$prov]['worked']++;
+            if ($is_conf) {
+                $map_data[$prov]['confirmed']++;
+            }
+
+            $status_char = $is_conf ? 'C' : 'W';
+            if ($status_char === 'C' || $map_data[$prov]['modes']['Mixed'] === '') {
+                $map_data[$prov]['modes']['Mixed'] = $status_char;
+            }
+
+            $mg = $this->rac_awards->mode_group($q['mode'], $q['submode']);
+            if ($mg !== null && isset($map_data[$prov]['modes'][$mg])) {
+                if ($status_char === 'C' || $map_data[$prov]['modes'][$mg] === '') {
+                    $map_data[$prov]['modes'][$mg] = $status_char;
+                }
+            }
+
+            $band_label = $this->rac_awards->is_satellite($q) ? 'SAT' : (string) $q['band'];
+            if ($band_label !== '' && !in_array($band_label, $map_data[$prov]['bands'], true)) {
+                $map_data[$prov]['bands'][] = $band_label;
+            }
+        }
+
         $data['rac_groups'] = $groups;
         $data['rac_award'] = $award;
         $data['filters'] = $filters;
-        $data['rac'] = $this->rac_awards->evaluate($award, $this->rac->get_qsos($groups[$award], $filters));
+        $data['rac'] = $rac_result;
+        $data['rac_map_data'] = $map_data;
+        $data['tile_url'] = $this->optionslib->get_option('option_map_tile_server');
+
+        $footerData = array();
+        $racmap_path = realpath(__DIR__ . "/../../assets/js/sections/racmap.js");
+        $footerData['scripts'] = array(
+            'assets/js/sections/racmap.js?' . ($racmap_path ? filemtime($racmap_path) : time()),
+        );
 
         $data['page_title'] = "Awards - RAC";
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/rac/index');
-        $this->load->view('interface_assets/footer');
+        $this->load->view('interface_assets/footer', $footerData);
     }
 
     /*

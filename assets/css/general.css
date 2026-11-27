@@ -3606,6 +3606,101 @@ tr.htmx-swapping td {
 	gap: 0.75rem;
 }
 
+/* RAC Canada Award Map */
+.rac-map-card {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.75rem;
+	overflow: hidden;
+}
+
+.rac-mode-pill {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.15));
+	background: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	color: var(--bs-secondary-color, #64748b);
+	border-radius: 999px;
+	padding: 0.15rem 0.65rem;
+	font-size: 0.74rem;
+	font-weight: 600;
+}
+
+.rac-mode-pill.is-active {
+	background: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	border-color: var(--bs-primary, #0d6efd);
+	color: var(--bs-primary, #0d6efd);
+}
+
+.rac-info,
+.rac-legend {
+	padding: 8px 11px;
+	font-size: 0.78rem;
+	line-height: 1.4;
+	background: rgba(255, 255, 255, 0.92);
+	color: #0f172a;
+	border: 1px solid rgba(15, 23, 42, 0.14);
+	border-radius: 8px;
+	box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
+	min-width: 170px;
+}
+
+.rac-info-title,
+.rac-legend-title {
+	font-weight: 700;
+	font-size: 0.82rem;
+	margin-bottom: 3px;
+}
+
+.rac-info-code {
+	font-family: var(--bs-font-monospace, monospace);
+	font-size: 0.72rem;
+	padding: 1px 5px;
+	border-radius: 4px;
+	background: rgba(15, 23, 42, 0.08);
+}
+
+.rac-info-sub,
+.rac-info-stat {
+	font-size: 0.74rem;
+	color: #475569;
+}
+
+.rac-info-badge {
+	display: inline-block;
+	font-size: 0.69rem;
+	font-weight: 700;
+	padding: 1px 6px;
+	border-radius: 4px;
+}
+
+.rac-info-badge.is-conf {
+	background: rgba(25, 135, 84, 0.16);
+	color: #198754;
+}
+
+.rac-info-badge.is-work {
+	background: rgba(245, 158, 11, 0.18);
+	color: #b45309;
+}
+
+.rac-info-badge.is-none {
+	background: rgba(220, 53, 69, 0.14);
+	color: #dc3545;
+}
+
+.rac-legend-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.74rem;
+}
+
+.rac-swatch {
+	width: 11px;
+	height: 11px;
+	border-radius: 3px;
+	display: inline-block;
+	flex-shrink: 0;
+}
+
 @media (max-width: 575.98px) {
 	.qso_panel #qsoRightTabs {
 		flex-wrap: wrap !important;

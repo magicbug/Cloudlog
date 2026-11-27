@@ -1169,3 +1169,48 @@ kbd {
 .selectize-control.single .selectize-input.dropdown-active:after {
 	border-color: transparent transparent #adb5bd transparent !important;
 }
+
+/* RAC Canada Award Map Dark Mode */
+.rac-mode-pill {
+	background: #2b3038;
+	border-color: rgba(255, 255, 255, 0.15);
+	color: #adb5bd;
+}
+
+.rac-mode-pill.is-active {
+	background: rgba(122, 179, 239, 0.18);
+	border-color: #7ab3ef;
+	color: #7ab3ef;
+}
+
+.rac-info,
+.rac-legend {
+	background: rgba(30, 34, 41, 0.94);
+	color: #f1f5f9;
+	border-color: rgba(255, 255, 255, 0.16);
+}
+
+.rac-info-code {
+	background: rgba(255, 255, 255, 0.12);
+	color: #e2e8f0;
+}
+
+.rac-info-sub,
+.rac-info-stat {
+	color: #cbd5e1;
+}
+
+.rac-info-badge.is-conf {
+	background: rgba(0, 188, 140, 0.22);
+	color: #3dd5a3;
+}
+
+.rac-info-badge.is-work {
+	background: rgba(245, 158, 11, 0.22);
+	color: #fbbf24;
+}
+
+.rac-info-badge.is-none {
+	background: rgba(231, 76, 60, 0.22);
+	color: #ff7b72;
+}
