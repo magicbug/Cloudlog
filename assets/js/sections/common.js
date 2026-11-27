@@ -132,8 +132,11 @@ function qso_edit(id) {
         success: function(html) {
             // Hide cloned action menus so they do not sit above the dialog
             $('.menuOnBody').remove();
+            var $parsed = $('<div>').html(html);
+            var editCall = $.trim($parsed.find('.qso-edit-wrap').attr('data-qso-callsign') || $parsed.find('#callsign').val() || '');
+            var dialogTitle = editCall ? ('Editing QSO - ' + editCall) : lang_general_word_qso_data;
             BootstrapDialog.show({
-                title: lang_general_word_qso_data,
+                title: dialogTitle,
                 cssClass: 'edit-dialog',
                 size: BootstrapDialog.SIZE_WIDE,
                 nl2br: false,

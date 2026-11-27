@@ -932,3 +932,67 @@ kbd {
 	border-color: rgba(255, 255, 255, 0.16);
 	opacity: 0.65;
 }
+
+/* Edit QSO Modal Dark Mode */
+.qso-edit-hero,
+.qso-edit-footer {
+	background-color: #2a2e35;
+	border-color: rgba(255, 255, 255, 0.1);
+}
+
+.qso-edit-section,
+.qso-edit-qsl-card {
+	background-color: #2a2e35;
+	border-color: rgba(255, 255, 255, 0.1);
+}
+
+.qso-edit-call-chip {
+	background-color: rgba(122, 179, 239, 0.16);
+	border-color: rgba(122, 179, 239, 0.34);
+	color: #7ab3ef;
+}
+
+.qso-edit-pill {
+	background-color: #1f2228;
+	border-color: rgba(255, 255, 255, 0.14);
+	color: #e9ecef;
+}
+
+.qso-edit-pill.is-ok {
+	background-color: rgba(0, 188, 140, 0.18);
+	color: #3dd5a3;
+}
+
+.qso-edit-pill.is-pending {
+	background-color: rgba(245, 158, 11, 0.18);
+	color: #fbbf24;
+}
+
+.qso-edit-pills .nav-link {
+	color: #adb5bd;
+}
+
+.qso-edit-pills .nav-link:hover {
+	background-color: rgba(255, 255, 255, 0.07);
+	color: #f8f9fa;
+}
+
+.qso-edit-pills .nav-link.active {
+	background-color: rgba(122, 179, 239, 0.18);
+	color: #7ab3ef;
+	border-color: rgba(122, 179, 239, 0.35);
+}
+
+.qso-edit-dot {
+	background-color: #3dd5a3;
+}
+
+.qso-edit-footer .btn-outline-secondary {
+	color: #cfd6de;
+	border-color: rgba(255, 255, 255, 0.24);
+}
+
+.qso-edit-footer .btn-outline-secondary:hover {
+	color: #fff;
+	background-color: rgba(255, 255, 255, 0.12);
+}

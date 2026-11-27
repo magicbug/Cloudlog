@@ -57,7 +57,7 @@ $load_leaflet = in_array($this->uri->segment(1), [NULL, '', 'dashboard', 'logboo
 <?php if ($load_leaflet) { ?>
     <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/easyprint.js"></script>
 <?php } ?>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/common.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/common.js?v=<?php echo @filemtime(FCPATH . 'assets/js/sections/common.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/eqslcharcounter.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/sections/version_dialog.js"></script>
 
