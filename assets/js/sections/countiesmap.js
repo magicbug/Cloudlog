@@ -6,9 +6,18 @@ var countiesShapesCache = {};
 var countiesViewState = null;
 var countiesBackControl = null;
 
+var countiesMapRequest = 0;
+
 $(function () {
 	$('#counties-map-tab').on('shown.bs.tab', function () {
 		countiesLoadMap();
+	});
+
+	$('#counties-map-sat').on('change', function () {
+		countiesUpdateMapNote();
+		if (countiesMap !== null) {
+			countiesLoadMap();
+		}
 	});
 
 	$('#counties-table-tab').on('shown.bs.tab', function () {
@@ -18,12 +27,47 @@ $(function () {
 	});
 });
 
+function countiesSelectedSat() {
+	var el = document.getElementById('counties-map-sat');
+	return el ? el.value : '';
+}
+
+function countiesMapTitle() {
+	var sat = countiesSelectedSat();
+	if (!sat) {
+		return 'USA-CA';
+	}
+	if (sat === 'All') {
+		return 'Any satellite';
+	}
+	return sat;
+}
+
+function countiesUpdateMapNote() {
+	var note = document.getElementById('counties-map-note');
+	if (!note) {
+		return;
+	}
+	if (countiesSelectedSat()) {
+		note.textContent = 'Satellite counties only. These do not count toward USA-CA. Click a state, then a worked or confirmed county, for the satellite QSOs.';
+	} else {
+		note.textContent = 'States are shaded by USA-CA progress. Satellite contacts are not included. Click a state for its counties, then a worked or confirmed county for the QSOs.';
+	}
+}
+
 function countiesLoadMap() {
+	var requestId = ++countiesMapRequest;
+	var sat = countiesSelectedSat();
+	countiesUpdateMapNote();
 	$.ajax({
 		url: base_url + 'index.php/awards/counties_map',
 		type: 'post',
-		dataType: 'json'
+		dataType: 'json',
+		data: sat ? { Sat: sat } : {}
 	}).done(function (data) {
+		if (requestId !== countiesMapRequest) {
+			return;
+		}
 		countiesMapData = data || { states: {}, counties: {} };
 		if (countiesViewState) {
 			countiesShowState(countiesViewState);
@@ -63,7 +107,7 @@ function countiesEnsureMap() {
 		return this._div;
 	};
 	countiesInfo.update = function (html) {
-		this._div.innerHTML = html || '<h4>USA-CA</h4>Hover a state or county';
+		this._div.innerHTML = html || '<h4>' + countiesEscape(countiesMapTitle()) + '</h4>Hover a state or county';
 	};
 	countiesInfo.addTo(countiesMap);
 
@@ -118,6 +162,10 @@ function countiesCountyStatus(state, county) {
 	return 'none';
 }
 
+function countiesEscape(value) {
+	return $('<span>').text(value == null ? '' : String(value)).html();
+}
+
 function countiesFillColor(status) {
 	if (status === 'confirmed') {
 		return 'green';
@@ -157,7 +205,7 @@ function countiesShowNational() {
 	if (countiesBackControl && countiesBackControl._div) {
 		countiesBackControl._div.style.display = 'none';
 	}
-	countiesInfo.update('<h4>USA-CA</h4>Click a state to see its counties');
+	countiesInfo.update('<h4>' + countiesEscape(countiesMapTitle()) + '</h4>Click a state to see its counties');
 
 	var url = base_url + 'assets/json/counties/US-states.geojson';
 	var request = countiesShapesCache.states
@@ -197,7 +245,7 @@ function countiesShowNational() {
 				},
 				mouseout: function (e) {
 					countiesGeoLayer.resetStyle(e.target);
-					countiesInfo.update('<h4>USA-CA</h4>Click a state to see its counties');
+					countiesInfo.update('<h4>' + countiesEscape(countiesMapTitle()) + '</h4>Click a state to see its counties');
 				},
 				click: function () {
 					countiesShowState(feature.properties.state);
@@ -267,7 +315,12 @@ function countiesShowState(state) {
 					if (status === 'none' || typeof displayCountyContacts !== 'function') {
 						return;
 					}
-					displayCountyContacts(state, props.county);
+					var sat = countiesSelectedSat();
+					if (sat) {
+						displayCountyContacts(state, props.county, sat);
+					} else {
+						displayCountyContacts(state, props.county);
+					}
 				}
 			});
 		});

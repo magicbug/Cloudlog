@@ -337,8 +337,20 @@
             </div>
 
             <div class="tab-pane fade" id="countiesmaptab" role="tabpanel" aria-labelledby="counties-map-tab">
+                <?php if (!empty($summary['satellites']['sats'])) { ?>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <label for="counties-map-sat" class="mb-0">Show</label>
+                        <select id="counties-map-sat" class="form-select form-select-sm" style="max-width: 16rem;">
+                            <option value="">USA-CA</option>
+                            <option value="All">Any satellite</option>
+                            <?php foreach ($summary['satellites']['sats'] as $sat_name => $unused) { ?>
+                                <option value="<?php echo htmlspecialchars($sat_name, ENT_QUOTES); ?>"><?php echo htmlspecialchars($sat_name); ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                <?php } ?>
                 <div id="countiesmap" class="map-leaflet"></div>
-                <p class="text-muted small mt-2">States are shaded by county progress. Click a state for its counties; click a worked or confirmed county to open the QSO list.</p>
+                <p id="counties-map-note" class="text-muted small mt-2">States are shaded by USA-CA progress. Satellite contacts are not included. Click a state for its counties, then a worked or confirmed county for the QSOs.</p>
             </div>
         </div>
 

@@ -161,17 +161,39 @@ class Counties extends CI_Model
     }
 
     /*
-     * Status payload for the USA-CA Leaflet map: per-state totals and county C/W flags.
+     * Status payload for the Leaflet map: per-state totals and county C/W flags.
+     * $satellite false is the USA-CA award. "All" or a satellite name is satellite contacts only.
      */
-    function get_map_data() {
-        $summary = $this->get_counties_array();
-        if ($summary === 0 || !is_array($summary)) {
-            return array('states' => array(), 'counties' => array());
+    function get_map_data($satellite = false) {
+        if ($satellite === null || $satellite === '') {
+            $satellite = false;
         }
 
-        $rows = $this->fetch_rows();
+        $targets = $this->usaca->state_targets();
+        $states = array();
+        foreach ($targets as $state => $target) {
+            $states[$state] = array('worked' => 0, 'confirmed' => 0, 'total' => (int)$target);
+        }
+
+        if ($satellite === false) {
+            $summary = $this->get_counties_array();
+            if ($summary === 0 || !is_array($summary)) {
+                return array('states' => array(), 'counties' => array());
+            }
+            foreach ($summary['states'] as $state => $counts) {
+                if (!isset($states[$state])) {
+                    continue;
+                }
+                $states[$state]['worked'] = (int)$counts['worked'];
+                $states[$state]['confirmed'] = (int)$counts['confirmed'];
+            }
+            $rows = $this->fetch_rows();
+        } else {
+            $rows = $this->fetch_rows('All', $satellite === 'All' ? true : $satellite);
+        }
+
         if ($rows === null) {
-            return array('states' => array(), 'counties' => array());
+            return array('states' => $states, 'counties' => array());
         }
 
         $worked = array();
@@ -182,24 +204,21 @@ class Counties extends CI_Model
                 continue;
             }
             $id = $row['state'] . '|' . $mapped['name'];
-            $worked[$id] = true;
+            $worked[$id] = $row['state'];
             if ((int)$row['confirmed'] === 1) {
                 $confirmed[$id] = true;
             }
         }
 
         $counties = array();
-        foreach ($worked as $id => $unused) {
+        foreach ($worked as $id => $state) {
             $counties[$id] = isset($confirmed[$id]) ? 'C' : 'W';
-        }
-
-        $states = array();
-        foreach ($summary['states'] as $state => $counts) {
-            $states[$state] = array(
-                'worked' => (int)$counts['worked'],
-                'confirmed' => (int)$counts['confirmed'],
-                'total' => (int)$counts['target'],
-            );
+            if ($satellite !== false && isset($states[$state])) {
+                $states[$state]['worked']++;
+                if (isset($confirmed[$id])) {
+                    $states[$state]['confirmed']++;
+                }
+            }
         }
 
         return array('states' => $states, 'counties' => $counties);

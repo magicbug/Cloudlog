@@ -1347,8 +1347,12 @@ class Awards extends CI_Controller
     public function counties_map()
     {
         $this->load->model('counties');
+        $sat = trim(str_replace('"', '', (string)$this->input->post('Sat')));
+        if ($sat === '') {
+            $sat = trim(str_replace('"', '', (string)$this->input->get('Sat')));
+        }
         header('Content-Type: application/json');
-        echo json_encode($this->counties->get_map_data());
+        echo json_encode($this->counties->get_map_data($sat !== '' ? $sat : false));
     }
 
     public function counties_details()
