@@ -6611,7 +6611,7 @@ class Logbook_model extends CI_Model
   /*
    * QSOs in a state whose logged county (text after the state prefix, lower case) is one of $county_names.
    */
-  function county_qso_details($state, $county_names)
+  function county_qso_details($state, $county_names, $satellite = null)
   {
     $CI = &get_instance();
     $CI->load->model('logbooks_model');
@@ -6632,8 +6632,19 @@ class Logbook_model extends CI_Model
     $this->db->where(Counties::STATE_EXPRESSION . ' = ' . $this->db->escape($normalizedState), null, false);
     $this->db->where('LOWER(' . Counties::COUNTY_EXPRESSION . ') IN (' . $countyList . ')', null, false);
     $this->db->where_in('COL_DXCC', array('291', '6', '110'));
-    $this->db->where('COL_BAND !=', 'SAT');
-    $this->db->where("COALESCE(COL_PROP_MODE, '') != 'SAT'", null, false);
+    if ($satellite === null || $satellite === '') {
+      $this->db->where('COL_BAND !=', 'SAT');
+      $this->db->where("COALESCE(COL_PROP_MODE, '') != 'SAT'", null, false);
+    } else {
+      $this->db->where("(COL_BAND = 'SAT' OR COALESCE(COL_PROP_MODE, '') = 'SAT')", null, false);
+      if ($satellite !== 'All') {
+        if ($satellite === 'Unknown') {
+          $this->db->where("COALESCE(COL_SAT_NAME, '') = ''", null, false);
+        } else {
+          $this->db->where('COL_SAT_NAME', $satellite);
+        }
+      }
+    }
 
     return $this->db->get($this->config->item('table_name'));
   }

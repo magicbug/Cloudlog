@@ -15,7 +15,7 @@ class Counties extends CI_Model
     /*
      * Worked and confirmed MARAC USA-CA counties for the active logbook.
      * Confirmation is not required by MARAC; it is shown for information and includes QSL, eQSL and LoTW.
-     * Satellite QSOs do not count.
+     * Satellite QSOs do not count toward USA-CA. They are summarized separately under satellites.
      */
     function get_counties_array() {
         $rows = $this->fetch_rows();
@@ -111,6 +111,51 @@ class Counties extends CI_Model
             $summary['city_credits'][] = $city;
         }
         ksort($summary['unknown']);
+        $summary['satellites'] = $this->satellite_summary();
+
+        return $summary;
+    }
+
+    /*
+     * Counties worked through a satellite. Not part of USA-CA.
+     * The total is distinct counties. Each satellite row counts the counties worked through that satellite.
+     */
+    function satellite_summary() {
+        $rows = $this->fetch_rows('All', true);
+        $summary = array('worked' => 0, 'confirmed' => 0, 'sats' => array());
+        if ($rows === null) {
+            return $summary;
+        }
+
+        $worked = $confirmed = array();
+        $sat_worked = $sat_confirmed = array();
+        foreach ($rows as $row) {
+            $mapped = $this->usaca->map($row['state'], $row['county']);
+            if ($mapped === null || $mapped['type'] !== 'county') {
+                continue;
+            }
+            $id = $row['state'] . '|' . $mapped['name'];
+            $sat = isset($row['sat']) && $row['sat'] !== '' ? $row['sat'] : 'Unknown';
+            $worked[$id] = true;
+            $sat_worked[$sat][$id] = true;
+            if ((int)$row['confirmed'] === 1) {
+                $confirmed[$id] = true;
+                $sat_confirmed[$sat][$id] = true;
+            }
+        }
+
+        foreach ($sat_worked as $sat => $ids) {
+            $summary['sats'][$sat] = array(
+                'worked' => count($ids),
+                'confirmed' => isset($sat_confirmed[$sat]) ? count($sat_confirmed[$sat]) : 0,
+            );
+        }
+        uksort($summary['sats'], function ($a, $b) use ($summary) {
+            $diff = $summary['sats'][$b]['worked'] <=> $summary['sats'][$a]['worked'];
+            return $diff !== 0 ? $diff : strnatcasecmp($a, $b);
+        });
+        $summary['worked'] = count($worked);
+        $summary['confirmed'] = count($confirmed);
 
         return $summary;
     }
@@ -163,8 +208,8 @@ class Counties extends CI_Model
     /*
      * Lists the award counties (and multi-neighbor independent city contacts) for a state or 'All'.
      */
-    function counties_details($state, $type) {
-        $rows = $this->fetch_rows($state);
+    function counties_details($state, $type, $satellite = null) {
+        $rows = $this->fetch_rows($state, $satellite);
         if ($rows === null) {
             return 0;
         }
@@ -283,8 +328,8 @@ class Counties extends CI_Model
     /*
      * Logged county names (lower case) in a state that map to the given award county or independent city.
      */
-    function logged_names($state, $county) {
-        $rows = $this->fetch_rows($state);
+    function logged_names($state, $county, $satellite = false) {
+        $rows = $this->fetch_rows($state, $satellite);
         $names = array();
         if ($rows === null) {
             return $names;
@@ -337,8 +382,13 @@ class Counties extends CI_Model
     /*
      * Distinct state / logged county / band / mode combinations with a confirmed flag.
      * Rows with no county text after the state prefix are excluded.
+     * $satellite false keeps terrestrial QSOs for USA-CA. true or "All" keeps every satellite QSO.
+     * A satellite name keeps QSOs through that satellite. "Unknown" is a blank satellite name.
      */
-    private function fetch_rows($state = 'All') {
+    private function fetch_rows($state = 'All', $satellite = false) {
+        if ($satellite === null || $satellite === '') {
+            $satellite = false;
+        }
         $this->load->model('logbooks_model');
         $logbooks_locations_array = $this->logbooks_model->list_logbook_relationships($this->session->userdata('active_station_logbook'));
 
@@ -348,26 +398,44 @@ class Counties extends CI_Model
 
         $location_list = implode(',', array_map('intval', $logbooks_locations_array));
 
-        $this->load->model('bands');
-        $bandslots = $this->bands->get_worked_bands('uscounties');
-        $bandslots_list = "'" . implode("','", array_map(array($this->db, 'escape_str'), $bandslots)) . "'";
-
-        $sql = "select " . self::STATE_EXPRESSION . " as state, " . self::COUNTY_EXPRESSION . " as county, COL_BAND as band, COL_MODE as mode, COL_SUBMODE as submode,
-                max(case when col_qsl_rcvd = 'Y' or col_eqsl_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y' then 1 else 0 end) as confirmed
+        $sat_expression = "COALESCE(NULLIF(COL_SAT_NAME, ''), 'Unknown')";
+        $sql = "select " . self::STATE_EXPRESSION . " as state, " . self::COUNTY_EXPRESSION . " as county, COL_BAND as band, COL_MODE as mode, COL_SUBMODE as submode,";
+        if ($satellite !== false) {
+            $sql .= " " . $sat_expression . " as sat,";
+        }
+        $sql .= " max(case when col_qsl_rcvd = 'Y' or col_eqsl_qsl_rcvd = 'Y' or col_lotw_qsl_rcvd = 'Y' then 1 else 0 end) as confirmed
                 from " . $this->config->item('table_name') . "
                 where station_id in (" . $location_list . ")
-                and col_band in (" . $bandslots_list . ")
                 and COL_DXCC in ('291', '6', '110')
                 and " . self::COUNTY_EXPRESSION . " <> ''
-                and " . self::STATE_EXPRESSION . " <> ''
+                and " . self::STATE_EXPRESSION . " <> ''";
+
+        if ($satellite === false) {
+            $this->load->model('bands');
+            $bandslots = $this->bands->get_worked_bands('uscounties');
+            $bandslots_list = "'" . implode("','", array_map(array($this->db, 'escape_str'), $bandslots)) . "'";
+            $sql .= " and col_band in (" . $bandslots_list . ")
                 and COL_BAND != 'SAT'
                 and coalesce(COL_PROP_MODE, '') != 'SAT'";
+        } else {
+            $sql .= " and (COL_BAND = 'SAT' OR COALESCE(COL_PROP_MODE, '') = 'SAT')";
+            if ($satellite !== true && $satellite !== 'All' && $satellite !== '') {
+                if ($satellite === 'Unknown') {
+                    $sql .= " and COALESCE(COL_SAT_NAME, '') = ''";
+                } else {
+                    $sql .= " and COL_SAT_NAME = " . $this->db->escape($satellite);
+                }
+            }
+        }
 
         if ($state != 'All') {
             $sql .= " and " . self::STATE_EXPRESSION . " = " . $this->db->escape(strtoupper($state));
         }
 
         $sql .= " group by state, county, band, mode, submode";
+        if ($satellite !== false) {
+            $sql .= ", sat";
+        }
 
         return $this->db->query($sql)->result_array();
     }

@@ -5186,15 +5186,19 @@ $(document).ready(function() {
             }
         }
 
-        function displayCountyContacts(state, county) {
+        function displayCountyContacts(state, county, sat) {
             var baseURL = "<?php echo base_url(); ?>";
+            var request = {
+                'State': state,
+                'County': county
+            };
+            if (sat) {
+                request.Sat = sat;
+            }
             $.ajax({
                 url: baseURL + 'index.php/awards/counties_details_ajax',
                 type: 'get',
-                data: {
-                    'State': state,
-                    'County': county
-                },
+                data: request,
                 success: function(html) {
                     BootstrapDialog.show({
                         title: lang_general_word_qso_data,

@@ -14,13 +14,14 @@
         </tr>
         </thead>
         <tbody>';
+        $sat_js = json_encode(isset($sat) ? $sat : '');
         foreach ($counties_array['counties'] as $county) {
             $state = htmlspecialchars($county['COL_STATE']);
             $name = htmlspecialchars($county['COL_CNTY']);
             echo '<tr>
             <td>'. $i++ .'</td>
             <td>'. $state .'</td>
-            <td><a href="javascript:displayCountyContacts(' . htmlspecialchars(json_encode($county['COL_STATE'])) . ',' . htmlspecialchars(json_encode($county['COL_CNTY'])) . ')">'. $name .'</a></td>';
+            <td><a href="javascript:displayCountyContacts(' . htmlspecialchars(json_encode($county['COL_STATE'])) . ',' . htmlspecialchars(json_encode($county['COL_CNTY'])) . ',' . htmlspecialchars($sat_js) . ')">'. $name .'</a></td>';
             echo '</tr>';
         }
         echo '</tbody></table>';
@@ -44,7 +45,7 @@
                 <?php foreach ($counties_array['cities'] as $city) { ?>
                     <tr>
                         <td><?php echo htmlspecialchars($city['COL_STATE']); ?></td>
-                        <td><a href="javascript:displayCountyContacts(<?php echo htmlspecialchars(json_encode($city['COL_STATE'])); ?>,<?php echo htmlspecialchars(json_encode($city['COL_CNTY'])); ?>)"><?php echo htmlspecialchars($city['COL_CNTY']); ?></a></td>
+                        <td><a href="javascript:displayCountyContacts(<?php echo htmlspecialchars(json_encode($city['COL_STATE'])); ?>,<?php echo htmlspecialchars(json_encode($city['COL_CNTY'])); ?>,<?php echo htmlspecialchars(json_encode(isset($sat) ? $sat : '')); ?>)"><?php echo htmlspecialchars($city['COL_CNTY']); ?></a></td>
                         <td><?php echo htmlspecialchars(implode(', ', $city['neighbors'])); ?></td>
                     </tr>
                 <?php } ?>

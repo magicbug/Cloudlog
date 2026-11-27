@@ -1356,12 +1356,17 @@ class Awards extends CI_Controller
         $this->load->model('counties');
         $state = str_replace('"', "", $this->security->xss_clean($this->input->get("State")));
         $type = str_replace('"', "", $this->security->xss_clean($this->input->get("Type")));
-        $data['counties_array'] = $this->counties->counties_details($state, $type);
+        $sat = trim(str_replace('"', '', (string)$this->input->get('Sat')));
+        $data['counties_array'] = $this->counties->counties_details($state, $type, $sat !== '' ? $sat : null);
         $data['type'] = $type;
+        $data['sat'] = $sat;
 
         // Render Page
         $data['page_title'] = "US Counties";
         $data['filter'] = $type . " counties in state " . $state;
+        if ($sat !== '') {
+            $data['filter'] .= $sat === 'All' ? ' via satellite' : ' via ' . $sat;
+        }
         $this->load->view('interface_assets/header', $data);
         $this->load->view('awards/counties/details');
         $this->load->view('interface_assets/footer');
@@ -1376,12 +1381,13 @@ class Awards extends CI_Controller
         // Do not xss_clean county text: it URL-decodes and can change the lookup key.
         $state = strtoupper(trim((string)$this->input->get('State')));
         $county = trim((string)$this->input->get('County'));
-        $names = $this->counties->logged_names($state, $county);
+        $sat = trim(str_replace('"', '', (string)$this->input->get('Sat')));
+        $names = $this->counties->logged_names($state, $county, $sat !== '' ? $sat : false);
         // Invalid / unknown logged names are not award counties; match the posted name directly.
         if (empty($names) && $county !== '') {
             $names = array(strtolower($county));
         }
-        $data['results'] = $this->logbook_model->county_qso_details($state, $names);
+        $data['results'] = $this->logbook_model->county_qso_details($state, $names, $sat !== '' ? $sat : null);
 
         // Render Page
         $data['page_title'] = "Log View - Counties";

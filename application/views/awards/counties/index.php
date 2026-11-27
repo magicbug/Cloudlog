@@ -384,6 +384,40 @@
                 </tbody>
             </table>
         </div>
+
+        <?php
+        $satellites = isset($summary['satellites']) ? $summary['satellites'] : array('worked' => 0, 'confirmed' => 0, 'sats' => array());
+        if (!empty($satellites['sats'])) { ?>
+            <h4 class="mt-4">Satellite tracking</h4>
+            <p class="text-muted small">MARAC does not count satellite contacts toward USA-CA. This is a separate count of counties worked through a satellite. A county worked on two satellites counts once in the total and once on each satellite.</p>
+            <div class="counties-table-wrap">
+                <table style="width:100%" class="table table-sm table-bordered table-hover table-striped text-center align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">Satellite</th>
+                            <th scope="col">Worked</th>
+                            <th scope="col">Confirmed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($satellites['sats'] as $sat_name => $counts) { ?>
+                            <tr>
+                                <td><span class="counties-label-chip"><?php echo htmlspecialchars($sat_name); ?></span></td>
+                                <td><a href='counties_details?State="All"&amp;Type="worked"&amp;Sat="<?php echo htmlspecialchars($sat_name, ENT_QUOTES); ?>"'><?php echo (int)$counts['worked']; ?></a></td>
+                                <td><a href='counties_details?State="All"&amp;Type="confirmed"&amp;Sat="<?php echo htmlspecialchars($sat_name, ENT_QUOTES); ?>"'><?php echo (int)$counts['confirmed']; ?></a></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th scope="row">Any satellite</th>
+                            <th><a href='counties_details?State="All"&amp;Type="worked"&amp;Sat="All"'><?php echo (int)$satellites['worked']; ?></a></th>
+                            <th><a href='counties_details?State="All"&amp;Type="confirmed"&amp;Sat="All"'><?php echo (int)$satellites['confirmed']; ?></a></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        <?php } ?>
     <?php } else {
         echo '<div class="alert alert-danger" role="alert">Nothing found!</div>';
     } ?>
