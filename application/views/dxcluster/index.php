@@ -130,7 +130,7 @@
                 </div>
 
                 <!-- Right: Live Search + Reset -->
-                <div class="d-flex align-items-center gap-2 ms-auto">
+                <div class="d-flex align-items-center gap-2 ms-auto dxc-search-wrap">
                     <div class="input-group input-group-sm dxc-search-group">
                         <span class="input-group-text"><i class="fas fa-search"></i></span>
                         <input type="search" class="form-control" id="dxcSearchInput" placeholder="Search call, entity, comment…" autocomplete="off">

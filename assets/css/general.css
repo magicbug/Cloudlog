@@ -3423,6 +3423,10 @@ tr.htmx-swapping td {
 }
 
 @media (max-width: 575.98px) {
+	.dxc-search-wrap {
+		flex: 1 1 100%;
+		width: 100%;
+	}
 	.dxc-search-group {
 		width: 100%;
 	}

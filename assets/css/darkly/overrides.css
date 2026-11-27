@@ -913,3 +913,22 @@ kbd {
 	background: rgba(122, 179, 239, 0.18);
 	color: #7ab3ef;
 }
+
+.dxc-page .btn-outline-secondary {
+	color: #cfd6de;
+	border-color: rgba(255, 255, 255, 0.24);
+}
+
+.dxc-page .btn-outline-secondary:hover,
+.dxc-page .btn-outline-secondary:focus {
+	color: #fff;
+	background-color: rgba(255, 255, 255, 0.12);
+	border-color: rgba(255, 255, 255, 0.36);
+}
+
+.dxc-page .btn-outline-secondary:disabled,
+.dxc-page .btn-outline-secondary.disabled {
+	color: #adb5bd;
+	border-color: rgba(255, 255, 255, 0.16);
+	opacity: 0.65;
+}
