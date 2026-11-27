@@ -841,8 +841,13 @@ class Lotw extends CI_Controller {
 			return array('ok' => false, 'message' => 'Temporary download file is not writable.', 'bytes' => 0);
 		}
 
-		$max_retries = 3;
-		$retry_delay = 2;
+		// A long CLI download is the one LoTW answers with an immediate 503 while it is
+		// busy. A couple of seconds between tries never gets through that. The hourly
+		// job and the browser import stay on the short retry.
+		$patient = (bool)$verbose;
+		$max_retries = $patient ? 8 : 3;
+		$retry_delay = $patient ? 30 : 2;
+		$max_delay = $patient ? 300 : 16;
 		$curl_error = '';
 		$http_code = 0;
 		$bytes = 0;
@@ -857,6 +862,7 @@ class Lotw extends CI_Controller {
 			if ($fp === false) {
 				return array('ok' => false, 'message' => 'Failed to write the LoTW report.', 'bytes' => 0);
 			}
+			$retry_after = null;
 			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, $lotw_url);
 			curl_setopt($ch, CURLOPT_FILE, $fp);
@@ -866,6 +872,12 @@ class Lotw extends CI_Controller {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 			curl_setopt($ch, CURLOPT_USERAGENT, 'Cloudlog LoTW Client/1.0');
+			curl_setopt($ch, CURLOPT_HEADERFUNCTION, function ($ch, $header) use (&$retry_after) {
+				if (stripos($header, 'Retry-After:') === 0) {
+					$retry_after = trim(substr($header, strlen('Retry-After:')));
+				}
+				return strlen($header);
+			});
 			$ok = $this->lotw_curl_exec($ch, $verbose);
 			$http_code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			$curl_error = curl_error($ch);
@@ -877,22 +889,51 @@ class Lotw extends CI_Controller {
 			if ($saved) {
 				break;
 			}
-			if ($attempt < $max_retries) {
-				log_message('error', 'LoTW download attempt ' . $attempt . ' failed: ' . $curl_error . ' HTTP ' . $http_code);
-				sleep($retry_delay);
-				$retry_delay *= 2;
+			if ($this->lotw_auth_failure($destination)) {
+				log_message('error', 'LoTW download rejected the username or password');
+				return array('ok' => false, 'message' => 'LoTW rejected the username or password.', 'bytes' => $bytes);
 			}
+			$retryable = ($curl_error !== '' || in_array($http_code, array(0, 429, 500, 502, 503, 504), true));
+			if (!$retryable || $attempt >= $max_retries) {
+				break;
+			}
+			log_message('error', 'LoTW download attempt ' . $attempt . ' failed: ' . $curl_error . ' HTTP ' . $http_code);
+			$wait = $retry_delay;
+			if ($retry_after !== null && ctype_digit($retry_after)) {
+				$wait = max($wait, min($max_delay, (int)$retry_after));
+			}
+			if ($patient) {
+				$why = $curl_error !== '' ? $curl_error : ('HTTP ' . $http_code);
+				$hint = $this->lotw_failure_hint($destination);
+				echo '  LoTW returned ' . $why;
+				if ($hint !== '') {
+					echo ': ' . $hint;
+				}
+				echo '. Waiting ' . $wait . "s\n";
+				$this->lotw_flush_cli();
+			}
+			sleep($wait);
+			$retry_delay = min($max_delay, $retry_delay * 2);
 		}
 
 		if (!$saved) {
 			$message = $curl_error !== '' ? $curl_error : ('HTTP ' . $http_code);
+			$hint = $this->lotw_failure_hint($destination);
+			if ($hint !== '') {
+				$message .= ': ' . $hint;
+			}
 			log_message('error', 'LoTW download failed: ' . $message);
 			return array('ok' => false, 'message' => 'LoTW download failed: ' . $message, 'bytes' => $bytes);
 		}
 
 		$header = file_get_contents($destination, false, null, 0, 39);
 		if ($header != "ARRL Logbook of the World Status Report") {
-			return array('ok' => false, 'message' => 'LoTW download failed. The service may be down, or the username and password are wrong.', 'bytes' => $bytes);
+			if ($this->lotw_auth_failure($destination)) {
+				return array('ok' => false, 'message' => 'LoTW rejected the username or password.', 'bytes' => $bytes);
+			}
+			$hint = $this->lotw_failure_hint($destination);
+			$message = $hint !== '' ? $hint : 'The service may be down, or the username and password are wrong.';
+			return array('ok' => false, 'message' => 'LoTW download failed. ' . $message, 'bytes' => $bytes);
 		}
 
 		log_message('info', 'LoTW report saved (' . $bytes . ' bytes) since ' . $since);
@@ -945,6 +986,46 @@ class Lotw extends CI_Controller {
 		curl_multi_close($mh);
 
 		return $status === CURLM_OK;
+	}
+
+	private function lotw_failure_hint($destination)
+	{
+		$raw = $this->lotw_body_sample($destination);
+		if ($raw === '' || strncmp($raw, 'ARRL Logbook of the World Status Report', 39) === 0) {
+			return '';
+		}
+		$text = trim(preg_replace('/\s+/', ' ', strip_tags($raw)));
+		$text = preg_replace('/[^\x20-\x7E]/', '', $text);
+		if ($text === null || $text === '') {
+			return '';
+		}
+		if (strlen($text) > 160) {
+			$text = substr($text, 0, 157) . '...';
+		}
+		return $text;
+	}
+
+	private function lotw_auth_failure($destination)
+	{
+		$raw = $this->lotw_body_sample($destination);
+		if ($raw === '') {
+			return false;
+		}
+		return (stripos($raw, 'Username/password incorrect') !== false
+			|| stripos($raw, 'password incorrect') !== false
+			|| stripos($raw, 'invalid login') !== false);
+	}
+
+	private function lotw_body_sample($destination)
+	{
+		if (!is_file($destination)) {
+			return '';
+		}
+		$raw = file_get_contents($destination, false, null, 0, 512);
+		if ($raw === false) {
+			return '';
+		}
+		return $raw;
 	}
 
 	private function lotw_format_bytes($bytes)
