@@ -129,6 +129,7 @@ class Wpx extends CI_Model {
 
 	/*
 		Aggregate worked/confirmed WPX prefixes per DXCC entity for the interactive world map.
+		Includes both rows with stored COL_PFX and rows where COL_PFX is empty (derived from COL_CALL).
 	*/
 	function get_map_entities($filters) {
 		$locations = $this->logbook_locations();
@@ -155,6 +156,42 @@ class Wpx extends CI_Model {
 			$confirmed_expr = '1';
 		}
 
+		$apply_map_filters = function ($db) use ($filters) {
+			if (isset($filters['mode']) && $filters['mode'] !== 'All' && $filters['mode'] !== '') {
+				$db->group_start();
+				$db->where('t.COL_MODE', $filters['mode']);
+				$db->or_where('t.COL_SUBMODE', $filters['mode']);
+				$db->group_end();
+			}
+			if (isset($filters['band']) && $filters['band'] !== 'All' && $filters['band'] !== '') {
+				$db->where('t.COL_BAND', $filters['band']);
+			}
+			$db->where_in('t.COL_BAND', array('160m', '80m', '60m', '40m', '30m', '20m', '17m', '15m', '12m', '10m', '6m'));
+			$db->where('(t.COL_PROP_MODE IS NULL OR t.COL_PROP_MODE != "SAT")', NULL, FALSE);
+		};
+
+		$entities = array();
+		$add_pfx = function ($adif, $name, $cont, $lat, $lng, $pfx, $confirmed) use (&$entities) {
+			if ($pfx === '') return;
+			if (!isset($entities[$adif])) {
+				$entities[$adif] = array(
+					'adif' => $adif,
+					'name' => ucwords(strtolower((string) $name)),
+					'cont' => strtoupper(trim((string) $cont)),
+					'lat' => (float) $lat,
+					'lng' => (float) $lng,
+					'prefixes' => array(),
+				);
+			}
+			if (!isset($entities[$adif]['prefixes'][$pfx])) {
+				$entities[$adif]['prefixes'][$pfx] = false;
+			}
+			if ($confirmed) {
+				$entities[$adif]['prefixes'][$pfx] = true;
+			}
+		};
+
+		// 1. Rows with stored COL_PFX
 		$this->db->select("t.COL_DXCC AS adif, UPPER(TRIM(t.COL_PFX)) AS pfx, MAX($confirmed_expr) AS confirmed, d.name AS name, d.cont AS cont, d.lat AS lat, d.`long` AS lng", FALSE);
 		$this->db->from($table . ' t');
 		$this->db->join('dxcc_entities d', 't.COL_DXCC = d.adif', 'inner');
@@ -164,46 +201,57 @@ class Wpx extends CI_Model {
 		$this->db->where("TRIM(t.COL_PFX) !=", '');
 		$this->db->where('d.lat IS NOT NULL', NULL, FALSE);
 		$this->db->where('d.`long` IS NOT NULL', NULL, FALSE);
-
-		if (isset($filters['mode']) && $filters['mode'] !== 'All' && $filters['mode'] !== '') {
-			$this->db->group_start();
-			$this->db->where('t.COL_MODE', $filters['mode']);
-			$this->db->or_where('t.COL_SUBMODE', $filters['mode']);
-			$this->db->group_end();
-		}
-		if (isset($filters['band']) && $filters['band'] !== 'All' && $filters['band'] !== '') {
-			$this->db->where('t.COL_BAND', $filters['band']);
-		}
-		$this->db->where_in('t.COL_BAND', array('160m', '80m', '60m', '40m', '30m', '20m', '17m', '15m', '12m', '10m', '6m'));
-		$this->db->where('(t.COL_PROP_MODE IS NULL OR t.COL_PROP_MODE != "SAT")', NULL, FALSE);
-
+		$apply_map_filters($this->db);
 		$this->db->group_by('t.COL_DXCC, pfx, d.name, d.cont, d.lat, d.`long`');
 		$query = $this->db->get();
 
-		$entities = array();
 		foreach ($query->result() as $row) {
-			$adif = (int) $row->adif;
-			if (!isset($entities[$adif])) {
-				$entities[$adif] = array(
-					'adif' => $adif,
-					'name' => ucwords(strtolower((string) $row->name)),
-					'cont' => strtoupper(trim((string) $row->cont)),
-					'lat' => (float) $row->lat,
-					'lng' => (float) $row->lng,
-					'worked' => 0,
-					'confirmed' => 0,
-					'sample' => array(),
-				);
-			}
-			$entities[$adif]['worked']++;
-			if (!empty($row->confirmed)) {
-				$entities[$adif]['confirmed']++;
-			}
-			if (count($entities[$adif]['sample']) < 8) {
-				$entities[$adif]['sample'][] = $row->pfx;
-			}
+			$add_pfx((int) $row->adif, $row->name, $row->cont, $row->lat, $row->lng, $row->pfx, !empty($row->confirmed));
 		}
 
-		return array_values($entities);
+		// 2. Rows with empty/NULL COL_PFX — derive prefix from COL_CALL
+		$this->db->select("t.COL_DXCC AS adif, t.COL_CALL AS callsign, MAX($confirmed_expr) AS confirmed, d.name AS name, d.cont AS cont, d.lat AS lat, d.`long` AS lng", FALSE);
+		$this->db->from($table . ' t');
+		$this->db->join('dxcc_entities d', 't.COL_DXCC = d.adif', 'inner');
+		$this->db->where_in('t.station_id', $locations);
+		$this->db->where('t.COL_DXCC >', 0);
+		$this->db->group_start();
+		$this->db->where('t.COL_PFX IS NULL', NULL, FALSE);
+		$this->db->or_where("TRIM(t.COL_PFX) =", '');
+		$this->db->group_end();
+		$this->db->where('d.lat IS NOT NULL', NULL, FALSE);
+		$this->db->where('d.`long` IS NOT NULL', NULL, FALSE);
+		$apply_map_filters($this->db);
+		$this->db->group_by('t.COL_DXCC, t.COL_CALL, d.name, d.cont, d.lat, d.`long`');
+		$query2 = $this->db->get();
+
+		$CI =& get_instance();
+		$CI->load->library('wpx_award');
+		foreach ($query2->result() as $row) {
+			$pfx = $CI->wpx_award->prefix_from_call($row->callsign);
+			$add_pfx((int) $row->adif, $row->name, $row->cont, $row->lat, $row->lng, $pfx, !empty($row->confirmed));
+		}
+
+		$result = array();
+		foreach ($entities as $ent) {
+			$worked = count($ent['prefixes']);
+			$confirmed = 0;
+			foreach ($ent['prefixes'] as $is_c) {
+				if ($is_c) $confirmed++;
+			}
+			$sample = array_slice(array_keys($ent['prefixes']), 0, 8);
+			$result[] = array(
+				'adif' => $ent['adif'],
+				'name' => $ent['name'],
+				'cont' => $ent['cont'],
+				'lat' => $ent['lat'],
+				'lng' => $ent['lng'],
+				'worked' => $worked,
+				'confirmed' => $confirmed,
+				'sample' => $sample,
+			);
+		}
+
+		return $result;
 	}
 }
