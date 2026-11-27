@@ -6,13 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <?php if($this->optionslib->get_theme()) { ?>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/bootstrap.min.css">
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css">
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/visitor.css">
+    <?php if($this->optionslib->get_theme()) {
+		$theme_name = $this->optionslib->get_theme();
+	?>
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $theme_name;?>/bootstrap.min.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/general.css?v=<?php echo @filemtime(FCPATH . 'assets/css/general.css'); ?>">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/visitor.css?v=<?php echo @filemtime(FCPATH . 'assets/css/visitor.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/selectize.bootstrap4.css"/>
 		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/bootstrap-dialog.css"/>
-		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $this->optionslib->get_theme();?>/overrides.css">
+		<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/<?php echo $theme_name;?>/overrides.css?v=<?php echo @filemtime(FCPATH . 'assets/css/' . $theme_name . '/overrides.css'); ?>">
 	<?php } ?>
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/fontawesome/css/all.css">
@@ -53,22 +55,25 @@
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light main-nav visitor-nav">
 <div class="container">
-		<a class="navbar-brand" href="<?php echo $brand_href; ?>"><?php echo $brand_display; ?></a>
+		<a class="navbar-brand d-inline-flex align-items-center gap-2" href="<?php echo $brand_href; ?>">
+			<span class="visitor-brand-icon"><i class="fas fa-broadcast-tower"></i></span>
+			<span><?php echo $brand_display; ?></span>
+		</a>
 	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
 	<div class="collapse navbar-collapse" id="navbarNav">
 
-		<ul class="navbar-nav me-auto">
+		<ul class="navbar-nav me-auto gap-1">
 		<?php if (!empty($slug)) { ?>
 		<li class="nav-item">
-			<a class="nav-link<?php echo $is_home ? ' active' : ''; ?>" href="<?php echo site_url('visitor/'.$slug); ?>"><?php echo lang('visitor_logbook'); ?></a>
+			<a class="nav-link<?php echo $is_home ? ' active' : ''; ?>" href="<?php echo site_url('visitor/'.$slug); ?>"><i class="fas fa-book-open me-1"></i><?php echo lang('visitor_logbook'); ?></a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link<?php echo $is_grids ? ' active' : ''; ?>" href="<?php echo site_url('visitor/gridsquares/'.$slug); ?>"><?php echo lang('menu_gridsquares'); ?></a>
+			<a class="nav-link<?php echo $is_grids ? ' active' : ''; ?>" href="<?php echo site_url('visitor/gridsquares/'.$slug); ?>"><i class="fas fa-th me-1"></i><?php echo lang('menu_gridsquares'); ?></a>
 		</li>
 		<?php if ($oqrs_enabled) { ?>
 			<li class="nav-item">
-				<a class="nav-link<?php echo $is_oqrs ? ' active' : ''; ?>" href="<?php echo site_url('oqrs/'.$slug); ?>"><?php echo lang('visitor_request_qsl'); ?></a>
+				<a class="nav-link<?php echo $is_oqrs ? ' active' : ''; ?>" href="<?php echo site_url('oqrs/'.$slug); ?>"><i class="fas fa-envelope-open-text me-1"></i><?php echo lang('visitor_request_qsl'); ?></a>
 			</li>
 		<?php } ?>
 		<?php } ?>

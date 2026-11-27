@@ -7,21 +7,36 @@
 }
 
 .visitor-nav .navbar-brand {
-	font-weight: 700;
-	letter-spacing: 0.02em;
+	font-family: var(--bs-font-monospace, monospace);
+	font-weight: 800;
+	letter-spacing: 0.03em;
+}
+
+.visitor-brand-icon {
+	width: 30px;
+	height: 30px;
+	border-radius: 8px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.85rem;
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	color: var(--bs-primary, #0d6efd);
 }
 
 .visitor-page {
-	padding-top: 1rem;
+	padding-top: 1.1rem;
 	padding-bottom: 2rem;
 }
 
+/* Flagship Showcase Card */
 .visitor-showcase {
-	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.125));
-	border-radius: 0.5rem;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.85rem;
 	overflow: hidden;
-	margin-bottom: 1.5rem;
+	margin-bottom: 1rem;
 	background-color: var(--bs-body-bg, #fff);
+	box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
 }
 
 .visitor-hero {
@@ -29,69 +44,111 @@
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	gap: 1.25rem 2rem;
-	padding: 1.15rem 1.35rem;
-	background: var(--bs-tertiary-bg, var(--bs-secondary-bg, #f8f9fa));
-	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.125));
+	gap: 1.1rem 1.75rem;
+	padding: 1.15rem 1.4rem;
+	background: var(--bs-tertiary-bg, #f8fafc);
+	border-bottom: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
 }
 
 .visitor-hero-identity {
 	min-width: 12rem;
 }
 
+.visitor-kicker-row {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-bottom: 0.25rem;
+}
+
 .visitor-kicker {
 	display: inline-block;
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
+	font-size: 0.69rem;
+	font-weight: 800;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.visitor-onair-pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4rem;
+	padding: 0.12rem 0.55rem;
+	border-radius: 999px;
 	font-size: 0.7rem;
-	font-weight: 600;
-	color: var(--bs-secondary-color, #6c757d);
-	margin-bottom: 0.2rem;
+	font-weight: 700;
+	background-color: rgba(25, 135, 84, 0.15);
+	color: #198754;
+}
+
+.visitor-live-dot {
+	width: 7px;
+	height: 7px;
+	border-radius: 50%;
+	background-color: #198754;
+	box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.25);
 }
 
 .visitor-callsign {
+	font-family: var(--bs-font-monospace, monospace);
 	font-size: 2rem;
-	font-weight: 700;
+	font-weight: 800;
 	margin: 0;
-	line-height: 1.15;
+	line-height: 1.12;
 	letter-spacing: 0.03em;
 }
 
+.visitor-sub-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin-top: 0.35rem;
+}
+
 .visitor-logbook-name {
-	font-size: 0.95rem;
-	color: var(--bs-secondary-color, #6c757d);
-	margin: 0.2rem 0 0;
+	font-size: 0.92rem;
+	color: var(--bs-secondary-color, #64748b);
 }
 
-.visitor-callsigns {
-	font-size: 0.9rem;
-	color: var(--bs-secondary-color, #6c757d);
-	margin: 0.25rem 0 0;
-}
-
-.visitor-onair {
-	margin-top: 0.5rem;
+.visitor-call-tag {
+	font-family: var(--bs-font-monospace, monospace);
+	font-size: 0.74rem;
+	font-weight: 700;
+	padding: 0.1rem 0.45rem;
+	border-radius: 0.35rem;
+	background-color: var(--bs-body-bg, #fff);
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
 }
 
 .visitor-find-form {
 	flex: 1 1 18rem;
 	max-width: 26rem;
 	margin: 0;
+	padding: 0.75rem 0.9rem;
+	border-radius: 0.65rem;
+	background-color: var(--bs-body-bg, #fff);
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
 }
 
 .visitor-find-label {
 	display: block;
-	font-weight: 600;
-	margin-bottom: 0.15rem;
+	font-size: 0.82rem;
+	font-weight: 700;
+	margin-bottom: 0.1rem;
 }
 
 .visitor-find-hint {
-	font-size: 0.8rem;
-	color: var(--bs-secondary-color, #6c757d);
+	font-size: 0.75rem;
+	color: var(--bs-secondary-color, #64748b);
 	margin-bottom: 0.45rem;
 }
 
 .visitor-find-input {
+	font-family: var(--bs-font-monospace, monospace);
+	font-weight: 700;
 	text-transform: uppercase;
 }
 
@@ -108,20 +165,177 @@
 	border-radius: 0;
 }
 
-.visitor-section-title {
-	font-size: 1.15rem;
+/* KPI & Content Cards */
+.visitor-kpi-card,
+.visitor-card {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	border-radius: 0.75rem;
+	box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+	overflow: hidden;
+}
+
+.visitor-kpi-label {
+	font-size: 0.69rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary-color, #64748b);
+}
+
+.visitor-kpi-val {
+	font-size: 1.55rem;
+	font-weight: 800;
+	line-height: 1.15;
+	font-variant-numeric: tabular-nums;
+	margin-top: 2px;
+}
+
+.visitor-kpi-sub {
+	font-size: 0.74rem;
+	color: var(--bs-secondary-color, #64748b);
+	margin-top: 3px;
+}
+
+/* Filter Pills */
+.visitor-filter-pill {
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.14));
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.08));
+	color: var(--bs-secondary-color, #64748b);
+	border-radius: 999px;
+	padding: 0.15rem 0.6rem;
+	font-size: 0.73rem;
 	font-weight: 600;
+}
+
+.visitor-filter-pill.is-active {
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.14);
+	border-color: var(--bs-primary, #0d6efd);
+	color: var(--bs-primary, #0d6efd);
+}
+
+/* Recent Contacts Table */
+.visitor-log-table thead th {
+	font-size: 0.69rem;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--bs-secondary-color, #64748b);
+	padding-top: 0.6rem;
+	padding-bottom: 0.6rem;
+}
+
+.visitor-call-chip {
+	display: inline-block;
+	font-family: var(--bs-font-monospace, monospace);
+	font-weight: 700;
+	font-size: 0.84rem;
+	padding: 0.14rem 0.48rem;
+	border-radius: 0.38rem;
+	background-color: rgba(var(--bs-primary-rgb, 13, 110, 253), 0.11);
+	color: var(--bs-primary, #0d6efd);
+}
+
+.visitor-mode-badge,
+.visitor-band-badge {
+	display: inline-block;
+	font-size: 0.71rem;
+	font-weight: 700;
+	padding: 0.12rem 0.45rem;
+	border-radius: 0.32rem;
+	line-height: 1.3;
+}
+
+.visitor-mode-ssb {
+	background-color: rgba(25, 135, 84, 0.14);
+	color: #198754;
+}
+
+.visitor-mode-cw {
+	background-color: rgba(245, 158, 11, 0.16);
+	color: #b45309;
+}
+
+.visitor-mode-digi {
+	background-color: rgba(13, 202, 240, 0.16);
+	color: #087990;
+}
+
+.visitor-mode-sat {
+	background-color: rgba(111, 66, 193, 0.14);
+	color: #6f42c1;
+}
+
+.visitor-band-badge {
+	font-family: var(--bs-font-monospace, monospace);
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.12));
+	color: var(--bs-body-color, inherit);
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+}
+
+.visitor-band-badge.is-sat {
+	background-color: rgba(111, 66, 193, 0.14);
+	color: #6f42c1;
+	border-color: rgba(111, 66, 193, 0.28);
+}
+
+.visitor-pagination .pagination {
+	margin-bottom: 0;
+	flex-wrap: wrap;
+	gap: 2px;
+}
+
+.visitor-pagination .page-link {
+	padding: 0.22rem 0.58rem;
+	font-size: 0.78rem;
+	border-radius: 0.35rem !important;
+}
+
+/* Sidebar Progress Bars & Quick Links */
+.visitor-bar-row {
 	margin-bottom: 0.75rem;
 }
 
-.visitor-stats-card .card-header {
+.visitor-bar-track {
+	height: 7px;
+	border-radius: 999px;
+	background-color: var(--bs-tertiary-bg, rgba(127, 127, 127, 0.16));
+	overflow: hidden;
+}
+
+.visitor-bar-fill {
+	height: 100%;
+	border-radius: 999px;
+}
+
+.visitor-quick-link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0.58rem 0.75rem;
+	border-radius: 0.5rem;
+	border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.12));
+	background-color: var(--bs-tertiary-bg, #f8fafc);
+	color: var(--bs-body-color, inherit);
+	text-decoration: none;
+	font-size: 0.84rem;
 	font-weight: 600;
+	margin-bottom: 0.5rem;
+	transition: border-color 120ms ease, color 120ms ease;
+}
+
+.visitor-quick-link:last-child {
+	margin-bottom: 0;
+}
+
+.visitor-quick-link:hover {
+	border-color: var(--bs-primary, #0d6efd);
+	color: var(--bs-primary, #0d6efd);
 }
 
 .visitor-site-footer {
-	padding: 1.5rem 0 2rem;
-	border-top: 1px solid rgba(0, 0, 0, 0.08);
-	margin-top: 1rem;
+	padding: 1.4rem 0 1.8rem;
+	border-top: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.1));
+	margin-top: 1.25rem;
 	text-align: center;
-	font-size: 0.85rem;
+	font-size: 0.82rem;
 }

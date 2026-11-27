@@ -996,3 +996,138 @@ kbd {
 	color: #fff;
 	background-color: rgba(255, 255, 255, 0.12);
 }
+
+/* Public Logbook (Visitor) Dark Mode & Leaflet Controls */
+.visitor-brand-icon {
+	background-color: rgba(122, 179, 239, 0.18);
+	color: #7ab3ef;
+}
+
+.visitor-showcase,
+.visitor-kpi-card,
+.visitor-card {
+	background-color: #24282f;
+	border-color: rgba(255, 255, 255, 0.1);
+}
+
+.visitor-hero {
+	background: #2b3038;
+	border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.visitor-find-form {
+	background-color: #1f2228;
+	border-color: rgba(255, 255, 255, 0.14);
+}
+
+.visitor-find-input {
+	background-color: #16181d !important;
+	border-color: rgba(255, 255, 255, 0.2) !important;
+	color: #f8f9fa !important;
+}
+
+.visitor-find-input::placeholder {
+	color: #94a3b8 !important;
+}
+
+.visitor-call-tag {
+	background-color: #1f2228;
+	border-color: rgba(255, 255, 255, 0.14);
+	color: #e9ecef;
+}
+
+.visitor-call-chip {
+	background-color: rgba(122, 179, 239, 0.16);
+	color: #7ab3ef;
+}
+
+.visitor-onair-pill {
+	background-color: rgba(0, 188, 140, 0.18);
+	color: #3dd5a3;
+}
+
+.visitor-mode-ssb {
+	background-color: rgba(0, 188, 140, 0.2);
+	color: #3dd5a3;
+}
+
+.visitor-mode-cw {
+	background-color: rgba(245, 158, 11, 0.2);
+	color: #fbbf24;
+}
+
+.visitor-mode-digi {
+	background-color: rgba(57, 192, 237, 0.2);
+	color: #6edff6;
+}
+
+.visitor-mode-sat,
+.visitor-band-badge.is-sat {
+	background-color: rgba(167, 139, 250, 0.2);
+	color: #c4b5fd;
+	border-color: rgba(167, 139, 250, 0.35);
+}
+
+.visitor-filter-pill {
+	background-color: #2b3038;
+	border-color: rgba(255, 255, 255, 0.14);
+	color: #adb5bd;
+}
+
+.visitor-filter-pill.is-active {
+	background-color: rgba(122, 179, 239, 0.18);
+	border-color: #7ab3ef;
+	color: #7ab3ef;
+}
+
+.visitor-quick-link {
+	background-color: #2b3038;
+	border-color: rgba(255, 255, 255, 0.12);
+	color: #e9ecef;
+}
+
+.visitor-quick-link:hover {
+	border-color: #7ab3ef;
+	color: #7ab3ef;
+}
+
+.visitor-pagination .page-link {
+	background-color: #2b3038;
+	border-color: rgba(255, 255, 255, 0.16);
+	color: #cfd6de;
+}
+
+.visitor-pagination .page-link:hover {
+	background-color: #374151;
+	border-color: rgba(255, 255, 255, 0.28);
+	color: #fff;
+}
+
+.visitor-pagination .page-item.active .page-link {
+	background-color: #375a7f;
+	border-color: #4f79a5;
+	color: #fff;
+}
+
+.visitor-site-footer {
+	border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Leaflet Layers & EasyPrint controls */
+.leaflet-control-layers,
+.leaflet-control-layers-expanded {
+	background-color: #24282f !important;
+	color: #e9ecef !important;
+	border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.leaflet-control-layers-toggle {
+	filter: invert(1) brightness(0.92);
+}
+
+.leaflet-control-easyPrint a,
+.easyPrintHolder a {
+	background-color: #dcd8d1 !important;
+	border-color: rgba(0, 0, 0, 0.25) !important;
+	filter: invert(1) brightness(0.95);
+}

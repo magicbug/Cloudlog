@@ -124,6 +124,27 @@ class Visitor extends CI_Controller {
                 $data['total_countries_confirmed_eqsl'] = $CountriesBreakdown['Countries_Worked_EQSL'];
                 $data['total_countries_confirmed_lotw'] = $CountriesBreakdown['Countries_Worked_LOTW'];
 
+				// Distinct confirmed DXCC (any channel) + Top Bands snapshot
+				$location_list = implode(',', array_map('intval', $logbooks_locations_array));
+				$table_name = $this->config->item('table_name');
+				$conf_any_row = $this->db->query(
+					"SELECT COUNT(DISTINCT COL_DXCC) AS cnt FROM `{$table_name}` WHERE station_id IN ({$location_list}) AND COL_DXCC > 0 AND (COL_QSL_RCVD IN ('Y','V') OR COL_LOTW_QSL_RCVD IN ('Y','V') OR COL_EQSL_QSL_RCVD IN ('Y','V'))"
+				)->row();
+				$data['total_countries_confirmed_any'] = $conf_any_row ? (int) $conf_any_row->cnt : 0;
+
+				$top_bands_q = $this->db->query(
+					"SELECT LOWER(COL_BAND) AS band, COUNT(*) AS cnt FROM `{$table_name}` WHERE station_id IN ({$location_list}) AND COALESCE(COL_BAND, '') <> '' GROUP BY LOWER(COL_BAND) ORDER BY cnt DESC LIMIT 5"
+				);
+				$data['top_bands'] = $top_bands_q ? $top_bands_q->result_array() : array();
+
+				$active_bands_row = $this->db->query(
+					"SELECT COUNT(DISTINCT LOWER(COL_BAND)) AS cnt FROM `{$table_name}` WHERE station_id IN ({$location_list}) AND COALESCE(COL_BAND, '') <> ''"
+				)->row();
+				$data['active_bands_count'] = $active_bands_row ? (int) $active_bands_row->cnt : 0;
+
+				$data['page_offset'] = (int) $this->uri->segment(4);
+				$data['per_page'] = (int) $config['per_page'];
+
 				// Show paginated results
 				$data['results'] = $this->logbook_model->get_qsos($config['per_page'], $this->uri->segment(4), $logbooks_locations_array);
 
